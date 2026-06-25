@@ -45,8 +45,10 @@ a {
 }
 
 .container {
-  width: min(1160px, 100% - 3rem);
+  width: 100%;
+  max-width: 1160px;
   margin-inline: auto;
+  padding-inline: 1.5rem;
 }
 
 .site-header {
@@ -164,6 +166,13 @@ main {
   margin-bottom: 1.35rem;
 }
 
+.hero > *,
+.proof-pillars > *,
+.products-grid > *,
+.proof-standard > * {
+  min-width: 0;
+}
+
 .hero-copy,
 .hero-visual,
 .pillar-card,
@@ -267,6 +276,7 @@ h1 span {
 .pillar-card p {
   color: #c3ced7;
   font-size: 0.92rem;
+  overflow-wrap: anywhere;
 }
 
 .products {
@@ -316,6 +326,7 @@ h1 span {
 .product-card p {
   color: #c6d0d8;
   font-size: 0.9rem;
+  overflow-wrap: anywhere;
 }
 
 .chip {
@@ -486,7 +497,7 @@ h1 span {
 
 @media (max-width: 900px) {
   .container {
-    width: min(1160px, 100% - 1.6rem);
+    padding-inline: 0.8rem;
   }
 
   .nav-row {
@@ -531,8 +542,27 @@ h1 span {
 }
 
 @media (max-width: 760px) {
+  .container {
+    padding-inline: 0.65rem;
+  }
+
   .brand-logo {
-    width: min(240px, 100%);
+    width: min(190px, 100%);
+  }
+
+  .nav-row {
+    gap: 0.55rem;
+  }
+
+  .top-nav {
+    order: 3;
+    width: 100%;
+  }
+
+  .nav-cta {
+    order: 4;
+    width: 100%;
+    justify-content: center;
   }
 
   .products-grid {
