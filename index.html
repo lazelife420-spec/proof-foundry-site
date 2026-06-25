@@ -20,157 +20,160 @@
 <body>
   <header class="site-header" id="top">
     <div class="container nav-row">
-      <a class="brand-lockup" href="#top" aria-label="The Proof Foundry home">
-        <img class="brand-logo" src="brand/proof-foundry-logo-horizontal.svg" alt="The Proof Foundry™" />
+      <a class="brand-lockup" href="#home" aria-label="Proof Foundry home">
+        <img class="brand-logo" src="brand/proof-foundry-logo-horizontal.svg" alt="Proof Foundry" />
       </a>
-      <nav class="top-nav" aria-label="Primary">
+      <nav class="top-nav" aria-label="Primary navigation">
+        <a href="#home">Home</a>
         <a href="#products">Products</a>
         <a href="#proof-standard">Proof Standard</a>
         <a href="https://github.com/Z3r0DayZion-install" target="_blank" rel="noopener">GitHub</a>
-        <a class="button button-primary nav-cta" href="https://z3r0dayzion-install.github.io/cache-vault-landing/" target="_blank" rel="noopener">Get Cache Vault</a>
       </nav>
+      <a class="button button-primary nav-cta" href="#products">Explore Products</a>
     </div>
   </header>
 
-  <main class="container">
-    <section class="hero" aria-labelledby="hero-title">
+  <main>
+    <section id="home" class="hero container" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <div class="hero-badge">
-          <img class="hero-mark" src="brand/proof-foundry-mark.svg" alt="Proof Foundry mark" />
-          <p class="eyebrow">The Proof Foundry™</p>
+        <p class="eyebrow">Proof over promises</p>
+        <h1 id="hero-title">We build software.<br /><span>We prove it works.</span></h1>
+        <p class="hero-lede">Proof Foundry creates tools that deliver real results — with receipts, release proof, and verifiable claims.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#products">Explore Products</a>
+          <a class="button button-secondary" href="#proof-standard">View Proof Standard</a>
         </div>
-        <h1 id="hero-title">Proof-first software forged for builders.</h1>
-        <p class="sub">The Proof Foundry™ builds local-first tools with receipts, user-owned data, and honest release claims. Build it. Prove it. Ship it.</p>
-        <div class="hero-ctas">
-          <a class="button button-primary" href="https://z3r0dayzion-install.github.io/cache-vault-landing/" target="_blank" rel="noopener">Get Cache Vault</a>
-          <a class="button button-secondary" href="https://github.com/Z3r0DayZion-install" target="_blank" rel="noopener">View GitHub</a>
-        </div>
-        <p class="trust-strip">Local-first · No telemetry · Receipts included · Useful free tiers</p>
-        <p class="motto">Build it. Prove it. Ship it.</p>
       </div>
 
-      <aside class="proof-stack" aria-label="Proof stack status">
-        <div class="stack-head">
-          <h2>Proof Stack</h2>
-          <img class="seal-image" src="brand/proof-foundry-verified-seal.svg" alt="Verified by The Proof Foundry" />
-        </div>
-        <ul>
-          <li><span>Product built</span><strong>Pass</strong></li>
-          <li><span>Tests passed</span><strong>Pass</strong></li>
-          <li><span>Hash recorded</span><strong>Pass</strong></li>
-          <li><span>Receipt stamped</span><strong>Pass</strong></li>
-          <li><span>Release shipped</span><strong>Pass</strong></li>
-        </ul>
-      </aside>
+      <div class="hero-visual" aria-hidden="true">
+        <img class="hero-mark" src="brand/proof-foundry-mark.svg" alt="" aria-hidden="true" />
+      </div>
     </section>
 
-    <section class="featured-product" id="products" aria-labelledby="featured-title">
-      <div class="section-head">
-        <h2 class="section-title" id="featured-title">Featured Product</h2>
-        <span class="chip available">Available</span>
-      </div>
-      <article class="featured-card">
-        <h3 class="product-name">Cache Vault™</h3>
-        <p class="product-desc">A local-first Windows clipboard vault for saving, searching, organizing, and exporting copied work.</p>
-        <div class="featured-layout">
-          <ul class="feature-list">
-            <li>Search copied text, code, links, notes, and images</li>
-            <li>Organize clips into safes and smart views</li>
-            <li>Export useful work with stamped receipts</li>
-            <li>Free base version, optional Founder upgrade</li>
-          </ul>
-          <div class="preview-card" aria-label="Cache Vault preview note">
-            <p>Cache Vault visual preview is on the product page.</p>
-            <a class="button button-secondary" href="https://z3r0dayzion-install.github.io/cache-vault-landing/" target="_blank" rel="noopener">Open landing page</a>
-          </div>
-        </div>
-        <a class="button button-primary" href="https://z3r0dayzion-install.github.io/cache-vault-landing/" target="_blank" rel="noopener">Download / details</a>
+    <section class="proof-pillars container" aria-label="Proof pillars">
+      <article class="pillar-card">
+        <p class="pillar-index">01</p>
+        <h2>Verifiable Proof</h2>
+        <p>Receipts, release notes, screenshots, hashes, and test gates where available.</p>
+      </article>
+      <article class="pillar-card">
+        <p class="pillar-index">02</p>
+        <h2>Open Standards</h2>
+        <p>Plain-language claims tied to visible evidence.</p>
+      </article>
+      <article class="pillar-card">
+        <p class="pillar-index">03</p>
+        <h2>Results That Last</h2>
+        <p>Tools built for real local workflows, not disposable hype.</p>
       </article>
     </section>
 
-    <section class="pipeline" aria-labelledby="pipeline-title">
-      <h2 class="section-title" id="pipeline-title">Products on the proof track</h2>
-      <div class="pipeline-grid">
-        <article class="product-card">
-          <div class="product-row">
-            <h3 class="product-name">Cache Vault™</h3>
+    <section id="products" class="products container" aria-labelledby="products-title">
+      <div class="section-head">
+        <h2 id="products-title">Our Products</h2>
+        <p>Focused tools. Real results. Verifiable proof.</p>
+      </div>
+
+      <div class="products-grid">
+        <article class="product-card product-live">
+          <div class="product-top">
+            <h3>Cache Vault</h3>
             <span class="chip available">Available</span>
           </div>
-          <p class="product-desc">Local-first Windows clipboard vault with search, organization, and export receipts.</p>
+          <p>Local clipboard vault with stamped receipts, safes, exports, and proof-pack workflows.</p>
+          <a class="button button-primary" href="https://z3r0dayzion-install.github.io/cache-vault-landing/" target="_blank" rel="noopener">Launch Cache Vault</a>
         </article>
 
-        <article class="product-card">
-          <div class="product-row">
-            <h3 class="product-name">Cleanroom™</h3>
+        <article class="product-card product-proof">
+          <div class="product-top">
+            <h3>Cleanroom</h3>
             <span class="chip in-proof">In proof</span>
           </div>
-          <p class="product-desc">Windows cleanup with proof receipts.</p>
+          <p>Isolated Windows workspaces for safer analysis, cleanup, and repeatable release proof.</p>
+          <span class="button button-muted" aria-disabled="true">Proof pending</span>
         </article>
 
-        <article class="product-card">
-          <div class="product-row">
-            <h3 class="product-name">Lights Out™</h3>
-            <span class="chip in-development">In development</span>
-          </div>
-          <p class="product-desc">Bedtime shutdown ritual for Windows.</p>
-        </article>
-
-        <article class="product-card">
-          <div class="product-row">
-            <h3 class="product-name">SkyFoundry™</h3>
+        <article class="product-card product-proof">
+          <div class="product-top">
+            <h3>HyperSnatch</h3>
             <span class="chip in-proof">In proof</span>
           </div>
-          <p class="product-desc">Weather that tells you what to do next.</p>
+          <p>Fast link and file capture with proof-focused retrieval receipts.</p>
+          <span class="button button-muted" aria-disabled="true">Proof pending</span>
         </article>
 
-        <article class="product-card">
-          <div class="product-row">
-            <h3 class="product-name">Sound Assist™</h3>
+        <article class="product-card product-build">
+          <div class="product-top">
+            <h3>SkyFoundry</h3>
             <span class="chip in-development">In development</span>
           </div>
-          <p class="product-desc">Simple sound controls for everyday use.</p>
+          <p>Weather surfaces built for clear daily decisions, readable forecasts, and practical planning.</p>
+          <span class="button button-muted" aria-disabled="true">Coming soon</span>
         </article>
+      </div>
 
-        <article class="product-card">
-          <div class="product-row">
-            <h3 class="product-name">ProofShot™ / HyperSnatch™</h3>
-            <span class="chip in-proof">In proof</span>
-          </div>
-          <p class="product-desc">Capture workflows with proof.</p>
-        </article>
-
-        <article class="product-card">
-          <div class="product-row">
-            <h3 class="product-name">ProofBound™</h3>
-            <span class="chip in-development">In development</span>
-          </div>
-          <p class="product-desc">Self-verifying digital book format.</p>
-        </article>
+      <div class="more-tools" aria-label="Additional products in progress">
+        <p class="more-tools-title">More tools on the proof track</p>
+        <ul>
+          <li>Lights Out <span>In development</span></li>
+          <li>Sound Assist <span>In development</span></li>
+          <li>ProofBound <span>In development</span></li>
+        </ul>
       </div>
     </section>
 
-    <section class="proof-standard" id="proof-standard" aria-labelledby="standard-title">
-      <div class="standard-head">
-        <h2 class="section-title" id="standard-title">The Proof Standard</h2>
-        <img class="seal-image seal-image-large" src="brand/proof-foundry-verified-seal.svg" alt="Verified seal" />
+    <section id="proof-standard" class="proof-standard container" aria-labelledby="proof-standard-title">
+      <div class="proof-seal-wrap">
+        <img class="seal-image" src="brand/proof-foundry-verified-seal.svg" alt="Proof Foundry verified seal" />
       </div>
-      <div class="doctrine-grid">
-        <article class="doctrine-card">Build local-first</article>
-        <article class="doctrine-card">Prove the release</article>
-        <article class="doctrine-card">Keep receipts</article>
-        <article class="doctrine-card">Make free useful</article>
-        <article class="doctrine-card">Avoid telemetry by default</article>
-        <article class="doctrine-card">No fake claims</article>
+      <div class="proof-copy">
+        <p class="eyebrow">The Proof Standard</p>
+        <h2 id="proof-standard-title">Every claim. Every tool. Every time.</h2>
+        <p>Proof Foundry products are shipped with visible evidence where possible: release notes, screenshots, checksums, test results, receipts, and plain-language limits.</p>
+        <p>Because trust is earned through verification, not words.</p>
+        <div class="proof-actions">
+          <a class="button button-primary" href="#proof-standard">Read the Proof Standard</a>
+          <a class="button button-secondary" href="#products">Explore Products</a>
+        </div>
       </div>
-      <p class="receipt-line">If it matters, keep the receipt.</p>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container">
-      <p>Forged by The Proof Foundry™ &mdash; Build it. Prove it. Ship it.</p>
-      <p>Independent software studio by Christian Cash.</p>
-      <p><a href="https://github.com/Z3r0DayZion-install" target="_blank" rel="noopener">GitHub</a></p>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img class="footer-logo" src="brand/proof-foundry-logo-horizontal.svg" alt="Proof Foundry" />
+        <p>Build it. Prove it. Ship it.</p>
+      </div>
+
+      <div>
+        <h2>Products</h2>
+        <ul>
+          <li><a href="https://z3r0dayzion-install.github.io/cache-vault-landing/" target="_blank" rel="noopener">Cache Vault</a></li>
+          <li>Cleanroom</li>
+          <li>HyperSnatch</li>
+          <li>SkyFoundry</li>
+        </ul>
+      </div>
+
+      <div>
+        <h2>Company</h2>
+        <ul>
+          <li><a href="#proof-standard">Proof Standard</a></li>
+          <li><a href="https://github.com/Z3r0DayZion-install" target="_blank" rel="noopener">Docs</a></li>
+          <li>About</li>
+        </ul>
+      </div>
+
+      <div>
+        <h2>Connect</h2>
+        <ul>
+          <li><a href="https://github.com/Z3r0DayZion-install" target="_blank" rel="noopener">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Proof Foundry. All rights reserved.</p>
     </div>
   </footer>
 </body>
