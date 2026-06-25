@@ -644,14 +644,6 @@ h1 span {
     overflow-wrap: break-word;
   }
 
-  .hero-lede,
-  .pillar-card p,
-  .product-card p,
-  .proof-copy p {
-    padding-right: 0.3rem;
-    max-inline-size: calc(100% - 0.3rem);
-  }
-
   .top-nav a {
     font-size: 0.82rem;
   }
@@ -678,20 +670,6 @@ h1 span {
   .proof-standard,
   .more-tools {
     padding: 0.92rem 1rem;
-  }
-
-  .hero-lede,
-  .pillar-card p,
-  .product-card p,
-  .proof-copy p {
-    padding-right: 0.34rem;
-    max-inline-size: 92%;
-  }
-
-  .section-head p,
-  .more-tools-title,
-  .more-tools li {
-    max-inline-size: 92%;
   }
 
   .top-nav {
