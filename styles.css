@@ -454,6 +454,199 @@ h1 span {
   gap: 0.7rem;
 }
 
+/* Founders Circle */
+.founders-hero {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 1.2rem;
+  align-items: stretch;
+  margin-bottom: 1.6rem;
+}
+
+.founders-hero > * {
+  min-width: 0;
+}
+
+.founders-hero .hero-copy {
+  border: 1px solid rgba(38, 55, 70, 0.85);
+  border-radius: var(--radius);
+  background: linear-gradient(160deg, rgba(16, 25, 35, 0.95), rgba(10, 16, 24, 0.88));
+  box-shadow: var(--shadow);
+  padding: clamp(1.25rem, 2vw, 2rem);
+}
+
+.founders-note {
+  margin-top: 0.95rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+  letter-spacing: 0.01em;
+}
+
+.founders-receipt {
+  display: grid;
+  align-content: start;
+  gap: 0.95rem;
+  padding: clamp(1.1rem, 2vw, 1.6rem);
+  border: 1px solid rgba(214, 168, 79, 0.45);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(circle at 80% 0%, rgba(214, 168, 79, 0.12), transparent 60%),
+    linear-gradient(160deg, rgba(16, 25, 35, 0.96), rgba(10, 16, 24, 0.9));
+  box-shadow: var(--shadow);
+}
+
+.receipt-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.receipt-seal {
+  width: 64px;
+  height: auto;
+}
+
+.receipt-fields {
+  display: grid;
+  gap: 0.6rem;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 0.85rem 0;
+}
+
+.receipt-fields > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.receipt-fields dt {
+  color: var(--muted);
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+}
+
+.receipt-fields dd {
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: right;
+}
+
+.receipt-status {
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--gold);
+  text-align: center;
+  padding: 0.55rem 0.5rem;
+  border: 1px dashed rgba(214, 168, 79, 0.5);
+  border-radius: 12px;
+}
+
+.founders-cap {
+  margin-bottom: 1.6rem;
+}
+
+.cap-line {
+  border: 1px solid rgba(0, 209, 178, 0.32);
+  border-radius: var(--radius);
+  background: linear-gradient(160deg, rgba(16, 25, 35, 0.9), rgba(10, 16, 24, 0.82));
+  padding: 0.85rem 1.1rem;
+  color: #d6e0e6;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.founders-ledger {
+  margin-bottom: 2.3rem;
+}
+
+.ledger-wrap {
+  border: 1px solid rgba(38, 55, 70, 0.85);
+  border-radius: var(--radius);
+  background: linear-gradient(160deg, rgba(16, 25, 35, 0.95), rgba(10, 16, 24, 0.88));
+  box-shadow: var(--shadow);
+  overflow-x: auto;
+}
+
+.ledger-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 540px;
+}
+
+.ledger-table th,
+.ledger-table td {
+  padding: 0.78rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(38, 55, 70, 0.6);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.ledger-table thead th {
+  color: var(--muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  font-weight: 600;
+}
+
+.ledger-table tbody tr:last-child th,
+.ledger-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.ledger-table tbody th[scope="row"] {
+  font-family: "JetBrains Mono", Consolas, monospace;
+  color: var(--gold);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.ledger-holder {
+  color: var(--muted);
+}
+
+.slot-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.slot-state::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.85;
+}
+
+.slot-state.open {
+  color: var(--teal);
+}
+
+.button-sm {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.8rem;
+}
+
+.ledger-footer {
+  margin-top: 0.9rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
 .site-footer {
   border-top: 1px solid rgba(38, 55, 70, 0.72);
   background: rgba(5, 8, 12, 0.85);
@@ -546,7 +739,8 @@ h1 span {
     margin-left: auto;
   }
 
-  .hero {
+  .hero,
+  .founders-hero {
     grid-template-columns: 1fr;
   }
 
@@ -615,9 +809,20 @@ h1 span {
   .pillar-card,
   .product-card,
   .proof-standard,
-  .more-tools {
+  .more-tools,
+  .founders-hero .hero-copy,
+  .founders-receipt {
     padding: 0.95rem 1.05rem;
     max-width: 100%;
+  }
+
+  .founders-hero .hero-actions {
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .founders-hero .hero-actions .button {
+    width: 100%;
   }
 
   .hero-lede,
