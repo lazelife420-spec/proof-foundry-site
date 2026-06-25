@@ -26,6 +26,12 @@ html {
   scroll-behavior: smooth;
 }
 
+#home,
+#products,
+#proof-standard {
+  scroll-margin-top: 5.5rem;
+}
+
 body {
   min-height: 100vh;
   color: var(--text);
@@ -329,6 +335,28 @@ h1 span {
   overflow-wrap: normal;
 }
 
+.product-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.2rem 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.product-status::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.8;
+}
+
 .chip {
   border-radius: 999px;
   border: 1px solid currentColor;
@@ -542,6 +570,12 @@ h1 span {
 }
 
 @media (max-width: 760px) {
+  #home,
+  #products,
+  #proof-standard {
+    scroll-margin-top: 6.5rem;
+  }
+
   .container {
     padding-inline: 1rem;
   }
