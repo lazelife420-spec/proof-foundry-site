@@ -1,0 +1,46 @@
+{
+  "brand": "The Proof Foundry\u2122",
+  "short_name": "Proof Foundry",
+  "tagline": "Build it. Prove it. Ship it.",
+  "positioning": "Proof-first software forged for builders.",
+  "palette": {
+    "foundry_black": "#0B0F14",
+    "deep_field": "#07111F",
+    "iron_gray": "#1C232B",
+    "panel": "#101923",
+    "proof_teal": "#00D1B2",
+    "receipt_white": "#F4F7F8",
+    "muted_steel": "#91A0AF",
+    "stamp_gold": "#D6A84F",
+    "warning_red": "#E5484D"
+  },
+  "css_variables": {
+    "--pf-black": "#0B0F14",
+    "--pf-field": "#07111F",
+    "--pf-iron": "#1C232B",
+    "--pf-panel": "#101923",
+    "--pf-line": "#263746",
+    "--pf-teal": "#00D1B2",
+    "--pf-white": "#F4F7F8",
+    "--pf-muted": "#91A0AF",
+    "--pf-gold": "#D6A84F",
+    "--pf-red": "#E5484D"
+  },
+  "type": {
+    "display": "Space Grotesk / Inter / system sans-serif",
+    "body": "Inter / Segoe UI / system sans-serif",
+    "mono": "JetBrains Mono / Consolas / ui-monospace"
+  },
+  "voice": [
+    "plain",
+    "specific",
+    "receipt-backed",
+    "builder-serious",
+    "no fake claims"
+  ],
+  "assets": [
+    "proof-foundry-mark.svg",
+    "proof-foundry-logo-horizontal.svg",
+    "proof-foundry-verified-seal.svg"
+  ]
+}
