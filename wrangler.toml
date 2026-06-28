@@ -1,0 +1,10 @@
+name = "proof-foundry-site"
+compatibility_date = "2026-06-28"
+workers_dev = true
+
+routes = [
+  { pattern = "theprooffoundry.com", custom_domain = true }
+]
+
+[assets]
+directory = "./public"
