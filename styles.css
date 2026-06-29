@@ -932,3 +932,222 @@ h1 span {
     width: 100%;
   }
 }
+
+/* ───────────────────────────────────────────────────────────────────────────
+   LIGHTS OUT PC LANDING PAGE
+   ─────────────────────────────────────────────────────────────────────────── */
+.lo-hero {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 1.2rem;
+  align-items: stretch;
+  margin-bottom: 1.6rem;
+}
+
+.lo-hero > * {
+  min-width: 0;
+}
+
+.lo-hero-copy {
+  border: 1px solid rgba(38, 55, 70, 0.85);
+  border-radius: var(--radius);
+  background: linear-gradient(160deg, rgba(16, 25, 35, 0.95), rgba(10, 16, 24, 0.88));
+  box-shadow: var(--shadow);
+  padding: clamp(1.25rem, 2vw, 2rem);
+}
+
+.lo-tagline {
+  font-size: clamp(1.15rem, 2vw, 1.6rem);
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.lo-secondary {
+  color: var(--muted);
+  font-size: 1.05rem;
+  margin-bottom: 0.9rem;
+}
+
+.lo-hero-visual {
+  border: 1px solid rgba(107, 211, 255, 0.25);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(circle at 50% 45%, rgba(107, 211, 255, 0.12), transparent 60%),
+    linear-gradient(160deg, rgba(12, 17, 24, 0.98), rgba(7, 11, 16, 0.92));
+  box-shadow: var(--shadow);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: 1rem;
+}
+
+.lo-hero-img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* Trust Strip */
+.lo-trust {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.8rem 1.5rem;
+  margin-bottom: 2.5rem;
+  padding: 1rem 1.5rem;
+  border: 1px solid rgba(38, 55, 70, 0.6);
+  border-radius: var(--radius);
+  background: rgba(16, 25, 35, 0.6);
+}
+
+.lo-trust-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.88rem;
+  color: #c8d2da;
+  font-weight: 500;
+}
+
+.lo-trust-icon {
+  font-size: 1rem;
+}
+
+/* Features */
+.lo-features {
+  margin-bottom: 2.5rem;
+}
+
+.lo-features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.lo-feature-card {
+  border: 1px solid rgba(38, 55, 70, 0.85);
+  border-radius: var(--radius);
+  background: linear-gradient(160deg, rgba(16, 25, 35, 0.95), rgba(10, 16, 24, 0.88));
+  box-shadow: var(--shadow);
+  padding: 1.1rem 1rem;
+}
+
+.lo-feature-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.lo-feature-card h3 {
+  font-size: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.lo-feature-card p {
+  color: #c6d0d8;
+  font-size: 0.88rem;
+}
+
+/* Proof Section */
+.lo-proof {
+  margin-bottom: 2.5rem;
+}
+
+.lo-proof-card {
+  border: 1px solid rgba(214, 168, 79, 0.45);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(circle at 80% 0%, rgba(214, 168, 79, 0.1), transparent 60%),
+    linear-gradient(160deg, rgba(16, 25, 35, 0.96), rgba(10, 16, 24, 0.9));
+  box-shadow: var(--shadow);
+  padding: clamp(1.1rem, 2vw, 1.6rem);
+}
+
+.lo-proof-fields {
+  display: grid;
+  gap: 0.55rem;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 0.85rem 0;
+  margin: 0.8rem 0;
+}
+
+.lo-proof-fields > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.lo-proof-fields dt {
+  color: var(--muted);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.lo-proof-fields dd {
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: right;
+}
+
+.lo-proof-note {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin-top: 0.4rem;
+}
+
+/* CTA */
+.lo-cta {
+  margin-bottom: 2rem;
+}
+
+.lo-cta-card {
+  border: 1px solid rgba(38, 55, 70, 0.85);
+  border-radius: var(--radius);
+  background: linear-gradient(160deg, rgba(16, 25, 35, 0.95), rgba(10, 16, 24, 0.88));
+  box-shadow: var(--shadow);
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+.lo-cta-wordmark {
+  width: min(280px, 80%);
+  height: auto;
+  margin-bottom: 0.8rem;
+}
+
+.lo-cta-card > p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+/* Lights Out responsive */
+@media (max-width: 900px) {
+  .lo-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .lo-features-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .lo-features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lo-hero-copy {
+    padding: 0.95rem 1.05rem;
+  }
+
+  .lo-trust {
+    gap: 0.6rem 1rem;
+    padding: 0.8rem 1rem;
+  }
+}
