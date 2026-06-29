@@ -3,3 +3,21 @@
 
 # Local deploy artifacts (zips for Direct-Upload fallback)
 /receipts/*.zip
+
+# Browser automation / Playwright artifacts
+.edge-headless-profile/
+.snapshots/
+screenshot-*.png
+receipt-*.png
+see-live-*.png
+try-again-*.png
+
+# Local custody receipts and bundles (backed up off-machine)
+/receipts/
+
+# Rasterized brand exports (source SVGs are tracked)
+brand/*.png
+brand/*.pdf
+
+# Reference PDFs (not part of deployed site)
+*.pdf
