@@ -1,0 +1,57 @@
+{
+  "brand": "The Proof Foundry",
+  "positioning": "Proof over promises. Local-first software with receipts, honest claims, and user-owned workflows.",
+  "canonicalUrl": "https://theprooffoundry.com",
+  "products": [
+    {
+      "name": "Lights Out PC",
+      "slug": "lights-out",
+      "status": "public",
+      "route": "/lights-out",
+      "build": "PowerShell compiled (SleepTimer.exe)",
+      "latestVersion": "v1.0.0",
+      "distType": "Windows Executable",
+      "proof": ["tests", "release-receipt", "checksum"]
+    },
+    {
+      "name": "Cache Vault",
+      "slug": "cache-vault",
+      "status": "public",
+      "route": "https://cache-vault-landing.pages.dev/",
+      "build": "Python compiled (CacheVault.exe)",
+      "latestVersion": "v0.1.4",
+      "distType": "Windows Portable ZIP",
+      "proof": ["tests", "signed-checksum", "changelog", "release-notes"]
+    },
+    {
+      "name": "Cleanroom",
+      "slug": "cleanroom",
+      "status": "in-proof",
+      "route": "#products",
+      "build": "Windows isolated workspace environment",
+      "latestVersion": "unreleased",
+      "distType": "N/A",
+      "proof": ["pending"]
+    },
+    {
+      "name": "HyperSnatch",
+      "slug": "hypersnatch",
+      "status": "in-proof",
+      "route": "#products",
+      "build": "Fast link & file capture utility",
+      "latestVersion": "unreleased",
+      "distType": "N/A",
+      "proof": ["pending"]
+    },
+    {
+      "name": "ForgeCast Weather",
+      "slug": "forgecast",
+      "status": "pending-release",
+      "route": "/forgecast",
+      "build": "Android APK package (com.prooffoundry.skyfoundry)",
+      "latestVersion": "v0.2.0",
+      "distType": "Android APK Package",
+      "proof": ["device-verification", "sideload-manifest", "checksum"]
+    }
+  ]
+}

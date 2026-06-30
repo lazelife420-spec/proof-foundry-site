@@ -4,6 +4,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 $script:failedCount = 0
+$script:verifiedRoutes = @()
 
 Write-Host "==> Starting Public Site Verification for: $TargetUrl"
 
@@ -31,6 +32,7 @@ function Assert-Route {
         } else {
             Write-Host "[FAIL] (Request failed: $_)" -ForegroundColor Red
             $script:failedCount++
+            $script:verifiedRoutes += [PSCustomObject]@{ Path = $Path; Status = 0; Msg = "FAIL" }
             return
         }
     }
@@ -39,21 +41,24 @@ function Assert-Route {
     if ($ExpectedStatus -notcontains $status) {
         Write-Host "[FAIL] (Expected status $($ExpectedStatus -join '/'), got $status)" -ForegroundColor Red
         $script:failedCount++
+        $script:verifiedRoutes += [PSCustomObject]@{ Path = $Path; Status = $status; Msg = "FAIL" }
         return
     }
 
     # Redirect location check if status is 3xx
     if ($status -ge 300 -and $status -lt 400) {
         Write-Host "[PASS] (Redirects to $($headers['Location']))" -ForegroundColor Green
+        $script:verifiedRoutes += [PSCustomObject]@{ Path = $Path; Status = $status; Msg = "PASS (Redirect)" }
         return
     }
 
     # Content Type check
     if ($ExpectedContentType) {
         $contentType = $headers['Content-Type']
-        if ($contentType -notmatch [regex]::Escape($ExpectedContentType)) {
+        if ($contentType -notlike "*$ExpectedContentType*") {
             Write-Host "[FAIL] (Expected Content-Type '$ExpectedContentType', got '$contentType')" -ForegroundColor Red
             $script:failedCount++
+            $script:verifiedRoutes += [PSCustomObject]@{ Path = $Path; Status = $status; Msg = "FAIL (MIME)" }
             return
         }
     }
@@ -64,6 +69,7 @@ function Assert-Route {
             if ($content -notmatch $pattern) {
                 Write-Host "[FAIL] (Missing expected pattern: '$pattern')" -ForegroundColor Red
                 $script:failedCount++
+                $script:verifiedRoutes += [PSCustomObject]@{ Path = $Path; Status = $status; Msg = "FAIL (Pattern)" }
                 return
             }
         }
@@ -74,12 +80,14 @@ function Assert-Route {
             if ($content -match $pattern) {
                 Write-Host "[FAIL] (Found forbidden pattern: '$pattern')" -ForegroundColor Red
                 $script:failedCount++
+                $script:verifiedRoutes += [PSCustomObject]@{ Path = $Path; Status = $status; Msg = "FAIL (Pattern)" }
                 return
             }
         }
     }
 
     Write-Host "[PASS]" -ForegroundColor Green
+    $script:verifiedRoutes += [PSCustomObject]@{ Path = $Path; Status = $status; Msg = "PASS" }
 }
 
 # Run the assertions
@@ -98,4 +106,31 @@ if ($script:failedCount -gt 0) {
     exit 1
 } else {
     Write-Host "==> ALL GATES PASSED! Verification complete." -ForegroundColor Green
+    
+    # Generate verification receipt
+    $date = Get-Date -Format "yyyy-MM-dd"
+    $receiptDir = Join-Path (Split-Path -Parent $PSScriptRoot) "reports\deploy-receipts"
+    if (-not (Test-Path $receiptDir)) {
+        New-Item -ItemType Directory -Path $receiptDir -Force | Out-Null
+    }
+    $receiptPath = Join-Path $receiptDir "$date-proof-foundry-site.md"
+    
+    $md = @"
+# Deployment Verification Receipt — $date
+
+*   **Target Deployment URL**: $TargetUrl
+*   **Timestamp**: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss K")
+*   **Overall Status**: **PASS**
+
+## Verified Routes
+
+| Path | Status Code | Result |
+| :--- | :---: | :---: |
+"@
+    foreach ($r in $script:verifiedRoutes) {
+        $md += "`n| $($r.Path) | $($r.Status) | **$($r.Msg)** |"
+    }
+    $md += "`n"
+    $md | Out-File $receiptPath -Encoding utf8NoBOM
+    Write-Host "==> Verification receipt written to: $receiptPath" -ForegroundColor Green
 }
