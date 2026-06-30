@@ -48,7 +48,7 @@
       "slug": "forgecast",
       "status": "pending-release",
       "route": "/forgecast",
-      "build": "Android APK package (com.prooffoundry.skyfoundry)",
+      "build": "Android APK package (com.prooffoundry.forgecast)",
       "latestVersion": "v0.2.0",
       "distType": "Android APK Package",
       "proof": ["device-verification", "sideload-manifest", "checksum"]

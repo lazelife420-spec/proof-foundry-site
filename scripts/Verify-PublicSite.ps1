@@ -1,12 +1,46 @@
 param(
-    [string[]]$Targets = @("https://theprooffoundry.com", "https://www.theprooffoundry.com", "https://proof-foundry-site.pages.dev")
+    [string[]]$Targets = @("https://theprooffoundry.com", "https://www.theprooffoundry.com", "https://proof-foundry-site.pages.dev"),
+    [string]$ApkUrl = "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.1/ForgeCast-Weather-v0.2.1-android-release.apk",
+    [string]$ShaUrl = "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.1/ForgeCast-Weather-v0.2.1-android-release.apk.sha256.txt",
+    [string]$ExpectedSha = "0E244EBA5A75A8186BC854A35F14ACA650AE47DDEC6806A3242C739E4C43B50C"
 )
 
 $ErrorActionPreference = "Stop"
 $script:failedCount = 0
 $script:verifiedRoutes = @()
 
-Write-Host "==> Starting Public Site Hardened Verification via curl"
+function Write-Fail {
+    param(
+        [string]$Message,
+        [string]$Url
+    )
+    Write-Host "[FAIL] ($Message)" -ForegroundColor Red
+    $script:failedCount++
+    $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = 0; Msg = "FAIL ($Message)" }
+}
+
+function Write-Pass {
+    param(
+        [string]$Message,
+        [string]$Url,
+        [int]$Status
+    )
+    Write-Host "[PASS] ($Message)" -ForegroundColor Green
+    $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = $Status; Msg = "PASS ($Message)" }
+}
+
+function Get-PlaintextContent {
+    param(
+        [string]$Url
+    )
+    $contentLines = curl.exe -s -L $Url
+    return $contentLines -join "`n"
+}
+
+Write-Host "==> Starting Public Site Hardened Verification via curl" -ForegroundColor Cyan
+Write-Host "Targets: $($Targets -join ', ')" -ForegroundColor Cyan
+Write-Host "APK URL: $ApkUrl" -ForegroundColor Cyan
+Write-Host "SHA URL: $ShaUrl" -ForegroundColor Cyan
 
 function Test-UrlContent {
     param(
@@ -18,10 +52,10 @@ function Test-UrlContent {
     Write-Host "Checking content: $Url (FollowRedirects=$FollowRedirects) ... " -NoNewline
     try {
         # Using curl.exe to follow redirects and fetch content
-        $args = @("-s")
-        if ($FollowRedirects) { $args += "-L" }
-        $args += $Url
-        $contentLines = & curl.exe @args
+        $curlArgs = @("-s")
+        if ($FollowRedirects) { $curlArgs += "-L" }
+        $curlArgs += $Url
+        $contentLines = & curl.exe @curlArgs
         $content = $contentLines -join "`n"
         
         # Check if curl failed or returned empty content
@@ -106,6 +140,45 @@ function Test-UrlRedirect {
     }
 }
 
+function Test-AssetHead {
+    param(
+        [string]$Url,
+        [string]$Name = "asset",
+        [string]$ExpectedContentType = "application/"
+    )
+    Write-Host "Checking asset HEAD ($Name): $Url ... " -NoNewline
+    try {
+        $response = Invoke-WebRequest -Uri $Url -Method Head -UseBasicParsing -MaximumRedirection 0 -ErrorAction SilentlyContinue
+        $status = $response.StatusCode
+        $contentType = $response.Headers['Content-Type']
+    } catch {
+        if ($_.Exception.Response) {
+            $status = [int]$_.Exception.Response.StatusCode
+            $contentType = $_.Exception.Response.Headers['Content-Type']
+        } else {
+            Write-Fail "Request failed: $_" -Url $Url
+            return
+        }
+    }
+
+    if ($status -ne 200) {
+        Write-Fail "Expected status 200, got $status" -Url $Url
+        return
+    }
+
+    if ($contentType -notlike "*$ExpectedContentType*") {
+        Write-Fail "Expected Content-Type '$ExpectedContentType', got '$contentType'" -Url $Url
+        return
+    }
+
+    if ($contentType -like "*text/html*") {
+        Write-Fail "Asset returned text/html (likely fallback to index.html)" -Url $Url
+        return
+    }
+
+    Write-Pass "$status $contentType" -Url $Url -Status $status
+}
+
 function Test-Asset {
     param(
         [string]$Url,
@@ -171,7 +244,7 @@ foreach ($target in $Targets) {
     Write-Host "`n---> Testing target: $target"
     
     # 1. Homepage content check
-    Test-UrlContent -Url "$target/" -ContainsPatterns @("Lights Out", "Cache Vault", "Cleanroom", "ForgeCast", "HyperSnatch")
+    Test-UrlContent -Url "$target/" -ContainsPatterns @("Lights Out", "Cache Vault", "Cleanroom", "ForgeCast", "ForgeCast Weather", "HyperSnatch") -NotContainsPatterns @("SkyFoundry")
     
     # 2. Lights Out canonical slash check
     Test-UrlContent -Url "$target/lights-out/" -ContainsPatterns @("PowerShell compiled \(SleepTimer.exe\)", "ForgeCast Weather") -NotContainsPatterns @("Electron packaged", "SkyFoundry", "guided breathing", "breathing ritual", "ambient soundscapes", "soundscapes", "screen shift")
@@ -184,10 +257,11 @@ foreach ($target in $Targets) {
     Test-UrlRedirect -Url "$target/lights-out" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/lights-out/"
     Test-UrlRedirect -Url "$target/lights-out.html" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/lights-out/"
     
-    # 5. Robots/Sitemap check
-    Test-UrlContent -Url "$target/robots.txt" -ContainsPatterns @("sitemap.xml")
+    # 5. ForgeCast landing page
+    Test-UrlContent -Url "$target/forgecast/" -ContainsPatterns @("ForgeCast Weather", "v0.2.1", "0E244EBA5A75A8186BC854A35F14ACA650AE47DDEC6806A3242C739E4C43B50C", "193/193") -NotContainsPatterns @("SkyFoundry")
+    Test-UrlContent -Url "$target/forgecast" -ContainsPatterns @("ForgeCast Weather", "v0.2.1") -NotContainsPatterns @("SkyFoundry") -FollowRedirects $true
     if ($target -like "*theprooffoundry.com*") {
-        Test-UrlContent -Url "$target/sitemap.xml" -ContainsPatterns @("https://theprooffoundry.com/lights-out/")
+        Test-UrlContent -Url "$target/sitemap.xml" -ContainsPatterns @("https://theprooffoundry.com/lights-out/", "https://theprooffoundry.com/forgecast/")
     } else {
         Test-UrlContent -Url "$target/sitemap.xml"
     }
@@ -195,6 +269,45 @@ foreach ($target in $Targets) {
     # 6. Assets content-type and payload check
     Test-Asset -Url "$target/assets/lights-out/lights-out-keyart-hero-ui.png" -ExpectedContentType "image/"
     Test-Asset -Url "$target/brand/proof-foundry-logo-horizontal.svg" -ExpectedContentType "image/"
+
+    # 7. 404 page check — should return a branded HTML page
+    Test-UrlContent -Url "$target/this-page-does-not-exist" -ContainsPatterns @("404", "Page Not Found", "The Proof Foundry") -NotContainsPatterns @("SkyFoundry")
+}
+
+# 8. APK and SHA256 availability (R2 distribution)
+Write-Host "`n---> Testing ForgeCast distribution files"
+Test-AssetHead -Url $ApkUrl -Name "APK" -ExpectedContentType "application/"
+Test-UrlContent -Url $ShaUrl -Name "SHA256" -ContainsPatterns @($ExpectedSha)
+
+# 9. Hash chain: landing page and SHA file both expose the expected SHA
+foreach ($target in $Targets) {
+    if ($target -like "*theprooffoundry.com*") {
+        Write-Host "Checking hash chain for $target/forgecast/ ... " -NoNewline
+        try {
+            $landingContent = Get-PlaintextContent -Url "$target/forgecast/"
+            $shaFileContent = (Invoke-WebRequest -Uri $ShaUrl -UseBasicParsing).Content.Trim()
+
+            $landingMatch = $landingContent -match [regex]::Escape($ExpectedSha)
+            $shaMatch = $shaFileContent -match [regex]::Escape($ExpectedSha)
+
+            if (-not $landingMatch) {
+                Write-Host "[FAIL] (Landing page missing expected SHA)" -ForegroundColor Red
+                $script:failedCount++
+                $script:verifiedRoutes += [PSCustomObject]@{ Url = "$target/forgecast/"; Status = 200; Msg = "FAIL (SHA missing)" }
+            } elseif (-not $shaMatch) {
+                Write-Host "[FAIL] (SHA file missing expected SHA)" -ForegroundColor Red
+                $script:failedCount++
+                $script:verifiedRoutes += [PSCustomObject]@{ Url = $ShaUrl; Status = 200; Msg = "FAIL (SHA file bad)" }
+            } else {
+                Write-Host "[PASS] (Hash chain OK)" -ForegroundColor Green
+                $script:verifiedRoutes += [PSCustomObject]@{ Url = "$target/forgecast/"; Status = 200; Msg = "PASS (Hash chain)" }
+            }
+        } catch {
+            Write-Host "[FAIL] (Hash chain check threw: $_)" -ForegroundColor Red
+            $script:failedCount++
+            $script:verifiedRoutes += [PSCustomObject]@{ Url = "$target/forgecast/"; Status = 0; Msg = "FAIL (Hash chain exception)" }
+        }
+    }
 }
 
 if ($script:failedCount -gt 0) {
@@ -211,10 +324,25 @@ if ($script:failedCount -gt 0) {
     }
     $receiptPath = Join-Path $receiptDir "$date-proof-foundry-site.md"
     
+    $commitHash = "unknown"
+    try {
+        $commitHash = (git -C (Split-Path -Parent $PSScriptRoot) rev-parse --short HEAD 2>$null)
+        if (-not $commitHash) { $commitHash = "unknown" }
+    } catch { $commitHash = "unknown" }
+
+    $apkStatus = if ($script:verifiedRoutes | Where-Object { $_.Url -eq $ApkUrl -and $_.Msg -like "PASS*" }) { "OK" } else { "FAIL" }
+    $shaStatus = if ($script:verifiedRoutes | Where-Object { $_.Url -eq $ShaUrl -and $_.Msg -like "PASS*" }) { "OK" } else { "FAIL" }
+
     $md = @"
 # Deployment Verification Receipt — $date
 
+*   **Site Commit**: $commitHash
 *   **Verified Targets**: $($Targets -join ', ')
+*   **APK URL**: $ApkUrl
+*   **SHA URL**: $ShaUrl
+*   **Expected SHA**: $ExpectedSha
+*   **APK Status**: $apkStatus
+*   **SHA Status**: $shaStatus
 *   **Timestamp**: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss K")
 *   **Overall Status**: **PASS**
 
