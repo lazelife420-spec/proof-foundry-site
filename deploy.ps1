@@ -14,7 +14,7 @@ Write-Host "==> Rebuilding public/ from tracked source"
 if (Test-Path public) { Remove-Item public -Recurse -Force }
 New-Item -ItemType Directory public | Out-Null
 Copy-Item index.html, founders.html, forgecast.html, lights-out.html, styles.css, CNAME, robots.txt, sitemap.xml public\
-Copy-Item brand public\ -Recurse
+Copy-Item brand, assets public\ -Recurse
 
 # Place product pages at clean directory routes
 New-Item -ItemType Directory public\forgecast | Out-Null
