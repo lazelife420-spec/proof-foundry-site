@@ -51,6 +51,20 @@
       gap: 1rem;
       margin-bottom: 1.25rem;
     }
+    .release-pending {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.85rem 1.25rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(16, 25, 35, 0.72);
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .release-pending strong {
+      color: var(--gold);
+    }
     .proof-strip {
       display: flex;
       flex-wrap: wrap;
@@ -165,15 +179,9 @@
       </p>
 
       <div class="download-group">
-        <a class="button button-primary" href="https://github.com/Z3r0DayZion-install/skyfoundry/releases/tag/v0.2.0" target="_blank" rel="noopener">
-          Download APK
-        </a>
-        <a class="button button-secondary" href="https://github.com/Z3r0DayZion-install/skyfoundry/releases/download/v0.2.0/ForgeCast-Weather-v0.2.0-android-release.apk.sha256.txt" target="_blank" rel="noopener">
-          SHA256
-        </a>
-        <a class="button button-secondary" href="https://github.com/Z3r0DayZion-install/skyfoundry/blob/main/docs/INSTALL-SIDELOAD.md" target="_blank" rel="noopener">
-          Install guide
-        </a>
+        <span class="release-pending">
+          <strong>Release pending</strong> — Android APK release coming soon
+        </span>
       </div>
 
       <div class="proof-strip">
@@ -186,14 +194,6 @@
     </section>
 
     <section class="detail-grid" aria-label="Release details">
-      <article class="detail-card">
-        <h3>SHA-256 checksum</h3>
-        <p>Verify the APK before installing.</p>
-        <div class="code-block">
-          522F4F785D32DACE07D2766DCD6AC3715CA6876DEDDB9EBB1D1514AB79A30218
-        </div>
-      </article>
-
       <article class="detail-card">
         <h3>What’s inside</h3>
         <ul>
@@ -215,27 +215,8 @@
       </article>
     </section>
 
-    <section aria-labelledby="proof-title">
-      <h2 id="proof-title">Proof screenshots</h2>
-      <p class="product-lede">Captured on a Samsung Galaxy S23 (SM-S911W) running the release APK.</p>
-      <div class="screenshot-grid">
-        <a href="https://github.com/Z3r0DayZion-install/skyfoundry/tree/main/docs/proof/v0.2-forgecast/forgecast-release-today-s23.png" target="_blank" rel="noopener">
-          <img src="https://raw.githubusercontent.com/Z3r0DayZion-install/skyfoundry/v0.2.0/docs/proof/v0.2-forgecast/forgecast-release-today-s23.png" alt="ForgeCast Today screen" loading="lazy" />
-        </a>
-        <a href="https://github.com/Z3r0DayZion-install/skyfoundry/tree/main/docs/proof/v0.2-forgecast/forgecast-release-settings-s23.png" target="_blank" rel="noopener">
-          <img src="https://raw.githubusercontent.com/Z3r0DayZion-install/skyfoundry/v0.2.0/docs/proof/v0.2-forgecast/forgecast-release-settings-s23.png" alt="ForgeCast Settings screen showing version 0.2.0" loading="lazy" />
-        </a>
-        <a href="https://github.com/Z3r0DayZion-install/skyfoundry/tree/main/docs/proof/v0.2-forgecast/forgecast-release-senior-s23.png" target="_blank" rel="noopener">
-          <img src="https://raw.githubusercontent.com/Z3r0DayZion-install/skyfoundry/v0.2.0/docs/proof/v0.2-forgecast/forgecast-release-senior-s23.png" alt="ForgeCast Senior View" loading="lazy" />
-        </a>
-        <a href="https://github.com/Z3r0DayZion-install/skyfoundry/tree/main/docs/proof/v0.2-forgecast/forgecast-widget-medium-s23.png" target="_blank" rel="noopener">
-          <img src="https://raw.githubusercontent.com/Z3r0DayZion-install/skyfoundry/v0.2.0/docs/proof/v0.2-forgecast/forgecast-widget-medium-s23.png" alt="ForgeCast home screen widget" loading="lazy" />
-        </a>
-      </div>
-    </section>
-
     <p class="note">
-      <strong>Public downloads:</strong> APK and SHA256 files are currently served from the GitHub release. Cloudflare R2 can be enabled later to host downloads directly under <code>downloads.theprooffoundry.com/forgecast/</code> if you want to move distribution fully off GitHub.
+      <strong>Release status:</strong> ForgeCast Weather v0.2.0 has been verified on device and is awaiting public distribution. The APK and SHA256 will be added here once a verified release host is ready. No download is available yet.
     </p>
   </main>
 </body>
