@@ -6,7 +6,7 @@ $ErrorActionPreference = "Stop"
 $script:failedCount = 0
 $script:verifiedRoutes = @()
 
-Write-Host "==> Starting Public Site Hardened Verification"
+Write-Host "==> Starting Public Site Hardened Verification via curl"
 
 function Test-UrlContent {
     param(
@@ -17,14 +17,15 @@ function Test-UrlContent {
     )
     Write-Host "Checking content: $Url (FollowRedirects=$FollowRedirects) ... " -NoNewline
     try {
-        # Using curl.exe -L -s to follow redirects and fetch content
+        # Using curl.exe to follow redirects and fetch content
         $args = @("-s")
         if ($FollowRedirects) { $args += "-L" }
         $args += $Url
-        $content = & curl.exe @args
+        $contentLines = & curl.exe @args
+        $content = $contentLines -join "`n"
         
         # Check if curl failed or returned empty content
-        if ([string]::IsNullOrEmpty($content)) {
+        if ([string]::IsNullOrWhiteSpace($content)) {
             Write-Host "[FAIL] (Empty response from curl)" -ForegroundColor Red
             $script:failedCount++
             $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = 0; Msg = "FAIL (Empty)" }
@@ -65,38 +66,44 @@ function Test-UrlRedirect {
     )
     Write-Host "Checking redirect headers: $Url ... " -NoNewline
     try {
-        $response = Invoke-WebRequest -Uri $Url -Method Get -UseBasicParsing -MaximumRedirection 0 -ErrorAction SilentlyContinue
-        $status = $response.StatusCode
-        $headers = $response.Headers
-    } catch {
-        if ($_.Exception.Response) {
-            $status = [int]$_.Exception.Response.StatusCode
-            $headers = $_.Exception.Response.Headers
+        $headersText = curl.exe -s -I $Url
+        $headersString = $headersText -join "`n"
+        
+        # Extract Status Code
+        if ($headersString -match "HTTP/\S+\s+(\d+)") {
+            $status = [int]$Matches[1]
         } else {
-            Write-Host "[FAIL] (Request failed: $_)" -ForegroundColor Red
+            $status = 0
+        }
+        
+        # Extract Location Header
+        if ($headersString -match "(?m)^[Ll]ocation:\s*(\S+)") {
+            $location = $Matches[1].Trim()
+        } else {
+            $location = ""
+        }
+
+        if ($ExpectedStatus -notcontains $status) {
+            Write-Host "[FAIL] (Expected status $($ExpectedStatus -join '/'), got $status)" -ForegroundColor Red
             $script:failedCount++
-            $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = 0; Msg = "FAIL" }
+            $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = $status; Msg = "FAIL (Status)" }
             return
         }
-    }
 
-    if ($ExpectedStatus -notcontains $status) {
-        Write-Host "[FAIL] (Expected status $($ExpectedStatus -join '/'), got $status)" -ForegroundColor Red
+        if ($location -ne $ExpectedLocation) {
+            Write-Host "[FAIL] (Expected Location '$ExpectedLocation', got '$location')" -ForegroundColor Red
+            $script:failedCount++
+            $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = $status; Msg = "FAIL (Location)" }
+            return
+        }
+
+        Write-Host "[PASS] (Redirects correctly to $location)" -ForegroundColor Green
+        $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = $status; Msg = "PASS (Redirect)" }
+    } catch {
+        Write-Host "[FAIL] (Exception: $_)" -ForegroundColor Red
         $script:failedCount++
-        $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = $status; Msg = "FAIL (Status)" }
-        return
+        $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = 0; Msg = "FAIL (Exception)" }
     }
-
-    $location = $headers['Location']
-    if ($location -ne $ExpectedLocation) {
-        Write-Host "[FAIL] (Expected Location '$ExpectedLocation', got '$location')" -ForegroundColor Red
-        $script:failedCount++
-        $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = $status; Msg = "FAIL (Location)" }
-        return
-    }
-
-    Write-Host "[PASS] (Redirects correctly to $location)" -ForegroundColor Green
-    $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = $status; Msg = "PASS (Redirect)" }
 }
 
 function Test-Asset {
@@ -106,48 +113,57 @@ function Test-Asset {
     )
     Write-Host "Checking asset header & content: $Url ... " -NoNewline
     try {
-        $response = Invoke-WebRequest -Uri $Url -Method Get -UseBasicParsing -ErrorAction SilentlyContinue
-        $status = $response.StatusCode
-        $headers = $response.Headers
-        $content = $response.Content
-    } catch {
-        if ($_.Exception.Response) {
-            $status = [int]$_.Exception.Response.StatusCode
-            $headers = $_.Exception.Response.Headers
-            $content = ""
+        # Fetch headers
+        $headersText = curl.exe -s -I $Url
+        $headersString = $headersText -join "`n"
+        
+        # Status check
+        if ($headersString -match "HTTP/\S+\s+(\d+)") {
+            $status = [int]$Matches[1]
         } else {
-            Write-Host "[FAIL] (Request failed: $_)" -ForegroundColor Red
+            $status = 0
+        }
+        
+        if ($status -ne 200) {
+            Write-Host "[FAIL] (Expected status 200, got $status)" -ForegroundColor Red
             $script:failedCount++
-            $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = 0; Msg = "FAIL" }
+            $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = $status; Msg = "FAIL (Status)" }
             return
         }
-    }
+        
+        # Content-Type check
+        if ($headersString -match "(?m)^[Cc]ontent-[Tt]ype:\s*(\S+)") {
+            $contentType = $Matches[1].Trim()
+        } else {
+            $contentType = ""
+        }
+        
+        if ($contentType -notlike "*$ExpectedContentType*") {
+            Write-Host "[FAIL] (Expected Content-Type matches '$ExpectedContentType', got '$contentType')" -ForegroundColor Red
+            $script:failedCount++
+            $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = $status; Msg = "FAIL (Content-Type)" }
+            return
+        }
+        
+        # Fetch body content
+        $bodyLines = curl.exe -s $Url
+        $body = $bodyLines -join "`n"
+        
+        # Fail loudly if an asset request returns HTML content
+        if ($body -match "<!doctype html>" -or $body -match "<html" -or $body -match "The Proof Foundry") {
+            Write-Host "[FAIL] (Asset request returned HTML content instead of binary data!)" -ForegroundColor Red
+            $script:failedCount++
+            $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = $status; Msg = "FAIL (Returned HTML)" }
+            return
+        }
 
-    if ($status -ne 200) {
-        Write-Host "[FAIL] (Expected status 200, got $status)" -ForegroundColor Red
+        Write-Host "[PASS] (Content-Type: $contentType)" -ForegroundColor Green
+        $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = $status; Msg = "PASS" }
+    } catch {
+        Write-Host "[FAIL] (Exception: $_)" -ForegroundColor Red
         $script:failedCount++
-        $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = $status; Msg = "FAIL (Status)" }
-        return
+        $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = 0; Msg = "FAIL (Exception)" }
     }
-
-    $contentType = $headers['Content-Type']
-    if ($contentType -notlike "*$ExpectedContentType*") {
-        Write-Host "[FAIL] (Expected Content-Type matches '$ExpectedContentType', got '$contentType')" -ForegroundColor Red
-        $script:failedCount++
-        $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = $status; Msg = "FAIL (Content-Type)" }
-        return
-    }
-
-    # Fail loudly if an asset request returns HTML content
-    if ($content -match "<!doctype html>" -or $content -match "<html" -or $content -match "The Proof Foundry") {
-        Write-Host "[FAIL] (Asset request returned HTML content instead of binary data!)" -ForegroundColor Red
-        $script:failedCount++
-        $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = $status; Msg = "FAIL (Returned HTML)" }
-        return
-    }
-
-    Write-Host "[PASS] (Content-Type: $contentType)" -ForegroundColor Green
-    $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = $status; Msg = "PASS" }
 }
 
 # Run the assertions
