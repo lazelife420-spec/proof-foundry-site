@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ForgeCast Weather v0.2.0 — The Proof Foundry</title>
+  <meta name="description" content="ForgeCast Weather turns the forecast into daily decisions: what to wear, when to go outside, what to bring, and when to stay in." />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#0B0F14" />
+  <link rel="canonical" href="https://theprooffoundry.com/forgecast/" />
+
+  <meta property="og:title" content="ForgeCast Weather v0.2.0" />
+  <meta property="og:description" content="Know when to go. Know what to wear." />
+  <meta property="og:type" content="product" />
+  <meta property="og:url" content="https://theprooffoundry.com/forgecast/" />
+  <meta property="og:site_name" content="The Proof Foundry" />
+  <meta property="og:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .product-hero {
+      padding: 4.5rem 0 3rem;
+    }
+    .product-hero .eyebrow {
+      color: var(--gold);
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .product-hero h1 {
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      line-height: 1.05;
+      margin-bottom: 1rem;
+    }
+    .product-hero h1 span {
+      color: var(--gold);
+    }
+    .product-lede {
+      color: var(--muted);
+      font-size: 1.15rem;
+      max-width: 640px;
+      margin-bottom: 2rem;
+    }
+    .download-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .proof-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      margin-top: 2rem;
+    }
+    .proof-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(16, 25, 35, 0.72);
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+    .proof-pill strong {
+      color: var(--text);
+    }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin: 3rem 0;
+    }
+    .detail-card {
+      background: rgba(16, 25, 35, 0.62);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+    }
+    .detail-card h3 {
+      font-size: 1rem;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+    .detail-card p,
+    .detail-card li {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .detail-card ul {
+      list-style: none;
+      padding: 0;
+    }
+    .detail-card li {
+      padding: 0.35rem 0;
+      border-bottom: 1px solid rgba(38, 55, 70, 0.4);
+    }
+    .detail-card li:last-child {
+      border-bottom: none;
+    }
+    .code-block {
+      background: #070b10;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.85rem;
+      color: var(--text);
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+    .code-block .dim {
+      color: var(--muted);
+    }
+    .screenshot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .screenshot-grid img {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+    }
+    .screenshot-grid a {
+      text-decoration: none;
+    }
+    .note {
+      color: var(--muted);
+      font-size: 0.9rem;
+      border-left: 3px solid var(--gold);
+      padding-left: 1rem;
+      margin: 1.5rem 0;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header" id="top">
+    <div class="container nav-row">
+      <a class="brand-lockup" href="/" aria-label="Proof Foundry home">
+        <img class="brand-logo" src="/brand/proof-foundry-logo-horizontal.svg" alt="Proof Foundry" />
+      </a>
+      <nav class="top-nav" aria-label="Primary navigation">
+        <a href="/">Home</a>
+        <a href="/#products">Products</a>
+        <a href="/founders.html">Founders</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="product-hero" aria-labelledby="product-title">
+      <p class="eyebrow">ForgeCast Weather</p>
+      <h1 id="product-title">Know when to go.<br /><span>Know what to wear.</span></h1>
+      <p class="product-lede">
+        ForgeCast Weather turns the forecast into daily decisions: what to wear, when to go outside, what to bring, and when to stay in.
+      </p>
+
+      <div class="download-group">
+        <a class="button button-primary" href="https://github.com/Z3r0DayZion-install/skyfoundry/releases/tag/v0.2.0" target="_blank" rel="noopener">
+          Download APK
+        </a>
+        <a class="button button-secondary" href="https://github.com/Z3r0DayZion-install/skyfoundry/releases/download/v0.2.0/ForgeCast-Weather-v0.2.0-android-release.apk.sha256.txt" target="_blank" rel="noopener">
+          SHA256
+        </a>
+        <a class="button button-secondary" href="https://github.com/Z3r0DayZion-install/skyfoundry/blob/main/docs/INSTALL-SIDELOAD.md" target="_blank" rel="noopener">
+          Install guide
+        </a>
+      </div>
+
+      <div class="proof-strip">
+        <span class="proof-pill"><strong>Version</strong> 0.2.0</span>
+        <span class="proof-pill"><strong>Package</strong> com.prooffoundry.skyfoundry</span>
+        <span class="proof-pill"><strong>Device proof</strong> SM-S911W</span>
+        <span class="proof-pill"><strong>Tests</strong> 187/187</span>
+        <span class="proof-pill"><strong>Expo Doctor</strong> 16/16</span>
+      </div>
+    </section>
+
+    <section class="detail-grid" aria-label="Release details">
+      <article class="detail-card">
+        <h3>SHA-256 checksum</h3>
+        <p>Verify the APK before installing.</p>
+        <div class="code-block">
+          522F4F785D32DACE07D2766DCD6AC3715CA6876DEDDB9EBB1D1514AB79A30218
+        </div>
+      </article>
+
+      <article class="detail-card">
+        <h3>What’s inside</h3>
+        <ul>
+          <li>Wear Today decision card</li>
+          <li>Best Window outdoor planner</li>
+          <li>Senior View single-column layout</li>
+          <li>ForgeCast home-screen widget</li>
+          <li>First-run explainer</li>
+        </ul>
+      </article>
+
+      <article class="detail-card">
+        <h3>Requirements</h3>
+        <ul>
+          <li>Android 8+ (API 26+)</li>
+          <li>Sideload permission enabled</li>
+          <li>OpenWeatherMap API key only if building from source</li>
+        </ul>
+      </article>
+    </section>
+
+    <section aria-labelledby="proof-title">
+      <h2 id="proof-title">Proof screenshots</h2>
+      <p class="product-lede">Captured on a Samsung Galaxy S23 (SM-S911W) running the release APK.</p>
+      <div class="screenshot-grid">
+        <a href="https://github.com/Z3r0DayZion-install/skyfoundry/tree/main/docs/proof/v0.2-forgecast/forgecast-release-today-s23.png" target="_blank" rel="noopener">
+          <img src="https://raw.githubusercontent.com/Z3r0DayZion-install/skyfoundry/v0.2.0/docs/proof/v0.2-forgecast/forgecast-release-today-s23.png" alt="ForgeCast Today screen" loading="lazy" />
+        </a>
+        <a href="https://github.com/Z3r0DayZion-install/skyfoundry/tree/main/docs/proof/v0.2-forgecast/forgecast-release-settings-s23.png" target="_blank" rel="noopener">
+          <img src="https://raw.githubusercontent.com/Z3r0DayZion-install/skyfoundry/v0.2.0/docs/proof/v0.2-forgecast/forgecast-release-settings-s23.png" alt="ForgeCast Settings screen showing version 0.2.0" loading="lazy" />
+        </a>
+        <a href="https://github.com/Z3r0DayZion-install/skyfoundry/tree/main/docs/proof/v0.2-forgecast/forgecast-release-senior-s23.png" target="_blank" rel="noopener">
+          <img src="https://raw.githubusercontent.com/Z3r0DayZion-install/skyfoundry/v0.2.0/docs/proof/v0.2-forgecast/forgecast-release-senior-s23.png" alt="ForgeCast Senior View" loading="lazy" />
+        </a>
+        <a href="https://github.com/Z3r0DayZion-install/skyfoundry/tree/main/docs/proof/v0.2-forgecast/forgecast-widget-medium-s23.png" target="_blank" rel="noopener">
+          <img src="https://raw.githubusercontent.com/Z3r0DayZion-install/skyfoundry/v0.2.0/docs/proof/v0.2-forgecast/forgecast-widget-medium-s23.png" alt="ForgeCast home screen widget" loading="lazy" />
+        </a>
+      </div>
+    </section>
+
+    <p class="note">
+      <strong>Public downloads:</strong> APK and SHA256 files are currently served from the GitHub release. Cloudflare R2 can be enabled later to host downloads directly under <code>downloads.theprooffoundry.com/forgecast/</code> if you want to move distribution fully off GitHub.
+    </p>
+  </main>
+</body>
+</html>

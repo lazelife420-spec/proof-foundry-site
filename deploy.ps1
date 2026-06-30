@@ -13,8 +13,12 @@ Set-Location $PSScriptRoot
 Write-Host "==> Rebuilding public/ from tracked source"
 if (Test-Path public) { Remove-Item public -Recurse -Force }
 New-Item -ItemType Directory public | Out-Null
-Copy-Item index.html, founders.html, styles.css, CNAME public\
+Copy-Item index.html, founders.html, forgecast.html, styles.css, CNAME public\
 Copy-Item brand public\ -Recurse
+
+# Place ForgeCast landing page at /forgecast/
+New-Item -ItemType Directory public\forgecast | Out-Null
+Copy-Item forgecast.html public\forgecast\index.html
 
 Write-Host "==> Deploying proof-foundry-site"
 npx --yes wrangler deploy --assets .\public --name proof-foundry-site --compatibility-date 2026-06-28
