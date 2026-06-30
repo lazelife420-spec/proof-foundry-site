@@ -13,7 +13,7 @@ Set-Location $PSScriptRoot
 Write-Host "==> Rebuilding public/ from tracked source"
 if (Test-Path public) { Remove-Item public -Recurse -Force }
 New-Item -ItemType Directory public | Out-Null
-Copy-Item index.html, founders.html, forgecast.html, lights-out.html, styles.css, CNAME, robots.txt, sitemap.xml public\
+Copy-Item index.html, founders.html, forgecast.html, lights-out.html, styles.css, CNAME, robots.txt, sitemap.xml, 404.html public\
 Copy-Item brand, assets public\ -Recurse
 
 # Place product pages at clean directory routes
@@ -24,10 +24,39 @@ Copy-Item lights-out.html public\lights-out\index.html
 New-Item -ItemType Directory public\founders | Out-Null
 Copy-Item founders.html public\founders\index.html
 
-# Optional: explicit path rewrites
-"`n/forgecast/ /forgecast.html 200`n/lights-out/ /lights-out.html 200`n/founders/ /founders.html 200`n" | Out-File public\_redirects -Encoding utf8NoBOM
+# Generate _headers file
+$headersContent = @"
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+/*.html
+  Cache-Control: no-cache, must-revalidate
+
+/lights-out
+  Cache-Control: no-cache, must-revalidate
+
+/forgecast/
+  Cache-Control: no-cache, must-revalidate
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/brand/*
+  Cache-Control: public, max-age=31536000, immutable
+"@
+$headersContent | Out-File public\_headers -Encoding utf8NoBOM
+
+# Generate _redirects file
+$redirectsContent = @"
+/lights-out.html /lights-out 301
+/forgecast.html /forgecast/ 301
+/index.html / 301
+"@
+$redirectsContent | Out-File public\_redirects -Encoding utf8NoBOM
 
 Write-Host "==> Deploying proof-foundry-site to Cloudflare Pages"
 npx --yes wrangler pages deploy .\public --project-name proof-foundry-site --branch main
 
-Write-Host "==> Done. Verify: https://proof-foundry-site.pages.dev/  and  https://theprooffoundry.com/ (after DNS cutover)"
+Write-Host "==> Done. Running Verification..."
+.\scripts\Verify-PublicSite.ps1 -TargetUrl "https://proof-foundry-site.pages.dev"
