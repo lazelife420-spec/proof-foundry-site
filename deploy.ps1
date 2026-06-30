@@ -54,4 +54,4 @@ Write-Host "==> Deploying proof-foundry-site to Cloudflare Pages"
 npx --yes wrangler pages deploy .\public --project-name proof-foundry-site --branch main
 
 Write-Host "==> Done. Running Verification..."
-.\scripts\Verify-PublicSite.ps1 -TargetUrl "https://proof-foundry-site.pages.dev"
+.\scripts\Verify-PublicSite.ps1 -Targets @("https://proof-foundry-site.pages.dev", "https://theprooffoundry.com", "https://www.theprooffoundry.com")
