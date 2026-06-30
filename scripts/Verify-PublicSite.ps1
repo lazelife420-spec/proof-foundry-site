@@ -150,7 +150,7 @@ function Test-Asset {
         $body = $bodyLines -join "`n"
         
         # Fail loudly if an asset request returns HTML content
-        if ($body -match "<!doctype html>" -or $body -match "<html" -or $body -match "The Proof Foundry") {
+        if ($body -match "<!doctype html>" -or $body -match "<html\b" -or $body -match "</html>") {
             Write-Host "[FAIL] (Asset request returned HTML content instead of binary data!)" -ForegroundColor Red
             $script:failedCount++
             $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = $status; Msg = "FAIL (Returned HTML)" }
