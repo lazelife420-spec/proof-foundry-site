@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Proof Foundry Receipts — Proof-first software forged for builders</title>
+  <meta name="description" content="Public proof for what we ship: routes, releases, checksums, receipts, and verification status." />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#0B0F14" />
+  <link rel="canonical" href="https://theprooffoundry.com/proof/" />
+
+  <meta property="og:title" content="Proof Foundry Receipts" />
+  <meta property="og:description" content="Routes, releases, checksums, and verification status for Proof Foundry products." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://theprooffoundry.com/proof/" />
+  <meta property="og:site_name" content="The Proof Foundry" />
+  <meta property="og:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .proof-hero {
+      padding: 5rem 0 3rem;
+    }
+    .proof-hero .eyebrow {
+      color: var(--gold);
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .proof-hero h1 {
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      line-height: 1.05;
+      margin-bottom: 1.25rem;
+    }
+    .proof-hero h1 span {
+      color: var(--gold);
+    }
+    .proof-hero p {
+      color: var(--muted);
+      font-size: 1.2rem;
+      max-width: 680px;
+    }
+    .receipts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin: 3rem 0;
+    }
+    .receipt-card {
+      background: rgba(16, 25, 35, 0.62);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .receipt-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 100% 0%, rgba(214, 168, 79, 0.04), transparent 12rem);
+      pointer-events: none;
+      border-radius: inherit;
+    }
+    .receipt-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+    }
+    .receipt-card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .receipt-card .platform-badge {
+      font-size: 0.75rem;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      padding: 0.25rem 0.5rem;
+      border-radius: 99px;
+      background: rgba(7, 17, 31, 0.4);
+    }
+    .receipt-card .build-desc {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.4;
+    }
+    .receipt-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      font-size: 0.88rem;
+    }
+    .receipt-fields > div {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(38, 55, 70, 0.4);
+      padding-bottom: 0.5rem;
+    }
+    .receipt-fields dt {
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .receipt-fields dd {
+      color: var(--text);
+      font-weight: 600;
+      text-align: right;
+    }
+    .receipt-fields dd.code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.8rem;
+      background: #070b10;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      border: 1px solid rgba(38, 55, 70, 0.6);
+      max-width: 180px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .receipt-fields dd a {
+      color: var(--gold);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .receipt-fields dd a:hover {
+      color: var(--gold-strong);
+      text-decoration: underline;
+    }
+    .receipt-card-action {
+      margin-top: auto;
+      width: 100%;
+    }
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .status-indicator::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .status-indicator.verified { color: var(--teal); }
+    .status-indicator.verified::before { background: var(--teal); }
+    .status-indicator.receipt-available { color: var(--gold); }
+    .status-indicator.receipt-available::before { background: var(--gold); }
+    .status-indicator.verification-pending { color: #8899a6; }
+    .status-indicator.verification-pending::before { background: #8899a6; }
+
+    .verification-ledger {
+      background: rgba(16, 25, 35, 0.42);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      margin-bottom: 5rem;
+    }
+    .verification-ledger h2 {
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+    .verification-ledger p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin-bottom: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header" id="top">
+    <div class="container nav-row">
+      <a class="brand-lockup" href="/index.html" aria-label="Proof Foundry home">
+        <img class="brand-logo" src="/brand/proof-foundry-logo-horizontal.svg" alt="Proof Foundry" />
+      </a>
+      <nav class="top-nav" aria-label="Primary navigation">
+        <a href="/index.html">Home</a>
+        <a href="/index.html#products">Products</a>
+        <a href="/index.html#proof-standard">Proof Standard</a>
+        <a href="/founders.html">Founders</a>
+        <a href="/proof/" aria-current="page">Receipts</a>
+      </nav>
+      <a class="button button-primary nav-cta" href="/index.html#products">Explore Products</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="proof-hero" aria-labelledby="proof-title">
+      <p class="eyebrow">Public receipts</p>
+      <h1 id="proof-title">Proof Foundry <span>Receipts</span></h1>
+      <p>Public proof for what we ship: routes, releases, checksums, receipts, and verification status.</p>
+    </section>
+
+    <section class="receipts-grid" id="products-grid">
+      <!-- Loading Skeleton -->
+      <div style="text-align: center; grid-column: 1 / -1; padding: 3rem; color: var(--muted);">
+        Loading manifest proof...
+      </div>
+    </section>
+
+    <section class="verification-ledger">
+      <h2>Latest site verification</h2>
+      <p>Every deployment is automatically verified by our local and edge gate checkers before going live.</p>
+      <a class="button button-secondary" href="/reports/deploy-receipts/2026-06-30-proof-foundry-site.md" target="_blank" rel="noopener">
+        View Verification Receipt (2026-06-30)
+      </a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img class="footer-logo" src="/brand/proof-foundry-logo-horizontal.svg" alt="Proof Foundry" />
+        <p>Build it. Prove it. Ship it.</p>
+      </div>
+
+      <div>
+        <h2>Products</h2>
+        <ul>
+          <li><a href="/lights-out/">Lights Out PC</a></li>
+          <li><a href="https://cache-vault-landing.pages.dev/" target="_blank" rel="noopener">Cache Vault</a></li>
+          <li>Cleanroom</li>
+          <li>HyperSnatch</li>
+          <li><a href="/forgecast/">ForgeCast Weather</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h2>Company</h2>
+        <ul>
+          <li><a href="/founders.html">Founders Circle</a></li>
+          <li><a href="/index.html#proof-standard">Proof Standard</a></li>
+          <li><a href="/proof/">Receipts</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Proof Foundry. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    async function loadManifest() {
+      const grid = document.getElementById('products-grid');
+      try {
+        const response = await fetch('/site-manifest.json');
+        if (!response.ok) throw new Error('Failed to load site-manifest.json');
+        const data = await response.json();
+        
+        let html = '';
+        data.products.forEach(p => {
+          const statusClass = p.proofStatus ? p.proofStatus.replace(' ', '-') : 'verification-pending';
+          const statusLabel = p.proofStatus || 'verification pending';
+          
+          let downloadLinkText = 'Download Coming Soon';
+          let downloadDisabledClass = 'button-muted';
+          let downloadHref = '#';
+          
+          if (p.downloadUrl && p.downloadUrl.startsWith('http')) {
+            downloadLinkText = p.slug === 'forgecast' ? 'Download APK' : 'Explore / Download';
+            downloadDisabledClass = 'button-primary';
+            downloadHref = p.downloadUrl;
+          }
+
+          let proofLinkHtml = 'Not listed yet';
+          if (p.proofLinks && p.proofLinks.length > 0) {
+            proofLinkHtml = p.proofLinks.map(link => {
+              const baseName = link.split('/').pop();
+              return `<a href="${link}" target="_blank" rel="noopener">${baseName}</a>`;
+            }).join(', ');
+          }
+
+          const routeHtml = p.route && p.route.startsWith('http') 
+            ? `<a href="${p.route}" target="_blank" rel="noopener">External link</a>`
+            : p.route && p.route !== '#products' 
+              ? `<a href="${p.route}">${p.route}</a>`
+              : 'N/A';
+
+          const shaDisplay = p.sha256 || 'verification pending';
+          const isShaHex = /^[0-9a-fA-F]{64}$/.test(shaDisplay);
+          const shaClass = isShaHex ? 'class="code" title="' + shaDisplay + '"' : '';
+
+          html += `
+            <article class="receipt-card">
+              <div class="receipt-card-head">
+                <div>
+                  <h3>${p.name}</h3>
+                  <span class="platform-badge">${p.platform || 'Cross-platform'}</span>
+                </div>
+                <span class="status-indicator ${statusClass}">${statusLabel}</span>
+              </div>
+              <p class="build-desc">${p.build || 'Release details coming soon.'}</p>
+              
+              <dl class="receipt-fields">
+                <div>
+                  <dt>Route</dt>
+                  <dd>${routeHtml}</dd>
+                </div>
+                <div>
+                  <dt>Latest Version</dt>
+                  <dd>${p.latestVersion || 'unknown'}</dd>
+                </div>
+                <div>
+                  <dt>SHA-256 Checksum</dt>
+                  <dd ${shaClass}>${shaDisplay}</dd>
+                </div>
+                <div>
+                  <dt>Proof Link</dt>
+                  <dd>${proofLinkHtml}</dd>
+                </div>
+                <div>
+                  <dt>Last Verified</dt>
+                  <dd>${p.lastVerified || 'N/A'}</dd>
+                </div>
+              </dl>
+              
+              <div class="receipt-card-action">
+                ${downloadHref !== '#' 
+                  ? `<a class="button ${downloadDisabledClass}" style="display:block; text-align:center;" href="${downloadHref}" target="_blank" rel="noopener">${downloadLinkText}</a>`
+                  : `<span class="button ${downloadDisabledClass}" style="display:block; text-align:center;">${downloadLinkText}</span>`
+                }
+              </div>
+            </article>
+          `;
+        });
+        grid.innerHTML = html;
+      } catch (err) {
+        grid.innerHTML = `
+          <div style="text-align: center; grid-column: 1 / -1; padding: 3rem; color: #ff6b6b; border: 1px dashed #ff6b6b; border-radius: 12px;">
+            Failed to load manifest receipts: ${err.message}. Please refresh or ensure deployment is complete.
+          </div>
+        `;
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', loadManifest);
+  </script>
+</body>
+</html>

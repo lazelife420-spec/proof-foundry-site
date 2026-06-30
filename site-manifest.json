@@ -7,51 +7,78 @@
       "name": "Lights Out PC",
       "slug": "lights-out",
       "status": "public",
-      "route": "/lights-out",
+      "route": "/lights-out/",
+      "platform": "Windows",
       "build": "PowerShell compiled (SleepTimer.exe)",
       "latestVersion": "v1.0.0",
       "distType": "Windows Executable",
-      "proof": ["tests", "release-receipt", "checksum"]
+      "proofStatus": "verified",
+      "proofLinks": [
+        "/reports/deploy-receipts/2026-06-30-proof-foundry-site.md"
+      ],
+      "downloadUrl": "Download link coming soon",
+      "sha256": "N/A (unreleased)",
+      "lastVerified": "2026-06-30"
     },
     {
       "name": "Cache Vault",
       "slug": "cache-vault",
       "status": "public",
       "route": "https://cache-vault-landing.pages.dev/",
+      "platform": "Windows",
       "build": "Python compiled (CacheVault.exe)",
       "latestVersion": "v0.1.4",
       "distType": "Windows Portable ZIP",
-      "proof": ["tests", "signed-checksum", "changelog", "release-notes"]
+      "proofStatus": "receipt available",
+      "proofLinks": [],
+      "downloadUrl": "https://cache-vault-landing.pages.dev/",
+      "sha256": "verification pending",
+      "lastVerified": "2026-06-30"
     },
     {
       "name": "Cleanroom",
       "slug": "cleanroom",
       "status": "in-proof",
       "route": "#products",
+      "platform": "Windows",
       "build": "Windows isolated workspace environment",
       "latestVersion": "unreleased",
       "distType": "N/A",
-      "proof": ["pending"]
+      "proofStatus": "verification pending",
+      "proofLinks": [],
+      "downloadUrl": "Coming soon",
+      "sha256": "verification pending",
+      "lastVerified": "N/A"
     },
     {
       "name": "HyperSnatch",
       "slug": "hypersnatch",
       "status": "in-proof",
       "route": "#products",
+      "platform": "Windows",
       "build": "Fast link & file capture utility",
       "latestVersion": "unreleased",
       "distType": "N/A",
-      "proof": ["pending"]
+      "proofStatus": "verification pending",
+      "proofLinks": [],
+      "downloadUrl": "Coming soon",
+      "sha256": "verification pending",
+      "lastVerified": "N/A"
     },
     {
       "name": "ForgeCast Weather",
       "slug": "forgecast",
       "status": "pending-release",
-      "route": "/forgecast",
+      "route": "/forgecast/",
+      "platform": "Android",
       "build": "Android APK package (com.prooffoundry.forgecast)",
-      "latestVersion": "v0.2.0",
+      "latestVersion": "v0.2.1",
       "distType": "Android APK Package",
-      "proof": ["device-verification", "sideload-manifest", "checksum"]
+      "proofStatus": "verified",
+      "proofLinks": [],
+      "downloadUrl": "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.1/ForgeCast-Weather-v0.2.1-android-release.apk",
+      "sha256": "0E244EBA5A75A8186BC854A35F14ACA650AE47DDEC6806A3242C739E4C43B50C",
+      "lastVerified": "2026-06-30"
     }
   ]
 }

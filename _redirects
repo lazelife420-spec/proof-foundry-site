@@ -1,3 +1,7 @@
 /lights-out/      /lights-out/index.html  200
 /lights-out       /lights-out/            301
 /lights-out.html  /lights-out/            301
+
+/proof/           /proof/index.html       200
+/proof            /proof/                 301
+/proof.html       /proof/                 301

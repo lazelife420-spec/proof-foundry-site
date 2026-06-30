@@ -261,7 +261,7 @@ foreach ($target in $Targets) {
     Test-UrlContent -Url "$target/forgecast/" -ContainsPatterns @("ForgeCast Weather", "v0.2.1", "0E244EBA5A75A8186BC854A35F14ACA650AE47DDEC6806A3242C739E4C43B50C", "193/193") -NotContainsPatterns @("SkyFoundry")
     Test-UrlContent -Url "$target/forgecast" -ContainsPatterns @("ForgeCast Weather", "v0.2.1") -NotContainsPatterns @("SkyFoundry") -FollowRedirects $true
     if ($target -like "*theprooffoundry.com*") {
-        Test-UrlContent -Url "$target/sitemap.xml" -ContainsPatterns @("https://theprooffoundry.com/lights-out/", "https://theprooffoundry.com/forgecast/")
+        Test-UrlContent -Url "$target/sitemap.xml" -ContainsPatterns @("https://theprooffoundry.com/lights-out/", "https://theprooffoundry.com/forgecast/", "https://theprooffoundry.com/proof/")
     } else {
         Test-UrlContent -Url "$target/sitemap.xml"
     }
@@ -272,6 +272,15 @@ foreach ($target in $Targets) {
 
     # 7. 404 page check — should return a branded HTML page
     Test-UrlContent -Url "$target/this-page-does-not-exist" -ContainsPatterns @("404", "Page Not Found", "The Proof Foundry") -NotContainsPatterns @("SkyFoundry")
+
+    # 8. Proof/Receipts page checks
+    Test-UrlContent -Url "$target/proof/" -ContainsPatterns @("Proof Foundry Receipts", "Lights Out", "Cache Vault", "Cleanroom", "ForgeCast Weather", "HyperSnatch") -NotContainsPatterns @("Electron packaged", "SkyFoundry", "Guided breathing", "ambient soundscapes", "warm screen shift", "smart light dimming")
+    Test-UrlContent -Url "$target/proof" -ContainsPatterns @("Proof Foundry Receipts", "Lights Out", "Cache Vault", "Cleanroom", "ForgeCast Weather", "HyperSnatch") -NotContainsPatterns @("Electron packaged", "SkyFoundry", "Guided breathing", "ambient soundscapes", "warm screen shift", "smart light dimming") -FollowRedirects $true
+    Test-UrlContent -Url "$target/proof.html" -ContainsPatterns @("Proof Foundry Receipts", "Lights Out", "Cache Vault", "Cleanroom", "ForgeCast Weather", "HyperSnatch") -NotContainsPatterns @("Electron packaged", "SkyFoundry", "Guided breathing", "ambient soundscapes", "warm screen shift", "smart light dimming") -FollowRedirects $true
+    
+    # Redirect headers checks for proof page
+    Test-UrlRedirect -Url "$target/proof" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/proof/"
+    Test-UrlRedirect -Url "$target/proof.html" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/proof/"
 }
 
 # 8. APK and SHA256 availability (R2 distribution)
