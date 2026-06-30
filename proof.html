@@ -264,38 +264,54 @@
         if (!response.ok) throw new Error('Failed to load site-manifest.json');
         const data = await response.json();
         
+        const statusLabels = {
+          'coming_soon': 'Coming soon',
+          'available': 'Available',
+          'unreleased': 'Unreleased',
+          'verification pending': 'Verification pending',
+          'pending': 'Pending'
+        };
+
         let html = '';
         data.products.forEach(p => {
-          const statusClass = p.proofStatus ? p.proofStatus.replace(' ', '-') : 'verification-pending';
+          const statusClass = p.proofStatus ? p.proofStatus.replace(/ /g, '-') : 'verification-pending';
           const statusLabel = p.proofStatus || 'verification pending';
           
-          let downloadLinkText = 'Download Coming Soon';
-          let downloadDisabledClass = 'button-muted';
-          let downloadHref = '#';
-          
+          // Download link — only render as anchor if URL is a real http URL
+          let downloadHtml;
           if (p.downloadUrl && p.downloadUrl.startsWith('http')) {
-            downloadLinkText = p.slug === 'forgecast' ? 'Download APK' : 'Explore / Download';
-            downloadDisabledClass = 'button-primary';
-            downloadHref = p.downloadUrl;
+            const linkText = p.slug === 'forgecast' ? 'Download APK' : 'Explore / Download';
+            downloadHtml = `<a class="button button-primary" style="display:block; text-align:center;" href="${p.downloadUrl}" target="_blank" rel="noopener">${linkText}</a>`;
+          } else {
+            const label = p.downloadStatus ? (statusLabels[p.downloadStatus] || p.downloadStatus) : 'Download coming soon';
+            downloadHtml = `<span class="button button-muted" style="display:block; text-align:center;">${label}</span>`;
           }
 
-          let proofLinkHtml = 'Not listed yet';
+          // SHA-256 — only render as code if a real hex hash
+          let shaDisplay;
+          if (p.sha256 && /^[0-9a-fA-F]{64}$/.test(p.sha256)) {
+            shaDisplay = `<dd class="code" title="${p.sha256}">${p.sha256.slice(0, 16)}&hellip;</dd>`;
+          } else {
+            const shaLabel = p.sha256Status ? (statusLabels[p.sha256Status] || p.sha256Status) : 'Verification pending';
+            shaDisplay = `<dd style="color:var(--muted);">${shaLabel}</dd>`;
+          }
+
+          let proofLinkHtml = '<dd style="color:var(--muted);">Not listed yet</dd>';
           if (p.proofLinks && p.proofLinks.length > 0) {
-            proofLinkHtml = p.proofLinks.map(link => {
+            const links = p.proofLinks.map(link => {
               const baseName = link.split('/').pop();
               return `<a href="${link}" target="_blank" rel="noopener">${baseName}</a>`;
             }).join(', ');
+            proofLinkHtml = `<dd>${links}</dd>`;
           }
 
           const routeHtml = p.route && p.route.startsWith('http') 
             ? `<a href="${p.route}" target="_blank" rel="noopener">External link</a>`
             : p.route && p.route !== '#products' 
               ? `<a href="${p.route}">${p.route}</a>`
-              : 'N/A';
+              : '<span style="color:var(--muted);">N/A</span>';
 
-          const shaDisplay = p.sha256 || 'verification pending';
-          const isShaHex = /^[0-9a-fA-F]{64}$/.test(shaDisplay);
-          const shaClass = isShaHex ? 'class="code" title="' + shaDisplay + '"' : '';
+          const lastVerified = p.lastVerified || null;
 
           html += `
             <article class="receipt-card">
@@ -315,27 +331,24 @@
                 </div>
                 <div>
                   <dt>Latest Version</dt>
-                  <dd>${p.latestVersion || 'unknown'}</dd>
+                  <dd>${p.latestVersion || '<span style="color:var(--muted);">unknown</span>'}</dd>
                 </div>
                 <div>
                   <dt>SHA-256 Checksum</dt>
-                  <dd ${shaClass}>${shaDisplay}</dd>
+                  ${shaDisplay}
                 </div>
                 <div>
                   <dt>Proof Link</dt>
-                  <dd>${proofLinkHtml}</dd>
+                  ${proofLinkHtml}
                 </div>
                 <div>
                   <dt>Last Verified</dt>
-                  <dd>${p.lastVerified || 'N/A'}</dd>
+                  <dd>${lastVerified || '<span style="color:var(--muted);">N/A</span>'}</dd>
                 </div>
               </dl>
               
               <div class="receipt-card-action">
-                ${downloadHref !== '#' 
-                  ? `<a class="button ${downloadDisabledClass}" style="display:block; text-align:center;" href="${downloadHref}" target="_blank" rel="noopener">${downloadLinkText}</a>`
-                  : `<span class="button ${downloadDisabledClass}" style="display:block; text-align:center;">${downloadLinkText}</span>`
-                }
+                ${downloadHtml}
               </div>
             </article>
           `;

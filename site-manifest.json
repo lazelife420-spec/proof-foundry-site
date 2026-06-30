@@ -16,8 +16,10 @@
       "proofLinks": [
         "/reports/deploy-receipts/2026-06-30-proof-foundry-site.md"
       ],
-      "downloadUrl": "Download link coming soon",
-      "sha256": "N/A (unreleased)",
+      "downloadStatus": "coming_soon",
+      "downloadUrl": null,
+      "sha256Status": "unreleased",
+      "sha256": null,
       "lastVerified": "2026-06-30"
     },
     {
@@ -31,8 +33,10 @@
       "distType": "Windows Portable ZIP",
       "proofStatus": "receipt available",
       "proofLinks": [],
+      "downloadStatus": "available",
       "downloadUrl": "https://cache-vault-landing.pages.dev/",
-      "sha256": "verification pending",
+      "sha256Status": "verification pending",
+      "sha256": null,
       "lastVerified": "2026-06-30"
     },
     {
@@ -46,9 +50,11 @@
       "distType": "N/A",
       "proofStatus": "verification pending",
       "proofLinks": [],
-      "downloadUrl": "Coming soon",
-      "sha256": "verification pending",
-      "lastVerified": "N/A"
+      "downloadStatus": "coming_soon",
+      "downloadUrl": null,
+      "sha256Status": "unreleased",
+      "sha256": null,
+      "lastVerified": null
     },
     {
       "name": "HyperSnatch",
@@ -61,9 +67,11 @@
       "distType": "N/A",
       "proofStatus": "verification pending",
       "proofLinks": [],
-      "downloadUrl": "Coming soon",
-      "sha256": "verification pending",
-      "lastVerified": "N/A"
+      "downloadStatus": "coming_soon",
+      "downloadUrl": null,
+      "sha256Status": "unreleased",
+      "sha256": null,
+      "lastVerified": null
     },
     {
       "name": "ForgeCast Weather",
