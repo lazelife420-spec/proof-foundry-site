@@ -92,7 +92,8 @@ function Assert-Route {
 
 # Run the assertions
 Assert-Route -Path "/" -ExpectedStatus @(200) -ContainsPatterns @("Lights Out", "Cache Vault", "Cleanroom", "ForgeCast", "HyperSnatch")
-Assert-Route -Path "/lights-out" -ExpectedStatus @(200) -ContainsPatterns @("PowerShell compiled \(SleepTimer.exe\)") -NotContainsPatterns @("Electron packaged")
+Assert-Route -Path "/lights-out/" -ExpectedStatus @(200) -ContainsPatterns @("PowerShell compiled \(SleepTimer.exe\)") -NotContainsPatterns @("Electron packaged")
+Assert-Route -Path "/lights-out" -ExpectedStatus @(301, 302, 307, 308)
 Assert-Route -Path "/lights-out.html" -ExpectedStatus @(301, 302, 307, 308)
 Assert-Route -Path "/forgecast" -ExpectedStatus @(200) -ContainsPatterns @("ForgeCast Weather")
 Assert-Route -Path "/founders" -ExpectedStatus @(200)
