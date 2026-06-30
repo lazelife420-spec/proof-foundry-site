@@ -47,13 +47,8 @@ $headersContent = @"
 "@
 $headersContent | Out-File public\_headers -Encoding utf8NoBOM
 
-# Generate _redirects file
-$redirectsContent = @"
-/lights-out.html /lights-out 301
-/forgecast.html /forgecast/ 301
-/index.html / 301
-"@
-$redirectsContent | Out-File public\_redirects -Encoding utf8NoBOM
+# Copy _redirects file from root
+Copy-Item _redirects public\ -Force
 
 Write-Host "==> Deploying proof-foundry-site to Cloudflare Pages"
 npx --yes wrangler pages deploy .\public --project-name proof-foundry-site --branch main
