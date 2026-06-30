@@ -13,7 +13,7 @@ Set-Location $PSScriptRoot
 Write-Host "==> Rebuilding public/ from tracked source"
 if (Test-Path public) { Remove-Item public -Recurse -Force }
 New-Item -ItemType Directory public | Out-Null
-Copy-Item index.html, founders.html, forgecast.html, styles.css, CNAME public\
+Copy-Item index.html, founders.html, forgecast.html, lights-out.html, styles.css, CNAME, robots.txt, sitemap.xml public\
 Copy-Item brand public\ -Recurse
 
 # Place ForgeCast landing page at /forgecast/
