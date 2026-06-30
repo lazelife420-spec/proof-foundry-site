@@ -179,9 +179,12 @@
       </p>
 
       <div class="download-group">
-        <span class="release-pending">
-          <strong>Release pending</strong> — Android APK release coming soon
-        </span>
+        <a class="button button-primary" href="https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.0/ForgeCast-Weather-v0.2.0-android-release.apk" download>
+          Download APK
+        </a>
+        <a class="button button-secondary" href="https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.0/ForgeCast-Weather-v0.2.0-android-release.apk.sha256.txt" target="_blank" rel="noopener">
+          SHA256
+        </a>
       </div>
 
       <div class="proof-strip">
@@ -194,6 +197,14 @@
     </section>
 
     <section class="detail-grid" aria-label="Release details">
+      <article class="detail-card">
+        <h3>SHA-256 checksum</h3>
+        <p>Verify the APK before installing.</p>
+        <div class="code-block">
+          522F4F785D32DACE07D2766DCD6AC3715CA6876DEDDB9EBB1D1514AB79A30218
+        </div>
+      </article>
+
       <article class="detail-card">
         <h3>What’s inside</h3>
         <ul>
@@ -216,7 +227,7 @@
     </section>
 
     <p class="note">
-      <strong>Release status:</strong> ForgeCast Weather v0.2.0 has been verified on device and is awaiting public distribution. The APK and SHA256 will be added here once a verified release host is ready. No download is available yet.
+      <strong>Public download:</strong> APK and SHA256 are served from Cloudflare R2. Download the APK, verify its SHA256 matches the checksum above, then sideload it with your preferred Android installer. The custom domain <code>downloads.theprooffoundry.com</code> will be enabled later; for now the canonical hosted files are on the verified R2 URL.
     </p>
   </main>
 </body>
