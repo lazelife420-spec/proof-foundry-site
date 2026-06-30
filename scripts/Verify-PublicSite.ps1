@@ -33,7 +33,7 @@ function Get-PlaintextContent {
     param(
         [string]$Url
     )
-    $contentLines = curl.exe -s -L $Url
+    $contentLines = curl.exe -s -H "Cache-Control: no-cache" -L $Url
     return $contentLines -join "`n"
 }
 
@@ -52,7 +52,7 @@ function Test-UrlContent {
     Write-Host "Checking content: $Url (FollowRedirects=$FollowRedirects) ... " -NoNewline
     try {
         # Using curl.exe to follow redirects and fetch content
-        $curlArgs = @("-s")
+        $curlArgs = @("-s", "-H", "Cache-Control: no-cache")
         if ($FollowRedirects) { $curlArgs += "-L" }
         $curlArgs += $Url
         $contentLines = & curl.exe @curlArgs
@@ -100,7 +100,7 @@ function Test-UrlRedirect {
     )
     Write-Host "Checking redirect headers: $Url ... " -NoNewline
     try {
-        $headersText = curl.exe -s -I $Url
+        $headersText = curl.exe -s -H "Cache-Control: no-cache" -I $Url
         $headersString = $headersText -join "`n"
         
         # Extract Status Code
@@ -148,7 +148,7 @@ function Test-AssetHead {
     )
     Write-Host "Checking asset HEAD ($Name): $Url ... " -NoNewline
     try {
-        $response = Invoke-WebRequest -Uri $Url -Method Head -UseBasicParsing -MaximumRedirection 0 -ErrorAction SilentlyContinue
+        $response = Invoke-WebRequest -Uri $Url -Method Head -Headers @{ "Cache-Control" = "no-cache" } -UseBasicParsing -MaximumRedirection 0 -ErrorAction SilentlyContinue
         $status = $response.StatusCode
         $contentType = $response.Headers['Content-Type']
     } catch {
@@ -187,7 +187,7 @@ function Test-Asset {
     Write-Host "Checking asset header & content: $Url ... " -NoNewline
     try {
         # Fetch headers
-        $headersText = curl.exe -s -I $Url
+        $headersText = curl.exe -s -H "Cache-Control: no-cache" -I $Url
         $headersString = $headersText -join "`n"
         
         # Status check
@@ -219,7 +219,7 @@ function Test-Asset {
         }
         
         # Fetch body content
-        $bodyLines = curl.exe -s $Url
+        $bodyLines = curl.exe -s -H "Cache-Control: no-cache" $Url
         $body = $bodyLines -join "`n"
         
         # Fail loudly if an asset request returns HTML content
