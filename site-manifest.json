@@ -88,18 +88,18 @@
       "route": "/forgecast/",
       "platform": "Android",
       "build": "Android APK (release build)",
-      "latestVersion": "v0.2.3",
+      "latestVersion": "v0.2.4",
       "distType": "Android APK Package",
       "proofStatus": "verified",
       "proofLinks": [
         "/forgecast/",
-        "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.3/ForgeCast-Weather-v0.2.3-android-release.apk.sha256.txt"
+        "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.4/ForgeCast-Weather-v0.2.4-android-release.apk.sha256.txt"
       ],
-      "testCount": "260/260",
+      "testCount": "279/279",
       "downloadStatus": "available",
-      "downloadUrl": "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.3/ForgeCast-Weather-v0.2.3-android-release.apk",
+      "downloadUrl": "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.4/ForgeCast-Weather-v0.2.4-android-release.apk",
       "sha256Status": "published",
-      "sha256": "FFF192CD79F783E129616CC98E31748A672C25464E763397E24F36F7996C70BA",
+      "sha256": "14A9597FC861129E53F6D832ACD1FD35E0B281B624AE4F1050A7A4FADC408916",
       "lastVerified": "2026-07-01"
     }
   ]
