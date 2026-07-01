@@ -29,14 +29,19 @@
       "route": "https://cache-vault-landing.pages.dev/",
       "platform": "Windows",
       "build": "Python compiled (CacheVault.exe)",
-      "latestVersion": "v0.1.4",
+      "latestVersion": "v0.1.4 release.1",
       "distType": "Windows Portable ZIP",
-      "proofStatus": "receipt available",
-      "proofLinks": [],
+      "proofStatus": "published",
+      "proofLinks": [
+        "https://cache-vault-landing.pages.dev/",
+        "https://github.com/lazelife420-spec/CacheVault/releases/tag/cache-vault-v0.1.4-release.1",
+        "https://github.com/lazelife420-spec/CacheVault/releases/download/cache-vault-v0.1.4-release.1/CacheVault-v0.1.4-windows.sha256"
+      ],
+      "testCount": "740/740",
       "downloadStatus": "available",
-      "downloadUrl": "https://cache-vault-landing.pages.dev/",
-      "sha256Status": "verification pending",
-      "sha256": null,
+      "downloadUrl": "https://github.com/lazelife420-spec/CacheVault/releases/download/cache-vault-v0.1.4-release.1/CacheVault-v0.1.4-windows.zip",
+      "sha256Status": "published",
+      "sha256": "710c8988455b30a3fa8589862e3e7c8a36c7faf73b015cfda5024f700a2c81bf",
       "lastVerified": "2026-06-30"
     },
     {
