@@ -1,4 +1,4 @@
-# Deployment Verification Receipt — 2026-06-30
+# Deployment Verification Receipt — 2026-07-01
 
 *   **Site Commit**: 26e045a
 *   **Verified Targets**: https://proof-foundry-site.pages.dev, https://theprooffoundry.com, https://www.theprooffoundry.com
@@ -7,7 +7,7 @@
 *   **Expected SHA**: 8F7AF747206F1578E2E35A646EB5E28700A1B7EC2C1158F91E4E0E421132DFCD
 *   **APK Status**: OK
 *   **SHA Status**: OK
-*   **Timestamp**: 2026-06-30 23:36:43 -07:00
+*   **Timestamp**: 2026-07-01 16:56:23 -07:00
 *   **Overall Status**: **PASS**
 
 ## Verified Routes

@@ -47,22 +47,22 @@
     {
       "name": "Cleanroom",
       "slug": "cleanroom",
-      "status": "in-proof",
-      "route": "#products",
+      "status": "public",
+      "route": "https://github.com/lazelife420-spec/cleanroom-windows/releases/tag/v1.0.6",
       "platform": "Windows",
-      "build": "Windows isolated workspace environment (installer)",
-      "latestVersion": "v1.0.4",
+      "build": "CI-built Windows installer (PyInstaller + Inno Setup). Provenance attested via GitHub Actions.",
+      "latestVersion": "v1.0.6",
       "distType": "Windows Installer EXE",
-      "proofStatus": "partial",
-      "proofNote": "Public release page seen at v1.0.4 (Cleanroom-Setup-1.0.4.exe + SHA256SUMS.txt). Repo/asset URLs returned 404 from unauthenticated requests. Asset URL and hash require authenticated verification before population.",
+      "proofStatus": "verified",
       "proofLinks": [
-        "https://github.com/Z3r0DayZion-install/cleanroom-windows/releases"
+        "https://github.com/lazelife420-spec/cleanroom-windows/releases/tag/v1.0.6",
+        "https://github.com/lazelife420-spec/cleanroom-windows/releases/download/v1.0.6/SHA256SUMS.txt"
       ],
-      "downloadStatus": "verification_pending",
-      "downloadUrl": null,
-      "sha256Status": "verification_pending",
-      "sha256": null,
-      "lastVerified": null
+      "downloadStatus": "available",
+      "downloadUrl": "https://github.com/lazelife420-spec/cleanroom-windows/releases/download/v1.0.6/Cleanroom-Setup-1.0.6.exe",
+      "sha256Status": "published",
+      "sha256": "56dcbfd13e7d9814921c4651bf13b61a18d0faece8f5ea3ca8ce55c067fefed5",
+      "lastVerified": "2026-07-01"
     },
     {
       "name": "HyperSnatch",
