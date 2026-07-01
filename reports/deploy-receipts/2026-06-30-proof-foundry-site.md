@@ -1,13 +1,13 @@
 # Deployment Verification Receipt — 2026-06-30
 
-*   **Site Commit**: 70b5058
+*   **Site Commit**: b043868
 *   **Verified Targets**: https://proof-foundry-site.pages.dev, https://theprooffoundry.com, https://www.theprooffoundry.com
-*   **APK URL**: https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.1/ForgeCast-Weather-v0.2.1-android-release.apk
-*   **SHA URL**: https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.1/ForgeCast-Weather-v0.2.1-android-release.apk.sha256.txt
-*   **Expected SHA**: 0E244EBA5A75A8186BC854A35F14ACA650AE47DDEC6806A3242C739E4C43B50C
+*   **APK URL**: https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.3/ForgeCast-Weather-v0.2.3-android-release.apk
+*   **SHA URL**: https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.3/ForgeCast-Weather-v0.2.3-android-release.apk.sha256.txt
+*   **Expected SHA**: FFF192CD79F783E129616CC98E31748A672C25464E763397E24F36F7996C70BA
 *   **APK Status**: OK
 *   **SHA Status**: OK
-*   **Timestamp**: 2026-06-30 19:11:12 -07:00
+*   **Timestamp**: 2026-06-30 19:26:11 -07:00
 *   **Overall Status**: **PASS**
 
 ## Verified Routes
@@ -65,8 +65,8 @@
 | https://www.theprooffoundry.com/proof.html | 200 | **PASS (Content)** |
 | https://www.theprooffoundry.com/proof | 301 | **PASS (Redirect)** |
 | https://www.theprooffoundry.com/proof.html | 301 | **PASS (Redirect)** |
-| https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.1/ForgeCast-Weather-v0.2.1-android-release.apk | 200 | **PASS (200 application/vnd.android.package-archive)** |
-| https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.1/ForgeCast-Weather-v0.2.1-android-release.apk.sha256.txt | 200 | **PASS (Content)** |
+| https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.3/ForgeCast-Weather-v0.2.3-android-release.apk | 200 | **PASS (200 application/vnd.android.package-archive)** |
+| https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.3/ForgeCast-Weather-v0.2.3-android-release.apk.sha256.txt | 200 | **PASS (Content)** |
 | https://theprooffoundry.com/forgecast/ | 200 | **PASS (Hash chain)** |
 | https://www.theprooffoundry.com/forgecast/ | 200 | **PASS (Hash chain)** |
 
