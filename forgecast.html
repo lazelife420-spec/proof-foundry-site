@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ForgeCast Weather v0.2.5 — The Proof Foundry</title>
+  <title>ForgeCast Weather v0.2.6 — The Proof Foundry</title>
   <meta name="description" content="ForgeCast Weather turns the forecast into daily decisions: what to wear, when to go outside, what to bring, and when to stay in." />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#0B0F14" />
   <link rel="canonical" href="https://theprooffoundry.com/forgecast/" />
 
-  <meta property="og:title" content="ForgeCast Weather v0.2.5" />
+  <meta property="og:title" content="ForgeCast Weather v0.2.6" />
   <meta property="og:description" content="Know when to go. Know what to wear." />
   <meta property="og:type" content="product" />
   <meta property="og:url" content="https://theprooffoundry.com/forgecast/" />
@@ -180,18 +180,18 @@
       </p>
 
       <div class="download-group">
-        <a class="button button-primary" href="https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.5/ForgeCast-Weather-v0.2.5-android-release.apk" download>
+        <a class="button button-primary" href="https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.6/ForgeCast-Weather-v0.2.6-android-release.apk" download>
           Download APK
         </a>
-        <a class="button button-secondary" href="https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.5/ForgeCast-Weather-v0.2.5-android-release.apk.sha256.txt" target="_blank" rel="noopener">
+        <a class="button button-secondary" href="https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.6/ForgeCast-Weather-v0.2.6-android-release.apk.sha256.txt" target="_blank" rel="noopener">
           SHA256
         </a>
       </div>
 
       <div class="proof-strip">
-        <span class="proof-pill"><strong>Version</strong> 0.2.5</span>
-        <span class="proof-pill"><strong>versionCode</strong> 6</span>
-        <span class="proof-pill"><strong>Tests</strong> 297/297</span>
+        <span class="proof-pill"><strong>Version</strong> 0.2.6</span>
+        <span class="proof-pill"><strong>versionCode</strong> 7</span>
+        <span class="proof-pill"><strong>Tests</strong> 318/318</span>
         <span class="proof-pill"><strong>Platform</strong> Android</span>
         <span class="proof-pill"><strong>Build</strong> release</span>
       </div>
@@ -202,24 +202,21 @@
         <h3>SHA-256 checksum</h3>
         <p>Verify the APK before installing.</p>
         <div class="code-block">
-          67CE3B9A72B8CB2751B6945E65D30D6B30C4142874E4B19941C6DD75748997C3
+          8F7AF747206F1578E2E35A646EB5E28700A1B7EC2C1158F91E4E0E421132DFCD
         </div>
       </article>
 
       <article class="detail-card">
         <h3>What’s inside</h3>
         <ul>
-          <li>Leaving soon: fires only when best window is within 2 hours</li>
-          <li>Best tomorrow: named correctly when window is the next day</li>
-          <li>Tonight still works / Tomorrow looks better / No strong window</li>
-          <li>Evening + night posture is data-driven, never forced</li>
-          <li>Plan/TodayPulse chip labels: Tomorrow vs Tonight vs Next — accurate</li>
-          <li>Decision-time correctness: best window always actionable</li>
-          <li>Best passed / Not ideal states</li>
-          <li>DayOutlineRail labels: Mild / Go out / Cooling / Calm</li>
-          <li>Clean punctuation throughout — no double periods</li>
-          <li>How today moves — Day Outline Rail (Now → Best → Evening → Tonight)</li>
-          <li>Freshness / Alive feedback bar</li>
+          <li>Senior Mode: Today answers Can I go? / What to wear? / Watch for? first</li>
+          <li>Wear a light jacket. — natural article-correct copy for all outfit tiers</li>
+          <li>Why? collapsible reveals outfit detail, window summary, next change</li>
+          <li>Primary answer surface: badge + wearLine + windowLine + watchLine</li>
+          <li>All v0.2.5 evening logic retained: Leaving soon / Best tomorrow / Tonight posture</li>
+          <li>Decision badge always visible, no parsing required</li>
+          <li>Power user details available on tap — not forced on first view</li>
+          <li>Deploy wrapper false-negative fixed (exit 0 on clean verify)</li>
         </ul>
       </article>
 
