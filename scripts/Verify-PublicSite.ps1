@@ -320,7 +320,7 @@ foreach ($target in $Targets) {
 }
 
 if ($script:failedCount -gt 0) {
-    Write-Error "Site Verification FAILED with $script:failedCount errors."
+    Write-Host "==> VERIFICATION FAILED with $script:failedCount error(s). Check output above." -ForegroundColor Red
     exit 1
 } else {
     Write-Host "`n==> ALL GATES PASSED! Verification complete." -ForegroundColor Green

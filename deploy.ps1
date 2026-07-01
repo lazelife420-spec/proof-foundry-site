@@ -68,4 +68,12 @@ Write-Host "==> Waiting 10 seconds for edge propagation..."
 Start-Sleep -Seconds 10
 
 Write-Host "==> Done. Running Verification..."
+$ErrorActionPreference = 'Continue'
 & "$PSScriptRoot\scripts\Verify-PublicSite.ps1" -Targets @("https://proof-foundry-site.pages.dev", "https://theprooffoundry.com", "https://www.theprooffoundry.com")
+$verifyExit = $LASTEXITCODE
+$ErrorActionPreference = 'Stop'
+if ($verifyExit -ne 0) {
+    Write-Host "==> VERIFICATION FAILED (exit $verifyExit). Check output above." -ForegroundColor Red
+    exit $verifyExit
+}
+Write-Host "==> ALL GATES PASSED. Deploy complete." -ForegroundColor Green
