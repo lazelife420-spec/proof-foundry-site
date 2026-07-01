@@ -1,10 +1,7 @@
+# Cloudflare Pages config for the direct-upload workflow.
+# deploy.ps1 rebuilds public/ and then runs:
+#   npx --yes wrangler pages deploy .\public --project-name proof-foundry-site --branch main
+
 name = "proof-foundry-site"
-compatibility_date = "2026-06-28"
-workers_dev = true
-
-routes = [
-  { pattern = "theprooffoundry.com", custom_domain = true }
-]
-
-[assets]
-directory = "./public"
+compatibility_date = "2026-06-30"
+pages_build_output_dir = "public"

@@ -1,47 +1,83 @@
 # Deploying theprooffoundry.com
 
-The site is a **Cloudflare Worker static-assets** deployment named `proof-foundry-site`
-(account `ceomindset2019`). It is **not** GitHub Pages.
+The site is a **Cloudflare Pages direct-upload** deployment named `proof-foundry-site`
+in account `ceomindset2019`. It is not GitHub Pages, and it is not using a Git
+integration in Cloudflare.
+
+## Current publish model
+
+- Cloudflare project: `proof-foundry-site`
+- Deploy surface: `wrangler pages deploy`
+- Public domains:
+  - `https://proof-foundry-site.pages.dev`
+  - `https://theprooffoundry.com`
+  - `https://www.theprooffoundry.com`
+- Git connection in Cloudflare: none
 
 ## One-time setup
 
 ```powershell
-npx wrangler login   # authorize the ceomindset2019 Cloudflare account in the browser
+npx wrangler login
 ```
 
+Authorize the `ceomindset2019` Cloudflare account in the browser.
+
 ## Deploy
+
+Use the repo script:
 
 ```powershell
 ./deploy.ps1
 ```
 
-This rebuilds `public/` from the tracked source files (`index.html`, `founders.html`,
-`styles.css`, `CNAME`, `brand/`) and runs `wrangler deploy`.
+What it does:
 
-`wrangler.toml` declares both triggers, so they survive every deploy:
+- rebuilds `public/` from tracked source files
+- copies site assets and brand files
+- writes `_headers`
+- copies `_redirects`
+- deploys with:
 
-- `theprooffoundry.com` (custom domain)
-- `proof-foundry-site.ceomindset2019.workers.dev` (`workers_dev = true`)
-
-> Note: if `workers_dev = true` is ever removed while `routes` are present, Wrangler
-> auto-disables the workers.dev URL. Keep it set.
+```powershell
+npx --yes wrangler pages deploy .\public --project-name proof-foundry-site --branch main
+```
 
 ## Verify
 
+The deploy script already runs:
+
+```powershell
+.\scripts\Verify-PublicSite.ps1 -Targets @(
+  "https://proof-foundry-site.pages.dev",
+  "https://theprooffoundry.com",
+  "https://www.theprooffoundry.com"
+)
+```
+
+Manual spot checks:
+
 ```powershell
 foreach ($u in @(
+  "https://proof-foundry-site.pages.dev/",
   "https://theprooffoundry.com/",
-  "https://theprooffoundry.com/founders.html",
-  "https://theprooffoundry.com/styles.css",
-  "https://www.theprooffoundry.com/"
+  "https://www.theprooffoundry.com/",
+  "https://theprooffoundry.com/founders/",
+  "https://theprooffoundry.com/forgecast/",
+  "https://theprooffoundry.com/proof/"
 )) { (Invoke-WebRequest $u -UseBasicParsing).StatusCode }
 ```
 
-If the apex (`theprooffoundry.com`) fails to resolve locally right after a domain
-change, run `ipconfig /flushdns` — it is a local resolver cache, not the deploy.
+If the apex domain fails locally right after a DNS/domain change, run:
+
+```powershell
+ipconfig /flushdns
+```
 
 ## Notes
 
-- `public/` and `receipts/*.zip` are git-ignored (build output / Direct-Upload fallback).
-- Direct-Upload fallback: zip the contents of `public/` and upload via the Cloudflare
-  dashboard (Workers & Pages → proof-foundry-site → new version).
+- `public/` is build output and is regenerated on each deploy.
+- `reports/deploy-receipts/` contains public verification receipts copied into `public/`.
+- Cloudflare dashboard fallback:
+  - Workers & Pages -> `proof-foundry-site` -> create deployment
+  - upload the contents of `public/`
+- The source of truth for deployment behavior is `deploy.ps1`.
