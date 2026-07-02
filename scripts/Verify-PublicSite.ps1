@@ -1,8 +1,8 @@
 param(
     [string[]]$Targets = @("https://theprooffoundry.com", "https://www.theprooffoundry.com", "https://proof-foundry-site.pages.dev"),
-    [string]$ApkUrl = "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.6/ForgeCast-Weather-v0.2.6-android-release.apk",
-    [string]$ShaUrl = "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.6/ForgeCast-Weather-v0.2.6-android-release.apk.sha256.txt",
-    [string]$ExpectedSha = "8F7AF747206F1578E2E35A646EB5E28700A1B7EC2C1158F91E4E0E421132DFCD"
+    [string]$ApkUrl = "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.7/ForgeCast-Weather-v0.2.7-android-release.apk",
+    [string]$ShaUrl = "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.7/ForgeCast-Weather-v0.2.7-android-release.apk.sha256.txt",
+    [string]$ExpectedSha = "acd990a61d994fa097143b0c4690370220c4fc0bb7d4f8a4436710ef67edeba6"
 )
 
 $ErrorActionPreference = "Stop"
@@ -258,8 +258,8 @@ foreach ($target in $Targets) {
     Test-UrlRedirect -Url "$target/lights-out.html" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/lights-out/"
     
     # 5. ForgeCast landing page
-    Test-UrlContent -Url "$target/forgecast/" -ContainsPatterns @("ForgeCast Weather", "v0.2.6", "8F7AF747206F1578E2E35A646EB5E28700A1B7EC2C1158F91E4E0E421132DFCD", "318/318") -NotContainsPatterns @("SkyFoundry")
-    Test-UrlContent -Url "$target/forgecast" -ContainsPatterns @("ForgeCast Weather", "v0.2.6") -NotContainsPatterns @("SkyFoundry") -FollowRedirects $true
+    Test-UrlContent -Url "$target/forgecast/" -ContainsPatterns @("ForgeCast Weather", "v0.2.7", "acd990a61d994fa097143b0c4690370220c4fc0bb7d4f8a4436710ef67edeba6", "329/329") -NotContainsPatterns @("SkyFoundry")
+    Test-UrlContent -Url "$target/forgecast" -ContainsPatterns @("ForgeCast Weather", "v0.2.7") -NotContainsPatterns @("SkyFoundry") -FollowRedirects $true
     if ($target -like "*theprooffoundry.com*") {
         Test-UrlContent -Url "$target/sitemap.xml" -ContainsPatterns @("https://theprooffoundry.com/lights-out/", "https://theprooffoundry.com/forgecast/", "https://theprooffoundry.com/proof/")
     } else {
@@ -294,7 +294,8 @@ foreach ($target in $Targets) {
         Write-Host "Checking hash chain for $target/forgecast/ ... " -NoNewline
         try {
             $landingContent = Get-PlaintextContent -Url "$target/forgecast/"
-            $shaFileContent = (Invoke-WebRequest -Uri $ShaUrl -UseBasicParsing).Content.Trim()
+            $rawContent = (Invoke-WebRequest -Uri $ShaUrl -UseBasicParsing).Content
+            $shaFileContent = if ($rawContent -is [string]) { $rawContent.Trim() } else { [System.Text.Encoding]::UTF8.GetString($rawContent).Trim() }
 
             $landingMatch = $landingContent -match [regex]::Escape($ExpectedSha)
             $shaMatch = $shaFileContent -match [regex]::Escape($ExpectedSha)
@@ -364,6 +365,6 @@ if ($script:failedCount -gt 0) {
         $md += "`n| $($r.Url) | $($r.Status) | **$($r.Msg)** |"
     }
     $md += "`n"
-    $md | Out-File $receiptPath -Encoding utf8NoBOM
+    $md | Out-File $receiptPath -Encoding utf8
     Write-Host "==> Verification receipt written to: $receiptPath" -ForegroundColor Green
 }

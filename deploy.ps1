@@ -56,7 +56,7 @@ $headersContent = @"
 /brand/*
   Cache-Control: public, max-age=31536000, immutable
 "@
-$headersContent | Out-File public\_headers -Encoding utf8NoBOM
+$headersContent | Out-File public\_headers -Encoding utf8
 
 # Copy _redirects file from root
 Copy-Item _redirects public\ -Force
