@@ -31,7 +31,7 @@
       "build": "Python compiled (CacheVault.exe)",
       "latestVersion": "v0.1.4 release.1",
       "distType": "Windows Portable ZIP",
-      "proofStatus": "published",
+      "proofStatus": "verified",
       "proofLinks": [
         "https://cache-vault-landing.pages.dev/",
         "https://github.com/lazelife420-spec/CacheVault/releases/tag/cache-vault-v0.1.4-release.1",
