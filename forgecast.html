@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ForgeCast Weather v0.2.8 — The Proof Foundry</title>
+  <title>ForgeCast Weather v0.2.9 — The Proof Foundry</title>
   <meta name="description" content="ForgeCast Weather turns the forecast into daily decisions: what to wear, when to go outside, what to bring, and when to stay in." />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#0B0F14" />
   <link rel="canonical" href="https://theprooffoundry.com/forgecast/" />
 
-  <meta property="og:title" content="ForgeCast Weather v0.2.8" />
+  <meta property="og:title" content="ForgeCast Weather v0.2.9" />
   <meta property="og:description" content="Know when to go. Know what to wear." />
   <meta property="og:type" content="product" />
   <meta property="og:url" content="https://theprooffoundry.com/forgecast/" />
@@ -180,18 +180,18 @@
       </p>
 
       <div class="download-group">
-        <a class="button button-primary" href="https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.8/ForgeCast-Weather-v0.2.8-android-release.apk" download>
+        <a class="button button-primary" href="https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.9/ForgeCast-Weather-v0.2.9-android-release.apk" download>
           Download APK
         </a>
-        <a class="button button-secondary" href="https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.8/ForgeCast-Weather-v0.2.8-android-release.apk.sha256.txt" target="_blank" rel="noopener">
+        <a class="button button-secondary" href="https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.9/ForgeCast-Weather-v0.2.9-android-release.apk.sha256.txt" target="_blank" rel="noopener">
           SHA256
         </a>
       </div>
 
       <div class="proof-strip">
-        <span class="proof-pill"><strong>Version</strong> 0.2.8</span>
-        <span class="proof-pill"><strong>versionCode</strong> 9</span>
-        <span class="proof-pill"><strong>Tests</strong> 333/333</span>
+        <span class="proof-pill"><strong>Version</strong> 0.2.9</span>
+        <span class="proof-pill"><strong>versionCode</strong> 10</span>
+        <span class="proof-pill"><strong>Tests</strong> 372/372</span>
         <span class="proof-pill"><strong>Platform</strong> Android</span>
         <span class="proof-pill"><strong>Build</strong> release</span>
       </div>
@@ -202,18 +202,18 @@
         <h3>SHA-256 checksum</h3>
         <p>Verify the APK before installing.</p>
         <div class="code-block">
-          4c1b0828d657973c34d7178085d75c943a30871519677f3aa739991ef27d8fc1
+          A8FC26C1373038F70D9DCB7ABCC936F094C91E43D2E5F7562F8A525CB923A525
         </div>
       </article>
 
       <article class="detail-card">
         <h3>What’s inside</h3>
         <ul>
-          <li>First-run onboarding explainer modal: welcome introduction covering outfit advice, best window timing, and timeline shifts</li>
-          <li>Home screen widget setup CTA: guides users on placing the widget and explains 2x1 compact vs 4x2 larger widget layouts</li>
-          <li>Settings trust & privacy polish: clear structured details showing version, weather source, no accounts, zero telemetry, and local-first positioning</li>
-          <li>Time formatting polish: replaced raw browser-locale time strings with clean human AM/PM formatting on all screens</li>
-          <li>Clearer forecast labels: renamed vague "Forecast next" / "Next forecast" to "Upcoming forecast" / "Hourly forecast"</li>
+          <li>Launcher widget now shows Wear + Best in all default cell sizes — all three lines visible, unclipped</li>
+          <li>Widget tap opens Plan screen directly, not widget setup</li>
+          <li>Decision correctness: isNow range check, imminent rain POP from nearest hourly slot, duplicate outfit computation removed, clear-night sunglasses guard</li>
+          <li>Tomorrow abbreviation fixed from ambiguous "Tom" to "Tmrw" in widget best-time label</li>
+          <li>UI polish: header shows city only, Plan hides empty rows, Plan card deduplicates detail text, Forecast uses clean two-line row layout, Settings icons replaced with uniform glyphs</li>
         </ul>
       </article>
 

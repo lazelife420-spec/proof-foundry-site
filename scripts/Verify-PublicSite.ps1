@@ -1,8 +1,8 @@
 param(
     [string[]]$Targets = @("https://theprooffoundry.com", "https://www.theprooffoundry.com", "https://proof-foundry-site.pages.dev"),
-    [string]$ApkUrl = "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.8/ForgeCast-Weather-v0.2.8-android-release.apk",
-    [string]$ShaUrl = "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.8/ForgeCast-Weather-v0.2.8-android-release.apk.sha256.txt",
-    [string]$ExpectedSha = "4c1b0828d657973c34d7178085d75c943a30871519677f3aa739991ef27d8fc1"
+    [string]$ApkUrl = "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.9/ForgeCast-Weather-v0.2.9-android-release.apk",
+    [string]$ShaUrl = "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.9/ForgeCast-Weather-v0.2.9-android-release.apk.sha256.txt",
+    [string]$ExpectedSha = "A8FC26C1373038F70D9DCB7ABCC936F094C91E43D2E5F7562F8A525CB923A525"
 )
 
 $ErrorActionPreference = "Stop"
@@ -258,8 +258,8 @@ foreach ($target in $Targets) {
     Test-UrlRedirect -Url "$target/lights-out.html" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/lights-out/"
     
     # 5. ForgeCast landing page
-    Test-UrlContent -Url "$target/forgecast/" -ContainsPatterns @("ForgeCast Weather", "v0.2.8", "4c1b0828d657973c34d7178085d75c943a30871519677f3aa739991ef27d8fc1", "333/333") -NotContainsPatterns @("SkyFoundry")
-    Test-UrlContent -Url "$target/forgecast" -ContainsPatterns @("ForgeCast Weather", "v0.2.8") -NotContainsPatterns @("SkyFoundry") -FollowRedirects $true
+    Test-UrlContent -Url "$target/forgecast/" -ContainsPatterns @("ForgeCast Weather", "v0.2.9", "A8FC26C1373038F70D9DCB7ABCC936F094C91E43D2E5F7562F8A525CB923A525", "372/372") -NotContainsPatterns @("SkyFoundry")
+    Test-UrlContent -Url "$target/forgecast" -ContainsPatterns @("ForgeCast Weather", "v0.2.9") -NotContainsPatterns @("SkyFoundry") -FollowRedirects $true
     if ($target -like "*theprooffoundry.com*") {
         Test-UrlContent -Url "$target/sitemap.xml" -ContainsPatterns @("https://theprooffoundry.com/lights-out/", "https://theprooffoundry.com/forgecast/", "https://theprooffoundry.com/proof/")
     } else {
