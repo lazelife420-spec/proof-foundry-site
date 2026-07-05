@@ -1,8 +1,8 @@
 param(
     [string[]]$Targets = @("https://theprooffoundry.com", "https://www.theprooffoundry.com", "https://proof-foundry-site.pages.dev"),
-    [string]$ApkUrl = "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.9/ForgeCast-Weather-v0.2.9-android-release.apk",
-    [string]$ShaUrl = "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.2.9/ForgeCast-Weather-v0.2.9-android-release.apk.sha256.txt",
-    [string]$ExpectedSha = "A8FC26C1373038F70D9DCB7ABCC936F094C91E43D2E5F7562F8A525CB923A525"
+    [string]$ApkUrl = "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.0/ForgeCast-Weather-v0.3.0-android-release.apk",
+    [string]$ShaUrl = "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.0/ForgeCast-Weather-v0.3.0-android-release.apk.sha256.txt",
+    [string]$ExpectedSha = "ED36ADC30B381A0B559CB4C793A24C98E249F94529915889B1546A5C0D00539E"
 )
 
 $ErrorActionPreference = "Stop"
@@ -258,8 +258,8 @@ foreach ($target in $Targets) {
     Test-UrlRedirect -Url "$target/lights-out.html" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/lights-out/"
     
     # 5. ForgeCast landing page
-    Test-UrlContent -Url "$target/forgecast/" -ContainsPatterns @("ForgeCast Weather", "v0.2.9", "A8FC26C1373038F70D9DCB7ABCC936F094C91E43D2E5F7562F8A525CB923A525", "372/372") -NotContainsPatterns @("SkyFoundry")
-    Test-UrlContent -Url "$target/forgecast" -ContainsPatterns @("ForgeCast Weather", "v0.2.9") -NotContainsPatterns @("SkyFoundry") -FollowRedirects $true
+    Test-UrlContent -Url "$target/forgecast/" -ContainsPatterns @("ForgeCast Weather", "v0.3.0", "ED36ADC30B381A0B559CB4C793A24C98E249F94529915889B1546A5C0D00539E", "470/470") -NotContainsPatterns @("SkyFoundry", "v0.2.9/ForgeCast-Weather-v0.2.9")
+    Test-UrlContent -Url "$target/forgecast" -ContainsPatterns @("ForgeCast Weather", "v0.3.0") -NotContainsPatterns @("SkyFoundry", "v0.2.9/ForgeCast-Weather-v0.2.9") -FollowRedirects $true
     if ($target -like "*theprooffoundry.com*") {
         Test-UrlContent -Url "$target/sitemap.xml" -ContainsPatterns @("https://theprooffoundry.com/lights-out/", "https://theprooffoundry.com/forgecast/", "https://theprooffoundry.com/proof/")
     } else {
