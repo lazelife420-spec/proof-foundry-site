@@ -1,8 +1,8 @@
 param(
     [string[]]$Targets = @("https://theprooffoundry.com", "https://www.theprooffoundry.com", "https://proof-foundry-site.pages.dev"),
-    [string]$ApkUrl = "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.2/ForgeCast-Weather-v0.3.2-android-release.apk",
-    [string]$ShaUrl = "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.2/ForgeCast-Weather-v0.3.2-android-release.apk.sha256.txt",
-    [string]$ExpectedSha = "7B42EE1CE5F320F3CFD153E9499E67F26F12CD6FE3D8F879156688B9424AAAC5"
+    [string]$ApkUrl = "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk",
+    [string]$ShaUrl = "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk.sha256.txt",
+    [string]$ExpectedSha = "50ABE59E52B6DC7E8649C0CA63EB065425F8EDC607187E3844D90CE5F1EED833"
 )
 
 $ErrorActionPreference = "Stop"
@@ -258,8 +258,8 @@ foreach ($target in $Targets) {
     Test-UrlRedirect -Url "$target/lights-out.html" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/lights-out/"
     
     # 5. ForgeCast landing page
-    Test-UrlContent -Url "$target/forgecast/" -ContainsPatterns @("ForgeCast Weather", "v0.3.2", "7B42EE1CE5F320F3CFD153E9499E67F26F12CD6FE3D8F879156688B9424AAAC5", "512/512", "v030-today.png") -NotContainsPatterns @("SkyFoundry", "v0.2.9/ForgeCast-Weather-v0.2.9", "v0.3.1/ForgeCast-Weather-v0.3.1-android-release.apk")
-    Test-UrlContent -Url "$target/forgecast" -ContainsPatterns @("ForgeCast Weather", "v0.3.2") -NotContainsPatterns @("SkyFoundry", "v0.2.9/ForgeCast-Weather-v0.2.9", "v0.3.1/ForgeCast-Weather-v0.3.1-android-release.apk") -FollowRedirects $true
+    Test-UrlContent -Url "$target/forgecast/" -ContainsPatterns @("ForgeCast Weather", "v0.3.3", "50ABE59E52B6DC7E8649C0CA63EB065425F8EDC607187E3844D90CE5F1EED833", "724/724", "v030-today.png") -NotContainsPatterns @("SkyFoundry", "v0.2.9/ForgeCast-Weather-v0.2.9", "v0.3.2/ForgeCast-Weather-v0.3.2-android-release.apk")
+    Test-UrlContent -Url "$target/forgecast" -ContainsPatterns @("ForgeCast Weather", "v0.3.3") -NotContainsPatterns @("SkyFoundry", "v0.2.9/ForgeCast-Weather-v0.2.9", "v0.3.2/ForgeCast-Weather-v0.3.2-android-release.apk") -FollowRedirects $true
     if ($target -like "*theprooffoundry.com*") {
         Test-UrlContent -Url "$target/sitemap.xml" -ContainsPatterns @("https://theprooffoundry.com/lights-out/", "https://theprooffoundry.com/forgecast/", "https://theprooffoundry.com/proof/")
     } else {
