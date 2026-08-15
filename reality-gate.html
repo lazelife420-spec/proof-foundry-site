@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reality Gate — Developer Continuity Platform | The Proof Foundry</title>
+  <meta name="description" content="Reality Gate is a local-first developer continuity platform that works alongside GitHub, GitLab, Forgejo, and ordinary Git workflows." />
+  <link rel="canonical" href="https://theprooffoundry.com/reality-gate/" />
+  <link rel="icon" type="image/svg+xml" href="/brand/proof-foundry-mark.svg" />
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    /* Based on ForgeCast structure */
+    .product-hero {
+      padding: 4rem 1rem 3rem 1rem;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .eyebrow {
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      color: var(--text);
+    }
+    h1 span {
+      color: var(--muted);
+    }
+    .product-lede {
+      font-size: 1.25rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    .download-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 3rem;
+    }
+    @media (min-width: 600px) {
+      .download-group {
+        flex-direction: row;
+        justify-content: center;
+      }
+    }
+    .proof-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    .proof-pill {
+      padding: 0.45rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(16, 25, 35, 0.72);
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+    .proof-pill strong {
+      color: var(--text);
+    }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin: 3rem 0;
+    }
+    .detail-card {
+      background: rgba(16, 25, 35, 0.62);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+    }
+    .detail-card h3 {
+      font-size: 1rem;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+    .detail-card p,
+    .detail-card li {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .detail-card ul {
+      list-style: none;
+      padding: 0;
+    }
+    .detail-card li {
+      padding: 0.35rem 0;
+      border-bottom: 1px solid rgba(38, 55, 70, 0.4);
+    }
+    .detail-card li:last-child {
+      border-bottom: none;
+    }
+    .code-block {
+      background: #070b10;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.85rem;
+      color: var(--text);
+      overflow-wrap: break-word; /* Important for long SHA wraps on mobile */
+      margin: 1rem 0;
+    }
+    .note {
+      color: var(--muted);
+      font-size: 0.9rem;
+      border-left: 3px solid var(--gold);
+      padding-left: 1rem;
+      margin: 1.5rem 0;
+    }
+    
+    .status-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: rgba(255, 215, 0, 0.15);
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header" id="top">
+    <div class="container nav-row">
+      <a class="brand-lockup" href="/" aria-label="Proof Foundry home">
+        <img class="brand-logo" src="/brand/proof-foundry-logo-horizontal.svg" alt="Proof Foundry" />
+      </a>
+      <nav class="top-nav" aria-label="Primary navigation">
+        <a href="/">Home</a>
+        <a href="/#products">Products</a>
+        <a href="/founders.html">Founders</a>
+        <a href="/proof/">Receipts</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="product-hero" aria-labelledby="product-title">
+      <p class="eyebrow">A Proof Foundry product</p>
+      <h1 id="product-title">Reality Gate<br /><span>Developer Continuity Platform</span></h1>
+      <div class="status-badge">Developer Pilot</div>
+      <p class="product-lede" style="font-weight: bold; color: var(--text);">Keep your forge. Keep control of your work.</p>
+      <p class="product-lede">
+        Reality Gate works alongside GitHub, GitLab, Forgejo, and ordinary Git. It helps you understand what your development depends on, verify whether your local operation can continue, and keep proof of what was checked. No migration required.
+      </p>
+
+      <h2>Developer Pilot — Windows</h2>
+      <p class="product-lede" style="font-size: 1.1rem;">Reality Gate 1.1.0 is currently available as an early Windows developer pilot.</p>
+
+      <div class="download-group">
+        <a class="button button-primary" href="https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/reality-gate/Reality-Gate-1.1.0-Developer-Pilot.zip" download>
+          Download Developer Pilot (.zip)
+        </a>
+        <a class="button button-secondary" href="https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/reality-gate/Reality-Gate-1.1.0-Developer-Pilot.zip.sha256.txt" target="_blank" rel="noopener">
+          SHA-256
+        </a>
+      </div>
+      <div style="font-family: monospace; color: var(--muted); font-size: 0.85rem; word-break: break-all; max-width: 100%; padding: 0 1rem;">
+        620e113a94b5cf422b32cbdcf876e3ba7448d2c3ec161a1f6b8ee145b9a82566
+      </div>
+
+      <div class="proof-strip">
+        <span class="proof-pill"><strong>Version</strong> 1.1.0 Developer Pilot</span>
+        <span class="proof-pill"><strong>Source checkpoint</strong> c78e9d87afa4076497ee04e5f5070e4fed5ee406</span>
+        <span class="proof-pill"><strong>Distribution</strong> Developer Pilot ZIP</span>
+        <span class="proof-pill"><strong>Platform</strong> Windows</span>
+        <span class="proof-pill"><strong>Status</strong> Pilot Ready</span>
+      </div>
+    </section>
+
+    <section class="detail-grid" aria-label="Release details">
+      <article class="detail-card">
+        <h3>Keep GitHub. Keep GitLab. Keep Forgejo.</h3>
+        <p>Reality Gate is the continuity layer underneath your existing workflow.</p>
+        <ul>
+          <li>Existing Git repositories remain normal Git repositories.</li>
+          <li>Existing remotes remain usable.</li>
+          <li>Reality Gate analyzes local project/provider dependencies.</li>
+          <li>Reality Gate helps evaluate continuity.</li>
+          <li>Reality Gate produces proof/receipts.</li>
+          <li>No mandatory source migration.</li>
+        </ul>
+      </article>
+
+      <article class="detail-card">
+        <h3>Provider Compatibility</h3>
+        <p>Reality Gate reads the Git workflow you already have rather than asking you to replace it.</p>
+        <ul>
+          <li>GitHub</li>
+          <li>GitLab</li>
+          <li>Forgejo</li>
+          <li>Ordinary Git / local repositories</li>
+        </ul>
+      </article>
+
+      <article class="detail-card">
+        <h3>How It Works</h3>
+        <ol style="color: var(--muted); font-size: 0.95rem; margin-left: 1.2rem; padding-left: 0;">
+          <li style="padding-bottom: 0.5rem; border-bottom: none;"><strong>1. Add a Git repository:</strong> Use an existing project or the included disposable demo repository.</li>
+          <li style="padding-bottom: 0.5rem; border-bottom: none;"><strong>2. See dependencies:</strong> Reality Gate identifies relevant local Git/provider configuration.</li>
+          <li style="padding-bottom: 0.5rem; border-bottom: none;"><strong>3. Check continuity:</strong> See what the current evidence says about your ability to keep working.</li>
+          <li style="padding-bottom: 0.5rem; border-bottom: none;"><strong>4. View proof:</strong> Review the evidence/receipt behind the result.</li>
+        </ol>
+      </article>
+      
+      <article class="detail-card">
+        <h3>What is in the ZIP</h3>
+        <p>Try the included demo repository first, then add one of your own projects when you're comfortable.</p>
+        <ul>
+          <li>Reality Gate Windows installer</li>
+          <li>Quick Start & Product explanation</li>
+          <li>Privacy/data-safety notes & Known limitations</li>
+          <li>Troubleshooting & Feedback form</li>
+          <li>SHA-256 information</li>
+          <li>Disposable demo Git repository</li>
+        </ul>
+      </article>
+
+      <article class="detail-card">
+        <h3>Your repository stays yours</h3>
+        <p>The passive pilot workflow has been tested to leave the source repository unchanged while adding a repo, analyzing dependencies, checking continuity, and viewing proof.</p>
+        <p>No repository migration is required.</p>
+      </article>
+
+      <article class="detail-card">
+        <h3>Requirements</h3>
+        <ul>
+          <li>Windows 10 / 11</li>
+          <li>Existing Git installation/project recommended</li>
+          <li>No mandatory Proof Foundry account for the individual continuity workflow</li>
+        </ul>
+        <p style="margin-top: 1rem;">Because this is an early pilot build, Windows SmartScreen may show "Windows protected your PC". Click <strong>More info -&gt; Run anyway</strong>.</p>
+      </article>
+      
+      <article class="detail-card">
+        <h3>What the evidence means</h3>
+        <ul>
+          <li>Configured provider dependency does not prove live provider availability.</li>
+          <li>Local source does not equal off-machine backup.</li>
+          <li>A continuity result is scoped to evidence Reality Gate actually checked.</li>
+          <li>This pilot does not claim every disaster scenario is recoverable.</li>
+        </ul>
+      </article>
+
+      <article class="detail-card">
+        <h3>Pilot Status</h3>
+        <p>This build has passed internal packaged workflow and repository-immutability checks. The purpose of the pilot is to test Reality Gate against different developers, machines, repositories, and Git configurations.</p>
+        <p style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(38, 55, 70, 0.4);"><strong>Included installer SHA-256:</strong><br><span style="font-family: monospace; font-size: 0.8rem; word-break: break-all;">6564423ef0f7345a3e9d4a431e03fb56a6beb544b2f0a8f17330dccb35e9a71b</span></p>
+      </article>
+    </section>
+
+    <section aria-labelledby="feedback-title" style="margin: 4rem 0 2rem; padding: 2rem; background: rgba(16, 25, 35, 0.62); border: 1px solid var(--line); border-radius: var(--radius); text-align: center;">
+      <h2 id="feedback-title" style="color: var(--text); font-size: 1.5rem; margin-bottom: 1rem;">Help test Reality Gate</h2>
+      <p style="color: var(--muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
+        The most useful feedback right now is simple: could you install it, add your own repository, understand what Reality Gate told you, and would you keep it installed?
+      </p>
+      <p style="color: var(--muted); font-size: 0.95rem; margin-top: 1rem;">
+        See <strong>FEEDBACK.md</strong> included in the ZIP.
+      </p>
+    </section>
+
+  </main>
+  
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img class="footer-logo" src="/brand/proof-foundry-logo-horizontal.svg" alt="Proof Foundry" />
+        <p>Build it. Prove it. Ship it.</p>
+      </div>
+
+      <div>
+        <h2>Products</h2>
+        <ul>
+          <li><a href="/reality-gate/">Reality Gate</a></li>
+          <li><a href="/lights-out.html">Lights Out PC</a></li>
+          <li><a href="https://cache-vault-landing.pages.dev/" target="_blank" rel="noopener">Cache Vault</a></li>
+          <li><a href="https://github.com/lazelife420-spec/cleanroom-windows/releases/tag/v1.0.7" target="_blank" rel="noopener">Cleanroom</a></li>
+          <li>HyperSnatch</li>
+          <li><a href="/forgecast/">ForgeCast Weather</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h2>Company</h2>
+        <ul>
+          <li><a href="/founders.html">Founders Circle</a></li>
+          <li><a href="/#proof-standard">Proof Standard</a></li>
+          <li><a href="/proof/">Receipts</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Proof Foundry. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

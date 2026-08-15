@@ -18,6 +18,8 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
 
+  <link rel="icon" type="image/svg+xml" href="brand/proof-foundry-mark.svg" />
+  <link rel="apple-touch-icon" href="brand/proof-foundry-mark.png" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -38,37 +40,42 @@
   </header>
 
   <main>
-    <section id="home" class="hero container" aria-labelledby="hero-title">
-      <div class="hero-copy">
-        <p class="eyebrow">Proof over promises</p>
-        <h1 id="hero-title">We build software.<br /><span>We prove it works.</span></h1>
-        <p class="hero-lede">Proof Foundry creates tools that deliver real results — with receipts, release proof, and verifiable claims.</p>
-        <div class="hero-actions">
-          <a class="button button-primary" href="#products">Explore Products</a>
-          <a class="button button-secondary" href="#proof-standard">View Proof Standard</a>
+    <section id="home" class="hero" aria-labelledby="hero-title">
+      <img class="hero-image" src="assets/foundry-strike/proof-foundry-forged-artifact.png" alt="" aria-hidden="true" />
+      <div class="hero-shade" aria-hidden="true"></div>
+      <div class="hero-inner container">
+        <div class="hero-copy">
+          <p class="eyebrow">Software. Forged. Verified.</p>
+          <h1 id="hero-title">We build software.<br /><span>We prove it works.</span></h1>
+          <p class="hero-lede">Proof Foundry builds local-first tools with visible evidence: receipts, release proof, checksums, and claims you can inspect.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#products">Explore Products</a>
+            <a class="button button-secondary" href="#proof-standard">View Proof Standard</a>
+          </div>
         </div>
-      </div>
-
-      <div class="hero-visual" aria-hidden="true">
-        <img class="hero-mark" src="brand/proof-foundry-mark.svg" alt="" aria-hidden="true" />
       </div>
     </section>
 
-    <section class="proof-pillars container" aria-label="Proof pillars">
+    <section class="proof-pillars container" aria-label="Proof standards at a glance">
       <article class="pillar-card">
         <p class="pillar-index">01</p>
-        <h2>Verifiable Proof</h2>
-        <p>Receipts, release notes, screenshots, hashes, and test gates where available.</p>
+        <h2>Built in public</h2>
+        <p>Visible progress, shipped work, and plain-language claims.</p>
       </article>
       <article class="pillar-card">
         <p class="pillar-index">02</p>
-        <h2>Open Standards</h2>
-        <p>Plain-language claims tied to visible evidence.</p>
+        <h2>Receipts posted</h2>
+        <p>Release notes, deployment records, checksums, and public proof links.</p>
       </article>
       <article class="pillar-card">
         <p class="pillar-index">03</p>
-        <h2>Results That Last</h2>
-        <p>Tools built for real local workflows, not disposable hype.</p>
+        <h2>Claims tested</h2>
+        <p>Behavior tied to test gates and evidence instead of hype language.</p>
+      </article>
+      <article class="pillar-card">
+        <p class="pillar-index">04</p>
+        <h2>Local-first tools</h2>
+        <p>Software made for owned workflows, durable files, and user control.</p>
       </article>
     </section>
 
@@ -78,7 +85,15 @@
         <p>Focused tools. Real results. Verifiable proof.</p>
       </div>
 
-      <div class="products-grid">
+              <div class="products-grid">
+          <article class="product-card product-live">
+            <div class="product-top">
+              <h3><a href="/reality-gate/" style="text-decoration:none;color:inherit">Reality Gate</a></h3>
+              <span class="chip available">Developer Pilot</span>
+            </div>
+            <p>Local-first developer continuity for the Git workflow you already use. Keep GitHub, GitLab, or Forgejo. Reality Gate helps you understand your dependencies, verify continuity, and keep proof.</p>
+            <a class="button button-secondary button-sm" href="/reality-gate/">View Reality Gate</a>
+          </article>
         <article class="product-card product-live">
           <div class="product-top">
             <h3><a href="lights-out.html" style="text-decoration:none;color:inherit">Lights Out PC</a></h3>
@@ -161,7 +176,8 @@
       <div>
         <h2>Products</h2>
         <ul>
-          <li><a href="lights-out.html">Lights Out PC</a></li>
+          <li><a href="/reality-gate/">Reality Gate</a></li>
+            <li><a href="lights-out.html">Lights Out PC</a></li>
           <li><a href="https://cache-vault-landing.pages.dev/" target="_blank" rel="noopener">Cache Vault</a></li>
           <li><a href="https://github.com/lazelife420-spec/cleanroom-windows/releases/tag/v1.0.7" target="_blank" rel="noopener">Cleanroom</a></li>
           <li>HyperSnatch</li>
@@ -184,3 +200,4 @@
   </footer>
 </body>
 </html>
+

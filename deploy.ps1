@@ -13,10 +13,13 @@ Set-Location $PSScriptRoot
 Write-Host "==> Rebuilding public/ from tracked source"
 if (Test-Path public) { Remove-Item public -Recurse -Force }
 New-Item -ItemType Directory public | Out-Null
-Copy-Item index.html, founders.html, forgecast.html, lights-out.html, styles.css, CNAME, robots.txt, sitemap.xml, 404.html, proof.html, site-manifest.json public\
+Copy-Item index.html, founders.html, forgecast.html, reality-gate.html, lights-out.html, support-context.html, foundry-strike.html, styles.css, CNAME, robots.txt, sitemap.xml, 404.html, proof.html, site-manifest.json public\
 Copy-Item brand, assets public\ -Recurse
 
 # Place product pages and proof page at clean directory routes
+New-Item -ItemType Directory public\reality-gate | Out-Null
+Copy-Item reality-gate.html public\reality-gate\index.html
+
 New-Item -ItemType Directory public\forgecast | Out-Null
 Copy-Item forgecast.html public\forgecast\index.html
 New-Item -ItemType Directory public\lights-out | Out-Null
@@ -25,6 +28,10 @@ New-Item -ItemType Directory public\founders | Out-Null
 Copy-Item founders.html public\founders\index.html
 New-Item -ItemType Directory public\proof | Out-Null
 Copy-Item proof.html public\proof\index.html
+New-Item -ItemType Directory public\support-context | Out-Null
+Copy-Item support-context.html public\support-context\index.html
+New-Item -ItemType Directory public\foundry-strike | Out-Null
+Copy-Item foundry-strike.html public\foundry-strike\index.html
 
 # Expose deploy receipts publicly
 if (Test-Path reports\deploy-receipts) {
@@ -45,6 +52,15 @@ $headersContent = @"
   Cache-Control: no-cache, must-revalidate
 
 /proof
+  Cache-Control: no-cache, must-revalidate
+
+/support-context
+  Cache-Control: no-cache, must-revalidate
+
+/foundry-strike
+  Cache-Control: no-cache, must-revalidate
+
+/reality-gate/
   Cache-Control: no-cache, must-revalidate
 
 /forgecast/
@@ -77,3 +93,4 @@ if ($verifyExit -ne 0) {
     exit $verifyExit
 }
 Write-Host "==> ALL GATES PASSED. Deploy complete." -ForegroundColor Green
+
