@@ -87,6 +87,12 @@ a {
   display: block;
 }
 
+.nav-panel {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
 .top-nav {
   display: flex;
   align-items: center;
@@ -392,11 +398,14 @@ h1 span {
   margin-bottom: 1rem;
 }
 
+/* Flex column rather than grid: `align-content: start` on a grid parks the rows
+   at the top and leaves the slack below, which made `margin-top: auto` on
+   .card-cta inert and left CTAs on a ragged baseline across a row. */
 .product-card {
   padding: 1rem;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 0.72rem;
-  align-content: start;
   min-width: 0;
 }
 
@@ -409,6 +418,17 @@ h1 span {
 
 .product-card h3 {
   font-size: 1.08rem;
+}
+
+/* The whole title stays clickable, but it should read as a card title rather
+   than ordinary inline body text. */
+.product-card h3 a {
+  text-decoration: none;
+}
+
+.product-card h3 a:hover,
+.product-card h3 a:focus-visible {
+  color: var(--gold);
 }
 
 .product-card p {
@@ -826,19 +846,7 @@ h1 span {
   .nav-row {
     min-height: 64px;
     padding: 0.5rem 0;
-    flex-wrap: wrap;
-  }
-
-  .top-nav {
-    order: 3;
-    width: 100%;
-    flex-wrap: wrap;
-    gap: 0.55rem 0.9rem;
-    padding-bottom: 0.25rem;
-  }
-
-  .nav-cta {
-    margin-left: auto;
+    flex-wrap: nowrap;
   }
 
   .founders-hero {
@@ -893,23 +901,7 @@ h1 span {
 
   .nav-row {
     gap: 0.45rem;
-    align-items: flex-start;
-  }
-
-  .top-nav {
-    order: 3;
-    width: 100%;
-    gap: 0.5rem 0.85rem;
-    padding-top: 0.2rem;
-  }
-
-  .nav-cta {
-    order: 4;
-    width: auto;
-    margin-left: 0;
-    margin-top: 0.2rem;
-    justify-content: center;
-    padding: 0.48rem 0.86rem;
+    align-items: center;
   }
 
   .products-grid {
@@ -1001,14 +993,6 @@ h1 span {
     overflow-wrap: break-word;
   }
 
-  .top-nav a {
-    font-size: 0.82rem;
-  }
-
-  .nav-cta {
-    font-size: 0.8rem;
-  }
-
   .footer-grid {
     grid-template-columns: 1fr;
     gap: 1.15rem;
@@ -1025,19 +1009,6 @@ h1 span {
   .proof-standard,
   .more-tools {
     padding: 0.92rem 1rem;
-  }
-
-  .top-nav {
-    gap: 0.42rem 0.72rem;
-  }
-
-  .top-nav a {
-    font-size: 0.81rem;
-  }
-
-  .nav-cta {
-    padding: 0.44rem 0.78rem;
-    font-size: 0.78rem;
   }
 
   .hero {
@@ -1168,6 +1139,22 @@ h1 span {
 .lo-feature-icon {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
+  color: var(--gold);
+}
+
+/* Inline SVG icon treatment. Glyph-based icons are not dependable here: U+23FB
+   POWER SYMBOL has no coverage in the default Windows font stack and rendered
+   as a tofu box. */
+.lo-feature-icon svg,
+.lo-trust-icon svg {
+  display: block;
+  width: 1em;
+  height: 1em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .lo-feature-card h3 {
@@ -1515,10 +1502,9 @@ h1 span {
     display: flex;
   }
 
-  .top-nav {
-    order: unset;
-    width: auto;
-    flex-wrap: nowrap;
+  /* Links and the CTA collapse together into one dropdown panel, so the
+     collapsed header stays a single row: brand + menu button. */
+  .nav-panel {
     position: absolute;
     top: 100%;
     left: 0;
@@ -1527,13 +1513,19 @@ h1 span {
     align-items: stretch;
     gap: 0;
     padding: 0.5rem 1.5rem 1rem;
-    background: rgba(7, 11, 16, 0.98);
+    background: rgb(7, 11, 16);
     border-bottom: 1px solid rgba(38, 55, 70, 0.85);
     display: none;
   }
 
-  .site-header.nav-open .top-nav {
+  .site-header.nav-open .nav-panel {
     display: flex;
+  }
+
+  .top-nav {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
   }
 
   .top-nav a {
@@ -1546,7 +1538,10 @@ h1 span {
   }
 
   .nav-cta {
-    margin-left: 0;
+    margin-top: 0.9rem;
+    justify-content: center;
+    font-size: 0.9rem;
+    padding: 0.62rem 1.05rem;
   }
 
   .product-subnav {

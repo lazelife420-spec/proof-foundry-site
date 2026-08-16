@@ -39,7 +39,9 @@
     /* Hero Section */
     .rg-hero {
       position: relative;
-      padding: 3rem 0;
+      /* padding-block, not the padding shorthand: the shorthand would reset
+         .rg-container's padding-inline and push content to the viewport edges. */
+      padding-block: 3rem;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 3rem;
@@ -166,7 +168,8 @@
 
     /* Section Styles */
     .rg-section {
-      padding: 5rem 0;
+      /* padding-block so .rg-container's padding-inline survives (see .rg-hero) */
+      padding-block: 5rem;
       border-top: 1px solid var(--rg-steel);
     }
 
@@ -450,12 +453,22 @@
       margin-bottom: 0.5rem;
     }
 
+    .rg-product-nav {
+      padding-block: 1.25rem 0;
+    }
+
     /* Responsive */
     @media (max-width: 900px) {
+      .rg-container {
+        padding-inline: 1rem;
+      }
+      .rg-section {
+        padding-block: 3rem;
+      }
       .rg-hero {
         grid-template-columns: 1fr;
         text-align: center;
-        padding: 1.5rem 0;
+        padding-block: 1.5rem;
         gap: 1.5rem;
       }
       .rg-hero-content {
@@ -508,8 +521,22 @@
   <!-- @include header -->
 
   <main>
+    <!-- Shared Proof Foundry product primitives: the page keeps its own visual
+         identity, but it joins the family on breadcrumb and section navigation. -->
+    <div class="rg-container rg-product-nav">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/#products">Products</a> <span aria-hidden="true">/</span> <span>Reality Gate</span>
+      </nav>
+      <nav class="product-subnav" aria-label="Product sections">
+        <a href="#overview">Overview</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#proof">Proof</a>
+        <a href="#download">Download</a>
+      </nav>
+    </div>
+
     <!-- Hero Section -->
-    <section class="rg-hero rg-container">
+    <section class="rg-hero rg-container" id="overview">
       <div class="rg-hero-bg"></div>
       <div class="rg-hero-grid-overlay"></div>
       
@@ -646,7 +673,7 @@
     </section>
 
     <!-- Evidence Receipt -->
-    <section class="rg-section rg-container">
+    <section class="rg-section rg-container" id="proof">
       <h2 class="rg-section-title">What Reality Gate proves</h2>
       <p class="rg-section-subtitle">A continuity result is scoped to evidence Reality Gate actually checked. See why "proof-backed" is different from a vague green checkmark.</p>
 
@@ -696,7 +723,7 @@
     </section>
 
     <!-- How It Works -->
-    <section class="rg-section rg-container">
+    <section class="rg-section rg-container" id="how-it-works">
       <h2 class="rg-section-title">How it works</h2>
       <p class="rg-section-subtitle">Integrate continuity verification into your existing process in minutes.</p>
       
@@ -721,7 +748,7 @@
     </section>
 
     <!-- Pilot Distribution Panel -->
-    <section class="rg-section rg-container">
+    <section class="rg-section rg-container" id="download">
       <div class="rg-pilot-panel">
         <div class="rg-pilot-badge">{{product.statusLabel}}</div>
         <h2 class="rg-section-title" style="margin-bottom: 0.5rem;">Reality Gate {{product.versionLabel}}</h2>

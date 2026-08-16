@@ -20,9 +20,10 @@
       setOpen(!header.classList.contains("nav-open"));
     });
 
-    // Close after following a nav link (useful for anchor jumps on the same page)
+    // Close after following any panel link, including the CTA (which now lives
+    // inside the dropdown on mobile). Matters for same-page anchor jumps.
     header.addEventListener("click", function (e) {
-      if (e.target.closest(".top-nav a")) setOpen(false);
+      if (e.target.closest(".nav-panel a")) setOpen(false);
     });
 
     // Close on Escape

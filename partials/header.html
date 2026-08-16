@@ -8,9 +8,13 @@
       <span class="nav-toggle-bar"></span>
       <span class="nav-toggle-bar"></span>
     </button>
-    <nav class="top-nav" id="primary-nav" aria-label="Primary navigation">
-      {{nav-links}}
-    </nav>
-    {{nav-cta}}
+    <!-- Wrapper so the links and the CTA collapse into one dropdown panel on mobile
+         instead of the CTA wrapping onto a second header row. -->
+    <div class="nav-panel" id="primary-nav">
+      <nav class="top-nav" aria-label="Primary navigation">
+        {{nav-links}}
+      </nav>
+      {{nav-cta}}
+    </div>
   </div>
 </header>

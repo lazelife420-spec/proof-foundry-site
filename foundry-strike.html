@@ -835,12 +835,19 @@
         <a class="brand-lockup" href="/index.html" aria-label="Proof Foundry home">
           <img class="brand-logo" src="/brand/proof-foundry-logo-horizontal.svg" alt="Proof Foundry" />
         </a>
-        <nav class="top-nav" aria-label="Prototype navigation">
-          <a href="/index.html">Home</a>
-          <a href="/proof/">Receipts</a>
-          <a href="/founders.html">Founders</a>
-        </nav>
-        <a class="button button-secondary nav-cta" href="/index.html#proof-standard">Proof Standard</a>
+        <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="primary-nav">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+        <div class="nav-panel" id="primary-nav">
+          <nav class="top-nav" aria-label="Prototype navigation">
+            <a href="/index.html">Home</a>
+            <a href="/proof/">Receipts</a>
+            <a href="/founders.html">Founders</a>
+          </nav>
+          <a class="button button-secondary nav-cta" href="/index.html#proof-standard">Proof Standard</a>
+        </div>
       </div>
     </header>
 
@@ -1055,6 +1062,7 @@
     animateEmbers();
     playSequence();
   </script>
+  <script src="/site.js" defer></script>
 </body>
 </html>
 
