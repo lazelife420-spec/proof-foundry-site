@@ -9,131 +9,496 @@
   <link rel="icon" type="image/svg+xml" href="/brand/proof-foundry-mark.svg" />
   <link rel="stylesheet" href="/styles.css" />
   <style>
-    /* Based on ForgeCast structure */
-    .product-hero {
-      padding: 4rem 1rem 3rem 1rem;
-      text-align: center;
-      max-width: 800px;
-      margin: 0 auto;
+    /* Reality Gate specific styles */
+    :root {
+      --rg-bg: #06090f;
+      --rg-bg-2: #0a0f18;
+      --rg-panel: #0d1520;
+      --rg-panel-2: #111c29;
+      --rg-cyan: #00e6ff;
+      --rg-teal: #00d9c8;
+      --rg-gold: #d9a441;
+      --rg-bronze: #9f7e3b;
+      --rg-steel: #2a323f;
+      --rg-text: #f2f6f8;
+      --rg-muted: #93a4b5;
     }
-    .eyebrow {
-      color: var(--gold);
+
+    body {
+      background-color: var(--rg-bg);
+      color: var(--rg-text);
+      overflow-x: hidden;
+    }
+
+    .rg-container {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Hero Section */
+    .rg-hero {
+      position: relative;
+      padding: 3rem 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .rg-hero-bg {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: -1;
+      background: 
+        radial-gradient(circle at 75% 50%, rgba(0, 230, 255, 0.05), transparent 50%),
+        linear-gradient(to bottom, transparent, var(--rg-bg-2));
+    }
+    
+    .rg-hero-grid-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background-image: 
+        linear-gradient(var(--rg-steel) 1px, transparent 1px),
+        linear-gradient(90deg, var(--rg-steel) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.15;
+      mask-image: linear-gradient(to bottom, transparent, black 30%, black 70%, transparent);
+      -webkit-mask-image: linear-gradient(to bottom, transparent, black 30%, black 70%, transparent);
+    }
+
+    .rg-eyebrow {
+      color: var(--rg-gold);
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.15em;
       font-size: 0.85rem;
       font-weight: 700;
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
     }
-    h1 {
-      font-size: clamp(2.5rem, 5vw, 4rem);
+
+    .rg-title {
+      font-size: clamp(3rem, 5vw, 4.5rem);
       line-height: 1.1;
+      margin-bottom: 0.5rem;
+      color: #fff;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .rg-subtitle {
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      color: var(--rg-cyan);
       margin-bottom: 1.5rem;
-      color: var(--text);
+      font-weight: 600;
     }
-    h1 span {
-      color: var(--muted);
-    }
-    .product-lede {
+    
+    .rg-tagline {
       font-size: 1.25rem;
-      color: var(--muted);
-      line-height: 1.6;
-      margin-bottom: 2rem;
+      color: var(--rg-text);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      border-left: 2px solid var(--rg-cyan);
+      padding-left: 1rem;
     }
-    .download-group {
+
+    .rg-desc {
+      font-size: 1.1rem;
+      color: var(--rg-muted);
+      line-height: 1.6;
+      margin-bottom: 2.5rem;
+      max-width: 500px;
+    }
+
+    /* Abstract Gate Art */
+    .rg-gate-art {
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Download Buttons */
+    .rg-cta-group {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .rg-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .rg-btn-primary {
+      background: var(--rg-cyan);
+      color: #000;
+      border: 1px solid var(--rg-cyan);
+      box-shadow: 0 0 15px rgba(0, 230, 255, 0.2);
+    }
+
+    .rg-btn-primary:hover {
+      background: #00cce6;
+      box-shadow: 0 0 20px rgba(0, 230, 255, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .rg-btn-secondary {
+      background: var(--rg-panel);
+      color: var(--rg-text);
+      border: 1px solid var(--rg-steel);
+    }
+
+    .rg-btn-secondary:hover {
+      border-color: var(--rg-muted);
+      background: var(--rg-panel-2);
+    }
+
+    /* Section Styles */
+    .rg-section {
+      padding: 5rem 0;
+      border-top: 1px solid var(--rg-steel);
+    }
+
+    .rg-section-title {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      text-align: center;
+      color: #fff;
+    }
+
+    .rg-section-subtitle {
+      text-align: center;
+      color: var(--rg-muted);
+      font-size: 1.15rem;
+      margin-bottom: 4rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Provider Flow */
+    .rg-flow-diagram {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      margin: 3rem auto;
+      padding: 3rem;
+      background: var(--rg-panel);
+      border: 1px solid var(--rg-steel);
+      border-radius: 8px;
+      max-width: 900px;
+    }
+
+    .rg-flow-col {
       display: flex;
       flex-direction: column;
       gap: 1rem;
-      align-items: center;
-      margin-bottom: 3rem;
+      flex: 1;
     }
-    @media (min-width: 600px) {
-      .download-group {
-        flex-direction: row;
-        justify-content: center;
-      }
-    }
-    .proof-strip {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: center;
-      margin-top: 2rem;
-    }
-    .proof-pill {
-      padding: 0.45rem 0.85rem;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(16, 25, 35, 0.72);
-      color: var(--muted);
-      font-size: 0.82rem;
-    }
-    .proof-pill strong {
-      color: var(--text);
-    }
-    .detail-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
-      margin: 3rem 0;
-    }
-    .detail-card {
-      background: rgba(16, 25, 35, 0.62);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-    }
-    .detail-card h3 {
-      font-size: 1rem;
-      color: var(--gold);
-      margin-bottom: 0.75rem;
-    }
-    .detail-card p,
-    .detail-card li {
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-    .detail-card ul {
-      list-style: none;
-      padding: 0;
-    }
-    .detail-card li {
-      padding: 0.35rem 0;
-      border-bottom: 1px solid rgba(38, 55, 70, 0.4);
-    }
-    .detail-card li:last-child {
-      border-bottom: none;
-    }
-    .code-block {
-      background: #070b10;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 1rem 1.25rem;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.85rem;
-      color: var(--text);
-      overflow-wrap: break-word; /* Important for long SHA wraps on mobile */
-      margin: 1rem 0;
-    }
-    .note {
-      color: var(--muted);
-      font-size: 0.9rem;
-      border-left: 3px solid var(--gold);
-      padding-left: 1rem;
-      margin: 1.5rem 0;
+
+    .rg-provider-card {
+      background: var(--rg-panel-2);
+      border: 1px solid var(--rg-steel);
+      padding: 1rem;
+      text-align: center;
+      border-radius: 4px;
+      color: var(--rg-text);
+      font-weight: 600;
+      white-space: nowrap;
     }
     
-    .status-badge {
+    .rg-provider-card.rg-gate-node {
+      border-color: var(--rg-cyan);
+      box-shadow: 0 0 20px rgba(0, 230, 255, 0.1);
+      padding: 2.5rem 1rem;
+      font-size: 1.2rem;
+      background: rgba(0, 230, 255, 0.05);
+    }
+
+    .rg-flow-arrow {
+      color: var(--rg-cyan);
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+
+    /* Product Pillars */
+    .rg-pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .rg-pillar-card {
+      background: var(--rg-panel);
+      border: 1px solid var(--rg-steel);
+      padding: 2.5rem;
+      border-radius: 4px;
+      transition: border-color 0.3s;
+    }
+    
+    .rg-pillar-card:hover {
+      border-color: var(--rg-gold);
+    }
+
+    .rg-pillar-icon {
+      color: var(--rg-gold);
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      font-family: monospace;
+    }
+
+    .rg-pillar-title {
+      font-size: 1.25rem;
+      color: #fff;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .rg-pillar-text {
+      color: var(--rg-muted);
+      line-height: 1.6;
+    }
+
+    /* Receipt Section */
+    .rg-receipt-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 3rem;
+    }
+
+    .rg-receipt {
+      background: #04060a;
+      border: 1px solid var(--rg-steel);
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 600px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: var(--rg-muted);
+      position: relative;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+
+    .rg-receipt::before {
+      content: 'ILLUSTRATIVE RECEIPT';
+      position: absolute;
+      top: -10px;
+      right: 20px;
+      background: var(--rg-bg);
+      padding: 0 10px;
+      color: var(--rg-gold);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      border: 1px solid var(--rg-gold);
+    }
+
+    .rg-receipt-header {
+      text-align: center;
+      border-bottom: 1px dashed var(--rg-steel);
+      padding-bottom: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .rg-receipt-title {
+      color: #fff;
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .rg-receipt-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .rg-receipt-row span:last-child {
+      color: #fff;
+      text-align: right;
+    }
+    
+    .rg-receipt-row.rg-success span:last-child {
+      color: var(--rg-teal);
+    }
+
+    .rg-receipt-divider {
+      border-top: 1px dashed var(--rg-steel);
+      margin: 1rem 0;
+    }
+
+    /* How It Works */
+    .rg-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      counter-reset: rg-step;
+    }
+
+    .rg-step {
+      position: relative;
+      padding: 2rem;
+      background: var(--rg-panel);
+      border: 1px solid var(--rg-steel);
+      border-radius: 4px;
+    }
+
+    .rg-step::before {
+      counter-increment: rg-step;
+      content: counter(rg-step);
+      position: absolute;
+      top: -15px;
+      left: 20px;
+      background: var(--rg-bg);
+      color: var(--rg-cyan);
+      font-size: 1.2rem;
+      font-weight: bold;
+      padding: 0 10px;
+      border: 1px solid var(--rg-cyan);
+    }
+
+    .rg-step-title {
+      color: #fff;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .rg-step-text {
+      color: var(--rg-muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* Pilot Panel */
+    .rg-pilot-panel {
+      background: var(--rg-panel-2);
+      border: 1px solid var(--rg-steel);
+      padding: 3rem;
+      border-radius: 4px;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .rg-pilot-panel::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--rg-cyan), transparent);
+    }
+
+    .rg-pilot-badge {
       display: inline-block;
       padding: 0.25rem 0.75rem;
-      background: rgba(255, 215, 0, 0.15);
-      color: var(--gold);
-      border: 1px solid var(--gold);
+      background: rgba(0, 230, 255, 0.1);
+      color: var(--rg-cyan);
+      border: 1px solid var(--rg-cyan);
       border-radius: 999px;
       font-size: 0.8rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .rg-hash-box {
+      background: #04060a;
+      border: 1px solid var(--rg-steel);
+      padding: 1rem;
+      margin: 1.5rem 0;
+      font-family: monospace;
+      font-size: 0.85rem;
+      color: var(--rg-muted);
+      word-break: break-all;
+      border-radius: 4px;
+    }
+
+    .rg-checkpoint {
+      font-size: 0.85rem;
+      color: var(--rg-muted);
+      margin-top: 1rem;
+    }
+
+    .rg-privacy {
+      text-align: center;
+      margin-top: 4rem;
+      padding: 2rem;
+      border: 1px solid var(--rg-steel);
+      background: var(--rg-panel);
+      border-radius: 4px;
+    }
+
+    .rg-privacy p {
+      color: var(--rg-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .rg-hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 1.5rem 0;
+        gap: 1.5rem;
+      }
+      .rg-hero-content {
+        order: 2;
+      }
+      .rg-gate-art {
+        order: 1;
+        max-width: 220px;
+        max-height: 220px;
+        margin: 0 auto;
+      }
+      .rg-desc {
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin-bottom: 1.5rem;
+      }
+      .rg-tagline {
+        border-left: none;
+        padding-left: 0;
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+      }
+      .rg-title { font-size: 2.5rem; }
+      .rg-subtitle { font-size: 1.3rem; margin-bottom: 1rem; }
+      .rg-cta-group {
+        justify-content: center;
+      }
+      .rg-flow-diagram {
+        flex-direction: column;
+      }
+      .rg-flow-arrow {
+        transform: rotate(90deg);
+      }
+    }
+    
+    @media (max-width: 600px) {
+      .rg-title { font-size: 2.5rem; }
+      .rg-subtitle { font-size: 1.5rem; }
+      .rg-flow-diagram { padding: 1.5rem; }
+      .rg-pilot-panel { padding: 1.5rem; }
+      .rg-receipt { padding: 1.5rem; }
     }
   </style>
 </head>
@@ -152,131 +517,261 @@
     </div>
   </header>
 
-  <main class="container">
-    <section class="product-hero" aria-labelledby="product-title">
-      <p class="eyebrow">A Proof Foundry product</p>
-      <h1 id="product-title">Reality Gate<br /><span>Developer Continuity Platform</span></h1>
-      <div class="status-badge">Developer Pilot</div>
-      <p class="product-lede" style="font-weight: bold; color: var(--text);">Keep your forge. Keep control of your work.</p>
-      <p class="product-lede">
-        Reality Gate works alongside GitHub, GitLab, Forgejo, and ordinary Git. It helps you understand what your development depends on, verify whether your local operation can continue, and keep proof of what was checked. No migration required.
-      </p>
-
-      <h2>Developer Pilot — Windows</h2>
-      <p class="product-lede" style="font-size: 1.1rem;">Reality Gate 1.1.0 is currently available as an early Windows developer pilot.</p>
-
-      <div class="download-group">
-        <a class="button button-primary" href="https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/reality-gate/Reality-Gate-1.1.0-Developer-Pilot.zip" download>
-          Download Developer Pilot (.zip)
-        </a>
-        <a class="button button-secondary" href="https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/reality-gate/Reality-Gate-1.1.0-Developer-Pilot.zip.sha256.txt" target="_blank" rel="noopener">
-          SHA-256
-        </a>
-      </div>
-      <div style="font-family: monospace; color: var(--muted); font-size: 0.85rem; word-break: break-all; max-width: 100%; padding: 0 1rem;">
-        620e113a94b5cf422b32cbdcf876e3ba7448d2c3ec161a1f6b8ee145b9a82566
-      </div>
-
-      <div class="proof-strip">
-        <span class="proof-pill"><strong>Version</strong> 1.1.0 Developer Pilot</span>
-        <span class="proof-pill"><strong>Source checkpoint</strong> 7a3e47136341951dcb8365db8c40da8553edd6c5</span>
-        <span class="proof-pill"><strong>Distribution</strong> Developer Pilot ZIP</span>
-        <span class="proof-pill"><strong>Platform</strong> Windows</span>
-        <span class="proof-pill"><strong>Status</strong> Pilot Ready</span>
-      </div>
-    </section>
-
-    <section class="detail-grid" aria-label="Release details">
-      <article class="detail-card">
-        <h3>Keep GitHub. Keep GitLab. Keep Forgejo.</h3>
-        <p>Reality Gate is the continuity layer underneath your existing workflow.</p>
-        <ul>
-          <li>Existing Git repositories remain normal Git repositories.</li>
-          <li>Existing remotes remain usable.</li>
-          <li>Reality Gate analyzes local project/provider dependencies.</li>
-          <li>Reality Gate helps evaluate continuity.</li>
-          <li>Reality Gate produces proof/receipts.</li>
-          <li>No mandatory source migration.</li>
-        </ul>
-      </article>
-
-      <article class="detail-card">
-        <h3>Provider Compatibility</h3>
-        <p>Reality Gate reads the Git workflow you already have rather than asking you to replace it.</p>
-        <ul>
-          <li>GitHub</li>
-          <li>GitLab</li>
-          <li>Forgejo</li>
-          <li>Ordinary Git / local repositories</li>
-        </ul>
-      </article>
-
-      <article class="detail-card">
-        <h3>How It Works</h3>
-        <ol style="color: var(--muted); font-size: 0.95rem; margin-left: 1.2rem; padding-left: 0;">
-          <li style="padding-bottom: 0.5rem; border-bottom: none;"><strong>1. Add a Git repository:</strong> Use an existing project or the included disposable demo repository.</li>
-          <li style="padding-bottom: 0.5rem; border-bottom: none;"><strong>2. See dependencies:</strong> Reality Gate identifies relevant local Git/provider configuration.</li>
-          <li style="padding-bottom: 0.5rem; border-bottom: none;"><strong>3. Check continuity:</strong> See what the current evidence says about your ability to keep working.</li>
-          <li style="padding-bottom: 0.5rem; border-bottom: none;"><strong>4. View proof:</strong> Review the evidence/receipt behind the result.</li>
-        </ol>
-      </article>
+  <main>
+    <!-- Hero Section -->
+    <section class="rg-hero rg-container">
+      <div class="rg-hero-bg"></div>
+      <div class="rg-hero-grid-overlay"></div>
       
-      <article class="detail-card">
-        <h3>What is in the ZIP</h3>
-        <p>Try the included demo repository first, then add one of your own projects when you're comfortable.</p>
-        <ul>
-          <li>Reality Gate Windows installer</li>
-          <li>Quick Start & Product explanation</li>
-          <li>Privacy/data-safety notes & Known limitations</li>
-          <li>Troubleshooting & Feedback form</li>
-          <li>SHA-256 information</li>
-          <li>Disposable demo Git repository</li>
-        </ul>
-      </article>
+      <div class="rg-hero-content">
+        <div class="rg-eyebrow">A Proof Foundry Product</div>
+        <h1 class="rg-title">Reality Gate</h1>
+        <div class="rg-subtitle">Developer Continuity Platform</div>
+        
+        <p class="rg-tagline">Entrance to reality. Proof at the gate.</p>
+        
+        <p class="rg-desc">
+          <strong style="color: #fff;">Keep your forge. Keep control of your work.</strong><br><br>
+          Reality Gate works alongside GitHub, GitLab, Forgejo, and ordinary Git. 
+          It helps you understand what your development depends on, verify whether your local operation can continue, and keep proof of what was checked. No migration required.
+        </p>
 
-      <article class="detail-card">
-        <h3>Your repository stays yours</h3>
-        <p>The passive pilot workflow has been tested to leave the source repository unchanged while adding a repo, analyzing dependencies, checking continuity, and viewing proof.</p>
-        <p>No repository migration is required.</p>
-      </article>
+        <div class="rg-cta-group">
+          <a class="rg-btn rg-btn-primary" href="https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/reality-gate/Reality-Gate-1.1.0-Developer-Pilot.zip" download>
+            Download Developer Pilot (.zip)
+          </a>
+          <a class="rg-btn rg-btn-secondary" href="https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/reality-gate/Reality-Gate-1.1.0-Developer-Pilot.zip.sha256.txt" target="_blank" rel="noopener">
+            SHA-256
+          </a>
+        </div>
+      </div>
 
-      <article class="detail-card">
-        <h3>Requirements</h3>
-        <ul>
-          <li>Windows 10 / 11</li>
-          <li>Existing Git installation/project recommended</li>
-          <li>No mandatory Proof Foundry account for the individual continuity workflow</li>
-        </ul>
-        <p style="margin-top: 1rem;">Because this is an early pilot build, Windows SmartScreen may show "Windows protected your PC". Click <strong>More info -&gt; Run anyway</strong>.</p>
-      </article>
+      <div class="rg-gate-art" aria-hidden="true">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="rgPathGradient" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stop-color="var(--rg-cyan)" stop-opacity="0.8"/>
+              <stop offset="50%" stop-color="var(--rg-cyan)" stop-opacity="0.2"/>
+              <stop offset="100%" stop-color="var(--rg-bg)" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="rgGoldGradient" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="var(--rg-gold)" stop-opacity="1"/>
+              <stop offset="100%" stop-color="var(--rg-bronze)" stop-opacity="1"/>
+            </linearGradient>
+            <linearGradient id="rgEdgeHighlight" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3a475a" stop-opacity="1"/>
+              <stop offset="100%" stop-color="var(--rg-steel)" stop-opacity="0.2"/>
+            </linearGradient>
+            <filter id="rgBloom" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="8" result="blur"/>
+              <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+            </filter>
+          </defs>
+
+          <!-- Ground / Base -->
+          <path d="M 40 360 L 360 360" stroke="var(--rg-steel)" stroke-width="2" opacity="0.5"/>
+          
+          <!-- Luminous central path emanating from threshold -->
+          <polygon points="140,360 260,360 230,220 170,220" fill="url(#rgPathGradient)"/>
+          
+          <!-- Outer Forged Silhouette -->
+          <path d="M 80 360 L 80 140 L 140 60 L 260 60 L 320 140 L 320 360 L 280 360 L 280 160 L 240 100 L 160 100 L 120 160 L 120 360 Z" 
+                fill="var(--rg-panel-2)" 
+                stroke="url(#rgEdgeHighlight)" stroke-width="2"/>
+                
+          <!-- Inner Facets for depth -->
+          <path d="M 120 360 L 120 160 L 160 100 L 240 100 L 280 160 L 280 360 L 260 360 L 260 180 L 230 140 L 170 140 L 140 180 L 140 360 Z" 
+                fill="var(--rg-bg-2)" 
+                stroke="var(--rg-steel)" stroke-width="1.5"/>
+
+          <!-- Core Threshold -->
+          <path d="M 140 360 L 140 180 L 170 140 L 230 140 L 260 180 L 260 360" 
+                fill="none" 
+                stroke="var(--rg-cyan)" stroke-width="3" filter="url(#rgBloom)" opacity="0.8"/>
+
+          <!-- Subtle Developer Motif inside threshold (>_) -->
+          <g transform="translate(185, 200)" opacity="0.9" filter="url(#rgBloom)">
+            <polyline points="0,0 12,12 0,24" fill="none" stroke="var(--rg-cyan)" stroke-width="3" stroke-linecap="square"/>
+            <line x1="16" y1="24" x2="30" y2="24" stroke="var(--rg-cyan)" stroke-width="3"/>
+          </g>
+
+          <!-- Restrained Gold Checkpoint Structure -->
+          <!-- Central keystone locking the top arch -->
+          <path d="M 180 50 L 220 50 L 230 80 L 170 80 Z" fill="url(#rgGoldGradient)"/>
+          <!-- Anchor nodes at the bottom -->
+          <rect x="70" y="340" width="20" height="20" fill="url(#rgGoldGradient)" rx="2"/>
+          <rect x="310" y="340" width="20" height="20" fill="url(#rgGoldGradient)" rx="2"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- Provider Flow -->
+    <section class="rg-section rg-container">
+      <h2 class="rg-section-title">Keep your forge</h2>
+      <p class="rg-section-subtitle">Keep GitHub. Keep GitLab. Keep Forgejo. Reality Gate is the continuity layer underneath your workflow.</p>
       
-      <article class="detail-card">
-        <h3>What the evidence means</h3>
-        <ul>
-          <li>Configured provider dependency does not prove live provider availability.</li>
-          <li>Local source does not equal off-machine backup.</li>
-          <li>A continuity result is scoped to evidence Reality Gate actually checked.</li>
-          <li>This pilot does not claim every disaster scenario is recoverable.</li>
-        </ul>
-      </article>
-
-      <article class="detail-card">
-        <h3>Pilot Status</h3>
-        <p>This build has passed internal packaged workflow and repository-immutability checks. The purpose of the pilot is to test Reality Gate against different developers, machines, repositories, and Git configurations.</p>
-        <p style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(38, 55, 70, 0.4);"><strong>Included installer SHA-256:</strong><br><span style="font-family: monospace; font-size: 0.8rem; word-break: break-all;">0B13FD5DA6FA2855B02CC1363068CBE8B684B58B7208291A542968162627387B</span></p>
-      </article>
+      <div class="rg-flow-diagram">
+        <div class="rg-flow-col">
+          <div class="rg-provider-card">GitHub</div>
+          <div class="rg-provider-card">GitLab</div>
+          <div class="rg-provider-card">Forgejo</div>
+          <div class="rg-provider-card">Ordinary Git</div>
+        </div>
+        
+        <div class="rg-flow-arrow">→</div>
+        
+        <div class="rg-flow-col" style="flex: 0.8">
+          <div class="rg-provider-card rg-gate-node">Reality Gate</div>
+        </div>
+        
+        <div class="rg-flow-arrow">→</div>
+        
+        <div class="rg-flow-col">
+          <div class="rg-provider-card" style="background: transparent; border: 1px dashed var(--rg-cyan); color: var(--rg-cyan);">Local Continuity</div>
+          <div class="rg-provider-card" style="background: transparent; border: 1px dashed var(--rg-gold); color: var(--rg-gold);">Proof Generation</div>
+          <div class="rg-provider-card" style="background: transparent; border: 1px dashed var(--rg-muted);">Recovery State</div>
+        </div>
+      </div>
     </section>
 
-    <section aria-labelledby="feedback-title" style="margin: 4rem 0 2rem; padding: 2rem; background: rgba(16, 25, 35, 0.62); border: 1px solid var(--line); border-radius: var(--radius); text-align: center;">
-      <h2 id="feedback-title" style="color: var(--text); font-size: 1.5rem; margin-bottom: 1rem;">Help test Reality Gate</h2>
-      <p style="color: var(--muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
-        The most useful feedback right now is simple: could you install it, add your own repository, understand what Reality Gate told you, and would you keep it installed?
-      </p>
-      <p style="color: var(--muted); font-size: 0.95rem; margin-top: 1rem;">
-        See <strong>FEEDBACK.md</strong> included in the ZIP.
-      </p>
+    <!-- Product Pillars -->
+    <section class="rg-section rg-container">
+      <div class="rg-pillars">
+        <div class="rg-pillar-card">
+          <div class="rg-pillar-icon">&lt;/&gt;</div>
+          <h3 class="rg-pillar-title">Local-First</h3>
+          <p class="rg-pillar-text">Local source and ordinary Git remain authoritative. You maintain complete control over your codebase without yielding authority to a proprietary cloud service.</p>
+        </div>
+        <div class="rg-pillar-card">
+          <div class="rg-pillar-icon">{}</div>
+          <h3 class="rg-pillar-title">Provider-Aware</h3>
+          <p class="rg-pillar-text">Reality Gate maps what the workflow depends on without making a provider the authority. It understands your existing remotes and infrastructure seamlessly.</p>
+        </div>
+        <div class="rg-pillar-card">
+          <div class="rg-pillar-icon">#</div>
+          <h3 class="rg-pillar-title">Proof-Backed</h3>
+          <p class="rg-pillar-text">Continuity checks, runs, receipts, and recovery evidence remain inspectable. You get tangible, cryptographic proof of your operational readiness.</p>
+        </div>
+      </div>
     </section>
 
+    <!-- Evidence Receipt -->
+    <section class="rg-section rg-container">
+      <h2 class="rg-section-title">What Reality Gate proves</h2>
+      <p class="rg-section-subtitle">A continuity result is scoped to evidence Reality Gate actually checked. See why "proof-backed" is different from a vague green checkmark.</p>
+
+      <div class="rg-receipt-container">
+        <div class="rg-receipt">
+          <div class="rg-receipt-header">
+            <div class="rg-receipt-title">Reality Gate Proof</div>
+            <div>VERIFICATION RECEIPT</div>
+          </div>
+          
+          <div class="rg-receipt-row">
+            <span>TIMESTAMP</span>
+            <span>2026-08-16T14:32:00Z</span>
+          </div>
+          <div class="rg-receipt-row">
+            <span>RECEIPT ID</span>
+            <span>RG-88A9-2B4C-99F1</span>
+          </div>
+          
+          <div class="rg-receipt-divider"></div>
+          
+          <div class="rg-receipt-row">
+            <span>TARGET</span>
+            <span>/local/src/core-engine</span>
+          </div>
+          <div class="rg-receipt-row rg-success">
+            <span>LOCAL GIT INTEGRITY</span>
+            <span>VERIFIED [HEAD: 7a3e471]</span>
+          </div>
+          <div class="rg-receipt-row">
+            <span>PROVIDER DEPENDENCIES</span>
+            <span>github.com (1 remote)</span>
+          </div>
+          
+          <div class="rg-receipt-divider"></div>
+          
+          <div class="rg-receipt-row rg-success">
+            <span>CONTINUITY STATE</span>
+            <span>LOCAL OPERATIONS READY</span>
+          </div>
+          <div class="rg-receipt-row">
+            <span>RECOVERY EVIDENCE</span>
+            <span>CAPTURED</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="rg-section rg-container">
+      <h2 class="rg-section-title">How it works</h2>
+      <p class="rg-section-subtitle">Integrate continuity verification into your existing process in minutes.</p>
+      
+      <div class="rg-steps">
+        <div class="rg-step">
+          <h3 class="rg-step-title">Add a Git repository</h3>
+          <p class="rg-step-text">Use an existing project or the included disposable demo repository.</p>
+        </div>
+        <div class="rg-step">
+          <h3 class="rg-step-title">Analyze dependencies</h3>
+          <p class="rg-step-text">Reality Gate identifies relevant local Git and provider configuration.</p>
+        </div>
+        <div class="rg-step">
+          <h3 class="rg-step-title">Check continuity</h3>
+          <p class="rg-step-text">See what the current evidence says about your ability to keep working.</p>
+        </div>
+        <div class="rg-step">
+          <h3 class="rg-step-title">Inspect proof</h3>
+          <p class="rg-step-text">Review the evidence and receipt behind the continuity result.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pilot Distribution Panel -->
+    <section class="rg-section rg-container">
+      <div class="rg-pilot-panel">
+        <div class="rg-pilot-badge">Developer Pilot</div>
+        <h2 class="rg-section-title" style="margin-bottom: 0.5rem;">Reality Gate 1.1.0</h2>
+        <p style="color: var(--rg-text); font-size: 1.1rem; margin-bottom: 2rem;">Available for Windows</p>
+        
+        <div class="rg-cta-group" style="justify-content: center;">
+          <a class="rg-btn rg-btn-primary" href="https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/reality-gate/Reality-Gate-1.1.0-Developer-Pilot.zip" download>
+            Download Developer Pilot (.zip)
+          </a>
+          <a class="rg-btn rg-btn-secondary" href="https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/reality-gate/Reality-Gate-1.1.0-Developer-Pilot.zip.sha256.txt" target="_blank" rel="noopener">
+            Checksum
+          </a>
+        </div>
+        
+        <div class="rg-hash-box">
+          ZIP SHA-256: 4A68DE375E592AECF173B4AAAE3FDFAEEDACCE5F821F84F11C25AD345A0B62CB
+        </div>
+        
+        <div class="rg-checkpoint">
+          Source checkpoint: 7a3e47136341951dcb8365db8c40da8553edd6c5
+        </div>
+
+        <p style="margin-top: 1.5rem; font-size: 0.9rem; color: var(--rg-muted);">
+          Because this is an early pilot build, Windows SmartScreen may show "Windows protected your PC". Click <strong>More info -&gt; Run anyway</strong>.
+        </p>
+      </div>
+      
+      <div class="rg-privacy">
+        <h3 style="color: #fff; margin-bottom: 1rem;">Your repository stays yours</h3>
+        <p>Local-first. Ordinary Git repos. No mandatory migration.</p>
+        <p>No mandatory Proof Foundry account is required for the individual continuity workflow.</p>
+      </div>
+
+      <div style="text-align: center; margin-top: 5rem;">
+        <h2 style="font-size: 2rem; color: #fff; margin-bottom: 2rem;">Your development operation continues even when the platform does not.</h2>
+        <a class="rg-btn rg-btn-primary" href="https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/reality-gate/Reality-Gate-1.1.0-Developer-Pilot.zip" download>
+          Download Developer Pilot
+        </a>
+      </div>
+    </section>
   </main>
   
   <footer class="site-footer">
