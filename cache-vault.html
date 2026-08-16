@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cache Vault — Local-first clipboard vault | The Proof Foundry</title>
+  <meta name="description" content="Cache Vault is a local-first clipboard vault with stamped receipts, safes, global search, Quick Paste, image capture, exports, and proof-pack workflows. A Proof Foundry product." />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#0B0F14" />
+  <link rel="canonical" href="https://theprooffoundry.com/cache-vault/" />
+
+  <meta property="og:title" content="Cache Vault — Local-first clipboard vault" />
+  <meta property="og:description" content="Local-first clipboard vault with stamped receipts, safes, search, Quick Paste, and proof-pack workflows." />
+  <meta property="og:type" content="product" />
+  <meta property="og:url" content="https://theprooffoundry.com/cache-vault/" />
+  <meta property="og:site_name" content="The Proof Foundry" />
+  <meta property="og:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
+
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <!-- @page cache-vault -->
+  <!-- @product cache-vault -->
+  <!-- @include header -->
+
+  <main class="container product-page">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/#products">Products</a> <span aria-hidden="true">/</span> <span>Cache Vault</span>
+    </nav>
+
+    <nav class="product-subnav" aria-label="Product sections">
+      <a href="#overview">Overview</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#proof">Proof</a>
+      <a href="#download">Download</a>
+      <a href="#limitations">Limitations</a>
+    </nav>
+
+    <section id="overview" class="product-hero" aria-labelledby="product-title">
+      <p class="eyebrow">Cache Vault · {{product.statusLabel}}</p>
+      <h1 id="product-title">Your clipboard,<br /><span>owned and stamped.</span></h1>
+      <p class="product-lede">{{product.summary}}</p>
+      <div class="download-group">{{product.downloadBlock}}</div>
+      {{product.proofStrip}}
+    </section>
+
+    <section id="how-it-works" class="product-section" aria-labelledby="what-title">
+      <div class="section-head">
+        <h2 id="what-title">What it does</h2>
+        <p>Clipboard history that stays on your machine, with receipts for everything.</p>
+      </div>
+      <div class="detail-grid">
+        <article class="detail-card">
+          <h3>Clipboard history &amp; safes</h3>
+          <p>Capture every clip automatically, then organize the ones that matter into named safes and collections.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Global search &amp; Quick Paste</h3>
+          <p>Find any clip fast across history and safes, and paste it back in one step with Quick Paste.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Screenshots &amp; images</h3>
+          <p>Images live alongside text clips, so visual context is never lost between pastes.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Exports &amp; proof packs</h3>
+          <p>Bundle clips into exports and proof-pack workflows with stamped receipts you can inspect later.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Local-first storage</h3>
+          <p>No cloud account, no telemetry. Your clipboard vault lives on your machine in durable files you own.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Mobile companion</h3>
+          <p>A Windows + Android pair, so the workflow travels with you without surrendering your data to a service.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="product-section" aria-labelledby="why-title">
+      <div class="section-head">
+        <h2 id="why-title">Why Cache Vault</h2>
+        <p>Differentiators, not hype.</p>
+      </div>
+      <div class="detail-grid">
+        <article class="detail-card">
+          <h3>Receipts, not just history</h3>
+          <p>Every clip and export can carry a stamped receipt — proof of what was captured and when.</p>
+        </article>
+        <article class="detail-card">
+          <h3>User-owned workflows</h3>
+          <p>Durable local files mean your vault is not hostage to a SaaS shutdown or a pricing change.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Honest claims</h3>
+          <p>What Cache Vault does is tied to tested behavior and visible release proof, not marketing language.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="proof" class="product-section" aria-labelledby="proof-title">
+      <div class="section-head">
+        <h2 id="proof-title">Proof &amp; release evidence</h2>
+        <p>Current public release and what is still in validation.</p>
+      </div>
+      <div class="detail-grid">
+        <article class="detail-card">
+          <h3>Current public checksum</h3>
+          <p>Verify the current public Windows release before running it.</p>
+          {{product.hashBlock}}
+        </article>
+        <article class="detail-card">
+          <h3>Release evidence</h3>
+          <ul>
+            <li><a href="https://github.com/lazelife420-spec/CacheVault/releases/tag/cache-vault-v0.1.4-release.1" target="_blank" rel="noopener">GitHub release: v0.1.4 release.1</a></li>
+            <li><a href="https://github.com/lazelife420-spec/CacheVault/releases/download/cache-vault-v0.1.4-release.1/CacheVault-v0.1.4-windows.sha256" target="_blank" rel="noopener">Published SHA-256</a></li>
+            <li>Test suite: 740/740 passing on the current public build</li>
+          </ul>
+        </article>
+      </div>
+      {{product.releaseNoteBlock}}
+    </section>
+
+    <section id="limitations" class="product-section" aria-labelledby="limits-title">
+      <div class="section-head">
+        <h2 id="limits-title">Current limitations &amp; release state</h2>
+        <p>What is true right now, including what is not yet released.</p>
+      </div>
+      <div class="detail-grid">
+        <article class="detail-card">
+          <h3>Current public release</h3>
+          <p>The public external page presents v0.1.4. That is the established public release.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Next build is not public yet</h3>
+          <p>The repaired Windows/Android pair is still going through its pre-tester reliability gate. It is not frozen as an external-test release and is not on the public page.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="download" class="product-section" aria-labelledby="download-title">
+      <div class="section-head">
+        <h2 id="download-title">Download / Founder</h2>
+        <p>Downloads and Founder options are hosted on the Cache Vault release site.</p>
+      </div>
+      <div class="download-group">{{product.downloadBlock}}</div>
+      <p class="note">The Proof Foundry owns the canonical product route here; the release site is the transaction and download destination for now. Buy/download options open in a new tab on the Cache Vault release site.</p>
+    </section>
+
+    <section class="product-section other-products" aria-labelledby="other-title">
+      <div class="section-head">
+        <h2 id="other-title">Other Proof Foundry products</h2>
+      </div>
+      <div class="other-products-grid">
+        <a class="other-product-chip" href="/reality-gate/">Reality Gate</a>
+        <a class="other-product-chip" href="/lights-out/">Lights Out PC</a>
+        <a class="other-product-chip" href="/cleanroom/">Cleanroom</a>
+        <a class="other-product-chip" href="/forgecast/">ForgeCast Weather</a>
+        <a class="other-product-chip" href="/proofshot/">ProofShot</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- @include footer -->
+  <script src="/site.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cleanroom — Archive-first Windows cleanup | The Proof Foundry</title>
+  <meta name="description" content="Cleanroom is archive-first Windows cleanup with receipts, custody checks, and rollback. No cloud, no account, no telemetry. A Proof Foundry product." />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#0B0F14" />
+  <link rel="canonical" href="https://theprooffoundry.com/cleanroom/" />
+
+  <meta property="og:title" content="Cleanroom — Archive-first Windows cleanup" />
+  <meta property="og:description" content="Archive-first Windows cleanup with receipts, custody checks, and rollback. No cloud, no account, no telemetry." />
+  <meta property="og:type" content="product" />
+  <meta property="og:url" content="https://theprooffoundry.com/cleanroom/" />
+  <meta property="og:site_name" content="The Proof Foundry" />
+  <meta property="og:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
+
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <!-- @page cleanroom -->
+  <!-- @product cleanroom -->
+  <!-- @include header -->
+
+  <main class="container product-page">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/#products">Products</a> <span aria-hidden="true">/</span> <span>Cleanroom</span>
+    </nav>
+
+    <nav class="product-subnav" aria-label="Product sections">
+      <a href="#overview">Overview</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#proof">Proof</a>
+      <a href="#download">Download</a>
+      <a href="#limitations">Limitations</a>
+    </nav>
+
+    <section id="overview" class="product-hero" aria-labelledby="product-title">
+      <p class="eyebrow">Cleanroom · {{product.statusLabel}}</p>
+      <h1 id="product-title">Clean up Windows<br /><span>without losing anything.</span></h1>
+      <p class="product-lede">{{product.summary}}</p>
+      <div class="download-group">{{product.downloadBlock}}</div>
+      {{product.proofStrip}}
+    </section>
+
+    <section id="how-it-works" class="product-section" aria-labelledby="what-title">
+      <div class="section-head">
+        <h2 id="what-title">What it does</h2>
+        <p>Archive-first cleanup that treats your files as evidence, not garbage.</p>
+      </div>
+      <div class="detail-grid">
+        <article class="detail-card">
+          <h3>Archive-first</h3>
+          <p>Before anything is removed, it is archived. You clean up without the risk of an irreversible delete.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Receipts &amp; custody checks</h3>
+          <p>Every action produces a receipt with custody checks, so you can trace what was moved and where it landed.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Rollback</h3>
+          <p>If a cleanup step was wrong, rollback puts things back. Proof of what happened is kept either way.</p>
+        </article>
+        <article class="detail-card">
+          <h3>No cloud, no account, no telemetry</h3>
+          <p>Runs locally. No sign-in. No telemetry. Your file inventory never leaves your machine.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="proof" class="product-section" aria-labelledby="proof-title">
+      <div class="section-head">
+        <h2 id="proof-title">Proof &amp; release evidence</h2>
+        <p>The verified public release and its checksums.</p>
+      </div>
+      <div class="detail-grid">
+        <article class="detail-card">
+          <h3>SHA-256 checksum</h3>
+          <p>Verify the installer before running it.</p>
+          {{product.hashBlock}}
+        </article>
+        <article class="detail-card">
+          <h3>Release evidence</h3>
+          <ul>
+            <li><a href="https://github.com/lazelife420-spec/cleanroom-windows/releases/tag/v1.0.7" target="_blank" rel="noopener">GitHub release: v1.0.7</a></li>
+            <li><a href="https://github.com/lazelife420-spec/cleanroom-windows/releases/download/v1.0.7/SHA256SUMS.txt" target="_blank" rel="noopener">Published SHA256SUMS</a></li>
+            <li>CI-built Windows installer (PyInstaller + Inno Setup); provenance attested via GitHub Actions</li>
+          </ul>
+        </article>
+      </div>
+      {{product.releaseNoteBlock}}
+    </section>
+
+    <section id="limitations" class="product-section" aria-labelledby="limits-title">
+      <div class="section-head">
+        <h2 id="limits-title">Known limitations</h2>
+        <p>Honest about scope.</p>
+      </div>
+      <div class="detail-grid">
+        <article class="detail-card">
+          <h3>Windows only</h3>
+          <p>Built for Windows. No macOS or Linux build in this release.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Established release</h3>
+          <p>The public presentation is v1.0.7. A newer verified release is pending; nothing newer is claimed here until it is actually established.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="download" class="product-section" aria-labelledby="download-title">
+      <div class="section-head">
+        <h2 id="download-title">Download</h2>
+        <p>Installer and checksums are served from GitHub Releases.</p>
+      </div>
+      <div class="download-group">{{product.downloadBlock}}</div>
+      <p class="note">GitHub is the release infrastructure behind this product page, not a replacement for it. Download the installer, verify the SHA-256 matches the checksum above, then run it.</p>
+    </section>
+
+    <section class="product-section other-products" aria-labelledby="other-title">
+      <div class="section-head">
+        <h2 id="other-title">Other Proof Foundry products</h2>
+      </div>
+      <div class="other-products-grid">
+        <a class="other-product-chip" href="/reality-gate/">Reality Gate</a>
+        <a class="other-product-chip" href="/cache-vault/">Cache Vault</a>
+        <a class="other-product-chip" href="/lights-out/">Lights Out PC</a>
+        <a class="other-product-chip" href="/forgecast/">ForgeCast Weather</a>
+        <a class="other-product-chip" href="/proofshot/">ProofShot</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- @include footer -->
+  <script src="/site.js" defer></script>
+</body>
+</html>

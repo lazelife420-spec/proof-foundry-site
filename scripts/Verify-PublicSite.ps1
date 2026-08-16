@@ -243,8 +243,8 @@ function Test-Asset {
 foreach ($target in $Targets) {
     Write-Host "`n---> Testing target: $target"
     
-    # 1. Homepage content check
-    Test-UrlContent -Url "$target/" -ContainsPatterns @("Lights Out", "Cache Vault", "Cleanroom", "ForgeCast", "ForgeCast Weather", "HyperSnatch") -NotContainsPatterns @("SkyFoundry")
+    # 1. Homepage content check — global nav + full product family + card contract
+    Test-UrlContent -Url "$target/" -ContainsPatterns @("Reality Gate", "Lights Out", "Cache Vault", "Cleanroom", "ForgeCast Weather", "ProofShot", "Proof Standard", "View product") -NotContainsPatterns @("SkyFoundry", "HyperSnatch")
     
     # 2. Lights Out canonical slash check
     Test-UrlContent -Url "$target/lights-out/" -ContainsPatterns @("PowerShell compiled \(SleepTimer.exe\)", "ForgeCast Weather") -NotContainsPatterns @("Electron packaged", "SkyFoundry", "guided breathing", "breathing ritual", "ambient soundscapes", "soundscapes", "screen shift")
@@ -261,7 +261,7 @@ foreach ($target in $Targets) {
     Test-UrlContent -Url "$target/forgecast/" -ContainsPatterns @("ForgeCast Weather", "v0.3.3", "50ABE59E52B6DC7E8649C0CA63EB065425F8EDC607187E3844D90CE5F1EED833", "724/724", "v030-today.png") -NotContainsPatterns @("SkyFoundry", "v0.2.9/ForgeCast-Weather-v0.2.9", "v0.3.2/ForgeCast-Weather-v0.3.2-android-release.apk")
     Test-UrlContent -Url "$target/forgecast" -ContainsPatterns @("ForgeCast Weather", "v0.3.3") -NotContainsPatterns @("SkyFoundry", "v0.2.9/ForgeCast-Weather-v0.2.9", "v0.3.2/ForgeCast-Weather-v0.3.2-android-release.apk") -FollowRedirects $true
     if ($target -like "*theprooffoundry.com*") {
-        Test-UrlContent -Url "$target/sitemap.xml" -ContainsPatterns @("https://theprooffoundry.com/lights-out/", "https://theprooffoundry.com/forgecast/", "https://theprooffoundry.com/proof/")
+        Test-UrlContent -Url "$target/sitemap.xml" -ContainsPatterns @("https://theprooffoundry.com/reality-gate/", "https://theprooffoundry.com/cache-vault/", "https://theprooffoundry.com/lights-out/", "https://theprooffoundry.com/cleanroom/", "https://theprooffoundry.com/forgecast/", "https://theprooffoundry.com/proofshot/", "https://theprooffoundry.com/proof/")
     } else {
         Test-UrlContent -Url "$target/sitemap.xml"
     }
@@ -273,14 +273,31 @@ foreach ($target in $Targets) {
     # 7. 404 page check — should return a branded HTML page
     Test-UrlContent -Url "$target/this-page-does-not-exist" -ContainsPatterns @("404", "Page Not Found", "The Proof Foundry") -NotContainsPatterns @("SkyFoundry")
 
-    # 8. Proof/Receipts page checks
-    Test-UrlContent -Url "$target/proof/" -ContainsPatterns @("Proof Foundry Receipts", "Lights Out", "Cache Vault", "Cleanroom", "ForgeCast Weather", "HyperSnatch") -NotContainsPatterns @("Electron packaged", "SkyFoundry", "Guided breathing", "ambient soundscapes", "warm screen shift", "smart light dimming")
-    Test-UrlContent -Url "$target/proof" -ContainsPatterns @("Proof Foundry Receipts", "Lights Out", "Cache Vault", "Cleanroom", "ForgeCast Weather", "HyperSnatch") -NotContainsPatterns @("Electron packaged", "SkyFoundry", "Guided breathing", "ambient soundscapes", "warm screen shift", "smart light dimming") -FollowRedirects $true
-    Test-UrlContent -Url "$target/proof.html" -ContainsPatterns @("Proof Foundry Receipts", "Lights Out", "Cache Vault", "Cleanroom", "ForgeCast Weather", "HyperSnatch") -NotContainsPatterns @("Electron packaged", "SkyFoundry", "Guided breathing", "ambient soundscapes", "warm screen shift", "smart light dimming") -FollowRedirects $true
+    # 8. Proof/Receipts page checks — generated from the same manifest
+    Test-UrlContent -Url "$target/proof/" -ContainsPatterns @("Proof Foundry Receipts", "Reality Gate", "Lights Out", "Cache Vault", "Cleanroom", "ForgeCast Weather", "ProofShot") -NotContainsPatterns @("Electron packaged", "SkyFoundry", "Guided breathing", "ambient soundscapes", "warm screen shift", "smart light dimming", "HyperSnatch")
+    Test-UrlContent -Url "$target/proof" -ContainsPatterns @("Proof Foundry Receipts", "Reality Gate", "Lights Out", "Cache Vault", "Cleanroom", "ForgeCast Weather", "ProofShot") -NotContainsPatterns @("Electron packaged", "SkyFoundry", "Guided breathing", "ambient soundscapes", "warm screen shift", "smart light dimming", "HyperSnatch") -FollowRedirects $true
+    Test-UrlContent -Url "$target/proof.html" -ContainsPatterns @("Proof Foundry Receipts", "Reality Gate", "Lights Out", "Cache Vault", "Cleanroom", "ForgeCast Weather", "ProofShot") -NotContainsPatterns @("Electron packaged", "SkyFoundry", "Guided breathing", "ambient soundscapes", "warm screen shift", "smart light dimming", "HyperSnatch") -FollowRedirects $true
     
     # Redirect headers checks for proof page
     Test-UrlRedirect -Url "$target/proof" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/proof/"
     Test-UrlRedirect -Url "$target/proof.html" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/proof/"
+
+    # 9. New internal product routes (canonical, no off-site jumps)
+    Test-UrlContent -Url "$target/reality-gate/" -ContainsPatterns @("Reality Gate", "Developer Pilot", "4A68DE375E592AECF173B4AAAE3FDFAEEDACCE5F821F84F11C25AD345A0B62CB") -NotContainsPatterns @("SkyFoundry")
+    Test-UrlContent -Url "$target/cache-vault/" -ContainsPatterns @("Cache Vault", "Get Cache Vault", "Public release") -NotContainsPatterns @("SkyFoundry")
+    Test-UrlContent -Url "$target/cache-vault" -ContainsPatterns @("Cache Vault") -NotContainsPatterns @("SkyFoundry") -FollowRedirects $true
+    Test-UrlRedirect -Url "$target/cache-vault" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/cache-vault/"
+    Test-UrlRedirect -Url "$target/cache-vault.html" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/cache-vault/"
+
+    Test-UrlContent -Url "$target/cleanroom/" -ContainsPatterns @("Cleanroom", "Download v1.0.7", "Public release") -NotContainsPatterns @("SkyFoundry")
+    Test-UrlContent -Url "$target/cleanroom" -ContainsPatterns @("Cleanroom") -NotContainsPatterns @("SkyFoundry") -FollowRedirects $true
+    Test-UrlRedirect -Url "$target/cleanroom" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/cleanroom/"
+    Test-UrlRedirect -Url "$target/cleanroom.html" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/cleanroom/"
+
+    Test-UrlContent -Url "$target/proofshot/" -ContainsPatterns @("ProofShot", "Rebrand in progress", "In proof") -NotContainsPatterns @("SkyFoundry", "HyperSnatch")
+    Test-UrlContent -Url "$target/proofshot" -ContainsPatterns @("ProofShot") -NotContainsPatterns @("SkyFoundry") -FollowRedirects $true
+    Test-UrlRedirect -Url "$target/proofshot" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/proofshot/"
+    Test-UrlRedirect -Url "$target/proofshot.html" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/proofshot/"
 }
 
 # 8. APK and SHA256 availability (R2 distribution)

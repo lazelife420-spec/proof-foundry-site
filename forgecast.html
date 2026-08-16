@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ForgeCast Weather v0.3.3 — The Proof Foundry</title>
-  <meta name="description" content="Day-planning weather: what to wear, when to go outside, what to bring or skip, and why." />
+  <title>ForgeCast Weather — The Proof Foundry</title>
+  <meta name="description" content="Day-planning weather: what to wear, when to go outside, what to bring or skip, and why. A Proof Foundry product." />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#0B0F14" />
   <link rel="canonical" href="https://theprooffoundry.com/forgecast/" />
 
-  <meta property="og:title" content="ForgeCast Weather v0.3.3" />
+  <meta property="og:title" content="ForgeCast Weather" />
   <meta property="og:description" content="Day-planning weather: what to wear, when to go outside, what to bring or skip, and why." />
   <meta property="og:type" content="product" />
   <meta property="og:url" content="https://theprooffoundry.com/forgecast/" />
@@ -19,255 +19,162 @@
   <meta name="twitter:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
 
   <link rel="stylesheet" href="/styles.css" />
-  <style>
-    .product-hero {
-      padding: 4.5rem 0 3rem;
-    }
-    .product-hero .eyebrow {
-      color: var(--gold);
-      font-weight: 600;
-      font-size: 0.85rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 0.75rem;
-    }
-    .product-hero h1 {
-      font-size: clamp(2.4rem, 6vw, 4rem);
-      line-height: 1.05;
-      margin-bottom: 1rem;
-    }
-    .product-hero h1 span {
-      color: var(--gold);
-    }
-    .product-lede {
-      color: var(--muted);
-      font-size: 1.15rem;
-      max-width: 640px;
-      margin-bottom: 2rem;
-    }
-    .download-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-bottom: 1.25rem;
-    }
-    .release-pending {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding: 0.85rem 1.25rem;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(16, 25, 35, 0.72);
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-    .release-pending strong {
-      color: var(--gold);
-    }
-    .proof-strip {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.25rem;
-      margin-top: 2rem;
-    }
-    .proof-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.45rem 0.85rem;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(16, 25, 35, 0.72);
-      color: var(--muted);
-      font-size: 0.82rem;
-    }
-    .proof-pill strong {
-      color: var(--text);
-    }
-    .detail-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
-      margin: 3rem 0;
-    }
-    .detail-card {
-      background: rgba(16, 25, 35, 0.62);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-    }
-    .detail-card h3 {
-      font-size: 1rem;
-      color: var(--gold);
-      margin-bottom: 0.75rem;
-    }
-    .detail-card p,
-    .detail-card li {
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-    .detail-card ul {
-      list-style: none;
-      padding: 0;
-    }
-    .detail-card li {
-      padding: 0.35rem 0;
-      border-bottom: 1px solid rgba(38, 55, 70, 0.4);
-    }
-    .detail-card li:last-child {
-      border-bottom: none;
-    }
-    .code-block {
-      background: #070b10;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 1rem 1.25rem;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.85rem;
-      color: var(--text);
-      overflow-x: auto;
-      margin: 1rem 0;
-    }
-    .code-block .dim {
-      color: var(--muted);
-    }
-    .screenshot-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
-    .screenshot-grid img {
-      width: 100%;
-      border-radius: 14px;
-      border: 1px solid var(--line);
-      background: var(--panel);
-    }
-    .screenshot-grid a {
-      text-decoration: none;
-    }
-    .note {
-      color: var(--muted);
-      font-size: 0.9rem;
-      border-left: 3px solid var(--gold);
-      padding-left: 1rem;
-      margin: 1.5rem 0;
-    }
-  </style>
 </head>
 <body>
-  <header class="site-header" id="top">
-    <div class="container nav-row">
-      <a class="brand-lockup" href="/" aria-label="Proof Foundry home">
-        <img class="brand-logo" src="/brand/proof-foundry-logo-horizontal.svg" alt="Proof Foundry" />
-      </a>
-      <nav class="top-nav" aria-label="Primary navigation">
-        <a href="/">Home</a>
-        <a href="/#products">Products</a>
-        <a href="/founders.html">Founders</a>
-        <a href="/proof/">Receipts</a>
-      </nav>
-    </div>
-  </header>
+  <!-- @page forgecast -->
+  <!-- @product forgecast -->
+  <!-- @include header -->
 
-  <main class="container">
-    <section class="product-hero" aria-labelledby="product-title">
-      <p class="eyebrow">ForgeCast Weather · v0.3.3</p>
+  <main class="container product-page">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/#products">Products</a> <span aria-hidden="true">/</span> <span>ForgeCast Weather</span>
+    </nav>
+
+    <nav class="product-subnav" aria-label="Product sections">
+      <a href="#overview">Overview</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#proof">Proof</a>
+      <a href="#download">Download</a>
+      <a href="#limitations">Limitations</a>
+    </nav>
+
+    <section id="overview" class="product-hero" aria-labelledby="product-title">
+      <p class="eyebrow">ForgeCast Weather · {{product.statusLabel}}</p>
       <h1 id="product-title">Weather that plans<br /><span>your day.</span></h1>
-      <p class="product-lede">
-        DayForge UX consolidation: a decision-first Today screen, clearer separation between Today, Plan, Forecast, Widgets, and Settings, improved outfit confidence and cold/wet guidance, and a fixed Bring/Skip contradiction — device-verified on every build.
-      </p>
-
-      <div class="download-group">
-        <a class="button button-primary" href="https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk" download>
-          Download APK
-        </a>
-        <a class="button button-secondary" href="https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk.sha256.txt" target="_blank" rel="noopener">
-          SHA256
-        </a>
-      </div>
-
-      <div class="proof-strip">
-        <span class="proof-pill"><strong>Version</strong> 0.3.3</span>
-        <span class="proof-pill"><strong>versionCode</strong> 14</span>
-        <span class="proof-pill"><strong>Tests</strong> 724/724</span>
-        <span class="proof-pill"><strong>APK size</strong> 77,264,536 bytes</span>
-        <span class="proof-pill"><strong>Platform</strong> Android</span>
-        <span class="proof-pill"><strong>Build</strong> release</span>
-      </div>
+      <p class="product-lede">{{product.summary}}</p>
+      <div class="download-group">{{product.downloadBlock}}</div>
+      {{product.proofStrip}}
     </section>
 
-    <section aria-label="Product screenshots">
+    <section aria-label="Product screenshots" class="product-screens">
       <p class="eyebrow" style="margin-bottom: 1rem;">On device</p>
       <div class="screenshot-grid">
         <figure>
           <img src="/assets/forgecast/v030-today.png" alt="ForgeCast Today screen with wear and best-outside tokens" loading="lazy" />
-          <figcaption style="color: var(--muted); font-size: 0.82rem; margin-top: 0.5rem;">Today — wear, best outside, and how the day moves</figcaption>
+          <figcaption>Today — wear, best outside, and how the day moves</figcaption>
         </figure>
         <figure>
           <img src="/assets/forgecast/v030-forecast.png" alt="ForgeCast Forecast with expanded day meaning" loading="lazy" />
-          <figcaption style="color: var(--muted); font-size: 0.82rem; margin-top: 0.5rem;">Forecast — expanded rows with outfit and timing meaning</figcaption>
+          <figcaption>Forecast — expanded rows with outfit and timing meaning</figcaption>
         </figure>
         <figure>
           <img src="/assets/forgecast/v030-plan.png" alt="ForgeCast Plan PREP board" loading="lazy" />
-          <figcaption style="color: var(--muted); font-size: 0.82rem; margin-top: 0.5rem;">Plan — what to wear, best outside, bring/skip</figcaption>
+          <figcaption>Plan — what to wear, best outside, bring/skip</figcaption>
         </figure>
         <figure>
           <img src="/assets/forgecast/v030-widgets.png" alt="ForgeCast Daily Planner widget preset" loading="lazy" />
-          <figcaption style="color: var(--muted); font-size: 0.82rem; margin-top: 0.5rem;">Widgets — Daily Planner with wear and outside lines</figcaption>
+          <figcaption>Widgets — Daily Planner with wear and outside lines</figcaption>
         </figure>
       </div>
     </section>
 
-    <section class="detail-grid" aria-label="Release details">
-      <article class="detail-card">
-        <h3>SHA-256 checksum</h3>
-        <p>Verify the APK before installing.</p>
-        <div class="code-block">
-          50ABE59E52B6DC7E8649C0CA63EB065425F8EDC607187E3844D90CE5F1EED833
-        </div>
-      </article>
-
-      <article class="detail-card">
-        <h3>What’s inside</h3>
-        <ul>
-          <li>DayForge UX consolidation — Today, Plan, Forecast, Widgets, and Settings each do one job instead of overlapping</li>
-          <li>Decision-first Today — what to wear, best outside time, and bring/skip above the fold</li>
-          <li>Three-preset widget setup — Weather Now, Daily Planner, Compact Temp</li>
-          <li>Improved outfit confidence and cold/wet guidance — cold-and-wet days get rain protection and warmth, not rain-only advice</li>
-          <li>Fixed tomorrow leakage and stale-time guidance — no more tomorrow's clock time or stale afternoon copy at night</li>
-          <li>Fixed contradictory Bring/Skip — an item can no longer show up in both lists at once</li>
-          <li>Preserved urgent drive-now road alerts, even when the aggregate road-risk band reads low</li>
-        </ul>
-      </article>
-
-      <article class="detail-card">
-        <h3>Trust</h3>
-        <ul>
-          <li>No background telemetry</li>
-          <li>Community Checks are off and opt-in — no Community Checks backend in this release</li>
-          <li>No fake AI claims</li>
-          <li>No Day Receipts backend</li>
-          <li>No Local Memory backend</li>
-          <li>Hardened device verification — every build's E2E proof is checked against a locked/asleep-screen false-pass before it ships</li>
-        </ul>
-      </article>
-
-      <article class="detail-card">
-        <h3>Requirements</h3>
-        <ul>
-          <li>Android 8+ (API 26+)</li>
-          <li>Sideload permission enabled</li>
-          <li>OpenWeatherMap API key only if building from source</li>
-        </ul>
-      </article>
+    <section id="how-it-works" class="product-section" aria-labelledby="what-title">
+      <div class="section-head">
+        <h2 id="what-title">What it does</h2>
+        <p>DayForge UX consolidation — each screen does one job instead of overlapping.</p>
+      </div>
+      <div class="detail-grid">
+        <article class="detail-card">
+          <h3>Decision-first Today</h3>
+          <p>What to wear, best outside time, and bring/skip sit above the fold so the day's decisions are immediate.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Clearer screen roles</h3>
+          <p>Today, Plan, Forecast, Widgets, and Settings each own one job instead of overlapping.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Fixed Bring/Skip contradiction</h3>
+          <p>An item can no longer appear in both lists at once. Cold-and-wet days get rain protection and warmth, not rain-only advice.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Three widget presets</h3>
+          <p>Weather Now, Daily Planner, and Compact Temp — set up once, glance anytime.</p>
+        </article>
+      </div>
     </section>
 
-    <p class="note">
-      <strong>Public download:</strong> APK and SHA256 are served from Cloudflare R2. Download the APK, verify its SHA256 matches the checksum above, then sideload it with your preferred Android installer. The custom domain <code>downloads.theprooffoundry.com</code> will be enabled later; for now the canonical hosted files are on the verified R2 URL.
-    </p>
+    <section id="proof" class="product-section" aria-labelledby="proof-title">
+      <div class="section-head">
+        <h2 id="proof-title">Proof &amp; release evidence</h2>
+        <p>What was actually verified before this build shipped.</p>
+      </div>
+      <div class="detail-grid">
+        <article class="detail-card">
+          <h3>SHA-256 checksum</h3>
+          <p>Verify the APK before installing.</p>
+          {{product.hashBlock}}
+        </article>
+        <article class="detail-card">
+          <h3>What's inside</h3>
+          <ul>
+            <li>DayForge UX consolidation across Today, Plan, Forecast, Widgets, Settings</li>
+            <li>Improved outfit confidence and cold/wet guidance</li>
+            <li>Fixed tomorrow leakage and stale-time guidance</li>
+            <li>Preserved urgent drive-now road alerts even when aggregate road-risk reads low</li>
+          </ul>
+        </article>
+        <article class="detail-card">
+          <h3>Trust</h3>
+          <ul>
+            <li>No background telemetry</li>
+            <li>Community Checks off and opt-in — no backend in this release</li>
+            <li>No fake AI claims</li>
+            <li>Hardened device verification on every build</li>
+          </ul>
+        </article>
+      </div>
+      {{product.releaseNoteBlock}}
+    </section>
+
+    <section id="limitations" class="product-section" aria-labelledby="limits-title">
+      <div class="section-head">
+        <h2 id="limits-title">Known limitations</h2>
+        <p>Honest about what this release does not do.</p>
+      </div>
+      <div class="detail-grid">
+        <article class="detail-card">
+          <h3>Requirements</h3>
+          <ul>
+            <li>Android 8+ (API 26+)</li>
+            <li>Sideload permission enabled</li>
+            <li>OpenWeatherMap API key only if building from source</li>
+          </ul>
+        </article>
+        <article class="detail-card">
+          <h3>Not included</h3>
+          <ul>
+            <li>No Community Checks backend</li>
+            <li>No Day Receipts backend</li>
+            <li>No Local Memory backend</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="download" class="product-section" aria-labelledby="download-title">
+      <div class="section-head">
+        <h2 id="download-title">Download</h2>
+        <p>APK and SHA256 are served from Cloudflare R2.</p>
+      </div>
+      <div class="download-group">{{product.downloadBlock}}</div>
+      <p class="note">Download the APK, verify its SHA-256 matches the checksum above, then sideload with your preferred Android installer. The custom domain <code>downloads.theprooffoundry.com</code> will be enabled later; for now the canonical hosted files are on the verified R2 URL.</p>
+    </section>
+
+    <section class="product-section other-products" aria-labelledby="other-title">
+      <div class="section-head">
+        <h2 id="other-title">Other Proof Foundry products</h2>
+      </div>
+      <div class="other-products-grid">
+        <a class="other-product-chip" href="/reality-gate/">Reality Gate</a>
+        <a class="other-product-chip" href="/cache-vault/">Cache Vault</a>
+        <a class="other-product-chip" href="/lights-out/">Lights Out PC</a>
+        <a class="other-product-chip" href="/cleanroom/">Cleanroom</a>
+        <a class="other-product-chip" href="/proofshot/">ProofShot</a>
+      </div>
+    </section>
   </main>
+
+  <!-- @include footer -->
+  <script src="/site.js" defer></script>
 </body>
 </html>
-

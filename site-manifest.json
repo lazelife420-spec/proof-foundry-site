@@ -1,130 +1,176 @@
 {
-    "brand":  "The Proof Foundry",
-    "positioning":  "Proof over promises. Local-first software with receipts, honest claims, and user-owned workflows.",
-    "canonicalUrl":  "https://theprooffoundry.com",
-    "products":  [
-                     {
-                         "lastVerified":  "2026-08-15",
-                         "sha256Status":  "published",
-                         "downloadStatus":  "available",
-                         "name":  "Reality Gate",
-                         "downloadUrl":  "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/reality-gate/Reality-Gate-1.1.0-Developer-Pilot.zip",
-                         "distType":  "Windows Installer ZIP",
-                         "build":  "Windows Installer EXE",
-                         "status":  "developer-pilot",
-                         "platform":  "Windows",
-                         "slug":  "reality-gate",
-                         "proofStatus":  "verified",
-                         "latestVersion":  "v1.1.0 Developer Pilot",
-                         "route":  "/reality-gate/",
-                         "proofLinks":  [
-                                            "/reality-gate/",
-                                            "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/reality-gate/Reality-Gate-1.1.0-Developer-Pilot.zip.sha256.txt"
-                                        ],
-                         "testCount":  "269/269",
-                         "sha256":  "620e113a94b5cf422b32cbdcf876e3ba7448d2c3ec161a1f6b8ee145b9a82566"
-                     },
-                     {
-                         "name":  "Cache Vault",
-                         "slug":  "cache-vault",
-                         "status":  "public",
-                         "route":  "https://cache-vault-landing.pages.dev/",
-                         "platform":  "Windows",
-                         "build":  "Python compiled (CacheVault.exe)",
-                         "latestVersion":  "v0.1.4 release.1",
-                         "distType":  "Windows Portable ZIP",
-                         "proofStatus":  "verified",
-                         "proofLinks":  [
-                                            "https://cache-vault-landing.pages.dev/",
-                                            "https://github.com/lazelife420-spec/CacheVault/releases/tag/cache-vault-v0.1.4-release.1",
-                                            "https://github.com/lazelife420-spec/CacheVault/releases/download/cache-vault-v0.1.4-release.1/CacheVault-v0.1.4-windows.sha256"
-                                        ],
-                         "testCount":  "740/740",
-                         "downloadStatus":  "available",
-                         "downloadUrl":  "https://github.com/lazelife420-spec/CacheVault/releases/download/cache-vault-v0.1.4-release.1/CacheVault-v0.1.4-windows.zip",
-                         "sha256Status":  "published",
-                         "sha256":  "710c8988455b30a3fa8589862e3e7c8a36c7faf73b015cfda5024f700a2c81bf",
-                         "lastVerified":  "2026-06-30"
-                     },
-                     {
-                         "name":  "Lights Out PC",
-                         "slug":  "lights-out",
-                         "status":  "public",
-                         "route":  "/lights-out/",
-                         "platform":  "Windows",
-                         "build":  "PowerShell compiled (SleepTimer.exe)",
-                         "latestVersion":  "v1.0.0",
-                         "distType":  "Windows Executable",
-                         "proofStatus":  "verified",
-                         "proofLinks":  [
-                                            "/reports/deploy-receipts/2026-06-30-proof-foundry-site.md"
-                                        ],
-                         "downloadStatus":  "coming_soon",
-                         "downloadUrl":  null,
-                         "sha256Status":  "unreleased",
-                         "sha256":  null,
-                         "lastVerified":  "2026-06-30"
-                     },
-                     {
-                         "name":  "Cleanroom",
-                         "slug":  "cleanroom",
-                         "status":  "public",
-                         "route":  "https://github.com/lazelife420-spec/cleanroom-windows/releases/tag/v1.0.7",
-                         "platform":  "Windows",
-                         "build":  "CI-built Windows installer (PyInstaller + Inno Setup). Provenance attested via GitHub Actions.",
-                         "latestVersion":  "v1.0.7",
-                         "distType":  "Windows Installer EXE",
-                         "proofStatus":  "verified",
-                         "proofLinks":  [
-                                            "https://github.com/lazelife420-spec/cleanroom-windows/releases/tag/v1.0.7",
-                                            "https://github.com/lazelife420-spec/cleanroom-windows/releases/download/v1.0.7/SHA256SUMS.txt"
-                                        ],
-                         "downloadStatus":  "available",
-                         "downloadUrl":  "https://github.com/lazelife420-spec/cleanroom-windows/releases/download/v1.0.7/Cleanroom-Setup-1.0.7.exe",
-                         "sha256Status":  "published",
-                         "sha256":  "2cd6953015ce0b8e429c869564be11ad10504332aded10b442a58ea2b990a76e",
-                         "lastVerified":  "2026-07-01"
-                     },
-                     {
-                         "name":  "ForgeCast Weather",
-                         "slug":  "forgecast",
-                         "status":  "available",
-                         "route":  "/forgecast/",
-                         "platform":  "Android",
-                         "build":  "Android APK (release build)",
-                         "latestVersion":  "v0.3.3",
-                         "distType":  "Android APK Package",
-                         "proofStatus":  "verified",
-                         "proofLinks":  [
-                                            "/forgecast/",
-                                            "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk.sha256.txt",
-                                            "https://github.com/lazelife420-spec/ForgeCast/releases/tag/v0.3.3"
-                                        ],
-                         "testCount":  "724/724",
-                         "downloadStatus":  "available",
-                         "downloadUrl":  "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk",
-                         "sha256Status":  "published",
-                         "sha256":  "50abe59e52b6dc7e8649c0ca63eb065425f8edc607187e3844d90ce5f1eed833",
-                         "lastVerified":  "2026-07-11"
-                     },
-                     {
-                         "name":  "HyperSnatch",
-                         "slug":  "hypersnatch",
-                         "status":  "in-proof",
-                         "route":  "#products",
-                         "platform":  "Windows",
-                         "build":  "Fast link & file capture utility",
-                         "latestVersion":  "unreleased",
-                         "distType":  "N/A",
-                         "proofStatus":  "verification pending",
-                         "proofLinks":  [
+  "brand": "The Proof Foundry",
+  "tagline": "Build it. Prove it. Ship it.",
+  "positioning": "Proof over promises. Local-first software with receipts, honest claims, and user-owned workflows.",
+  "canonicalUrl": "https://theprooffoundry.com",
 
-                                        ],
-                         "downloadStatus":  "coming_soon",
-                         "downloadUrl":  null,
-                         "sha256Status":  "unreleased",
-                         "sha256":  null,
-                         "lastVerified":  null
-                     }
-                 ]
+  "stateLabels": {
+    "pilot": "Developer Pilot",
+    "available": "Public release",
+    "frozen": "Public release · Frozen",
+    "testing": "In testing",
+    "proof": "In proof",
+    "coming": "Coming soon"
+  },
+
+  "nav": [
+    { "id": "products",       "label": "Products",       "href": "/#products" },
+    { "id": "proof-standard", "label": "Proof Standard",  "href": "/#proof-standard" },
+    { "id": "receipts",       "label": "Receipts",        "href": "/proof/" },
+    { "id": "founders",       "label": "Founders",        "href": "/founders/" }
+  ],
+  "navCta": { "label": "Explore Products", "href": "/#products" },
+
+  "products": [
+    {
+      "id": "reality-gate",
+      "name": "Reality Gate",
+      "route": "/reality-gate/",
+      "state": "pilot",
+      "version": "1.1.0",
+      "platform": "Windows",
+      "summary": "Local-first developer continuity for the Git workflow you already use. Keep GitHub, GitLab, or Forgejo — Reality Gate helps you understand dependencies, verify continuity, and keep proof.",
+      "cta": "View product",
+      "downloadUrl": "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/reality-gate/Reality-Gate-1.1.0-Developer-Pilot.zip",
+      "downloadLabel": "Download Developer Pilot (.zip)",
+      "distType": "Windows Installer ZIP",
+      "build": "Windows Installer EXE",
+      "sha256": "4a68de375e592aecf173b4aaae3fdfaeedacce5f821f84f11c25ad345a0b62cb",
+      "sha256Url": "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/reality-gate/Reality-Gate-1.1.0-Developer-Pilot.zip.sha256.txt",
+      "testCount": "269/269",
+      "releaseNote": "",
+      "proofStatus": "verified",
+      "lastVerified": "2026-08-15",
+      "visible": true,
+      "proofLinks": [
+        "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/reality-gate/Reality-Gate-1.1.0-Developer-Pilot.zip.sha256.txt"
+      ]
+    },
+    {
+      "id": "cache-vault",
+      "name": "Cache Vault",
+      "route": "/cache-vault/",
+      "state": "available",
+      "version": "0.1.4",
+      "platform": "Windows + Android",
+      "summary": "Local-first clipboard vault with stamped receipts, safes, global search, Quick Paste, image capture, exports, and proof-pack workflows.",
+      "cta": "View product",
+      "downloadUrl": "https://cache-vault-landing.pages.dev/",
+      "downloadLabel": "Get Cache Vault →",
+      "distType": "Windows Portable ZIP",
+      "build": "Python compiled (CacheVault.exe)",
+      "sha256": "710c8988455b30a3fa8589862e3e7c8a36c7faf73b015cfda5024f700a2c81bf",
+      "sha256Url": "https://github.com/lazelife420-spec/CacheVault/releases/download/cache-vault-v0.1.4-release.1/CacheVault-v0.1.4-windows.sha256",
+      "testCount": "740/740",
+      "releaseNote": "Current public release is v0.1.4. The next external-test build (repaired Windows/Android pair) is still going through reliability validation before release.",
+      "proofStatus": "verified",
+      "lastVerified": "2026-06-30",
+      "visible": true,
+      "proofLinks": [
+        "https://github.com/lazelife420-spec/CacheVault/releases/tag/cache-vault-v0.1.4-release.1",
+        "https://github.com/lazelife420-spec/CacheVault/releases/download/cache-vault-v0.1.4-release.1/CacheVault-v0.1.4-windows.sha256"
+      ]
+    },
+    {
+      "id": "lights-out",
+      "name": "Lights Out PC",
+      "route": "/lights-out/",
+      "state": "testing",
+      "version": null,
+      "platform": "Windows",
+      "summary": "Bedtime shutdown timer for Windows. Wind down, start a timed shutdown, cancel safely, and get proof it worked.",
+      "cta": "View product",
+      "downloadUrl": null,
+      "downloadLabel": "",
+      "distType": "Windows Executable",
+      "build": "PowerShell compiled (SleepTimer.exe)",
+      "sha256": null,
+      "sha256Url": null,
+      "testCount": "87 passed, 0 failed",
+      "releaseNote": "Public download coming after account-safe distribution is ready. No GitHub release is live at this time.",
+      "proofStatus": "verified",
+      "lastVerified": "2026-06-30",
+      "visible": true,
+      "proofLinks": [
+        "/reports/deploy-receipts/2026-06-30-proof-foundry-site.md"
+      ]
+    },
+    {
+      "id": "cleanroom",
+      "name": "Cleanroom",
+      "route": "/cleanroom/",
+      "state": "available",
+      "version": "1.0.7",
+      "platform": "Windows",
+      "summary": "Archive-first Windows cleanup with receipts, custody checks, and rollback. No cloud, no account, no telemetry.",
+      "cta": "View product",
+      "downloadUrl": "https://github.com/lazelife420-spec/cleanroom-windows/releases/download/v1.0.7/Cleanroom-Setup-1.0.7.exe",
+      "downloadLabel": "Download v1.0.7",
+      "distType": "Windows Installer EXE",
+      "build": "CI-built Windows installer (PyInstaller + Inno Setup). Provenance attested via GitHub Actions.",
+      "sha256": "2cd6953015ce0b8e429c869564be11ad10504332aded10b442a58ea2b990a76e",
+      "sha256Url": "https://github.com/lazelife420-spec/cleanroom-windows/releases/download/v1.0.7/SHA256SUMS.txt",
+      "testCount": "",
+      "releaseNote": "Public release v1.0.7. Pending a newer verified release.",
+      "proofStatus": "verified",
+      "lastVerified": "2026-07-01",
+      "visible": true,
+      "proofLinks": [
+        "https://github.com/lazelife420-spec/cleanroom-windows/releases/tag/v1.0.7",
+        "https://github.com/lazelife420-spec/cleanroom-windows/releases/download/v1.0.7/SHA256SUMS.txt"
+      ]
+    },
+    {
+      "id": "forgecast",
+      "name": "ForgeCast Weather",
+      "route": "/forgecast/",
+      "state": "frozen",
+      "version": "0.3.3",
+      "platform": "Android",
+      "summary": "Day-planning weather: what to wear, when to go outside, what to bring or skip, and why. Decision-first Today screen, verified with 724 tests.",
+      "cta": "View product",
+      "downloadUrl": "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk",
+      "downloadLabel": "Download APK",
+      "distType": "Android APK Package",
+      "build": "Android APK (release build)",
+      "sha256": "50abe59e52b6dc7e8649c0ca63eb065425f8edc607187e3844d90ce5f1eed833",
+      "sha256Url": "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk.sha256.txt",
+      "testCount": "724/724",
+      "releaseNote": "Frozen historical release. Do not rebuild or replace this artifact. No newer public build; future APK publication is pending secure successor signing/identity work.",
+      "proofStatus": "verified",
+      "lastVerified": "2026-07-11",
+      "visible": true,
+      "proofLinks": [
+        "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk.sha256.txt",
+        "https://github.com/lazelife420-spec/ForgeCast/releases/tag/v0.3.3"
+      ]
+    },
+    {
+      "id": "proofshot",
+      "name": "ProofShot",
+      "route": "/proofshot/",
+      "state": "proof",
+      "version": null,
+      "platform": "Windows",
+      "summary": "Fast link and file capture with proof-focused retrieval receipts. The renamed capture/proof product — rebrand in progress.",
+      "cta": "View product",
+      "downloadUrl": null,
+      "downloadLabel": "",
+      "distType": "N/A",
+      "build": "Capture & proof utility (rebrand in progress)",
+      "sha256": null,
+      "sha256Url": null,
+      "testCount": "",
+      "releaseNote": "Rebrand in progress from the earlier capture tool. No public download yet. ProofForge is a separate project and is not this product.",
+      "proofStatus": "verification pending",
+      "lastVerified": null,
+      "visible": true,
+      "proofLinks": []
+    }
+  ],
+
+  "incubating": [
+    { "name": "Sound Assist", "note": "In development" },
+    { "name": "ProofBound",  "note": "In development" }
+  ]
 }

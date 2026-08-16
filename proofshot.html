@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ProofShot — Capture &amp; proof utility (in proof) | The Proof Foundry</title>
+  <meta name="description" content="ProofShot is a fast link and file capture utility with proof-focused retrieval receipts. The renamed capture/proof product — rebrand in progress. A Proof Foundry product." />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#0B0F14" />
+  <link rel="canonical" href="https://theprooffoundry.com/proofshot/" />
+
+  <meta property="og:title" content="ProofShot — Capture &amp; proof utility (in proof)" />
+  <meta property="og:description" content="Fast link and file capture with proof-focused retrieval receipts. Rebrand in progress." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://theprooffoundry.com/proofshot/" />
+  <meta property="og:site_name" content="The Proof Foundry" />
+  <meta property="og:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
+
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <!-- @page proofshot -->
+  <!-- @product proofshot -->
+  <!-- @include header -->
+
+  <main class="container product-page">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/#products">Products</a> <span aria-hidden="true">/</span> <span>ProofShot</span>
+    </nav>
+
+    <nav class="product-subnav" aria-label="Product sections">
+      <a href="#overview">Overview</a>
+      <a href="#proof">Proof</a>
+      <a href="#limitations">Limitations</a>
+    </nav>
+
+    <section id="overview" class="product-hero" aria-labelledby="product-title">
+      <p class="eyebrow">ProofShot · {{product.statusLabel}}</p>
+      <h1 id="product-title">Capture fast.<br /><span>Prove it later.</span></h1>
+      <p class="product-lede">{{product.summary}}</p>
+      <div class="download-group">{{product.downloadBlock}}</div>
+      {{product.proofStrip}}
+    </section>
+
+    <section id="proof" class="product-section" aria-labelledby="proof-title">
+      <div class="section-head">
+        <h2 id="proof-title">Proof &amp; release state</h2>
+        <p>Where this product actually stands.</p>
+      </div>
+      <div class="detail-grid">
+        <article class="detail-card">
+          <h3>Rebrand in progress</h3>
+          <p>The README and product description have moved to ProofShot, while packaging and internal code still retain the earlier identity. The migration is unfinished.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Not ProofForge</h3>
+          <p>ProofForge is a separate project. The two names are not interchangeable and are not mixed here.</p>
+        </article>
+      </div>
+      {{product.releaseNoteBlock}}
+    </section>
+
+    <section id="limitations" class="product-section" aria-labelledby="limits-title">
+      <div class="section-head">
+        <h2 id="limits-title">Known limitations</h2>
+        <p>Honest about what is not ready.</p>
+      </div>
+      <div class="detail-grid">
+        <article class="detail-card">
+          <h3>No public download</h3>
+          <p>There is no public build to download yet. This page exists so the product family has a canonical route and an honest status, not a dead card or a redirect elsewhere.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Identity migration unfinished</h3>
+          <p>Until the rebrand completes across packaging and code, no release is claimed here.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="product-section other-products" aria-labelledby="other-title">
+      <div class="section-head">
+        <h2 id="other-title">Other Proof Foundry products</h2>
+      </div>
+      <div class="other-products-grid">
+        <a class="other-product-chip" href="/reality-gate/">Reality Gate</a>
+        <a class="other-product-chip" href="/cache-vault/">Cache Vault</a>
+        <a class="other-product-chip" href="/lights-out/">Lights Out PC</a>
+        <a class="other-product-chip" href="/cleanroom/">Cleanroom</a>
+        <a class="other-product-chip" href="/forgecast/">ForgeCast Weather</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- @include footer -->
+  <script src="/site.js" defer></script>
+</body>
+</html>

@@ -18,36 +18,23 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
 
-  <link rel="icon" type="image/svg+xml" href="brand/proof-foundry-mark.svg" />
-  <link rel="apple-touch-icon" href="brand/proof-foundry-mark.png" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/svg+xml" href="/brand/proof-foundry-mark.svg" />
+  <link rel="apple-touch-icon" href="/brand/proof-foundry-mark.png" />
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-  <header class="site-header" id="top">
-    <div class="container nav-row">
-      <a class="brand-lockup" href="#home" aria-label="Proof Foundry home">
-        <img class="brand-logo" src="brand/proof-foundry-logo-horizontal.svg" alt="Proof Foundry" />
-      </a>
-      <nav class="top-nav" aria-label="Primary navigation">
-        <a href="#home">Home</a>
-        <a href="#products">Products</a>
-        <a href="#proof-standard">Proof Standard</a>
-        <a href="founders.html">Founders</a>
-        <a href="/proof/">Receipts</a>
-      </nav>
-      <a class="button button-primary nav-cta" href="#products">Explore Products</a>
-    </div>
-  </header>
+  <!-- @page home -->
+  <!-- @include header -->
 
   <main>
     <section id="home" class="hero" aria-labelledby="hero-title">
-      <img class="hero-image" src="assets/foundry-strike/proof-foundry-forged-artifact.png" alt="" aria-hidden="true" />
+      <img class="hero-image" src="/assets/foundry-strike/proof-foundry-forged-artifact.png" alt="" aria-hidden="true" />
       <div class="hero-shade" aria-hidden="true"></div>
       <div class="hero-inner container">
         <div class="hero-copy">
           <p class="eyebrow">Software. Forged. Verified.</p>
           <h1 id="hero-title">We build software.<br /><span>We prove it works.</span></h1>
-          <p class="hero-lede">Proof Foundry builds local-first tools with visible evidence: receipts, release proof, checksums, and claims you can inspect.</p>
+          <p class="hero-lede">{{brand}} builds local-first tools with visible evidence: receipts, release proof, checksums, and claims you can inspect.</p>
           <div class="hero-actions">
             <a class="button button-primary" href="#products">Explore Products</a>
             <a class="button button-secondary" href="#proof-standard">View Proof Standard</a>
@@ -85,62 +72,11 @@
         <p>Focused tools. Real results. Verifiable proof.</p>
       </div>
 
-                      <div class="products-grid">
-          <article class="product-card product-live">
-            <div class="product-top">
-              <h3><a href="/reality-gate/" style="text-decoration:none;color:inherit">Reality Gate</a></h3>
-              <span class="chip available">Developer Pilot</span>
-            </div>
-            <p>Local-first developer continuity for the Git workflow you already use. Keep GitHub, GitLab, or Forgejo. Reality Gate helps you understand your dependencies, verify continuity, and keep proof.</p>
-            <a class="button button-secondary button-sm" href="/reality-gate/">View Reality Gate</a>
-          </article>
-  
-          <article class="product-card product-live">
-            <div class="product-top">
-              <h3><a href="https://cache-vault-landing.pages.dev/" style="text-decoration:none;color:inherit" target="_blank" rel="noopener">Cache Vault</a></h3>
-              <span class="chip available">Available</span>
-            </div>
-            <p>Local clipboard vault with stamped receipts, safes, exports, and proof-pack workflows.</p>
-            <a class="button button-secondary button-sm" href="https://cache-vault-landing.pages.dev/" target="_blank" rel="noopener">Download / Buy Founder ($19)</a>
-          </article>
+      <div class="products-grid">
+          <!-- @products -->
+      </div>
 
-          <article class="product-card product-live">
-            <div class="product-top">
-              <h3><a href="lights-out.html" style="text-decoration:none;color:inherit">Lights Out PC</a></h3>
-              <span class="chip available">Available</span>
-            </div>
-            <p>Bedtime shutdown timer for Windows. Wind down, start a timed shutdown, cancel safely, and get proof it worked.</p>
-            <a class="button button-secondary button-sm" href="lights-out.html">View product</a>
-          </article>
-  
-          <article class="product-card product-live">
-            <div class="product-top">
-              <h3><a href="https://github.com/lazelife420-spec/cleanroom-windows/releases/tag/v1.0.7" style="text-decoration:none;color:inherit" target="_blank" rel="noopener">Cleanroom</a></h3>
-              <span class="chip available">v1.0.7</span>
-            </div>
-            <p>Archive-first Windows cleanup with receipts, custody checks, and rollback. No cloud, no account, no telemetry.</p>
-            <a class="button button-secondary button-sm" href="https://github.com/lazelife420-spec/cleanroom-windows/releases/tag/v1.0.7" target="_blank" rel="noopener">Download v1.0.7</a>
-          </article>
-  
-          <article class="product-card product-live">
-            <div class="product-top">
-              <h3><a href="/forgecast/" style="text-decoration:none;color:inherit">ForgeCast Weather</a></h3>
-              <span class="chip available">v0.3.3</span>
-            </div>
-            <p>DayForge UX consolidation: decision-first Today screen, improved outfit confidence, and fixed Bring/Skip contradiction. Verified with 724 tests and published SHA256.</p>
-            <a class="button button-secondary button-sm" href="/forgecast/">Download v0.3.3</a>
-          </article>
-
-          <article class="product-card product-proof">
-            <div class="product-top">
-              <h3>HyperSnatch</h3>
-              <span class="chip in-proof">In proof</span>
-            </div>
-            <p>Fast link and file capture with proof-focused retrieval receipts.</p>
-            <p class="product-status" aria-label="Status: Proof pending">Proof pending</p>
-          </article>
-        </div>
-  <div class="more-tools" aria-label="Additional products in progress">
+      <div class="more-tools" aria-label="Additional products in progress">
         <p class="more-tools-title">More tools on the proof track</p>
         <ul>
           <li>Sound Assist <span>In development</span></li>
@@ -151,7 +87,7 @@
 
     <section id="proof-standard" class="proof-standard container" aria-labelledby="proof-standard-title">
       <div class="proof-seal-wrap">
-        <img class="seal-image" src="brand/proof-foundry-verified-seal.svg" alt="Proof Foundry verified seal" />
+        <img class="seal-image" src="/brand/proof-foundry-verified-seal.svg" alt="Proof Foundry verified seal" />
       </div>
       <div class="proof-copy">
         <p class="eyebrow">The Proof Standard</p>
@@ -159,47 +95,14 @@
         <p>Proof Foundry products are shipped with visible evidence where possible: release notes, screenshots, checksums, test results, receipts, and plain-language limits.</p>
         <p>Because trust is earned through verification, not words.</p>
         <div class="proof-actions">
-          <a class="button button-primary" href="#proof-standard">Read the Proof Standard</a>
+          <a class="button button-primary" href="/proof/">Read the Receipts</a>
           <a class="button button-secondary" href="#products">Explore Products</a>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div class="footer-brand">
-        <img class="footer-logo" src="brand/proof-foundry-logo-horizontal.svg" alt="Proof Foundry" />
-        <p>Build it. Prove it. Ship it.</p>
-      </div>
-
-      <div>
-                <h2>Products</h2>
-        <ul>
-          <li><a href="/reality-gate/">Reality Gate</a></li>
-          <li><a href="https://cache-vault-landing.pages.dev/" target="_blank" rel="noopener">Cache Vault</a></li>
-          <li><a href="/lights-out/">Lights Out PC</a></li>
-          <li><a href="https://github.com/lazelife420-spec/cleanroom-windows/releases/tag/v1.0.7" target="_blank" rel="noopener">Cleanroom</a></li>
-          <li><a href="/forgecast/">ForgeCast Weather</a></li>
-          <li>HyperSnatch</li>
-        </ul>
-      </div>
-
-      <div>
-        <h2>Company</h2>
-        <ul>
-          <li><a href="founders.html">Founders Circle</a></li>
-          <li><a href="#proof-standard">Proof Standard</a></li>
-          <li><a href="/proof/">Receipts</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="container footer-bottom">
-      <p>&copy; 2026 Proof Foundry. All rights reserved.</p>
-    </div>
-  </footer>
+  <!-- @include footer -->
+  <script src="/site.js" defer></script>
 </body>
 </html>
-
-
-

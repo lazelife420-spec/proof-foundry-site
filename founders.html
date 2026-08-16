@@ -21,21 +21,8 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="site-header" id="top">
-    <div class="container nav-row">
-      <a class="brand-lockup" href="index.html#home" aria-label="Proof Foundry home">
-        <img class="brand-logo" src="brand/proof-foundry-logo-horizontal.svg" alt="Proof Foundry" />
-      </a>
-      <nav class="top-nav" aria-label="Primary navigation">
-        <a href="index.html#home">Home</a>
-        <a href="index.html#products">Products</a>
-        <a href="index.html#proof-standard">Proof Standard</a>
-        <a href="founders.html" aria-current="page">Founders</a>
-        <a href="/proof/">Receipts</a>
-      </nav>
-      <span class="button button-primary nav-cta" aria-disabled="true">Founder access coming soon</span>
-    </div>
-  </header>
+  <!-- @page founders -->
+  <!-- @include header -->
 
   <main>
     <section class="founders-hero container" aria-labelledby="founders-title">
@@ -135,38 +122,8 @@
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div class="footer-brand">
-        <img class="footer-logo" src="brand/proof-foundry-logo-horizontal.svg" alt="Proof Foundry" />
-        <p>Build it. Prove it. Ship it.</p>
-      </div>
-
-      <div>
-                <h2>Products</h2>
-        <ul>
-          <li><a href="/reality-gate/">Reality Gate</a></li>
-          <li><a href="https://cache-vault-landing.pages.dev/" target="_blank" rel="noopener">Cache Vault</a></li>
-          <li><a href="/lights-out/">Lights Out PC</a></li>
-          <li><a href="https://github.com/lazelife420-spec/cleanroom-windows/releases/tag/v1.0.7" target="_blank" rel="noopener">Cleanroom</a></li>
-          <li><a href="/forgecast/">ForgeCast Weather</a></li>
-          <li>HyperSnatch</li>
-        </ul>
-      </div>
-
-      <div>
-        <h2>Company</h2>
-        <ul>
-          <li><a href="founders.html">Founders Circle</a></li>
-          <li><a href="https://theprooffoundry.com/#proof-standard">Proof Standard</a></li>
-          <li><a href="/proof/">Receipts</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="container footer-bottom">
-      <p>&copy; 2026 Proof Foundry. All rights reserved.</p>
-    </div>
-  </footer>
+  <!-- @include footer -->
+  <script src="/site.js" defer></script>
 </body>
 </html>
 

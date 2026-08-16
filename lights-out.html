@@ -7,12 +7,12 @@
   <meta name="description" content="Lights Out PC is a local Windows bedtime shutdown timer. Wind down, start a timed shutdown, cancel safely, and receive proof-style confirmation. A Proof Foundry product." />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#0B0F14" />
-  <link rel="canonical" href="https://theprooffoundry.com/lights-out" />
+  <link rel="canonical" href="https://theprooffoundry.com/lights-out/" />
 
   <meta property="og:title" content="Lights Out PC — Bedtime Mode for Windows" />
   <meta property="og:description" content="Local Windows bedtime shutdown timer. Wind down. Rest easy. A Proof Foundry product." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://theprooffoundry.com/lights-out" />
+  <meta property="og:url" content="https://theprooffoundry.com/lights-out/" />
   <meta property="og:site_name" content="The Proof Foundry" />
   <meta property="og:image" content="https://theprooffoundry.com/assets/lights-out/lights-out-og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -20,7 +20,7 @@
   <meta name="twitter:description" content="Local Windows bedtime shutdown timer. Wind down. Rest easy." />
   <meta name="twitter:image" content="https://theprooffoundry.com/assets/lights-out/lights-out-og-image.png" />
 
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="/styles.css" />
 
   <script type="application/ld+json">
   {
@@ -44,43 +44,32 @@
   </script>
 </head>
 <body>
-  <header class="site-header" id="top">
-    <div class="container nav-row">
-      <a class="brand-lockup" href="index.html" aria-label="Proof Foundry home">
-        <img class="brand-logo" src="brand/proof-foundry-logo-horizontal.svg" alt="Proof Foundry" />
-      </a>
-      <nav class="top-nav" aria-label="Primary navigation">
-        <a href="index.html">Home</a>
-        <a href="index.html#products">Products</a>
-        <a href="index.html#proof-standard">Proof Standard</a>
-        <a href="founders.html">Founders</a>
-        <a href="/proof/">Receipts</a>
-      </nav>
-      <a class="button button-secondary nav-cta" href="index.html#products">All Products</a>
-    </div>
-  </header>
+  <!-- @page lights-out -->
+  <!-- @product lights-out -->
+  <!-- @include header -->
 
-  <main>
-    <!-- Hero -->
-    <section class="lo-hero container" aria-labelledby="lo-hero-title">
-      <div class="lo-hero-copy">
-        <p class="eyebrow">A Proof Foundry product</p>
-        <h1 id="lo-hero-title">Lights Out PC</h1>
-        <p class="lo-tagline">Bedtime Mode for Windows</p>
-        <p class="lo-secondary">Wind down. Rest easy.</p>
-        <p class="hero-lede">A local Windows bedtime shutdown timer that helps you wind down, start a timed shutdown, cancel safely, and receive proof-style confirmation that it worked.</p>
-        <div class="hero-actions">
-          <span class="button button-muted">Download link coming soon</span>
-          <a class="button button-secondary" href="index.html">Back to Proof Foundry</a>
-        </div>
-      </div>
-      <div class="lo-hero-visual" aria-hidden="true">
-        <img class="lo-hero-img" src="assets/lights-out/lights-out-keyart-hero-ui.png" alt="Lights Out PC cockpit interface" />
-      </div>
+  <main class="container product-page">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/#products">Products</a> <span aria-hidden="true">/</span> <span>Lights Out PC</span>
+    </nav>
+
+    <nav class="product-subnav" aria-label="Product sections">
+      <a href="#overview">Overview</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#proof">Proof</a>
+      <a href="#download">Download</a>
+      <a href="#limitations">Limitations</a>
+    </nav>
+
+    <section id="overview" class="product-hero" aria-labelledby="product-title">
+      <p class="eyebrow">Lights Out PC · {{product.statusLabel}}</p>
+      <h1 id="product-title">Bedtime Mode<br /><span>for Windows.</span></h1>
+      <p class="product-lede">{{product.summary}} Wind down. Rest easy.</p>
+      <div class="download-group">{{product.downloadBlock}}</div>
+      {{product.proofStrip}}
     </section>
 
-    <!-- Trust Strip -->
-    <section class="lo-trust container" aria-label="Trust highlights">
+    <section aria-label="Trust highlights" class="lo-trust">
       <div class="lo-trust-item">
         <span class="lo-trust-icon" aria-hidden="true">&#x1F512;</span>
         <span>Local-first</span>
@@ -99,44 +88,37 @@
       </div>
     </section>
 
-    <!-- Features -->
-    <section class="lo-features container" aria-labelledby="lo-features-title">
+    <section id="how-it-works" class="product-section" aria-labelledby="what-title">
       <div class="section-head">
-        <h2 id="lo-features-title">What Lights Out does</h2>
+        <h2 id="what-title">What Lights Out does</h2>
         <p>Focused bedtime tooling. No cloud account required.</p>
       </div>
-
       <div class="lo-features-grid">
         <article class="lo-feature-card">
           <div class="lo-feature-icon" aria-hidden="true">&#x23F0;</div>
           <h3>Smart Bedtime Timers</h3>
           <p>Preset or custom countdowns. Save profiles for different nights. Quick-start from the tray, keyboard shortcuts, or the cockpit dashboard.</p>
         </article>
-
         <article class="lo-feature-card">
           <div class="lo-feature-icon" aria-hidden="true">&#x1F319;</div>
           <h3>Gentle Wind-Down</h3>
           <p>Dim phase, warnings, pause, snooze, Cinema mode, and emergency cancel help the shutdown feel controlled instead of abrupt.</p>
         </article>
-
         <article class="lo-feature-card">
           <div class="lo-feature-icon" aria-hidden="true">&#x23FB;</div>
           <h3>Automatic Shutdown</h3>
           <p>Shutdown, sleep, hibernate, or restart — with an emergency cancel always available. Force shutdown only when you explicitly ask for it.</p>
         </article>
-
         <article class="lo-feature-card">
           <div class="lo-feature-icon" aria-hidden="true">&#x1F9FE;</div>
           <h3>Morning Proof</h3>
           <p>Receipt-style confirmation of every run: what happened, when it happened, and whether you cancelled or followed through. Honest results.</p>
         </article>
-
         <article class="lo-feature-card">
           <div class="lo-feature-icon" aria-hidden="true">&#x1F525;</div>
           <h3>Streaks &amp; Sleep Score</h3>
           <p>Track your bedtime consistency with a streak counter, achievements, and a sleep score that only counts real completed nights.</p>
         </article>
-
         <article class="lo-feature-card">
           <div class="lo-feature-icon" aria-hidden="true">&#x1F6AB;</div>
           <h3>No Cloud Account</h3>
@@ -145,82 +127,64 @@
       </div>
     </section>
 
-    <!-- Proof Section -->
-    <section class="lo-proof container" aria-labelledby="lo-proof-title">
+    <section id="proof" class="product-section" aria-labelledby="proof-title">
+      <div class="section-head">
+        <h2 id="proof-title">Proof &amp; release evidence</h2>
+        <p>Verified status of the current build.</p>
+      </div>
       <div class="lo-proof-card">
-        <p class="eyebrow">Release proof</p>
-        <h2 id="lo-proof-title">Verified status</h2>
         <dl class="lo-proof-fields">
-          <div>
-            <dt>Runtime UX pass</dt>
-            <dd>Complete</dd>
-          </div>
-          <div>
-            <dt>Smoke suite</dt>
-            <dd>87 passed, 0 failed</dd>
-          </div>
-          <div>
-            <dt>Lint</dt>
-            <dd>0 errors, 15 known warnings remain</dd>
-          </div>
-          <div>
-            <dt>Build</dt>
-            <dd>PowerShell compiled (SleepTimer.exe)</dd>
-          </div>
-          <div>
-            <dt>Public download</dt>
-            <dd>Coming after account-safe distribution is ready</dd>
-          </div>
+          <div><dt>Runtime UX pass</dt><dd>Complete</dd></div>
+          <div><dt>Smoke suite</dt><dd>87 passed, 0 failed</dd></div>
+          <div><dt>Lint</dt><dd>0 errors, 15 known warnings remain</dd></div>
+          <div><dt>Build</dt><dd>{{product.build}}</dd></div>
+          <div><dt>Public download</dt><dd>Coming after account-safe distribution is ready</dd></div>
         </dl>
-        <p class="lo-proof-note">Download link coming after account-safe distribution is ready. No GitHub release is live at this time.</p>
+        {{product.releaseNoteBlock}}
       </div>
     </section>
 
-    <!-- CTA -->
-    <section class="lo-cta container">
-      <div class="lo-cta-card">
-        <img class="lo-cta-wordmark" src="assets/lights-out/lights-out-wordmark-banner.png" alt="Lights Out" />
-        <p>Bedtime Mode for Windows.<br />Built by The Proof Foundry.</p>
-        <div class="hero-actions" style="justify-content:center">
-          <span class="button button-muted">Download coming soon</span>
-          <a class="button button-secondary" href="index.html#products">Explore all products</a>
-        </div>
+    <section id="limitations" class="product-section" aria-labelledby="limits-title">
+      <div class="section-head">
+        <h2 id="limits-title">Known limitations</h2>
+        <p>Honest about what is not ready yet.</p>
+      </div>
+      <div class="detail-grid">
+        <article class="detail-card">
+          <h3>No public download yet</h3>
+          <p>The public build is still in testing. No GitHub release is live at this time. The download link appears once account-safe distribution is ready.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Windows only</h3>
+          <p>Built for Windows 10 and Windows 11. No macOS or Linux build in this cycle.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="download" class="product-section" aria-labelledby="download-title">
+      <div class="section-head">
+        <h2 id="download-title">Download</h2>
+        <p>Not available yet — this is the current status, not a promise.</p>
+      </div>
+      <div class="download-group">{{product.downloadBlock}}</div>
+      <p class="note">No GitHub release is live at this time. The download link appears once account-safe distribution is ready.</p>
+    </section>
+
+    <section class="product-section other-products" aria-labelledby="other-title">
+      <div class="section-head">
+        <h2 id="other-title">Other Proof Foundry products</h2>
+      </div>
+      <div class="other-products-grid">
+        <a class="other-product-chip" href="/reality-gate/">Reality Gate</a>
+        <a class="other-product-chip" href="/cache-vault/">Cache Vault</a>
+        <a class="other-product-chip" href="/cleanroom/">Cleanroom</a>
+        <a class="other-product-chip" href="/forgecast/">ForgeCast Weather</a>
+        <a class="other-product-chip" href="/proofshot/">ProofShot</a>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div class="footer-brand">
-        <img class="footer-logo" src="brand/proof-foundry-logo-horizontal.svg" alt="Proof Foundry" />
-        <p>Build it. Prove it. Ship it.</p>
-      </div>
-
-      <div>
-                <h2>Products</h2>
-        <ul>
-          <li><a href="/reality-gate/">Reality Gate</a></li>
-          <li><a href="https://cache-vault-landing.pages.dev/" target="_blank" rel="noopener">Cache Vault</a></li>
-          <li><a href="/lights-out/">Lights Out PC</a></li>
-          <li><a href="https://github.com/lazelife420-spec/cleanroom-windows/releases/tag/v1.0.7" target="_blank" rel="noopener">Cleanroom</a></li>
-          <li><a href="/forgecast/">ForgeCast Weather</a></li>
-          <li>HyperSnatch</li>
-        </ul>
-      </div>
-
-      <div>
-        <h2>Company</h2>
-        <ul>
-          <li><a href="founders.html">Founders Circle</a></li>
-          <li><a href="index.html#proof-standard">Proof Standard</a></li>
-          <li><a href="/proof/">Receipts</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="container footer-bottom">
-      <p>&copy; 2026 Proof Foundry. All rights reserved.</p>
-    </div>
-  </footer>
+  <!-- @include footer -->
+  <script src="/site.js" defer></script>
 </body>
 </html>
-
