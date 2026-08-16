@@ -102,6 +102,18 @@ foreach ($p in $manifest.products) {
   if ($p.cta -like 'Download*' -and [string]::IsNullOrWhiteSpace($p.downloadUrl)) {
     $errors += "$tag cta says Download but downloadUrl is empty"
   }
+
+  # A download label that says "Download" must name the version the manifest
+  # already knows, so the button and the status chip can never disagree.
+  if ($p.downloadLabel -like 'Download*' -and -not [string]::IsNullOrWhiteSpace($p.version)) {
+    if ($p.downloadLabel -notlike "*$($p.version)*") {
+      $errors += "$tag downloadLabel '$($p.downloadLabel)' omits version $($p.version)"
+    }
+  }
+
+  if (-not [string]::IsNullOrWhiteSpace($p.downloadLabel) -and [string]::IsNullOrWhiteSpace($p.downloadUrl)) {
+    $errors += "$tag downloadLabel set but downloadUrl is empty"
+  }
 }
 
 if ($errors.Count -gt 0) {
@@ -181,11 +193,10 @@ function ProductTokens($p) {
 
   # downloadBlock
   if ([string]::IsNullOrWhiteSpace($p.downloadUrl)) {
-    if ($p.state -eq 'proof') {
-      $tokens['downloadBlock'] = "<span class=`"button button-muted`">No public download yet</span>"
-    } else {
-      $tokens['downloadBlock'] = "<span class=`"button button-muted`">Download coming soon</span>"
-    }
+    # Both are the same disabled treatment, but the wording differs on purpose:
+    # "coming soon" is a commitment, and an in-proof product has not made one.
+    $mutedLabel = if ($p.state -eq 'proof') { 'No public build yet' } else { 'Coming soon' }
+    $tokens['downloadBlock'] = "<span class=`"button button-muted`" aria-disabled=`"true`">$mutedLabel</span>"
   } else {
     $url = $p.downloadUrl
     $label = if ($p.downloadLabel) { $p.downloadLabel } else { 'Download' }

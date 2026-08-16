@@ -19,6 +19,9 @@
   --teal: #B9823F;
   --shadow: 0 24px 54px rgba(0, 0, 0, 0.38);
   --radius: 18px;
+  /* Vertical rhythm between top-level blocks on a product page. Every such
+     block uses this, so a new section cannot introduce its own spacing. */
+  --section-gap: 2.8rem;
 }
 
 html {
@@ -1038,58 +1041,10 @@ h1 span {
 /* ───────────────────────────────────────────────────────────────────────────
    LIGHTS OUT PC LANDING PAGE
    ─────────────────────────────────────────────────────────────────────────── */
-.lo-hero {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 1.2rem;
-  align-items: stretch;
-  margin-bottom: 1.6rem;
-}
-
-.lo-hero > * {
-  min-width: 0;
-}
-
-.lo-hero-copy {
-  border: 1px solid rgba(38, 55, 70, 0.85);
-  border-radius: var(--radius);
-  background: linear-gradient(160deg, rgba(16, 25, 35, 0.95), rgba(10, 16, 24, 0.88));
-  box-shadow: var(--shadow);
-  padding: clamp(1.25rem, 2vw, 2rem);
-}
-
-.lo-tagline {
-  font-size: clamp(1.15rem, 2vw, 1.6rem);
-  color: var(--gold);
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-}
-
-.lo-secondary {
-  color: var(--muted);
-  font-size: 1.05rem;
-  margin-bottom: 0.9rem;
-}
-
-.lo-hero-visual {
-  border: 1px solid rgba(107, 211, 255, 0.25);
-  border-radius: var(--radius);
-  background:
-    radial-gradient(circle at 50% 45%, rgba(107, 211, 255, 0.12), transparent 60%),
-    linear-gradient(160deg, rgba(12, 17, 24, 0.98), rgba(7, 11, 16, 0.92));
-  box-shadow: var(--shadow);
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  padding: 1rem;
-}
-
-.lo-hero-img {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-}
+/* This page was converted onto the shared product template. What remains here
+   is only what the shared template does not already provide: the trust strip,
+   the feature grid, and the proof card. The old bespoke hero and CTA rules were
+   removed because they no longer matched any element. */
 
 /* Trust Strip */
 .lo-trust {
@@ -1097,7 +1052,7 @@ h1 span {
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.8rem 1.5rem;
-  margin-bottom: 2.5rem;
+  margin-block: var(--section-gap);
   padding: 1rem 1.5rem;
   border: 1px solid rgba(38, 55, 70, 0.6);
   border-radius: var(--radius);
@@ -1115,13 +1070,11 @@ h1 span {
 
 .lo-trust-icon {
   font-size: 1rem;
+  display: inline-flex;
+  color: var(--gold);
 }
 
 /* Features */
-.lo-features {
-  margin-bottom: 2.5rem;
-}
-
 .lo-features-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1168,10 +1121,6 @@ h1 span {
 }
 
 /* Proof Section */
-.lo-proof {
-  margin-bottom: 2.5rem;
-}
-
 .lo-proof-card {
   border: 1px solid rgba(214, 168, 79, 0.45);
   border-radius: var(--radius);
@@ -1212,44 +1161,8 @@ h1 span {
   text-align: right;
 }
 
-.lo-proof-note {
-  color: var(--muted);
-  font-size: 0.82rem;
-  margin-top: 0.4rem;
-}
-
-/* CTA */
-.lo-cta {
-  margin-bottom: 2rem;
-}
-
-.lo-cta-card {
-  border: 1px solid rgba(38, 55, 70, 0.85);
-  border-radius: var(--radius);
-  background: linear-gradient(160deg, rgba(16, 25, 35, 0.95), rgba(10, 16, 24, 0.88));
-  box-shadow: var(--shadow);
-  padding: 2rem 1.5rem;
-  text-align: center;
-}
-
-.lo-cta-wordmark {
-  width: min(280px, 80%);
-  height: auto;
-  margin-bottom: 0.8rem;
-}
-
-.lo-cta-card > p {
-  color: var(--muted);
-  font-size: 0.95rem;
-  margin-bottom: 1rem;
-}
-
 /* Lights Out responsive */
 @media (max-width: 900px) {
-  .lo-hero {
-    grid-template-columns: 1fr;
-  }
-
   .lo-features-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1258,10 +1171,6 @@ h1 span {
 @media (max-width: 760px) {
   .lo-features-grid {
     grid-template-columns: 1fr;
-  }
-
-  .lo-hero-copy {
-    padding: 0.95rem 1.05rem;
   }
 
   .lo-trust {
@@ -1369,7 +1278,7 @@ h1 span {
 }
 
 .product-screens {
-  margin: 2.5rem 0;
+  margin-block: var(--section-gap);
 }
 .screenshot-grid {
   display: grid;
@@ -1392,7 +1301,7 @@ h1 span {
 }
 
 .product-section {
-  margin: 2.8rem 0;
+  margin-block: var(--section-gap);
 }
 
 .detail-grid {
