@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>July Update</title>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+html{scroll-behavior:smooth;}
+*{font-family:'Inter',sans-serif;box-sizing:border-box;-webkit-font-smoothing:antialiased;}
+body{
+  background:
+    radial-gradient(circle at 15% -10%, rgba(96,165,250,0.08), transparent 45%),
+    radial-gradient(circle at 90% 10%, rgba(167,139,250,0.06), transparent 40%),
+    radial-gradient(circle at 50% 100%, rgba(52,211,153,0.05), transparent 40%),
+    #0F172A;
+  background-attachment:fixed;
+  color:#E2E8F0;margin:0;padding:0;
+  animation:pageFade .6s ease;
+}
+@keyframes pageFade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.glass{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:20px;box-shadow:0 8px 30px rgba(0,0,0,0.25);}
+.glass-dark{background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.07);border-radius:16px;}
+.danger{color:#F87171;} .safe{color:#34D399;} .warn{color:#FBBF24;} .accent{color:#60A5FA;} .muted{color:#8492A6;} .purple{color:#A78BFA;}
+.big{font-size:clamp(28px,6vw,54px);font-weight:900;line-height:1.05;}
+.label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8492A6;display:flex;align-items:center;gap:8px;}
+.num-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;min-width:22px;border-radius:50%;
+  background:rgba(96,165,250,0.12);border:1px solid rgba(96,165,250,0.4);
+  color:#60A5FA;font-size:11px;font-weight:800;letter-spacing:0;
+}
+.chart-wrap{position:relative;width:100%;height:280px;}
+@media(max-width:640px){.chart-wrap{height:220px;}}
+.tr{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;gap:10px;}
+.tr:last-child{border-bottom:none;}
+.tag{display:inline-block;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:700;white-space:nowrap;}
+.tag-r{background:rgba(248,113,113,.15);color:#F87171;border:1px solid rgba(248,113,113,.25);}
+.tag-g{background:rgba(52,211,153,.15);color:#34D399;border:1px solid rgba(52,211,153,.25);}
+.tag-a{background:rgba(251,191,36,.15);color:#FBBF24;border:1px solid rgba(251,191,36,.25);}
+.tag-b{background:rgba(96,165,250,.15);color:#60A5FA;border:1px solid rgba(96,165,250,.25);}
+.tag-p{background:rgba(167,139,250,.15);color:#A78BFA;border:1px solid rgba(167,139,250,.25);}
+.lift{transition:transform .25s ease,box-shadow .25s ease;}
+.lift:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,0.4);}
+.bar-bg{width:100%;height:8px;background:rgba(255,255,255,0.08);border-radius:999px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:999px;transition:width 1s ease;}
+.warn-box{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);border-radius:12px;padding:14px 18px;}
+.good-box{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);border-radius:12px;padding:14px 18px;}
+.info-box{background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.2);border-radius:12px;padding:14px 18px;}
+.step{padding:18px 16px;border-radius:16px;text-align:center;flex:1;}
+.arrow{color:#334155;font-size:20px;margin:0 2px;}
+.arrow-down-mobile{color:#334155;font-size:18px;text-align:center;line-height:1;}
+.gradient-danger{background:linear-gradient(135deg,#F87171,#A78BFA);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.gradient-safe{background:linear-gradient(135deg,#34D399,#60A5FA);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+@media(max-width:768px){.hide-mobile{display:none;}}
+
+/* bill drain rows — reflow on very narrow screens */
+.bill-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;row-gap:4px;}
+.bill-label{width:96px;flex-shrink:0;}
+.bill-bar{flex:1 1 90px;min-width:60px;}
+.bill-amt{min-width:60px;width:auto;text-align:right;flex-shrink:0;white-space:nowrap;}
+.bill-note{width:80px;text-align:right;flex-shrink:0;font-size:11px;display:none;}
+.bill-compact{padding:14px 14px 12px;}
+.bill-compact .space-y-2 > :not([hidden]) ~ :not([hidden]){margin-top:.35rem;}
+.bill-compact .bill-row{gap:6px;row-gap:2px;}
+.bill-compact .bill-label{font-size:12px;}
+.bill-compact .bill-amt{font-size:12px;}
+.bill-compact .bill-note{font-size:10px;width:72px;}
+.bill-compact .bar-bg{height:7px;}
+.bill-summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.55rem;}
+.bill-summary-card{padding:10px 8px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);}
+.bill-summary-card p{margin:0;}
+@media(max-width:640px){
+  .bill-compact{padding:12px 12px 10px;}
+  .bill-summary-grid{grid-template-columns:1fr;}
+}
+@media(min-width:480px){
+  .bill-label{width:150px;}
+  .bill-amt{width:76px;}
+}
+@media(min-width:640px){
+  .bill-label{width:176px;}
+  .bill-amt{width:80px;}
+  .bill-note{display:block;}
+}
+@media(max-width:379px){
+  .bill-label{order:1;width:auto;flex:1 1 auto;}
+  .bill-amt{order:2;}
+  .bill-bar{order:3;flex:1 1 100%;}
+}
+
+/* back to top */
+#topBtn{position:fixed;bottom:20px;right:20px;width:46px;height:46px;border-radius:50%;
+  background:rgba(15,23,42,0.85);border:1px solid rgba(96,165,250,0.4);color:#60A5FA;font-size:20px;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:50;
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .3s ease;
+  box-shadow:0 8px 24px rgba(0,0,0,0.4);}
+#topBtn.show{opacity:1;pointer-events:auto;}
+
+/* sticky nav */
+.quick-nav{position:sticky;top:10px;z-index:40;margin:0 0 18px 0;padding:10px 12px;border-radius:18px;background:rgba(15,23,42,0.82);border:1px solid rgba(148,163,184,0.18);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
+.quick-nav-list{display:flex;gap:10px;overflow:auto;scrollbar-width:none;}
+.quick-nav-list::-webkit-scrollbar{display:none;}
+.quick-nav-link{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#CBD5E1;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;}
+.quick-nav-link:hover{background:rgba(96,165,250,0.12);border-color:rgba(96,165,250,0.28);color:#DBEAFE;}
+</style>
+</head>
+<body class="p-4 md:p-8 max-w-5xl mx-auto">
+
+<nav class="quick-nav">
+  <div class="quick-nav-list">
+    <a class="quick-nav-link" href="#summary">Summary</a>
+    <a class="quick-nav-link" href="#dates">Key Dates</a>
+    <a class="quick-nav-link" href="#definitions">Definitions</a>
+    <a class="quick-nav-link" href="#bills">Bills</a>
+    <a class="quick-nav-link" href="#subscriptions">Upcoming Charges</a>
+    <a class="quick-nav-link" href="#reset">Reset Plan</a>
+    <a class="quick-nav-link" href="#proof">Proof & Details</a>
+  </div>
+</nav>
+
+<!-- HERO SUMMARY -->
+<section id="summary" class="mb-8 p-5 sm:p-8 md:p-10 rounded-2xl" style="background:rgba(96,165,250,0.07);border:2px solid rgba(96,165,250,0.3);box-shadow:0 12px 40px rgba(0,0,0,0.3);">
+  <h1 class="text-3xl md:text-5xl font-black mb-2 tracking-tight">The <span class="gradient-danger">KOHO</span> Trap</h1>
+  <p class="text-slate-400 text-sm md:text-base mb-6">Why a $1,433.50 paycheque left $237.00 in real cash — and the plan to fix it permanently on July 21st.</p>
+  <div class="space-y-4 text-slate-200 text-base md:text-lg leading-relaxed mb-7">
+    <p>The paycheque from the Province of B.C. was <strong class="text-white">$1,433.50</strong>. Before it could be touched, KOHO automatically took <strong class="danger">$968.97</strong> — that's <strong class="danger">67%</strong> of the cheque — to repay last month's borrowing.</p>
+    <p>KOHO gives back <strong class="warn">$600 as "Cover"</strong> — but Cover can only be spent on the KOHO card. <strong class="danger">It cannot be sent to anyone via e-transfer.</strong> It was used to pay all the bills, but it was never actually real cash — it gets owed back next payday, and the cycle repeats.</p>
+    <p>After all of that, <strong class="warn">$237.00</strong> remains in real, transferable cash. That has to last <strong class="warn">17 more days</strong> — with Cursor Pro+ (~$88.61), ChatGPT ($30), and vape supplies ($34) still coming out, leaving ~$84.</p>
+    <p>On <strong class="safe">July 21st</strong> the cycle breaks: KOHO takes the $600 one final time, and it does not get borrowed back. Starting August: <strong class="safe">+$600 every single month</strong>, as real cash.</p>
+  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center mb-6">
+    <div class="rounded-2xl p-5 lift" style="background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);">
+      <p class="text-xs muted mb-2">Taken by KOHO automatically</p>
+      <p class="danger font-black" style="font-size:clamp(26px,5vw,46px);">$968.97</p>
+      <p class="text-xs muted mt-1">before it could be touched</p>
+    </div>
+    <div class="rounded-2xl p-5 lift" style="background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.3);">
+      <p class="text-xs muted mb-2">Real cash right now</p>
+      <p class="warn font-black" style="font-size:clamp(26px,5vw,46px);">$237.00</p>
+      <p class="text-xs muted mt-1">17 days left · ~$152 still owed</p>
+    </div>
+    <div class="rounded-2xl p-5 lift" style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.3);">
+      <p class="text-xs muted mb-2">Freed up after Jul 21</p>
+      <p class="safe font-black" style="font-size:clamp(26px,5vw,46px);">+$600</p>
+      <p class="text-xs muted mt-1">every month · permanently</p>
+    </div>
+  </div>
+  <!-- COUNTDOWN TO JUL 21 -->
+  <div class="glass-dark p-4 sm:p-5 rounded-xl">
+    <div class="flex flex-wrap justify-between items-center gap-2 mb-2 text-xs sm:text-sm">
+      <span class="text-slate-300 font-bold">Where things stand in the cycle</span>
+      <span class="warn font-bold">11 of 28 days · 17 to go</span>
+    </div>
+    <div class="bar-bg"><div class="bar-fill" style="width:39.3%;background:linear-gradient(90deg,#60A5FA,#FBBF24);"></div></div>
+    <p class="text-xs muted mt-2">Jun 23 payday → today (Jul 4) → Jul 21 next payday. 11 days in, 17 days of tight cash left before the cycle resets.</p>
+  </div>
+</section>
+
+<!-- QUICK DEFINITIONS -->
+<div id="definitions" class="info-box mb-5 text-sm text-slate-300">
+  <p class="label mb-3" style="color:#A78BFA;">Quick definitions</p>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div><span class="purple font-bold">Cover — </span>a short-term credit line KOHO extends against the next paycheque. It can only be spent on the KOHO card itself; it cannot be e-transferred to a bank account or another person.</div>
+    <div><span class="purple font-bold">Credit Building — </span>a KOHO product that locks part of each paycheque away as collateral to help build credit history. That money is inaccessible until KOHO releases it — and it isn't a one-time lock: it has to be reapplied for every single month, then there's at least a 3-day wait before any released funds become available.</div>
+  </div>
+</div>
+
+<!-- SECTION 9: COVER DRAIN VISUAL -->
+<section id="bills" class="glass p-4 sm:p-6 md:p-8 mb-6" style="border-color:rgba(248,113,113,0.2);">
+  <h2 class="label mb-2"><span class="num-badge" style="background:rgba(248,113,113,0.12);border-color:rgba(248,113,113,0.4);color:#F87171;">9</span><span style="color:#F87171;">Where the $600 Cover Goes — Bill by Bill</span></h2>
+  <p class="text-slate-400 text-sm mb-5">KOHO hands back $600 as Cover credit. Here's how every dollar of it disappears on real bills.</p>
+  <div class="glass-dark bill-compact mb-4">
+    <div class="flex flex-wrap justify-between items-center gap-2 mb-4">
+      <span class="text-white font-bold">Cover Balance — $600.00</span>
+      <span class="tag tag-r">CARD ONLY · CANNOT E-TRANSFER</span>
+    </div>
+    <div class="space-y-2 text-xs sm:text-sm">
+      <div class="bill-row">
+        <span class="text-slate-400 bill-label truncate">BC Hydro</span>
+        <div class="bill-bar bar-bg"><div class="bar-fill" style="width:16.7%;background:#F87171;"></div></div>
+        <span class="danger font-bold bill-amt">−$100.00</span>
+        <span class="muted bill-note">→ $500 left</span>
+      </div>
+      <div class="bill-row">
+        <span class="text-slate-400 bill-label truncate">Internet</span>
+        <div class="bill-bar bar-bg"><div class="bar-fill" style="width:33.3%;background:#F87171;"></div></div>
+        <span class="danger font-bold bill-amt">−$100.00</span>
+        <span class="muted bill-note">→ $400 left</span>
+      </div>
+      <div class="bill-row">
+        <span class="text-slate-400 bill-label truncate">Dispensary</span>
+        <div class="bill-bar bar-bg"><div class="bar-fill" style="width:71.7%;background:#F87171;"></div></div>
+        <span class="danger font-bold bill-amt">−$230.00</span>
+        <span class="muted bill-note">→ $170 left</span>
+      </div>
+      <div class="bill-row">
+        <span class="text-slate-400 bill-label truncate">Groceries &amp; essentials</span>
+        <div class="bill-bar bar-bg"><div class="bar-fill" style="width:78.6%;background:#F87171;"></div></div>
+        <span class="danger font-bold bill-amt">−$41.37</span>
+        <span class="muted bill-note">→ $129 left</span>
+      </div>
+      <div class="bill-row">
+        <span class="text-slate-400 bill-label truncate">Clothing / household</span>
+        <div class="bill-bar bar-bg"><div class="bar-fill" style="width:85.3%;background:#F87171;"></div></div>
+        <span class="danger font-bold bill-amt">−$40.00</span>
+        <span class="muted bill-note">→ $89 left</span>
+      </div>
+      <div class="bill-row">
+        <span class="text-slate-400 bill-label truncate">Vape supplies</span>
+        <div class="bill-bar bar-bg"><div class="bar-fill" style="width:90.9%;background:#F87171;"></div></div>
+        <span class="danger font-bold bill-amt">−$34.00</span>
+        <span class="muted bill-note">→ $55 left</span>
+      </div>
+      <div class="bill-row">
+        <span class="text-slate-400 bill-label truncate">Phone bill</span>
+        <div class="bill-bar bar-bg"><div class="bar-fill" style="width:96.6%;background:#F87171;"></div></div>
+        <span class="danger font-bold bill-amt">−$34.00</span>
+        <span class="muted bill-note">→ $21 left</span>
+      </div>
+      <div class="bill-row">
+        <span class="text-slate-400 bill-label truncate">Pharmacy</span>
+        <div class="bill-bar bar-bg"><div class="bar-fill" style="width:100%;background:#F87171;"></div></div>
+        <span class="danger font-bold bill-amt">−$20.63</span>
+        <span class="muted bill-note">→ $0 left</span>
+      </div>
+      <div class="mt-3 pt-3" style="border-top:1px solid rgba(255,255,255,0.08);">
+        <div class="bill-row">
+          <span class="bill-label font-bold safe truncate">Cover fully spent</span>
+          <div class="bill-bar bar-bg"><div class="bar-fill" style="width:100%;background:rgba(52,211,153,0.35);"></div></div>
+          <span class="safe font-bold bill-amt">$0.00</span>
+          <span class="bill-note safe">ALL GONE</span>
+        </div>
+        <p class="text-xs muted mt-2">Every dollar of Cover consumed by bills. None of it was real cash — and it all gets owed back next payday.</p>
+      </div>
+    </div>
+  </div>
+  <div class="bill-summary-grid text-center mb-4">
+    <div class="bill-summary-card"><p class="text-xs muted mb-1">Cover started at</p><p class="text-white font-black text-lg">$600.00</p><p class="text-xs muted">handed back by KOHO</p></div>
+    <div class="bill-summary-card" style="border-color:rgba(248,113,113,0.2);"><p class="text-xs muted mb-1">Spent on bills</p><p class="danger font-black text-lg">−$600.00</p><p class="text-xs muted">fully consumed</p></div>
+    <div class="bill-summary-card" style="border-color:rgba(52,211,153,0.2);"><p class="text-xs muted mb-1">Cover remaining</p><p class="safe font-black text-lg">$0.00</p><p class="text-xs safe font-bold">fully spent</p></div>
+  </div>
+  <div class="warn-box text-sm"><strong class="warn">The entire $600 Cover was consumed.</strong> Every dollar gone on real bills. But it was never real money — next payday KOHO sweeps the full $600 back again. That's the trap.</div>
+</section>
+
+<!-- SECTION 1: KEY DATES -->
+<section id="dates" class="glass p-4 sm:p-6 md:p-8 mb-6">
+  <h2 class="label mb-4"><span class="num-badge">1</span>Key Dates</h2>
+  <div class="space-y-1">
+    <div class="tr"><span class="accent font-bold">Jun 23</span><span class="text-slate-300">Payday — $1,433.50 deposited · $968.97 swept by KOHO · $379.00 to Neo</span></div>
+    <div class="tr"><span class="warn font-bold">Jul 4</span><span class="text-slate-300">Current — <strong class="warn">$237.00 liquid</strong> · Cover fully spent · ~$152.61 still owed (Cursor + ChatGPT + vape)</span></div>
+    <div class="tr"><span class="safe font-bold">Jul 10</span><span class="text-slate-300">Factory AI expires — $140 saved · auto-renew must stay OFF</span></div>
+    <div class="tr"><span class="safe font-bold">Jul 21</span><span class="text-slate-300">Next payday — final KOHO rake (~$600) · <strong class="safe">do not re-borrow Cover</strong></span></div>
+    <div class="tr" style="border:none;"><span class="safe font-bold">Aug+</span><span class="text-slate-300">Full liquid paycheque — <strong class="safe">+$600/month permanently</strong></span></div>
+  </div>
+</section>
+
+<!-- SECTION 2-3: KOHO LIABILITY + SUBSCRIPTIONS side by side -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+  <section class="glass p-4 sm:p-6" style="border-color:rgba(248,113,113,0.2);">
+    <h2 class="label mb-4"><span class="num-badge" style="background:rgba(248,113,113,0.12);border-color:rgba(248,113,113,0.4);color:#F87171;">2</span>Total KOHO Liability</h2>
+    <div class="tr"><span>Cover Balance (card-only, locked)</span><span class="danger font-bold">$600.00</span></div>
+    <div class="tr"><span>Credit Building Lock (escrow)</span><span class="danger font-bold">$368.97</span></div>
+    <div class="tr"><span>Pay Later Balance (debt)</span><span class="danger font-bold">$50.16</span></div>
+    <div class="tr font-bold text-base"><span>Total Trapped / Owed</span><span class="danger text-xl">~$1,019.13</span></div>
+    <div class="mt-4">
+      <div class="flex justify-between text-xs mb-2"><span class="muted">Liquid ($237 Neo) vs. total (~$1,256)</span><span class="warn font-bold">18.9% liquid</span></div>
+      <div class="bar-bg"><div class="bar-fill" style="width:18.9%;background:#FBBF24;"></div></div>
+      <p class="text-xs muted mt-2">$237 you can send · ~$1,019 in KOHO you cannot use for rent or cash bills</p>
+    </div>
+    <div class="mt-4 p-3 rounded-xl text-xs" style="background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.2);">
+      <p class="purple font-bold mb-1">The rubber band</p>
+      <p class="text-slate-400">KOHO sweeps $600 → hands it back as Cover → Cover forces card-only spending → you owe again next month. Repeats forever until you stop.</p>
+    </div>
+  </section>
+  <section id="subscriptions" class="glass p-4 sm:p-6">
+    <h2 class="label mb-4"><span class="num-badge">3</span>Subscriptions &amp; Upcoming Charges</h2>
+    <div class="space-y-3">
+      <div class="glass-dark p-3 lift flex flex-wrap justify-between items-center gap-2" style="border-color:rgba(52,211,153,0.2);">
+        <div><span class="tag tag-g mr-2">CANCELLED</span><span class="text-white font-bold">Factory AI</span></div>
+        <div class="text-right"><p class="safe font-bold">$140 saved</p><p class="text-xs muted">expires Jul 10 · keep OFF</p></div>
+      </div>
+      <div class="glass-dark p-3 lift flex flex-wrap justify-between items-center gap-2">
+        <div><span class="tag tag-a mr-2">ACTIVE</span><span class="text-white font-bold">ChatGPT Premium</span></div>
+        <p class="warn font-bold">$30.00/mo</p>
+      </div>
+      <div class="glass-dark p-3 lift flex flex-wrap justify-between items-center gap-2">
+        <div><span class="tag tag-a mr-2">ACTIVE</span><span class="text-white font-bold">Claude AI</span></div>
+        <p class="warn font-bold">$30.00/mo</p>
+      </div>
+      <div class="glass-dark p-3 lift flex flex-wrap justify-between items-center gap-2">
+        <div><span class="tag tag-b mr-2">ACTIVE</span><span class="text-white font-bold">YouTube Premium</span></div>
+        <p class="accent font-bold">~$14.00/mo</p>
+      </div>
+      <div class="glass-dark p-3 lift flex flex-wrap justify-between items-center gap-2" style="border-color:rgba(248,113,113,0.25);">
+        <div><span class="tag tag-r mr-2">DUE SOON</span><span class="text-white font-bold">Cursor Pro+</span></div>
+        <div class="text-right"><p class="danger font-bold">$88.61 CAD</p><p class="text-xs muted">hits Neo before Jul 21</p></div>
+      </div>
+      <div class="glass-dark p-3 lift flex flex-wrap justify-between items-center gap-2" style="border-color:rgba(248,113,113,0.25);">
+        <div><span class="tag tag-r mr-2">DUE SOON</span><span class="text-white font-bold">ChatGPT Premium</span></div>
+        <div class="text-right"><p class="danger font-bold">$30.00</p><p class="text-xs muted">hits Neo before Jul 21</p></div>
+      </div>
+      <div class="glass-dark p-3 lift flex flex-wrap justify-between items-center gap-2" style="border-color:rgba(248,113,113,0.25);">
+        <div><span class="tag tag-r mr-2">DUE SOON</span><span class="text-white font-bold">Vape supplies (salt nic)</span></div>
+        <div class="text-right"><p class="danger font-bold">$34.00</p><p class="text-xs muted">hits Neo before Jul 21</p></div>
+      </div>
+      <div class="p-3 rounded-xl text-sm" style="background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.2);">
+        <span class="danger font-bold">After all three charges: </span>
+        <span class="text-slate-400">$237 − $88.61 − $30 − $34 = </span>
+        <strong class="warn">$84.39 left to Jul 21</strong>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- SECTION 4: RESET STRATEGY -->
+<section id="reset" class="glass p-4 sm:p-6 md:p-8 mb-6" style="border-color:rgba(52,211,153,0.2);">
+  <h2 class="label mb-2"><span class="num-badge" style="background:rgba(52,211,153,0.12);border-color:rgba(52,211,153,0.4);color:#34D399;">4</span>The July 21st Reset — The Only Move</h2>
+  <p class="text-slate-400 text-sm mb-6">One deliberate decision. One month of tight. Permanent +$600/month forever.</p>
+  <div class="flex flex-col md:flex-row gap-1 md:gap-3 items-stretch mb-6">
+    <div class="step glass-dark lift flex-1">
+      <div class="text-3xl mb-2">💰</div>
+      <p class="text-white font-bold text-sm">July 21 Payday</p>
+      <p class="text-xs muted mt-1">Cheque lands from Province of B.C.</p>
+    </div>
+    <div class="hidden md:flex arrow self-center text-2xl">→</div>
+    <div class="md:hidden arrow-down-mobile">↓</div>
+    <div class="step glass-dark lift flex-1" style="border-color:rgba(248,113,113,0.2);">
+      <div class="text-3xl mb-2">🪤</div>
+      <p class="text-white font-bold text-sm">Final KOHO Rake</p>
+      <p class="text-xs muted mt-1">~$600 auto-swept. <strong class="danger">Last time.</strong></p>
+    </div>
+    <div class="hidden md:flex arrow self-center text-2xl">→</div>
+    <div class="md:hidden arrow-down-mobile">↓</div>
+    <div class="step glass-dark lift flex-1" style="border-color:rgba(251,191,36,0.2);">
+      <div class="text-3xl mb-2">🛑</div>
+      <p class="text-white font-bold text-sm">Do Not Re-Borrow</p>
+      <p class="text-xs muted mt-1">Don't pull Cover back out. This is the entire plan.</p>
+    </div>
+    <div class="hidden md:flex arrow self-center text-2xl">→</div>
+    <div class="md:hidden arrow-down-mobile">↓</div>
+    <div class="step glass-dark lift flex-1" style="border-color:rgba(52,211,153,0.2);">
+      <div class="text-3xl mb-2">🔓</div>
+      <p class="text-white font-bold text-sm">Liquidity Unlocked</p>
+      <p class="text-xs muted mt-1">$600 stays as real, e-transferable cash.</p>
+    </div>
+    <div class="hidden md:flex arrow self-center text-2xl">→</div>
+    <div class="md:hidden arrow-down-mobile">↓</div>
+    <div class="step lift flex-1" style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.3);border-radius:16px;">
+      <div class="text-3xl mb-2">🚀</div>
+      <p class="safe font-bold text-sm">Full Freedom</p>
+      <p class="text-xs mt-1 safe">+$600/month permanently.</p>
+    </div>
+  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <div class="glass-dark p-4 text-center lift"><p class="text-xs muted mb-1">One-time hit Jul 21</p><p class="big danger">−$600</p></div>
+    <div class="glass-dark p-4 text-center lift"><p class="text-xs muted mb-1">Permanent monthly gain</p><p class="big safe">+$600</p></div>
+    <div class="glass-dark p-4 text-center lift"><p class="text-xs muted mb-1">Months to break even</p><p class="big accent">1</p></div>
+  </div>
+</section>
+
+<!-- SECTION 5: STRUCTURAL, NOT A CHOICE -->
+<section class="glass p-4 sm:p-6 md:p-8 mb-6" style="border-color:rgba(167,139,250,0.25);">
+  <h2 class="label mb-4"><span class="num-badge" style="background:rgba(167,139,250,0.12);border-color:rgba(167,139,250,0.4);color:#A78BFA;">5</span><span style="color:#A78BFA;">This Isn't a Spending Problem</span></h2>
+  <div class="glass-dark p-4 sm:p-5 text-sm leading-relaxed text-slate-300 space-y-3">
+    <p>No amount of budgeting changes this before July 21st. The moment the paycheque lands, KOHO automatically sweeps ~$969 for Cover repayment and Credit Building — <strong class="text-white">before any spending decision is made.</strong> That happens whether every discretionary dollar is cut to zero or not.</p>
+    <p>The $600 that comes back as "Cover" isn't optional to touch — it's the only form the money takes. It can't sit unused as savings; it can't be e-transferred to cover rent or debt. It's card credit by design, and it's the same $600 that gets clawed back next payday no matter how carefully it's spent.</p>
+    <p>Credit Building adds its own timing trap on top of that: it isn't a one-time lock either. It has to be <strong class="text-white">reapplied for every single month</strong>, and even once it's approved there's <strong class="text-white">at least a 3-day wait</strong> before any released funds actually become available. That delay is set by KOHO's process, not by planning or budgeting — there's no way to speed it up.</p>
+    <p>In other words: this cycle isn't the result of overspending this month. It's how the product is structured to repay itself. The only thing that changes it is the one move already in motion — <strong class="safe">let the July 21st sweep happen and don't re-borrow the Cover.</strong> Until that day, the math is fixed regardless of behaviour.</p>
+  </div>
+</section>
+
+<!-- SOURCE NOTE -->
+<div class="mb-5 px-5 py-4 rounded-2xl text-sm text-slate-300 flex items-start gap-4" style="background:rgba(96,165,250,0.06);border:1px solid rgba(96,165,250,0.2);">
+  <svg class="w-5 h-5 mt-0.5 shrink-0" style="color:#60A5FA;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+  <span><strong class="text-white">Source:</strong> This document was compiled by reviewing all available bank and account statements. The figures below reflect where the numbers actually end up after every transaction is accounted for — not estimates, not approximations. <strong style="color:#60A5FA;">This is what the statements show.</strong> <span class="text-slate-400">Scope: covers transactions from the June 23rd payday onward only.</span></span>
+</div>
+
+<!-- SECTION 6: PAYDAY BREAKDOWN -->
+<section id="proof" class="glass p-4 sm:p-6 md:p-8 mb-6">
+  <h2 class="label mb-4"><span class="num-badge">6</span>The June 23rd Payday — What Actually Happened</h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+    <div class="glass-dark p-4 sm:p-5 lift">
+      <p class="label mb-2">Gross Deposit</p>
+      <p class="big text-white">$1,433.50</p>
+      <p class="text-slate-500 text-xs mt-1">Province of B.C. payroll</p>
+    </div>
+    <div class="glass-dark p-4 sm:p-5 lift" style="border-color:rgba(248,113,113,0.2);">
+      <p class="label mb-2">KOHO Auto-Rake</p>
+      <p class="big danger">−$968.97</p>
+      <p class="text-slate-500 text-xs mt-1">67.6% swept before you could touch it</p>
+    </div>
+    <div class="glass-dark p-4 sm:p-5 lift" style="border-color:rgba(251,191,36,0.2);">
+      <p class="label mb-2">Neo Cash Now</p>
+      <p class="big warn">$237.00</p>
+      <p class="text-slate-500 text-xs mt-1">Real, e-transferable balance</p>
+    </div>
+  </div>
+  <!-- HOW KOHO WORKS FLOW -->
+  <div class="glass-dark p-4 sm:p-5 mb-5">
+    <p class="label mb-4">How it works every payday</p>
+    <div class="flex flex-col md:flex-row gap-1 md:gap-2 items-stretch md:items-center text-center text-sm">
+      <div class="flex-1 p-3 rounded-xl" style="background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);">
+        <p class="text-xs muted mb-1">① Cheque lands</p>
+        <p class="accent font-bold text-xl">~$1,450</p>
+        <p class="text-xs muted">hits KOHO</p>
+      </div>
+      <div class="hidden md:block arrow font-bold">→</div>
+      <div class="md:hidden arrow-down-mobile">↓</div>
+      <div class="flex-1 p-3 rounded-xl" style="background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.2);">
+        <p class="text-xs muted mb-1">② KOHO takes</p>
+        <p class="danger font-bold text-xl">−$969</p>
+        <p class="text-xs muted">Cover + Credit Building</p>
+      </div>
+      <div class="hidden md:block arrow font-bold">→</div>
+      <div class="md:hidden arrow-down-mobile">↓</div>
+      <div class="flex-1 p-3 rounded-xl" style="background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);">
+        <p class="text-xs muted mb-1">③ Gives back</p>
+        <p class="warn font-bold text-xl">$600 Cover</p>
+        <p class="text-xs danger font-bold">can't e-transfer</p>
+      </div>
+      <div class="hidden md:block arrow font-bold">→</div>
+      <div class="md:hidden arrow-down-mobile">↓</div>
+      <div class="flex-1 p-3 rounded-xl" style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.2);">
+        <p class="text-xs muted mb-1">④ You move</p>
+        <p class="safe font-bold text-xl">$379</p>
+        <p class="text-xs muted">to Neo — real cash</p>
+      </div>
+    </div>
+    <p class="text-xs muted text-center mt-3">$1,433.50 in → $968.97 swept → $379.00 to Neo → −$142 Jul spend → $237.00 current</p>
+  </div>
+  <!-- DEDUCTIONS TABLE -->
+  <div class="glass-dark p-4 mb-4">
+    <p class="label mb-3">KOHO Deductions — June 23rd</p>
+    <div class="tr"><span>Cover Repaid</span><span class="danger font-bold">−$600.00</span></div>
+    <div class="tr"><span>Credit Building Contributions</span><span class="danger font-bold">−$368.97</span></div>
+    <div class="tr font-bold"><span>Total auto-swept</span><span class="danger">−$968.97</span></div>
+    <div class="tr"><span class="muted text-xs">Remaining → moved to Neo as real cash</span><span class="safe text-xs font-bold">$379.00</span></div>
+  </div>
+  <div class="warn-box text-sm">
+    <strong class="warn">67.6% of the paycheque</strong> was automatically seized before it could be touched. The $600 Cover given back looks like money — but <strong class="danger">it cannot be sent to anyone.</strong> Every bill came off that Cover card. Next payday KOHO sweeps it back again.
+  </div>
+</section>
+
+<!-- SECTION 7-8: CHARTS -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+  <section class="glass p-4 sm:p-6">
+    <h2 class="label mb-4"><span class="num-badge">7</span>Where $1,433.50 Went</h2>
+    <div class="chart-wrap"><canvas id="allocationChart" role="img" aria-label="Doughnut chart: of the $1,433.50 paycheque, $237.00 is current Neo cash, $600.00 is KOHO Cover repaid, $368.97 is Credit Building locked escrow, and $227.53 is July outlays and remnant."></canvas></div>
+    <p class="muted text-xs mt-3">The green slice is every dollar received as liquid cash. Everything else never reached you as spendable money.</p>
+  </section>
+  <section class="glass p-4 sm:p-6">
+    <h2 class="label mb-4"><span class="num-badge">8</span>KOHO Rake Breakdown</h2>
+    <div class="chart-wrap"><canvas id="rakeChart" role="img" aria-label="Bar chart: KOHO Cover repaid $600.00, Credit Building locked $368.97, Pay Later debt $50.16, and $379.00 moved to Neo."></canvas></div>
+    <p class="muted text-xs mt-3">Cover $600 + Credit Building $369 = $969 swept from this payday. Pay Later ($50.16) is a separate KOHO balance, not part of this payday's sweep. Green bar shows what made it to Neo.</p>
+  </section>
+</div>
+
+<!-- SECTION 10: CREDIT BUILDING DOUBLE-HIT -->
+<section class="glass p-4 sm:p-6 md:p-8 mb-6" style="border-color:rgba(251,191,36,0.2);">
+  <h2 class="label mb-2"><span class="num-badge" style="background:rgba(251,191,36,0.12);border-color:rgba(251,191,36,0.4);color:#FBBF24;">10</span><span style="color:#FBBF24;">The Double-Hit — Why There's Barely Anything Left to E-Transfer</span></h2>
+  <p class="text-slate-400 text-sm mb-5">Cover repayment AND Credit Building both come out the instant the cheque lands. Two sweeps at once, before you can move a dollar.</p>
+  <div class="glass-dark p-4 sm:p-5 mb-5">
+    <div class="space-y-3">
+      <div class="flex items-center gap-3 sm:gap-4 p-3 rounded-xl" style="background:rgba(52,211,153,0.07);border:1px solid rgba(52,211,153,0.2);">
+        <div class="text-2xl">💰</div>
+        <div class="flex-1 min-w-0"><p class="text-white font-bold text-sm">Paycheque arrives</p><p class="text-xs muted">Province of B.C. deposit hits KOHO</p></div>
+        <p class="safe font-black text-lg sm:text-xl whitespace-nowrap">+$1,433.50</p>
+      </div>
+      <div class="flex items-center gap-3 sm:gap-4 p-3 rounded-xl" style="background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.2);">
+        <div class="text-2xl">🪤</div>
+        <div class="flex-1 min-w-0"><p class="text-white font-bold text-sm">KOHO instantly takes: Cover repayment</p><p class="text-xs muted">Automatic — happens before you can touch it</p></div>
+        <p class="danger font-black text-lg sm:text-xl whitespace-nowrap">−$600.00</p>
+      </div>
+      <div class="flex justify-end pr-1"><span class="text-xs muted">After Cover sweep → </span><span class="text-xs warn font-bold ml-1">$833.50</span></div>
+      <div class="flex items-center gap-3 sm:gap-4 p-3 rounded-xl" style="background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.25);">
+        <div class="text-2xl">🔒</div>
+        <div class="flex-1 min-w-0"><p class="text-white font-bold text-sm">KOHO instantly takes: Credit Building</p><p class="text-xs muted">Also automatic — locked as collateral escrow, not accessible</p></div>
+        <p class="danger font-black text-lg sm:text-xl whitespace-nowrap">−$368.97</p>
+      </div>
+      <div class="flex justify-end pr-1"><span class="text-xs muted">After both sweeps → </span><span class="text-xs warn font-bold ml-1">$464.53</span></div>
+      <div class="flex items-center gap-3 sm:gap-4 p-3 rounded-xl" style="background:rgba(100,116,139,0.07);border:1px solid rgba(100,116,139,0.2);">
+        <div class="text-2xl">💸</div>
+        <div class="flex-1 min-w-0"><p class="text-white font-bold text-sm">Fees &amp; remnant stays in KOHO</p><p class="text-xs muted">Not transferred to Neo</p></div>
+        <p class="muted font-black text-lg sm:text-xl whitespace-nowrap">−$85.53</p>
+      </div>
+      <div class="flex items-center gap-3 sm:gap-4 p-3 rounded-xl" style="background:rgba(96,165,250,0.07);border:1px solid rgba(96,165,250,0.25);">
+        <div class="text-2xl">🏦</div>
+        <div class="flex-1 min-w-0"><p class="text-white font-bold text-sm">What actually moves to Neo</p><p class="text-xs muted">The only part that becomes real, e-transferable cash</p></div>
+        <p class="accent font-black text-lg sm:text-xl whitespace-nowrap">$379.00</p>
+      </div>
+    </div>
+  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+    <div class="glass-dark p-3 sm:p-4 text-center rounded-xl" style="border-color:rgba(248,113,113,0.2);">
+      <p class="text-xs muted mb-1">Total swept by KOHO</p>
+      <p class="danger font-black text-2xl">$968.97</p>
+      <p class="text-xs muted">Cover + Credit Building</p>
+    </div>
+    <div class="glass-dark p-3 sm:p-4 text-center rounded-xl" style="border-color:rgba(251,191,36,0.2);">
+      <p class="text-xs muted mb-1">Made it to Neo</p>
+      <p class="warn font-black text-2xl">$379.00</p>
+      <p class="text-xs muted">only 26¢ on every dollar</p>
+    </div>
+    <div class="glass-dark p-3 sm:p-4 text-center rounded-xl" style="border-color:rgba(52,211,153,0.2);">
+      <p class="text-xs muted mb-1">Current Neo balance</p>
+      <p class="safe font-black text-2xl">$237.00</p>
+      <p class="text-xs muted">after Jul spending</p>
+    </div>
+  </div>
+  <div class="warn-box text-sm"><strong class="warn">26 cents on every dollar</strong> made it to Neo as real cash. The Credit Building hit ($369) is the second biggest deduction — right behind Cover. Both come out instantly. That's why the cheque feels like it just vanishes.</div>
+</section>
+
+<!-- FOOTER -->
+<footer class="text-center text-slate-600 text-xs pb-8 border-t border-slate-800 pt-6">
+  Data verified against Neo Financial Statement &amp; KOHO Account Records.<br>
+  Jun 23 payday transfer <strong class="text-slate-500">$379.00</strong> confirmed from primary source ·
+  Current liquid cash <strong class="text-slate-500">$237.00</strong> · Generated July 4, 2026.
+</footer>
+
+<button id="topBtn" aria-label="Back to top">↑</button>
+
+<script>
+Chart.defaults.font.family = "'Inter', sans-serif";
+Chart.defaults.color = '#8492A6';
+const isMobile = window.matchMedia('(max-width:640px)').matches;
+const tip = { callbacks: { title(items) { const l = items[0].chart.data.labels[items[0].dataIndex]; return Array.isArray(l) ? l.join(' ') : l; } } };
+
+new Chart(document.getElementById('allocationChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Neo — Current Cash ($237.00)', 'KOHO Cover Repaid (card credit)', 'Credit Building (locked escrow)', 'Jul Outlays / Remnant'],
+    datasets: [{ data: [237.00, 600.00, 368.97, 227.53], backgroundColor: ['#34D399','#F87171','#FB923C','#475569'], borderWidth: 3, borderColor: '#0F172A', hoverOffset: 10 }]
+  },
+  options: {
+    maintainAspectRatio: false, cutout: '62%',
+    animation: { duration: 1200, easing: 'easeOutQuart' },
+    plugins: {
+      legend: { position: 'bottom', labels: { color: '#94A3B8', boxWidth: isMobile ? 10 : 12, padding: isMobile ? 10 : 14, font: { size: isMobile ? 10 : 11 } } },
+      tooltip: { backgroundColor:'#0F172A', padding:12, cornerRadius:10, callbacks: tip.callbacks }
+    }
+  }
+});
+
+new Chart(document.getElementById('rakeChart'), {
+  type: 'bar',
+  data: {
+    labels: [['KOHO Cover','Repaid'], ['Credit Building','Locked'], ['Pay Later','Debt'], ['Moved','to Neo']],
+    datasets: [{ label: '$CAD', data: [600.00, 368.97, 50.16, 379.00], backgroundColor: ['#F87171','#FB923C','#FBBF24','#34D399'], borderRadius: 8, borderWidth: 0 }]
+  },
+  options: {
+    maintainAspectRatio: false,
+    animation: { duration: 1200, easing: 'easeOutQuart' },
+    scales: {
+      y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8492A6', font: { size: isMobile ? 9 : 11 }, callback: v => '$' + v } },
+      x: { grid: { display: false }, ticks: { color: '#8492A6', font: { size: isMobile ? 8 : 10 } } }
+    },
+    plugins: { legend: { display: false }, tooltip: { backgroundColor:'#0F172A', padding:12, cornerRadius:10, callbacks: tip.callbacks } }
+  }
+});
+
+const topBtn = document.getElementById('topBtn');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 500) topBtn.classList.add('show');
+  else topBtn.classList.remove('show');
+});
+topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+</script>
+</body>
+</html>
+
