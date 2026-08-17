@@ -442,7 +442,9 @@
       filter: drop-shadow(0 0 4px rgba(255, 106, 31, 0.48));
     }
 
-    .brand-lockup {
+    /* Scoped to .scene: the shared site header also ships a .brand-lockup,
+       and an unscoped rule here absolutely positions the header logo. */
+    .scene .brand-lockup {
       position: absolute;
       left: 50%;
       top: 58%;
@@ -721,7 +723,7 @@
         width: min(100%, 62%);
       }
 
-      .brand-lockup {
+      .scene .brand-lockup {
         top: 60%;
         width: min(720px, 90%);
       }
@@ -729,7 +731,11 @@
 
     @media (max-width: 720px) {
       body {
-        overflow: auto;
+        /* The mobile layout is taller than the viewport, so the page has to
+           scroll vertically. Keep the horizontal axis clipped like the desktop
+           rule does, or the overhanging decorative layers become scrollable. */
+        overflow-x: hidden;
+        overflow-y: auto;
       }
 
       .foundry-shell {
@@ -737,7 +743,9 @@
       }
 
       .foundry-header {
-        position: static;
+        /* Not static: the shared mobile nav panel is absolutely positioned at
+           top:100% and needs the header itself as its containing block. */
+        position: relative;
         padding-bottom: 0;
       }
 
@@ -802,7 +810,7 @@
         height: 46px;
       }
 
-      .brand-lockup {
+      .scene .brand-lockup {
         top: 61%;
         width: calc(100% - 2rem);
       }
@@ -832,7 +840,7 @@
 
     <header class="site-header foundry-header">
       <div class="container nav-row">
-        <a class="brand-lockup" href="/index.html" aria-label="Proof Foundry home">
+        <a class="brand-lockup" href="/" aria-label="Proof Foundry home">
           <img class="brand-logo" src="/brand/proof-foundry-logo-horizontal.svg" alt="Proof Foundry" />
         </a>
         <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="primary-nav">
@@ -842,18 +850,18 @@
         </button>
         <div class="nav-panel" id="primary-nav">
           <nav class="top-nav" aria-label="Prototype navigation">
-            <a href="/index.html">Home</a>
+            <a href="/">Home</a>
             <a href="/proof/">Receipts</a>
-            <a href="/founders.html">Founders</a>
+            <a href="/founders/">Founders</a>
           </nav>
-          <a class="button button-secondary nav-cta" href="/index.html#proof-standard">Proof Standard</a>
+          <a class="button button-secondary nav-cta" href="/#proof-standard">Proof Standard</a>
         </div>
       </div>
     </header>
 
     <div class="controls">
       <button type="button" id="replay-btn">Replay Sequence</button>
-      <a href="/index.html">Back Home</a>
+      <a href="/">Back Home</a>
     </div>
 
     <main class="foundry-stage">
