@@ -175,6 +175,10 @@
       gap: 1rem;
     }
 
+    .lo-page .lo-shot-row.standalone {
+      margin-top: 1.25rem;
+    }
+
     /* Phone shots — legible at ~250px wide, never shrunk into meaninglessness. */
     .lo-page .lo-phone-row {
       display: flex;
@@ -260,12 +264,13 @@
       color: var(--gold);
     }
 
-    /* Devices surface — rendered as scoped status cards, mirroring the app's
-       layout without pretending to be a screenshot. */
+    /* Devices surface — rendered as scoped status cards mirroring the app's
+       layout, beneath the real panel screenshot. */
     .lo-page .lo-statuscards {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
       gap: 0.85rem;
+      margin-top: 1.1rem;
     }
 
     .lo-page .lo-statuscard {
@@ -519,22 +524,29 @@
             <li>While it runs: current phase, remaining time, then pause, snooze, or cancel — always available.</li>
           </ul>
         </div>
-        <div class="lo-shot-row">
-          <figure class="lo-shot" aria-labelledby="shot-plan-cap">
-            <img
-              src="/assets/lights-out/tonight-plan-projection.png"
-              alt="Tonight's plan projected before a Full Shutdown session starts, showing the action, ending style, clearance, and proof schedule."
-              width="1127" height="1154" loading="lazy" />
-            <figcaption id="shot-plan-cap">The plan, projected before a Full Shutdown session runs.</figcaption>
-          </figure>
-          <figure class="lo-shot" aria-labelledby="shot-movie-cap">
-            <img
-              src="/assets/lights-out/tonight-movie-running.png"
-              alt="A Movie Wind-Down session running: timer counting down with the ending preset active."
-              width="1127" height="1154" loading="lazy" />
-            <figcaption id="shot-movie-cap">Movie Wind-Down, running.</figcaption>
-          </figure>
-        </div>
+        <figure class="lo-shot" aria-labelledby="shot-plan-cap">
+          <img
+            src="/assets/lights-out/tonight-plan-projection.png"
+            alt="Tonight's plan projected before a Full Shutdown session starts, showing the action, ending style, clearance, and proof schedule."
+            width="1127" height="1154" loading="lazy" />
+          <figcaption id="shot-plan-cap">The plan, projected before a Full Shutdown session runs.</figcaption>
+        </figure>
+      </div>
+      <div class="lo-shot-row standalone">
+        <figure class="lo-shot" aria-labelledby="shot-movie-cap">
+          <img
+            src="/assets/lights-out/tonight-movie-running.png"
+            alt="A Movie Wind-Down session running: timer counting down with the ending preset active."
+            width="1127" height="1154" loading="lazy" />
+          <figcaption id="shot-movie-cap">Movie Wind-Down, running.</figcaption>
+        </figure>
+        <figure class="lo-shot" aria-labelledby="shot-modes-cap">
+          <img
+            src="/assets/lights-out/night-modes-panel.png"
+            alt="The Night Modes panel showing the preset endings, from Movie Wind-Down and Full Shutdown to Quiet House and School Night."
+            width="1600" height="1002" loading="lazy" />
+          <figcaption id="shot-modes-cap">Night Modes — six preset endings from Movie Wind-Down to Full Shutdown.</figcaption>
+        </figure>
       </div>
     </section>
 
@@ -589,22 +601,29 @@
           </ul>
           <p>Two supporting systems round out the routine: a <strong>Bedtime Reminder</strong> that nudges you before bed (on by default, 15 minutes before), and <strong>Autopilot Bedtime</strong>, which learns your pattern and offers to start the session — off by default until you turn it on.</p>
         </div>
-        <div class="lo-cards">
-          <div class="lo-card">
-            <span class="lo-card-step" aria-hidden="true">1</span>
-            <h3>Set the time</h3>
-            <p>A wake time in the app becomes a real scheduled wake event.</p>
-          </div>
-          <div class="lo-card">
-            <span class="lo-card-step" aria-hidden="true">2</span>
-            <h3>Windows wakes the PC</h3>
-            <p>Task Scheduler wakes the machine from sleep or hibernate at the set time.</p>
-          </div>
-          <div class="lo-card">
-            <span class="lo-card-step" aria-hidden="true">3</span>
-            <h3>First Light rises</h3>
-            <p>A gradual brightening sequence runs, followed by the morning briefing.</p>
-          </div>
+        <figure class="lo-shot" aria-labelledby="shot-firstlight-cap">
+          <img
+            src="/assets/lights-out/settings-first-light-automations.png"
+            alt="The Automations settings category: the First Light wake-alarm controls and Autopilot Bedtime."
+            width="1600" height="1002" loading="lazy" />
+          <figcaption id="shot-firstlight-cap">Automations — the First Light wake alarm and Autopilot Bedtime live here.</figcaption>
+        </figure>
+      </div>
+      <div class="lo-cards">
+        <div class="lo-card">
+          <span class="lo-card-step" aria-hidden="true">1</span>
+          <h3>Set the time</h3>
+          <p>A wake time in the app becomes a real scheduled wake event.</p>
+        </div>
+        <div class="lo-card">
+          <span class="lo-card-step" aria-hidden="true">2</span>
+          <h3>Windows wakes the PC</h3>
+          <p>Task Scheduler wakes the machine from sleep or hibernate at the set time.</p>
+        </div>
+        <div class="lo-card">
+          <span class="lo-card-step" aria-hidden="true">3</span>
+          <h3>First Light rises</h3>
+          <p>A gradual brightening sequence runs, followed by the morning briefing.</p>
         </div>
       </div>
     </section>
@@ -620,46 +639,53 @@
           <p>Open Devices and you get the current state of the whole setup in one place: what this PC will do, whether the companion is connected, and which integrations are configured. Each card routes straight into the matching settings.</p>
           <p>Smart Lights and Wi-Fi Guard live here as real, configured-or-planned cards: <a href="#smart-lights">Smart Lights</a> and <a href="#wifi-guard">Wi-Fi Guard</a> each show their armed state — never a silent promise that they are active when they are not.</p>
         </div>
-        <div class="lo-statuscards">
-          <div class="lo-statuscard">
-            <h3>This PC</h3>
-            <dl>
-              <div><dt>Status</dt><dd>Idle or running</dd></div>
-              <div><dt>Action</dt><dd>Shutdown · Sleep · Restart</dd></div>
-              <div><dt>Remaining</dt><dd>Live countdown</dd></div>
-            </dl>
-            <p class="lo-card-foot">Dry Run mode shows here when armed.</p>
-          </div>
-          <div class="lo-statuscard">
-            <h3>Phone Companion</h3>
-            <dl>
-              <div><dt>Network</dt><dd>Local LAN state</dd></div>
-              <div><dt>Mode</dt><dd>Off or on</dd></div>
-              <div><dt>Connected devices</dt><dd>Paired phones</dd></div>
-            </dl>
-            <p class="lo-card-foot">Control Tonight from bed once paired.</p>
-          </div>
-          <div class="lo-statuscard">
-            <h3>Family LAN</h3>
-            <dl>
-              <div><dt>Discovery</dt><dd>Scan for peers</dd></div>
-            </dl>
-            <p class="lo-card-foot">Discovers nearby Lights Out peers on your network — not remote household control.</p>
-          </div>
-          <div class="lo-statuscard">
-            <h3>Smart Lights</h3>
-            <dl>
-              <div><dt>Status</dt><dd>Planned or configured</dd></div>
-            </dl>
-            <p class="lo-card-foot">Hue or HTTP integration set up in Settings.</p>
-          </div>
-          <div class="lo-statuscard">
-            <h3>Wi-Fi Guard</h3>
-            <dl>
-              <div><dt>Status</dt><dd>Planned or configured</dd></div>
-            </dl>
-            <p class="lo-card-foot">Experimental router, webhook, or adapter control.</p>
-          </div>
+        <figure class="lo-shot" aria-labelledby="shot-devices-cap">
+          <img
+            src="/assets/lights-out/devices-panel.png"
+            alt="The Devices panel: This PC status, Phone Companion state, Family LAN discovery, Smart Lights, and Wi-Fi Guard cards."
+            width="1600" height="1002" loading="lazy" />
+          <figcaption id="shot-devices-cap">The real Devices panel — every surface Lights Out can talk to in one view.</figcaption>
+        </figure>
+      </div>
+      <div class="lo-statuscards">
+        <div class="lo-statuscard">
+          <h3>This PC</h3>
+          <dl>
+            <div><dt>Status</dt><dd>Idle or running</dd></div>
+            <div><dt>Action</dt><dd>Shutdown · Sleep · Restart</dd></div>
+            <div><dt>Remaining</dt><dd>Live countdown</dd></div>
+          </dl>
+          <p class="lo-card-foot">Dry Run mode shows here when armed.</p>
+        </div>
+        <div class="lo-statuscard">
+          <h3>Phone Companion</h3>
+          <dl>
+            <div><dt>Network</dt><dd>Local LAN state</dd></div>
+            <div><dt>Mode</dt><dd>Off or on</dd></div>
+            <div><dt>Connected devices</dt><dd>Paired phones</dd></div>
+          </dl>
+          <p class="lo-card-foot">Control Tonight from bed once paired.</p>
+        </div>
+        <div class="lo-statuscard">
+          <h3>Family LAN</h3>
+          <dl>
+            <div><dt>Discovery</dt><dd>Scan for peers</dd></div>
+          </dl>
+          <p class="lo-card-foot">Discovers nearby Lights Out peers on your network — not remote household control.</p>
+        </div>
+        <div class="lo-statuscard">
+          <h3>Smart Lights</h3>
+          <dl>
+            <div><dt>Status</dt><dd>Planned or configured</dd></div>
+          </dl>
+          <p class="lo-card-foot">Hue or HTTP integration set up in Settings.</p>
+        </div>
+        <div class="lo-statuscard">
+          <h3>Wi-Fi Guard</h3>
+          <dl>
+            <div><dt>Status</dt><dd>Planned or configured</dd></div>
+          </dl>
+          <p class="lo-card-foot">Experimental router, webhook, or adapter control.</p>
         </div>
       </div>
     </section>
@@ -680,23 +706,30 @@
           </ul>
           <p class="note">Independent per-light schedules — “Bedroom lights off at 11:00 PM, kitchen at 11:30” — are not part of this build. Light behavior is tied to the PC session tonight.</p>
         </div>
-        <div class="lo-cards">
-          <div class="lo-card">
-            <h3>Wind-down</h3>
-            <p>Dim and warm as the countdown progresses, when the fixture supports color temperature.</p>
-          </div>
-          <div class="lo-card">
-            <h3>End of session</h3>
-            <p>Lights off with the session's end, or follow the Night Mode you chose.</p>
-          </div>
-          <div class="lo-card">
-            <h3>Honest arming</h3>
-            <p>Nothing arms without a passing test connection. Configuration changes disarm it.</p>
-          </div>
-          <div class="lo-card">
-            <h3>Setup today</h3>
-            <p>Philips Hue and generic HTTP webhooks are the exposed integrations in this build.</p>
-          </div>
+        <figure class="lo-shot" aria-labelledby="shot-lights-cap">
+          <img
+            src="/assets/lights-out/settings-smart-lights.png"
+            alt="The Smart Lights settings in Wind-Down: the Philips Hue or HTTP webhook provider selection and test-connection gate."
+            width="1600" height="1002" loading="lazy" />
+          <figcaption id="shot-lights-cap">Smart Lights setup — Philips Hue or HTTP webhook, armed only after a passing test.</figcaption>
+        </figure>
+      </div>
+      <div class="lo-cards">
+        <div class="lo-card">
+          <h3>Wind-down</h3>
+          <p>Dim and warm as the countdown progresses, when the fixture supports color temperature.</p>
+        </div>
+        <div class="lo-card">
+          <h3>End of session</h3>
+          <p>Lights off with the session's end, or follow the Night Mode you chose.</p>
+        </div>
+        <div class="lo-card">
+          <h3>Honest arming</h3>
+          <p>Nothing arms without a passing test connection. Configuration changes disarm it.</p>
+        </div>
+        <div class="lo-card">
+          <h3>Setup today</h3>
+          <p>Philips Hue and generic HTTP webhooks are the exposed integrations in this build.</p>
         </div>
       </div>
     </section>
@@ -716,23 +749,30 @@
             <li>No independent per-device internet schedules in this build.</li>
           </ul>
         </div>
-        <div class="lo-cards">
-          <div class="lo-card">
-            <h3>Router integrations</h3>
-            <p>TP-Link, ASUS, and Netgear paths are implemented and selected per router.</p>
-          </div>
-          <div class="lo-card">
-            <h3>Webhook</h3>
-            <p>A custom HTTP(S) webhook can trigger your own network control.</p>
-          </div>
-          <div class="lo-card">
-            <h3>Local fallback</h3>
-            <p>Disabling the local Wi-Fi adapter works without any router at all.</p>
-          </div>
-          <div class="lo-card">
-            <h3>Recovery</h3>
-            <p>Access is restored when the session ends, is cancelled, or a recurring schedule is no longer active.</p>
-          </div>
+        <figure class="lo-shot" aria-labelledby="shot-wifi-cap">
+          <img
+            src="/assets/lights-out/settings-wifi-guard.png"
+            alt="The Wi-Fi Guard settings under Protection: the router, webhook, or local wireless-adapter provider selection."
+            width="1600" height="1002" loading="lazy" />
+          <figcaption id="shot-wifi-cap">Wi-Fi Guard settings, labelled Experimental — TP-Link, ASUS, Netgear, webhook, or local adapter.</figcaption>
+        </figure>
+      </div>
+      <div class="lo-cards">
+        <div class="lo-card">
+          <h3>Router integrations</h3>
+          <p>TP-Link, ASUS, and Netgear paths are implemented and selected per router.</p>
+        </div>
+        <div class="lo-card">
+          <h3>Webhook</h3>
+          <p>A custom HTTP(S) webhook can trigger your own network control.</p>
+        </div>
+        <div class="lo-card">
+          <h3>Local fallback</h3>
+          <p>Disabling the local Wi-Fi adapter works without any router at all.</p>
+        </div>
+        <div class="lo-card">
+          <h3>Recovery</h3>
+          <p>Access is restored when the session ends, is cancelled, or a recurring schedule is no longer active.</p>
         </div>
       </div>
     </section>
@@ -754,23 +794,30 @@
           </ul>
           <p class="note">One honest boundary: these systems are independently scheduled, not one saved whole-room timeline. “Kitchen lights dim at 11:00, Wi-Fi off at 11:30, PC sleeps at midnight” as a single plan is future direction — not current copy.</p>
         </div>
-        <div class="lo-cards">
-          <div class="lo-card">
-            <h3>Clock-time target</h3>
-            <p>“Shut down at 10:40 PM” instead of “in 45 minutes.”</p>
-          </div>
-          <div class="lo-card">
-            <h3>Recurring rules</h3>
-            <p>Multiple independent rules: at this time, on these days.</p>
-          </div>
-          <div class="lo-card">
-            <h3>Calendar-driven</h3>
-            <p>Live calendar events inform sessions and the morning briefing.</p>
-          </div>
-          <div class="lo-card">
-            <h3>Automations</h3>
-            <p>First Light, Autopilot Bedtime, Bedtime Reminder, and Content Blocker are each scheduled in their own settings.</p>
-          </div>
+        <figure class="lo-shot" aria-labelledby="shot-schedule-cap">
+          <img
+            src="/assets/lights-out/schedule-panel.png"
+            alt="The Schedule screen: the date-and-time target, the also-scheduled First Light, Autopilot Bedtime, and Content Blocker rows, and the calendar import section."
+            width="1600" height="1002" loading="lazy" />
+          <figcaption id="shot-schedule-cap">Schedule — a clock-time target, with First Light, Autopilot, and Content Blocker surfaced alongside.</figcaption>
+        </figure>
+      </div>
+      <div class="lo-cards">
+        <div class="lo-card">
+          <h3>Clock-time target</h3>
+          <p>“Shut down at 10:40 PM” instead of “in 45 minutes.”</p>
+        </div>
+        <div class="lo-card">
+          <h3>Recurring rules</h3>
+          <p>Multiple independent rules: at this time, on these days.</p>
+        </div>
+        <div class="lo-card">
+          <h3>Calendar-driven</h3>
+          <p>Live calendar events inform sessions and the morning briefing.</p>
+        </div>
+        <div class="lo-card">
+          <h3>Automations</h3>
+          <p>First Light, Autopilot Bedtime, Bedtime Reminder, and Content Blocker are each scheduled in their own settings.</p>
         </div>
       </div>
     </section>
@@ -791,13 +838,22 @@
             <li>Completion streaks and a routine consistency score, tracked per night.</li>
           </ul>
         </div>
-        <figure class="lo-shot" aria-labelledby="shot-proof-cap">
-          <img
-            src="/assets/lights-out/proof-morning-visible.png"
-            alt="The Proof screen showing Morning Proof results from the last session."
-            width="1600" height="902" loading="lazy" />
-          <figcaption id="shot-proof-cap">Morning Proof on the desktop — real capture from the v11.1.2 build.</figcaption>
-        </figure>
+        <div class="lo-shot-row">
+          <figure class="lo-shot" aria-labelledby="shot-proof-cap">
+            <img
+              src="/assets/lights-out/proof-morning-visible.png"
+              alt="The Proof screen showing Morning Proof results from the last session."
+              width="1600" height="902" loading="lazy" />
+            <figcaption id="shot-proof-cap">Morning Proof on the desktop — real capture from the v11.1.2 build.</figcaption>
+          </figure>
+          <figure class="lo-shot" aria-labelledby="shot-history-cap">
+            <img
+              src="/assets/lights-out/proof-session-history.png"
+              alt="The Proof panel showing Session History with per-run outcome, and the View Full Ledger button."
+              width="1600" height="1002" loading="lazy" />
+            <figcaption id="shot-history-cap">Session History — completed, cancelled, and dry-run nights are all recorded; View Full Ledger opens the complete list.</figcaption>
+          </figure>
+        </div>
       </div>
     </section>
 
@@ -821,13 +877,22 @@
             <li>Status and proof after every run, including cancellations</li>
           </ul>
         </div>
-        <figure class="lo-shot" aria-labelledby="shot-safety-cap">
-          <img
-            src="/assets/lights-out/settings-power-safety-1920.png"
-            alt="The Power &amp; Safety settings screen: action type, grace period, force-shutdown opt-in, and Dry Run."
-            width="2400" height="1350" loading="lazy" />
-          <figcaption id="shot-safety-cap">Power &amp; Safety settings — action, grace period, force-shutdown opt-in, and Dry Run.</figcaption>
-        </figure>
+        <div class="lo-shot-row">
+          <figure class="lo-shot" aria-labelledby="shot-dryrun-cap">
+            <img
+              src="/assets/lights-out/tonight-dryrun-running.png"
+              alt="A Dry Run session running: the full timer flow rehearsed in real time without touching the system."
+              width="1600" height="1002" loading="lazy" />
+            <figcaption id="shot-dryrun-cap">A real Dry Run session, running the full flow without touching the system.</figcaption>
+          </figure>
+          <figure class="lo-shot" aria-labelledby="shot-safety-cap">
+            <img
+              src="/assets/lights-out/settings-power-safety-1920.png"
+              alt="The Power &amp; Safety settings screen: action type, grace period, force-shutdown opt-in, and Dry Run."
+              width="2400" height="1350" loading="lazy" />
+            <figcaption id="shot-safety-cap">Power &amp; Safety settings — action, grace period, force-shutdown opt-in, and Dry Run.</figcaption>
+          </figure>
+        </div>
       </div>
     </section>
 
