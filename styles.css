@@ -22,6 +22,11 @@
   /* Vertical rhythm between top-level blocks on a product page. Every such
      block uses this, so a new section cannot introduce its own spacing. */
   --section-gap: 2.8rem;
+  /* One shell width for every section, so section edges line up down the whole
+     scroll. Prose is held narrower by --measure instead of by a second, wider
+     container, which would misalign left edges against the hero. */
+  --container: 1360px;
+  --measure: 68ch;
 }
 
 html {
@@ -55,7 +60,7 @@ a {
 
 .container {
   width: 100%;
-  max-width: 1240px;
+  max-width: var(--container);
   margin-inline: auto;
   padding-inline: 1.5rem;
 }
@@ -65,7 +70,9 @@ a {
   top: 0;
   z-index: 30;
   border-bottom: 1px solid rgba(38, 55, 70, 0.72);
-  background: rgba(7, 11, 16, 0.74);
+  /* Near-opaque on purpose. At 0.74 the hero artwork and headline read through
+     the bar while scrolling, which made the nav labels hard to pick out. */
+  background: rgba(7, 11, 16, 0.94);
   -webkit-backdrop-filter: blur(18px);
   backdrop-filter: blur(18px);
 }
@@ -260,9 +267,11 @@ main {
 .hero-image {
   position: absolute;
   top: 50%;
-  right: max(0px, calc((100vw - 1240px) / 2 - 18px));
+  right: max(0px, calc((100vw - var(--container)) / 2 - 18px));
   z-index: -3;
-  width: min(59vw, 760px);
+  /* 735px is the artwork's native width. It was being drawn at 760px, i.e.
+     upscaled, which softened the edges on large displays. */
+  width: min(59vw, 735px);
   height: auto;
   transform: translateY(-48%);
   filter: saturate(0.94) contrast(1.08) brightness(0.9) drop-shadow(0 36px 70px rgba(0, 0, 0, 0.56));
@@ -392,6 +401,7 @@ h1 span {
 .section-head p {
   color: var(--muted);
   font-size: 0.95rem;
+  max-width: var(--measure);
 }
 
 .products-grid {
@@ -470,6 +480,11 @@ h1 span {
   text-transform: uppercase;
   letter-spacing: 0.09em;
   white-space: nowrap;
+  /* A floor rather than a fixed width: short labels stop looking like offcuts
+     next to long ones, but a long label is still allowed to set its own width
+     instead of being truncated. */
+  min-width: 7.5rem;
+  text-align: center;
 }
 
 /* State chips — single source of truth is site-manifest.json state enum */
@@ -1282,7 +1297,7 @@ h1 span {
 }
 .screenshot-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
   gap: 1rem;
 }
 .screenshot-grid figure {
@@ -1306,7 +1321,7 @@ h1 span {
 
 .detail-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
   gap: 1.2rem;
 }
 .detail-card {

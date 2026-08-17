@@ -239,7 +239,10 @@
     /* Product Pillars */
     .rg-pillars {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      /* min() so the track can drop below 300px on a narrow phone. A bare
+         minmax(300px, 1fr) keeps a 300px floor and pushes the card past the
+         viewport, which put a horizontal scrollbar on the page at 320px. */
+      grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
       gap: 2rem;
     }
 
@@ -347,7 +350,7 @@
     /* How It Works */
     .rg-steps {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
       gap: 2rem;
       counter-reset: rg-step;
     }
@@ -464,6 +467,9 @@
       }
       .rg-section {
         padding-block: 3rem;
+      }
+      .rg-pillar-card {
+        padding: 1.5rem;
       }
       .rg-hero {
         grid-template-columns: 1fr;
