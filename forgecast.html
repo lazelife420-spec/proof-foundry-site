@@ -19,13 +19,145 @@
   <meta name="twitter:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
 
   <link rel="stylesheet" href="/styles.css" />
+
+  <style>
+    /* ───────────────────────────────────────────────────────────────────────
+       FORGECAST WEATHER — product identity layer
+
+       Shared with the rest of the site and deliberately not overridden here:
+       header, footer, nav, breadcrumb, subnav, the manifest-driven proof strip
+       / download block / hash block / release note, the detail cards, the
+       note, typography, container width, focus behaviour, and the gold chrome.
+
+       Specific to ForgeCast: the app's own teal-green as the key colour, the
+       day-rail-with-a-marked-window motif repeated on every section head, the
+       decision diagram in the hero, and a capped device lineup for the
+       screenshots. No weather iconography — this product is about the decision
+       the weather implies, not the forecast.
+       ─────────────────────────────────────────────────────────────────────── */
+    .fc-page {
+      /* Sampled from the app itself, which already pairs this green with the
+         Proof Foundry gold for its "best outside" marker. Softer and greener
+         than Reality Gate's #00e6ff so the two pages do not read as one. */
+      --fc-key: #3fbf94;
+      --fc-key-soft: rgba(63, 191, 148, 0.4);
+      --fc-key-wash: rgba(63, 191, 148, 0.07);
+    }
+
+    .fc-page .fc-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 21rem);
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .fc-page .fc-hero-art svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* Section heads carry the hero's motif: a rail across the shell with one
+       window marked on it. Offset from the left edge on purpose, so it reads as
+       a marked span rather than a tab. */
+    .fc-page .section-head {
+      position: relative;
+      padding-bottom: 1.15rem;
+    }
+
+    .fc-page .section-head::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background: var(--line);
+    }
+
+    .fc-page .section-head::after {
+      content: "";
+      position: absolute;
+      left: 2.5rem;
+      bottom: -1px;
+      width: 4.5rem;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--fc-key);
+    }
+
+    .fc-page .fc-screens-label {
+      margin-bottom: 1rem;
+    }
+
+    /* Four 1080x2340 phone captures. Left as 1fr tracks they rendered 316px
+       wide and 682px tall each, which is 2.7 screens of unreadable UI on a
+       phone, and auto-fit put them in a 3 + 1 orphan row at 768. Fixed 15rem
+       tracks packed left give a device lineup that resolves 4 / 2x2 / 1. */
+    .fc-page .screenshot-grid {
+      grid-template-columns: repeat(4, minmax(0, min(15rem, 100%)));
+      justify-content: start;
+    }
+
+    .fc-page .screenshot-grid img {
+      border-radius: 20px;
+      border: 1px solid var(--fc-key-soft);
+      background: #05080c;
+    }
+
+    /* Four cards and three cards need declared track counts. The shared
+       auto-fit floor produced a 3 + 1 orphan at 1024 for the quad and a
+       2 + 1 orphan at 768 for the triad. */
+    .fc-page .fc-quad {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .fc-page .fc-triad {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    @media (max-width: 1100px) {
+      .fc-page .screenshot-grid {
+        grid-template-columns: repeat(2, minmax(0, min(15rem, 100%)));
+      }
+      .fc-page .fc-quad {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .fc-page .fc-hero {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+      }
+      .fc-page .fc-hero-art {
+        order: -1;
+        width: min(17rem, 100%);
+      }
+      .fc-page .fc-triad {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .fc-page .fc-quad {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .fc-page .screenshot-grid {
+        grid-template-columns: minmax(0, min(15rem, 100%));
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- @page forgecast -->
   <!-- @product forgecast -->
   <!-- @include header -->
 
-  <main class="container product-page">
+  <main class="container product-page fc-page">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href="/#products">Products</a> <span aria-hidden="true">/</span> <span>ForgeCast Weather</span>
     </nav>
@@ -38,16 +170,56 @@
       <a href="#limitations">Limitations</a>
     </nav>
 
-    <section id="overview" class="product-hero" aria-labelledby="product-title">
-      <p class="eyebrow">ForgeCast Weather · {{product.statusLabel}}</p>
-      <h1 id="product-title">Weather that plans<br /><span>your day.</span></h1>
-      <p class="product-lede">{{product.summary}}</p>
-      <div class="download-group">{{product.downloadBlock}}</div>
-      {{product.proofStrip}}
+    <section id="overview" class="product-hero fc-hero" aria-labelledby="product-title">
+      <div class="fc-hero-copy">
+        <p class="eyebrow">ForgeCast Weather · {{product.statusLabel}}</p>
+        <h1 id="product-title">Weather that plans<br /><span>your day.</span></h1>
+        <p class="product-lede">{{product.summary}}</p>
+        <div class="download-group">{{product.downloadBlock}}</div>
+        {{product.proofStrip}}
+      </div>
+
+      <div class="fc-hero-art" aria-hidden="true">
+        <svg viewBox="0 0 320 250" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+          <g fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <!-- the decision that has been settled: filled badge, then a title
+                 line and a shorter supporting line -->
+            <rect x="22" y="26" width="164" height="46" rx="23" stroke="var(--fc-key)" fill="var(--fc-key-wash)" />
+            <circle cx="46" cy="49" r="12" fill="var(--fc-key)" stroke="none" />
+            <path d="M40.5 49l4 4 7.5-8.5" stroke="#06120d" stroke-width="2.2" />
+            <path d="M68 43h96" stroke="var(--fc-key)" stroke-width="4" opacity="0.85" />
+            <path d="M68 57h58" stroke="var(--fc-key)" stroke-width="4" opacity="0.35" />
+
+            <!-- the decision still pending: outlined, dashed, a clock instead -->
+            <rect x="198" y="26" width="100" height="46" rx="23" stroke="var(--line)" stroke-dasharray="6 5" />
+            <circle cx="222" cy="49" r="10" stroke="var(--line)" stroke-width="1.6" />
+            <path d="M222 43v6.5l4.5 3" stroke="var(--line)" stroke-width="1.6" />
+            <path d="M242 43h38" stroke="var(--line)" stroke-width="4" opacity="0.8" />
+            <path d="M242 57h24" stroke="var(--line)" stroke-width="4" opacity="0.45" />
+
+            <!-- how the day moves, and the point on it the settled decision
+                 came from. The anchor sits under the decided chip, not the
+                 pending one: an undecided call has no pinned moment yet. -->
+            <path d="M28 150C58 148 80 128 106 126S176 140 292 152" stroke="var(--line)" stroke-width="2.2" />
+            <circle cx="106" cy="126" r="4" stroke="var(--gold)" stroke-width="1.8" fill="var(--bg)" />
+
+            <!-- the reason, drawn down from the curve to the chosen moment -->
+            <path d="M106 132v52" stroke="var(--gold)" stroke-width="1.6" stroke-dasharray="4 5" opacity="0.7" />
+
+            <!-- the day, with one window marked and the moment pinned in gold -->
+            <path d="M28 196h264" stroke="var(--line)" stroke-width="3" />
+            <path d="M70 196h72" stroke="var(--fc-key)" stroke-width="6" />
+            <circle cx="106" cy="196" r="7.5" stroke="var(--gold)" stroke-width="2" fill="rgba(214, 168, 79, 0.18)" />
+            <circle cx="106" cy="196" r="2.4" stroke="none" fill="var(--gold)" />
+
+            <path d="M28 206v8M94 206v8M160 206v8M226 206v8M292 206v8" stroke="var(--line)" stroke-width="1.4" opacity="0.8" />
+          </g>
+        </svg>
+      </div>
     </section>
 
     <section aria-label="Product screenshots" class="product-screens">
-      <p class="eyebrow" style="margin-bottom: 1rem;">On device</p>
+      <p class="eyebrow fc-screens-label">On device</p>
       <div class="screenshot-grid">
         <figure>
           <img src="/assets/forgecast/v030-today.png" alt="ForgeCast Today screen with wear and best-outside tokens" loading="lazy" />
@@ -73,7 +245,7 @@
         <h2 id="what-title">What it does</h2>
         <p>DayForge UX consolidation — each screen does one job instead of overlapping.</p>
       </div>
-      <div class="detail-grid">
+      <div class="detail-grid fc-quad">
         <article class="detail-card">
           <h3>Decision-first Today</h3>
           <p>What to wear, best outside time, and bring/skip sit above the fold so the day's decisions are immediate.</p>
@@ -98,7 +270,7 @@
         <h2 id="proof-title">Proof &amp; release evidence</h2>
         <p>What was actually verified before this build shipped.</p>
       </div>
-      <div class="detail-grid">
+      <div class="detail-grid fc-triad">
         <article class="detail-card">
           <h3>SHA-256 checksum</h3>
           <p>Verify the APK before installing.</p>
