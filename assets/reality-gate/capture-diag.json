@@ -1,0 +1,80 @@
+{
+  "d_boot": {
+    "status": "No repositories are available in this local workspace.",
+    "repoCount": "No repositories found",
+    "repos": [],
+    "project": "Forge Home",
+    "branch": "No project",
+    "continuity": "",
+    "overlayHidden": false
+  },
+  "onboardingSteps": 4,
+  "addRepoClicked": true,
+  "d_after_register": {
+    "status": "Connected to local workspace · 1 repositories available",
+    "repoCount": "1 repository available",
+    "repos": [
+      "demo-repo"
+    ],
+    "project": "Forge Home",
+    "branch": "master",
+    "continuity": " CONTINUITY demo-repo ? UNKNOWN Work ✓ STRONG Proof ◦ NOT TESTED Recovery ◦ NOT TESTED Custody ? UNKNOWN Provider Exposure EXTERNAL_DEPENDENCY remote_pushremote_fetchremote_clone ✓ Work can continue locally. ◦ Proof state is not tested. ◦ Recovery is not teste",
+    "overlayHidden": true
+  },
+  "selectDemo": "263ec5ac52f1f4ca",
+  "d_after_select": {
+    "status": "Connected to local workspace · 1 repositories available",
+    "repoCount": "1 repository available",
+    "repos": [
+      "demo-repo"
+    ],
+    "project": "Forge Home",
+    "branch": "master",
+    "continuity": " CONTINUITY demo-repo ? UNKNOWN Work ✓ STRONG Proof ◦ NOT TESTED Recovery ◦ NOT TESTED Custody ? UNKNOWN Provider Exposure EXTERNAL_DEPENDENCY remote_pushremote_fetchremote_clone ✓ Work can continue locally. ◦ Proof state is not tested. ◦ Recovery is not teste",
+    "overlayHidden": true
+  },
+  "d_home": {
+    "status": "Connected to local workspace · 1 repositories available",
+    "repoCount": "1 repository available",
+    "repos": [
+      "demo-repo"
+    ],
+    "project": "Forge Home",
+    "branch": "master",
+    "continuity": " CONTINUITY demo-repo ? UNKNOWN Work ✓ STRONG Proof ◦ NOT TESTED Recovery ◦ NOT TESTED Custody ? UNKNOWN Provider Exposure EXTERNAL_DEPENDENCY remote_pushremote_fetchremote_clone ✓ Work can continue locally. ◦ Proof state is not tested. ◦ Recovery is not teste",
+    "overlayHidden": true
+  },
+  "depMap": " demo-repo Project ID: 263ec5ac52f1f4ca • Evaluated: Just now LOCAL CONTROL local_source LOCAL Source worktree is local. LOCAL_WORKTREE local_commits LOCAL Commit objects are local. LOCAL_COMMITS local_branches LOCAL Branches are local. LOCAL_BRANCHES local_history LOCAL Git history is local. LOCAL_",
+  "drill": {
+    "ok": true,
+    "keys": [
+      "ok",
+      "data"
+    ],
+    "full": "{\"ok\":true,\"data\":{\"drillId\":\"a5bb7179-6959-42c0-af94-0114e9d4027c\",\"schemaVersion\":2,\"policyId\":\"prove-you-can-leave-v1\",\"projectId\":\"263ec5ac52f1f4ca\",\"projectName\":\"demo-repo\",\"repoDisplayName\":\"demo-repo\",\"triggeredAt\":\"2026-08-17T21:26:47.833Z\",\"completedAt\":\"2026-08-17T21:26:48.721Z\",\"commit\":\"4728fe950c7c4f3b472b68a10e05d8392cb4ad50\",\"isolation\":{\"mode\":\"LOCAL_CUSTODY_CONSTRAINED\",\"networkBlockEnforced\":false,\"providerCredentialsRemoved\":true,\"externalGitRemotesPresent\":false,\"offlineTooling\":\"ENFORCED\",\"observedProviderContact\":\"NONE\",\"supplementalEvidence\":[]},\"technicalResult\":\"INCONCLUSIVE\",\"receiptStatus\":\"PERSISTED\",\"overall\":\"INCONCLUSIVE\",\"phases\":[{\"id\":\"source\",\"title\":\"Verify Local Source\",\"state\":\"PASSED\",\"checks\":[{\"id\":\"project_resolved\",\"title\":\"project_resolved\",\"state\":\"PASSED\",\"evidence\":{\"projectId\":\"263ec5ac52f1f4ca\",\"path\":\"C:\\\\Users\\\\KickA\\\\.rg-capture-worksp"
+  },
+  "recoveryReceipt": " Drill a5bb7179-6959-42c0-af94-0114e9d4027c · Project demo-repo Triggered 8/17/2026, 2:26:47 PM · Completed 8/17/2026, 2:26:48 PM ! Overall: INCONCLUSIVE ! Technical: INCONCLUSIVE ✓ Receipt: PERSISTED ISOLATION Mode LOCAL_CUSTODY_CONSTRAINED Provider credentials removed External git remotes absent Offline tooling ENFORCED Observed provider contact NONE Netwo",
+  "bundleClicked": true,
+  "bundle": " Drill a5bb7179-6959-42c0-af94-0114e9d4027c · Project demo-repo Triggered 8/17/2026, 2:26:47 PM · Completed 8/17/2026, 2:26:48 PM ! Overall: INCONCLUSIVE ! Technical: INCONCLUSIVE ✓ Receipt: PERSISTED ISOLATION Mode LOCAL_CUSTODY_CONSTRAINED Provider credentials removed External git remotes absent Offline tooling ENFORCED Observed provider contact NONE Network block not enforce",
+  "proveClicked": true,
+  "proveError": "timeout waiting for prove recovery passed",
+  "prove": " Drill a5bb7179-6959-42c0-af94-0114e9d4027c · Project demo-repo Triggered 8/17/2026, 2:26:47 PM · Completed 8/17/2026, 2:26:48 PM ! Overall: INCONCLUSIVE ! Technical: INCONCLUSIVE ✓ Receipt: PERSISTED ISOLATION Mode LOCAL_CUSTODY_CONSTRAINED Provider credentials removed External git remotes absent Offline tooling ENFORCED Observed provider contact NONE Network block not enforce",
+  "remotes": {
+    "rows": 2,
+    "text": "backupFetch: https://gitlab.com/example/reality-gate-demo.gitPush: https://gitlab.com/example/reality-gate-demo.gitAhead ? · Behind ?TestFetchPull (fast-forward only)Push branchPush tagsSync (fetch → pull → push)Open remoteRemove remoteoriginFetch: https://git",
+    "identity": " Local pathC:\\Users\\KickA\\.rg-capture-workspace\\demo-repo Current branchmaster Current commit4728fe950c7c Working treeCLEAN · 0 changes",
+    "cards": 7
+  },
+  "about": " Reality Gate DesktopPersistent local developer infrastructure REALITY GATE v1.1.0 A Proof Foundry product A mission-critical, local-only code management system designed for maximum privacy and air-gapped environments. Secure path sanitization No external dependencies or network calls Deterministic SHA256 tree integrity Direct Git integra",
+  "ci": {
+    "trust": "VERIFIED",
+    "latest": "PASSED",
+    "history": "Build #c5d53f98 • 8/17/2026, 2:30:17 PMBranch: master • Commit: 4728fe950c • Source: COMMITSUCCESSVERIFIED RECEIPTRerunCompare",
+    "console": "Connecting Live Console (Run ID: c5d53f98-106a-467f-ba0a-17707f16d5f8)... Initializing isolated CI workspace (Git Clone & Checkout): C:\\Users\\KickA\\AppData\\Local\\Temp\\rg-capture-app\\cache\\ci\\workspaces\\c5d53f98-106a-467f-ba0a-17707f16d5f8 --- Step: repository sanity (git) --- Step passed. Run verifi"
+  },
+  "ledger": {
+    "rows": 2,
+    "first": "8/17/2026, 2:30:17 PMdemo-repoCI_RUN4728fe950c7cPASSEDYESNone"
+  },
+  "consoleErrors": []
+}
