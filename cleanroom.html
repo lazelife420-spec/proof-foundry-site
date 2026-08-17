@@ -19,13 +19,117 @@
   <meta name="twitter:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
 
   <link rel="stylesheet" href="/styles.css" />
+
+  <style>
+    /* ── Cleanroom page identity ─────────────────────────────────────────────
+       Shared with the rest of the site and deliberately not overridden here:
+       header, footer, nav, breadcrumb, subnav, the manifest-driven proof strip
+       / download block / hash block / release note, the note, typography,
+       container width, radius, focus behaviour, and the gold chrome.
+
+       Specific to Cleanroom: a surgical sage as the key colour, the
+       containment bracket repeated on every section head and card, and the
+       airlock in the hero. This product removes nothing irreversibly, so the
+       page never uses the vocabulary of a one-click booster: no sirens, no
+       gauges, no speed. What it shows instead is the archive, the seal, the
+       receipt, and the way back.
+       ─────────────────────────────────────────────────────────────────────── */
+    .cln-page {
+      /* Surgical green: the signifier of a sterile, controlled procedure.
+         Warmer and far paler than ForgeCast's #3fbf94 so the two greens do not
+         read as one product. */
+      --cln-key: #a8cf9c;
+      --cln-key-soft: rgba(168, 207, 156, 0.4);
+      --cln-key-wash: rgba(168, 207, 156, 0.07);
+    }
+
+    .cln-page .cln-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 21rem);
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .cln-page .cln-hero-art svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* The hero's bracket, reused as the section rule: a measured span with its
+       caps turned down, enclosing the zone underneath it. */
+    .cln-page .section-head {
+      position: relative;
+      padding-bottom: 1.35rem;
+    }
+
+    .cln-page .section-head::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      /* Deliberately narrower than a card track at every breakpoint. At 19rem
+         the right cap landed 9px from the first card's right edge and the
+         bracket read as that card's underline instead of the section's. */
+      width: min(13rem, 100%);
+      height: 9px;
+      border: 2px solid var(--cln-key);
+      border-bottom: 0;
+    }
+
+    /* Same mark at card scale: a short sage tick let into the top edge, so each
+       card reads as its own labelled zone. */
+    .cln-page .detail-card {
+      position: relative;
+      border-color: var(--cln-key-soft);
+    }
+
+    .cln-page .detail-card::before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: 2.25rem;
+      width: 3.25rem;
+      height: 2px;
+      background: var(--cln-key);
+    }
+
+    /* Four cards need a declared track count. The shared auto-fit floor of
+       240px resolved to three columns at 1024 and left a 3 + 1 orphan row. */
+    .cln-page .cln-quad {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    @media (max-width: 1100px) {
+      .cln-page .cln-quad {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .cln-page .cln-hero {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+      }
+      .cln-page .cln-hero-art {
+        order: -1;
+        width: min(17rem, 100%);
+      }
+    }
+
+    @media (max-width: 620px) {
+      .cln-page .cln-quad {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- @page cleanroom -->
   <!-- @product cleanroom -->
   <!-- @include header -->
 
-  <main class="container product-page">
+  <main class="container product-page cln-page">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href="/#products">Products</a> <span aria-hidden="true">/</span> <span>Cleanroom</span>
     </nav>
@@ -38,12 +142,69 @@
       <a href="#limitations">Limitations</a>
     </nav>
 
-    <section id="overview" class="product-hero" aria-labelledby="product-title">
-      <p class="eyebrow">Cleanroom · {{product.statusLabel}}</p>
-      <h1 id="product-title">Clean up Windows<br /><span>without losing anything.</span></h1>
-      <p class="product-lede">{{product.summary}}</p>
-      <div class="download-group">{{product.downloadBlock}}</div>
-      {{product.proofStrip}}
+    <section id="overview" class="product-hero cln-hero" aria-labelledby="product-title">
+      <div class="cln-hero-copy">
+        <p class="eyebrow">Cleanroom · {{product.statusLabel}}</p>
+        <h1 id="product-title">Clean up Windows<br /><span>without losing anything.</span></h1>
+        <p class="product-lede">{{product.summary}}</p>
+        <div class="download-group">{{product.downloadBlock}}</div>
+        {{product.proofStrip}}
+      </div>
+
+      <div class="cln-hero-art" aria-hidden="true">
+        <svg viewBox="0 0 320 232" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+          <g fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <!-- the containment bracket, heading the whole operation the same
+                 way it heads every section below -->
+            <path d="M34 20V12h252v8" stroke="var(--cln-key)" stroke-width="2" />
+
+            <!-- what is on the machine now: two files staying, and one selected
+                 for removal, drawn as a dashed outline because it is on its way
+                 out rather than gone -->
+            <path d="M74 36h32l16 16v44H74z" stroke="var(--cln-key)" fill="var(--cln-key-wash)" />
+            <path d="M106 36v16h16" stroke="var(--cln-key)" stroke-width="1.2" />
+            <path d="M84 68h26" stroke="var(--cln-key)" stroke-width="3" opacity="0.85" />
+            <path d="M84 80h16" stroke="var(--cln-key)" stroke-width="3" opacity="0.4" />
+
+            <path d="M136 36h32l16 16v44h-48z" stroke="var(--cln-key)" fill="var(--cln-key-wash)" />
+            <path d="M168 36v16h16" stroke="var(--cln-key)" stroke-width="1.2" />
+            <path d="M146 68h26" stroke="var(--cln-key)" stroke-width="3" opacity="0.85" />
+            <path d="M146 80h16" stroke="var(--cln-key)" stroke-width="3" opacity="0.4" />
+
+            <path d="M198 36h32l16 16v44h-48z" stroke="var(--cln-key)" stroke-dasharray="5 4" opacity="0.7" />
+            <path d="M208 68h26" stroke="var(--cln-key)" stroke-width="3" opacity="0.3" />
+            <path d="M208 80h16" stroke="var(--cln-key)" stroke-width="3" opacity="0.18" />
+
+            <!-- it is archived on the way out, in sage -->
+            <path d="M214 104v26" stroke="var(--cln-key)" stroke-width="2.4" />
+            <path d="M208 124l6 6 6-6" stroke="var(--cln-key)" stroke-width="2.4" />
+
+            <!-- and it can come back to the slot it left, in gold: the rollback
+                 path is always drawn, dashed because it has not been used -->
+            <path d="M246 130v-26" stroke="var(--gold)" stroke-width="2.4" stroke-dasharray="5 4" />
+            <path d="M240 110l6-6 6 6" stroke="var(--gold)" stroke-width="2.4" />
+
+            <!-- the sealed archive: double-walled, locked, holding the copy,
+                 and issuing a receipt for it -->
+            <rect x="34" y="144" width="252" height="76" rx="12" stroke="var(--cln-key)" fill="var(--cln-key-wash)" />
+            <rect x="41" y="151" width="238" height="62" rx="8" stroke="var(--cln-key)" stroke-width="1.2" opacity="0.5" />
+
+            <path d="M63 172v-6a9 9 0 0 1 18 0v6" stroke="var(--gold)" stroke-width="2" />
+            <rect x="59" y="172" width="26" height="20" rx="4" stroke="var(--gold)" fill="rgba(214, 168, 79, 0.25)" />
+            <circle cx="72" cy="182" r="2.6" fill="var(--gold)" stroke="none" />
+
+            <path d="M120 157h26l14 14v36h-40z" stroke="var(--cln-key)" fill="var(--cln-key-wash)" />
+            <path d="M146 157v14h14" stroke="var(--cln-key)" stroke-width="1.2" />
+            <path d="M128 183h22" stroke="var(--cln-key)" stroke-width="3" opacity="0.85" />
+            <path d="M128 193h13" stroke="var(--cln-key)" stroke-width="3" opacity="0.4" />
+
+            <path d="M210 152h38v54l-9.5 5-9.5-5-9.5 5-9.5-5z" stroke="var(--gold)" fill="rgba(214, 168, 79, 0.12)" />
+            <path d="M217 168h24" stroke="var(--gold)" stroke-width="2.6" opacity="0.85" />
+            <path d="M217 178h24" stroke="var(--gold)" stroke-width="2.6" opacity="0.6" />
+            <path d="M217 188h15" stroke="var(--gold)" stroke-width="2.6" opacity="0.4" />
+          </g>
+        </svg>
+      </div>
     </section>
 
     <section id="how-it-works" class="product-section" aria-labelledby="what-title">
@@ -51,7 +212,7 @@
         <h2 id="what-title">What it does</h2>
         <p>Archive-first cleanup that treats your files as evidence, not garbage.</p>
       </div>
-      <div class="detail-grid">
+      <div class="detail-grid cln-quad">
         <article class="detail-card">
           <h3>Archive-first</h3>
           <p>Before anything is removed, it is archived. You clean up without the risk of an irreversible delete.</p>
