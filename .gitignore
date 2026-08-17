@@ -15,6 +15,9 @@ receipt-*.png
 see-live-*.png
 try-again-*.png
 audit-*.png
+/art-shots/
+/after-shots/
+/responsive-shots/
 
 # Local custody receipts and bundles (backed up off-machine)
 /receipts/

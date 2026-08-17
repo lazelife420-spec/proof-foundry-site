@@ -1,4 +1,4 @@
-param(
+﻿param(
     [string[]]$Targets = @("https://theprooffoundry.com", "https://www.theprooffoundry.com", "https://proof-foundry-site.pages.dev"),
     [string]$ApkUrl = "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk",
     [string]$ShaUrl = "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk.sha256.txt",
@@ -382,6 +382,8 @@ if ($script:failedCount -gt 0) {
         $md += "`n| $($r.Url) | $($r.Status) | **$($r.Msg)** |"
     }
     $md += "`n"
-    $md | Out-File $receiptPath -Encoding utf8
+    # Out-File -Encoding utf8 emits a BOM on Windows PowerShell 5.1; the receipts
+    # are served as plain text, so write UTF-8 without one on every host.
+    [System.IO.File]::WriteAllText($receiptPath, $md, (New-Object System.Text.UTF8Encoding($false)))
     Write-Host "==> Verification receipt written to: $receiptPath" -ForegroundColor Green
 }

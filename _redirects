@@ -1,39 +1,33 @@
-/reality-gate/      /reality-gate/index.html  200
+# Pages serves <route>/index.html for <route>/ automatically. Explicit
+# /<route>/ -> /<route>/index.html 200 proxies are rejected as infinite loops,
+# so only the legacy .html and bare-path redirects are declared here.
+
 /reality-gate       /reality-gate/            301
 /reality-gate.html  /reality-gate/            301
 
-/cache-vault/       /cache-vault/index.html   200
 /cache-vault        /cache-vault/             301
 /cache-vault.html   /cache-vault/             301
 
-/lights-out/        /lights-out/index.html    200
 /lights-out         /lights-out/              301
 /lights-out.html    /lights-out/              301
 
-/cleanroom/         /cleanroom/index.html     200
 /cleanroom          /cleanroom/               301
 /cleanroom.html     /cleanroom/               301
 
-/forgecast/         /forgecast/index.html     200
 /forgecast          /forgecast/               301
 /forgecast.html     /forgecast/               301
 
-/proofshot/         /proofshot/index.html     200
 /proofshot          /proofshot/               301
 /proofshot.html     /proofshot/               301
 
-/founders/          /founders/index.html      200
 /founders           /founders/                301
 /founders.html      /founders/                301
 
-/support-context/      /support-context/index.html  200
-/support-context       /support-context/            301
-/support-context.html  /support-context/            301
+/support-context       /support-context/      301
+/support-context.html  /support-context/      301
 
-/foundry-strike/       /foundry-strike/index.html   200
-/foundry-strike        /foundry-strike/             301
-/foundry-strike.html   /foundry-strike/             301
+/foundry-strike        /foundry-strike/       301
+/foundry-strike.html   /foundry-strike/       301
 
-/proof/           /proof/index.html       200
-/proof            /proof/                 301
-/proof.html       /proof/                 301
+/proof            /proof/                     301
+/proof.html       /proof/                     301
