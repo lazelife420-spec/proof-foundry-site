@@ -3,132 +3,369 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ProofShot — Capture &amp; proof utility (in proof) | The Proof Foundry</title>
-  <meta name="description" content="ProofShot is a fast link and file capture utility with proof-focused retrieval receipts. The renamed capture/proof product — rebrand in progress. A Proof Foundry product." />
+  <title>ProofShot — Capture and proof workstation (in proof) | The Proof Foundry</title>
+  <meta name="description" content="Capture what matters online, receive a proof bundle with hashes and receipts, and verify it later without trusting ProofShot or the internet. Local-first Windows proof workstation, in proof." />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#0B0F14" />
   <link rel="canonical" href="https://theprooffoundry.com/proofshot/" />
 
-  <meta property="og:title" content="ProofShot — Capture &amp; proof utility (in proof)" />
-  <meta property="og:description" content="Fast link and file capture with proof-focused retrieval receipts. Rebrand in progress." />
+  <meta property="og:title" content="ProofShot — Capture what matters. Keep proof you can verify anywhere." />
+  <meta property="og:description" content="Point ProofShot at anything online, keep a proof bundle with SHA-256 receipts, and verify it later without trusting the tool or the internet." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://theprooffoundry.com/proofshot/" />
   <meta property="og:site_name" content="The Proof Foundry" />
-  <meta property="og:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
+  <meta property="og:image" content="https://theprooffoundry.com/assets/proofshot/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
+  <meta name="twitter:title" content="ProofShot — Capture what matters. Keep proof you can verify anywhere." />
+  <meta name="twitter:description" content="Point ProofShot at anything online, keep a proof bundle with SHA-256 receipts, and verify it later without trusting the tool or the internet." />
+  <meta name="twitter:image" content="https://theprooffoundry.com/assets/proofshot/og-image.png" />
 
   <link rel="stylesheet" href="/styles.css" />
 
   <style>
     /* ───────────────────────────────────────────────────────────────────────
-       ProofShot page identity.
+       PROOFSHOT — product identity layer (story pass)
 
-       Character: capture now, prove later. This is the only product in the
-       family with no version, no download, no hash and no verification date,
-       so the page must not borrow the confidence of its shipped siblings. The
-       repeated gesture is the capture marquee: a selection edge that has been
-       drawn but not committed. Gold appears in the hero art exactly once, as
-       an empty seal ring, which is the literal state of the product.
+       Character: capture now, prove later — with the promise that the proof
+       outlives the tool. The new production brand gives the page its key:
+       the aperture cyan is sampled from the ProofShot asset pack itself and
+       happens to match the cyan the v1.6.18 app already renders (the UI's
+       accent is rgba(32, 199, 255, …)). Identity and product finally agree.
+
+       The page's repeated gesture is a focus ring: a small aperture circle
+       that opens each section rule and echoes the orbital mark of the brand.
+       It is drawn but never decorative — it is the same circle SmartDecode
+       draws around evidence when the operator captures it.
+
+       The old "provisional steel" stays on as the secondary colour on this
+       page, not the key: steel is the engine that still ships under its
+       legacy HyperSnatch name, cyan is the public identity that is replacing
+       it. One token changes when the rebrand release lands.
+
+       Gold is reserved for the two places proof is decided: the honest
+       "what this is not" card and the release-status card. Same house rule
+       as every other product page — proof is a house signal.
        ─────────────────────────────────────────────────────────────────────── */
     .ps-page {
-      /* Provisional steel: hsl(209, 21%, 69%). Same hue neighbourhood as Cache
-         Vault's #8ab6dc but at 21% saturation against its 54%, so a hairline of
-         this reads grey where Cache Vault's reads blue. Deliberately the one
-         near-neutral key in the set: this product has not earned a colour yet.
-         Promoting it when the rebrand lands is a one-token change. */
-      --ps-key: #9fb0c0;
-      --ps-key-soft: rgba(159, 176, 192, 0.4);
+      --ps-key: #40d9fd;
+      --ps-key-soft: rgba(64, 217, 253, 0.4);
+      --ps-key-wash: rgba(64, 217, 253, 0.06);
+      --ps-steel: #9fb0c0;
     }
 
+    /* The brand lockup over the hero copy: the aperture mark and wordmark
+       from the production asset pack, kept at a height that reads as a
+       signature, not a banner. */
+    .ps-page .ps-brand-lockup {
+      display: block;
+      height: 2.5rem;
+      width: auto;
+      margin-bottom: 0.9rem;
+    }
+
+    /* Hero: copy left, real Workbench capture right. */
     .ps-page .ps-hero {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 21rem);
+      grid-template-columns: minmax(0, 1fr) minmax(0, 36rem);
       gap: 2.5rem;
       align-items: center;
     }
 
-    .ps-page .ps-hero-art svg {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-
-    /* The marquee edge at section scale: dashed above, soft solid below. Not
-       yet a closed frame, because nothing here is closed. */
+    /* The focus-ring section rule: a thin cyan gradient rule opening with a
+       small aperture circle. The ring is the brand mark at section scale. */
     .ps-page .section-head {
       position: relative;
-      padding-bottom: 1.35rem;
+      padding-bottom: 1.1rem;
+    }
+
+    .ps-page .section-head::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0.78rem;
+      width: 0.62rem;
+      height: 0.62rem;
+      border: 2px solid var(--ps-key-soft);
+      border-radius: 50%;
     }
 
     .ps-page .section-head::after {
       content: "";
       position: absolute;
-      left: 0;
-      bottom: 0;
-      width: min(15rem, 100%);
-      height: 6px;
-      border-top: 2px dashed var(--ps-key);
-      border-bottom: 2px solid var(--ps-key-soft);
+      left: 0.9rem;
+      bottom: 0.84rem;
+      width: min(17rem, 100%);
+      height: 2px;
+      background: linear-gradient(90deg, var(--ps-key), rgba(64, 217, 253, 0.05));
     }
 
-    /* The same marquee at card scale: crop corners on the two opposite
-       corners, framing the card's content as a selected region. Inset 0.55rem
-       so the marks clear both the 18px border radius and the 1.4rem padding
-       the text starts at. */
-    .ps-page .detail-card {
-      position: relative;
-      border-color: rgba(159, 176, 192, 0.3);
+    /* Trust strip, left-aligned like its sibling pages. */
+    .ps-page .ps-trust {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: 0.8rem 1.9rem;
+      margin-block: var(--section-gap);
+      padding: 1rem 1.4rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(90deg, var(--ps-key-wash), rgba(16, 25, 35, 0.6) 42%);
     }
 
-    .ps-page .detail-card::before,
-    .ps-page .detail-card::after {
+    .ps-page .ps-trust-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: #c8d2da;
+    }
+
+    .ps-page .ps-trust-icon {
+      display: inline-flex;
+      font-size: 1rem;
+      color: var(--ps-key);
+    }
+
+    /* Screenshot figure — the story pass sells the product with real UI. */
+    .ps-page .ps-shot {
+      margin: 0;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 100% 0%, var(--ps-key-wash), transparent 55%),
+        linear-gradient(160deg, rgba(16, 25, 35, 0.95), rgba(10, 16, 24, 0.88));
+      box-shadow: var(--shadow);
+      padding: clamp(0.7rem, 1.5vw, 1.1rem);
+    }
+
+    .ps-page .ps-shot img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: calc(var(--radius) - 4px);
+    }
+
+    .ps-page .ps-shot figcaption {
+      margin-top: 0.6rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* Story beats alternate copy and screen, then collapse. */
+    .ps-page .ps-story {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+      gap: clamp(1.5rem, 3vw, 2.75rem);
+      align-items: center;
+    }
+
+    .ps-page .ps-story.copy-first { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+
+    .ps-page .ps-story-copy p { color: #c6d0d8; }
+    .ps-page .ps-story-copy p + p { margin-top: 0.7rem; }
+
+    .ps-page .ps-story-list {
+      margin: 0.9rem 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 0.45rem;
+    }
+
+    .ps-page .ps-story-list li {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      align-items: baseline;
+      font-size: 0.92rem;
+      color: #c8d2da;
+      min-width: 0;
+    }
+
+    .ps-page .ps-story-list li::before {
       content: "";
-      position: absolute;
-      width: 0.7rem;
-      height: 0.7rem;
-      border: 2px solid var(--ps-key);
+      flex: 0 0 auto;
+      width: 0.42rem;
+      height: 0.42rem;
+      border-radius: 50%;
+      background: var(--ps-key);
+      transform: translateY(-0.08rem);
     }
 
-    .ps-page .detail-card::before {
-      top: 0.55rem;
-      left: 0.55rem;
-      border-right: 0;
-      border-bottom: 0;
+    .ps-page .ps-shot-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+      gap: 1rem;
     }
 
-    .ps-page .detail-card::after {
-      bottom: 0.55rem;
-      right: 0.55rem;
-      border-left: 0;
-      border-top: 0;
+    .ps-page .ps-shot-row.standalone {
+      margin-top: 1.25rem;
     }
 
-    /* Two cards stretched across the full 1360 container gave 646px-wide cards
-       holding one to three lines, far outside both the family's card scale and
-       --measure. Capped as a content column instead of shrunken cards. */
-    .ps-page .ps-duo {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      max-width: min(58rem, 100%);
+    /* Small step / capability cards (text-only where no honest capture exists). */
+    .ps-page .ps-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
+      gap: 0.9rem;
+      margin-top: 1.1rem;
     }
 
-    @media (max-width: 900px) {
+    .ps-page .ps-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 0% 0%, var(--ps-key-wash), transparent 60%),
+        linear-gradient(160deg, rgba(16, 25, 35, 0.95), rgba(10, 16, 24, 0.88));
+      padding: 1rem 1rem 0.9rem;
+    }
+
+    .ps-page .ps-card h3 {
+      font-size: 0.95rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .ps-page .ps-card p {
+      color: #c6d0d8;
+      font-size: 0.85rem;
+      margin: 0;
+    }
+
+    /* Bundle anatomy — the exported proof bundle shown as a mono tree. */
+    .ps-page .ps-bundle-tree {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.8rem;
+      line-height: 1.55;
+      color: #c8d2da;
+      white-space: pre;
+      overflow-x: auto;
+    }
+
+    .ps-page .ps-bundle-tree .ps-tree-dir { color: var(--ps-key); }
+    .ps-page .ps-bundle-tree .ps-tree-comment { color: var(--muted); }
+
+    /* The naming table for the identity section. */
+    .ps-page .ps-naming {
+      margin: 0;
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      column-gap: 1.4rem;
+      row-gap: 0.45rem;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 0.8rem 0;
+    }
+
+    .ps-page .ps-naming dt {
+      color: var(--muted);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding-top: 0.14rem;
+    }
+
+    .ps-page .ps-naming dd {
+      margin: 0;
+      color: #d7dee5;
+      font-size: 0.9rem;
+    }
+
+    /* Gold, not cyan: proof is a house signal, and it reads the same on every
+       product page. Used for the honest-claims card and the release-status
+       card only. */
+    .ps-page .ps-proof-card {
+      max-width: min(52rem, 100%);
+      border: 1px solid rgba(214, 168, 79, 0.45);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 80% 0%, rgba(214, 168, 79, 0.1), transparent 60%),
+        linear-gradient(160deg, rgba(16, 25, 35, 0.96), rgba(10, 16, 24, 0.9));
+      box-shadow: var(--shadow);
+      padding: clamp(1.1rem, 2vw, 1.6rem);
+    }
+
+    .ps-page .ps-proof-fields {
+      display: grid;
+      gap: 0.55rem;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 0.85rem 0;
+      margin: 0.8rem 0;
+    }
+
+    .ps-page .ps-proof-fields > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+
+    .ps-page .ps-proof-fields dt {
+      color: var(--muted);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .ps-page .ps-proof-fields dd {
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: right;
+    }
+
+    @media (max-width: 980px) {
       .ps-page .ps-hero {
         grid-template-columns: 1fr;
         gap: 1.75rem;
       }
-      .ps-page .ps-hero-art {
+      .ps-page .ps-hero .ps-shot {
         order: -1;
-        width: min(17rem, 100%);
+        max-width: 40rem;
+        width: 100%;
+      }
+      .ps-page .ps-story {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.5rem;
+      }
+      .ps-page .ps-story.copy-first { grid-template-columns: minmax(0, 1fr); }
+      .ps-page .ps-naming {
+        grid-template-columns: 1fr;
+        row-gap: 0.35rem;
+      }
+      .ps-page .ps-naming dd {
+        margin-bottom: 0.6rem;
       }
     }
 
-    @media (max-width: 620px) {
-      .ps-page .ps-duo {
-        grid-template-columns: 1fr;
+    @media (max-width: 760px) {
+      .ps-page .ps-trust {
+        gap: 0.6rem 1.1rem;
+        padding: 0.85rem 1rem;
       }
     }
   </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ProofShot",
+    "operatingSystem": "Windows 10, Windows 11",
+    "applicationCategory": "UtilitiesApplication",
+    "description": "Local-first Windows proof workstation: capture what matters online, receive a proof bundle with SHA-256 receipts, and verify it later without trusting the tool or the internet. Rebrand in progress — the engine currently ships under its legacy HyperSnatch name.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "The Proof Foundry",
+      "url": "https://theprooffoundry.com"
+    }
+  }
+  </script>
 </head>
 <body>
   <!-- @page proofshot -->
@@ -142,92 +379,316 @@
 
     <nav class="product-subnav" aria-label="Product sections">
       <a href="#overview">Overview</a>
-      <a href="#proof">Proof</a>
+      <a href="#capture">Capture</a>
+      <a href="#understand">Understand</a>
+      <a href="#organize">Organize</a>
+      <a href="#prove">Prove</a>
+      <a href="#verify">Verify</a>
+      <a href="#identity">Identity</a>
+      <a href="#release-status">Release</a>
       <a href="#limitations">Limitations</a>
     </nav>
 
     <section id="overview" class="product-hero ps-hero" aria-labelledby="product-title">
       <div class="ps-hero-copy">
         <p class="eyebrow">ProofShot · {{product.statusLabel}}</p>
-        <h1 id="product-title">Capture fast.<br /><span>Prove it later.</span></h1>
+        <img class="ps-brand-lockup" src="/assets/proofshot/logo-transparent.png"
+             alt="ProofShot — the aperture mark and wordmark from the production brand pack."
+             width="1600" height="600" style="height: 2.5rem; width: auto;" />
+        <h1 id="product-title">Capture what matters online.<br /><span>Keep proof you can verify anywhere.</span></h1>
         <p class="product-lede">{{product.summary}}</p>
         <div class="download-group">{{product.downloadBlock}}</div>
         {{product.proofStrip}}
       </div>
 
-      <div class="ps-hero-art" aria-hidden="true">
-        <svg viewBox="0 0 320 232" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
-          <g fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <!-- the capture: a marquee drawn around the two things this product
-                 takes in, a link and a file. The marquee is dashed because a
-                 selection is a selection; the crop corners are solid because
-                 the capture itself is real. -->
-            <rect x="34" y="20" width="252" height="86" rx="4"
-                  stroke="var(--ps-key)" stroke-width="1.6" stroke-dasharray="7 5" opacity="0.85" />
-            <g stroke="var(--ps-key)" stroke-width="2.4">
-              <path d="M34 33V20h13" />
-              <path d="M273 20h13v13" />
-              <path d="M34 93v13h13" />
-              <path d="M273 106h13v-13" />
-            </g>
+      <figure class="ps-shot" aria-labelledby="shot-hero-cap">
+        <img
+          src="/assets/proofshot/workbench-home.png"
+          alt="The ProofShot Workbench on a fresh proof workspace: the four-step flow, the intake panel, and the status and proof-card stack."
+          width="1440" height="900" loading="eager" />
+        <figcaption id="shot-hero-cap">The Workbench on a fresh proof workspace — real capture from the v1.6.18 build, using the synthetic demo case the product ships with.</figcaption>
+      </figure>
+    </section>
 
-            <!-- captured link -->
-            <rect x="78" y="46" width="94" height="34" rx="17" stroke="var(--ps-key-soft)" />
-            <g stroke="var(--ps-key)" stroke-width="1.8">
-              <rect x="88" y="57" width="15" height="9" rx="4.5" />
-              <rect x="98" y="57" width="15" height="9" rx="4.5" />
-            </g>
-            <g stroke="var(--ps-key)" stroke-width="2" opacity="0.55">
-              <path d="M120 58h42" />
-              <path d="M120 67h28" />
-            </g>
-
-            <!-- captured file -->
-            <path d="M198 44h30l14 14v38h-44z" stroke="var(--ps-key)" stroke-width="1.8" />
-            <path d="M228 44v14h14" stroke="var(--ps-key)" stroke-width="1.8" />
-            <g stroke="var(--ps-key)" stroke-width="2" opacity="0.55">
-              <path d="M206 72h26" />
-              <path d="M206 81h20" />
-            </g>
-
-            <!-- and later -->
-            <g stroke="var(--ps-key)" stroke-width="2.4">
-              <path d="M160 114v20" />
-              <path d="M154 128l6 6.5 6-6.5" />
-            </g>
-
-            <!-- the retrieval receipt: fully drawn, fully unsealed. The gold
-                 ring is empty and dashed because nothing here is verified yet,
-                 and that is the only place gold appears in this art. -->
-            <rect x="34" y="146" width="252" height="70" rx="10" stroke="var(--ps-key)" stroke-width="2" />
-            <g stroke="var(--ps-key)" stroke-width="2" opacity="0.55">
-              <path d="M54 168h106" />
-              <path d="M54 181h124" />
-              <path d="M54 194h86" />
-            </g>
-            <circle cx="240" cy="181" r="20"
-                    stroke="var(--gold)" stroke-width="2" stroke-dasharray="5 5" stroke-opacity="0.55" />
-          </g>
-        </svg>
+    <section aria-label="Trust highlights" class="ps-trust">
+      <div class="ps-trust-item">
+        <span class="ps-trust-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="9.5" rx="2" /><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" /></svg>
+        </span>
+        <span>Local-first, no account</span>
+      </div>
+      <div class="ps-trust-item">
+        <span class="ps-trust-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" /><path d="M8 12.2l2.8 2.8L16 9.8" /></svg>
+        </span>
+        <span>Receipts + SHA-256 manifests</span>
+      </div>
+      <div class="ps-trust-item">
+        <span class="ps-trust-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 4.5 21 19.5H3Z" /><path d="M12 10v4M12 16.6v.4" /></svg>
+        </span>
+        <span>Tamper-evident by design</span>
+      </div>
+      <div class="ps-trust-item">
+        <span class="ps-trust-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="12" rx="1.6" /><path d="M2 19.5h20" /></svg>
+        </span>
+        <span>Offline verifier in every bundle</span>
       </div>
     </section>
 
-    <section id="proof" class="product-section" aria-labelledby="proof-title">
+    <!-- Beat 1 — Capture -->
+    <section id="capture" class="product-section" aria-labelledby="capture-title">
       <div class="section-head">
-        <h2 id="proof-title">Proof &amp; release state</h2>
-        <p>Where this product actually stands.</p>
+        <h2 id="capture-title">One workbench takes it in. Nothing runs by itself.</h2>
+        <p>The job is one sentence: something online matters, and you want it captured with proof. Paste a URL or a page into the Workbench and SmartDecode reads what the target actually contains — offline.</p>
       </div>
-      <div class="detail-grid ps-duo">
-        <article class="detail-card">
-          <h3>Rebrand in progress</h3>
-          <p>The README and product description have moved to ProofShot, while packaging and internal code still retain the earlier identity. The migration is unfinished.</p>
-        </article>
-        <article class="detail-card">
-          <h3>Not ProofForge</h3>
-          <p>ProofForge is a separate project. The two names are not interchangeable and are not mixed here.</p>
-        </article>
+      <div class="ps-story">
+        <div class="ps-story-copy">
+          <p>SmartDecode (v2.5.0, built into this release) works on the page's own text. It reads the structure the page declares for itself — scripts, stylesheets, images, links, embedded declarations — and separates what is real from what is not.</p>
+          <ul class="ps-story-list">
+            <li>Everything is resolved locally: no account, no upload, no cloud hop.</li>
+            <li>Refusals are kept apart from candidates, so the operator sees what was dismissed and why.</li>
+            <li>A full capture keeps the page's own artifacts and structure, not just a summary.</li>
+          </ul>
+          <p class="note">Capture is structural, not photographic. This build reads and records the page's own resources and receipts; there is no pixel-screenshot engine in it. What you see below is a real SmartDecode run — two candidates identified, best target selected.</p>
+        </div>
+        <figure class="ps-shot" aria-labelledby="shot-decode-cap">
+          <img
+            src="/assets/proofshot/decode-complete.png"
+            alt="The Workbench intake panel after a real SmartDecode run: status reads Decode complete, two candidates identified, best target selected."
+            width="1440" height="900" loading="lazy" />
+          <figcaption id="shot-decode-cap">A real SmartDecode run on a pasted page: “Decode complete: 2 candidate(s) identified and best target selected.” The input is a synthetic demo page.</figcaption>
+        </figure>
       </div>
-      {{product.releaseNoteBlock}}
+      <div class="ps-cards">
+        <div class="ps-card">
+          <h3>What it reads</h3>
+          <p>Scripts, stylesheets, images, links, and encoded declarations — the page's own references.</p>
+        </div>
+        <div class="ps-card">
+          <h3>Refusals separated</h3>
+          <p>Incomplete or non-extractable references are refused, listed separately, never mixed into results.</p>
+        </div>
+        <div class="ps-card">
+          <h3>Offline by default</h3>
+          <p>The extraction pipeline runs locally, with no account and no network dependency.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Beat 2 — Understand -->
+    <section id="understand" class="product-section" aria-labelledby="understand-title">
+      <div class="section-head">
+        <h2 id="understand-title">A plan you can read — and run yourself.</h2>
+        <p>Decode produces candidates, ranks them, and says which one is the best target and why. Then it hands you a plan — it never acts on your behalf.</p>
+      </div>
+      <div class="ps-story copy-first">
+        <div class="ps-story-copy">
+          <p>Every candidate gets a confidence score and a place in a deterministic ranking. The best target is selected the same way every time, and the extraction table shows the source and the score. A retrieval plan is generated from the result — a command the operator can run, change, or ignore.</p>
+          <ul class="ps-story-list">
+            <li>Candidate rows show what was found, where it came from, and how confident the engine is.</li>
+            <li>The plan is output, not action. Nothing is fetched, downloaded, or executed automatically.</li>
+            <li>Results are deterministic: the same input produces the same ranking on every run.</li>
+          </ul>
+        </div>
+        <figure class="ps-shot" aria-labelledby="shot-plan-cap">
+          <img
+            src="/assets/proofshot/candidates-plan.png"
+            alt="The candidates table with two scored candidates and the generated retrieval plan above it."
+            width="1440" height="900" loading="lazy" />
+          <figcaption id="shot-plan-cap">Two scored candidates from the real run above, with the generated plan. In the screenshot the plan is a request the operator can run — SmartDecode does not run it.</figcaption>
+        </figure>
+      </div>
+      <div class="ps-cards">
+        <div class="ps-card">
+          <h3>Confidence, with reasons</h3>
+          <p>Scores come from the extraction pipeline itself and sort deterministically.</p>
+        </div>
+        <div class="ps-card">
+          <h3>Best target selected</h3>
+          <p>One candidate is chosen as the best — the one the plan is built around.</p>
+        </div>
+        <div class="ps-card">
+          <h3>Operator runs the plan</h3>
+          <p>The generated plan is a starting point for the operator, never an autonomous action.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Beat 3 — Organize -->
+    <section id="organize" class="product-section" aria-labelledby="organize-title">
+      <div class="section-head">
+        <h2 id="organize-title">One folder per engagement.</h2>
+        <p>Everything captured for one matter stays together, locally, in a simple project container.</p>
+      </div>
+      <div class="ps-story">
+        <div class="ps-story-copy">
+          <p>A case is a workspace folder with a name and an ID — created in one click from the Cases panel. Items added to it keep their timestamps, and the case list shows the count at a glance. It is deliberately simple: a container for evidence and its receipts, not a team collaboration system.</p>
+          <ul class="ps-story-list">
+            <li>Create a case, name it, and it appears with its own ID and creation time.</li>
+            <li>Items hold their own hashes and receipts inside the case folder.</li>
+            <li>The whole workspace lives on the machine — no cloud project, no shared account.</li>
+          </ul>
+        </div>
+        <figure class="ps-shot" aria-labelledby="shot-cases-cap">
+          <img
+            src="/assets/proofshot/cases.png"
+            alt="The Cases panel with a real case row: case ID, case name, item count, and timestamp."
+            width="1440" height="900" loading="lazy" />
+          <figcaption id="shot-cases-cap">A real case created in the running build — ID, name, item count, and local timestamp.</figcaption>
+        </figure>
+      </div>
+      <div class="ps-cards">
+        <div class="ps-card">
+          <h3>One-click case</h3>
+          <p>Create a named case from the Cases panel; it appears with its own ID.</p>
+        </div>
+        <div class="ps-card">
+          <h3>Local timestamps</h3>
+          <p>Every item and case carries the machine's own time when it was recorded.</p>
+        </div>
+        <div class="ps-card">
+          <h3>Simple by design</h3>
+          <p>No team workspaces, no shared projects — a container, on purpose, per the product freeze.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Beat 4 — Prove -->
+    <section id="prove" class="product-section" aria-labelledby="prove-title">
+      <div class="section-head">
+        <h2 id="prove-title">Export a bundle you can hand over.</h2>
+        <p>One export writes the whole matter to a folder you choose: the captured page, its artifacts, and the proof files that let anyone check it later.</p>
+      </div>
+      <div class="ps-story">
+        <div class="ps-story-copy">
+          <p>The proof bundle is the product. Its layout is fixed and documented, and every file in it is covered by a SHA-256 manifest. A Proof Passport states what the bundle is, when it was exported, and why — and the bundle carries its own offline verifier so someone with zero software can check it.</p>
+          <ul class="ps-story-list">
+            <li>One export writes the full bundle: artifacts, captured page, receipts, manifests, and the verifier.</li>
+            <li>Proof Passport summarises the matter; SHA256SUMS.txt covers every file.</li>
+            <li>The proof-card stack (passport, tamper trial, diff, nutrition) shows everything that can be proven about the workspace at a glance.</li>
+          </ul>
+        </div>
+        <figure class="ps-shot" aria-labelledby="shot-export-cap">
+          <img
+            src="/assets/proofshot/export-complete.png"
+            alt="The Workbench after a real export: the bundle has been written, Prove It Again and Tamper Trial are now enabled."
+            width="1440" height="900" loading="lazy" />
+          <figcaption id="shot-export-cap">A real export from the running build — the bundle lands in the folder you chose, and Prove It Again and Tamper Trial unlock.</figcaption>
+        </figure>
+      </div>
+      <div class="ps-shot-row standalone">
+        <figure class="ps-shot" aria-labelledby="shot-cards-cap">
+          <img
+            src="/assets/proofshot/workbench-proof-cards.png"
+            alt="The proof-card stack on the Workbench: Proof Passport, Tamper Trial, Proof Bundle Diff, and nutrition cards."
+            width="1440" height="900" loading="lazy" />
+          <figcaption id="shot-cards-cap">The proof-card stack — passport, tamper trial, diff, and nutrition for the loaded workspace.</figcaption>
+        </figure>
+        <figure class="ps-shot" aria-labelledby="shot-bundle-cap">
+          <div class="code-block ps-bundle-tree" role="img" aria-label="The exported proof bundle layout: PROOF-PASSPORT.json, SHA256SUMS.txt, README.txt, VERIFY-HYPERSNATCH.html, artifacts, captured-page, and proof folders."><span class="ps-tree-dir">HyperSnatch-Proof-Bundle-&lt;timestamp&gt;/</span>
+├─ <span class="ps-tree-dir">PROOF-PASSPORT.json</span>   <span class="ps-tree-comment"># what this bundle is, when, and why</span>
+├─ <span class="ps-tree-dir">SHA256SUMS.txt</span>        <span class="ps-tree-comment"># every file, one hash each</span>
+├─ <span class="ps-tree-dir">README.txt</span>            <span class="ps-tree-comment"># how to verify, in plain text</span>
+├─ <span class="ps-tree-dir">VERIFY-HYPERSNATCH.html</span> <span class="ps-tree-comment"># offline verifier, included</span>
+├─ <span class="ps-tree-dir">artifacts/</span>             <span class="ps-tree-comment"># the captured resources</span>
+├─ <span class="ps-tree-dir">captured-page/</span>         <span class="ps-tree-comment"># what the page actually was</span>
+└─ <span class="ps-tree-dir">proof/</span>                  <span class="ps-tree-comment"># receipts + machine-readable manifest</span></div>
+          <figcaption id="shot-bundle-cap">The exported bundle's fixed anatomy — this exact layout came out of the running build.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Beat 5 — Verify -->
+    <section id="verify" class="product-section" aria-labelledby="verify-title">
+      <div class="section-head">
+        <h2 id="verify-title">Verify later — without trusting ProofShot or the internet.</h2>
+        <p>The whole point of the bundle is that it outlives the tool that made it.</p>
+      </div>
+      <div class="ps-story copy-first">
+        <div class="ps-story-copy">
+          <p>Proof is checked against the files, not against this product. Prove It Again re-verifies an exported bundle directly from disk, and the offline verifier shipped inside the bundle does the same job on any machine with a browser. The Tamper Trial proves the system sees changes: it runs four temp copies of the bundle — a modified artifact, a missing hashed file, an altered passport, and a deleted verifier — and each tamper is caught.</p>
+          <ul class="ps-story-list">
+            <li>Prove It Again recomputes and compares hashes against the bundle's own manifests.</li>
+            <li>The verifier HTML ships inside every bundle — verification needs no software install.</li>
+            <li>The Tamper Trial is a real self-test: four tampered copies, all detected.</li>
+          </ul>
+        </div>
+        <div class="ps-shot-row">
+          <figure class="ps-shot" aria-labelledby="shot-proveagain-cap">
+            <img
+              src="/assets/proofshot/prove-again.png"
+              alt="Prove It Again re-verifying the exported bundle from disk."
+              width="1440" height="900" loading="lazy" />
+            <figcaption id="shot-proveagain-cap">Prove It Again, run from disk against the exported bundle — a real re-verification.</figcaption>
+          </figure>
+          <figure class="ps-shot" aria-labelledby="shot-tamper-cap">
+            <img
+              src="/assets/proofshot/tamper-trial.png"
+              alt="The Tamper Trial results: modified file, missing file, altered passport, and deleted verifier, each marked as caught."
+              width="1440" height="900" loading="lazy" />
+            <figcaption id="shot-tamper-cap">The Tamper Trial against four temp copies of the export — modified, missing, altered, and deleted files, each caught.</figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="ps-proof-card">
+        <h3>What this product is not</h3>
+        <p>Words matter, and the cheapest way to trust a proof tool is to be exact about its limits:</p>
+        <ul class="ps-story-list">
+          <li><strong>Not court-certified</strong> — nothing here certifies anything for court.</li>
+          <li><strong>Not a chain-of-custody</strong> — we record hashes and receipts, not custody.</li>
+          <li><strong>Tamper-evident, not tamper-proof</strong> — changes are detected and reported; nothing is unhackable.</li>
+          <li><strong>Not a legal evidence platform</strong> — verification is the operator's to interpret.</li>
+          <li><strong>Not a media ripping utility</strong> — capture is one input type into a proof bundle, not the product's purpose.</li>
+          <li><strong>Not ProofForge</strong> — that is a separate project; the names are not interchangeable.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Beat 6 — Identity -->
+    <section id="identity" class="product-section" aria-labelledby="identity-title">
+      <div class="section-head">
+        <h2 id="identity-title">The ProofShot rebrand, stated plainly.</h2>
+        <p>The public identity has moved; the packaging has not. This section says exactly where each name stands.</p>
+      </div>
+      <div class="ps-story">
+        <div class="ps-story-copy">
+          <p>The production brand pack shipped the aperture mark, wordmark, and hero artwork you see on this page. But a rename is not a name change until it reaches the files people run — so the v1.6.18 application still presents itself as HyperSnatch inside its own UI, and the bundle it exports still says so. That is deliberate: UI strings are batch-renamed in a controlled rebrand release, not patched one by one.</p>
+          <dl class="ps-naming">
+            <div><dt>Public name</dt><dd>ProofShot — the product identity this page and the brand pack use.</dd></div>
+            <div><dt>Current build</dt><dd>HyperSnatch v1.6.18 — the same engine, still shipped under the legacy name.</dd></div>
+            <div><dt>Reserved name</dt><dd>Proof Forge — the underlying proof-bundle engine name, reserved and not claimed here.</dd></div>
+            <div><dt>Parent</dt><dd>The Proof Foundry — the studio that produces ProofShot.</dd></div>
+          </dl>
+        </div>
+        <figure class="ps-shot" aria-labelledby="shot-brand-cap">
+          <img
+            src="/assets/proofshot/web-hero.png"
+            alt="The ProofShot production brand hero artwork: the aperture mark over a dark steel-and-cyan landscape."
+            width="1920" height="900" loading="lazy" />
+          <figcaption id="shot-brand-cap">The ProofShot brand hero from the production asset pack (designer artwork).</figcaption>
+        </figure>
+      </div>
+      <p class="note">One honesty note about branding collateral: the example hashes and timestamps inside the brand pack's asset manifest are illustrative placeholders from the designer handoff — they are artwork metadata, not verification evidence for this product. The hashes that matter are the ones inside a proof bundle.</p>
+    </section>
+
+    <section id="release-status" class="product-section" aria-labelledby="release-title">
+      <div class="section-head">
+        <h2 id="release-title">Release status &amp; evidence</h2>
+        <p>Current status of the internal build. The public release under the ProofShot name is not out yet — this is the present state, not a promise.</p>
+      </div>
+      <div class="ps-proof-card">
+        <dl class="ps-proof-fields">
+          <div><dt>Runtime UX pass</dt><dd>Complete (story screens captured from the live build)</dd></div>
+          <div><dt>Smoke suite</dt><dd>{{product.testStatus}}</dd></div>
+          <div><dt>Build</dt><dd>{{product.build}}</dd></div>
+          <div><dt>Released artifact (ProofShot)</dt><dd>None — no artifact served under this name yet</dd></div>
+          <div><dt>Underlying engine</dt><dd>HyperSnatch v1.6.18, public under the legacy name</dd></div>
+          <div><dt>ProofStrip status</dt><dd>{{product.proofStatus}}</dd></div>
+        </dl>
+        {{product.releaseNoteBlock}}
+      </div>
     </section>
 
     <section id="limitations" class="product-section" aria-labelledby="limits-title">
@@ -235,14 +696,22 @@
         <h2 id="limits-title">Known limitations</h2>
         <p>Honest about what is not ready.</p>
       </div>
-      <div class="detail-grid ps-duo">
+      <div class="detail-grid">
         <article class="detail-card">
           <h3>No public download under the ProofShot name</h3>
           <p>The engine ships as HyperSnatch v1.6.18 under the original brand while identity migration continues. No artifact is served under the ProofShot name until the rebrand completes across packaging and code.</p>
         </article>
         <article class="detail-card">
-          <h3>Rebrand in progress</h3>
-          <p>The HyperSnatch v1.6.18 codebase is a forensic-grade desktop workstation with SmartDecode v2.5.0, 100+ modules, case management, proof-bundle exports, and institutional trust tooling — all of which carries forward into ProofShot. The rebrand touches packaging, naming, and public identity, not the engine.</p>
+          <h3>UI still carries the legacy name</h3>
+          <p>The v1.6.18 app title, shell, and strings still read HyperSnatch. Batch rename is held for a controlled rebrand release — this page is the public-facing side of that migration, done first on purpose.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Capture is structural, not photographic</h3>
+          <p>SmartDecode reads and records the page's own resources and structure. There is no pixel-screenshot capture engine in this build, and no engine will be added while the product freeze is active.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Scoped by the product freeze</h3>
+          <p>No new extraction engines, intelligence features, or automation lanes while the freeze stands. Cases stay simple project containers, and proof means hashes, receipts, and tamper-evidence — nothing more.</p>
         </article>
       </div>
     </section>
