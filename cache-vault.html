@@ -19,13 +19,99 @@
   <meta name="twitter:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
 
   <link rel="stylesheet" href="/styles.css" />
+
+  <style>
+    /* ───────────────────────────────────────────────────────────────────────
+       CACHE VAULT — product identity layer
+
+       Shared with the rest of the site and deliberately not overridden here:
+       header, footer, nav, breadcrumb, subnav, the manifest-driven proof strip
+       / download block / hash block, typography, container width, focus
+       behaviour, and the gold chrome.
+
+       Specific to Cache Vault: a cool archival key colour sitting under that
+       gold chrome, cards that read as index cards seated in a rack,
+       drawer-divider section headers, and the cabinet art in the hero.
+       ─────────────────────────────────────────────────────────────────────── */
+    .cv-page {
+      --cv-key: #8ab6dc;
+      --cv-key-soft: rgba(138, 182, 220, 0.55);
+      --cv-key-wash: rgba(138, 182, 220, 0.06);
+    }
+
+    .cv-page .cv-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 21rem);
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .cv-page .cv-hero-art svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* Section headers read as drawer dividers: a hairline across the shell with
+       a short key-coloured tab seated at its left end. */
+    .cv-page .section-head {
+      position: relative;
+      border-top: 1px solid var(--line);
+      padding-top: 1.15rem;
+    }
+
+    .cv-page .section-head::before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: 0;
+      width: 3.5rem;
+      height: 2px;
+      background: var(--cv-key);
+    }
+
+    /* One track rule for every grid on this page. At the shell width it resolves
+       to three columns, so the six "What it does" cards fill two clean rows
+       instead of the 5 + 1 orphan the shared 240px floor produced, while a
+       two-card section still collapses to a deliberate pair. */
+    .cv-page .detail-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
+    }
+
+    /* Index cards seated in a rack: squared and keyed on the spine edge,
+       rounded on the open edge. */
+    .cv-page .detail-card {
+      border-radius: 3px var(--radius) var(--radius) 3px;
+      border-left: 3px solid var(--cv-key-soft);
+      transition: border-left-color 150ms ease;
+    }
+
+    .cv-page .detail-card:hover {
+      border-left-color: var(--cv-key);
+    }
+
+    .cv-page .detail-card h3 {
+      color: var(--cv-key);
+    }
+
+    @media (max-width: 900px) {
+      .cv-page .cv-hero {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+      }
+      .cv-page .cv-hero-art {
+        order: -1;
+        width: min(17rem, 100%);
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- @page cache-vault -->
   <!-- @product cache-vault -->
   <!-- @include header -->
 
-  <main class="container product-page">
+  <main class="container product-page cv-page">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href="/#products">Products</a> <span aria-hidden="true">/</span> <span>Cache Vault</span>
     </nav>
@@ -38,12 +124,48 @@
       <a href="#limitations">Limitations</a>
     </nav>
 
-    <section id="overview" class="product-hero" aria-labelledby="product-title">
-      <p class="eyebrow">Cache Vault · {{product.statusLabel}}</p>
-      <h1 id="product-title">Your clipboard,<br /><span>owned and stamped.</span></h1>
-      <p class="product-lede">{{product.summary}}</p>
-      <div class="download-group">{{product.downloadBlock}}</div>
-      {{product.proofStrip}}
+    <section id="overview" class="product-hero cv-hero" aria-labelledby="product-title">
+      <div class="cv-hero-copy">
+        <p class="eyebrow">Cache Vault · {{product.statusLabel}}</p>
+        <h1 id="product-title">Your clipboard,<br /><span>owned and stamped.</span></h1>
+        <p class="product-lede">{{product.summary}}</p>
+        <div class="download-group">{{product.downloadBlock}}</div>
+        {{product.proofStrip}}
+      </div>
+
+      <div class="cv-hero-art" aria-hidden="true">
+        <svg viewBox="0 0 320 250" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+          <g fill="none" stroke-width="1.5" stroke-linecap="round">
+            <!-- the clip that was retrieved, carrying its stamp -->
+            <rect x="88" y="14" width="144" height="46" rx="4" stroke="var(--cv-key)" fill="var(--cv-key-wash)" />
+            <line x1="102" y1="32" x2="190" y2="32" stroke="var(--cv-key)" opacity="0.45" />
+            <line x1="102" y1="43" x2="166" y2="43" stroke="var(--cv-key)" opacity="0.45" />
+            <circle cx="210" cy="37" r="12" stroke="var(--gold)" fill="rgba(214, 168, 79, 0.12)" />
+            <circle cx="210" cy="37" r="6.5" stroke="var(--gold)" opacity="0.6" />
+            <circle cx="210" cy="37" r="1.8" stroke="none" fill="var(--gold)" />
+
+            <!-- the path back to the drawer it was pulled from -->
+            <line x1="160" y1="60" x2="160" y2="84" stroke="var(--cv-key)" stroke-dasharray="4 5" opacity="0.7" />
+
+            <!-- the cabinet: one drawer keyed, the rest at rest. Each drawer
+                 front carries a label plate on the left and a pull on the
+                 right, so it reads as filing hardware rather than a list. -->
+            <rect x="24" y="84" width="272" height="152" rx="5" stroke="var(--line)" />
+
+            <rect x="38" y="96" width="244" height="38" rx="3" stroke="var(--cv-key)" fill="var(--cv-key-wash)" />
+            <rect x="50" y="108" width="58" height="14" rx="2" stroke="var(--cv-key)" fill="var(--cv-key-wash)" />
+            <line x1="228" y1="115" x2="266" y2="115" stroke="var(--cv-key)" stroke-width="2.5" />
+
+            <rect x="38" y="142" width="244" height="38" rx="3" stroke="var(--line)" />
+            <rect x="50" y="154" width="58" height="14" rx="2" stroke="var(--line)" />
+            <line x1="228" y1="161" x2="266" y2="161" stroke="var(--line)" stroke-width="2.5" />
+
+            <rect x="38" y="188" width="244" height="38" rx="3" stroke="var(--line)" />
+            <rect x="50" y="200" width="58" height="14" rx="2" stroke="var(--line)" />
+            <line x1="228" y1="207" x2="266" y2="207" stroke="var(--line)" stroke-width="2.5" />
+          </g>
+        </svg>
+      </div>
     </section>
 
     <section id="how-it-works" class="product-section" aria-labelledby="what-title">
