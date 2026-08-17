@@ -22,6 +22,217 @@
 
   <link rel="stylesheet" href="/styles.css" />
 
+  <style>
+    /* ───────────────────────────────────────────────────────────────────────
+       LIGHTS OUT PC — product identity layer
+
+       Shared with the rest of the site and deliberately not overridden here:
+       header, footer, nav, breadcrumb, subnav, the manifest-driven proof strip
+       / download block / release note, the limitations cards, typography,
+       container width, focus behaviour, and the gold chrome.
+
+       Specific to Lights Out: a moonlight key colour that takes over the
+       page's own iconography, section rules that dim out to the right instead
+       of ending on a hard edge, and the dial-and-crescent art in the hero.
+       Nothing here animates — the product is about winding down, and a page
+       that fades content in is a page whose content can be missing.
+
+       These rules used to sit in shared styles.css even though this is the
+       only page that used them. They live here now, matching Reality Gate and
+       Cache Vault.
+       ─────────────────────────────────────────────────────────────────────── */
+    .lo-page {
+      --lo-key: #9b93d6;
+      --lo-key-soft: rgba(155, 147, 214, 0.5);
+      --lo-key-wash: rgba(155, 147, 214, 0.07);
+    }
+
+    .lo-page .lo-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 21rem);
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .lo-page .lo-hero-art svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* The one gesture this page repeats: a rule that dims out rather than
+       stopping. Scoped to the heading so section bodies keep the shared
+       spacing. */
+    .lo-page .section-head h2 {
+      position: relative;
+      padding-bottom: 0.6rem;
+    }
+
+    .lo-page .section-head h2::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: min(18rem, 100%);
+      height: 2px;
+      /* 2px at full key strength. At 1px and half strength the rule measured
+         correctly but was invisible in a capture, which is the same as absent. */
+      background: linear-gradient(90deg, var(--lo-key), transparent);
+    }
+
+    /* Trust strip. Left-aligned on purpose: every other block on the page
+       starts at the shell's left edge, and a centred strip broke that datum. */
+    .lo-page .lo-trust {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: 0.8rem 1.9rem;
+      margin-block: var(--section-gap);
+      padding: 1rem 1.4rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(90deg, var(--lo-key-wash), rgba(16, 25, 35, 0.6) 42%);
+    }
+
+    .lo-page .lo-trust-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: #c8d2da;
+    }
+
+    .lo-page .lo-trust-icon {
+      display: inline-flex;
+      font-size: 1rem;
+      color: var(--lo-key);
+    }
+
+    /* Six cards, so the track count is fixed rather than auto-fit: three and
+       three, never five and an orphan. */
+    .lo-page .lo-features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.9rem;
+    }
+
+    .lo-page .lo-feature-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 0% 0%, var(--lo-key-wash), transparent 60%),
+        linear-gradient(160deg, rgba(16, 25, 35, 0.95), rgba(10, 16, 24, 0.88));
+      box-shadow: var(--shadow);
+      padding: 1.2rem 1.1rem;
+      transition: border-color 150ms ease;
+    }
+
+    .lo-page .lo-feature-card:hover {
+      border-color: var(--lo-key-soft);
+    }
+
+    .lo-page .lo-feature-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.55rem;
+      color: var(--lo-key);
+    }
+
+    /* Inline SVG icon treatment. Glyph-based icons are not dependable here:
+       U+23FB POWER SYMBOL has no coverage in the default Windows font stack
+       and rendered as a tofu box. */
+    .lo-page .lo-feature-icon svg,
+    .lo-page .lo-trust-icon svg {
+      display: block;
+      width: 1em;
+      height: 1em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .lo-page .lo-feature-card h3 {
+      font-size: 1rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .lo-page .lo-feature-card p {
+      color: #c6d0d8;
+      font-size: 0.88rem;
+    }
+
+    /* Gold, not moonlight: proof is a house signal, and it reads the same on
+       every product page. Capped because a five-row label/value list stretched
+       across the full 1360px shell put each label and its value a third of a
+       screen apart. */
+    .lo-page .lo-proof-card {
+      max-width: min(52rem, 100%);
+      border: 1px solid rgba(214, 168, 79, 0.45);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 80% 0%, rgba(214, 168, 79, 0.1), transparent 60%),
+        linear-gradient(160deg, rgba(16, 25, 35, 0.96), rgba(10, 16, 24, 0.9));
+      box-shadow: var(--shadow);
+      padding: clamp(1.1rem, 2vw, 1.6rem);
+    }
+
+    .lo-page .lo-proof-fields {
+      display: grid;
+      gap: 0.55rem;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 0.85rem 0;
+      margin: 0.8rem 0;
+    }
+
+    .lo-page .lo-proof-fields > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+
+    .lo-page .lo-proof-fields dt {
+      color: var(--muted);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .lo-page .lo-proof-fields dd {
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: right;
+    }
+
+    @media (max-width: 900px) {
+      .lo-page .lo-hero {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+      }
+      .lo-page .lo-hero-art {
+        order: -1;
+        width: min(17rem, 100%);
+      }
+      .lo-page .lo-features-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .lo-page .lo-features-grid {
+        grid-template-columns: 1fr;
+      }
+      .lo-page .lo-trust {
+        gap: 0.6rem 1.1rem;
+        padding: 0.85rem 1rem;
+      }
+    }
+  </style>
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -48,7 +259,7 @@
   <!-- @product lights-out -->
   <!-- @include header -->
 
-  <main class="container product-page">
+  <main class="container product-page lo-page">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href="/#products">Products</a> <span aria-hidden="true">/</span> <span>Lights Out PC</span>
     </nav>
@@ -61,12 +272,44 @@
       <a href="#limitations">Limitations</a>
     </nav>
 
-    <section id="overview" class="product-hero" aria-labelledby="product-title">
-      <p class="eyebrow">Lights Out PC · {{product.statusLabel}}</p>
-      <h1 id="product-title">Bedtime Mode<br /><span>for Windows.</span></h1>
-      <p class="product-lede">{{product.summary}} Wind down. Rest easy.</p>
-      <div class="download-group">{{product.downloadBlock}}</div>
-      {{product.proofStrip}}
+    <section id="overview" class="product-hero lo-hero" aria-labelledby="product-title">
+      <div class="lo-hero-copy">
+        <p class="eyebrow">Lights Out PC · {{product.statusLabel}}</p>
+        <h1 id="product-title">Bedtime Mode<br /><span>for Windows.</span></h1>
+        <p class="product-lede">{{product.summary}} Wind down. Rest easy.</p>
+        <div class="download-group">{{product.downloadBlock}}</div>
+        {{product.proofStrip}}
+      </div>
+
+      <div class="lo-hero-art" aria-hidden="true">
+        <svg viewBox="0 0 320 250" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+          <g fill="none" stroke-width="1.5" stroke-linecap="round">
+            <!-- the whole night, as a dial -->
+            <circle cx="156" cy="98" r="70" stroke="var(--line)" />
+
+            <!-- the countdown already spent, ending on the moment the lights
+                 go out -->
+            <path d="M156 28A70 70 0 1 1 90.2 121.9" stroke="var(--lo-key)" stroke-width="2.5" />
+            <circle cx="90.2" cy="121.9" r="8" stroke="var(--lo-key)" opacity="0.45" />
+            <circle cx="90.2" cy="121.9" r="3.6" stroke="none" fill="var(--lo-key)" />
+
+            <!-- the one warm thing still on: a gold crescent seated in the dial -->
+            <path d="M169 72A26 26 0 1 0 169 124A34 34 0 1 1 169 72Z" stroke="var(--gold)" fill="rgba(214, 168, 79, 0.14)" />
+
+            <!-- quiet sky. Filled four-point stars rather than stroked
+                 crosses, which read as stray plus signs at this size. -->
+            <path d="M248 26L250.2 31.8L256 34L250.2 36.2L248 42L245.8 36.2L240 34L245.8 31.8Z" fill="var(--lo-key)" stroke="none" opacity="0.75" />
+            <path d="M272 56L273.7 60.3L278 62L273.7 63.7L272 68L270.3 63.7L266 62L270.3 60.3Z" fill="var(--lo-key)" stroke="none" opacity="0.5" />
+
+            <!-- the machine, asleep on the desk, sleep light still lit -->
+            <rect x="118" y="186" width="76" height="44" rx="3" stroke="var(--line)" />
+            <rect x="124" y="192" width="64" height="28" rx="1.5" stroke="none" fill="var(--lo-key-wash)" />
+            <circle cx="156" cy="226" r="1.6" stroke="none" fill="var(--lo-key-soft)" />
+            <path d="M156 230v8" stroke="var(--line)" />
+            <path d="M112 238h88" stroke="var(--line)" />
+          </g>
+        </svg>
+      </div>
     </section>
 
     <section aria-label="Trust highlights" class="lo-trust">
