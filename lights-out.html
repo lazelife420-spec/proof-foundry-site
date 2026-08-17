@@ -398,7 +398,7 @@
       <div class="lo-proof-card">
         <dl class="lo-proof-fields">
           <div><dt>Runtime UX pass</dt><dd>Complete</dd></div>
-          <div><dt>Smoke suite</dt><dd>87 passed, 0 failed</dd></div>
+          <div><dt>Smoke suite</dt><dd>{{product.testStatus}}</dd></div>
           <div><dt>Lint</dt><dd>0 errors, 15 known warnings remain</dd></div>
           <div><dt>Build</dt><dd>{{product.build}}</dd></div>
           <div><dt>Released artifact</dt><dd>None — no public build, no checksum</dd></div>
@@ -419,8 +419,8 @@
           <p>The public build is still in testing. No GitHub release is live at this time. The download link appears once account-safe distribution is ready.</p>
         </article>
         <article class="detail-card">
-          <h3>Windows only</h3>
-          <p>Built for Windows 10 and Windows 11. No macOS or Linux build in this cycle.</p>
+          <h3>Windows desktop + Android companion</h3>
+          <p>Desktop app runs on Windows 10 and Windows 11. The Android companion ({{product.companionLabel}}) lets you start/stop shutdowns and check status from your phone. No macOS or Linux build in this cycle.</p>
         </article>
       </div>
     </section>

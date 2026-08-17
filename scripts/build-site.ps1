@@ -131,15 +131,48 @@ if ($ValidateOnly) { exit 0 }
 function Read-File($path) { return (Get-Content $path -Raw -Encoding UTF8) }
 
 function VersionLabel($p) {
-  if ([string]::IsNullOrWhiteSpace($p.version)) { return '' }
-  return "v$($p.version)"
+  # publicVersion is the explicit published-release version (may differ from the
+  # legacy 'version' field, which now also holds the published version).
+  $v = if (-not [string]::IsNullOrWhiteSpace($p.publicVersion)) { $p.publicVersion }
+       elseif (-not [string]::IsNullOrWhiteSpace($p.version))      { $p.version }
+       else { return '' }
+  return "v$v"
+}
+
+function CurrentVersionLabel($p) {
+  if ([string]::IsNullOrWhiteSpace($p.currentLocalVersion)) { return '' }
+  return "Local v$($p.currentLocalVersion)"
+}
+
+function CompanionLabel($p) {
+  if ([string]::IsNullOrWhiteSpace($p.companionVersion)) { return '' }
+  return "Companion v$($p.companionVersion)"
+}
+
+function PlatformLabel($p) {
+  # Prefer the platforms array; fall back to the legacy string field.
+  if ($p.platforms -is [array] -and $p.platforms.Count -gt 0) {
+    return ($p.platforms -join ' + ')
+  }
+  if (-not [string]::IsNullOrWhiteSpace($p.platform)) {
+    return $p.platform
+  }
+  return ''
+}
+
+function TestStatusLabel($p) {
+  # testStatus is the canonical field; fall back to testCount for backward compat.
+  if (-not [string]::IsNullOrWhiteSpace($p.testStatus)) { return $p.testStatus }
+  if (-not [string]::IsNullOrWhiteSpace($p.testCount))  { return $p.testCount }
+  return ''
 }
 
 function MetaLine($p) {
   $parts = @()
   $vl = VersionLabel $p
   if ($vl) { $parts += $vl }
-  if ($p.platform) { $parts += $p.platform }
+  $pl = PlatformLabel $p
+  if ($pl) { $parts += $pl }
   return ($parts -join ' · ')
 }
 
@@ -155,27 +188,30 @@ function IsFileDownload($url) {
 # Resolve computed blocks for a product
 function ProductTokens($p) {
   $tokens = @{}
-  $tokens['id']            = $p.id
-  $tokens['name']          = $p.name
-  $tokens['route']         = $p.route
-  $tokens['state']         = $p.state
-  $tokens['statusLabel']   = StateLabel $p.state
-  $tokens['versionLabel']  = VersionLabel $p
-  $tokens['version']       = $p.version
-  $tokens['meta']          = MetaLine $p
-  $tokens['platform']      = $p.platform
-  $tokens['summary']       = $p.summary
-  $tokens['cta']           = $p.cta
-  $tokens['distType']      = $p.distType
-  $tokens['build']         = $p.build
-  $tokens['testCount']     = $p.testCount
-  $tokens['proofStatus']   = $p.proofStatus
-  $tokens['lastVerified']  = $p.lastVerified
-  $tokens['downloadUrl']   = $p.downloadUrl
-  $tokens['downloadLabel'] = $p.downloadLabel
-  $tokens['sha256']        = $p.sha256
-  $tokens['sha256Url']     = $p.sha256Url
-  $tokens['releaseNote']   = $p.releaseNote
+  $tokens['id']                  = $p.id
+  $tokens['name']                = $p.name
+  $tokens['route']               = $p.route
+  $tokens['state']               = $p.state
+  $tokens['statusLabel']         = StateLabel $p.state
+  $tokens['versionLabel']        = VersionLabel $p
+  $tokens['currentVersionLabel'] = CurrentVersionLabel $p
+  $tokens['companionLabel']      = CompanionLabel $p
+  $tokens['version']             = $p.version
+  $tokens['meta']                = MetaLine $p
+  $tokens['platform']            = PlatformLabel $p
+  $tokens['summary']             = $p.summary
+  $tokens['cta']                 = $p.cta
+  $tokens['distType']            = $p.distType
+  $tokens['build']               = $p.build
+  $tokens['testStatus']          = TestStatusLabel $p
+  $tokens['testCount']           = $p.testCount
+  $tokens['proofStatus']         = $p.proofStatus
+  $tokens['lastVerified']        = $p.lastVerified
+  $tokens['downloadUrl']         = $p.downloadUrl
+  $tokens['downloadLabel']       = $p.downloadLabel
+  $tokens['sha256']              = $p.sha256
+  $tokens['sha256Url']           = $p.sha256Url
+  $tokens['releaseNote']         = $p.releaseNote
 
   # proofStrip
   $pills = @()
@@ -183,8 +219,8 @@ function ProductTokens($p) {
   $ver = if ($tokens['versionLabel']) { $tokens['versionLabel'] } else { '&mdash;' }
   $pills += "<span class=`"proof-pill`"><strong>Version</strong> $ver</span>"
   $pills += "<span class=`"proof-pill`"><strong>Platform</strong> $($tokens['platform'])</span>"
-  if (-not [string]::IsNullOrWhiteSpace($p.testCount)) {
-    $pills += "<span class=`"proof-pill`"><strong>Tests</strong> $($p.testCount)</span>"
+  if ($tokens['testStatus']) {
+    $pills += "<span class=`"proof-pill`"><strong>Tests</strong> $($tokens['testStatus'])</span>"
   }
   $pills += "<span class=`"proof-pill`"><strong>Proof</strong> $($tokens['proofStatus'])</span>"
   $lv = if ($p.lastVerified) { $p.lastVerified } else { '&mdash;' }
