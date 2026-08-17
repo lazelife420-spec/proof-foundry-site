@@ -19,13 +19,123 @@
   <meta name="twitter:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
 
   <link rel="stylesheet" href="/styles.css" />
+
+  <style>
+    /* ───────────────────────────────────────────────────────────────────────
+       ProofShot page identity.
+
+       Character: capture now, prove later. This is the only product in the
+       family with no version, no download, no hash and no verification date,
+       so the page must not borrow the confidence of its shipped siblings. The
+       repeated gesture is the capture marquee: a selection edge that has been
+       drawn but not committed. Gold appears in the hero art exactly once, as
+       an empty seal ring, which is the literal state of the product.
+       ─────────────────────────────────────────────────────────────────────── */
+    .ps-page {
+      /* Provisional steel: hsl(209, 21%, 69%). Same hue neighbourhood as Cache
+         Vault's #8ab6dc but at 21% saturation against its 54%, so a hairline of
+         this reads grey where Cache Vault's reads blue. Deliberately the one
+         near-neutral key in the set: this product has not earned a colour yet.
+         Promoting it when the rebrand lands is a one-token change. */
+      --ps-key: #9fb0c0;
+      --ps-key-soft: rgba(159, 176, 192, 0.4);
+    }
+
+    .ps-page .ps-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 21rem);
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .ps-page .ps-hero-art svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* The marquee edge at section scale: dashed above, soft solid below. Not
+       yet a closed frame, because nothing here is closed. */
+    .ps-page .section-head {
+      position: relative;
+      padding-bottom: 1.35rem;
+    }
+
+    .ps-page .section-head::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: min(15rem, 100%);
+      height: 6px;
+      border-top: 2px dashed var(--ps-key);
+      border-bottom: 2px solid var(--ps-key-soft);
+    }
+
+    /* The same marquee at card scale: crop corners on the two opposite
+       corners, framing the card's content as a selected region. Inset 0.55rem
+       so the marks clear both the 18px border radius and the 1.4rem padding
+       the text starts at. */
+    .ps-page .detail-card {
+      position: relative;
+      border-color: rgba(159, 176, 192, 0.3);
+    }
+
+    .ps-page .detail-card::before,
+    .ps-page .detail-card::after {
+      content: "";
+      position: absolute;
+      width: 0.7rem;
+      height: 0.7rem;
+      border: 2px solid var(--ps-key);
+    }
+
+    .ps-page .detail-card::before {
+      top: 0.55rem;
+      left: 0.55rem;
+      border-right: 0;
+      border-bottom: 0;
+    }
+
+    .ps-page .detail-card::after {
+      bottom: 0.55rem;
+      right: 0.55rem;
+      border-left: 0;
+      border-top: 0;
+    }
+
+    /* Two cards stretched across the full 1360 container gave 646px-wide cards
+       holding one to three lines, far outside both the family's card scale and
+       --measure. Capped as a content column instead of shrunken cards. */
+    .ps-page .ps-duo {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      max-width: min(58rem, 100%);
+    }
+
+    @media (max-width: 900px) {
+      .ps-page .ps-hero {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+      }
+      .ps-page .ps-hero-art {
+        order: -1;
+        width: min(17rem, 100%);
+      }
+    }
+
+    @media (max-width: 620px) {
+      .ps-page .ps-duo {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- @page proofshot -->
   <!-- @product proofshot -->
   <!-- @include header -->
 
-  <main class="container product-page">
+  <main class="container product-page ps-page">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href="/#products">Products</a> <span aria-hidden="true">/</span> <span>ProofShot</span>
     </nav>
@@ -36,12 +146,70 @@
       <a href="#limitations">Limitations</a>
     </nav>
 
-    <section id="overview" class="product-hero" aria-labelledby="product-title">
-      <p class="eyebrow">ProofShot · {{product.statusLabel}}</p>
-      <h1 id="product-title">Capture fast.<br /><span>Prove it later.</span></h1>
-      <p class="product-lede">{{product.summary}}</p>
-      <div class="download-group">{{product.downloadBlock}}</div>
-      {{product.proofStrip}}
+    <section id="overview" class="product-hero ps-hero" aria-labelledby="product-title">
+      <div class="ps-hero-copy">
+        <p class="eyebrow">ProofShot · {{product.statusLabel}}</p>
+        <h1 id="product-title">Capture fast.<br /><span>Prove it later.</span></h1>
+        <p class="product-lede">{{product.summary}}</p>
+        <div class="download-group">{{product.downloadBlock}}</div>
+        {{product.proofStrip}}
+      </div>
+
+      <div class="ps-hero-art" aria-hidden="true">
+        <svg viewBox="0 0 320 232" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+          <g fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <!-- the capture: a marquee drawn around the two things this product
+                 takes in, a link and a file. The marquee is dashed because a
+                 selection is a selection; the crop corners are solid because
+                 the capture itself is real. -->
+            <rect x="34" y="20" width="252" height="86" rx="4"
+                  stroke="var(--ps-key)" stroke-width="1.6" stroke-dasharray="7 5" opacity="0.85" />
+            <g stroke="var(--ps-key)" stroke-width="2.4">
+              <path d="M34 33V20h13" />
+              <path d="M273 20h13v13" />
+              <path d="M34 93v13h13" />
+              <path d="M273 106h13v-13" />
+            </g>
+
+            <!-- captured link -->
+            <rect x="78" y="46" width="94" height="34" rx="17" stroke="var(--ps-key-soft)" />
+            <g stroke="var(--ps-key)" stroke-width="1.8">
+              <rect x="88" y="57" width="15" height="9" rx="4.5" />
+              <rect x="98" y="57" width="15" height="9" rx="4.5" />
+            </g>
+            <g stroke="var(--ps-key)" stroke-width="2" opacity="0.55">
+              <path d="M120 58h42" />
+              <path d="M120 67h28" />
+            </g>
+
+            <!-- captured file -->
+            <path d="M198 44h30l14 14v38h-44z" stroke="var(--ps-key)" stroke-width="1.8" />
+            <path d="M228 44v14h14" stroke="var(--ps-key)" stroke-width="1.8" />
+            <g stroke="var(--ps-key)" stroke-width="2" opacity="0.55">
+              <path d="M206 72h26" />
+              <path d="M206 81h20" />
+            </g>
+
+            <!-- and later -->
+            <g stroke="var(--ps-key)" stroke-width="2.4">
+              <path d="M160 114v20" />
+              <path d="M154 128l6 6.5 6-6.5" />
+            </g>
+
+            <!-- the retrieval receipt: fully drawn, fully unsealed. The gold
+                 ring is empty and dashed because nothing here is verified yet,
+                 and that is the only place gold appears in this art. -->
+            <rect x="34" y="146" width="252" height="70" rx="10" stroke="var(--ps-key)" stroke-width="2" />
+            <g stroke="var(--ps-key)" stroke-width="2" opacity="0.55">
+              <path d="M54 168h106" />
+              <path d="M54 181h124" />
+              <path d="M54 194h86" />
+            </g>
+            <circle cx="240" cy="181" r="20"
+                    stroke="var(--gold)" stroke-width="2" stroke-dasharray="5 5" stroke-opacity="0.55" />
+          </g>
+        </svg>
+      </div>
     </section>
 
     <section id="proof" class="product-section" aria-labelledby="proof-title">
@@ -49,7 +217,7 @@
         <h2 id="proof-title">Proof &amp; release state</h2>
         <p>Where this product actually stands.</p>
       </div>
-      <div class="detail-grid">
+      <div class="detail-grid ps-duo">
         <article class="detail-card">
           <h3>Rebrand in progress</h3>
           <p>The README and product description have moved to ProofShot, while packaging and internal code still retain the earlier identity. The migration is unfinished.</p>
@@ -67,7 +235,7 @@
         <h2 id="limits-title">Known limitations</h2>
         <p>Honest about what is not ready.</p>
       </div>
-      <div class="detail-grid">
+      <div class="detail-grid ps-duo">
         <article class="detail-card">
           <h3>No public download</h3>
           <p>There is no public build to download yet. This page exists so the product family has a canonical route and an honest status, not a dead card or a redirect elsewhere.</p>
