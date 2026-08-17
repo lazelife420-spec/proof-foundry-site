@@ -31,7 +31,10 @@
     }
 
     .rg-container {
-      max-width: 1240px;
+      /* Must track --container: the global header and footer use the shared
+         shell, so any fixed value here misaligns their edges against this
+         page's sections. */
+      max-width: var(--container);
       margin: 0 auto;
       padding: 0 1.5rem;
     }
@@ -174,20 +177,53 @@
     }
 
     .rg-section-title {
-      font-size: 2.5rem;
+      font-size: clamp(1.75rem, 3.4vw, 2.5rem);
       margin-bottom: 1rem;
-      text-align: center;
       color: #fff;
+      text-wrap: balance;
     }
 
     .rg-section-subtitle {
-      text-align: center;
       color: var(--rg-muted);
       font-size: 1.15rem;
       margin-bottom: 4rem;
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
+      max-width: var(--measure);
+    }
+
+    /* Top-level sections read as numbered plates in an engineering document:
+       left-aligned, indexed, with a measured rule running out to the edge of
+       the shell. Titles inside panels (the pilot panel) keep their own
+       centred treatment, hence the direct-child selectors. */
+    main {
+      counter-reset: rg-plate;
+    }
+
+    .rg-section > .rg-section-title {
+      display: flex;
+      align-items: baseline;
+      gap: 0.85rem;
+    }
+
+    .rg-section > .rg-section-title::before {
+      counter-increment: rg-plate;
+      content: counter(rg-plate, decimal-leading-zero);
+      flex: none;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--rg-cyan);
+      letter-spacing: 0.14em;
+    }
+
+    /* The measured rule runs from the end of the title out to the shell edge.
+       It may shrink to nothing on a narrow screen rather than crowd the text. */
+    .rg-section > .rg-section-title::after {
+      content: "";
+      flex: 1 1 0;
+      min-width: 0;
+      align-self: center;
+      height: 1px;
+      background: linear-gradient(90deg, var(--rg-steel), transparent);
     }
 
     /* Provider Flow */
@@ -196,12 +232,17 @@
       align-items: center;
       justify-content: space-between;
       gap: 2rem;
-      margin: 3rem auto;
+      /* Sits on the left datum rather than floating centred: the plate headings,
+         the pillars and the steps all hang off the same line, and the centred
+         figure was breaking it. Capped short of the full shell because at
+         1312px the provider columns stretched to 368px and a one-word label in
+         a bar that wide reads as empty. */
+      margin: 3rem 0;
+      max-width: min(1040px, 100%);
       padding: 3rem;
       background: var(--rg-panel);
       border: 1px solid var(--rg-steel);
       border-radius: 8px;
-      max-width: 900px;
     }
 
     .rg-flow-col {
@@ -281,7 +322,9 @@
     /* Receipt Section */
     .rg-receipt-container {
       display: flex;
-      justify-content: center;
+      /* The specimen sits on the left datum, directly under a subtitle capped at
+         the same measure, so the two share one edge. */
+      justify-content: flex-start;
       margin-top: 3rem;
     }
 
@@ -507,6 +550,15 @@
       .rg-flow-diagram {
         flex-direction: column;
       }
+      /* Stacked, the columns are full width so the provider cards form an even
+         ledger. Left to content-size they came out at 124/138/159px and read
+         as ragged offcuts. */
+      .rg-flow-col {
+        width: 100%;
+      }
+      .rg-provider-card {
+        white-space: normal;
+      }
       .rg-flow-arrow {
         transform: rotate(90deg);
       }
@@ -518,6 +570,20 @@
       .rg-flow-diagram { padding: 1.5rem; }
       .rg-pilot-panel { padding: 1.5rem; }
       .rg-receipt { padding: 1.5rem; }
+    }
+
+    /* The threshold in the gate art settles to its resting glow. Kept to the
+       decorative art on purpose: animating hero copy or the download button
+       would hold content readers need at opacity 0 until the animation runs. */
+    @media (prefers-reduced-motion: no-preference) {
+      .rg-gate-art {
+        animation: rg-settle 0.9s ease-out both;
+      }
+
+      @keyframes rg-settle {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+      }
     }
   </style>
 </head>
