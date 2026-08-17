@@ -393,7 +393,7 @@
     <section id="proof" class="product-section" aria-labelledby="proof-title">
       <div class="section-head">
         <h2 id="proof-title">Proof &amp; release evidence</h2>
-        <p>Verified status of the current build.</p>
+        <p>Test evidence from the internal build. There is no released artifact to verify yet.</p>
       </div>
       <div class="lo-proof-card">
         <dl class="lo-proof-fields">
@@ -401,6 +401,7 @@
           <div><dt>Smoke suite</dt><dd>87 passed, 0 failed</dd></div>
           <div><dt>Lint</dt><dd>0 errors, 15 known warnings remain</dd></div>
           <div><dt>Build</dt><dd>{{product.build}}</dd></div>
+          <div><dt>Released artifact</dt><dd>None — no public build, no checksum</dd></div>
           <div><dt>Public download</dt><dd>Coming after account-safe distribution is ready</dd></div>
         </dl>
         {{product.releaseNoteBlock}}
