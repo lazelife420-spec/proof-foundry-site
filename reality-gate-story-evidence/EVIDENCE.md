@@ -130,3 +130,15 @@ Changed files this pass:
 Untouched: `proofshot.html` (frozen at `a7daabd`), all other product pages, the product source repo.
 
 Local commit only. No push, no deploy. Disposable capture workspace (`C:\Users\KickA\.rg-capture-workspace`), temp sandbox, and temp data roots are removed after this pass.
+
+## 9. Follow-up polish (2026-08-17, same session)
+
+User review approved the pass with three small changes, applied in a follow-up commit:
+
+1. **Synthetic-demo disclosure moved earlier.** The first screenshot (Beat 01 onboarding) caption now states that this and every screenshot show the app driving its disposable demo repository — a synthetic stand-in, not a production project. The Beat 03 continuity-card caption now says "for the demo repository (synthetic, disposable)". The comprehensive provenance note at Beat 04 remains.
+2. **Root-of-trust positioning adopted.** Hero description now leads with: "Reality Gate is a local software continuity and proof workstation. Understand provider dependencies, run and preserve verified work, prepare recovery, and ship without making any single provider the root of trust." The same phrase closes the page ("Ship without making any single provider the root of trust.") and the meta description was aligned. Tagline unchanged: "Use the forge. Don't depend on the forge."
+3. **Dead CSS removed.** The unused `.rg-card` / `.rg-cards` block (audited in the follow-up layout pass) was deleted; markup never used it.
+
+This deliberately does not widen the artifact or test-suite claims: no numbers changed, no new screenshots were added, the INCONCLUSIVE drill, the prepared-recovery framing, and the verified-receipt provenance definition are all untouched.
+
+Validation of the follow-up: `build-site.ps1` Validate + Build clean; built output contains the new positioning and demo-disclosure strings, contains no `rg-card` / `rg-cards` classes, and carries no leftover `{{product.*}}` tokens; rendered page spot-checked at 320/390/768/1440/3440 with zero console errors, zero horizontal overflow, 12/12 images loaded.

@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reality Gate — Developer Continuity Platform | The Proof Foundry</title>
-  <meta name="description" content="Reality Gate is a local-first developer continuity platform that works alongside GitHub, GitLab, Forgejo, and ordinary Git workflows: it maps dependencies, verifies continuity, and keeps proof." />
+  <meta name="description" content="Reality Gate is a local software continuity and proof workstation: map provider dependencies, run and preserve verified work, prepare recovery, and ship without making any single provider the root of trust." />
   <link rel="canonical" href="https://theprooffoundry.com/reality-gate/" />
   <link rel="icon" type="image/svg+xml" href="/brand/proof-foundry-mark.svg" />
   <link rel="stylesheet" href="/styles.css" />
@@ -430,36 +430,6 @@
       color: var(--rg-teal);
     }
 
-    /* Three-up fact cards */
-    .rg-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
-      gap: 1.5rem;
-      margin-top: 2.5rem;
-    }
-
-    .rg-card {
-      background: var(--rg-panel);
-      border: 1px solid var(--rg-steel);
-      padding: 1.75rem;
-      border-radius: 4px;
-    }
-
-    .rg-card h3 {
-      color: #fff;
-      font-size: 1rem;
-      margin-bottom: 0.6rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .rg-card p {
-      color: var(--rg-muted);
-      font-size: 0.9rem;
-      line-height: 1.55;
-      margin: 0;
-    }
-
     /* Release card */
     .rg-pilot-panel {
       background: var(--rg-panel-2);
@@ -705,12 +675,13 @@
         <p class="rg-tagline">Use the forge. Don't depend on the forge.</p>
 
         <p class="rg-desc">
-          Reality Gate works alongside GitHub, GitLab, Forgejo, and ordinary Git.
-          It maps what your workflow actually depends on, verifies what keeps
-          working when the provider doesn't, and keeps receipts of what was
-          checked — with no migration required. Adding a repository is passive:
-          Reality Gate reads the local path and git state, and never rewrites
-          your repo, your remotes, or your history.
+          <strong style="color: #fff;">Reality Gate is a local software continuity and proof workstation.</strong>
+          Understand provider dependencies, run and preserve verified work,
+          prepare recovery, and ship without making any single provider the
+          root of trust. It works alongside GitHub, GitLab, Forgejo, and
+          ordinary Git — with no migration required. Adding a repository is
+          passive: Reality Gate reads the local path and git state, and never
+          rewrites your repo, your remotes, or your history.
         </p>
 
         <div class="rg-cta-group">
@@ -844,7 +815,7 @@
             src="/assets/reality-gate/00-onboarding.png"
             alt="The onboarding overlay of the real app on a fresh launch: four steps — add a repository, analyze dependencies, run a continuity check, get proof."
             width="1440" height="900" loading="lazy" />
-          <figcaption id="shot-onboard-cap">The real onboarding overlay on a repository-less launch. Four steps: Add repo → Analyze dependencies → Run continuity check → Get proof. No account, no telemetry.</figcaption>
+          <figcaption id="shot-onboard-cap">The real onboarding overlay on a repository-less launch. Four steps: Add repo → Analyze dependencies → Run continuity check → Get proof. This screenshot — and every screenshot on this page — shows the app driving its disposable demo repository: a synthetic stand-in, not a production project.</figcaption>
         </figure>
       </div>
     </section>
@@ -905,7 +876,7 @@
             src="/assets/reality-gate/01-home-continuity.png"
             alt="The real continuity card for a registered project: Work strong, Proof not tested, Recovery not tested, Custody unknown, Provider exposure external dependency for remote push, fetch, and clone."
             width="1440" height="900" loading="lazy" />
-          <figcaption id="shot-continuity-cap">The real continuity card before any drill: <strong>Work</strong> STRONG, <strong>Proof/Recovery</strong> NOT TESTED, <strong>Provider Exposure</strong> EXTERNAL_DEPENDENCY — the honest baseline.</figcaption>
+          <figcaption id="shot-continuity-cap">The real continuity card for the demo repository (synthetic, disposable) before any drill: <strong>Work</strong> STRONG, <strong>Proof/Recovery</strong> NOT TESTED, <strong>Provider Exposure</strong> EXTERNAL_DEPENDENCY — the honest baseline.</figcaption>
         </figure>
       </div>
     </section>
@@ -1098,7 +1069,7 @@
         </div>
 
         <div style="text-align: center; margin-top: 4rem;">
-          <h2 style="font-size: clamp(1.5rem, 3vw, 2rem); color: #fff; margin-bottom: 1.5rem;">Prepared continuity and recovery — proven before you need it.</h2>
+          <h2 style="font-size: clamp(1.5rem, 3vw, 2rem); color: #fff; margin-bottom: 1.5rem;">Prepared continuity and recovery — proven before you need it. Ship without making any single provider the root of trust.</h2>
           <a class="rg-btn rg-btn-primary" href="{{product.downloadUrl}}" download>
             {{product.downloadLabel}}
           </a>
