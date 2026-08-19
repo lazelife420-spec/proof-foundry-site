@@ -173,6 +173,33 @@
       background: var(--rg-panel-2);
     }
 
+    /* Hero lede + fine print. These must track the CTA row's alignment: the
+       row is left-aligned on desktop and centered under the 900px media query,
+       so centered text here would float free of the buttons on desktop. */
+    .rg-hero-lede {
+      margin: 0.35rem 0 0;
+      color: var(--rg-text);
+      font-size: 1.05rem;
+      line-height: 1.5;
+      max-width: 540px;
+    }
+
+    .rg-hero-fineprint {
+      margin-top: 0.5rem;
+      font-size: 0.82rem;
+      color: var(--rg-muted);
+      line-height: 1.5;
+      max-width: 520px;
+    }
+
+    .rg-cta-group + .rg-hero-fineprint {
+      margin-top: 0.75rem;
+    }
+
+    .rg-hero-fineprint strong {
+      color: var(--rg-text);
+    }
+
     /* Unnumbered bands (flow, pillars, privacy) keep the plate geometry but
        must NOT advance the plate counter, so they do not reuse .rg-section. */
     .rg-band {
@@ -590,6 +617,11 @@
         line-height: 1.5;
         margin-bottom: 1.5rem;
       }
+      .rg-hero-lede,
+      .rg-hero-fineprint {
+        margin-left: auto;
+        margin-right: auto;
+      }
       .rg-tagline {
         border-left: none;
         padding-left: 0;
@@ -673,7 +705,7 @@
         <div class="rg-subtitle">Developer Continuity Platform</div>
 
         <p class="rg-tagline">Keep your forge. Keep control of your work.</p>
-        <p style="margin: 0.35rem 0 0; color: var(--rg-cyan); font-size: 0.9rem; letter-spacing: 0.08em; text-transform: uppercase;">Entrance to reality. Proof at the gate.</p>
+        <p class="rg-hero-lede">See what your Git project depends on GitHub, GitLab, or Forgejo for — and prove you can keep working if any of them goes down.</p>
 
         <p class="rg-desc">
           <strong style="color: #fff;">Reality Gate is a local software continuity and proof workstation.</strong>
@@ -693,6 +725,14 @@
             SHA-256
           </a>
         </div>
+
+        <p class="rg-hero-fineprint">
+          <strong>Windows 10/11 x64</strong> &middot; ~113 MB download
+        </p>
+
+        <p class="rg-hero-fineprint">
+          Windows may show "Windows protected your PC" on first launch — choose <strong>More info → Run anyway</strong>. Verify the SHA-256 first.
+        </p>
 
         <div style="margin-top: 2rem; display: flex; justify-content: center;" class="rg-hero-strip">
           {{product.proofStrip}}
@@ -1060,7 +1100,7 @@
 
         <p style="margin-top: 1.25rem; font-size: 0.9rem; color: var(--rg-muted); text-align: left;">
           Verify locally with <code style="font-family: ui-monospace, monospace; color: var(--rg-teal);">Get-FileHash .\Reality-Gate-1.1.0-Developer-Pilot.zip -Algorithm SHA256</code>
-          and compare against the value above and the checksum file. The checksum chain — ZIP, artifact host, build manifest — was verified end to end. The installer EXE inside the ZIP carries its own SHA-256 recorded in the build's BUILD-INFO.
+          and compare against the value above and the checksum file. PowerShell prints the hash in uppercase and the value above is lowercase — the comparison is case-insensitive, so only the characters need to match. The checksum chain — ZIP, artifact host, build manifest — was verified end to end. The installer EXE inside the ZIP carries its own SHA-256 recorded in the build's BUILD-INFO.
         </p>
 
         <div class="rg-privacy">
