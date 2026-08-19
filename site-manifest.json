@@ -36,7 +36,7 @@
       "downloadLabel": "Download Developer Pilot v1.1.0",
       "distType": "Windows Installer ZIP",
       "build": "Windows installer EXE delivered inside a ZIP archive. The published SHA-256 is the checksum of the ZIP you download; the installer EXE inside carries its own checksum in the build's BUILD-INFO.",
-      "sha256": "4a68de375e592aecf173b4aaae3fdfaeedacce5f821f84f11c25ad345a0b62cb",
+      "sha256": "58cc27d22bdee8157ee4598e116e17ff42d0efc95630c97bee4b2bc6be6ce756",
       "sha256Url": "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/reality-gate/Reality-Gate-1.1.0-Developer-Pilot.zip.sha256.txt",
       "testStatus": "269/269",
       "testCount": "269/269",
