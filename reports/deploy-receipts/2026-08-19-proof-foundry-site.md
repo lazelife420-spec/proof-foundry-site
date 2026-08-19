@@ -1,13 +1,13 @@
 # Deployment Verification Receipt — 2026-08-19
 
-*   **Site Commit**: 886e2f6
+*   **Site Commit**: 4e14cfd
 *   **Verified Targets**: https://proof-foundry-site.pages.dev, https://theprooffoundry.com, https://www.theprooffoundry.com
 *   **APK URL**: https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk
 *   **SHA URL**: https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk.sha256.txt
 *   **Expected SHA**: 50ABE59E52B6DC7E8649C0CA63EB065425F8EDC607187E3844D90CE5F1EED833
 *   **APK Status**: OK
 *   **SHA Status**: OK
-*   **Timestamp**: 2026-08-19 16:01:36 -07:00
+*   **Timestamp**: 2026-08-19 16:03:23 -07:00
 *   **Overall Status**: **PASS**
 
 ## Verified Routes
