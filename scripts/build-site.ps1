@@ -231,7 +231,13 @@ function ProductTokens($p) {
   if ([string]::IsNullOrWhiteSpace($p.downloadUrl)) {
     # Both are the same disabled treatment, but the wording differs on purpose:
     # "coming soon" is a commitment, and an in-proof product has not made one.
-    $mutedLabel = if ($p.state -eq 'proof') { 'No public build yet' } else { 'Coming soon' }
+    $mutedLabel = if (-not [string]::IsNullOrWhiteSpace($p.disabledDownloadLabel)) {
+      $p.disabledDownloadLabel
+    } elseif ($p.state -eq 'proof') {
+      'No public build yet'
+    } else {
+      'Coming soon'
+    }
     $tokens['downloadBlock'] = "<span class=`"button button-muted`" aria-disabled=`"true`">$mutedLabel</span>"
   } else {
     $url = $p.downloadUrl

@@ -545,7 +545,7 @@
             src="/assets/lights-out/night-modes-panel.png"
             alt="The Night Modes panel showing the preset endings, from Movie Wind-Down and Full Shutdown to Quiet House and School Night."
             width="1600" height="1002" loading="lazy" />
-          <figcaption id="shot-modes-cap">Night Modes — six preset endings from Movie Wind-Down to Full Shutdown.</figcaption>
+          <figcaption id="shot-modes-cap">Night Modes — a six-mode catalogue with four executable endings; Quiet House is coming soon, and School Night remains setup-dependent.</figcaption>
         </figure>
       </div>
     </section>
@@ -597,7 +597,7 @@
           <ul class="lo-story-list">
             <li>On wake, the session shows a morning briefing drawn from your live calendar and sleep-debt state.</li>
             <li>Smart lights configured for the morning can join the sunrise with a bounded brightness transition.</li>
-            <li>The one-shot wake task removes itself after it fires.</li>
+            <li>Setting First Light replaces the previous one-time wake task; choosing Remove deletes that task.</li>
           </ul>
           <p>Two supporting systems round out the routine: a <strong>Bedtime Reminder</strong> that nudges you before bed (on by default, 15 minutes before), and <strong>Autopilot Bedtime</strong>, which learns your pattern and offers to start the session — off by default until you turn it on.</p>
         </div>
@@ -899,16 +899,16 @@
     <section id="release-status" class="product-section" aria-labelledby="release-title">
       <div class="section-head">
         <h2 id="release-title">Release status &amp; evidence</h2>
-        <p>Test evidence from the current internal build. The public release is not out yet — this is the current status, not a promise.</p>
+        <p>Evidence from the frozen v11.1.2 release candidate and the published artifact. Public access is currently blocked by an external GitHub account-level restriction.</p>
       </div>
       <div class="lo-proof-card">
         <dl class="lo-proof-fields">
-          <div><dt>Runtime UX pass</dt><dd>Complete</dd></div>
-          <div><dt>Smoke suite</dt><dd>{{product.testStatus}}</dd></div>
-          <div><dt>Lint</dt><dd>0 errors, 15 known warnings remain</dd></div>
+          <div><dt>Runtime UX pass</dt><dd>Complete on the frozen candidate</dd></div>
+          <div><dt>Regression suites</dt><dd>{{product.testStatus}}</dd></div>
+          <div><dt>Artifact</dt><dd>Lights-Out-Portable-v11.1.2-win-x64.zip</dd></div>
           <div><dt>Build</dt><dd>{{product.build}}</dd></div>
-          <div><dt>Released artifact</dt><dd>None — no public build, no checksum</dd></div>
-          <div><dt>Public download</dt><dd>Coming after account-safe distribution is ready</dd></div>
+          <div><dt>Distribution</dt><dd>Unsigned portable ZIP; manual extraction required</dd></div>
+          <div><dt>Public download</dt><dd>Blocked — anonymous GitHub requests return 404</dd></div>
         </dl>
         {{product.releaseNoteBlock}}
       </div>
@@ -921,8 +921,8 @@
       </div>
       <div class="detail-grid">
         <article class="detail-card">
-          <h3>No public download yet</h3>
-          <p>The current build is in testing. No GitHub release is live at this time. The download link appears once account-safe distribution is ready.</p>
+          <h3>Public download currently blocked</h3>
+          <p>The v11.1.2 release and frozen ZIP exist in the publisher's authenticated GitHub control plane, but an external account-level restriction currently makes the owner, repository, release, and asset return 404 to anonymous visitors. No download link is shown while that remains true.</p>
         </article>
         <article class="detail-card">
           <h3>Windows desktop + Android companion</h3>
@@ -938,10 +938,10 @@
     <section id="download" class="product-section" aria-labelledby="download-title">
       <div class="section-head">
         <h2 id="download-title">Download</h2>
-        <p>Not available yet — this is the current status, not a promise.</p>
+        <p>The frozen v11.1.2 portable ZIP is not publicly reachable while GitHub hides the publisher account.</p>
       </div>
       <div class="download-group">{{product.downloadBlock}}</div>
-      <p class="note">No GitHub release is live at this time. The download link appears once account-safe distribution is ready.</p>
+      <p class="note">When public access is restored, download <strong>Lights-Out-Portable-v11.1.2-win-x64.zip</strong>, verify SHA-256 <strong>525FF7A28CAF7EB590F5504ABFFB8B5B49E864DED2A5A5482D8D3A7367755B28</strong>, extract it into its own folder, and launch <strong>Lights Out.exe</strong> from the extracted folder. Do not run it inside the ZIP. This Windows build is unsigned, so SmartScreen or an Unknown Publisher warning may appear.</p>
     </section>
 
     <section class="product-section other-products" aria-labelledby="other-title">
