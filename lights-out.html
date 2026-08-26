@@ -461,6 +461,7 @@
       <a href="#proof-surface">Proof</a>
       <a href="#safety">Safety</a>
       <a href="#download">Download</a>
+      <a href="#faq">FAQ</a>
     </nav>
 
     <section id="overview" class="product-hero lo-hero" aria-labelledby="product-title">
@@ -470,6 +471,15 @@
         <p class="product-lede">{{product.summary}}</p>
         <div class="download-group">{{product.downloadBlock}}</div>
         {{product.proofStrip}}
+        <p class="note lo-trust-note">Lights Out v11.1.3 is a <strong>Reality-Gate-verified, unsigned Windows portable build</strong>. The artifact has a SHA-256 hash and a Reality Gate proof bundle. It is not code-signed yet, so Windows may show warnings.</p>
+        <div class="proof-strip" aria-label="Lights Out v11.1.3 proof status badges">
+          <span class="proof-pill"><strong>Reality Gate</strong> Verified</span>
+          <span class="proof-pill"><strong>Signing</strong> Unsigned Portable Build</span>
+          <span class="proof-pill"><strong>Hash</strong> SHA-256 Published</span>
+          <span class="proof-pill"><strong>Bundle</strong> Proof Bundle Prepared</span>
+          <span class="proof-pill"><strong>Windows</strong> Portable</span>
+          <span class="proof-pill"><strong>Android</strong> Companion 11.1.1</span>
+        </div>
       </div>
 
       <figure class="lo-shot" aria-labelledby="shot-hero-cap">
@@ -899,18 +909,57 @@
     <section id="release-status" class="product-section" aria-labelledby="release-title">
       <div class="section-head">
         <h2 id="release-title">Release status &amp; evidence</h2>
-        <p>Evidence from the frozen v11.1.2 release candidate and the published artifact. Public access is currently blocked by an external GitHub account-level restriction.</p>
+        <p>Lights Out v11.1.3 passed a full Reality Gate Runroom validation on the exact candidate artifact below. This is proof of validation, not a public release — see "What this does not claim" further down.</p>
       </div>
       <div class="lo-proof-card">
         <dl class="lo-proof-fields">
-          <div><dt>Runtime UX pass</dt><dd>Complete on the frozen candidate</dd></div>
-          <div><dt>Regression suites</dt><dd>{{product.testStatus}}</dd></div>
-          <div><dt>Artifact</dt><dd>Lights-Out-Portable-v11.1.2-win-x64.zip</dd></div>
+          <div><dt>Reality Gate result</dt><dd>{{product.testStatus}} steps passed</dd></div>
+          <div><dt>Receipt</dt><dd>cfb87394-5d3c-4763-aa66-b89500b858f7 · verified GREEN</dd></div>
+          <div><dt>Artifact</dt><dd>Lights-Out-Portable-v11.1.3-win-x64.zip</dd></div>
           <div><dt>Build</dt><dd>{{product.build}}</dd></div>
           <div><dt>Distribution</dt><dd>Unsigned portable ZIP; manual extraction required</dd></div>
-          <div><dt>Public download</dt><dd>Blocked — anonymous GitHub requests return 404</dd></div>
+          <div><dt>Public download</dt><dd>Not yet authorized — pending separate owner publish decision</dd></div>
         </dl>
         {{product.releaseNoteBlock}}
+      </div>
+
+      <div class="lo-proof-card">
+        <h3>What Reality Gate proved</h3>
+        <ul class="lo-story-list">
+          <li>Run 9 (receipt <code>cfb87394-5d3c-4763-aa66-b89500b858f7</code>) passed all 20 of 20 validation steps against this exact artifact and source pairing.</li>
+          <li>The receipt is cryptographically signed and was independently verified <strong>GREEN</strong>.</li>
+          <li>Validation included real physical Android companion automation on a Samsung Galaxy S23 — not a simulator.</li>
+          <li>Provider operations during validation: <strong>0</strong>. Real Windows power actions during validation: <strong>0</strong>.</li>
+          <li>An earlier run (receipt <code>8b917a70-0a2d-4b57-82b2-113e9ea6fbad</code>) is kept only as evidence of a validation-targeting issue that was found and fixed — it does not count as a passing result and is never cited as one.</li>
+        </ul>
+      </div>
+
+      <div class="lo-proof-card">
+        <h3>Verify the artifact yourself</h3>
+        <p>Before running any Lights Out download, confirm its hash matches exactly:</p>
+        <div class="code-block">Get-FileHash ".\Lights-Out-Portable-v11.1.3-win-x64.zip" -Algorithm SHA256</div>
+        <p>Expected artifact SHA-256:</p>
+        {{product.hashBlock}}
+        <p>Expected Reality Gate proof bundle SHA-256 (optional, for the proof bundle archive if it is published alongside the artifact):</p>
+        <div class="code-block">176BD7EF53CDAB57E0A27E844820BA0F7704CD547937A3EABECAD3144EAB163D</div>
+        <p class="note">If the hash doesn't match exactly, do not run the file — download again or contact the project.</p>
+      </div>
+
+      <div class="lo-proof-card">
+        <h3>Unsigned build disclosure</h3>
+        <p>This build is not Authenticode-signed. Windows may show a "Windows protected your PC" / unrecognized-publisher warning when you run it. No trusted-publisher claim is made, and no SmartScreen reputation is claimed. Please verify the SHA-256 hash above before running the download.</p>
+      </div>
+
+      <div class="lo-proof-card">
+        <h3>What this does not claim</h3>
+        <ul class="lo-story-list">
+          <li>Not a signed Windows release.</li>
+          <li>Not a trusted-publisher build.</li>
+          <li>Not SmartScreen trusted.</li>
+          <li>Not a GitHub release.</li>
+          <li>Not a public release — that requires a later, separately authorized owner decision.</li>
+          <li>Not a re-verification of the earlier, separately frozen v11.1.2 GitHub release ZIP, which remains blocked from anonymous GitHub access for unrelated account-level reasons.</li>
+        </ul>
       </div>
     </section>
 
@@ -921,8 +970,12 @@
       </div>
       <div class="detail-grid">
         <article class="detail-card">
-          <h3>Public download currently blocked</h3>
-          <p>The v11.1.2 release and frozen ZIP exist in the publisher's authenticated GitHub control plane, but an external account-level restriction currently makes the owner, repository, release, and asset return 404 to anonymous visitors. No download link is shown while that remains true.</p>
+          <h3>v11.1.3 download not yet authorized</h3>
+          <p>Lights Out v11.1.3 passed full Reality Gate validation, but publishing it is a separate, owner-only decision that hasn't happened yet. No download link is shown until that authorization exists.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Separately: the older v11.1.2 GitHub release is still hidden</h3>
+          <p>The earlier v11.1.2 release and frozen ZIP exist in the publisher's authenticated GitHub control plane, but an external account-level restriction currently makes the owner, repository, release, and asset return 404 to anonymous visitors. This is unrelated to, and unaffected by, the v11.1.3 Reality Gate proof above.</p>
         </article>
         <article class="detail-card">
           <h3>Windows desktop + Android companion</h3>
@@ -938,10 +991,42 @@
     <section id="download" class="product-section" aria-labelledby="download-title">
       <div class="section-head">
         <h2 id="download-title">Download</h2>
-        <p>The frozen v11.1.2 portable ZIP is not publicly reachable while GitHub hides the publisher account.</p>
+        <p>Lights Out v11.1.3 is Reality-Gate-verified, but the download is not live yet — publication requires a separate, owner-authorized publish/deploy decision.</p>
       </div>
       <div class="download-group">{{product.downloadBlock}}</div>
-      <p class="note">When public access is restored, download <strong>Lights-Out-Portable-v11.1.2-win-x64.zip</strong>, verify SHA-256 <strong>525FF7A28CAF7EB590F5504ABFFB8B5B49E864DED2A5A5482D8D3A7367755B28</strong>, extract it into its own folder, and launch <strong>Lights Out.exe</strong> from the extracted folder. Do not run it inside the ZIP. This Windows build is unsigned, so SmartScreen or an Unknown Publisher warning may appear.</p>
+      <p class="note">Once publication is authorized, this section will link to <strong>Lights-Out-Portable-v11.1.3-win-x64.zip</strong> and its Reality Gate proof bundle. Verify SHA-256 <strong>CC3AB6A78D08A6AE17092F0DC79A3EC5F916B7A6CEB27B16307698A62F94ADD3</strong> before running the downloaded file, extract it into its own folder, and launch <strong>Lights Out.exe</strong> from the extracted folder — do not run it inside the ZIP. This Windows build is unsigned, so SmartScreen or an Unknown Publisher warning may appear.</p>
+    </section>
+
+    <section id="faq" class="product-section" aria-labelledby="faq-title">
+      <div class="section-head">
+        <h2 id="faq-title">Frequently asked questions</h2>
+      </div>
+      <div class="detail-grid">
+        <article class="detail-card">
+          <h3>Why is Windows warning me when I run this?</h3>
+          <p>Because the build isn't code-signed yet. Windows shows this warning for any unsigned executable, regardless of how it was tested. Verify the SHA-256 hash above before deciding whether to proceed.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Is this signed?</h3>
+          <p>No. It's an unsigned Windows portable build. Code signing is a separate, tracked piece of future work, not something this release claims.</p>
+        </article>
+        <article class="detail-card">
+          <h3>What does "Reality Gate Verified" mean?</h3>
+          <p>It means this exact build passed a full, real, 20-step automated validation pipeline — including packaged-app checks and live physical-phone companion automation — and produced a cryptographically signed, independently verified proof receipt. It does not mean the file is digitally signed, and it has no effect on Windows SmartScreen.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Is this hosted on GitHub?</h3>
+          <p>No. This build is not a GitHub release. Distribution here is provider-neutral by design.</p>
+        </article>
+        <article class="detail-card">
+          <h3>How do I verify the download?</h3>
+          <p>Run the <code>Get-FileHash</code> command in the Release status &amp; evidence section above and compare the result to the published SHA-256. If they don't match exactly, don't run the file.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Is the Android app also v11.1.3?</h3>
+          <p>No. The Android Companion app remains at version 11.1.1 in this release; only the Windows desktop app moved to 11.1.3.</p>
+        </article>
+      </div>
     </section>
 
     <section class="product-section other-products" aria-labelledby="other-title">
