@@ -284,7 +284,9 @@ foreach ($target in $Targets) {
 
     # 9. New internal product routes (canonical, no off-site jumps)
     Test-UrlContent -Url "$target/reality-gate/" -ContainsPatterns @("Reality Gate", "Developer Pilot", "58cc27d22bdee8157ee4598e116e17ff42d0efc95630c97bee4b2bc6be6ce756") -NotContainsPatterns @("SkyFoundry")
-    Test-UrlContent -Url "$target/cache-vault/" -ContainsPatterns @("Cache Vault", "Get Cache Vault", "Public release") -NotContainsPatterns @("SkyFoundry")
+    # Pinned to Cache Vault v0.2.0 release truth: product, versioned download action, state,
+    # download target, and published hash. "Get Cache Vault" was the v0.1.9 CTA and must not return.
+    Test-UrlContent -Url "$target/cache-vault/" -ContainsPatterns @("Cache Vault", "Download v0\.2\.0 \(Windows\)", "Public release", "v0\.2\.0/CacheVault-v0\.2\.0-windows\.zip", "84471c92b84b4414dc59b03170321c388cdf70c4a02918b7294af3c8cde12c12") -NotContainsPatterns @("SkyFoundry", "Get Cache Vault")
     Test-UrlContent -Url "$target/cache-vault" -ContainsPatterns @("Cache Vault") -NotContainsPatterns @("SkyFoundry") -FollowRedirects $true
     Test-UrlRedirect -Url "$target/cache-vault" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/cache-vault/"
     Test-UrlRedirect -Url "$target/cache-vault.html" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/cache-vault/"
