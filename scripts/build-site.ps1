@@ -509,6 +509,15 @@ Copy-Item (Join-Path $root 'site-manifest.json') $publicDir -Force
 Copy-Item (Join-Path $root 'brand')  $publicDir -Recurse -Force
 Copy-Item (Join-Path $root 'assets') $publicDir -Recurse -Force
 
+# assets/ ships published imagery only. Capture tooling has previously dropped
+# diagnostic dumps here that carry local machine paths, so strip that class of
+# file from the public output and say so out loud rather than shipping it.
+$diagLeaks = @(Get-ChildItem (Join-Path $publicDir 'assets') -Recurse -File -Include '*-diag.json', '*.diag.json' -ErrorAction SilentlyContinue)
+foreach ($leak in $diagLeaks) {
+  Remove-Item $leak.FullName -Force
+  Write-Host "    excluded diagnostic artifact from public output: $($leak.Name)" -ForegroundColor Yellow
+}
+
 # Expose deploy receipts publicly
 if (Test-Path (Join-Path $root 'reports/deploy-receipts')) {
   $receiptsOut = Join-Path $publicDir 'reports/deploy-receipts'
