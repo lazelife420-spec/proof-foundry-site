@@ -4,13 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cache Vault — Local-first clipboard vault | The Proof Foundry</title>
-  <meta name="description" content="Cache Vault is a local-first clipboard vault with stamped receipts, safes, global search, Quick Paste, image capture, exports, and proof-pack workflows. A Proof Foundry product." />
+  <meta name="description" content="Cache Vault is a local-first Windows clipboard vault with stamped receipts, safes, global search, Quick Paste, image capture, exports, Command Center, and an opt-in LAN-only Mobile Bridge with a production-signed Android companion. A Proof Foundry product." />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#0B0F14" />
   <link rel="canonical" href="https://theprooffoundry.com/cache-vault/" />
 
   <meta property="og:title" content="Cache Vault — Local-first clipboard vault" />
-  <meta property="og:description" content="Local-first clipboard vault with stamped receipts, safes, search, Quick Paste, and proof-pack workflows." />
+  <meta property="og:description" content="Local-first Windows clipboard vault with receipts, safes, search, Quick Paste, image capture, exports, Command Center, and a production-signed Android companion." />
   <meta property="og:type" content="product" />
   <meta property="og:url" content="https://theprooffoundry.com/cache-vault/" />
   <meta property="og:site_name" content="The Proof Foundry" />
@@ -71,8 +71,8 @@
     }
 
     /* One track rule for every grid on this page. At the shell width it resolves
-       to three columns, so the six "What it does" cards fill two clean rows
-       instead of the 5 + 1 orphan the shared 240px floor produced, while a
+       to three columns, so the seven "What it does" cards fill three clean rows
+       instead of the orphan row the shared 240px floor produced, while a
        two-card section still collapses to a deliberate pair. */
     .cv-page .detail-grid {
       grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
@@ -183,6 +183,10 @@
           <p>Find any clip fast across history and safes, and paste it back in one step with Quick Paste.</p>
         </article>
         <article class="detail-card">
+          <h3>Command Center</h3>
+          <p>Trigger actions from a single hotkey-driven launcher. Phase 1 ships Hotkey Actions; expansions wait for deliberate scope decisions.</p>
+        </article>
+        <article class="detail-card">
           <h3>Screenshots &amp; images</h3>
           <p>Images live alongside text clips, so visual context is never lost between pastes.</p>
         </article>
@@ -196,7 +200,7 @@
         </article>
         <article class="detail-card">
           <h3>Mobile companion</h3>
-          <p>A Windows + Android pair, so the workflow travels with you without surrendering your data to a service.</p>
+          <p>An opt-in LAN-only Mobile Bridge pairs Cache Vault Desktop with a production-signed Android companion. No cloud relay — your clips stay on the local network.</p>
         </article>
       </div>
     </section>
@@ -219,6 +223,10 @@
           <h3>Honest claims</h3>
           <p>What Cache Vault does is tied to tested behavior and visible release proof, not marketing language.</p>
         </article>
+        <article class="detail-card">
+          <h3>Founder license gate</h3>
+          <p>Advanced features are unlocked offline with an Ed25519 Founder license. No online account or subscription is required for the usable base application.</p>
+        </article>
       </div>
     </section>
 
@@ -230,15 +238,17 @@
       <div class="detail-grid">
         <article class="detail-card">
           <h3>Current public checksum</h3>
-          <p>Verify the current public Windows release before running it.</p>
+          <p>Verify the v0.2.0 Windows ZIP and the production-signed Android APK before installing.</p>
           {{product.hashBlock}}
+          <p class="note">The Android APK hash is in the published <a href="{{product.sha256Url}}" target="_blank" rel="noopener">SHA256SUMS.txt</a> on the v0.2.0 release page.</p>
         </article>
         <article class="detail-card">
           <h3>Release evidence</h3>
           <ul>
-            <li><a href="https://github.com/lazelife420-spec/CacheVault/releases/tag/cache-vault-v0.1.4-release.1" target="_blank" rel="noopener">GitHub release: v0.1.4 release.1</a></li>
-            <li><a href="https://github.com/lazelife420-spec/CacheVault/releases/download/cache-vault-v0.1.4-release.1/CacheVault-v0.1.4-windows.sha256" target="_blank" rel="noopener">Published SHA-256</a></li>
-            <li>Test suite: {{product.testStatus}} passing on the latest public build</li>
+            <li><a href="https://github.com/lazelife420-spec/CacheVault/releases/tag/v0.2.0" target="_blank" rel="noopener">GitHub release: v0.2.0</a></li>
+            <li><a href="https://github.com/lazelife420-spec/CacheVault/releases/download/v0.2.0/SHA256SUMS.txt" target="_blank" rel="noopener">Published SHA256SUMS.txt</a> (Windows ZIP + Android APK)</li>
+            <li>Test suite: {{product.testStatus}} on the v0.2.0 release</li>
+            <li>Production-signed Android companion verified on a Samsung Galaxy S23</li>
           </ul>
         </article>
       </div>
@@ -256,8 +266,8 @@
           <p>The public external page presents {{product.versionLabel}}. That is the established public release.</p>
         </article>
         <article class="detail-card">
-          <h3>Next build is not public yet</h3>
-          <p>The repaired Windows/Android pair is still going through its pre-tester reliability gate. It is not frozen as an external-test release and is not on the public page.</p>
+          <h3>Command Center scope is frozen</h3>
+          <p>Command Center is Phase 1 only (Hotkey Actions) in v0.2.0. Later phases such as Text Expansions and Run Log UI are not claimed until they ship.</p>
         </article>
       </div>
     </section>
@@ -268,7 +278,7 @@
         <p>Downloads and Founder options are hosted on the Cache Vault release site.</p>
       </div>
       <div class="download-group">{{product.downloadBlock}}</div>
-      <p class="note">The Proof Foundry owns the canonical product route here; the release site is the transaction and download destination for now. Buy/download options open in a new tab on the Cache Vault release site.</p>
+      <p class="note">The Windows installer is inside the ZIP. The Android APK is available on the same <a href="https://github.com/lazelife420-spec/CacheVault/releases/tag/v0.2.0" target="_blank" rel="noopener">v0.2.0 release page</a>. Verify the SHA-256 before installing either artifact.</p>
     </section>
 
     <section class="product-section other-products" aria-labelledby="other-title">
