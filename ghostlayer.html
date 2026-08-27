@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GhostLayer — RAM-backed file staging | The Proof Foundry</title>
+  <meta name="description" content="GhostLayer is a controllable RAM-backed layer between active work and permanent storage. Stage files in RAM, commit them to disk on your terms, and wipe the layer instantly. No cloud, no account, no telemetry." />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#0a0d14" />
+  <link rel="canonical" href="https://theprooffoundry.com/ghostlayer/" />
+  <link rel="icon" type="image/svg+xml" href="/brand/proof-foundry-mark.svg" />
+
+  <meta property="og:title" content="GhostLayer — RAM-backed file staging" />
+  <meta property="og:description" content="A controllable RAM-backed layer between active work and permanent storage. Stage, commit, and wipe — no cloud, no account, no telemetry." />
+  <meta property="og:type" content="product" />
+  <meta property="og:url" content="https://theprooffoundry.com/ghostlayer/" />
+  <meta property="og:site_name" content="The Proof Foundry" />
+  <meta property="og:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    /* GhostLayer product identity — a translucent, layered aesthetic
+       suggesting RAM (volatile) vs disk (permanent). */
+    :root {
+      --gl-bg: #0a0d14;
+      --gl-bg-2: #0d1118;
+      --gl-panel: #0f1520;
+      --gl-panel-2: #121a28;
+      --gl-primary: #4a8fd6;
+      --gl-primary-dim: #3a6fa8;
+      --gl-secondary: #7b6dc9;
+      --gl-secondary-dim: #5f50a0;
+      --gl-gold: #d6a84f;
+      --gl-bronze: #9f7e3b;
+      --gl-steel: #2a323f;
+      --gl-text: #f2f6f8;
+      --gl-muted: #93a4b5;
+    }
+
+    body {
+      background-color: var(--gl-bg);
+      color: var(--gl-text);
+      overflow-x: hidden;
+    }
+
+    .gl-container {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Hero */
+    .gl-hero {
+      position: relative;
+      padding-block: 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .gl-hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(circle at 75% 50%, rgba(74, 143, 214, 0.06), transparent 50%),
+        radial-gradient(circle at 25% 50%, rgba(123, 109, 201, 0.04), transparent 50%),
+        linear-gradient(to bottom, transparent, var(--gl-bg-2));
+    }
+
+    .gl-hero-grid-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background-image:
+        linear-gradient(var(--gl-steel) 1px, transparent 1px),
+        linear-gradient(90deg, var(--gl-steel) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.12;
+      mask-image: linear-gradient(to bottom, transparent, black 30%, black 70%, transparent);
+      -webkit-mask-image: linear-gradient(to bottom, transparent, black 30%, black 70%, transparent);
+    }
+
+    .gl-eyebrow {
+      color: var(--gl-gold);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .gl-title {
+      font-size: clamp(3rem, 5vw, 4.5rem);
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+      color: #fff;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .gl-subtitle {
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      color: var(--gl-primary);
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+
+    .gl-tagline {
+      font-size: 1.25rem;
+      color: var(--gl-text);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      border-left: 2px solid var(--gl-primary);
+      padding-left: 1rem;
+    }
+
+    .gl-desc {
+      font-size: 1.1rem;
+      color: var(--gl-muted);
+      line-height: 1.6;
+      margin-bottom: 2.5rem;
+      max-width: 500px;
+    }
+
+    .gl-cta-group {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .gl-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .gl-btn-primary {
+      background: var(--gl-primary);
+      color: #000;
+      border: 1px solid var(--gl-primary);
+      box-shadow: 0 0 15px rgba(74, 143, 214, 0.2);
+    }
+
+    .gl-btn-primary:hover {
+      background: #3a7fc6;
+      box-shadow: 0 0 20px rgba(74, 143, 214, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .gl-btn-secondary {
+      background: var(--gl-panel);
+      color: var(--gl-text);
+      border: 1px solid var(--gl-steel);
+    }
+
+    .gl-btn-secondary:hover {
+      border-color: var(--gl-muted);
+      background: var(--gl-panel-2);
+    }
+
+    .gl-hero-fineprint {
+      margin-top: 0.5rem;
+      font-size: 0.82rem;
+      color: var(--gl-muted);
+      line-height: 1.5;
+      max-width: 520px;
+    }
+
+    .gl-hero-fineprint strong {
+      color: var(--gl-text);
+    }
+
+    /* Layer art */
+    .gl-layer-art {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Sections */
+    .gl-section {
+      padding-block: 5rem;
+      border-top: 1px solid var(--gl-steel);
+    }
+
+    .gl-band {
+      padding-block: 5rem;
+      border-top: 1px solid var(--gl-steel);
+    }
+
+    .gl-section-title {
+      font-size: clamp(1.75rem, 3.4vw, 2.5rem);
+      margin-bottom: 1rem;
+      color: #fff;
+      text-wrap: balance;
+    }
+
+    .gl-section-subtitle {
+      color: var(--gl-muted);
+      font-size: 1.15rem;
+      margin-bottom: 4rem;
+      max-width: var(--measure);
+    }
+
+    /* Workflow cards */
+    .gl-workflow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+      gap: 2rem;
+      margin-top: 2.5rem;
+    }
+
+    .gl-workflow-card {
+      background: var(--gl-panel);
+      border: 1px solid var(--gl-steel);
+      padding: 2.5rem;
+      border-radius: 8px;
+      position: relative;
+      transition: border-color 0.3s;
+    }
+
+    .gl-workflow-card:hover {
+      border-color: var(--gl-primary);
+    }
+
+    .gl-workflow-step {
+      position: absolute;
+      top: -0.75rem;
+      left: 1.5rem;
+      background: var(--gl-bg);
+      padding: 0 0.75rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--gl-primary);
+      letter-spacing: 0.1em;
+    }
+
+    .gl-workflow-title {
+      font-size: 1.25rem;
+      color: #fff;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .gl-workflow-text {
+      color: var(--gl-muted);
+      line-height: 1.6;
+    }
+
+    .gl-workflow-icon {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      font-family: monospace;
+      color: var(--gl-primary);
+    }
+
+    /* Principles */
+    .gl-principles {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+      gap: 2rem;
+    }
+
+    .gl-principle {
+      background: var(--gl-panel);
+      border: 1px solid var(--gl-steel);
+      padding: 2rem;
+      border-radius: 4px;
+    }
+
+    .gl-principle h3 {
+      font-size: 1.1rem;
+      color: #fff;
+      margin-bottom: 0.75rem;
+    }
+
+    .gl-principle p {
+      color: var(--gl-muted);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    /* Download section */
+    .gl-download-panel {
+      background: var(--gl-panel-2);
+      border: 1px solid var(--gl-steel);
+      padding: 3rem;
+      border-radius: 8px;
+      text-align: center;
+      max-width: 860px;
+      margin: 2.5rem auto 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gl-download-panel::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gl-primary), transparent);
+    }
+
+    .gl-hash-box {
+      background: #04060a;
+      border: 1px solid var(--gl-steel);
+      padding: 1rem;
+      margin: 1.5rem 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.85rem;
+      color: var(--gl-muted);
+      word-break: break-all;
+      border-radius: 4px;
+      text-align: left;
+    }
+
+    /* Honest notes */
+    .gl-note {
+      margin-top: 1rem;
+      padding: 1rem 1.25rem;
+      font-size: 0.88rem;
+      color: var(--gl-muted);
+      line-height: 1.55;
+      border: 1px dashed var(--gl-bronze);
+      background: rgba(217, 164, 79, 0.04);
+      border-radius: 4px;
+    }
+
+    .gl-note strong {
+      color: var(--gl-gold);
+    }
+
+    .gl-note-blue {
+      border-color: var(--gl-primary);
+      background: rgba(74, 143, 214, 0.04);
+    }
+
+    .gl-note-blue strong {
+      color: var(--gl-primary);
+    }
+
+    /* Proof links */
+    .gl-proof-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .gl-proof-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: var(--gl-panel);
+      border: 1px solid var(--gl-steel);
+      border-radius: 4px;
+      color: var(--gl-text);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: border-color 0.2s;
+    }
+
+    .gl-proof-link:hover {
+      border-color: var(--gl-primary);
+      color: var(--gl-primary);
+    }
+
+    .gl-proof-link::before {
+      content: "›";
+      color: var(--gl-primary);
+      font-weight: 700;
+      flex: none;
+    }
+
+    /* Limits */
+    .gl-limits {
+      margin: 2rem auto 0;
+      max-width: 860px;
+      text-align: left;
+      background: var(--gl-panel);
+      border: 1px solid var(--gl-steel);
+      border-radius: 4px;
+      padding: 2rem 2.5rem;
+    }
+
+    .gl-limits h3 {
+      color: #fff;
+      font-size: 1.05rem;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .gl-limits ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .gl-limits li {
+      display: flex;
+      gap: 0.6rem;
+      align-items: baseline;
+      color: var(--gl-muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    .gl-limits li::before {
+      content: "—";
+      color: var(--gl-bronze);
+      flex: none;
+    }
+
+    .gl-product-nav {
+      padding-block: 1.25rem 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .gl-container {
+        padding-inline: 1rem;
+      }
+      .gl-section, .gl-band {
+        padding-block: 3rem;
+      }
+      .gl-hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding-block: 1.5rem;
+        gap: 1.5rem;
+      }
+      .gl-desc {
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+      }
+      .gl-tagline {
+        border-left: none;
+        padding-left: 0;
+        font-size: 1.1rem;
+      }
+      .gl-cta-group {
+        justify-content: center;
+      }
+      .gl-hero-fineprint {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .gl-layer-art {
+        order: 1;
+        max-width: 220px;
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .gl-title { font-size: 2.5rem; }
+      .gl-subtitle { font-size: 1.3rem; }
+      .gl-download-panel { padding: 1.5rem; }
+      .gl-limits { padding: 1.5rem; }
+      .gl-workflow-card { padding: 1.5rem; }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .gl-layer-art {
+        animation: gl-settle 0.9s ease-out both;
+      }
+      @keyframes gl-settle {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- @page ghostlayer -->
+  <!-- @product ghostlayer -->
+  <!-- @include header -->
+
+  <main>
+    <div class="gl-container gl-product-nav">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/#products">Products</a> <span aria-hidden="true">/</span> <span>GhostLayer</span>
+      </nav>
+    </div>
+
+    <!-- Hero -->
+    <section class="gl-hero gl-container" id="overview">
+      <div class="gl-hero-bg"></div>
+      <div class="gl-hero-grid-overlay"></div>
+
+      <div class="gl-hero-content">
+        <div class="gl-eyebrow">A Proof Foundry Product · {{product.statusLabel}}</div>
+        <h1 class="gl-title">GhostLayer</h1>
+        <div class="gl-subtitle">RAM-Backed File Staging</div>
+
+        <p class="gl-tagline">Stage in RAM. Commit on your terms. Wipe the rest.</p>
+
+        <p class="gl-desc">
+          <strong style="color: #fff;">A controllable layer between active work and permanent storage.</strong>
+          Drop files into a RAM-backed staging area, commit only what you choose to disk,
+          and wipe the layer instantly when you are done. No cloud sync, no background
+          writes, no telemetry — the volatile layer stays volatile until you say otherwise.
+        </p>
+
+        <div class="gl-cta-group">
+          {{product.downloadBlock}}
+        </div>
+
+        <p class="gl-hero-fineprint">
+          <strong>Windows 10/11 x64</strong> &middot; ~80 MB installer
+        </p>
+
+        <p class="gl-hero-fineprint">
+          <strong>Unsigned by Windows.</strong> Receipt-backed by Proof Foundry.
+          Windows SmartScreen may prompt on first launch — choose <strong>More info → Run anyway</strong>.
+          Verify the SHA-256 before running.
+        </p>
+
+        <div style="margin-top: 2rem; display: flex; justify-content: center;" class="gl-hero-strip">
+          {{product.proofStrip}}
+        </div>
+      </div>
+
+      <div class="gl-layer-art" aria-hidden="true">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="glRamGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#4a8fd6" stop-opacity="0.6"/>
+              <stop offset="100%" stop-color="#4a8fd6" stop-opacity="0.1"/>
+            </linearGradient>
+            <linearGradient id="glDiskGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#7b6dc9" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#7b6dc9" stop-opacity="0.6"/>
+            </linearGradient>
+            <linearGradient id="glGoldGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#d6a84f" stop-opacity="1"/>
+              <stop offset="100%" stop-color="#9f7e3b" stop-opacity="1"/>
+            </linearGradient>
+          </defs>
+
+          <!-- RAM layer (translucent, top) -->
+          <rect x="60" y="80" width="280" height="100" rx="8"
+                fill="url(#glRamGrad)" stroke="#4a8fd6" stroke-width="1.5" stroke-dasharray="6,3" opacity="0.7"/>
+          <text x="200" y="135" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#4a8fd6" letter-spacing="2">RAM · VOLATILE</text>
+
+          <!-- File icons in RAM -->
+          <rect x="90" y="95" width="24" height="30" rx="2" fill="#4a8fd6" opacity="0.4"/>
+          <rect x="124" y="95" width="24" height="30" rx="2" fill="#4a8fd6" opacity="0.3"/>
+          <rect x="158" y="95" width="24" height="30" rx="2" fill="#4a8fd6" opacity="0.5"/>
+
+          <!-- Commit arrow -->
+          <line x1="200" y1="190" x2="200" y2="240" stroke="#d6a84f" stroke-width="2"/>
+          <polygon points="195,235 205,235 200,245" fill="#d6a84f"/>
+          <text x="215" y="218" font-family="ui-monospace, monospace" font-size="9" fill="#d6a84f">commit</text>
+
+          <!-- Wipe arrow (dashed, going right) -->
+          <line x1="340" y1="130" x2="380" y2="130" stroke="#4a8fd6" stroke-width="1.5" stroke-dasharray="4,2" opacity="0.5"/>
+          <text x="345" y="120" font-family="ui-monospace, monospace" font-size="9" fill="#4a8fd6" opacity="0.6">wipe</text>
+
+          <!-- Disk layer (solid, bottom) -->
+          <rect x="60" y="260" width="280" height="100" rx="8"
+                fill="url(#glDiskGrad)" stroke="#7b6dc9" stroke-width="1.5" opacity="0.8"/>
+          <text x="200" y="315" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#7b6dc9" letter-spacing="2">DISK · PERMANENT</text>
+
+          <!-- Committed file -->
+          <rect x="90" y="275" width="24" height="30" rx="2" fill="#7b6dc9" opacity="0.6"/>
+
+          <!-- Ground line -->
+          <path d="M 40 360 L 360 360" stroke="#2a323f" stroke-width="2" opacity="0.5"/>
+
+          <!-- Gold accents -->
+          <rect x="178" y="50" width="44" height="14" rx="2" fill="url(#glGoldGrad)"/>
+          <text x="200" y="61" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#000" font-weight="700">GhostLayer</text>
+        </svg>
+      </div>
+    </section>
+
+    <!-- What GhostLayer is -->
+    <section class="gl-section gl-container" id="what-it-is">
+      <h2 class="gl-section-title">A layer you control between RAM and disk.</h2>
+      <p class="gl-section-subtitle">
+        Files dropped into GhostLayer exist in RAM only — volatile, inspectable, and
+        never written to disk until you explicitly commit them. Wipe the layer and
+        the uncommitted files are gone. No residual copies, no background sync,
+        no cloud backup you did not authorize.
+      </p>
+
+      <div class="gl-principles">
+        <div class="gl-principle">
+          <h3>RAM-Backed Staging</h3>
+          <p>Dropped files live in a RAM-backed layer. They are visible, sortable, and
+          manageable inside the app — but they do not touch disk until you commit them.</p>
+        </div>
+        <div class="gl-principle">
+          <h3>Deliberate Commit</h3>
+          <p>Choose which files to write to disk and where. GhostLayer commits exactly
+          what you select, nothing more. No bulk writes, no hidden persistence,
+          no "helpful" background saves.</p>
+        </div>
+        <div class="gl-principle">
+          <h3>Instant Wipe</h3>
+          <p>One action clears the staging layer. Uncommitted files are removed from RAM.
+          The layer is empty and ready for the next session. What was not committed
+          was never written.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Workflow -->
+    <section class="gl-band gl-container" id="workflow">
+      <h2 class="gl-section-title" style="margin-bottom: 0;">Stage → Commit → Wipe</h2>
+      <p class="gl-section-subtitle">Three deliberate actions. No hidden steps between them.</p>
+
+      <div class="gl-workflow">
+        <div class="gl-workflow-card">
+          <span class="gl-workflow-step">01 / STAGE</span>
+          <div class="gl-workflow-icon">⬇</div>
+          <h3 class="gl-workflow-title">Drop files into RAM</h3>
+          <p class="gl-workflow-text">
+            Drag and drop files into the GhostLayer window. They appear in the staging
+            list with their names, sizes, and status. They exist in RAM only — no disk
+            writes occur at this stage. The layer is volatile by design.
+          </p>
+        </div>
+
+        <div class="gl-workflow-card">
+          <span class="gl-workflow-step">02 / COMMIT</span>
+          <div class="gl-workflow-icon">↧</div>
+          <h3 class="gl-workflow-title">Write only what you choose</h3>
+          <p class="gl-workflow-text">
+            Select a destination and commit the files you want to keep. GhostLayer writes
+            exactly those files to the path you specify — no temp copies, no shadow
+            duplicates, no background persistence. Files you do not commit are left behind
+            in RAM.
+          </p>
+        </div>
+
+        <div class="gl-workflow-card">
+          <span class="gl-workflow-step">03 / WIPE</span>
+          <div class="gl-workflow-icon">✕</div>
+          <h3 class="gl-workflow-title">Clear the layer instantly</h3>
+          <p class="gl-workflow-text">
+            Wipe the staging layer in one action. Uncommitted files are removed from RAM.
+            The layer is empty and ready for the next set. What was never committed was
+            never written to disk — and the wipe confirms it.
+          </p>
+        </div>
+      </div>
+
+      <p class="gl-note gl-note-blue" style="max-width: 900px; margin-top: 2rem;">
+        <strong>Duplicate guard:</strong> GhostLayer rejects the same file staged twice
+        — by path, by name, and by case-insensitive match on Windows. You will not
+        accidentally commit two copies of the same file under slightly different
+        spellings.
+      </p>
+    </section>
+
+    <!-- Local-first -->
+    <section class="gl-section gl-container" id="local-first">
+      <h2 class="gl-section-title">Local-first. User-controlled. No telemetry.</h2>
+      <p class="gl-section-subtitle">
+        GhostLayer is built on a simple principle: your files stay on your machine,
+        in your control, until you decide otherwise. No cloud account, no subscription,
+        no telemetry, no background network activity.
+      </p>
+
+      <div class="gl-principles">
+        <div class="gl-principle">
+          <h3>No Cloud, No Account</h3>
+          <p>GhostLayer does not require or request any cloud account. It does not
+          sync, upload, or phone home. The application runs entirely locally.</p>
+        </div>
+        <div class="gl-principle">
+          <h3>No Telemetry</h3>
+          <p>No analytics, no crash reporting to a remote server, no usage tracking.
+          What happens in GhostLayer stays on your machine.</p>
+        </div>
+        <div class="gl-principle">
+          <h3>User-Owned Persistence</h3>
+          <p>You decide what persists. Files in the RAM layer are volatile; files you
+          commit are permanent. There is no middle ground and no surprise — the
+          boundary is explicit and user-controlled.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Download and verify -->
+    <section class="gl-section gl-container" id="download">
+      <h2 class="gl-section-title">Download, then verify the installer yourself.</h2>
+      <p class="gl-section-subtitle">
+        The download is a Windows NSIS installer. The SHA-256 below is the checksum of
+        the installer you download — the same value recorded in the Proof Foundry release
+        receipt and verified against the Reality Gate custody chain.
+      </p>
+
+      <div class="gl-download-panel">
+        <div class="gl-cta-group" style="justify-content: center;">
+          {{product.downloadBlock}}
+        </div>
+
+        <div class="gl-hash-box">
+          Installer SHA-256: {{product.sha256}}
+        </div>
+
+        <div style="font-size: 0.85rem; color: var(--gl-muted); margin-top: 0.75rem;">
+          {{product.distType}} &middot; 84,606,853 bytes &middot; {{product.build}}
+        </div>
+
+        <p style="margin-top: 1.25rem; font-size: 0.9rem; color: var(--gl-muted); text-align: left;">
+          Verify locally with
+          <code style="font-family: ui-monospace, monospace; color: var(--gl-primary);">Get-FileHash .\GhostLayer-Setup-0.2.0.exe -Algorithm SHA256</code>
+          and compare against the value above. PowerShell prints the hash in uppercase;
+          the comparison is case-insensitive, so only the characters need to match.
+        </p>
+
+        {{product.releaseNoteBlock}}
+      </div>
+
+      <div class="gl-limits">
+        <h3>What this is — and is not</h3>
+        <ul>
+          <li><strong>Unsigned by Windows.</strong> The installer is not Microsoft publisher signed.
+          Windows SmartScreen may show "Windows protected your PC" — choose <strong>More info → Run anyway</strong>.</li>
+          <li><strong>Receipt-backed, not code-signed.</strong> The SHA-256 and Proof Foundry release
+          receipts establish artifact custody — they do not establish Microsoft code signing,
+          SmartScreen trust, or third-party security attestation.</li>
+          <li><strong>What you verify</strong> is that the bytes you downloaded match the bytes Reality
+          Gate inspected at build time. That is a custody claim, not a safety claim.</li>
+          <li><strong>No auto-update channel.</strong> Updates are manual downloads with fresh
+          checksums. No background update mechanism is included.</li>
+          <li><strong>Local-only by design.</strong> No cloud sync, no account, no telemetry — which
+          also means there is no remote dashboard and no remote wipe.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Proof -->
+    <section class="gl-band gl-container" id="proof">
+      <h2 class="gl-section-title">Proof and receipts.</h2>
+      <p class="gl-section-subtitle">
+        The following public artifacts are hosted on the Proof Foundry's own distribution
+        domain. They are the same four objects that form the canonical release set —
+        the installer and three evidence files.
+      </p>
+
+      <div class="gl-proof-links">
+        <a class="gl-proof-link" href="https://downloads.theprooffoundry.com/ghostlayer/v0.2.0/GHOSTLAYER_V0.2.0_PROOF_FOUNDRY_RELEASE_RECEIPT.json" target="_blank" rel="noopener">
+          Release Receipt (JSON) — structured receipt with artifact hashes and signing status
+        </a>
+        <a class="gl-proof-link" href="https://downloads.theprooffoundry.com/ghostlayer/v0.2.0/GHOSTLAYER_V0.2.0_PROOF_FOUNDRY_RELEASE_RECEIPT.md" target="_blank" rel="noopener">
+          Release Receipt (Markdown) — human-readable receipt with verification instructions
+        </a>
+        <a class="gl-proof-link" href="https://downloads.theprooffoundry.com/ghostlayer/v0.2.0/GHOSTLAYER_V0.2.0_RELEASE_PACKAGE_MANIFEST.md" target="_blank" rel="noopener">
+          Release Package Manifest — artifact list with sizes, hashes, and source authority
+        </a>
+      </div>
+
+      <p class="gl-note" style="max-width: 900px; margin-top: 2rem;">
+        <strong>What the receipts prove:</strong> The published installer SHA-256 matches
+        the hash recorded at build time. The release was verified with 54/54 tests passing.
+        The Reality Gate custody chain (run f4d8762a) verified 6/6 artifacts including this
+        installer, with an ECDSA P-256 signed receipt.
+        <br><br>
+        <strong>What the receipts do not prove:</strong> The software is malware-free.
+        The software is Microsoft-signed. SmartScreen will not warn. Any third party
+        attested to its safety. The receipts establish custody and provenance — not safety.
+      </p>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="gl-section gl-container" style="text-align: center;">
+      <h2 style="font-size: clamp(1.5rem, 3vw, 2rem); color: #fff; margin-bottom: 1.5rem;">
+        Stage in RAM. Commit on your terms. Wipe the rest.
+      </h2>
+      <div class="gl-cta-group" style="justify-content: center;">
+        {{product.downloadBlock}}
+      </div>
+    </section>
+  </main>
+
+  <!-- @include footer -->
+  <script src="/site.js" defer></script>
+</body>
+</html>

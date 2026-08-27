@@ -135,6 +135,34 @@
       ]
     },
     {
+      "id": "ghostlayer",
+      "name": "GhostLayer",
+      "route": "/ghostlayer/",
+      "state": "available",
+      "version": "0.2.0",
+      "platforms": ["Windows"],
+      "platform": "Windows",
+      "summary": "A controllable RAM-backed layer between active work and permanent storage. Stage files in RAM, commit them to disk on your terms, and wipe the layer instantly — no cloud, no account, no telemetry.",
+      "cta": "View product",
+      "downloadUrl": "https://downloads.theprooffoundry.com/ghostlayer/v0.2.0/GhostLayer-Setup-0.2.0.exe",
+      "downloadLabel": "Download v0.2.0",
+      "distType": "Windows Installer EXE (unsigned, receipt-backed)",
+      "build": "Electron v0.2.0 · NSIS installer · Reality Gate custody verified",
+      "sha256": "240A449ED8FB5114F85FC7E26EF51941CDE90EC953F4527CA30FE2AD1A98596B",
+      "sha256Url": null,
+      "testStatus": "54/54",
+      "testCount": "54/54",
+      "releaseNote": "Public release v0.2.0 (Windows). Unsigned by Windows — not Microsoft publisher signed, not SmartScreen trusted. Reality Gate custody receipt (ECDSA P-256, run f4d8762a) verifies 6/6 artifacts including this installer. Verify the SHA-256 before running. Windows SmartScreen may prompt on first launch — choose More info, then Run anyway.",
+      "proofStatus": "Reality Gate verified · unsigned",
+      "lastVerified": "2026-08-27",
+      "visible": true,
+      "proofLinks": [
+        "https://downloads.theprooffoundry.com/ghostlayer/v0.2.0/GHOSTLAYER_V0.2.0_PROOF_FOUNDRY_RELEASE_RECEIPT.json",
+        "https://downloads.theprooffoundry.com/ghostlayer/v0.2.0/GHOSTLAYER_V0.2.0_PROOF_FOUNDRY_RELEASE_RECEIPT.md",
+        "https://downloads.theprooffoundry.com/ghostlayer/v0.2.0/GHOSTLAYER_V0.2.0_RELEASE_PACKAGE_MANIFEST.md"
+      ]
+    },
+    {
       "id": "forgecast",
       "name": "ForgeCast Weather",
       "route": "/forgecast/",
