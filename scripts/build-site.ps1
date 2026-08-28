@@ -472,7 +472,7 @@ function Process-Template($srcPath, $srcName) {
   }
 
   # Generated-file warning (after doctype)
-  $warning = "<!-- GENERATED FILE — DO NOT EDIT. Source: $srcName + site-manifest.json. Run scripts/build-site.ps1 to rebuild. -->`r`n"
+  $warning = "<!-- GENERATED FILE - DO NOT EDIT. Source: $srcName + site-manifest.json. Run scripts/build-site.ps1 to rebuild. -->`r`n"
   $html = $html -replace '(<!doctype[^>]*>\s*\r?\n)', "`$1$warning"
 
   return $html
