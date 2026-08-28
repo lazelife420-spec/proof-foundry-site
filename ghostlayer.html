@@ -519,9 +519,9 @@
 
         <p class="gl-desc">
           <strong style="color: #fff;">A controllable layer between active work and permanent storage.</strong>
-          Drop files into a RAM-backed staging area, commit only what you choose to disk,
-          and wipe the layer instantly when you are done. No cloud sync, no background
-          writes, no telemetry — the volatile layer stays volatile until you say otherwise.
+          Drop files into a RAM-backed staging area, open them for editing in their associated
+          applications, recover safely from interruptions, and commit only what you choose to
+          disk. No cloud sync, no background writes, no telemetry.
         </p>
 
         <div class="gl-cta-group">
@@ -601,23 +601,26 @@
     <section class="gl-section gl-container" id="what-it-is">
       <h2 class="gl-section-title">A layer you control between RAM and disk.</h2>
       <p class="gl-section-subtitle">
-        Files dropped into GhostLayer exist in RAM only — volatile, inspectable, and
-        never written to disk until you explicitly commit them. Wipe the layer and
-        the uncommitted files are gone. No residual copies, no background sync,
-        no cloud backup you did not authorize.
+        Files dropped into GhostLayer live in a RAM-backed staging layer — volatile,
+        inspectable, and never written to disk until you commit them. Open a staged file
+        in its associated editor and GhostLayer synchronizes your edits back into RAM.
+        Opening for edit creates a temporary disk copy; the temporary is removed when
+        the edit session closes normally. Wipe the layer and the uncommitted files are
+        gone. No residual copies, no background sync, no cloud backup you did not authorize.
       </p>
 
       <div class="gl-principles">
         <div class="gl-principle">
           <h3>RAM-Backed Staging</h3>
           <p>Dropped files live in a RAM-backed layer. They are visible, sortable, and
-          manageable inside the app — but they do not touch disk until you commit them.</p>
+          manageable inside the app. Opening a file for editing creates a temporary disk
+          copy that is removed when the edit session closes normally.</p>
         </div>
         <div class="gl-principle">
           <h3>Deliberate Commit</h3>
           <p>Choose which files to write to disk and where. GhostLayer commits exactly
-          what you select, nothing more. No bulk writes, no hidden persistence,
-          no "helpful" background saves.</p>
+          what you select, nothing more. If a destination changed after staging, conflict
+          recovery preserves both versions — no Overwrite, no force commit.</p>
         </div>
         <div class="gl-principle">
           <h3>Instant Wipe</h3>
@@ -630,50 +633,63 @@
 
     <!-- Workflow -->
     <section class="gl-band gl-container" id="workflow">
-      <h2 class="gl-section-title" style="margin-bottom: 0;">Stage → Commit → Wipe</h2>
-      <p class="gl-section-subtitle">Three deliberate actions. No hidden steps between them.</p>
+      <h2 class="gl-section-title" style="margin-bottom: 0;">Stage &rarr; Open/Edit &rarr; Recover &rarr; Commit Safely</h2>
+      <p class="gl-section-subtitle">Four deliberate steps. No hidden actions between them.</p>
 
       <div class="gl-workflow">
         <div class="gl-workflow-card">
           <span class="gl-workflow-step">01 / STAGE</span>
-          <div class="gl-workflow-icon">⬇</div>
+          <div class="gl-workflow-icon">&#x2B07;</div>
           <h3 class="gl-workflow-title">Drop files into RAM</h3>
           <p class="gl-workflow-text">
             Drag and drop files into the GhostLayer window. They appear in the staging
-            list with their names, sizes, and status. They exist in RAM only — no disk
+            list with their names, sizes, and status. They exist in RAM — no disk
             writes occur at this stage. The layer is volatile by design.
           </p>
         </div>
 
         <div class="gl-workflow-card">
-          <span class="gl-workflow-step">02 / COMMIT</span>
-          <div class="gl-workflow-icon">↧</div>
-          <h3 class="gl-workflow-title">Write only what you choose</h3>
+          <span class="gl-workflow-step">02 / OPEN &amp; EDIT</span>
+          <div class="gl-workflow-icon">&#x270E;</div>
+          <h3 class="gl-workflow-title">Edit in your associated application</h3>
           <p class="gl-workflow-text">
-            Select a destination and commit the files you want to keep. GhostLayer writes
-            exactly those files to the path you specify — no temp copies, no shadow
-            duplicates, no background persistence. Files you do not commit are left behind
-            in RAM.
+            Open a staged file in its associated desktop application. When you save in the
+            editor, GhostLayer synchronizes the changes back into the staged RAM copy and
+            marks the file as modified. Opening for edit creates a temporary disk copy that
+            is removed when the edit session closes normally.
           </p>
         </div>
 
         <div class="gl-workflow-card">
-          <span class="gl-workflow-step">03 / WIPE</span>
-          <div class="gl-workflow-icon">✕</div>
-          <h3 class="gl-workflow-title">Clear the layer instantly</h3>
+          <span class="gl-workflow-step">03 / RECOVER</span>
+          <div class="gl-workflow-icon">&#x21BB;</div>
+          <h3 class="gl-workflow-title">Recover from interruptions</h3>
           <p class="gl-workflow-text">
-            Wipe the staging layer in one action. Uncommitted files are removed from RAM.
-            The layer is empty and ready for the next set. What was never committed was
-            never written to disk — and the wipe confirms it.
+            If GhostLayer is interrupted while a file is open for editing, the temporary
+            edit copy may survive on disk. On the next launch, GhostLayer detects stranded
+            temporaries and offers safe recovery: Open, Save Copy, Delete, or Later.
+            Stranded temporaries are never automatically deleted.
+          </p>
+        </div>
+
+        <div class="gl-workflow-card">
+          <span class="gl-workflow-step">04 / COMMIT</span>
+          <div class="gl-workflow-icon">&#x2B07;</div>
+          <h3 class="gl-workflow-title">Write only what you choose</h3>
+          <p class="gl-workflow-text">
+            Select a destination and commit the files you want to keep. If a destination
+            changed after staging, GhostLayer blocks the commit and offers non-destructive
+            recovery: Keep Staged, Show Destination, or Save Copy. Save Copy creates a new
+            file only and never overwrites an existing filesystem object.
           </p>
         </div>
       </div>
 
       <p class="gl-note gl-note-blue" style="max-width: 900px; margin-top: 2rem;">
-        <strong>Duplicate guard:</strong> GhostLayer rejects the same file staged twice
-        — by path, by name, and by case-insensitive match on Windows. You will not
-        accidentally commit two copies of the same file under slightly different
-        spellings.
+        <strong>Conflict safety:</strong> GhostLayer's block-on-conflict guard is preserved.
+        If a destination file changes on disk after staging, the commit is blocked and both
+        versions are kept — the staged RAM copy and the changed disk file. There is no
+        Overwrite or force-commit operation.
       </p>
     </section>
 
@@ -725,12 +741,12 @@
         </div>
 
         <div style="font-size: 0.85rem; color: var(--gl-muted); margin-top: 0.75rem;">
-          {{product.distType}} &middot; 84,607,218 bytes &middot; {{product.build}}
+          {{product.distType}} &middot; 84,610,255 bytes &middot; {{product.build}}
         </div>
 
         <p style="margin-top: 1.25rem; font-size: 0.9rem; color: var(--gl-muted); text-align: left;">
           Verify locally with
-          <code style="font-family: ui-monospace, monospace; color: var(--gl-primary);">Get-FileHash .\GhostLayer-Setup-0.2.1.exe -Algorithm SHA256</code>
+          <code style="font-family: ui-monospace, monospace; color: var(--gl-primary);">Get-FileHash .\GhostLayer-Setup-0.3.0.exe -Algorithm SHA256</code>
           and compare against the value above. PowerShell prints the hash in uppercase;
           the comparison is case-insensitive, so only the characters need to match.
         </p>
@@ -766,20 +782,20 @@
       </p>
 
       <div class="gl-proof-links">
-        <a class="gl-proof-link" href="https://downloads.theprooffoundry.com/ghostlayer/v0.2.1/GHOSTLAYER_V0.2.1_PROOF_FOUNDRY_RELEASE_RECEIPT.json" target="_blank" rel="noopener">
+        <a class="gl-proof-link" href="https://downloads.theprooffoundry.com/ghostlayer/v0.3.0/GHOSTLAYER_V0.3.0_PROOF_FOUNDRY_RELEASE_RECEIPT.json" target="_blank" rel="noopener">
           Release Receipt (JSON) — structured receipt with artifact hashes and signing status
         </a>
-        <a class="gl-proof-link" href="https://downloads.theprooffoundry.com/ghostlayer/v0.2.1/GHOSTLAYER_V0.2.1_PROOF_FOUNDRY_RELEASE_RECEIPT.md" target="_blank" rel="noopener">
+        <a class="gl-proof-link" href="https://downloads.theprooffoundry.com/ghostlayer/v0.3.0/GHOSTLAYER_V0.3.0_PROOF_FOUNDRY_RELEASE_RECEIPT.md" target="_blank" rel="noopener">
           Release Receipt (Markdown) — human-readable receipt with verification instructions
         </a>
-        <a class="gl-proof-link" href="https://downloads.theprooffoundry.com/ghostlayer/v0.2.1/GHOSTLAYER_V0.2.1_RELEASE_PACKAGE_MANIFEST.md" target="_blank" rel="noopener">
+        <a class="gl-proof-link" href="https://downloads.theprooffoundry.com/ghostlayer/v0.3.0/GHOSTLAYER_V0.3.0_RELEASE_PACKAGE_MANIFEST.md" target="_blank" rel="noopener">
           Release Package Manifest — artifact list with sizes, hashes, and source authority
         </a>
       </div>
 
       <p class="gl-note" style="max-width: 900px; margin-top: 2rem;">
         <strong>What the receipts prove:</strong> The published installer SHA-256 matches
-        the hash recorded at build time. The release was verified with 62/62 tests passing,
+        the hash recorded at build time. The release was verified with 123/123 tests passing,
         a clean build, and packaged runtime qualification.
         <br><br>
         <strong>What the receipts do not prove:</strong> The software is malware-free.
