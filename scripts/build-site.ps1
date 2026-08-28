@@ -410,8 +410,14 @@ function Build-ReceiptCards {
 # Prepare public/ output dir
 # ─────────────────────────────────────────────────────────────────────────────
 Write-Host "==> Rebuilding public/ from templates + partials + manifest"
-if (Test-Path $publicDir) { Remove-Item $publicDir -Recurse -Force }
-New-Item -ItemType Directory $publicDir | Out-Null
+if (Test-Path $publicDir) {
+  try { Remove-Item $publicDir -Recurse -Force -ErrorAction Stop }
+  catch {
+    # Directory handle locked — clear contents and reuse
+    Get-ChildItem $publicDir -Recurse -Force | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
+  }
+}
+if (-not (Test-Path $publicDir)) { New-Item -ItemType Directory $publicDir | Out-Null }
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Process every template
