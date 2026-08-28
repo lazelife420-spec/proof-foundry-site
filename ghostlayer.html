@@ -712,7 +712,7 @@
       <p class="gl-section-subtitle">
         The download is a Windows NSIS installer. The SHA-256 below is the checksum of
         the installer you download — the same value recorded in the Proof Foundry release
-        receipt and verified against the Reality Gate custody chain.
+        receipt and verified through the release qualification process.
       </p>
 
       <div class="gl-download-panel">
@@ -725,12 +725,12 @@
         </div>
 
         <div style="font-size: 0.85rem; color: var(--gl-muted); margin-top: 0.75rem;">
-          {{product.distType}} &middot; 84,606,853 bytes &middot; {{product.build}}
+          {{product.distType}} &middot; 84,607,218 bytes &middot; {{product.build}}
         </div>
 
         <p style="margin-top: 1.25rem; font-size: 0.9rem; color: var(--gl-muted); text-align: left;">
           Verify locally with
-          <code style="font-family: ui-monospace, monospace; color: var(--gl-primary);">Get-FileHash .\GhostLayer-Setup-0.2.0.exe -Algorithm SHA256</code>
+          <code style="font-family: ui-monospace, monospace; color: var(--gl-primary);">Get-FileHash .\GhostLayer-Setup-0.2.1.exe -Algorithm SHA256</code>
           and compare against the value above. PowerShell prints the hash in uppercase;
           the comparison is case-insensitive, so only the characters need to match.
         </p>
@@ -766,22 +766,21 @@
       </p>
 
       <div class="gl-proof-links">
-        <a class="gl-proof-link" href="https://downloads.theprooffoundry.com/ghostlayer/v0.2.0/GHOSTLAYER_V0.2.0_PROOF_FOUNDRY_RELEASE_RECEIPT.json" target="_blank" rel="noopener">
+        <a class="gl-proof-link" href="https://downloads.theprooffoundry.com/ghostlayer/v0.2.1/GHOSTLAYER_V0.2.1_PROOF_FOUNDRY_RELEASE_RECEIPT.json" target="_blank" rel="noopener">
           Release Receipt (JSON) — structured receipt with artifact hashes and signing status
         </a>
-        <a class="gl-proof-link" href="https://downloads.theprooffoundry.com/ghostlayer/v0.2.0/GHOSTLAYER_V0.2.0_PROOF_FOUNDRY_RELEASE_RECEIPT.md" target="_blank" rel="noopener">
+        <a class="gl-proof-link" href="https://downloads.theprooffoundry.com/ghostlayer/v0.2.1/GHOSTLAYER_V0.2.1_PROOF_FOUNDRY_RELEASE_RECEIPT.md" target="_blank" rel="noopener">
           Release Receipt (Markdown) — human-readable receipt with verification instructions
         </a>
-        <a class="gl-proof-link" href="https://downloads.theprooffoundry.com/ghostlayer/v0.2.0/GHOSTLAYER_V0.2.0_RELEASE_PACKAGE_MANIFEST.md" target="_blank" rel="noopener">
+        <a class="gl-proof-link" href="https://downloads.theprooffoundry.com/ghostlayer/v0.2.1/GHOSTLAYER_V0.2.1_RELEASE_PACKAGE_MANIFEST.md" target="_blank" rel="noopener">
           Release Package Manifest — artifact list with sizes, hashes, and source authority
         </a>
       </div>
 
       <p class="gl-note" style="max-width: 900px; margin-top: 2rem;">
         <strong>What the receipts prove:</strong> The published installer SHA-256 matches
-        the hash recorded at build time. The release was verified with 54/54 tests passing.
-        The Reality Gate custody chain (run f4d8762a) verified 6/6 artifacts including this
-        installer, with an ECDSA P-256 signed receipt.
+        the hash recorded at build time. The release was verified with 62/62 tests passing,
+        a clean build, and packaged runtime qualification.
         <br><br>
         <strong>What the receipts do not prove:</strong> The software is malware-free.
         The software is Microsoft-signed. SmartScreen will not warn. Any third party
