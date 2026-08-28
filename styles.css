@@ -594,6 +594,17 @@ h1 span {
   gap: 0.7rem;
 }
 
+.proof-roadmap-link {
+  margin-top: 0.85rem;
+  font-size: 0.92rem;
+}
+
+.proof-roadmap-link a {
+  color: #ccd5dd;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 /* Founders Circle */
 .founders-hero {
   display: grid;

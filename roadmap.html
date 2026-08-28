@@ -1,0 +1,382 @@
+<!-- @page roadmap -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roadmap | The Proof Foundry</title>
+  <meta name="description" content="A public view of the Proof Foundry's current product lanes, proof gates, and what comes next — shipped work, release candidates, active proof work, and research, clearly separated." />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#0a0d14" />
+  <link rel="canonical" href="https://theprooffoundry.com/roadmap/" />
+  <link rel="icon" type="image/svg+xml" href="/brand/proof-foundry-mark.svg" />
+
+  <meta property="og:title" content="Roadmap | The Proof Foundry" />
+  <meta property="og:description" content="What we're building next — shipped work, release candidates, active proof work, and research, clearly separated." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://theprooffoundry.com/roadmap/" />
+  <meta property="og:site_name" content="The Proof Foundry" />
+  <meta property="og:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
+
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <!-- @include header -->
+
+<main class="roadmap-page">
+  <section class="roadmap-hero">
+    <p class="eyebrow">THE PROOF FOUNDRY™</p>
+    <h1>What we're building next.</h1>
+    <p class="lede">
+      A public view of the Foundry's current product lanes, proof gates, and what comes next.
+      We separate shipped work, release candidates, active proof work, and research so roadmap
+      ideas are never presented as finished features.
+    </p>
+    <div class="roadmap-principle">
+      <strong>Build it. Prove it. Ship it.</strong>
+      <span>Roadmap status is evidence-scoped and may change as gates close.</span>
+    </div>
+  </section>
+
+  <section class="roadmap-section">
+    <div class="section-heading">
+      <p class="eyebrow">ACTIVE PROOF LANES</p>
+      <h2>What is moving now</h2>
+    </div>
+
+    <div class="roadmap-grid">
+      <article class="roadmap-card roadmap-card--active">
+        <div class="status-pill">Active proof work</div>
+        <h3>Reality Gate</h3>
+        <p>
+          Reality Gate is being dogfooded against its own source. The validator path has
+          requalified; the current remaining blocker is a deterministic test-oracle issue
+          in the candidate baseline before the final self-CI proof can run.
+        </p>
+        <ul>
+          <li>Local-first project truth and CI governance</li>
+          <li>Signed failure receipts independently verified</li>
+          <li>Self-hosting proof still open</li>
+          <li>Agent/MCP gateway design underway in parallel</li>
+        </ul>
+        <p class="claim-limit">
+          <strong>Not claimed:</strong> self-modification or autonomous release authority.
+        </p>
+        <a class="roadmap-link" href="/reality-gate/">View Reality Gate →</a>
+      </article>
+
+      <article class="roadmap-card roadmap-card--active">
+        <div class="status-pill">Locally qualified</div>
+        <h3>GhostLayer</h3>
+        <p>
+          GhostLayer's v0.2.1 release has been built, tested, and packaged, with a local release
+          receipt on file — but network publication remains a separate, held owner decision.
+          The public v0.2.0 Proof Foundry distribution remains the field baseline until v0.2.1
+          is explicitly published.
+        </p>
+        <ul>
+          <li>v0.2.0 branded public distribution field-verified</li>
+          <li>v0.2.1 release prepared / locally qualified — network publication held</li>
+          <li>Publication remains a separate owner decision</li>
+        </ul>
+        <a class="roadmap-link" href="/ghostlayer/">View GhostLayer →</a>
+      </article>
+
+      <article class="roadmap-card roadmap-card--hold">
+        <div class="status-pill">Technical candidate / hold</div>
+        <h3>Lights Out</h3>
+        <p>
+          The v11.1.3 technical candidate is proven, but publication is intentionally held
+          until the live website/public-state story and exact release artifact identity are
+          reconciled.
+        </p>
+        <ul>
+          <li>Technical candidate proven</li>
+          <li>Exact artifact identity required before publication</li>
+          <li>Public-state reconciliation still open</li>
+        </ul>
+        <a class="roadmap-link" href="/lights-out/">View Lights Out →</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="roadmap-section">
+    <div class="section-heading">
+      <p class="eyebrow">SHIPPED / STABLE BASELINES</p>
+      <h2>Current public truth</h2>
+    </div>
+
+    <div class="roadmap-grid roadmap-grid--compact">
+      <article class="roadmap-card roadmap-card--done">
+        <div class="status-pill">Public release</div>
+        <h3>Cache Vault</h3>
+        <p>
+          v0.2.2 is publicly released. The next Cache Vault lane will be post-release
+          hardening and product refinement, not a replay of old release-candidate gates.
+        </p>
+        <a class="roadmap-link" href="/cache-vault/">View Cache Vault →</a>
+      </article>
+
+      <article class="roadmap-card roadmap-card--done">
+        <div class="status-pill">Public release · frozen</div>
+        <h3>ForgeCast</h3>
+        <p>
+          v0.3.3 remains the safe public baseline until a fresh source, signing, release,
+          and device-state audit opens the next engineering tranche.
+        </p>
+        <a class="roadmap-link" href="/forgecast/">View ForgeCast →</a>
+      </article>
+
+      <article class="roadmap-card roadmap-card--audit">
+        <div class="status-pill">Authority re-proof next</div>
+        <h3>Cleanroom</h3>
+        <p>
+          Cleanroom's next lane starts with a fresh canonical/release-state audit before any
+          new release or feature claim is made.
+        </p>
+        <a class="roadmap-link" href="/cleanroom/">View Cleanroom →</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="roadmap-section roadmap-agent">
+    <div class="section-heading">
+      <p class="eyebrow">NEXT PLATFORM LAYER</p>
+      <h2>Reality Gate Agent Gateway</h2>
+    </div>
+
+    <div class="agent-layout">
+      <div>
+        <p>
+          The next major platform direction is a standard agent bridge so local coding agents
+          can query and use Reality Gate without bypassing its proof and authority model.
+        </p>
+        <p>
+          The design draws selectively from earlier Proof Foundry / NeuralShell architecture:
+          operator sessions, bounded execution, capability requests, and intent gating—while
+          Reality Gate remains the authoritative control and receipt layer.
+        </p>
+      </div>
+
+      <pre class="agent-diagram">Agent
+  ↓
+MCP Gateway
+  ↓
+Capability / Claim / Mutation Budget
+  ↓
+Reality Gate
+  ↓
+Governed Project
+  ↓
+Signed Receipt</pre>
+    </div>
+
+    <div class="roadmap-callout">
+      <strong>Design now. Implement after self-hosting proof.</strong>
+      <p>
+        MCP v1 is intentionally narrow: project status, pipeline inspection, governed runs,
+        logs, source state, and receipt verification. Arbitrary shell, unrestricted Git,
+        release, and deployment operations are outside the first bridge.
+      </p>
+    </div>
+  </section>
+
+  <section class="roadmap-section">
+    <div class="section-heading">
+      <p class="eyebrow">ARCHITECTURAL RESEARCH</p>
+      <h2>NeuralShell / ProofForge lineage</h2>
+    </div>
+
+    <p>
+      Historical NeuralShell and ProofForge work is being treated as architectural research,
+      not as a product resurrection. Proven ideas around operator workspaces, persistent
+      sessions, command surfaces, bounded execution, capability brokering, and provider routing
+      are being studied for selective use in future Reality Gate layers.
+    </p>
+
+    <div class="lineage-grid">
+      <div><strong>NeuralShell / ProofForge</strong><span>Operator shell and session UX</span></div>
+      <div><strong>ExecutionBroker</strong><span>Bounded process execution</span></div>
+      <div><strong>OMEGA</strong><span>Capability / intent concepts</span></div>
+      <div><strong>RouterCore</strong><span>Potential later provider routing</span></div>
+    </div>
+
+    <p class="claim-limit">
+      Historical systems remain separate lineages. Their architecture may inform new work;
+      historical claims are not silently promoted into current Reality Gate guarantees.
+    </p>
+  </section>
+
+  <section class="roadmap-section roadmap-method">
+    <div class="section-heading">
+      <p class="eyebrow">THE ROADMAP RULE</p>
+      <h2>Green is not permission.</h2>
+    </div>
+
+    <div class="method-grid">
+      <div>
+        <strong>1. Build</strong>
+        <span>Create a bounded candidate.</span>
+      </div>
+      <div>
+        <strong>2. Prove</strong>
+        <span>Run explicit tests, receipts, field checks, and negative proof.</span>
+      </div>
+      <div>
+        <strong>3. Decide</strong>
+        <span>Release, merge, or publication remains a separate owner decision.</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<style>
+.roadmap-page{
+  --roadmap-panel:rgba(255,255,255,.035);
+  --roadmap-line:rgba(255,255,255,.11);
+  --roadmap-text-soft:rgba(255,255,255,.68);
+  --roadmap-accent:#c78f55;
+  max-width:1360px;
+  margin:0 auto;
+  padding:clamp(36px,6vw,84px) clamp(20px,4vw,64px) 100px;
+}
+.roadmap-page .eyebrow{
+  margin:0 0 10px;
+  font-size:.75rem;
+  font-weight:800;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+  color:var(--roadmap-accent);
+}
+.roadmap-hero{
+  max-width:900px;
+  padding:clamp(28px,5vw,64px) 0 56px;
+}
+.roadmap-hero h1{
+  margin:0 0 18px;
+  font-size:clamp(2.6rem,7vw,5.7rem);
+  line-height:.98;
+  letter-spacing:-.055em;
+}
+.roadmap-hero .lede{
+  max-width:800px;
+  font-size:clamp(1.05rem,2vw,1.32rem);
+  line-height:1.65;
+  color:var(--roadmap-text-soft);
+}
+.roadmap-principle{
+  display:flex;
+  gap:14px 22px;
+  flex-wrap:wrap;
+  align-items:center;
+  margin-top:28px;
+  padding:18px 20px;
+  border:1px solid var(--roadmap-line);
+  border-radius:16px;
+  background:var(--roadmap-panel);
+}
+.roadmap-principle span{color:var(--roadmap-text-soft)}
+.roadmap-section{
+  padding:56px 0;
+  border-top:1px solid var(--roadmap-line);
+}
+.section-heading{max-width:760px;margin-bottom:28px}
+.section-heading h2{
+  margin:0;
+  font-size:clamp(1.9rem,4vw,3.2rem);
+  letter-spacing:-.035em;
+}
+.roadmap-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+}
+.roadmap-card{
+  display:flex;
+  flex-direction:column;
+  min-height:100%;
+  padding:26px;
+  border:1px solid var(--roadmap-line);
+  border-radius:18px;
+  background:var(--roadmap-panel);
+}
+.roadmap-card h3{font-size:1.45rem;margin:14px 0 10px}
+.roadmap-card p,.roadmap-card li{color:var(--roadmap-text-soft)}
+.roadmap-card ul{padding-left:19px}
+.roadmap-card--active{border-top:3px solid #63a6ff}
+.roadmap-card--hold{border-top:3px solid #efc462}
+.roadmap-card--done{border-top:3px solid #68d48a}
+.roadmap-card--audit{border-top:3px solid #b995ef}
+.status-pill{
+  align-self:flex-start;
+  padding:5px 9px;
+  border:1px solid var(--roadmap-line);
+  border-radius:999px;
+  font-size:.72rem;
+  font-weight:800;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+.roadmap-link{margin-top:auto;padding-top:18px;font-weight:800}
+.claim-limit{
+  padding:13px 15px;
+  border-left:3px solid var(--roadmap-accent);
+  background:rgba(199,143,85,.07);
+}
+.agent-layout{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:28px;
+  align-items:start;
+}
+.agent-layout p{font-size:1.05rem;color:var(--roadmap-text-soft)}
+.agent-diagram{
+  margin:0;
+  padding:24px;
+  border:1px solid var(--roadmap-line);
+  border-radius:16px;
+  background:rgba(0,0,0,.25);
+  line-height:1.65;
+  overflow:auto;
+}
+.roadmap-callout{
+  margin-top:26px;
+  padding:22px;
+  border:1px solid var(--roadmap-line);
+  border-radius:16px;
+  background:var(--roadmap-panel);
+}
+.roadmap-callout strong{font-size:1.12rem}
+.roadmap-callout p{margin-bottom:0;color:var(--roadmap-text-soft)}
+.lineage-grid,.method-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+  margin:25px 0;
+}
+.lineage-grid div,.method-grid div{
+  padding:20px;
+  border:1px solid var(--roadmap-line);
+  border-radius:14px;
+  background:var(--roadmap-panel);
+}
+.lineage-grid strong,.lineage-grid span,.method-grid strong,.method-grid span{
+  display:block;
+}
+.lineage-grid span,.method-grid span{
+  margin-top:5px;
+  color:var(--roadmap-text-soft);
+  line-height:1.45;
+}
+.method-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:900px){
+  .roadmap-grid,.agent-layout,.lineage-grid{grid-template-columns:1fr}
+  .method-grid{grid-template-columns:1fr}
+}
+</style>
+
+  <!-- @include footer -->
+</body>
+</html>

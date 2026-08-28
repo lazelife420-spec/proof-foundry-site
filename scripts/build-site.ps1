@@ -417,7 +417,7 @@ New-Item -ItemType Directory $publicDir | Out-Null
 # Process every template
 # ─────────────────────────────────────────────────────────────────────────────
 # Map: source file  ->  output path under public/
-$dirRoutes = @('reality-gate','forgecast','lights-out','cache-vault','cleanroom','ghostlayer','proofshot','founders','proof','support-context','foundry-strike')
+$dirRoutes = @('reality-gate','forgecast','lights-out','cache-vault','cleanroom','ghostlayer','proofshot','founders','proof','support-context','foundry-strike','roadmap')
 $rootFiles = @('index.html','404.html')
 
 $headerPartial = Read-File (Join-Path $partialsDir 'header.html')
@@ -557,6 +557,8 @@ $headersContent = @"
 /support-context/
   Cache-Control: no-cache, must-revalidate
 /foundry-strike/
+  Cache-Control: no-cache, must-revalidate
+/roadmap/
   Cache-Control: no-cache, must-revalidate
 
 /assets/*
