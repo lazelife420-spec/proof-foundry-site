@@ -24,23 +24,116 @@
 
   <style>
     /* ───────────────────────────────────────────────────────────────────────
-       LIGHTS OUT — product identity layer (story pass, v11.1.2)
-
-       Shared with the rest of the site and deliberately not overridden here:
-       header, footer, nav, breadcrumb, subnav, the manifest-driven proof strip
-       / download block / release note, the limitations cards, typography,
-       container width, focus behaviour, and the gold chrome.
-
-       Specific to Lights Out: a moonlight key colour that takes over the
-       page's own iconography, section rules that dim out to the right instead
-       of ending on a hard edge, and real product screenshots as the visual
-       hero. Nothing here animates — the product is about winding down, and a
-       page that fades content in is a page whose content can be missing.
+       LIGHTS OUT — Nocturnal Product Identity System
+       
+       Palette:
+       - Nocturnal Black:    #0A0D16
+       - Midnight Surface:   #121426
+       - Elevated Indigo:    #191C33
+       - Moonlight Lavender: #9B93D6
+       - Moonlit Silver:     #C8D2DF
+       - Low-Light Amber:    #E8A848
+       - Shared Studio Gold: #D6A84F
        ─────────────────────────────────────────────────────────────────────── */
     .lo-page {
+      --lo-bg-base: #0a0d16;
+      --lo-bg-surface: #121426;
+      --lo-bg-elevated: #191c33;
       --lo-key: #9b93d6;
-      --lo-key-soft: rgba(155, 147, 214, 0.5);
-      --lo-key-wash: rgba(155, 147, 214, 0.07);
+      --lo-key-soft: rgba(155, 147, 214, 0.45);
+      --lo-key-wash: rgba(155, 147, 214, 0.08);
+      --lo-amber: #e8a848;
+      --lo-amber-soft: rgba(232, 168, 72, 0.45);
+      --lo-amber-wash: rgba(232, 168, 72, 0.1);
+      --lo-silver: #c8d2df;
+      --lo-line: rgba(155, 147, 214, 0.2);
+      --lo-line-strong: rgba(155, 147, 214, 0.4);
+    }
+
+    /* Brand mark lockup inside Lights Out page */
+    .lo-page .lo-mark-lockup {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .lo-page .lo-aperture-mark {
+      display: block;
+      flex-shrink: 0;
+    }
+
+    .lo-page .lo-brand-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--lo-key);
+    }
+
+    /* Candidate status banner */
+    .lo-page .lo-candidate-banner {
+      margin-top: 1.25rem;
+      padding: 1.1rem 1.3rem;
+      border: 1px solid var(--lo-line-strong);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 100% 0%, var(--lo-key-wash), transparent 65%),
+        linear-gradient(160deg, rgba(25, 28, 51, 0.95), rgba(18, 20, 38, 0.92));
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+    }
+
+    .lo-page .lo-candidate-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.6rem 0.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .lo-page .lo-pill-status {
+      display: inline-block;
+      padding: 0.22rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(155, 147, 214, 0.15);
+      border: 1px solid var(--lo-key-soft);
+      color: var(--lo-key);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .lo-page .lo-pill-hold {
+      display: inline-block;
+      padding: 0.22rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(232, 168, 72, 0.12);
+      border: 1px solid var(--lo-amber-soft);
+      color: var(--lo-amber);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .lo-page .lo-candidate-copy {
+      font-size: 0.88rem;
+      color: var(--lo-silver);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .lo-page .lo-history-note {
+      margin-top: 0.4rem;
+      font-size: 0.81rem;
+      color: var(--muted);
+    }
+
+    .lo-page .lo-candidate-actions {
+      margin-top: 0.85rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
     }
 
     /* Hero: copy left, real Tonight capture right. */
@@ -51,9 +144,6 @@
       align-items: center;
     }
 
-    /* The one gesture this page repeats: a rule that dims out rather than
-       stopping. Scoped to the heading so section bodies keep the shared
-       spacing. */
     .lo-page .section-head h2 {
       position: relative;
       padding-bottom: 0.6rem;
@@ -66,13 +156,9 @@
       bottom: 0;
       width: min(18rem, 100%);
       height: 2px;
-      /* 2px at full key strength. At 1px and half strength the rule measured
-         correctly but was invisible in a capture, which is the same as absent. */
       background: linear-gradient(90deg, var(--lo-key), transparent);
     }
 
-    /* Trust strip. Left-aligned on purpose: every other block on the page
-       starts at the shell's left edge, and a centred strip broke that datum. */
     .lo-page .lo-trust {
       display: flex;
       flex-wrap: wrap;
@@ -80,9 +166,9 @@
       gap: 0.8rem 1.9rem;
       margin-block: var(--section-gap);
       padding: 1rem 1.4rem;
-      border: 1px solid var(--line);
+      border: 1px solid var(--lo-line);
       border-radius: var(--radius);
-      background: linear-gradient(90deg, var(--lo-key-wash), rgba(16, 25, 35, 0.6) 42%);
+      background: linear-gradient(90deg, var(--lo-key-wash), rgba(18, 20, 38, 0.7) 45%);
     }
 
     .lo-page .lo-trust-item {
@@ -91,7 +177,7 @@
       gap: 0.45rem;
       font-size: 0.88rem;
       font-weight: 500;
-      color: #c8d2da;
+      color: var(--lo-silver);
     }
 
     .lo-page .lo-trust-icon {
@@ -100,14 +186,13 @@
       color: var(--lo-key);
     }
 
-    /* Screenshot figure — the story pass sells the product with real UI. */
     .lo-page .lo-shot {
       margin: 0;
-      border: 1px solid var(--line);
+      border: 1px solid var(--lo-line);
       border-radius: var(--radius);
       background:
         radial-gradient(circle at 100% 0%, var(--lo-key-wash), transparent 55%),
-        linear-gradient(160deg, rgba(16, 25, 35, 0.95), rgba(10, 16, 24, 0.88));
+        linear-gradient(160deg, rgba(18, 20, 38, 0.95), rgba(10, 13, 22, 0.9));
       box-shadow: var(--shadow);
       padding: clamp(0.7rem, 1.5vw, 1.1rem);
     }
@@ -125,7 +210,6 @@
       color: var(--muted);
     }
 
-    /* Story beats alternate copy and screen, then collapse. */
     .lo-page .lo-story {
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
@@ -135,7 +219,7 @@
 
     .lo-page .lo-story.copy-first { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 
-    .lo-page .lo-story-copy p { color: #c6d0d8; }
+    .lo-page .lo-story-copy p { color: var(--lo-silver); }
     .lo-page .lo-story-copy p + p { margin-top: 0.7rem; }
 
     .lo-page .lo-story-list {
@@ -152,10 +236,7 @@
       gap: 0.55rem;
       align-items: baseline;
       font-size: 0.92rem;
-      color: #c8d2da;
-      /* A nowrap flex row's min-content is the sum of its segments (text
-         nodes + <strong> are separate flex items), which overflows a 320px
-         viewport. Wrapping lets each segment shrink to its own minimum. */
+      color: var(--lo-silver);
       min-width: 0;
     }
 
@@ -179,7 +260,6 @@
       margin-top: 1.25rem;
     }
 
-    /* Phone shots — legible at ~250px wide, never shrunk into meaninglessness. */
     .lo-page .lo-phone-row {
       display: flex;
       flex-wrap: wrap;
@@ -196,7 +276,7 @@
       width: 100%;
       height: auto;
       border-radius: 1.1rem;
-      border: 1px solid var(--line);
+      border: 1px solid var(--lo-line);
       box-shadow: var(--shadow);
     }
 
@@ -207,7 +287,6 @@
       text-align: center;
     }
 
-    /* Small step / capability cards (text-only where no honest capture exists). */
     .lo-page .lo-cards {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
@@ -216,21 +295,22 @@
     }
 
     .lo-page .lo-card {
-      border: 1px solid var(--line);
+      border: 1px solid var(--lo-line);
       border-radius: var(--radius);
       background:
         radial-gradient(circle at 0% 0%, var(--lo-key-wash), transparent 60%),
-        linear-gradient(160deg, rgba(16, 25, 35, 0.95), rgba(10, 16, 24, 0.88));
+        linear-gradient(160deg, rgba(18, 20, 38, 0.95), rgba(10, 13, 22, 0.9));
       padding: 1rem 1rem 0.9rem;
     }
 
     .lo-page .lo-card h3 {
       font-size: 0.95rem;
       margin-bottom: 0.35rem;
+      color: #ffffff;
     }
 
     .lo-page .lo-card p {
-      color: #c6d0d8;
+      color: var(--lo-silver);
       font-size: 0.85rem;
       margin: 0;
     }
@@ -243,11 +323,223 @@
       height: 1.4rem;
       border-radius: 50%;
       background: var(--lo-key);
-      color: #0b0f14;
+      color: #0a0d16;
       font-size: 0.75rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
     }
+
+    /* First Light / Low-Light Amber accents */
+    .lo-page .lo-amber-card {
+      border-color: rgba(232, 168, 72, 0.3);
+      background:
+        radial-gradient(circle at 100% 0%, var(--lo-amber-wash), transparent 65%),
+        linear-gradient(160deg, rgba(18, 20, 38, 0.95), rgba(10, 13, 22, 0.9));
+    }
+
+    .lo-page .lo-amber-card .lo-card-step {
+      background: var(--lo-amber);
+      color: #0a0d16;
+    }
+
+    .lo-page .lo-badge-exp {
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 0.6rem;
+      padding: 0.14rem 0.55rem;
+      border: 1px solid rgba(214, 168, 79, 0.55);
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .lo-page .lo-statuscards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+      gap: 0.85rem;
+      margin-top: 1.1rem;
+    }
+
+    .lo-page .lo-statuscard {
+      border: 1px solid var(--lo-line);
+      border-radius: var(--radius);
+      background: linear-gradient(160deg, rgba(18, 20, 38, 0.96), rgba(10, 13, 22, 0.9));
+      padding: 0.95rem 1rem;
+    }
+
+    .lo-page .lo-statuscard h3 {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    .lo-page .lo-statuscard dl {
+      margin: 0;
+      display: grid;
+      gap: 0.32rem;
+    }
+
+    .lo-page .lo-statuscard dt {
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .lo-page .lo-statuscard dd {
+      margin: 0;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--lo-silver);
+    }
+
+    .lo-page .lo-statuscard .lo-card-foot {
+      margin-top: 0.55rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .lo-page .lo-safety-list {
+      display: grid;
+      gap: 0.5rem;
+      margin: 0.9rem 0 0;
+      padding: 0;
+      list-style: none;
+      columns: 2;
+      column-gap: 2rem;
+    }
+
+    .lo-page .lo-safety-list li {
+      break-inside: avoid;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      align-items: baseline;
+      font-size: 0.92rem;
+      color: var(--lo-silver);
+      min-width: 0;
+    }
+
+    .lo-page .lo-safety-list li::before {
+      content: "";
+      flex: 0 0 auto;
+      width: 0.42rem;
+      height: 0.42rem;
+      border-radius: 50%;
+      background: var(--lo-key);
+      transform: translateY(-0.08rem);
+    }
+
+    .lo-page .lo-proof-card {
+      max-width: min(52rem, 100%);
+      border: 1px solid rgba(214, 168, 79, 0.45);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 80% 0%, rgba(214, 168, 79, 0.1), transparent 60%),
+        linear-gradient(160deg, rgba(18, 20, 38, 0.96), rgba(10, 13, 22, 0.9));
+      box-shadow: var(--shadow);
+      padding: clamp(1.1rem, 2vw, 1.6rem);
+    }
+
+    .lo-page .lo-proof-fields {
+      display: grid;
+      gap: 0.55rem;
+      border-top: 1px solid var(--lo-line);
+      border-bottom: 1px solid var(--lo-line);
+      padding: 0.85rem 0;
+      margin: 0.8rem 0;
+    }
+
+    .lo-page .lo-proof-fields > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+
+    .lo-page .lo-proof-fields dt {
+      color: var(--muted);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .lo-page .lo-proof-fields dd {
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: right;
+    }
+
+    /* Accessibility focus state & reduced motion */
+    .lo-page a:focus-visible,
+    .lo-page button:focus-visible {
+      outline: 2px solid var(--lo-key);
+      outline-offset: 3px;
+    }
+
+    /* Word wrapping for SHA-256 hashes, code blocks, and notes on mobile */
+    .lo-page strong,
+    .lo-page code,
+    .lo-page .note,
+    .lo-page .code-block,
+    .lo-page .proof-pill,
+    .lo-page .lo-proof-fields dd {
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .lo-page code,
+    .lo-page .code-block {
+      word-break: break-all;
+    }
+
+    .lo-page .lo-shot,
+    .lo-page .lo-candidate-banner,
+    .lo-page .lo-proof-card,
+    .lo-page .lo-card,
+    .lo-page .lo-statuscard {
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .lo-page * {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .lo-page .lo-hero {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+      }
+      .lo-page .lo-hero .lo-shot {
+        order: -1;
+        max-width: 40rem;
+        width: 100%;
+      }
+      .lo-page .lo-story {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.5rem;
+      }
+      .lo-page .lo-story.copy-first { grid-template-columns: minmax(0, 1fr); }
+      .lo-page .lo-safety-list {
+        columns: 1;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .lo-page .lo-trust {
+        gap: 0.6rem 1.1rem;
+        padding: 0.85rem 1rem;
+      }
+    }
+  </style>
 
     /* Experimental badge — the app itself labels Wi-Fi Guard this way. */
     .lo-page .lo-badge-exp {
@@ -466,13 +758,39 @@
 
     <section id="overview" class="product-hero lo-hero" aria-labelledby="product-title">
       <div class="lo-hero-copy">
-        <p class="eyebrow">Lights Out · {{product.statusLabel}}</p>
+        <div class="lo-mark-lockup" aria-hidden="true">
+          <svg class="lo-aperture-mark" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+            <defs>
+              <radialGradient id="loAmberGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#E8A848" stop-opacity="1" />
+                <stop offset="100%" stop-color="#E8A848" stop-opacity="0" />
+              </radialGradient>
+            </defs>
+            <rect width="48" height="48" rx="12" fill="#121426" stroke="rgba(155, 147, 214, 0.25)" stroke-width="1.5" />
+            <circle cx="24" cy="24" r="15" fill="none" stroke="#9B93D6" stroke-width="2.5" stroke-dasharray="72 22" transform="rotate(-90 24 24)" />
+            <path d="M 24 9 A 15 15 0 1 1 9 24 A 10 10 0 1 0 24 9 Z" fill="#191C33" opacity="0.85" />
+            <line x1="24" y1="9" x2="24" y2="13" stroke="#9B93D6" stroke-width="2" stroke-linecap="round" />
+            <circle cx="24" cy="24" r="5" fill="url(#loAmberGlow)" />
+            <circle cx="24" cy="24" r="3" fill="#E8A848" />
+          </svg>
+          <span class="lo-brand-title">LIGHTS OUT PC</span>
+        </div>
         <h1 id="product-title">Control your night<br /><span>from the PC — or from bed.</span></h1>
         <p class="product-lede">{{product.summary}}</p>
-        <div class="download-group">{{product.downloadBlock}}</div>
-        {{product.proofStrip}}
-        <p class="note lo-trust-note">Lights Out v11.1.3 is a <strong>Reality-Gate-verified, unsigned Windows portable build</strong>. The artifact has a SHA-256 hash and a Reality Gate proof bundle. It is not code-signed yet, so Windows may show warnings.</p>
-        <div class="proof-strip" aria-label="Lights Out v11.1.3 proof status badges">
+
+        <div class="lo-candidate-banner" aria-label="Version candidate release status">
+          <div class="lo-candidate-header">
+            <span class="lo-pill-status">v11.1.3 · REALITY-GATE-VERIFIED CANDIDATE</span>
+            <span class="lo-pill-hold">PUBLICATION ON HOLD</span>
+          </div>
+          <p class="lo-candidate-copy">Qualification: 20/20 Reality Gate steps passed (Receipt <code>cfb87394-5d3c-4763-aa66-b89500b858f7</code>, GREEN). Physical Samsung Galaxy S23 companion automation verified.</p>
+          <p class="lo-history-note">Prior public Windows release: <strong>v11.1.2</strong> · Android companion: <strong>v11.1.1</strong></p>
+          <div class="lo-candidate-actions">
+            <a class="button button-secondary button-sm" href="#release-status">See Candidate Proof &rarr;</a>
+          </div>
+        </div>
+
+        <div class="proof-strip" aria-label="Lights Out v11.1.3 proof status badges" style="margin-top: 1rem;">
           <span class="proof-pill"><strong>Reality Gate</strong> Verified</span>
           <span class="proof-pill"><strong>Signing</strong> Unsigned Portable Build</span>
           <span class="proof-pill"><strong>Hash</strong> SHA-256 Published</span>
