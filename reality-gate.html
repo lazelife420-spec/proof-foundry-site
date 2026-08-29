@@ -3,21 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reality Gate — Developer Continuity Platform | The Proof Foundry</title>
-  <meta name="description" content="Reality Gate is a local software continuity and proof workstation: map provider dependencies, run work with receipt-backed proof, prepare recovery, and ship without making any single provider the root of trust." />
+  <title>Reality Gate — Local Execution &amp; Receipt Control Platform | The Proof Foundry</title>
+  <meta name="description" content="Reality Gate is a local-first software execution, continuity, and receipt-control platform: map provider dependencies, execute work inside isolated clones, record signed receipts, and prepare recovery before it is needed." />
   <link rel="canonical" href="https://theprooffoundry.com/reality-gate/" />
   <link rel="icon" type="image/svg+xml" href="/brand/proof-foundry-mark.svg" />
   <link rel="stylesheet" href="/styles.css" />
   <style>
-    /* Reality Gate specific styles */
+    /* Reality Gate specific platform styles */
     :root {
       --rg-bg: #06090f;
       --rg-bg-2: #0a0f18;
       --rg-panel: #0d1520;
       --rg-panel-2: #111c29;
-      /* Primary accent tracks the app itself (#2dd4bf is --accent inside Reality
-         Gate); the brighter cyan stays available as a secondary, high-energy
-         detail (gate art, step numerals). */
       --rg-teal: #2dd4bf;
       --rg-cyan: #00e6ff;
       --rg-gold: #d9a441;
@@ -34,9 +31,6 @@
     }
 
     .rg-container {
-      /* Must track --container: the global header and footer use the shared
-         shell, so any fixed value here misaligns their edges against this
-         page's sections. */
       max-width: var(--container);
       margin: 0 auto;
       padding: 0 1.5rem;
@@ -45,11 +39,9 @@
     /* Hero Section */
     .rg-hero {
       position: relative;
-      /* padding-block, not the padding shorthand: the shorthand would reset
-         .rg-container's padding-inline and push content to the viewport edges. */
-      padding-block: 3rem;
+      padding-block: 3.5rem 3rem;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1.1fr 0.9fr;
       gap: 3rem;
       align-items: center;
     }
@@ -59,7 +51,8 @@
       top: 0; left: 0; right: 0; bottom: 0;
       z-index: -1;
       background:
-        radial-gradient(circle at 75% 50%, rgba(45, 212, 191, 0.06), transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(45, 212, 191, 0.08), transparent 50%),
+        radial-gradient(circle at 20% 80%, rgba(0, 230, 255, 0.04), transparent 45%),
         linear-gradient(to bottom, transparent, var(--rg-bg-2));
     }
 
@@ -71,7 +64,7 @@
         linear-gradient(var(--rg-steel) 1px, transparent 1px),
         linear-gradient(90deg, var(--rg-steel) 1px, transparent 1px);
       background-size: 40px 40px;
-      opacity: 0.15;
+      opacity: 0.12;
       mask-image: linear-gradient(to bottom, transparent, black 30%, black 70%, transparent);
       -webkit-mask-image: linear-gradient(to bottom, transparent, black 30%, black 70%, transparent);
     }
@@ -80,14 +73,15 @@
       color: var(--rg-gold);
       text-transform: uppercase;
       letter-spacing: 0.15em;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 700;
-      margin-bottom: 1rem;
+      margin-bottom: 0.75rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
 
     .rg-title {
-      font-size: clamp(3rem, 5vw, 4.5rem);
-      line-height: 1.1;
+      font-size: clamp(2.75rem, 4.5vw, 4.25rem);
+      line-height: 1.08;
       margin-bottom: 0.5rem;
       color: #fff;
       font-weight: 800;
@@ -95,45 +89,35 @@
     }
 
     .rg-subtitle {
-      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-size: clamp(1.25rem, 2vw, 1.75rem);
       color: var(--rg-teal);
-      margin-bottom: 1.5rem;
       font-weight: 600;
+      margin-bottom: 1.25rem;
     }
 
     .rg-tagline {
-      font-size: 1.25rem;
+      font-size: 1.15rem;
       color: var(--rg-text);
       font-weight: 600;
-      margin-bottom: 1.5rem;
-      border-left: 2px solid var(--rg-teal);
+      border-left: 3px solid var(--rg-teal);
       padding-left: 1rem;
+      margin-bottom: 1rem;
+      line-height: 1.4;
     }
 
     .rg-desc {
-      font-size: 1.1rem;
-      color: var(--rg-muted);
+      font-size: 0.96rem;
+      color: #c8d2da;
       line-height: 1.6;
-      margin-bottom: 2.5rem;
-      max-width: 500px;
+      margin-bottom: 1.5rem;
     }
 
-    /* Abstract Gate Art (identity, kept) */
-    .rg-gate-art {
-      position: relative;
-      width: 100%;
-      max-width: 400px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    /* Download Buttons */
     .rg-cta-group {
       display: flex;
-      gap: 1rem;
-      align-items: center;
       flex-wrap: wrap;
+      align-items: center;
+      gap: 0.85rem;
+      margin-block: 1.25rem;
     }
 
     .rg-btn {
@@ -141,254 +125,137 @@
       align-items: center;
       justify-content: center;
       padding: 0.75rem 1.5rem;
-      border-radius: 4px;
-      font-size: 0.95rem;
       font-weight: 600;
+      border-radius: var(--radius);
       text-decoration: none;
-      transition: all 0.2s ease;
-      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+      font-size: 0.95rem;
     }
 
     .rg-btn-primary {
       background: var(--rg-teal);
-      color: #000;
+      color: #06090f;
       border: 1px solid var(--rg-teal);
-      box-shadow: 0 0 15px rgba(45, 212, 191, 0.2);
     }
-
     .rg-btn-primary:hover {
-      background: #25c3ae;
-      box-shadow: 0 0 20px rgba(45, 212, 191, 0.4);
-      transform: translateY(-1px);
+      background: #3ce6d0;
     }
 
     .rg-btn-secondary {
-      background: var(--rg-panel);
+      background: rgba(13, 21, 32, 0.8);
       color: var(--rg-text);
       border: 1px solid var(--rg-steel);
     }
-
     .rg-btn-secondary:hover {
-      border-color: var(--rg-muted);
-      background: var(--rg-panel-2);
-    }
-
-    /* Hero lede + fine print. These must track the CTA row's alignment: the
-       row is left-aligned on desktop and centered under the 900px media query,
-       so centered text here would float free of the buttons on desktop. */
-    .rg-hero-lede {
-      margin: 0.35rem 0 0;
-      color: var(--rg-text);
-      font-size: 1.05rem;
-      line-height: 1.5;
-      max-width: 540px;
+      border-color: var(--rg-teal);
     }
 
     .rg-hero-fineprint {
-      margin-top: 0.5rem;
       font-size: 0.82rem;
       color: var(--rg-muted);
-      line-height: 1.5;
-      max-width: 520px;
+      margin-top: 0.5rem;
+      line-height: 1.45;
     }
-
-    .rg-cta-group + .rg-hero-fineprint {
-      margin-top: 0.75rem;
-    }
-
     .rg-hero-fineprint strong {
       color: var(--rg-text);
     }
 
-    /* Unnumbered bands (flow, pillars, privacy) keep the plate geometry but
-       must NOT advance the plate counter, so they do not reuse .rg-section. */
-    .rg-band {
-      padding-block: 5rem;
+    /* System Pillars Section */
+    .rg-pillars-section {
+      padding-block: 3.5rem;
       border-top: 1px solid var(--rg-steel);
-    }
-
-    /* Numbered plates */
-    .rg-section {
-      padding-block: 5rem;
-      border-top: 1px solid var(--rg-steel);
+      border-bottom: 1px solid var(--rg-steel);
+      background: var(--rg-bg-2);
     }
 
     .rg-section-title {
-      font-size: clamp(1.75rem, 3.4vw, 2.5rem);
-      margin-bottom: 1rem;
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
       color: #fff;
-      text-wrap: balance;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.01em;
     }
 
     .rg-section-subtitle {
+      font-size: 1.05rem;
       color: var(--rg-muted);
-      font-size: 1.15rem;
-      margin-bottom: 4rem;
-      max-width: var(--measure);
+      max-width: 820px;
+      margin-bottom: 2.25rem;
+      line-height: 1.55;
     }
 
-    main {
-      counter-reset: rg-plate;
-    }
-
-    .rg-section > .rg-section-title {
-      display: flex;
-      align-items: baseline;
-      gap: 0.85rem;
-    }
-
-    .rg-section > .rg-section-title::before {
-      counter-increment: rg-plate;
-      content: counter(rg-plate, decimal-leading-zero);
-      flex: none;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--rg-cyan);
-      letter-spacing: 0.14em;
-    }
-
-    .rg-section > .rg-section-title::after {
-      content: "";
-      flex: 1 1 0;
-      min-width: 0;
-      align-self: center;
-      height: 1px;
-      background: linear-gradient(90deg, var(--rg-steel), transparent);
-    }
-
-    /* Provider Flow */
-    .rg-flow-diagram {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 2rem;
-      margin: 3rem 0;
-      max-width: min(1040px, 100%);
-      padding: 3rem;
-      background: var(--rg-panel);
-      border: 1px solid var(--rg-steel);
-      border-radius: 8px;
-    }
-
-    .rg-flow-col {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      flex: 1;
-    }
-
-    .rg-provider-card {
-      background: var(--rg-panel-2);
-      border: 1px solid var(--rg-steel);
-      padding: 1rem;
-      text-align: center;
-      border-radius: 4px;
-      color: var(--rg-text);
-      font-weight: 600;
-      white-space: nowrap;
-    }
-
-    .rg-provider-card.rg-gate-node {
-      border-color: var(--rg-teal);
-      box-shadow: 0 0 20px rgba(45, 212, 191, 0.1);
-      padding: 2.5rem 1rem;
-      font-size: 1.2rem;
-      background: rgba(45, 212, 191, 0.05);
-    }
-
-    .rg-flow-arrow {
-      color: var(--rg-cyan);
-      font-size: 2rem;
-      flex-shrink: 0;
-    }
-
-    /* Product Pillars */
-    .rg-pillars {
+    .rg-pillars-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+      gap: 1.25rem;
     }
 
     .rg-pillar-card {
       background: var(--rg-panel);
       border: 1px solid var(--rg-steel);
-      padding: 2.5rem;
-      border-radius: 4px;
-      transition: border-color 0.3s;
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
     }
 
-    .rg-pillar-card:hover {
-      border-color: var(--rg-gold);
+    .rg-pillar-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--rg-steel);
     }
 
-    .rg-pillar-icon {
+    .rg-pillar-card:hover::before {
+      background: var(--rg-teal);
+    }
+
+    .rg-pillar-num {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.8rem;
       color: var(--rg-gold);
-      font-size: 2rem;
-      margin-bottom: 1.5rem;
-      font-family: monospace;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
     }
 
     .rg-pillar-title {
-      font-size: 1.25rem;
+      font-size: 1.15rem;
       color: #fff;
-      margin-bottom: 1rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
     }
 
     .rg-pillar-text {
+      font-size: 0.9rem;
       color: var(--rg-muted);
-      line-height: 1.6;
+      line-height: 1.5;
     }
 
-    /* Story beats: copy alongside a real screenshot (same proven rhythm as
-       the rest of the foundry, restyled for the gate identity). */
-    .rg-story {
+    /* Architecture Visual Section */
+    .rg-arch-section {
+      padding-block: 4rem;
+    }
+
+    .rg-arch-container {
+      background: var(--rg-panel);
+      border: 1px solid var(--rg-steel);
+      border-radius: var(--radius);
+      padding: clamp(1.5rem, 3vw, 2.5rem);
+    }
+
+    .rg-arch-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
-      gap: clamp(1.5rem, 3vw, 2.75rem);
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
       align-items: center;
-      margin-top: 2.5rem;
     }
 
-    .rg-story.copy-first {
-      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-    }
-
-    .rg-story-copy p {
-      color: var(--rg-muted);
-      line-height: 1.6;
-      font-size: 0.98rem;
-    }
-
-    .rg-story-copy p + p {
-      margin-top: 0.7rem;
-    }
-
-    .rg-story-list {
-      margin: 0.9rem 0 0;
-      padding: 0;
-      list-style: none;
-      display: grid;
-      gap: 0.45rem;
-    }
-
-    .rg-story-list li {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.55rem;
-      align-items: baseline;
-      font-size: 0.92rem;
-      color: #c8d2da;
-      min-width: 0;
-    }
-
-    .rg-story-list li::before {
-      content: "›";
-      color: var(--rg-teal);
-      font-weight: 700;
-      flex: none;
+    /* Screenshot Gallery Showcase */
+    .rg-gallery-section {
+      padding-block: 4rem;
+      background: var(--rg-bg-2);
+      border-top: 1px solid var(--rg-steel);
     }
 
     .rg-shot {
@@ -410,8 +277,8 @@
     }
 
     .rg-shot figcaption {
-      margin-top: 0.6rem;
-      font-size: 0.8rem;
+      margin-top: 0.75rem;
+      font-size: 0.85rem;
       color: var(--rg-muted);
       line-height: 1.5;
     }
@@ -421,51 +288,98 @@
       font-weight: 600;
     }
 
-    .rg-shot-row {
+    .rg-gallery-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-      gap: 1.25rem;
-      margin-top: 2.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
     }
 
-    .rg-shot-row .rg-shot {
-      align-self: start;
+    /* Capability-State Matrix */
+    .rg-matrix-section {
+      padding-block: 4rem;
     }
 
-    /* Honest-notes: plain boxes for claim discipline. */
-    .rg-note {
-      margin-top: 1rem;
+    .rg-matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--rg-panel);
+      border: 1px solid var(--rg-steel);
+      border-radius: var(--radius);
+      overflow: hidden;
+      font-size: 0.9rem;
+    }
+
+    .rg-matrix-table th {
+      background: #09101a;
+      color: #fff;
+      text-align: left;
       padding: 1rem 1.25rem;
-      font-size: 0.88rem;
-      color: var(--rg-muted);
-      line-height: 1.55;
-      border: 1px dashed var(--rg-bronze);
-      background: rgba(217, 164, 65, 0.04);
+      border-bottom: 1px solid var(--rg-steel);
+      font-weight: 700;
+    }
+
+    .rg-matrix-table td {
+      padding: 0.9rem 1.25rem;
+      border-bottom: 1px solid rgba(42, 50, 63, 0.6);
+      color: #c8d2da;
+      line-height: 1.45;
+    }
+
+    .rg-matrix-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .rg-status-glyph {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.2rem 0.55rem;
       border-radius: 4px;
     }
 
-    .rg-note strong {
-      color: var(--rg-gold);
+    .glyph-pass {
+      color: #2dd4bf;
+      background: rgba(45, 212, 191, 0.1);
+      border: 1px solid rgba(45, 212, 191, 0.3);
+    }
+    .glyph-hold {
+      color: #d9a441;
+      background: rgba(217, 164, 65, 0.1);
+      border: 1px solid rgba(217, 164, 65, 0.3);
+    }
+    .glyph-roadmap {
+      color: #93a4b5;
+      background: rgba(147, 164, 181, 0.1);
+      border: 1px solid rgba(147, 164, 181, 0.3);
     }
 
-    .rg-note-teal {
-      border-color: var(--rg-teal);
-      background: rgba(45, 212, 191, 0.04);
+    /* Receipt Specimen Box */
+    .rg-receipt-specimen {
+      background: #04060a;
+      border: 1px solid var(--rg-steel);
+      border-radius: 6px;
+      padding: 1.25rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.82rem;
+      color: #2dd4bf;
+      line-height: 1.5;
+      overflow-x: auto;
+      margin-top: 1rem;
     }
 
-    .rg-note-teal strong {
-      color: var(--rg-teal);
-    }
-
-    /* Release card */
+    /* Release & Qualification Block */
     .rg-pilot-panel {
       background: var(--rg-panel-2);
       border: 1px solid var(--rg-steel);
-      padding: 3rem;
-      border-radius: 4px;
+      padding: clamp(2rem, 4vw, 3rem);
+      border-radius: var(--radius);
       text-align: center;
-      max-width: 860px;
-      margin: 2.5rem auto 0;
+      max-width: 900px;
+      margin: 3rem auto 0;
       position: relative;
       overflow: hidden;
     }
@@ -478,59 +392,45 @@
       background: linear-gradient(90deg, transparent, var(--rg-teal), transparent);
     }
 
-    .rg-pilot-badge {
-      display: inline-block;
-      padding: 0.25rem 0.75rem;
-      background: rgba(45, 212, 191, 0.1);
+    .rg-qual-flex {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-block: 1.5rem 1rem;
+    }
+
+    .rg-qual-card {
+      background: var(--rg-panel);
+      border: 1px solid rgba(45, 212, 191, 0.25);
+      border-radius: 6px;
+      padding: 0.85rem 1.25rem;
+      min-width: 140px;
+      text-align: center;
+    }
+
+    .rg-qual-val {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 1.35rem;
+      font-weight: 800;
       color: var(--rg-teal);
-      border: 1px solid var(--rg-teal);
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 600;
+    }
+
+    .rg-qual-lbl {
+      font-size: 0.75rem;
+      color: var(--rg-muted);
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin-bottom: 1.25rem;
-    }
-
-    .rg-suite-line {
-      display: inline-block;
-      margin-top: 0.9rem;
-      padding: 0.5rem 1rem;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.78rem;
-      color: var(--rg-teal);
-      border: 1px solid rgba(45, 212, 191, 0.35);
-      border-radius: 4px;
-      background: rgba(45, 212, 191, 0.05);
-      letter-spacing: 0.04em;
-    }
-
-    .rg-hash-box {
-      background: #04060a;
-      border: 1px solid var(--rg-steel);
-      padding: 1rem;
-      margin: 1.5rem 0;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.85rem;
-      color: var(--rg-muted);
-      word-break: break-all;
-      border-radius: 4px;
-      text-align: left;
-    }
-
-    .rg-checkpoint {
-      font-size: 0.85rem;
-      color: var(--rg-muted);
-      margin-top: 0.75rem;
+      margin-top: 0.25rem;
     }
 
     .rg-limits {
-      margin: 2rem auto 0;
-      max-width: 860px;
+      margin: 2.5rem auto 0;
+      max-width: 900px;
       text-align: left;
       background: var(--rg-panel);
       border: 1px solid var(--rg-steel);
-      border-radius: 4px;
+      border-radius: var(--radius);
       padding: 2rem 2.5rem;
     }
 
@@ -547,12 +447,12 @@
       padding: 0;
       list-style: none;
       display: grid;
-      gap: 0.6rem;
+      gap: 0.65rem;
     }
 
     .rg-limits li {
       display: flex;
-      gap: 0.6rem;
+      gap: 0.65rem;
       align-items: baseline;
       color: var(--rg-muted);
       font-size: 0.92rem;
@@ -565,109 +465,31 @@
       flex: none;
     }
 
-    .rg-privacy {
-      text-align: center;
-      margin-top: 4rem;
-      padding: 2rem;
-      border: 1px solid var(--rg-steel);
-      background: var(--rg-panel);
-      border-radius: 4px;
-    }
-
-    .rg-privacy p {
-      color: var(--rg-muted);
-      margin-bottom: 0.5rem;
-    }
-
     .rg-product-nav {
       padding-block: 1.25rem 0;
     }
 
     /* Responsive */
-    @media (max-width: 900px) {
-      .rg-container {
-        padding-inline: 1rem;
-      }
-      .rg-section,
-      .rg-band {
-        padding-block: 3rem;
-      }
-      .rg-pillar-card {
-        padding: 1.5rem;
-      }
+    @media (max-width: 980px) {
       .rg-hero {
         grid-template-columns: 1fr;
-        text-align: center;
-        padding-block: 1.5rem;
-        gap: 1.5rem;
+        gap: 2rem;
       }
-      .rg-hero-content {
-        order: 2;
+      .rg-arch-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
       }
-      .rg-gate-art {
-        order: 1;
-        max-width: 220px;
-        max-height: 220px;
-        margin: 0 auto;
-      }
-      .rg-desc {
-        margin-left: auto;
-        margin-right: auto;
-        font-size: 0.95rem;
-        line-height: 1.5;
-        margin-bottom: 1.5rem;
-      }
-      .rg-hero-lede,
-      .rg-hero-fineprint {
-        margin-left: auto;
-        margin-right: auto;
-      }
-      .rg-tagline {
-        border-left: none;
-        padding-left: 0;
-        font-size: 1.1rem;
-        margin-bottom: 1rem;
-      }
-      .rg-title { font-size: 2.5rem; }
-      .rg-subtitle { font-size: 1.3rem; margin-bottom: 1rem; }
-      .rg-cta-group {
-        justify-content: center;
-      }
-      .rg-flow-diagram {
-        flex-direction: column;
-      }
-      .rg-flow-col {
-        width: 100%;
-      }
-      .rg-provider-card {
-        white-space: normal;
-      }
-      .rg-flow-arrow {
-        transform: rotate(90deg);
-      }
-      .rg-story,
-      .rg-story.copy-first {
+      .rg-gallery-grid {
         grid-template-columns: 1fr;
       }
     }
 
     @media (max-width: 600px) {
       .rg-title { font-size: 2.5rem; }
-      .rg-subtitle { font-size: 1.5rem; }
-      .rg-flow-diagram { padding: 1.5rem; }
+      .rg-subtitle { font-size: 1.35rem; }
       .rg-pilot-panel { padding: 1.5rem; }
       .rg-limits { padding: 1.5rem; }
-    }
-
-    @media (prefers-reduced-motion: no-preference) {
-      .rg-gate-art {
-        animation: rg-settle 0.9s ease-out both;
-      }
-
-      @keyframes rg-settle {
-        from { opacity: 0; }
-        to   { opacity: 1; }
-      }
+      .rg-matrix-table { font-size: 0.82rem; }
     }
   </style>
 </head>
@@ -683,13 +505,12 @@
       </nav>
       <nav class="product-subnav" aria-label="Product sections">
         <a href="#overview">Overview</a>
-        <a href="#add">Add</a>
-        <a href="#understand">Understand</a>
-        <a href="#continuity">Continuity</a>
-        <a href="#prove">Prove</a>
-        <a href="#verify">Verify</a>
-        <a href="#recovery">Recovery</a>
-        <a href="#release">Release</a>
+        <a href="#systems">Five Systems</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#gallery">Screenshots</a>
+        <a href="#matrix">Capabilities</a>
+        <a href="#doctrine">Doctrine</a>
+        <a href="#release">Pilot Status</a>
         <a href="#download">Download</a>
       </nav>
     </div>
@@ -700,419 +521,415 @@
       <div class="rg-hero-grid-overlay"></div>
 
       <div class="rg-hero-content">
-        <div class="rg-eyebrow">A Proof Foundry Product · {{product.statusLabel}}</div>
+        <div class="rg-eyebrow">A PROOF FOUNDRY PLATFORM · {{product.statusLabel}}</div>
         <h1 class="rg-title">Reality Gate</h1>
-        <div class="rg-subtitle">Developer Continuity Platform</div>
+        <div class="rg-subtitle">LOCAL EXECUTION + RECEIPT CONTROL PLATFORM</div>
 
-        <p class="rg-tagline">Keep your forge. Keep control of your work.</p>
-        <p class="rg-hero-lede">See what your Git project depends on GitHub, GitLab, or Forgejo for — and prove you can keep working if any of them goes down.</p>
+        <p class="rg-tagline">Run locally. Cross a controlled boundary. Keep the evidence.</p>
 
         <p class="rg-desc">
-          <strong style="color: #fff;">Reality Gate is a local software continuity and proof workstation.</strong>
-          Understand provider dependencies, run work with receipt-backed proof,
-          prepare recovery, and ship without making any single provider the
-          root of trust. It works alongside GitHub, GitLab, Forgejo, and
-          ordinary Git — with no migration required. Adding a repository is
-          passive: Reality Gate reads the local path and git state, and never
-          rewrites your repo, your remotes, or your history.
+          <strong>Reality Gate is a local-first software continuity and execution platform.</strong>
+          It maps provider dependencies, executes CI/build steps inside isolated local clones,
+          records ECDSA-signed receipts, and prepares recovery before an outage happens — working alongside
+          GitHub, GitLab, Forgejo, and ordinary Git without requiring migration or credential takeover.
         </p>
 
         <div class="rg-cta-group">
           <a class="rg-btn rg-btn-primary" href="{{product.downloadUrl}}" download>
-            {{product.downloadLabel}}
+            Download Developer Pilot
           </a>
           <a class="rg-btn rg-btn-secondary" href="{{product.sha256Url}}" target="_blank" rel="noopener">
-            SHA-256
+            Verify SHA-256
           </a>
         </div>
 
         <p class="rg-hero-fineprint">
-          <strong>Windows 10/11 x64</strong> &middot; ~113 MB download
+          <strong>v1.1.0 DEVELOPER PILOT</strong> &middot; Windows 10/11 x64 &middot; ~113.5 MB ZIP &middot; Unsigned package
         </p>
 
         <p class="rg-hero-fineprint">
-          Windows may show "Windows protected your PC" on first launch — choose <strong>More info → Run anyway</strong>. Verify the SHA-256 first.
+          Windows SmartScreen may prompt on first launch — choose <strong>More info → Run anyway</strong>. Verify the ZIP SHA-256 first.
         </p>
 
-        <div style="margin-top: 2rem; display: flex; justify-content: center;" class="rg-hero-strip">
+        <div style="margin-top: 1.5rem; display: flex; justify-content: flex-start;" class="rg-hero-strip">
           {{product.proofStrip}}
         </div>
       </div>
 
-      <div class="rg-gate-art" aria-hidden="true">
-        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+      <div class="rg-schematic-wrap" aria-hidden="true">
+        <svg viewBox="0 0 380 320" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
           <defs>
-            <linearGradient id="rgPathGradient" x1="0" y1="1" x2="0" y2="0">
-              <stop offset="0%" stop-color="var(--rg-cyan)" stop-opacity="0.8"/>
-              <stop offset="50%" stop-color="var(--rg-cyan)" stop-opacity="0.2"/>
-              <stop offset="100%" stop-color="var(--rg-bg)" stop-opacity="0"/>
+            <linearGradient id="rgPgTeal" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#2dd4bf"/>
+              <stop offset="100%" stop-color="#00e6ff"/>
             </linearGradient>
-            <linearGradient id="rgGoldGradient" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="var(--rg-gold)" stop-opacity="1"/>
-              <stop offset="100%" stop-color="var(--rg-bronze)" stop-opacity="1"/>
+            <linearGradient id="rgPgGold" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#d9a441"/>
+              <stop offset="100%" stop-color="#9f7e3b"/>
             </linearGradient>
-            <linearGradient id="rgEdgeHighlight" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#3a475a" stop-opacity="1"/>
-              <stop offset="100%" stop-color="var(--rg-steel)" stop-opacity="0.2"/>
-            </linearGradient>
-            <filter id="rgBloom" x="-30%" y="-30%" width="160%" height="160%">
-              <feGaussianBlur stdDeviation="8" result="blur"/>
-              <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-            </filter>
           </defs>
 
-          <path d="M 40 360 L 360 360" stroke="var(--rg-steel)" stroke-width="2" opacity="0.5"/>
+          <!-- Outer Boundary Steel Rail Box -->
+          <rect x="14" y="14" width="352" height="292" rx="10" fill="#0d1520" stroke="#2a323f" stroke-width="2"/>
 
-          <polygon points="140,360 260,360 230,220 170,220" fill="url(#rgPathGradient)"/>
+          <!-- Boundary Steel Rails [ ] -->
+          <path d="M 36 54 L 36 36 L 68 36" stroke="#2dd4bf" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+          <path d="M 344 54 L 344 36 L 312 36" stroke="#2dd4bf" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+          <path d="M 36 266 L 36 284 L 68 284" stroke="#2dd4bf" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+          <path d="M 344 266 L 344 284 L 312 284" stroke="#2dd4bf" stroke-width="3.5" stroke-linecap="round" fill="none"/>
 
-          <path d="M 80 360 L 80 140 L 140 60 L 260 60 L 320 140 L 320 360 L 280 360 L 280 160 L 240 100 L 160 100 L 120 160 L 120 360 Z"
-                fill="var(--rg-panel-2)"
-                stroke="url(#rgEdgeHighlight)" stroke-width="2"/>
+          <text x="76" y="48" fill="#d9a441" font-size="10" font-family="monospace" font-weight="bold" letter-spacing="1">CONTROLLED BOUNDARY · REALITY GATE</text>
 
-          <path d="M 120 360 L 120 160 L 160 100 L 240 100 L 280 160 L 280 360 L 260 360 L 260 180 L 230 140 L 170 140 L 140 180 L 140 360 Z"
-                fill="var(--rg-bg-2)"
-                stroke="var(--rg-steel)" stroke-width="1.5"/>
+          <!-- Sequence Flow -->
+          <rect x="38" y="76" width="140" height="50" rx="6" fill="#06090f" stroke="#2a323f"/>
+          <text x="50" y="96" fill="#93a4b5" font-size="9" font-family="monospace">1. INTENT</text>
+          <text x="50" y="113" fill="#f2f6f8" font-size="10" font-weight="bold">Git Repo &amp; Remotes</text>
 
-          <path d="M 140 360 L 140 180 L 170 140 L 230 140 L 260 180 L 260 360"
-                fill="none"
-                stroke="var(--rg-cyan)" stroke-width="3" filter="url(#rgBloom)" opacity="0.8"/>
+          <rect x="202" y="76" width="140" height="50" rx="6" fill="#06090f" stroke="#2dd4bf" stroke-width="1.5"/>
+          <text x="214" y="96" fill="#2dd4bf" font-size="9" font-family="monospace">2. ISOLATED WORKSPACE</text>
+          <text x="214" y="113" fill="#00e6ff" font-size="10" font-weight="bold">git clone --local</text>
 
-          <g transform="translate(185, 200)" opacity="0.9" filter="url(#rgBloom)">
-            <polyline points="0,0 12,12 0,24" fill="none" stroke="var(--rg-cyan)" stroke-width="3" stroke-linecap="square"/>
-            <line x1="16" y1="24" x2="30" y2="24" stroke="var(--rg-cyan)" stroke-width="3"/>
-          </g>
+          <path d="M 178 101 L 202 101" stroke="#2dd4bf" stroke-width="2" stroke-dasharray="4 2"/>
 
-          <path d="M 180 50 L 220 50 L 230 80 L 170 80 Z" fill="url(#rgGoldGradient)"/>
-          <rect x="70" y="340" width="20" height="20" fill="url(#rgGoldGradient)" rx="2"/>
-          <rect x="310" y="340" width="20" height="20" fill="url(#rgGoldGradient)" rx="2"/>
+          <rect x="38" y="150" width="140" height="50" rx="6" fill="#06090f" stroke="#2a323f"/>
+          <text x="50" y="170" fill="#93a4b5" font-size="9" font-family="monospace">3. CONTROLLED RUN</text>
+          <text x="50" y="187" fill="#f2f6f8" font-size="10" font-weight="bold">Logs &amp; Hashed Artifacts</text>
+
+          <rect x="202" y="150" width="140" height="50" rx="6" fill="#06090f" stroke="#d9a441" stroke-width="1.5"/>
+          <text x="214" y="170" fill="#d9a441" font-size="9" font-family="monospace">4. SIGNED RECEIPT</text>
+          <text x="214" y="187" fill="#d9a441" font-size="10" font-weight="bold">ECDSA P-256 Key</text>
+
+          <path d="M 272 126 L 272 150" stroke="#00e6ff" stroke-width="2"/>
+          <path d="M 178 175 L 202 175" stroke="#d9a441" stroke-width="2"/>
+
+          <rect x="38" y="224" width="304" height="46" rx="6" fill="rgba(13, 21, 32, 0.95)" stroke="#2a323f"/>
+          <circle cx="58" cy="247" r="5" fill="#d9a441"/>
+          <text x="74" y="251" fill="#c8d2da" font-size="10" font-family="monospace">DECISION &amp; PROOF LEDGER: VERIFIED</text>
         </svg>
       </div>
     </section>
 
-    <!-- Provider Flow (unnumbered band) -->
-    <section class="rg-band rg-container" aria-label="How Reality Gate sits under your workflow">
-      <h2 class="rg-section-title" style="margin-bottom: 0;">Keep your forge</h2>
-      <p class="rg-section-subtitle">Keep GitHub. Keep GitLab. Keep Forgejo. Reality Gate is the continuity layer underneath your workflow.</p>
+    <!-- Five Concrete Platform Systems -->
+    <section class="rg-pillars-section" id="systems">
+      <div class="rg-container">
+        <h2 class="rg-section-title">The Platform as Five Concrete Systems</h2>
+        <p class="rg-section-subtitle">Reality Gate is organized around five distinct operational capability systems — not vague marketing features.</p>
 
-      <div class="rg-flow-diagram">
-        <div class="rg-flow-col">
-          <div class="rg-provider-card">GitHub</div>
-          <div class="rg-provider-card">GitLab</div>
-          <div class="rg-provider-card">Forgejo</div>
-          <div class="rg-provider-card">Ordinary Git</div>
-        </div>
+        <div class="rg-pillars-grid">
+          <div class="rg-pillar-card">
+            <div class="rg-pillar-num">01 / WORKSPACE</div>
+            <h3 class="rg-pillar-title">Isolated Workspace</h3>
+            <p class="rg-pillar-text">
+              Executes CI steps and builds inside isolated local clones (<code>git clone --local --no-hardlinks</code>). Authoritative user repositories remain 100% untouched and unmutated.
+            </p>
+          </div>
 
-        <div class="rg-flow-arrow">→</div>
+          <div class="rg-pillar-card">
+            <div class="rg-pillar-num">02 / RUNROOM</div>
+            <h3 class="rg-pillar-title">Runroom Control</h3>
+            <p class="rg-pillar-text">
+              Provides controlled execution, step queueing, real-time log streaming, process cancellation, and toolchain command whitelisting (Node, Python, Git, Make).
+            </p>
+          </div>
 
-        <div class="rg-flow-col" style="flex: 0.8">
-          <div class="rg-provider-card rg-gate-node">Reality Gate</div>
-        </div>
+          <div class="rg-pillar-card">
+            <div class="rg-pillar-num">03 / EVIDENCE</div>
+            <h3 class="rg-pillar-title">Evidence Capture</h3>
+            <p class="rg-pillar-text">
+              Records SHA-256 hashes of all inputs, environment variables, step outputs, and final artifacts, creating an immutable inspection trace for every run.
+            </p>
+          </div>
 
-        <div class="rg-flow-arrow">→</div>
+          <div class="rg-pillar-card">
+            <div class="rg-pillar-num">04 / RECEIPTS</div>
+            <h3 class="rg-pillar-title">Signed Receipts</h3>
+            <p class="rg-pillar-text">
+              Signs execution outcomes with local machine ECDSA P-256 keys. Emits self-contained Proof Passport JSON receipts that verify provenance independently.
+            </p>
+          </div>
 
-        <div class="rg-flow-col">
-          <div class="rg-provider-card" style="background: transparent; border: 1px dashed var(--rg-teal); color: var(--rg-teal);">Local Continuity</div>
-          <div class="rg-provider-card" style="background: transparent; border: 1px dashed var(--rg-gold); color: var(--rg-gold);">Proof Generation</div>
-          <div class="rg-provider-card" style="background: transparent; border: 1px dashed var(--rg-muted);">Recovery State</div>
-        </div>
-      </div>
-
-      <div class="rg-pillars">
-        <div class="rg-pillar-card">
-          <div class="rg-pillar-icon">&lt;/&gt;</div>
-          <h3 class="rg-pillar-title">Local-First</h3>
-          <p class="rg-pillar-text">Local source and ordinary Git stay authoritative. Reality Gate never moves your history or rewrites your repository — it reads it and reports on it.</p>
-        </div>
-        <div class="rg-pillar-card">
-          <div class="rg-pillar-icon">{}</div>
-          <h3 class="rg-pillar-title">Provider-Aware</h3>
-          <p class="rg-pillar-text">Reality Gate maps the workflow's real dependencies — remotes, configuration, local git state — and reports exposure honestly instead of pretending the provider isn't there.</p>
-        </div>
-        <div class="rg-pillar-card">
-          <div class="rg-pillar-icon">#</div>
-          <h3 class="rg-pillar-title">Proof-Backed</h3>
-          <p class="rg-pillar-text">Continuity checks, CI runs, drills, and recovery evidence are emitted as inspectable receipts — signed, hashed, and persisted locally.</p>
+          <div class="rg-pillar-card">
+            <div class="rg-pillar-num">05 / RECOVERY</div>
+            <h3 class="rg-pillar-title">Recovery Vault &amp; Ledger</h3>
+            <p class="rg-pillar-text">
+              Creates verified Git bundles, tests restore paths in advance, and persists run records into a local Proof Ledger — ensuring local continuity during provider outages.
+            </p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Beat 01 — Add -->
-    <section class="rg-section rg-container" id="add">
-      <h2 class="rg-section-title">Add a repository without touching it.</h2>
-      <p class="rg-section-subtitle">Onboarding is four steps, and the first one is passive. Reality Gate discovers a Git repository by reading its local path and git state — it does not modify, migrate, or rewrite anything.</p>
+    <!-- Architecture Visualization -->
+    <section class="rg-arch-section rg-container" id="architecture">
+      <div class="rg-arch-container">
+        <h2 class="rg-section-title">Execution Architecture &amp; Evidence Flow</h2>
+        <p class="rg-section-subtitle">Every node in this architecture corresponds to an implemented capability in the local product runtime.</p>
 
-      <div class="rg-story">
-        <div class="rg-story-copy">
-          <p>On a fresh launch with no repositories, Reality Gate walks you through: add a repository, analyze dependencies, run a continuity check, get proof. Add the path you already use — GitHub, GitLab, or Forgejo remotes included — and the project appears on the board exactly as your git state describes it.</p>
-          <ul class="rg-story-list">
-            <li>Registration is read-only for the repository: Reality Gate validates the path, records the mapping, and reads local git state.</li>
-            <li>No migration, no import step, no forced account. Your workflow stays where it is.</li>
-            <li>A disposable demo repository ships with the pilot, so you can run the whole flow before pointing it at a real project.</li>
-          </ul>
-          <p class="rg-note"><strong>What "passive" means here:</strong> the app does not push, fetch, rewrite remotes, or alter git configuration. It reads the repository and reports what it sees. The only writes it makes are its own data and receipt directories.</p>
+        <div class="rg-arch-grid">
+          <div>
+            <p style="color: #c8d2da; font-size: 0.96rem; line-height: 1.6; margin-bottom: 1rem;">
+              When a workflow executes through Reality Gate, the platform creates a temporary local clone, executes whitelisted commands inside that sandbox, collects execution logs and artifact checksums, and signs the outcome before persisting the receipt to the local Proof Ledger.
+            </p>
+            <ul style="margin: 0; padding-left: 1.25rem; color: var(--rg-muted); font-size: 0.9rem; line-height: 1.6;">
+              <li><strong>Zero Authority Mutation:</strong> User source repositories and remotes are never edited or rewritten.</li>
+              <li><strong>Local Cryptographic Keys:</strong> ECDSA P-256 keys are generated and held locally in AppData.</li>
+              <li><strong>Offline Execution Safety:</strong> Drills remove remote network credentials to verify true local operation.</li>
+            </ul>
+          </div>
+
+          <div style="background: #06090f; border: 1px solid var(--rg-steel); border-radius: 8px; padding: 1.25rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.82rem; color: #2dd4bf; line-height: 1.6;">
+            REPOSITORY / INTENT<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼<br />
+            &nbsp;&nbsp;ISOLATED WORKSPACE (git clone --local)<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;EXECUTION CONTROL (Runroom)<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;┌───┴───┐<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;▼       ▼<br />
+            &nbsp;&nbsp;LOGS   ARTIFACT HASHES (SHA-256)<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;└───┬───┘<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;DECISION (PASSED / FAILED)<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼<br />
+            &nbsp;&nbsp;SIGNED RECEIPT (ECDSA P-256)<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;PROOF LEDGER &amp; RECOVERY VAULT
+          </div>
         </div>
-        <figure class="rg-shot" aria-labelledby="shot-onboard-cap">
-          <img
-            src="/assets/reality-gate/00-onboarding.png"
-            alt="The onboarding overlay of the real app on a fresh launch: four steps — add a repository, analyze dependencies, run a continuity check, get proof."
-            width="1440" height="900" loading="lazy" />
-          <figcaption id="shot-onboard-cap">The real onboarding overlay on a repository-less launch. Four steps: Add repo → Analyze dependencies → Run continuity check → Get proof. This screenshot — and every screenshot on this page — shows the app driving its disposable demo repository: a synthetic stand-in, not a production project.</figcaption>
-        </figure>
       </div>
     </section>
 
-    <!-- Beat 02 — Understand -->
-    <section class="rg-section rg-container" id="understand">
-      <h2 class="rg-section-title">Know what your work depends on.</h2>
-      <p class="rg-section-subtitle">Before claiming continuity, Reality Gate maps each capability and says who holds it — local control or a provider.</p>
+    <!-- Screenshot Gallery Showcase -->
+    <section class="rg-gallery-section" id="gallery">
+      <div class="rg-container">
+        <h2 class="rg-section-title">Real Application Screenshots</h2>
+        <p class="rg-section-subtitle">Every image below shows the actual packaged Reality Gate desktop application running its synthetic disposable demo repository under test isolation.</p>
 
-      <div class="rg-story copy-first">
-        <figure class="rg-shot" aria-labelledby="shot-depmap-cap">
-          <img
-            src="/assets/reality-gate/02-dependency-map.png"
-            alt="The provider dependency map of the real app: LOCAL CONTROL for local source, commits, branches, and history; external dependency exposure for remote push, fetch, and clone."
-            width="1440" height="900" loading="lazy" />
-          <figcaption id="shot-depmap-cap">The dependency map for the demo project: source, commits, branches, and history classify as <strong>LOCAL CONTROL</strong>; push, fetch, and clone classify as provider dependencies.</figcaption>
-        </figure>
-        <div class="rg-story-copy">
-          <p>The dependency map answers one question: <em>what stops working if the provider disappears?</em> Each capability is classified from the repository's own state — local worktree, commit objects, branches, history — versus capabilities that flow through remotes like push, fetch, pull, and clone.</p>
-          <ul class="rg-story-list">
-            <li>Every capability is listed with its classification — nothing is hidden behind a single green badge.</li>
-            <li>The Remote Hub shows where remotes actually point, with identity, branch, commit, and working-tree state.</li>
-            <li>Provider integrations appear as cards so exposure is visible per provider, not averaged away.</li>
-          </ul>
-          <p class="rg-note"><strong>Honest limit:</strong> classification is static analysis of local git state and configuration. Reality Gate does not sniff traffic, and it reports UNKNOWN rather than guessing.</p>
-        </div>
-      </div>
-
-      <div class="rg-shot-row">
-        <figure class="rg-shot" aria-labelledby="shot-remotes-cap">
-          <img
-            src="/assets/reality-gate/06-remote-hub.png"
-            alt="The Remote Hub of the real app: origin pointing to a GitHub example remote, backup pointing to a GitLab example remote, and provider cards for seven integrations."
-            width="1440" height="900" loading="lazy" />
-          <figcaption id="shot-remotes-cap">The real Remote Hub for the demo project: <strong>origin</strong> (github.com) and <strong>backup</strong> (gitlab.com) remotes, with local identity and provider cards.</figcaption>
-        </figure>
-      </div>
-    </section>
-
-    <!-- Beat 03 — Continuity -->
-    <section class="rg-section rg-container" id="continuity">
-      <h2 class="rg-section-title">Can you keep working? The card says what is actually known.</h2>
-      <p class="rg-section-subtitle">The continuity card is a state report, not a mood ring. Every reading is tied to evidence — and "not tested" is shown as not tested.</p>
-
-      <div class="rg-story">
-        <div class="rg-story-copy">
-          <p>Once a project is registered, Forge Home renders a continuity card with five readings: Work, Proof, Recovery, Custody, and Provider Exposure. A reading is STRONG only when checks have run and passed; anything not yet exercised reads NOT TESTED or UNKNOWN — never an implied pass.</p>
-          <ul class="rg-story-list">
-            <li>Work: what local operations are known to keep working, and where they stand.</li>
-            <li>Proof: whether proof has been generated and persisted for this project.</li>
-            <li>Recovery: whether a recovery drill, bundle, or restore evidence exists.</li>
-            <li>Provider Exposure: which capabilities still depend on a provider, in plain terms.</li>
-          </ul>
-          <p class="rg-note"><strong>What this means for the demo below:</strong> the card reports provider exposure (push/fetch/clone) and marks proof and recovery as NOT TESTED — the honest state before any drill has run. The next two sections are what happen when you convert those readings into evidence.</p>
-        </div>
-        <figure class="rg-shot" aria-labelledby="shot-continuity-cap">
-          <img
-            src="/assets/reality-gate/01-home-continuity.png"
-            alt="The real continuity card for a registered project: Work strong, Proof not tested, Recovery not tested, Custody unknown, Provider exposure external dependency for remote push, fetch, and clone."
-            width="1440" height="900" loading="lazy" />
-          <figcaption id="shot-continuity-cap">The real continuity card for the demo repository (synthetic, disposable) before any drill: <strong>Work</strong> STRONG, <strong>Proof/Recovery</strong> NOT TESTED, <strong>Provider Exposure</strong> EXTERNAL_DEPENDENCY — the honest baseline.</figcaption>
-        </figure>
-      </div>
-    </section>
-
-    <!-- Beat 04 — Prove -->
-    <section class="rg-section rg-container" id="prove">
-      <h2 class="rg-section-title">Real receipts — the illustrative one is gone.</h2>
-      <p class="rg-section-subtitle">This page used to show a specimen receipt. It now shows receipts the running app actually produced, with their real IDs, checks, and outcomes — including the ones it could not pass.</p>
-
-      <div class="rg-story copy-first">
-        <figure class="rg-shot" aria-labelledby="shot-drillreceipt-cap">
-          <img
-            src="/assets/reality-gate/03-recovery-drill-receipt.png"
-            alt="A real continuity drill receipt in the Recovery panel: drill ID, project, trigger and completion times, overall result, isolation mode, and per-phase states."
-            width="1440" height="900" loading="lazy" />
-          <figcaption id="shot-drillreceipt-cap">A real drill receipt in the Recovery panel: drill ID, project, timestamps, <strong>isolation mode</strong>, and phase states. Overall: INCONCLUSIVE — read why below.</figcaption>
-        </figure>
-        <div class="rg-story-copy">
-          <p>The continuity drill walks the project through its own toolchain — source phase, CI phase, build phase, recovery phase, persistence phase — inside an isolated workspace. Provider credentials are removed from the environment, external git remotes are absent inside the drill, offline tooling is enforced, and any contact with a provider is observed and recorded.</p>
-          <ul class="rg-story-list">
-            <li>Source: PASSED — project resolved against its registered authoritative path.</li>
-            <li>CI: PASSED — the repository's own workflow ran inside the isolated clone.</li>
-            <li>Build: INCONCLUSIVE — the demo repository contains nothing executable to build.</li>
-            <li>Recovery: INCONCLUSIVE — with no build evidence, there is nothing to restore-test.</li>
-            <li>Receipt: PERSISTED — written with a SHA-256 integrity envelope.</li>
-          </ul>
-          <p class="rg-note"><strong>Why the overall result is INCONCLUSIVE and that is the right answer:</strong> the drill refuses to fake a pass. A repository with no build produces "nothing to prove" — so the receipt says exactly that, in phases, and persists it anyway.</p>
-        </div>
-      </div>
-
-      <div class="rg-shot-row">
-        <figure class="rg-shot" aria-labelledby="shot-ledger-cap">
-          <img
-            src="/assets/reality-gate/09-proof-ledger.png"
-            alt="The Proof Ledger of the real app with one row: the demo project CI run, PASSED outcome, receipt integrity YES."
-            width="1440" height="900" loading="lazy" />
-          <figcaption id="shot-ledger-cap">The real Proof Ledger after a CI run: <strong>demo-repo · CI_RUN · PASSED</strong>, receipt integrity <strong>YES</strong>.</figcaption>
-        </figure>
-      </div>
-
-      <p class="rg-note rg-note-teal" style="max-width: 900px;"><strong>Screenshot provenance:</strong> every screenshot on this page is the real desktop application driving a synthetic demo repository (disposable, with example GitHub/GitLab remotes) under the app's own test-isolation flags. No real project was used, opened, or modified — and the demo data is exactly what the app itself showed.</p>
-    </section>
-
-    <!-- Beat 05 — Verify -->
-    <section class="rg-section rg-container" id="verify">
-      <h2 class="rg-section-title">Verification is a separate action from running.</h2>
-      <p class="rg-section-subtitle">Running produces a result. Verification produces a signed record that the result is what it claims to be.</p>
-
-      <div class="rg-story">
-        <div class="rg-story-copy">
-          <p>When a CI run completes, Reality Gate snapshots the source state before and after the run, compares them by hash, and signs the run manifest with the machine's ECDSA P-256 key. The Runroom then shows the outcome badge and a VERIFIED RECEIPT badge — earned by a real signature, not assumed. A public key ships with each receipt, and a Compare action checks one run against another.</p>
-          <ul class="rg-story-list">
-            <li>The run manifest covers run ID, repository, branch, commit, pipeline hash, machine fingerprint, outcome, and source-state hashes.</li>
-            <li>If the source changes while the run is in flight, the receipt records a mutation detection rather than hiding it.</li>
-            <li>The signed receipt JSON (with its public key) is exported to the project's own workspace with the run record.</li>
-          </ul>
-          <p class="rg-note"><strong>What a verified receipt is — and is not:</strong> it proves the record — which run, on which commit, on which machine, with which outcome — was signed and has not been modified. It is not a claim that the code is correct. The receipt verifies provenance, not quality.</p>
-        </div>
-        <figure class="rg-shot" aria-labelledby="shot-runroom-cap">
-          <img
-            src="/assets/reality-gate/08-ci-run-complete.png"
-            alt="The real Runroom after a completed CI run: SUCCESS badge, VERIFIED RECEIPT badge, and the live console showing the isolated workspace and the signed receipt line."
-            width="1440" height="900" loading="lazy" />
-          <figcaption id="shot-runroom-cap">A real completed run in the Runroom: <strong>SUCCESS</strong> + <strong>VERIFIED RECEIPT</strong>, with the console showing the isolated CI workspace and the ECDSA P-256 signing step.</figcaption>
-        </figure>
-      </div>
-    </section>
-
-    <!-- Beat 06 — Recovery (prepared continuity, not failover) -->
-    <section class="rg-section rg-container" id="recovery">
-      <h2 class="rg-section-title">Prepare the recovery path before you need it.</h2>
-      <p class="rg-section-subtitle">Reality Gate cannot keep a provider online — no local tool can. What it can do is verify, in advance, that your local continuity path works.</p>
-
-      <div class="rg-story">
-        <div class="rg-story-copy">
-          <p>The Recovery Vault creates a verified Git bundle for the project, checks it with SHA-256, and writes a signed receipt. "Prove I Can Recover This Project" then runs the recovery drill end to end. When a provider goes down, the procedure is already evidence-backed — you are not debugging recovery in the middle of an outage.</p>
-          <ul class="rg-story-list">
-            <li>Create verified Git bundle → bundle verified + SHA-256 + signed receipt.</li>
-            <li>Recovery drill → runs the phases and persists the receipt regardless of outcome.</li>
-            <li>Isolation inside the drill: credentials removed, no external remotes, no provider contact observed.</li>
-          </ul>
-          <p class="rg-note"><strong>Preparedness, not magic:</strong> this is planned continuity and recovery capability, not autonomous failover. Reality Gate does not reroute your CI or keep a provider alive. It verifies that the local path — bundles, history, toolchain — is ready before it is needed.</p>
-        </div>
-        <div class="rg-shot-row" style="margin-top: 0;">
-          <figure class="rg-shot" aria-labelledby="shot-bundle-cap">
-            <img
-              src="/assets/reality-gate/04-recovery-bundle-verified.png"
-              alt="The Recovery Vault of the real app with the drill receipt displayed: the bundle was verified with SHA-256 and the receipt persisted."
-              width="1440" height="900" loading="lazy" />
-            <figcaption id="shot-bundle-cap">Recovery Vault after bundle verification: receipt persisted with the drill's isolation record.</figcaption>
+        <div class="rg-gallery-grid">
+          <figure class="rg-shot">
+            <img src="/assets/reality-gate/08-ci-run-complete.png" alt="Runroom execution completed: SUCCESS badge and VERIFIED RECEIPT badge." width="1440" height="900" loading="lazy" />
+            <figcaption><strong>Runroom:</strong> Controlled local workflow execution with real-time log streaming, outcome decision, and ECDSA signature verification.</figcaption>
           </figure>
-          <figure class="rg-shot" aria-labelledby="shot-proofcap">
-            <img
-              src="/assets/reality-gate/05-recovery-prove-passed.png"
-              alt="The same real drill receipt after the Prove I Can Recover action: phases listed, overall result, persisted receipt."
-              width="1440" height="900" loading="lazy" />
-            <figcaption id="shot-proofcap">The recovery drill receipt: <strong>receipt PERSISTED</strong>, phases itemized, no provider contact observed.</figcaption>
+
+          <figure class="rg-shot">
+            <img src="/assets/reality-gate/03-recovery-drill-receipt.png" alt="Recovery drill receipt showing phased execution breakdown." width="1440" height="900" loading="lazy" />
+            <figcaption><strong>Drill Receipt:</strong> Detailed phase-by-phase execution receipt recorded during an offline continuity drill.</figcaption>
+          </figure>
+
+          <figure class="rg-shot">
+            <img src="/assets/reality-gate/09-proof-ledger.png" alt="Proof Ledger displaying verified run records." width="1440" height="900" loading="lazy" />
+            <figcaption><strong>Proof Ledger:</strong> Persistent record of all signed receipts, execution outcomes, and integrity validation states.</figcaption>
+          </figure>
+
+          <figure class="rg-shot">
+            <img src="/assets/reality-gate/04-recovery-bundle-verified.png" alt="Recovery Vault displaying verified Git bundle." width="1440" height="900" loading="lazy" />
+            <figcaption><strong>Recovery Vault:</strong> Creation and SHA-256 verification of standalone Git bundles for disaster recovery.</figcaption>
+          </figure>
+
+          <figure class="rg-shot">
+            <img src="/assets/reality-gate/02-dependency-map.png" alt="Dependency map showing local control vs provider exposure." width="1440" height="900" loading="lazy" />
+            <figcaption><strong>Dependency Map:</strong> Static analysis classifying local control versus remote provider dependency exposure.</figcaption>
+          </figure>
+
+          <figure class="rg-shot">
+            <img src="/assets/reality-gate/07-about.png" alt="About panel showing Reality Gate Desktop v1.1.0." width="1440" height="900" loading="lazy" />
+            <figcaption><strong>About Panel:</strong> Package identity, version metadata, and local security model verification.</figcaption>
           </figure>
         </div>
       </div>
     </section>
 
-    <!-- Beat 07 — Identity & Release -->
+    <!-- Capability-State Matrix -->
+    <section class="rg-matrix-section rg-container" id="matrix">
+      <h2 class="rg-section-title">Capability &amp; Public Status Matrix</h2>
+      <p class="rg-section-subtitle">Separating what is available in the public Developer Pilot, what is qualified in current source, and what remains roadmap research.</p>
+
+      <table class="rg-matrix-table">
+        <thead>
+          <tr>
+            <th>Capability / Feature Area</th>
+            <th>Public Status</th>
+            <th>Implementation Detail</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Passive Repository Registration</strong></td>
+            <td><span class="rg-status-glyph glyph-pass">PASS ●</span> Pilot Available</td>
+            <td>Reads local git state and path; zero repository or git config mutation.</td>
+          </tr>
+          <tr>
+            <td><strong>Dependency Analysis &amp; Remote Hub</strong></td>
+            <td><span class="rg-status-glyph glyph-pass">PASS ●</span> Pilot Available</td>
+            <td>Classifies local control vs remote push/fetch/clone exposure.</td>
+          </tr>
+          <tr>
+            <td><strong>Isolated Clone CI Execution</strong></td>
+            <td><span class="rg-status-glyph glyph-pass">PASS ●</span> Pilot Available</td>
+            <td>Executes inside <code>git clone --local</code> with whitelisted commands.</td>
+          </tr>
+          <tr>
+            <td><strong>ECDSA P-256 Signed Receipts</strong></td>
+            <td><span class="rg-status-glyph glyph-pass">PASS ●</span> Pilot Available</td>
+            <td>Signs run outcomes with local ECDSA key and exports Proof Passport JSON.</td>
+          </tr>
+          <tr>
+            <td><strong>Proof Ledger &amp; Recovery Vault</strong></td>
+            <td><span class="rg-status-glyph glyph-pass">PASS ●</span> Pilot Available</td>
+            <td>Persists local receipts and verifies SHA-256 Git recovery bundles.</td>
+          </tr>
+          <tr>
+            <td><strong>First-Class CLI &amp; Instance Discovery</strong></td>
+            <td><span class="rg-status-glyph glyph-pass">PASS ●</span> Pilot Available</td>
+            <td>Local <code>reality-gate</code> CLI with instance discovery and identity handshake.</td>
+          </tr>
+          <tr>
+            <td><strong>Expanded Source Test Coverage</strong></td>
+            <td><span class="rg-status-glyph glyph-pass">PASS ●</span> Current Source</td>
+            <td>886 subtest assertions passing green across 55 test suites.</td>
+          </tr>
+          <tr>
+            <td><strong>Automated Provider Failover</strong></td>
+            <td><span class="rg-status-glyph glyph-roadmap">ROADMAP ◐</span> Research</td>
+            <td>Automatic background remote switching upon provider downtime detection.</td>
+          </tr>
+          <tr>
+            <td><strong>Multi-Machine Remote Agent Fleet</strong></td>
+            <td><span class="rg-status-glyph glyph-roadmap">ROADMAP ◐</span> Research</td>
+            <td>Remote multi-node agent orchestration and distributed run control.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Illustrative Receipt Specimen -->
+    <section class="rg-container" style="padding-bottom: 3rem;">
+      <h2 class="rg-section-title">Sample Run Receipt Schema</h2>
+      <p class="rg-section-subtitle">Schematic specimen of a self-contained ECDSA-signed Proof Passport JSON receipt emitted by Reality Gate.</p>
+
+      <div class="rg-receipt-specimen">
+<pre style="margin:0;">{
+  "receiptId": "rcpt_20260815_rg_00194827",
+  "schemaVersion": "1.1.0",
+  "subject": {
+    "projectId": "demo-repo",
+    "gitCommit": "c78e9d87afa4076497ee04e5f5070e4fed5ee406",
+    "branch": "main"
+  },
+  "execution": {
+    "isolationMode": "LOCAL_CLONE_ISOLATED",
+    "startTime": "2026-08-15T18:22:04.112Z",
+    "endTime": "2026-08-15T18:22:09.450Z",
+    "outcome": "PASSED"
+  },
+  "integrity": {
+    "sourcePreHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sourcePostHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "artifactHashes": ["08b33e35c0bab65d6356b1b1b6f25a66"]
+  },
+  "signature": {
+    "algorithm": "ECDSA_P256_SHA256",
+    "publicKey": "04a1f8...",
+    "signatureValue": "304402207b8..."
+  }
+}</pre>
+      </div>
+      <p style="font-size: 0.78rem; color: var(--rg-muted); margin-top: 0.5rem;">
+        <em>Note: Illustrative schematic JSON structure demonstrating receipt fields and ECDSA signature envelope.</em>
+      </p>
+    </section>
+
+    <!-- Proof Standard Relationship & Case Study -->
+    <section class="rg-container" id="doctrine" style="padding-bottom: 4rem;">
+      <div style="background: var(--rg-panel); border: 1px solid var(--rg-steel); border-radius: var(--radius); padding: 2rem 2.5rem;">
+        <h2 class="rg-section-title">The Proof Standard &amp; Software Catalog Relationship</h2>
+        <p style="color: #c8d2da; font-size: 0.96rem; line-height: 1.6; margin-bottom: 1rem;">
+          <strong>The Proof Standard defines the studio's evidence discipline:</strong> honest claims, local receipts, test gates, plain-language limits, and zero marketing exaggeration. Reality Gate is a software tool that implements one specific set of execution and receipt-signing workflows under that doctrine.
+        </p>
+        <p style="color: #c8d2da; font-size: 0.96rem; line-height: 1.6; margin-bottom: 1rem;">
+          <strong>Cross-Product Qualification Case Study:</strong> Reality Gate can qualify individual software workflows without becoming a runtime dependency of the software catalog. Example: <strong>Lights Out v11.1.3</strong> underwent explicit 20/20 step Reality Gate Runroom qualification with Galaxy S23 mobile companion automation. Other software products operate independently and follow Proof Standard principles on their own terms.
+        </p>
+      </div>
+    </section>
+
+    <!-- Pilot Status & Verification Block -->
     <section class="rg-section rg-container" id="release">
-      <h2 class="rg-section-title">Developer Pilot — staged honestly.</h2>
-      <p class="rg-section-subtitle">Reality Gate v1.1.0 is a Windows developer pilot. Here is exactly what that means, including the parts that are not ready.</p>
-
       <div class="rg-pilot-panel">
-        <div class="rg-pilot-badge">{{product.statusLabel}} · {{product.versionLabel}}</div>
-        <h2 class="rg-section-title" style="margin-bottom: 0.75rem;">Reality Gate {{product.versionLabel}}</h2>
-        <p style="color: var(--rg-text); font-size: 1.05rem; margin-bottom: 1.5rem;">Available for {{product.platform}}</p>
+        <div class="rg-pilot-badge">v1.1.0 DEVELOPER PILOT</div>
+        <h2 class="rg-section-title" style="margin-bottom: 0.5rem;">Reality Gate Developer Pilot v1.1.0</h2>
+        <p style="color: var(--rg-text); font-size: 1.05rem; margin-bottom: 1.5rem;">Windows 10/11 x64 &middot; Unsigned Package &middot; Manual Update Model</p>
 
-        {{product.proofStrip}}
+        <div class="rg-qual-flex">
+          <div class="rg-qual-card">
+            <div class="rg-qual-val">269 / 269</div>
+            <div class="rg-qual-lbl">Static Blocks</div>
+          </div>
+          <div class="rg-qual-card">
+            <div class="rg-qual-val">24 / 24</div>
+            <div class="rg-qual-lbl">Live Registry</div>
+          </div>
+          <div class="rg-qual-card">
+            <div class="rg-qual-val">20 / 20</div>
+            <div class="rg-qual-lbl">Installed Runtime</div>
+          </div>
+        </div>
 
-        <div class="rg-suite-line">Static 269/269 · Live registry 24/24 · Installed runtime 20/20</div>
+        <p style="font-family: ui-monospace, monospace; font-size: 0.82rem; color: var(--rg-teal); margin-top: 0.5rem;">
+          Current source regression: 886 assertions passed green across 55 test suites.
+        </p>
 
         <div class="rg-cta-group" style="justify-content: center; margin-top: 1.75rem;">
           <a class="rg-btn rg-btn-primary" href="{{product.downloadUrl}}" download>
-            {{product.downloadLabel}}
+            Download v1.1.0 Developer Pilot
           </a>
           <a class="rg-btn rg-btn-secondary" href="{{product.sha256Url}}" target="_blank" rel="noopener">
-            SHA-256
+            Verify SHA-256
           </a>
-        </div>
-      </div>
-
-      <div class="rg-story" style="margin-top: 3rem;">
-        <figure class="rg-shot" aria-labelledby="shot-about-cap">
-          <img
-            src="/assets/reality-gate/07-about.png"
-            alt="The About panel of the real app: Reality Gate Desktop v1.1.0, a Proof Foundry product, mission-critical local-only code management."
-            width="1440" height="900" loading="lazy" />
-          <figcaption id="shot-about-cap">The real About panel: <strong>REALITY GATE v1.1.0</strong>, a Proof Foundry product.</figcaption>
-        </figure>
-        <div class="rg-story-copy">
-          <p>The suite is verified at 269/269, and the number is composed of three checked suites: 269/269 static tests, a 24/24 live registration-registry suite, and a 20/20 installed-runtime hardening suite. The pre-pilot audit found no blockers and no overstated claims; it recorded two known non-blocking issues in standalone (non-packaged) execution.</p>
-          <ul class="rg-story-list">
-            <li>The published ZIP SHA-256 matches the build manifest and the R2 artifact (verified end to end).</li>
-            <li>The packaged app runs with Electron sandboxing, context isolation, and node integration disabled.</li>
-            <li>CI runs execute inside isolated git clones with whitelisted commands only.</li>
-          </ul>
         </div>
       </div>
 
       <div class="rg-limits">
-        <h3>Current known limitations</h3>
+        <h3>Explicit Developer Pilot Limits &amp; Plain-Language Boundaries</h3>
         <ul>
-          <li>Windows only at this stage; no macOS or Linux build is claimed.</li>
-          <li>Pilot distribution: the installer arrives inside a ZIP; Windows SmartScreen may show "Windows protected your PC" on first launch — <strong>More info → Run anyway</strong>. Verify the SHA-256 first (below).</li>
-          <li>No auto-update channel yet; updates are manual downloads with fresh checksums.</li>
-          <li>Two known non-blocking issues, both in standalone server execution and not affecting the packaged app: a port discrepancy between the standalone backend and the Electron shell (BUG-001), and strict IPv4 loopback binding (BUG-002).</li>
-          <li>Continuity results are evidence of what was checked, not a guarantee of future availability; drill phases report INCONCLUSIVE when the repository contains nothing executable.</li>
-          <li>Local-only by design: no cloud sync, no account, no telemetry — which also means there is no remote dashboard.</li>
+          <li><strong>Windows Only:</strong> Supported on Windows 10/11 x64. No macOS or Linux packages are available.</li>
+          <li><strong>Unsigned Package:</strong> Windows SmartScreen may show "Windows protected your PC" on first launch — choose <strong>More info → Run anyway</strong> after verifying SHA-256.</li>
+          <li><strong>Manual Update Model:</strong> No auto-updater; updates require fresh ZIP downloads and SHA-256 verification.</li>
+          <li><strong>Local-First Scope:</strong> Local data is stored in AppData. No cloud accounts, cloud sync, or remote dashboards exist.</li>
+          <li><strong>Plain-Language Boundaries:</strong> Receipts prove what was executed, hashed, and signed. They are not legal attestations, security certifications, or guarantees against third-party provider outages.</li>
         </ul>
       </div>
     </section>
 
-    <!-- Beat 08 — Download & verification -->
+    <!-- Final Download Section -->
     <section class="rg-section rg-container" id="download">
-      <h2 class="rg-section-title">Download, then verify the artifact yourself.</h2>
-      <p class="rg-section-subtitle">The download is a ZIP with an installer inside. The SHA-256 below is the checksum of the ZIP you download — the same value recorded in the build manifest at build time and served by the artifact host.</p>
+      <h2 class="rg-section-title">Download &amp; Verify SHA-256</h2>
+      <p class="rg-section-subtitle">Verify the downloaded ZIP archive using PowerShell before executing the installer inside.</p>
 
       <div style="max-width: 860px; margin: 0 auto; text-align: center;">
         <div class="rg-cta-group" style="justify-content: center;">
           <a class="rg-btn rg-btn-primary" href="{{product.downloadUrl}}" download>
-            {{product.downloadLabel}}
+            Download v1.1.0 Developer Pilot
           </a>
           <a class="rg-btn rg-btn-secondary" href="{{product.sha256Url}}" target="_blank" rel="noopener">
-            SHA-256 checksum file
+            SHA-256 Checksum File
           </a>
         </div>
 
-        <div class="rg-hash-box">
+        <div style="background: #04060a; border: 1px solid var(--rg-steel); padding: 1rem; margin: 1.5rem 0; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.85rem; color: var(--rg-muted); word-break: break-all; border-radius: 4px; text-align: left;">
           ZIP SHA-256: {{product.sha256}}
         </div>
 
-        <div class="rg-checkpoint">
-          Source checkpoint 7a3e47136341951dcb8365db8c40da8553edd6c5 · Build {{product.versionLabel}} · Built 2026-08-15
-        </div>
-
         <p style="margin-top: 1.25rem; font-size: 0.9rem; color: var(--rg-muted); text-align: left;">
-          Verify locally with <code style="font-family: ui-monospace, monospace; color: var(--rg-teal);">Get-FileHash .\Reality-Gate-1.1.0-Developer-Pilot.zip -Algorithm SHA256</code>
-          and compare against the value above and the checksum file. PowerShell prints the hash in uppercase and the value above is lowercase — the comparison is case-insensitive, so only the characters need to match. The checksum chain — ZIP, artifact host, build manifest — was verified end to end. The installer EXE inside the ZIP carries its own SHA-256 recorded in the build's BUILD-INFO.
+          Verify locally in PowerShell:<br />
+          <code style="font-family: ui-monospace, monospace; color: var(--rg-teal);">Get-FileHash .\Reality-Gate-1.1.0-Developer-Pilot.zip -Algorithm SHA256</code>
         </p>
 
-        <div class="rg-privacy">
-          <h3 style="color: #fff; margin-bottom: 1rem;">Your repository stays yours</h3>
-          <p>Local-first. Ordinary Git repos. No mandatory migration.</p>
-          <p>No mandatory Proof Foundry account is required for the individual continuity workflow.</p>
-        </div>
-
-        <div style="text-align: center; margin-top: 4rem;">
-          <h2 style="font-size: clamp(1.5rem, 3vw, 2rem); color: #fff; margin-bottom: 1.5rem;">Prepared continuity and recovery — proven before you need it. Ship without making any single provider the root of trust.</h2>
+        <div style="text-align: center; margin-top: 3.5rem;">
+          <h2 style="font-size: clamp(1.5rem, 3vw, 2rem); color: #fff; margin-bottom: 1.5rem;">Local execution. Controlled evidence. Signed outcomes.</h2>
           <a class="rg-btn rg-btn-primary" href="{{product.downloadUrl}}" download>
-            {{product.downloadLabel}}
+            Download v1.1.0 Developer Pilot
           </a>
         </div>
       </div>
