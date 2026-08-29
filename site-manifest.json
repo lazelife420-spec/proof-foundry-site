@@ -119,21 +119,21 @@
       "platform": "Windows",
       "summary": "Archive-first Windows cleanup with receipts, custody checks, and rollback. No cloud, no account, no telemetry.",
       "cta": "View product",
-      "downloadUrl": "https://github.com/lazelife420-spec/cleanroom-windows/releases/download/v1.0.7/Cleanroom-Setup-1.0.7.exe",
+      "downloadUrl": "https://downloads.theprooffoundry.com/cleanroom/v1.0.7/Cleanroom-Setup-1.0.7.exe",
       "downloadLabel": "Download v1.0.7",
       "distType": "Windows Installer EXE",
       "build": "CI-built Windows installer (PyInstaller + Inno Setup). Provenance attested via GitHub Actions.",
       "sha256": "2cd6953015ce0b8e429c869564be11ad10504332aded10b442a58ea2b990a76e",
-      "sha256Url": "https://github.com/lazelife420-spec/cleanroom-windows/releases/download/v1.0.7/SHA256SUMS.txt",
+      "sha256Url": "https://downloads.theprooffoundry.com/cleanroom/v1.0.7/SHA256SUMS.txt",
       "testStatus": "366/366",
       "testCount": "",
-      "releaseNote": "Public release v1.0.7 (the last with a published artifact). Source has advanced to v1.0.10; no newer verified public release has been established yet.",
+      "releaseNote": "Public release v1.0.7 (Windows). Served via Proof Foundry distribution while GitHub release access is unavailable. Source has advanced locally to v1.0.10 (627 tests collected, 608 passed, publication on hold).",
       "proofStatus": "verified",
-      "lastVerified": "2026-07-01",
+      "lastVerified": "2026-08-28",
       "visible": true,
       "proofLinks": [
-        "https://github.com/lazelife420-spec/cleanroom-windows/releases/tag/v1.0.7",
-        "https://github.com/lazelife420-spec/cleanroom-windows/releases/download/v1.0.7/SHA256SUMS.txt"
+        "https://downloads.theprooffoundry.com/cleanroom/v1.0.7/Cleanroom-Setup-1.0.7.exe",
+        "https://downloads.theprooffoundry.com/cleanroom/v1.0.7/SHA256SUMS.txt"
       ]
     },
     {
