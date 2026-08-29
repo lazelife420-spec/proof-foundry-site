@@ -52,6 +52,10 @@
       --cv-parchment-soft: rgba(216, 199, 164, 0.3);
       /* deep storage ground, sitting under the shared graphite shell */
       --cv-storage: #241a16;
+      /* the shared --line is a cool slate; the cabinet is this page's product
+         artifact, so its at-rest structure uses a warm neutral at comparable
+         luminance instead of drifting blue against copper and parchment */
+      --cv-line: #4a3730;
     }
 
     /* ─── Hero ──────────────────────────────────────────────────────────── */
@@ -474,19 +478,19 @@
             <!-- RETAINED HISTORY: the cabinet. One drawer keyed, the rest at
                  rest. Each front carries a label plate on the left and a pull
                  on the right, so it reads as filing hardware, not a list. -->
-            <rect x="26" y="86" width="288" height="156" rx="5" stroke="var(--line)" />
+            <rect x="26" y="86" width="288" height="156" rx="5" stroke="var(--cv-line)" />
 
-            <rect x="40" y="96" width="260" height="40" rx="3" stroke="var(--line)" />
-            <rect x="52" y="108" width="60" height="16" rx="2" stroke="var(--line)" />
-            <line x1="246" y1="116" x2="286" y2="116" stroke="var(--line)" stroke-width="2.5" />
+            <rect x="40" y="96" width="260" height="40" rx="3" stroke="var(--cv-line)" />
+            <rect x="52" y="108" width="60" height="16" rx="2" stroke="var(--cv-line)" />
+            <line x1="246" y1="116" x2="286" y2="116" stroke="var(--cv-line)" stroke-width="2.5" />
 
             <rect x="40" y="142" width="260" height="40" rx="3" stroke="var(--cv-copper)" fill="var(--cv-copper-wash)" />
             <rect x="52" y="154" width="60" height="16" rx="2" stroke="var(--cv-parchment)" fill="var(--cv-parchment-soft)" />
             <line x1="246" y1="162" x2="286" y2="162" stroke="var(--cv-copper)" stroke-width="3" />
 
-            <rect x="40" y="188" width="260" height="40" rx="3" stroke="var(--line)" />
-            <rect x="52" y="200" width="60" height="16" rx="2" stroke="var(--line)" />
-            <line x1="246" y1="208" x2="286" y2="208" stroke="var(--line)" stroke-width="2.5" />
+            <rect x="40" y="188" width="260" height="40" rx="3" stroke="var(--cv-line)" />
+            <rect x="52" y="200" width="60" height="16" rx="2" stroke="var(--cv-line)" />
+            <line x1="246" y1="208" x2="286" y2="208" stroke="var(--cv-line)" stroke-width="2.5" />
 
             <!-- RETRIEVAL: down to the receipt the retrieval leaves behind -->
             <line x1="171" y1="242" x2="171" y2="256" stroke="var(--cv-copper)" stroke-dasharray="4 5" opacity="0.75" />
