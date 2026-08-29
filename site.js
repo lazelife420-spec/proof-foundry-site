@@ -45,9 +45,47 @@
     });
   }
 
+  function initSha256Copy() {
+    var blocks = document.querySelectorAll(".sha256-block");
+    if (!blocks.length) return;
+
+    blocks.forEach(function (block) {
+      var btn = block.querySelector(".sha256-copy");
+      if (!btn) return;
+      btn.addEventListener("click", function () {
+        var value = block.getAttribute("data-sha256");
+        if (!value) return;
+        try {
+          navigator.clipboard.writeText(value).then(function () {
+            var original = btn.textContent;
+            btn.textContent = "Copied";
+            btn.classList.add("copied");
+            setTimeout(function () {
+              btn.textContent = original;
+              btn.classList.remove("copied");
+            }, 1500);
+          });
+        } catch (err) {
+          // Fallback: select the code text
+          var code = block.querySelector(".sha256-value");
+          if (code) {
+            var range = document.createRange();
+            range.selectNode(code);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+          }
+        }
+      });
+    });
+  }
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initNavToggle);
+    document.addEventListener("DOMContentLoaded", function () {
+      initNavToggle();
+      initSha256Copy();
+    });
   } else {
     initNavToggle();
+    initSha256Copy();
   }
 })();

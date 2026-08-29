@@ -1448,3 +1448,183 @@ h1 span {
     grid-template-columns: 1fr;
   }
 }
+
+/* ── Canonical proof receipt styles ─────────────────────────────────────── */
+.receipt-section {
+  margin-bottom: 1.5rem;
+}
+
+.receipt-section-title {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+}
+
+.verification-matrix {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 0.5rem;
+}
+
+.verification-matrix > div {
+  flex-direction: column;
+  align-items: flex-start;
+  border-bottom: 0;
+  background: rgba(7, 11, 16, 0.45);
+  padding: 0.5rem 0.65rem;
+  border-radius: 6px;
+}
+
+.verification-matrix dt {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.verification-matrix dd {
+  text-align: left;
+  font-size: 0.82rem;
+}
+
+.verification-matrix .status-verified { color: var(--teal); }
+.verification-matrix .status-pending { color: var(--gold); }
+.verification-matrix .status-published { color: #3fc3a6; }
+.verification-matrix .status-not-published { color: #8899a6; }
+
+.status-indicator {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: 99px;
+  border: 1px solid var(--line);
+  background: rgba(7, 11, 16, 0.5);
+  color: var(--text);
+}
+
+.status-indicator.public_release,
+.status-indicator.public-release,
+.status-indicator.frozen { color: var(--teal); border-color: rgba(63, 195, 166, 0.35); }
+.status-indicator.active_proof,
+.status-indicator.in-proof,
+.status-indicator.roadmap_direction,
+.status-indicator.unreleased { color: var(--gold); border-color: rgba(214, 168, 79, 0.35); }
+.status-indicator.hold { color: #8899a6; border-color: rgba(136, 153, 166, 0.35); }
+
+.candidate-version {
+  color: var(--gold);
+  font-size: 0.82rem;
+  margin-top: 0.2rem;
+}
+
+.sha256-block {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+  background: #070b10;
+  border: 1px solid rgba(38, 55, 70, 0.6);
+  border-radius: 6px;
+  padding: 0.35rem;
+  margin-bottom: 0.5rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.8rem;
+  overflow: hidden;
+}
+
+.sha256-block code {
+  flex: 1 1 auto;
+  padding: 0.4rem 0.5rem;
+  color: var(--text);
+  word-break: break-all;
+  line-height: 1.5;
+}
+
+.sha256-copy {
+  flex: 0 0 auto;
+  background: var(--gold);
+  color: #0b0f14;
+  border: 0;
+  border-radius: 4px;
+  padding: 0 0.8rem;
+  font-weight: 600;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.sha256-copy:hover,
+.sha256-copy:focus-visible {
+  background: var(--gold-strong);
+}
+
+.sha256-copy.copied {
+  background: var(--teal);
+}
+
+.sha256-prefix-note {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin-bottom: 0;
+}
+
+.sha256-file {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin-bottom: 0.5rem;
+}
+
+.sha256-filename {
+  color: var(--text);
+  /* Artifact filenames are long single tokens; without this they set the card's
+     min-content width and push it past narrow viewports. */
+  overflow-wrap: anywhere;
+}
+
+/* A checksum that covers a candidate rather than the public release is a
+   non-claim about the public build, so it must not read as neutral detail. */
+.sha256-scope {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.limits-list {
+  list-style: disc;
+  padding-left: 1.2rem;
+  color: var(--muted);
+  font-size: 0.86rem;
+  margin-bottom: 1.5rem;
+}
+
+.limits-list li {
+  margin-bottom: 0.4rem;
+}
+
+.verification-ledger-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+code.inline {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  background: rgba(7, 11, 16, 0.65);
+  padding: 0.15rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+/* Respect reduced motion for copy feedback */
+@media (prefers-reduced-motion: reduce) {
+  .sha256-copy {
+    transition: none;
+  }
+  /* Buttons and the nav toggle transition `transform`, which is movement rather
+     than a colour change. Drop transform from the transition list and keep the
+     colour feedback, so the control still confirms hover/focus without moving. */
+  .button,
+  .nav-toggle-bar {
+    transition-property: border-color, background-color, color, opacity;
+  }
+}

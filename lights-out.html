@@ -1259,7 +1259,7 @@
         <p>Expected artifact SHA-256:</p>
         {{product.hashBlock}}
         <p>Expected Reality Gate proof bundle SHA-256 (optional, for the proof bundle archive if it is published alongside the artifact):</p>
-        <div class="code-block">176BD7EF53CDAB57E0A27E844820BA0F7704CD547937A3EABECAD3144EAB163D</div>
+        <div class="code-block">{{product.artifacts.1.sha256}}</div>
         <p class="note">If the hash doesn't match exactly, do not run the file — download again or contact the project.</p>
       </div>
 
@@ -1312,7 +1312,7 @@
         <p>Lights Out v11.1.3 is Reality-Gate-verified, but the download is not live yet — publication requires a separate, owner-authorized publish/deploy decision.</p>
       </div>
       <div class="download-group">{{product.downloadBlock}}</div>
-      <p class="note">Once publication is authorized, this section will link to <strong>Lights-Out-Portable-v11.1.3-win-x64.zip</strong> and its Reality Gate proof bundle. Verify SHA-256 <strong>CC3AB6A78D08A6AE17092F0DC79A3EC5F916B7A6CEB27B16307698A62F94ADD3</strong> before running the downloaded file, extract it into its own folder, and launch <strong>Lights Out.exe</strong> from the extracted folder — do not run it inside the ZIP. This Windows build is unsigned, so SmartScreen or an Unknown Publisher warning may appear.</p>
+      <p class="note">Once publication is authorized, this section will link to <strong>Lights-Out-Portable-v11.1.3-win-x64.zip</strong> and its Reality Gate proof bundle. Verify SHA-256 <strong>{{product.artifacts.0.sha256}}</strong> before running the downloaded file, extract it into its own folder, and launch <strong>Lights Out.exe</strong> from the extracted folder — do not run it inside the ZIP. This Windows build is unsigned, so SmartScreen or an Unknown Publisher warning may appear.</p>
     </section>
 
     <section id="faq" class="product-section" aria-labelledby="faq-title">

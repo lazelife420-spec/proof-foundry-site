@@ -44,11 +44,16 @@
       font-size: 1.2rem;
       max-width: 680px;
     }
+    .receipts-title {
+      font-size: 1.75rem;
+      margin: 3rem 0 0;
+      color: var(--text);
+    }
     .receipts-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
       gap: 1.5rem;
-      margin: 3rem 0;
+      margin: 1.25rem 0 3rem;
     }
     .receipt-card {
       background: rgba(16, 25, 35, 0.62);
@@ -207,15 +212,20 @@
       <p>Public proof for what we ship: routes, releases, checksums, receipts, and verification status.</p>
     </section>
 
-    <section class="receipts-grid" id="products-grid">
+    <section aria-labelledby="receipts-title">
+      <h2 id="receipts-title" class="receipts-title">Product receipts</h2>
+      <div class="receipts-grid" id="products-grid">
           <!-- @receipts -->
+      </div>
     </section>
 
     <section class="verification-ledger">
       <h2>Latest site verification</h2>
-      <p>Every deployment is automatically verified by our local and edge gate checkers before going live.</p>
-      <a class="button button-secondary" href="/reports/deploy-receipts/2026-08-20-proof-foundry-site.md" target="_blank" rel="noopener">View Verification Receipt (2026-08-20)
-      </a>
+      {{latestVerification.block}}
+      <div class="verification-ledger-actions">
+        {{siteVerification.receiptLink}}
+        <a class="button button-secondary" href="/proof/index.json" target="_blank" rel="noopener" type="application/json">Machine-readable registry (JSON)</a>
+      </div>
     </section>
   </main>
 
