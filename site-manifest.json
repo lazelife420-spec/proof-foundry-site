@@ -179,6 +179,8 @@
       "platforms": ["Android"],
       "platform": "Android",
       "summary": "Day-planning weather: what to wear, when to go outside, what to bring or skip, and why. Decision-first Today screen, verified with 724 tests.",
+      "cardSummary": "Day-planning weather intelligence: what to wear, when to go outside, and what to bring or skip.",
+      "markSvg": "<div class=\"card-mark\" aria-hidden=\"true\"><svg viewBox=\"0 0 120 120\" xmlns=\"http://www.w3.org/2000/svg\" width=\"100%\" height=\"100%\"><defs><linearGradient id=\"fcCardMarkGold\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0%\" stop-color=\"#d6a84f\"/><stop offset=\"100%\" stop-color=\"#9f7e3b\"/></linearGradient></defs><rect x=\"14\" y=\"14\" width=\"92\" height=\"92\" rx=\"16\" fill=\"#0b0f14\" fill-opacity=\"0.95\" stroke=\"#1e2c3a\" stroke-width=\"1.5\"/><line x1=\"42\" y1=\"34\" x2=\"42\" y2=\"86\" stroke=\"#3fbf94\" stroke-width=\"6\" stroke-linecap=\"round\"/><line x1=\"42\" y1=\"38\" x2=\"82\" y2=\"38\" stroke=\"#3fbf94\" stroke-width=\"6\" stroke-linecap=\"round\"/><line x1=\"42\" y1=\"60\" x2=\"70\" y2=\"60\" stroke=\"#3fbf94\" stroke-width=\"5\" stroke-linecap=\"round\"/><line x1=\"30\" y1=\"82\" x2=\"90\" y2=\"82\" stroke=\"#1e2c3a\" stroke-width=\"2\" stroke-dasharray=\"4 4\"/><circle cx=\"70\" cy=\"60\" r=\"4.5\" fill=\"url(#fcCardMarkGold)\"/></svg></div>",
       "cta": "View product",
       "downloadUrl": "https://downloads.theprooffoundry.com/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk",
       "downloadLabel": "Download v0.3.3 (APK)",

@@ -599,6 +599,18 @@ h1 span {
     linear-gradient(160deg, rgba(15, 23, 42, 0.96), rgba(10, 15, 26, 0.9));
 }
 
+/* ForgeCast card identity — atmospheric signal teal & storm slate depth inside
+   the shared card architecture. Same dimensions, typography, CTA, and focus as
+   every other card; dark storm-slate base card with restrained signal-teal
+   border tint, pressure band atmosphere, and a small horizon gold decision pin. */
+.card-forgecast {
+  border-color: rgba(63, 191, 148, 0.28);
+  background:
+    radial-gradient(circle at 85% 0%, rgba(63, 191, 148, 0.06), transparent 45%),
+    radial-gradient(circle at 15% 100%, rgba(30, 44, 58, 0.05), transparent 40%),
+    linear-gradient(160deg, rgba(21, 36, 51, 0.96), rgba(11, 15, 20, 0.9));
+}
+
 .more-tools {
   padding: 0.9rem 1rem;
 }
