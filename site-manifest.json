@@ -88,6 +88,8 @@
       "platforms": ["Windows", "Android"],
       "platform": "Windows + Android",
       "summary": "Local-first night control for Windows. Plan tonight's session on your PC, control it from bed with the Android Companion, and wake with First Light. Compatible smart lights, schedule automation, an experimental Wi-Fi Guard, and proof of every run.",
+      "cardSummary": "Local-first night control, bedside companion, scheduled shutdown, and proof of every run.",
+      "markSvg": "<div class='card-mark' aria-hidden='true'><svg viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'><defs><radialGradient id='loCardAmberGlow' cx='50%' cy='50%' r='50%'><stop offset='0%' stop-color='#E8A848' stop-opacity='1'/><stop offset='100%' stop-color='#E8A848' stop-opacity='0'/></radialGradient></defs><rect width='48' height='48' rx='12' fill='#121426' stroke='rgba(155, 147, 214, 0.3)' stroke-width='1.5'/><circle cx='24' cy='24' r='15' fill='none' stroke='#9B93D6' stroke-width='2.5' stroke-dasharray='72 22' transform='rotate(-90 24 24)'/><path d='M 24 9 A 15 15 0 1 1 9 24 A 10 10 0 1 0 24 9 Z' fill='#191C33' opacity='0.85'/><line x1='24' y1='9' x2='24' y2='13' stroke='#9B93D6' stroke-width='2' stroke-linecap='round'/><circle cx='24' cy='24' r='5' fill='url(#loCardAmberGlow)'/><circle cx='24' cy='24' r='3' fill='#E8A848'/></svg></div>",
       "cta": "View product",
       "downloadUrl": null,
       "downloadLabel": "",

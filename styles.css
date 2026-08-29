@@ -572,6 +572,20 @@ h1 span {
     linear-gradient(160deg, rgba(16, 25, 35, 0.95), rgba(10, 16, 24, 0.88));
 }
 
+/* Lights Out card identity — nocturnal moonlight lavender & low-light amber
+   accent inside the shared card architecture. Same dimensions, typography,
+   CTA, and focus as every other card; only the border tint and background
+   atmosphere change. Moonlight lavender carries nocturnal identity, low-light
+   amber is the quiet-state transition accent, and gold appears only where the
+   card system already uses it. */
+.card-lights-out {
+  border-color: rgba(155, 147, 214, 0.28);
+  background:
+    radial-gradient(circle at 85% 0%, rgba(155, 147, 214, 0.06), transparent 45%),
+    radial-gradient(circle at 15% 100%, rgba(232, 168, 72, 0.03), transparent 40%),
+    linear-gradient(160deg, rgba(18, 20, 38, 0.96), rgba(10, 13, 22, 0.9));
+}
+
 .more-tools {
   padding: 0.9rem 1rem;
 }
