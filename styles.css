@@ -586,6 +586,19 @@ h1 span {
     linear-gradient(160deg, rgba(18, 20, 38, 0.96), rgba(10, 13, 22, 0.9));
 }
 
+/* Cleanroom card identity — sterile surgical mint & cold mineral instrumentation
+   accent inside the shared card architecture. Same dimensions, typography,
+   CTA, and focus as every other card; dark graphite base card with restrained
+   pale mineral instrumentation highlights, surgical mint border tint, and cold
+   silver details. */
+.card-cleanroom {
+  border-color: rgba(52, 211, 153, 0.28);
+  background:
+    radial-gradient(circle at 85% 0%, rgba(52, 211, 153, 0.06), transparent 45%),
+    radial-gradient(circle at 15% 100%, rgba(226, 232, 240, 0.04), transparent 40%),
+    linear-gradient(160deg, rgba(15, 23, 42, 0.96), rgba(10, 15, 26, 0.9));
+}
+
 .more-tools {
   padding: 0.9rem 1rem;
 }
