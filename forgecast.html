@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ForgeCast Weather — The Proof Foundry</title>
-  <meta name="description" content="Day-planning weather: what to wear, when to go outside, what to bring or skip, and why. A Proof Foundry product." />
+  <title>ForgeCast Weather — Decision Intelligence | The Proof Foundry</title>
+  <meta name="description" content="Day-planning weather intelligence: what to wear, when to go outside, what to bring or skip, and why. A Proof Foundry product." />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#0B0F14" />
   <link rel="canonical" href="https://theprooffoundry.com/forgecast/" />
 
-  <meta property="og:title" content="ForgeCast Weather" />
-  <meta property="og:description" content="Day-planning weather: what to wear, when to go outside, what to bring or skip, and why." />
+  <meta property="og:title" content="ForgeCast Weather — Decision Intelligence" />
+  <meta property="og:description" content="Day-planning weather intelligence: what to wear, when to go outside, what to bring or skip, and why." />
   <meta property="og:type" content="product" />
   <meta property="og:url" content="https://theprooffoundry.com/forgecast/" />
   <meta property="og:site_name" content="The Proof Foundry" />
@@ -21,45 +21,96 @@
   <link rel="stylesheet" href="/styles.css" />
 
   <style>
-    /* ───────────────────────────────────────────────────────────────────────
-       FORGECAST WEATHER — product identity layer
-
-       Shared with the rest of the site and deliberately not overridden here:
-       header, footer, nav, breadcrumb, subnav, the manifest-driven proof strip
-       / download block / hash block / release note, the detail cards, the
-       note, typography, container width, focus behaviour, and the gold chrome.
-
-       Specific to ForgeCast: the app's own teal-green as the key colour, the
-       day-rail-with-a-marked-window motif repeated on every section head, the
-       decision diagram in the hero, and a capped device lineup for the
-       screenshots. No weather iconography — this product is about the decision
-       the weather implies, not the forecast.
+    /* ── ForgeCast Product Identity — Atmospheric Signal & Decision Horizon ───
+       Page-scoped visual system: storm slate backgrounds, pressure band depth,
+       signal teal accents, horizon amber decision pins, and cloud silver typography.
        ─────────────────────────────────────────────────────────────────────── */
     .fc-page {
-      /* Sampled from the app itself, which already pairs this green with the
-         Proof Foundry gold for its "best outside" marker. Softer and greener
-         than Reality Gate's #00e6ff so the two pages do not read as one. */
-      --fc-key: #3fbf94;
-      --fc-key-soft: rgba(63, 191, 148, 0.4);
-      --fc-key-wash: rgba(63, 191, 148, 0.07);
+      --fc-teal: #3fbf94;
+      --fc-teal-soft: rgba(63, 191, 148, 0.35);
+      --fc-teal-wash: rgba(63, 191, 148, 0.08);
+      --fc-slate: #152433;
+      --fc-slate-border: #1e2c3a;
+      --fc-silver: #eef3f7;
+      --fc-silver-sub: #a8b8c4;
+      --fc-gold: #d6a84f;
+      --fc-bg: #0b0f14;
     }
 
+    /* Product subnav spacing */
+    .fc-page .product-subnav {
+      margin-bottom: 2rem;
+    }
+
+    /* Hero layout */
     .fc-page .fc-hero {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 21rem);
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
       gap: 2.5rem;
       align-items: center;
     }
 
-    .fc-page .fc-hero-art svg {
-      display: block;
-      width: 100%;
-      height: auto;
+    /* Brand header lockup with Atmospheric Signal Mark */
+    .fc-page .fc-brand-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
     }
 
-    /* Section heads carry the hero's motif: a rail across the shell with one
-       window marked on it. Offset from the left edge on purpose, so it reads as
-       a marked span rather than a tab. */
+    .fc-page .fc-signal-mark {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+    }
+
+    .fc-page .fc-signal-mark svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Status & Truth Pills */
+    .fc-page .fc-truth-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.75rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.82rem;
+    }
+
+    .fc-page .fc-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 4px;
+      font-family: monospace;
+      letter-spacing: 0.02em;
+    }
+
+    .fc-page .fc-pill-public {
+      background: rgba(63, 191, 148, 0.12);
+      border: 1px solid rgba(63, 191, 148, 0.4);
+      color: #6ee7b7;
+    }
+
+    .fc-page .fc-pill-local {
+      background: rgba(214, 168, 79, 0.1);
+      border: 1px solid rgba(214, 168, 79, 0.35);
+      color: #f6d387;
+    }
+
+    .fc-page .fc-pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .fc-page .fc-pill-public .fc-pill-dot { background: var(--fc-teal); }
+    .fc-page .fc-pill-local .fc-pill-dot { background: var(--fc-gold); }
+
+    /* Section head carrying the forecast rail motif */
     .fc-page .section-head {
       position: relative;
       padding-bottom: 1.15rem;
@@ -72,7 +123,7 @@
       right: 0;
       bottom: 0;
       height: 1px;
-      background: var(--line);
+      background: var(--fc-slate-border);
     }
 
     .fc-page .section-head::after {
@@ -83,31 +134,52 @@
       width: 4.5rem;
       height: 3px;
       border-radius: 999px;
-      background: var(--fc-key);
+      background: var(--fc-teal);
     }
 
+    /* Hero SVG Graphic */
+    .fc-page .fc-hero-art svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.6));
+    }
+
+    /* Device Screenshot Lineup */
     .fc-page .fc-screens-label {
       margin-bottom: 1rem;
     }
 
-    /* Four 1080x2340 phone captures. Left as 1fr tracks they rendered 316px
-       wide and 682px tall each, which is 2.7 screens of unreadable UI on a
-       phone, and auto-fit put them in a 3 + 1 orphan row at 768. Fixed 15rem
-       tracks packed left give a device lineup that resolves 4 / 2x2 / 1. */
     .fc-page .screenshot-grid {
+      display: grid;
       grid-template-columns: repeat(4, minmax(0, min(15rem, 100%)));
+      gap: 1.25rem;
       justify-content: start;
     }
 
-    .fc-page .screenshot-grid img {
-      border-radius: 20px;
-      border: 1px solid var(--fc-key-soft);
-      background: #05080c;
+    .fc-page .screenshot-grid figure {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* Four cards and three cards need declared track counts. The shared
-       auto-fit floor produced a 3 + 1 orphan at 1024 for the quad and a
-       2 + 1 orphan at 768 for the triad. */
+    .fc-page .screenshot-grid img {
+      width: 100%;
+      height: auto;
+      border-radius: 18px;
+      border: 1.5px solid var(--fc-slate-border);
+      background: #05080c;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    }
+
+    .fc-page .screenshot-grid figcaption {
+      margin-top: 0.65rem;
+      font-size: 0.82rem;
+      color: var(--fc-silver-sub);
+      line-height: 1.35;
+    }
+
+    /* Quad & Triad card layouts */
     .fc-page .fc-quad {
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }
@@ -116,6 +188,23 @@
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
+    .fc-page .detail-card {
+      position: relative;
+      border-color: var(--fc-teal-soft);
+      background: rgba(21, 36, 51, 0.5);
+    }
+
+    .fc-page .detail-card::before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: 2rem;
+      width: 3rem;
+      height: 2px;
+      background: var(--fc-teal);
+    }
+
+    /* Responsive breakpoints */
     @media (max-width: 1100px) {
       .fc-page .screenshot-grid {
         grid-template-columns: repeat(2, minmax(0, min(15rem, 100%)));
@@ -132,7 +221,8 @@
       }
       .fc-page .fc-hero-art {
         order: -1;
-        width: min(17rem, 100%);
+        width: min(22rem, 100%);
+        margin: 0 auto;
       }
       .fc-page .fc-triad {
         grid-template-columns: 1fr;
@@ -164,6 +254,7 @@
 
     <nav class="product-subnav" aria-label="Product sections">
       <a href="#overview">Overview</a>
+      <a href="#on-device">On device</a>
       <a href="#how-it-works">How it works</a>
       <a href="#proof">Proof</a>
       <a href="#download">Download</a>
@@ -172,70 +263,111 @@
 
     <section id="overview" class="product-hero fc-hero" aria-labelledby="product-title">
       <div class="fc-hero-copy">
-        <p class="eyebrow">ForgeCast Weather · {{product.statusLabel}}</p>
-        <h1 id="product-title">Weather that plans<br /><span>your day.</span></h1>
+        <div class="fc-brand-header">
+          <div class="fc-signal-mark" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="4" width="56" height="56" rx="10" fill="#0B0F14" stroke="#1E2C3A" stroke-width="2"/>
+              <!-- Spine & atmospheric bands forming F -->
+              <line x1="20" y1="18" x2="20" y2="48" stroke="#3FBF94" stroke-width="4" stroke-linecap="round"/>
+              <line x1="20" y1="20" x2="46" y2="20" stroke="#3FBF94" stroke-width="4" stroke-linecap="round"/>
+              <line x1="20" y1="33" x2="38" y2="33" stroke="#3FBF94" stroke-width="3" stroke-linecap="round"/>
+              <!-- Pressure horizon dash -->
+              <line x1="14" y1="46" x2="50" y2="46" stroke="#1E2C3A" stroke-width="2" stroke-dasharray="3 3"/>
+              <!-- Horizon decision point marker -->
+              <circle cx="38" cy="33" r="3.5" fill="#D6A84F"/>
+            </svg>
+          </div>
+          <div>
+            <p class="eyebrow" style="margin: 0;">ForgeCast Weather · {{product.statusLabel}}</p>
+          </div>
+        </div>
+
+        <h1 id="product-title">Know the conditions.<br /><span>Find the window. Make the call.</span></h1>
+        
         <p class="product-lede">{{product.summary}}</p>
+
+        <div class="fc-truth-pills" aria-label="Release state baseline">
+          <span class="fc-pill fc-pill-public"><span class="fc-pill-dot"></span> Public Release: v0.3.3 (DebugSigned Android APK)</span>
+          <span class="fc-pill fc-pill-local"><span class="fc-pill-dot"></span> Local Work: v0.3.4 (859 tests passed · Publication hold)</span>
+        </div>
+
         <div class="download-group">{{product.downloadBlock}}</div>
         {{product.proofStrip}}
       </div>
 
       <div class="fc-hero-art" aria-hidden="true">
-        <svg viewBox="0 0 320 250" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+        <svg viewBox="0 0 340 270" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
           <g fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <!-- the decision that has been settled: filled badge, then a title
-                 line and a shorter supporting line -->
-            <rect x="22" y="26" width="164" height="46" rx="23" stroke="var(--fc-key)" fill="var(--fc-key-wash)" />
-            <circle cx="46" cy="49" r="12" fill="var(--fc-key)" stroke="none" />
-            <path d="M40.5 49l4 4 7.5-8.5" stroke="#06120d" stroke-width="2.2" />
-            <path d="M68 43h96" stroke="var(--fc-key)" stroke-width="4" opacity="0.85" />
-            <path d="M68 57h58" stroke="var(--fc-key)" stroke-width="4" opacity="0.35" />
+            <!-- Atmospheric Horizon Outer Frame -->
+            <rect x="16" y="16" width="308" height="238" rx="12" fill="#0B0F14" stroke="#1E2C3A" stroke-width="2" />
 
-            <!-- the decision still pending: outlined, dashed, a clock instead -->
-            <rect x="198" y="26" width="100" height="46" rx="23" stroke="var(--line)" stroke-dasharray="6 5" />
-            <circle cx="222" cy="49" r="10" stroke="var(--line)" stroke-width="1.6" />
-            <path d="M222 43v6.5l4.5 3" stroke="var(--line)" stroke-width="1.6" />
-            <path d="M242 43h38" stroke="var(--line)" stroke-width="4" opacity="0.8" />
-            <path d="M242 57h24" stroke="var(--line)" stroke-width="4" opacity="0.45" />
+            <!-- Time Axis Header -->
+            <text x="32" y="44" fill="#EEF3F7" font-size="10" font-family="monospace" letter-spacing="1">ATMOSPHERIC DECISION HORIZON</text>
+            <rect x="238" y="32" width="70" height="18" rx="4" fill="rgba(63, 191, 148, 0.15)" stroke="var(--fc-teal)" stroke-width="1" />
+            <text x="246" y="44" fill="#6EE7B7" font-size="9" font-family="monospace">SIGNAL OK</text>
 
-            <!-- how the day moves, and the point on it the settled decision
-                 came from. The anchor sits under the decided chip, not the
-                 pending one: an undecided call has no pinned moment yet. -->
-            <path d="M28 150C58 148 80 128 106 126S176 140 292 152" stroke="var(--line)" stroke-width="2.2" />
-            <circle cx="106" cy="126" r="4" stroke="var(--gold)" stroke-width="1.8" fill="var(--bg)" />
+            <!-- Temperature & Pressure Curve -->
+            <path d="M 32 120 C 70 100 110 80 160 85 S 240 140 308 110" stroke="#1E2C3A" stroke-width="2" stroke-dasharray="4 4"/>
+            <path d="M 32 140 C 70 120 120 95 160 98 S 230 160 308 130" stroke="var(--fc-teal)" stroke-width="2.5"/>
 
-            <!-- the reason, drawn down from the curve to the chosen moment -->
-            <path d="M106 132v52" stroke="var(--gold)" stroke-width="1.6" stroke-dasharray="4 5" opacity="0.7" />
+            <!-- Horizon Time Steps -->
+            <line x1="32" y1="170" x2="308" y2="170" stroke="#1E2C3A" stroke-width="2"/>
+            
+            <circle cx="50" cy="170" r="3" fill="#EEF3F7"/>
+            <text x="42" y="186" fill="#A8B8C4" font-size="9" font-family="monospace">NOW</text>
 
-            <!-- the day, with one window marked and the moment pinned in gold -->
-            <path d="M28 196h264" stroke="var(--line)" stroke-width="3" />
-            <path d="M70 196h72" stroke="var(--fc-key)" stroke-width="6" />
-            <circle cx="106" cy="196" r="7.5" stroke="var(--gold)" stroke-width="2" fill="rgba(214, 168, 79, 0.18)" />
-            <circle cx="106" cy="196" r="2.4" stroke="none" fill="var(--gold)" />
+            <circle cx="120" cy="170" r="4" fill="var(--fc-teal)"/>
+            <text x="110" y="186" fill="var(--fc-teal)" font-size="9" font-family="monospace" font-weight="bold">+2H</text>
 
-            <path d="M28 206v8M94 206v8M160 206v8M226 206v8M292 206v8" stroke="var(--line)" stroke-width="1.4" opacity="0.8" />
+            <circle cx="210" cy="170" r="3" fill="#EEF3F7"/>
+            <text x="200" y="186" fill="#A8B8C4" font-size="9" font-family="monospace">+6H</text>
+
+            <circle cx="285" cy="170" r="3" fill="#EEF3F7"/>
+            <text x="273" y="186" fill="#A8B8C4" font-size="9" font-family="monospace">+12H</text>
+
+            <!-- Best Outside Window Highlight Box -->
+            <rect x="95" y="65" width="85" height="85" rx="6" fill="rgba(63, 191, 148, 0.08)" stroke="var(--fc-teal)" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <text x="103" y="80" fill="var(--fc-teal)" font-size="9" font-weight="bold" font-family="monospace">BEST WINDOW</text>
+            <circle cx="138" cy="98" r="4.5" fill="var(--fc-gold)"/>
+
+            <!-- Decision Cards Overlay (Wear / Bring / Skip) -->
+            <rect x="32" y="202" width="82" height="38" rx="6" fill="#152433" stroke="#1E2C3A"/>
+            <text x="38" y="216" fill="#A8B8C4" font-size="8" font-family="monospace">WEAR</text>
+            <text x="38" y="230" fill="#EEF3F7" font-size="9" font-weight="bold">Light Jacket</text>
+
+            <rect x="122" y="202" width="82" height="38" rx="6" fill="#152433" stroke="#1E2C3A"/>
+            <text x="128" y="216" fill="#A8B8C4" font-size="8" font-family="monospace">BRING</text>
+            <text x="128" y="230" fill="#EEF3F7" font-size="9" font-weight="bold">Sunglasses</text>
+
+            <rect x="212" y="202" width="96" height="38" rx="6" fill="#152433" stroke="#1E2C3A"/>
+            <text x="218" y="216" fill="#A8B8C4" font-size="8" font-family="monospace">SKIP</text>
+            <text x="218" y="230" fill="#EEF3F7" font-size="9" font-weight="bold">Heavy Coat</text>
           </g>
         </svg>
       </div>
     </section>
 
-    <section aria-label="Product screenshots" class="product-screens">
-      <p class="eyebrow fc-screens-label">On device</p>
+    <section id="on-device" aria-label="Product screenshots" class="product-screens">
+      <div class="section-head">
+        <h2 id="screens-title">On device</h2>
+        <p>Real application interfaces showing decision-first Today, expanded forecast, Plan board, and Android launcher widgets.</p>
+      </div>
       <div class="screenshot-grid">
         <figure>
-          <img src="/assets/forgecast/v030-today.png" alt="ForgeCast Today screen with wear and best-outside tokens" loading="lazy" />
-          <figcaption>Today — wear, best outside, and how the day moves</figcaption>
+          <img src="/assets/forgecast/v030-today.png" alt="ForgeCast Today screen showing outfit recommendations and best-outside timing window" loading="lazy" />
+          <figcaption>Today — wear, best outside window, and day motion timeline</figcaption>
         </figure>
         <figure>
-          <img src="/assets/forgecast/v030-forecast.png" alt="ForgeCast Forecast with expanded day meaning" loading="lazy" />
+          <img src="/assets/forgecast/v030-forecast.png" alt="ForgeCast 5-day forecast view with expanded outfit and condition meaning" loading="lazy" />
           <figcaption>Forecast — expanded rows with outfit and timing meaning</figcaption>
         </figure>
         <figure>
-          <img src="/assets/forgecast/v030-plan.png" alt="ForgeCast Plan PREP board" loading="lazy" />
+          <img src="/assets/forgecast/v030-plan.png" alt="ForgeCast Plan PREP board showing what to wear, best outside, bring/skip" loading="lazy" />
           <figcaption>Plan — what to wear, best outside, bring/skip</figcaption>
         </figure>
         <figure>
-          <img src="/assets/forgecast/v030-widgets.png" alt="ForgeCast Daily Planner widget preset" loading="lazy" />
-          <figcaption>Widgets — Daily Planner with wear and outside lines</figcaption>
+          <img src="/assets/forgecast/v030-widgets.png" alt="ForgeCast Android home-screen widget presets: SkyClock and SkyCompact" loading="lazy" />
+          <figcaption>Widgets — Daily Planner and Compact Temp launcher widgets</figcaption>
         </figure>
       </div>
     </section>
@@ -243,24 +375,24 @@
     <section id="how-it-works" class="product-section" aria-labelledby="what-title">
       <div class="section-head">
         <h2 id="what-title">What it does</h2>
-        <p>DayForge UX consolidation — each screen does one job instead of overlapping.</p>
+        <p>Day-planning weather intelligence — each screen does one job instead of overlapping.</p>
       </div>
       <div class="detail-grid fc-quad">
         <article class="detail-card">
           <h3>Decision-first Today</h3>
-          <p>What to wear, best outside time, and bring/skip sit above the fold so the day's decisions are immediate.</p>
+          <p>What to wear, best outside time window, and bring/skip guidance sit above the fold so your day's decisions are immediate.</p>
         </article>
         <article class="detail-card">
-          <h3>Clearer screen roles</h3>
-          <p>Today, Plan, Forecast, Widgets, and Settings each own one job instead of overlapping.</p>
+          <h3>Clear screen roles</h3>
+          <p>Today, Plan, Forecast, Widgets, and Settings each own one dedicated job without overlap.</p>
         </article>
         <article class="detail-card">
-          <h3>Fixed Bring/Skip contradiction</h3>
-          <p>An item can no longer appear in both lists at once. Cold-and-wet days get rain protection and warmth, not rain-only advice.</p>
+          <h3>Bring/Skip logic</h3>
+          <p>Strict rules prevent contradictions between lists. Cold and wet days trigger warmth and rain protection together.</p>
         </article>
         <article class="detail-card">
-          <h3>Three widget presets</h3>
-          <p>Weather Now, Daily Planner, and Compact Temp — set up once, glance anytime.</p>
+          <h3>Android launcher widgets</h3>
+          <p>SkyClock and SkyCompact widget presets provide wear advice and temperature at a glance on your home screen.</p>
         </article>
       </div>
     </section>
@@ -268,7 +400,7 @@
     <section id="proof" class="product-section" aria-labelledby="proof-title">
       <div class="section-head">
         <h2 id="proof-title">Proof &amp; release evidence</h2>
-        <p>What was actually verified before this build shipped.</p>
+        <p>Verified public build evidence and checksums.</p>
       </div>
       <div class="detail-grid fc-triad">
         <article class="detail-card">
@@ -279,19 +411,19 @@
         <article class="detail-card">
           <h3>What's inside</h3>
           <ul>
-            <li>DayForge UX consolidation across Today, Plan, Forecast, Widgets, Settings</li>
+            <li>Day-planning UX across Today, Plan, Forecast, Widgets, and Settings</li>
             <li>Improved outfit confidence and cold/wet guidance</li>
             <li>Fixed tomorrow leakage and stale-time guidance</li>
-            <li>Preserved urgent drive-now road alerts even when aggregate road-risk reads low</li>
+            <li>Preserved urgent road alerts even when aggregate risk reads low</li>
           </ul>
         </article>
         <article class="detail-card">
-          <h3>Trust</h3>
+          <h3>Trust &amp; Privacy</h3>
           <ul>
-            <li>No background telemetry</li>
-            <li>Community Checks off and opt-in — no backend in this release</li>
-            <li>No fake AI claims</li>
-            <li>Hardened device verification on every build</li>
+            <li>No background telemetry or location tracking</li>
+            <li>Community Checks off by default — no backend tracking</li>
+            <li>No fake AI marketing claims</li>
+            <li>Hardened test verification on every build</li>
           </ul>
         </article>
       </div>
@@ -308,16 +440,16 @@
           <h3>Requirements</h3>
           <ul>
             <li>Android 8+ (API 26+)</li>
-            <li>Sideload permission enabled</li>
-            <li>OpenWeatherMap API key only if building from source</li>
+            <li>Sideload / Install Unknown Apps permission enabled</li>
+            <li>DebugSigned build (Android displays sideload prompt)</li>
           </ul>
         </article>
         <article class="detail-card">
           <h3>Not included</h3>
           <ul>
-            <li>No Community Checks backend</li>
-            <li>No Day Receipts backend</li>
-            <li>No Local Memory backend</li>
+            <li>No Community Checks backend server</li>
+            <li>No Day Receipts cloud sync</li>
+            <li>No automatic background auto-update</li>
           </ul>
         </article>
       </div>
@@ -326,7 +458,7 @@
     <section id="download" class="product-section" aria-labelledby="download-title">
       <div class="section-head">
         <h2 id="download-title">Download</h2>
-        <p>APK and SHA256 are served from Cloudflare R2.</p>
+        <p>APK and SHA256 are served via Proof Foundry distribution storage.</p>
       </div>
       <div class="download-group">{{product.downloadBlock}}</div>
       <p class="note">Public APK and checksum are currently served through Proof Foundry's distribution storage (DebugSigned for sideload release). Download the APK, verify its SHA-256 matches the checksum above, then install with your preferred Android installer.</p>
