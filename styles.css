@@ -611,6 +611,18 @@ h1 span {
     linear-gradient(160deg, rgba(21, 36, 51, 0.96), rgba(11, 15, 20, 0.9));
 }
 
+/* ProofShot card identity — carbon exposure & vermilion focus identity inside
+   the shared card architecture. Same dimensions, typography, CTA, and focus as
+   every other card; dark exposure carbon base card with vermilion capture border
+   tint, aperture cyan instrumentation trace, and gold provenance seal detail. */
+.card-proofshot {
+  border-color: rgba(224, 82, 68, 0.28);
+  background:
+    radial-gradient(circle at 85% 0%, rgba(224, 82, 68, 0.06), transparent 45%),
+    radial-gradient(circle at 15% 100%, rgba(64, 217, 253, 0.03), transparent 40%),
+    linear-gradient(160deg, rgba(20, 27, 36, 0.96), rgba(11, 15, 20, 0.9));
+}
+
 .more-tools {
   padding: 0.9rem 1rem;
 }
