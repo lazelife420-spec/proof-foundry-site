@@ -4,13 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cleanroom — Archive-first Windows cleanup | The Proof Foundry</title>
-  <meta name="description" content="Cleanroom is archive-first Windows cleanup with receipts, custody checks, and rollback. No cloud, no account, no telemetry. A Proof Foundry product." />
+  <meta name="description" content="Cleanroom is archive-first Windows cleanup with receipts, custody checks, and rollback capability. No cloud, no account, no telemetry. A Proof Foundry product." />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#0B0F14" />
   <link rel="canonical" href="https://theprooffoundry.com/cleanroom/" />
 
   <meta property="og:title" content="Cleanroom — Archive-first Windows cleanup" />
-  <meta property="og:description" content="Archive-first Windows cleanup with receipts, custody checks, and rollback. No cloud, no account, no telemetry." />
+  <meta property="og:description" content="Archive-first Windows cleanup with receipts, custody checks, and restore capability. No cloud, no account, no telemetry." />
   <meta property="og:type" content="product" />
   <meta property="og:url" content="https://theprooffoundry.com/cleanroom/" />
   <meta property="og:site_name" content="The Proof Foundry" />
@@ -21,43 +21,99 @@
   <link rel="stylesheet" href="/styles.css" />
 
   <style>
-    /* ── Cleanroom page identity ─────────────────────────────────────────────
-       Shared with the rest of the site and deliberately not overridden here:
-       header, footer, nav, breadcrumb, subnav, the manifest-driven proof strip
-       / download block / hash block / release note, the note, typography,
-       container width, radius, focus behaviour, and the gold chrome.
-
-       Specific to Cleanroom: a surgical sage as the key colour, the
-       containment bracket repeated on every section head and card, and the
-       airlock in the hero. This product removes nothing irreversibly, so the
-       page never uses the vocabulary of a one-click booster: no sirens, no
-       gauges, no speed. What it shows instead is the archive, the seal, the
-       receipt, and the way back.
+    /* ── Cleanroom Product Identity — Precision Laboratory & Sterile Workspace ─
+       Page-scoped visual system: dark Proof Foundry studio shell containing
+       illuminated, high-luminance pale mineral instrumentation chambers with
+       surgical mint accents, cold silver borders, and proof-gold handles.
        ─────────────────────────────────────────────────────────────────────── */
     .cln-page {
-      /* Surgical green: the signifier of a sterile, controlled procedure.
-         Warmer and far paler than ForgeCast's #3fbf94 so the two greens do not
-         read as one product. */
-      --cln-key: #a8cf9c;
-      --cln-key-soft: rgba(168, 207, 156, 0.4);
-      --cln-key-wash: rgba(168, 207, 156, 0.07);
+      --cln-mint: #34d399;
+      --cln-mint-soft: rgba(52, 211, 153, 0.35);
+      --cln-mint-wash: rgba(52, 211, 153, 0.08);
+      --cln-sage: #a8cf9c;
+      --cln-silver: #e2e8f0;
+      --cln-mineral: #f8fafc;
+      --cln-graphite: #0f172a;
+      --cln-graphite-sub: #334155;
+      --cln-border: #334155;
+      --cln-gold: #d6a84f;
+      --cln-gold-wash: rgba(214, 168, 79, 0.12);
     }
 
+    /* Subnav styling */
+    .cln-page .product-subnav {
+      margin-bottom: 2rem;
+    }
+
+    /* Hero layout */
     .cln-page .cln-hero {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 21rem);
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
       gap: 2.5rem;
       align-items: center;
     }
 
-    .cln-page .cln-hero-art svg {
-      display: block;
-      width: 100%;
-      height: auto;
+    /* Precision mark lockup */
+    .cln-page .cln-brand-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
     }
 
-    /* The hero's bracket, reused as the section rule: a measured span with its
-       caps turned down, enclosing the zone underneath it. */
+    .cln-page .cln-aperture-mark {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+    }
+
+    .cln-page .cln-aperture-mark svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Eyebrow and truth pills */
+    .cln-page .cln-truth-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.75rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.82rem;
+    }
+
+    .cln-page .cln-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 4px;
+      font-family: monospace;
+      letter-spacing: 0.02em;
+    }
+
+    .cln-page .cln-pill-public {
+      background: rgba(52, 211, 153, 0.12);
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      color: #6ee7b7;
+    }
+
+    .cln-page .cln-pill-local {
+      background: rgba(214, 168, 79, 0.1);
+      border: 1px solid rgba(214, 168, 79, 0.35);
+      color: #f6d387;
+    }
+
+    .cln-page .cln-pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .cln-page .cln-pill-public .cln-pill-dot { background: var(--cln-mint); }
+    .cln-page .cln-pill-local .cln-pill-dot { background: var(--cln-gold); }
+
+    /* Section head containment bracket */
     .cln-page .section-head {
       position: relative;
       padding-bottom: 1.35rem;
@@ -68,20 +124,98 @@
       position: absolute;
       left: 0;
       bottom: 0;
-      /* Deliberately narrower than a card track at every breakpoint. At 19rem
-         the right cap landed 9px from the first card's right edge and the
-         bracket read as that card's underline instead of the section's. */
       width: min(13rem, 100%);
       height: 9px;
-      border: 2px solid var(--cln-key);
+      border: 2px solid var(--cln-mint);
       border-bottom: 0;
     }
 
-    /* Same mark at card scale: a short sage tick let into the top edge, so each
-       card reads as its own labelled zone. */
+    /* High-Luminance Sterile Chamber Instrument Panel */
+    .cln-page .cln-chamber-panel {
+      background: var(--cln-mineral);
+      color: var(--cln-graphite);
+      border: 2px solid var(--cln-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+      margin-top: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .cln-page .cln-chamber-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--cln-silver);
+      padding-bottom: 0.85rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .cln-page .cln-chamber-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--cln-graphite);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .cln-page .cln-chamber-badge {
+      background: #0f172a;
+      color: #34d399;
+      font-size: 0.72rem;
+      font-family: monospace;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+    }
+
+    .cln-page .cln-screenshot-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+
+    .cln-page .cln-shot-card {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cln-page .cln-shot-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-bottom: 1px solid var(--cln-silver);
+    }
+
+    .cln-page .cln-shot-caption {
+      padding: 0.75rem 0.9rem;
+      font-size: 0.84rem;
+      color: var(--cln-graphite-sub);
+      line-height: 1.4;
+    }
+
+    .cln-page .cln-shot-caption strong {
+      display: block;
+      color: var(--cln-graphite);
+      font-size: 0.88rem;
+      margin-bottom: 0.2rem;
+    }
+
+    /* Quad detail cards with sterile ticks */
+    .cln-page .cln-quad {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
     .cln-page .detail-card {
       position: relative;
-      border-color: var(--cln-key-soft);
+      border-color: var(--cln-mint-soft);
+      background: rgba(15, 23, 42, 0.6);
     }
 
     .cln-page .detail-card::before {
@@ -91,18 +225,24 @@
       left: 2.25rem;
       width: 3.25rem;
       height: 2px;
-      background: var(--cln-key);
+      background: var(--cln-mint);
     }
 
-    /* Four cards need a declared track count. The shared auto-fit floor of
-       240px resolved to three columns at 1024 and left a 3 + 1 orphan row. */
-    .cln-page .cln-quad {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+    /* Hero Schematic Graphic */
+    .cln-page .cln-hero-art svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5));
     }
 
+    /* Responsive adjustments */
     @media (max-width: 1100px) {
       .cln-page .cln-quad {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .cln-page .cln-screenshot-grid {
+        grid-template-columns: 1fr;
       }
     }
 
@@ -113,13 +253,17 @@
       }
       .cln-page .cln-hero-art {
         order: -1;
-        width: min(17rem, 100%);
+        width: min(22rem, 100%);
+        margin: 0 auto;
       }
     }
 
     @media (max-width: 620px) {
       .cln-page .cln-quad {
         grid-template-columns: 1fr;
+      }
+      .cln-page .cln-chamber-panel {
+        padding: 1rem;
       }
     }
   </style>
@@ -136,6 +280,7 @@
 
     <nav class="product-subnav" aria-label="Product sections">
       <a href="#overview">Overview</a>
+      <a href="#chamber">Chamber evidence</a>
       <a href="#how-it-works">How it works</a>
       <a href="#proof">Proof</a>
       <a href="#download">Download</a>
@@ -144,66 +289,128 @@
 
     <section id="overview" class="product-hero cln-hero" aria-labelledby="product-title">
       <div class="cln-hero-copy">
-        <p class="eyebrow">Cleanroom · {{product.statusLabel}}</p>
-        <h1 id="product-title">Clean up Windows<br /><span>without losing anything.</span></h1>
+        <div class="cln-brand-header">
+          <div class="cln-aperture-mark" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="4" width="56" height="56" rx="10" fill="#0F172A" stroke="#334155" stroke-width="2"/>
+              <rect x="10" y="10" width="44" height="44" rx="6" stroke="#34D399" stroke-width="1.5" stroke-dasharray="44 14" />
+              <path d="M 44 20 A 14 14 0 1 0 44 44 L 28 44 L 28 32 L 44 32" stroke="#34D399" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="32" y1="16" x2="32" y2="48" stroke="#E2E8F0" stroke-width="1.5" stroke-dasharray="2 3" opacity="0.6"/>
+              <circle cx="44" cy="32" r="3" fill="#D6A84F"/>
+            </svg>
+          </div>
+          <div>
+            <p class="eyebrow" style="margin: 0;">Cleanroom · {{product.statusLabel}}</p>
+          </div>
+        </div>
+
+        <h1 id="product-title">Inspect first. Contain before removal.<br /><span>Restore when needed.</span></h1>
+        
         <p class="product-lede">{{product.summary}}</p>
+
+        <div class="cln-truth-pills" aria-label="Release state baseline">
+          <span class="cln-pill cln-pill-public"><span class="cln-pill-dot"></span> Public Release: v1.0.7 (Served via Proof Foundry)</span>
+          <span class="cln-pill cln-pill-local"><span class="cln-pill-dot"></span> Local Work: v1.0.10 (Publication on hold)</span>
+        </div>
+
         <div class="download-group">{{product.downloadBlock}}</div>
         {{product.proofStrip}}
       </div>
 
       <div class="cln-hero-art" aria-hidden="true">
-        <svg viewBox="0 0 320 232" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+        <svg viewBox="0 0 340 260" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
           <g fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <!-- the containment bracket, heading the whole operation the same
-                 way it heads every section below -->
-            <path d="M34 20V12h252v8" stroke="var(--cln-key)" stroke-width="2" />
+            <!-- Header containment bracket -->
+            <path d="M20 16V8h300v8" stroke="var(--cln-mint)" stroke-width="2" />
 
-            <!-- what is on the machine now: two files staying, and one selected
-                 for removal, drawn as a dashed outline because it is on its way
-                 out rather than gone -->
-            <path d="M74 36h32l16 16v44H74z" stroke="var(--cln-key)" fill="var(--cln-key-wash)" />
-            <path d="M106 36v16h16" stroke="var(--cln-key)" stroke-width="1.2" />
-            <path d="M84 68h26" stroke="var(--cln-key)" stroke-width="3" opacity="0.85" />
-            <path d="M84 80h16" stroke="var(--cln-key)" stroke-width="3" opacity="0.4" />
+            <!-- Input state: file candidates before entering chamber -->
+            <text x="26" y="38" fill="var(--cln-silver)" font-size="10" font-family="monospace" letter-spacing="1">RAW CANDIDATES</text>
+            <path d="M30 48h28l12 12v34H30z" stroke="var(--cln-mint)" fill="rgba(52, 211, 153, 0.05)" />
+            <path d="M58 48v12h12" stroke="var(--cln-mint)" stroke-width="1" />
+            <path d="M38 72h22" stroke="var(--cln-mint)" stroke-width="2" opacity="0.8" />
 
-            <path d="M136 36h32l16 16v44h-48z" stroke="var(--cln-key)" fill="var(--cln-key-wash)" />
-            <path d="M168 36v16h16" stroke="var(--cln-key)" stroke-width="1.2" />
-            <path d="M146 68h26" stroke="var(--cln-key)" stroke-width="3" opacity="0.85" />
-            <path d="M146 80h16" stroke="var(--cln-key)" stroke-width="3" opacity="0.4" />
+            <path d="M84 48h28l12 12v34H84z" stroke="var(--cln-mint)" fill="rgba(52, 211, 153, 0.05)" opacity="0.7"/>
+            <path d="M92 72h22" stroke="var(--cln-mint)" stroke-width="2" opacity="0.5" />
 
-            <path d="M198 36h32l16 16v44h-48z" stroke="var(--cln-key)" stroke-dasharray="5 4" opacity="0.7" />
-            <path d="M208 68h26" stroke="var(--cln-key)" stroke-width="3" opacity="0.3" />
-            <path d="M208 80h16" stroke="var(--cln-key)" stroke-width="3" opacity="0.18" />
+            <!-- Inflow arrow down into cleanroom chamber -->
+            <path d="M170 82v20" stroke="var(--cln-mint)" stroke-width="2" />
+            <path d="M165 97l5 5 5-5" stroke="var(--cln-mint)" stroke-width="2" />
 
-            <!-- it is archived on the way out, in sage -->
-            <path d="M214 104v26" stroke="var(--cln-key)" stroke-width="2.4" />
-            <path d="M208 124l6 6 6-6" stroke="var(--cln-key)" stroke-width="2.4" />
+            <!-- Sterile Cleanroom Chamber (High-luminance panel in vector) -->
+            <rect x="20" y="108" width="300" height="96" rx="10" fill="#F8FAFC" stroke="var(--cln-border)" stroke-width="2" />
+            <rect x="26" y="114" width="288" height="84" rx="6" stroke="#CBD5E1" stroke-width="1" fill="none"/>
+            
+            <text x="38" y="134" fill="#0F172A" font-size="11" font-family="monospace" font-weight="bold">CLEANROOM CUSTODY CHAMBER</text>
+            <rect x="240" y="122" width="62" height="16" rx="3" fill="#0F172A" />
+            <text x="246" y="134" fill="#34D399" font-size="9" font-family="monospace">SEALED</text>
 
-            <!-- and it can come back to the slot it left, in gold: the rollback
-                 path is always drawn, dashed because it has not been used -->
-            <path d="M246 130v-26" stroke="var(--gold)" stroke-width="2.4" stroke-dasharray="5 4" />
-            <path d="M240 110l6-6 6 6" stroke="var(--gold)" stroke-width="2.4" />
+            <!-- Internal operations inside chamber -->
+            <rect x="38" y="146" width="70" height="38" rx="4" fill="#FFFFFF" stroke="#CBD5E1" />
+            <text x="44" y="162" fill="#0F172A" font-size="9" font-weight="bold">INSPECT</text>
+            <text x="44" y="174" fill="#334155" font-size="8">Candidates</text>
 
-            <!-- the sealed archive: double-walled, locked, holding the copy,
-                 and issuing a receipt for it -->
-            <rect x="34" y="144" width="252" height="76" rx="12" stroke="var(--cln-key)" fill="var(--cln-key-wash)" />
-            <rect x="41" y="151" width="238" height="62" rx="8" stroke="var(--cln-key)" stroke-width="1.2" opacity="0.5" />
+            <rect x="116" y="146" width="70" height="38" rx="4" fill="#FFFFFF" stroke="#CBD5E1" />
+            <text x="122" y="162" fill="#0F172A" font-size="9" font-weight="bold">ARCHIVE</text>
+            <text x="122" y="174" fill="#334155" font-size="8">Double-wall</text>
 
-            <path d="M63 172v-6a9 9 0 0 1 18 0v6" stroke="var(--gold)" stroke-width="2" />
-            <rect x="59" y="172" width="26" height="20" rx="4" stroke="var(--gold)" fill="rgba(214, 168, 79, 0.25)" />
-            <circle cx="72" cy="182" r="2.6" fill="var(--gold)" stroke="none" />
+            <rect x="194" y="146" width="100" height="38" rx="4" fill="#FFFFFF" stroke="#CBD5E1" />
+            <text x="200" y="162" fill="#0F172A" font-size="9" font-weight="bold">HASH &amp; RECEIPT</text>
+            <text x="200" y="174" fill="#D6A84F" font-size="8" font-family="monospace">SHA-256 Proof</text>
 
-            <path d="M120 157h26l14 14v36h-40z" stroke="var(--cln-key)" fill="var(--cln-key-wash)" />
-            <path d="M146 157v14h14" stroke="var(--cln-key)" stroke-width="1.2" />
-            <path d="M128 183h22" stroke="var(--cln-key)" stroke-width="3" opacity="0.85" />
-            <path d="M128 193h13" stroke="var(--cln-key)" stroke-width="3" opacity="0.4" />
+            <!-- Output & Restore arrows -->
+            <path d="M80 204v24" stroke="var(--cln-mint)" stroke-width="2" />
+            <path d="M75 223l5 5 5-5" stroke="var(--cln-mint)" stroke-width="2" />
+            <text x="30" y="244" fill="var(--cln-mint)" font-size="10" font-family="monospace">CLEAN RESULT</text>
 
-            <path d="M210 152h38v54l-9.5 5-9.5-5-9.5 5-9.5-5z" stroke="var(--gold)" fill="rgba(214, 168, 79, 0.12)" />
-            <path d="M217 168h24" stroke="var(--gold)" stroke-width="2.6" opacity="0.85" />
-            <path d="M217 178h24" stroke="var(--gold)" stroke-width="2.6" opacity="0.6" />
-            <path d="M217 188h15" stroke="var(--gold)" stroke-width="2.6" opacity="0.4" />
+            <path d="M260 228v-24" stroke="var(--cln-gold)" stroke-width="2" stroke-dasharray="4 3" />
+            <path d="M255 209l5-5 5 5" stroke="var(--cln-gold)" stroke-width="2" />
+            <text x="216" y="244" fill="var(--cln-gold)" font-size="10" font-family="monospace">RESTORE PATH</text>
           </g>
         </svg>
+      </div>
+    </section>
+
+    <section id="chamber" class="product-section" aria-labelledby="chamber-title">
+      <div class="section-head">
+        <h2 id="chamber-title">Cleanroom chamber evidence</h2>
+        <p>Real application interfaces showing candidate inspection, custody logging, and proof pack verification.</p>
+      </div>
+
+      <!-- High-luminance pale mineral chamber panel -->
+      <div class="cln-chamber-panel">
+        <div class="cln-chamber-header">
+          <div class="cln-chamber-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Cleanroom Desktop Application Interfaces
+          </div>
+          <span class="cln-chamber-badge">LOCAL RUNTIME VERIFIED</span>
+        </div>
+
+        <div class="cln-screenshot-grid">
+          <article class="cln-shot-card">
+            <img src="/assets/cleanroom/cleanroom-review.png" alt="Cleanroom Cleaner candidate review interface showing file selection and archive controls" loading="lazy" />
+            <div class="cln-shot-caption">
+              <strong>Candidate Review &amp; Inspection</strong>
+              Inspect candidates before moving them. Files are selected for archive custody, never direct deletion.
+            </div>
+          </article>
+
+          <article class="cln-shot-card">
+            <img src="/assets/cleanroom/cleanroom-activity-ledger.png" alt="Cleanroom Activity Ledger showing receipt history and custody trust score" loading="lazy" />
+            <div class="cln-shot-caption">
+              <strong>Activity Ledger &amp; Custody</strong>
+              Trace every cleanup action with cryptographic custody hashes and receipt verification.
+            </div>
+          </article>
+
+          <article class="cln-shot-card">
+            <img src="/assets/cleanroom/cleanroom-proof-pack-demo.png" alt="Exported HTML Proof Pack demo generated by Cleanroom" loading="lazy" />
+            <div class="cln-shot-caption">
+              <strong>Exportable Proof Pack</strong>
+              Export self-contained HTML proof packs documenting exact paths, file hashes, and execution timestamps.
+            </div>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -214,20 +421,20 @@
       </div>
       <div class="detail-grid cln-quad">
         <article class="detail-card">
-          <h3>Archive-first</h3>
-          <p>Before anything is removed, it is archived. You clean up without the risk of an irreversible delete.</p>
+          <h3>Archive-first containment</h3>
+          <p>Before anything is removed from active paths, it is archived into a sealed container. Cleanup happens without the risk of irreversible loss.</p>
         </article>
         <article class="detail-card">
           <h3>Receipts &amp; custody checks</h3>
-          <p>Every action produces a receipt with custody checks, so you can trace what was moved and where it landed.</p>
+          <p>Every cleanup run generates a `.cleanroom-receipt` with SHA-256 custody checks, recording what was moved and where it landed.</p>
         </article>
         <article class="detail-card">
-          <h3>Rollback</h3>
-          <p>If a cleanup step was wrong, rollback puts things back. Proof of what happened is kept either way.</p>
+          <h3>Restore capability</h3>
+          <p>If a cleanup step needs to be reversed, 1-click restore puts files back into their recorded original paths, keeping proof of the action.</p>
         </article>
         <article class="detail-card">
           <h3>No cloud, no account, no telemetry</h3>
-          <p>Runs locally. No sign-in. No telemetry. Your file inventory never leaves your machine.</p>
+          <p>Runs strictly on your machine. No sign-in required, zero telemetry collected. Your file inventory never leaves your system.</p>
         </article>
       </div>
     </section>
