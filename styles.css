@@ -559,6 +559,19 @@ h1 span {
     linear-gradient(160deg, rgba(16, 25, 35, 0.95), rgba(10, 16, 24, 0.88));
 }
 
+/* Cache Vault card identity — archive copper/patina accent inside the shared
+   card architecture. Same dimensions, typography, CTA, and focus as every
+   other card; only the border tint and background atmosphere change. Copper
+   carries the retained structure, patina is the secondary storage accent,
+   and gold appears only where the card system already uses it. */
+.card-cache-vault {
+  border-color: rgba(184, 115, 51, 0.28);
+  background:
+    radial-gradient(circle at 85% 0%, rgba(184, 115, 51, 0.05), transparent 45%),
+    radial-gradient(circle at 15% 100%, rgba(95, 143, 135, 0.03), transparent 40%),
+    linear-gradient(160deg, rgba(16, 25, 35, 0.95), rgba(10, 16, 24, 0.88));
+}
+
 .more-tools {
   padding: 0.9rem 1rem;
 }

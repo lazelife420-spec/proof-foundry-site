@@ -60,6 +60,8 @@
       "platforms": ["Windows", "Android companion"],
       "platform": "Windows + Android",
       "summary": "A local-first clipboard vault with receipts, safes, global search, Quick Paste, image capture, exports, Command Center, and an opt-in LAN-only Mobile Bridge paired to a production-signed Android companion.",
+      "cardSummary": "Local clipboard history, collections, retrieval, and receipts.",
+      "markSvg": "<div class=\"card-mark\" aria-hidden=\"true\"><svg viewBox=\"0 0 48 48\" xmlns=\"http://www.w3.org/2000/svg\" width=\"100%\" height=\"100%\"><rect x=\"8.5\" y=\"9\" width=\"4.5\" height=\"30\" rx=\"1.6\" fill=\"#b87333\"/><rect x=\"15.5\" y=\"9\" width=\"23\" height=\"7.5\" rx=\"1.8\" fill=\"#b87333\"/><rect x=\"20.5\" y=\"20.25\" width=\"8.5\" height=\"7.5\" rx=\"1.8\" fill=\"#5f8f87\"/><rect x=\"15.5\" y=\"31.5\" width=\"23\" height=\"7.5\" rx=\"1.8\" fill=\"#b87333\"/><circle cx=\"34.5\" cy=\"24\" r=\"4\" fill=\"#D6A84F\"/></svg></div>",
       "description": "A local-first Windows clipboard vault with smart classification, sensitive-content auto-expiry, Quick Paste, Safes, Vault Macros, Command Center (Phase 1: Hotkey Actions), and an opt-in LAN-only Mobile Bridge paired to a production-signed Android companion. No cloud account, no subscription, no telemetry.",
       "build": "Windows installer delivered inside a ZIP archive, distributed through the Proof Foundry download mirror alongside the production-signed CacheVault Mobile v0.2.1 Android companion. The published SHA-256 is the checksum of the ZIP you download. Anonymous GitHub access to the Cache Vault repository is currently unavailable, so the mirror is the working public distribution path.",
       "distType": "Windows installer ZIP + Android APK",
