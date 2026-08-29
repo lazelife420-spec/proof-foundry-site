@@ -200,6 +200,8 @@ function ProductTokens($p) {
   $tokens['meta']                = MetaLine $p
   $tokens['platform']            = PlatformLabel $p
   $tokens['summary']             = $p.summary
+  $tokens['cardSummary']         = if (-not [string]::IsNullOrWhiteSpace($p.cardSummary)) { $p.cardSummary } else { $p.summary }
+  $tokens['markSvg']             = if (-not [string]::IsNullOrWhiteSpace($p.markSvg)) { $p.markSvg } else { '' }
   $tokens['cta']                 = $p.cta
   $tokens['distType']            = $p.distType
   $tokens['build']               = $p.build
@@ -320,6 +322,9 @@ function Build-ProductCards {
     $card = $card -replace [regex]::Escape('{{state}}'),        $t['state']
     $card = $card -replace [regex]::Escape('{{statusLabel}}'),  $t['statusLabel']
     $card = $card -replace [regex]::Escape('{{summary}}'),      $t['summary']
+    $card = $card -replace [regex]::Escape('{{cardSummary}}'),  $t['cardSummary']
+    $card = $card -replace [regex]::Escape('{{markSvg}}'),      $t['markSvg']
+    $card = $card -replace [regex]::Escape('{{id}}'),           $t['id']
     $card = $card -replace [regex]::Escape('{{meta}}'),         $t['meta']
     $card = $card -replace [regex]::Escape('{{cta}}'),          $t['cta']
     $cards += $card

@@ -516,6 +516,27 @@ h1 span {
   margin-top: auto;
 }
 
+/* Product mark + title row — wraps optional mark and title so the status chip
+   stays on the right via justify-content: space-between on .product-top.
+   For products without a mark the wrapper is invisible (just the h3). */
+.card-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.card-mark {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.card-mark svg {
+  width: 100%;
+  height: 100%;
+}
+
 .product-pilot     { border-color: rgba(0, 209, 178, 0.36); }
 .product-available { border-color: rgba(0, 209, 178, 0.36); }
 .product-frozen    { border-color: rgba(127, 179, 213, 0.36); }
@@ -526,6 +547,17 @@ h1 span {
 /* Legacy card aliases */
 .product-live  { border-color: rgba(0, 209, 178, 0.36); }
 .product-proof { border-color: rgba(214, 168, 79, 0.36); }
+
+/* GhostLayer card identity — volatile blue/cyan accent inside the shared card
+   architecture. Same dimensions, typography, CTA, and focus as every other
+   card; only the border tint and background atmosphere change. */
+.card-ghostlayer {
+  border-color: rgba(68, 151, 255, 0.28);
+  background:
+    radial-gradient(circle at 85% 0%, rgba(68, 151, 255, 0.05), transparent 45%),
+    radial-gradient(circle at 15% 100%, rgba(98, 216, 255, 0.03), transparent 40%),
+    linear-gradient(160deg, rgba(16, 25, 35, 0.95), rgba(10, 16, 24, 0.88));
+}
 
 .more-tools {
   padding: 0.9rem 1rem;
