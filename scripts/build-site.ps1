@@ -128,7 +128,7 @@ if ($ValidateOnly) { exit 0 }
 # ─────────────────────────────────────────────────────────────────────────────
 # Helpers
 # ─────────────────────────────────────────────────────────────────────────────
-function Read-File($path) { return (Get-Content $path -Raw -Encoding UTF8) }
+function Read-File($path) { return [System.IO.File]::ReadAllText($path, [System.Text.Encoding]::UTF8) }
 
 function VersionLabel($p) {
   # publicVersion is the explicit published-release version (may differ from the
@@ -173,7 +173,8 @@ function MetaLine($p) {
   if ($vl) { $parts += $vl }
   $pl = PlatformLabel $p
   if ($pl) { $parts += $pl }
-  return ($parts -join ' · ')
+  $dot = [char]0x00B7
+  return ($parts -join " $dot ")
 }
 
 function Html-Attr($s) { return ($s -replace '&','&amp;' -replace '<','&lt;' -replace '>','&gt;') }
@@ -497,7 +498,7 @@ foreach ($f in $rootFiles) {
   if (-not (Test-Path $src)) { continue }
   $out = Process-Template $src $f
   $outPath = Join-Path $publicDir $f
-  Set-Content -Path $outPath -Value $out -Encoding UTF8 -NoNewline
+  [System.IO.File]::WriteAllText($outPath, $out, [System.Text.Encoding]::UTF8)
 }
 
 # Directory-route files
@@ -507,7 +508,7 @@ foreach ($slug in $dirRoutes) {
   $out = Process-Template $src "$slug.html"
   $dir = Join-Path $publicDir $slug
   New-Item -ItemType Directory $dir -Force | Out-Null
-  Set-Content -Path (Join-Path $dir 'index.html') -Value $out -Encoding UTF8 -NoNewline
+  [System.IO.File]::WriteAllText((Join-Path $dir 'index.html'), $out, [System.Text.Encoding]::UTF8)
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
