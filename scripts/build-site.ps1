@@ -41,7 +41,11 @@ $partialsDir  = Join-Path $root 'partials'
 $publicDir    = Join-Path $root 'public'
 
 if (-not (Test-Path $manifestPath)) { throw "site-manifest.json not found at $manifestPath" }
-$manifest = Get-Content $manifestPath -Raw | ConvertFrom-Json
+# -Encoding UTF8 is mandatory: site-manifest.json is UTF-8 and contains non-ASCII
+# punctuation (middle dot U+00B7, em dash U+2014). Without it, Get-Content falls
+# back to the platform default (Windows-1252 on Windows PowerShell), which
+# decodes those bytes as mojibake (Â·, â€") into every generated page.
+$manifest = Get-Content $manifestPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Validation

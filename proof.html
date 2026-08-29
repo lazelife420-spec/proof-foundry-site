@@ -105,17 +105,27 @@
     .receipt-fields > div {
       display: flex;
       justify-content: space-between;
+      gap: 0.75rem;
       border-bottom: 1px solid rgba(38, 55, 70, 0.4);
       padding-bottom: 0.5rem;
+      min-width: 0;
     }
     .receipt-fields dt {
       color: var(--muted);
       font-weight: 500;
+      flex-shrink: 0;
     }
     .receipt-fields dd {
       color: var(--text);
       font-weight: 600;
       text-align: right;
+      min-width: 0;
+      /* Long proof-link filenames (e.g. GHOSTLAYER_V0.4.0_..._RECEIPT.json)
+         are single unbreakable tokens. Without this the dd's min-content width
+         forces its flex row — and therefore the card — past the viewport on
+         narrow screens. `anywhere` (not `break-word`) also shrinks min-content
+         so the flex item can actually shrink. */
+      overflow-wrap: anywhere;
     }
     .receipt-fields dd.code {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
