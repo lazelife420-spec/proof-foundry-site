@@ -300,14 +300,23 @@
       padding-block: 4rem;
     }
 
-    .rg-matrix-table {
-      width: 100%;
-      border-collapse: collapse;
+    /* The matrix's three columns give it a ~366px min-content width, which
+       widened the whole document below 390px. The panel chrome lives on a
+       scroll wrapper so the table scrolls inside its own region instead,
+       mirroring the .ledger-wrap pattern already proven on /founders/. */
+    .rg-matrix-wrap {
       background: var(--rg-panel);
       border: 1px solid var(--rg-steel);
       border-radius: var(--radius);
-      overflow: hidden;
+      overflow-x: auto;
+    }
+
+    .rg-matrix-table {
+      width: 100%;
+      border-collapse: collapse;
       font-size: 0.9rem;
+      /* Scroll the matrix rather than crushing the columns on narrow screens. */
+      min-width: 560px;
     }
 
     .rg-matrix-table th {
@@ -450,10 +459,14 @@
       gap: 0.65rem;
     }
 
+    /* Hanging indent rather than flex. As a flex row with the default
+       flex-wrap:nowrap, each item's min-content width was the sum of every
+       inline segment (marker + each <strong> + each text run) -- 311px against
+       a 222px box -- which propagated up through .rg-section and main and
+       widened the document on narrow viewports. */
     .rg-limits li {
-      display: flex;
-      gap: 0.65rem;
-      align-items: baseline;
+      position: relative;
+      padding-left: 1.3rem;
       color: var(--rg-muted);
       font-size: 0.92rem;
       line-height: 1.55;
@@ -461,8 +474,10 @@
 
     .rg-limits li::before {
       content: "—";
+      position: absolute;
+      left: 0;
+      top: 0;
       color: var(--rg-bronze);
-      flex: none;
     }
 
     .rg-product-nav {
@@ -746,6 +761,7 @@
       <h2 class="rg-section-title">Capability &amp; Public Status Matrix</h2>
       <p class="rg-section-subtitle">Separating what is available in the public Developer Pilot, what is qualified in current source, and what remains roadmap research.</p>
 
+      <div class="rg-matrix-wrap" role="region" aria-label="Capability and public status matrix" tabindex="0">
       <table class="rg-matrix-table">
         <thead>
           <tr>
@@ -802,6 +818,7 @@
           </tr>
         </tbody>
       </table>
+      </div>
     </section>
 
     <!-- Illustrative Receipt Specimen -->
