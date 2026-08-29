@@ -315,6 +315,8 @@ function Build-ProductCards {
   $cards = @()
   foreach ($p in $manifest.products) {
     if (-not $p.visible) { continue }
+    # Reality Gate is featured above the software grid as the studio platform anchor
+    if ($p.id -eq 'reality-gate') { continue }
     $t = ProductTokens $p
     $card = $cardTemplate
     $card = $card -replace [regex]::Escape('{{name}}'),         $t['name']
