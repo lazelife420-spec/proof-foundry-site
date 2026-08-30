@@ -559,7 +559,7 @@
         </article>
         <article class="detail-card">
           <h3>Android companion</h3>
-          <p>An opt-in Mobile Bridge pairs Cache Vault Desktop with the production-signed CacheVault Mobile v0.2.1 companion over your own local network. There is no cloud relay and no account.</p>
+          <p>An opt-in Mobile Bridge pairs Cache Vault Desktop with the production-signed CacheVault Mobile v0.2.0 companion (the public companion) over your own local network. Android v0.2.1 is qualified and publication is on hold. There is no cloud relay and no account.</p>
           <p class="cv-chain">
             <span>Cache Vault Desktop</span>
             <span class="cv-chain-link">local network</span>
@@ -604,20 +604,20 @@
           <h3>Desktop artifact checksum</h3>
           <p>Verify the {{product.versionLabel}} Windows ZIP before running it.</p>
           {{product.hashBlock}}
-          <p class="note">Published in <a href="{{product.sha256Url}}" target="_blank" rel="noopener">SHA256SUMS.txt</a> on the Proof Foundry download mirror.</p>
+          <p class="note">SHA-256 published with the <a href="https://github.com/lazelife420-spec/CacheVault/releases/tag/v0.2.2" target="_blank" rel="noopener">v0.2.2 release</a> on GitHub.</p>
         </article>
         <article class="detail-card">
           <h3>Android companion checksum</h3>
-          <p>Verify the production-signed CacheVault Mobile v0.2.1 APK before installing it.</p>
+          <p>Verify the production-signed CacheVault Mobile v0.2.0 APK before installing it.</p>
           <div class="code-block">{{product.artifacts.1.sha256}}</div>
-          <p class="note">Published in <a href="https://downloads.theprooffoundry.com/cachevault/v0.2.1/SHA256SUMS.txt" target="_blank" rel="noopener">the companion SHA256SUMS.txt</a>.</p>
+          <p class="note">Published in the <a href="https://github.com/lazelife420-spec/CacheVault/releases/download/v0.2.0/SHA256SUMS.txt" target="_blank" rel="noopener">v0.2.0 companion SHA256SUMS.txt</a> on GitHub.</p>
         </article>
         <article class="detail-card">
           <h3>Release evidence</h3>
           <ul>
-            <li><a href="https://downloads.theprooffoundry.com/cachevault/v0.2.0/SHA256SUMS.txt" target="_blank" rel="noopener">Desktop SHA256SUMS.txt</a> (v0.2.0 Windows ZIP)</li>
-            <li><a href="https://downloads.theprooffoundry.com/cachevault/v0.2.1/SHA256SUMS.txt" target="_blank" rel="noopener">Companion SHA256SUMS.txt</a> (v0.2.1 Android APK)</li>
-            <li>Test suite: {{product.testStatus}} on the v0.2.0 release</li>
+            <li><a href="https://github.com/lazelife420-spec/CacheVault/releases/tag/v0.2.2" target="_blank" rel="noopener">Desktop release (GitHub)</a> (v0.2.2 Windows ZIP)</li>
+            <li><a href="https://github.com/lazelife420-spec/CacheVault/releases/download/v0.2.0/SHA256SUMS.txt" target="_blank" rel="noopener">Companion SHA256SUMS.txt</a> (v0.2.0 Android APK)</li>
+            <li>Test suite: {{product.testStatus}} on the v0.2.2 release</li>
             <li>Companion signing continuity and pairing verified on a physical Samsung Galaxy S23</li>
           </ul>
         </article>
@@ -633,11 +633,11 @@
       <div class="detail-grid">
         <article class="detail-card">
           <h3>Current public release</h3>
-          <p>{{product.versionLabel}} is the public desktop release, paired with the CacheVault Mobile v0.2.1 Android companion. The Windows build is not code-signed, so SmartScreen may prompt on first launch — verify the checksum above first.</p>
+          <p>{{product.versionLabel}} is the public desktop release, paired with the public CacheVault Mobile v0.2.0 Android companion. Android v0.2.1 is qualified and publication is on hold. The Windows build is not code-signed, so SmartScreen may prompt on first launch — verify the checksum above first.</p>
         </article>
         <article class="detail-card">
-          <h3>v0.2.2 is prepared, not published</h3>
-          <p>Cache Vault v0.2.2 is tagged in source, and its Windows artifact has been built and hash-verified. No public v0.2.2 artifact has been published and public distribution has not been authorized, so there is nothing to download under that version yet.</p>
+          <h3>Distribution source</h3>
+          <p>The v0.2.2 Windows ZIP is published as a GitHub release. Verify the SHA-256 checksum above against the release before installing it.</p>
         </article>
         <article class="detail-card">
           <h3>Command Center scope is frozen</h3>
@@ -649,14 +649,14 @@
     <section id="download" class="product-section" aria-labelledby="download-title">
       <div class="section-head">
         <h2 id="download-title">Download / Founder</h2>
-        <p>Both artifacts are served from the Proof Foundry download mirror.</p>
+        <p>The desktop v0.2.2 Windows ZIP and the Android companion v0.2.0 APK are both published as GitHub releases.</p>
       </div>
       <div class="download-group">
         {{product.downloadBlock}}
-        <a class="button button-secondary" href="https://downloads.theprooffoundry.com/cachevault/v0.2.1/CacheVault-Mobile-v0.2.1-android.apk" target="_blank" rel="noopener" download>Android companion v0.2.1 (APK)</a>
+        <a class="button button-secondary" href="https://github.com/lazelife420-spec/CacheVault/releases/download/v0.2.0/CacheVault-Mobile-v0.2.0-android.apk" target="_blank" rel="noopener" download>Android companion v0.2.0 (APK)</a>
       </div>
       <p class="note">The Windows installer is inside the ZIP. Verify the SHA-256 of either artifact against the published checksums before installing it.</p>
-      <p class="note note-pending">Public downloads are currently served through the Proof Foundry download mirror while anonymous GitHub access to the Cache Vault repository is unavailable.</p>
+      <p class="note note-pending">The public Android companion is v0.2.0; Android v0.2.1 is qualified and publication is on hold, so it is not a public download.</p>
     </section>
 
     <section class="product-section other-products" aria-labelledby="other-title">

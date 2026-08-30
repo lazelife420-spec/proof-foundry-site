@@ -169,28 +169,28 @@
       "cta": "View product",
       "visible": true,
       "release": {
-        "publicVersion": "0.2.0",
-        "candidateVersion": "0.2.2",
+        "publicVersion": "0.2.2",
+        "candidateVersion": null,
         "releaseStatus": "PUBLIC_RELEASE",
-        "publishedAt": "2026-08-28"
+        "publishedAt": "2026-08-27"
       },
       "artifacts": [
         {
-          "filename": "CacheVault-v0.2.0-windows.zip",
+          "filename": "CacheVault-v0.2.2-windows.zip",
           "sizeBytes": null,
-          "sha256": "84471c92b84b4414dc59b03170321c388cdf70c4a02918b7294af3c8cde12c12",
-          "downloadUrl": "https://downloads.theprooffoundry.com/cachevault/v0.2.0/CacheVault-v0.2.0-windows.zip",
-          "sha256Url": "https://downloads.theprooffoundry.com/cachevault/v0.2.0/SHA256SUMS.txt",
+          "sha256": "f67375d198a4304d5263aea7a980fec8e9f0c1f5226dc0b1d2285e4d9eacb9ed",
+          "downloadUrl": "https://github.com/lazelife420-spec/CacheVault/releases/download/v0.2.2/CacheVault-v0.2.2-windows.zip",
+          "sha256Url": null,
           "signingStatus": "UNSIGNED",
           "platform": "Windows",
           "distType": "Windows installer ZIP"
         },
         {
-          "filename": "CacheVault-Mobile-v0.2.1-android.apk",
-          "sizeBytes": null,
-          "sha256": "7081a10d14ee3dab9112413723f7463b7618f944016b18dd1cfb72f180fc93f5",
-          "downloadUrl": "https://downloads.theprooffoundry.com/cachevault/v0.2.1/CacheVault-Mobile-v0.2.1-android.apk",
-          "sha256Url": "https://downloads.theprooffoundry.com/cachevault/v0.2.1/SHA256SUMS.txt",
+          "filename": "CacheVault-Mobile-v0.2.0-android.apk",
+          "sizeBytes": 12887895,
+          "sha256": "fb6c5a3034b1d25be55db2da8842e17cfb48a0f40d8c479441faf389040524ad",
+          "downloadUrl": "https://github.com/lazelife420-spec/CacheVault/releases/download/v0.2.0/CacheVault-Mobile-v0.2.0-android.apk",
+          "sha256Url": "https://github.com/lazelife420-spec/CacheVault/releases/download/v0.2.0/SHA256SUMS.txt",
           "signingStatus": "PRODUCTION_SIGNED",
           "platform": "Android companion",
           "distType": "Android APK"
@@ -221,36 +221,37 @@
       ],
       "evidence": [
         {
-          "label": "Desktop SHA256SUMS",
-          "url": "https://downloads.theprooffoundry.com/cachevault/v0.2.0/SHA256SUMS.txt"
+          "label": "Desktop release (GitHub)",
+          "url": "https://github.com/lazelife420-spec/CacheVault/releases/tag/v0.2.2"
         },
         {
-          "label": "Companion SHA256SUMS",
-          "url": "https://downloads.theprooffoundry.com/cachevault/v0.2.1/SHA256SUMS.txt"
+          "label": "Companion SHA256SUMS (GitHub v0.2.0)",
+          "url": "https://github.com/lazelife420-spec/CacheVault/releases/download/v0.2.0/SHA256SUMS.txt"
         }
       ],
       "limits": [
         "The Windows build is not code-signed, so Windows SmartScreen may prompt on first launch.",
-        "v0.2.2 is tagged in source and built, but no public artifact has been published or authorized.",
+        "Cache Vault v0.2.2 is the current public desktop release, served from the GitHub release.",
         "Command Center is Phase 1 (Hotkey Actions) only.",
-        "Checksum is not a code signature; production-signed companion is a separate Android artifact."
+        "Checksum is not a code signature; the production-signed Android companion is a separate artifact.",
+        "The public Android companion is v0.2.0; Android v0.2.1 is qualified and publication is on hold, so it is not a public download."
       ],
-      "downloadUrl": "https://downloads.theprooffoundry.com/cachevault/v0.2.0/CacheVault-v0.2.0-windows.zip",
-      "downloadLabel": "Download v0.2.0 (Windows)",
+      "downloadUrl": "https://github.com/lazelife420-spec/CacheVault/releases/download/v0.2.2/CacheVault-v0.2.2-windows.zip",
+      "downloadLabel": "Download v0.2.2 (Windows)",
       "distType": "Windows installer ZIP + Android APK",
-      "build": "Windows installer delivered inside a ZIP archive, distributed through the Proof Foundry download mirror alongside the production-signed CacheVault Mobile v0.2.1 Android companion. The published SHA-256 is the checksum of the ZIP you download. Anonymous GitHub access to the Cache Vault repository is currently unavailable, so the mirror is the working public distribution path.",
-      "sha256": "84471c92b84b4414dc59b03170321c388cdf70c4a02918b7294af3c8cde12c12",
-      "sha256Url": "https://downloads.theprooffoundry.com/cachevault/v0.2.0/SHA256SUMS.txt",
+      "build": "Windows installer delivered inside a ZIP archive, published as the Cache Vault v0.2.2 GitHub release alongside the production-signed CacheVault Mobile v0.2.0 Android companion (the public companion). Android v0.2.1 is qualified and publication is on hold. The published SHA-256 is the checksum of the ZIP you download.",
+      "sha256": "f67375d198a4304d5263aea7a980fec8e9f0c1f5226dc0b1d2285e4d9eacb9ed",
+      "sha256Url": null,
       "testStatus": "988/988 desktop · 88/88 Android",
       "testCount": "988/988 desktop · 88/88 Android",
-      "releaseNote": "Current public release: Cache Vault v0.2.0 for Windows, distributed as a ZIP through the Proof Foundry download mirror, alongside the production-signed CacheVault Mobile v0.2.1 Android companion. Both artifacts carry published SHA-256 checksums. The Windows build is not code-signed, so Windows SmartScreen may prompt on first launch; verify the checksum before running it. Cache Vault v0.2.2 is tagged in source and its Windows artifact has been built and hash-verified, but no public v0.2.2 artifact has been published and public distribution has not been authorized. v0.2.0 remains the desktop release you can download.",
+      "releaseNote": "Current public release: Cache Vault v0.2.2 for Windows (GitHub release ZIP) and the production-signed CacheVault Mobile v0.2.0 Android companion (GitHub release APK). The Windows build is not code-signed, so Windows SmartScreen may prompt on first launch; verify the SHA-256 before running it. Android v0.2.1 is qualified and publication is on hold; it is not a public download.",
       "proofStatus": "Verified",
       "lastVerified": "2026-08-28",
       "proofLinks": [
-        "https://downloads.theprooffoundry.com/cachevault/v0.2.0/SHA256SUMS.txt"
+        "https://github.com/lazelife420-spec/CacheVault/releases/tag/v0.2.2"
       ],
-      "currentLocalVersion": "0.2.2",
-      "companionVersion": "0.2.1"
+      "currentLocalVersion": null,
+      "companionVersion": "0.2.0"
     },
     {
       "id": "lights-out",
