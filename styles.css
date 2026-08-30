@@ -16,7 +16,7 @@
   --gold: #D6A84F;
   --gold-strong: #e0b660;
   --line: #263746;
-  --teal: #B9823F;
+  --teal: #00D1B2;
   --shadow: 0 24px 54px rgba(0, 0, 0, 0.38);
   --radius: 18px;
   /* Vertical rhythm between top-level blocks on a product page. Every such
@@ -548,26 +548,27 @@ h1 span {
 .product-live  { border-color: rgba(0, 209, 178, 0.36); }
 .product-proof { border-color: rgba(214, 168, 79, 0.36); }
 
-/* GhostLayer card identity — volatile blue/cyan accent inside the shared card
-   architecture. Same dimensions, typography, CTA, and focus as every other
-   card; only the border tint and background atmosphere change. */
+/* GhostLayer card identity — Matrix-green accent inside the shared card
+   architecture, matching the shipped app accent (#00CC33) and its neon
+   highlight (#00FF41). Same dimensions, typography, CTA, and focus as every
+   other card; only the border tint and background atmosphere change. */
 .card-ghostlayer {
-  border-color: rgba(68, 151, 255, 0.28);
+  border-color: rgba(0, 204, 51, 0.28);
   background:
-    radial-gradient(circle at 85% 0%, rgba(68, 151, 255, 0.05), transparent 45%),
-    radial-gradient(circle at 15% 100%, rgba(98, 216, 255, 0.03), transparent 40%),
+    radial-gradient(circle at 85% 0%, rgba(0, 204, 51, 0.05), transparent 45%),
+    radial-gradient(circle at 15% 100%, rgba(0, 255, 65, 0.03), transparent 40%),
     linear-gradient(160deg, rgba(16, 25, 35, 0.95), rgba(10, 16, 24, 0.88));
 }
 
-/* Cache Vault card identity — archive copper/patina accent inside the shared
-   card architecture. Same dimensions, typography, CTA, and focus as every
-   other card; only the border tint and background atmosphere change. Copper
-   carries the retained structure, patina is the secondary storage accent,
-   and gold appears only where the card system already uses it. */
+/* Cache Vault card identity — restrained Proof Teal accent (brand.py
+   PROOF_TEAL #1A9E8C) inside the shared card architecture, with patina
+   retained as the secondary storage accent so the archive register survives.
+   Same dimensions, typography, CTA, and focus as every other card; only the
+   border tint and background atmosphere change. */
 .card-cache-vault {
-  border-color: rgba(184, 115, 51, 0.28);
+  border-color: rgba(26, 158, 140, 0.28);
   background:
-    radial-gradient(circle at 85% 0%, rgba(184, 115, 51, 0.05), transparent 45%),
+    radial-gradient(circle at 85% 0%, rgba(26, 158, 140, 0.05), transparent 45%),
     radial-gradient(circle at 15% 100%, rgba(95, 143, 135, 0.03), transparent 40%),
     linear-gradient(160deg, rgba(16, 25, 35, 0.95), rgba(10, 16, 24, 0.88));
 }
@@ -1506,7 +1507,7 @@ h1 span {
 
 .status-indicator.public_release,
 .status-indicator.public-release,
-.status-indicator.frozen { color: var(--teal); border-color: rgba(63, 195, 166, 0.35); }
+.status-indicator.frozen { color: var(--teal); border-color: rgba(0, 209, 178, 0.35); }
 .status-indicator.active_proof,
 .status-indicator.in-proof,
 .status-indicator.roadmap_direction,

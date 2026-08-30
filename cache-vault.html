@@ -29,20 +29,24 @@
        / download block / hash block, typography, container width, and the gold
        chrome.
 
-       Cache Vault's own world is an archive: copper carries the retained
-       structure, patina is the secondary storage accent, parchment is reserved
-       for receipt and index-card detail, and Proof Foundry gold appears only as
-       the provenance stamp. Where GhostLayer reads volatile and transient, this
-       page reads stored and durable.
+       Cache Vault's own world is an archive. The accent is the product's own
+       teal — brand.py PROOF_TEAL, the same accent the shipped desktop app and
+       its icon use — while patina stays the secondary storage accent, parchment
+       is reserved for receipt and index-card detail, and Proof Foundry gold
+       appears only as the provenance stamp. The archive register lives in the
+       parchment, warm substrate, and cabinet structure, not in the accent hue.
+       Where GhostLayer reads volatile and transient, this page reads stored and
+       durable.
        ─────────────────────────────────────────────────────────────────────── */
     .cv-page {
-      /* copper = retained / archive structure */
-      --cv-copper: #b87333;
-      /* lifted off the base copper so heading text clears AA on the dark shell
-         while the structural copper below stays at its brand value */
-      --cv-copper-text: #ce8a45;
-      --cv-copper-soft: rgba(184, 115, 51, 0.5);
-      --cv-copper-wash: rgba(184, 115, 51, 0.07);
+      /* accent = retained / archive structure; brand.py PROOF_TEAL */
+      --cv-accent: #1A9E8C;
+      /* lifted off the base accent so heading text clears AA on the dark shell
+         while the structural accent below stays at its brand value; this is the
+         shipped Cache Vault icon teal */
+      --cv-accent-text: #2DD4BF;
+      --cv-accent-soft: rgba(26, 158, 140, 0.5);
+      --cv-accent-wash: rgba(26, 158, 140, 0.07);
       /* patina = secondary age / storage accent */
       --cv-patina: #5f8f87;
       --cv-patina-soft: rgba(95, 143, 135, 0.45);
@@ -54,7 +58,7 @@
       --cv-storage: #241a16;
       /* the shared --line is a cool slate; the cabinet is this page's product
          artifact, so its at-rest structure uses a warm neutral at comparable
-         luminance instead of drifting blue against copper and parchment */
+         luminance instead of drifting cool slate against parchment and the teal accent */
       --cv-line: #4a3730;
     }
 
@@ -97,7 +101,7 @@
       font-weight: 700;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: var(--cv-copper-text);
+      color: var(--cv-accent-text);
     }
 
     /* The three beats of the product, in plain HTML so the meaning never
@@ -124,7 +128,7 @@
       width: 5px;
       height: 5px;
       border-radius: 1px;
-      background: var(--cv-copper);
+      background: var(--cv-accent);
     }
 
     .cv-page .cv-hero-art {
@@ -149,8 +153,8 @@
       inset: 0;
       z-index: 0;
       background-image:
-        linear-gradient(rgba(184, 115, 51, 0.15) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(184, 115, 51, 0.15) 1px, transparent 1px);
+        linear-gradient(rgba(26, 158, 140, 0.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(26, 158, 140, 0.15) 1px, transparent 1px);
       background-size: 26px 26px;
       -webkit-mask-image: radial-gradient(ellipse at 50% 50%, #000 22%, transparent 72%);
       mask-image: radial-gradient(ellipse at 50% 50%, #000 22%, transparent 72%);
@@ -192,7 +196,7 @@
       top: 0;
       bottom: 0;
       width: 3px;
-      background: var(--cv-copper);
+      background: var(--cv-accent);
       opacity: 0.5;
     }
 
@@ -210,7 +214,7 @@
       font-weight: 800;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: var(--cv-copper-text);
+      color: var(--cv-accent-text);
     }
 
     .cv-page .cv-flow li:last-child .cv-flow-step {
@@ -240,7 +244,7 @@
       left: 0;
       width: 3.5rem;
       height: 2px;
-      background: var(--cv-copper);
+      background: var(--cv-accent);
     }
 
     .cv-page .section-head::after {
@@ -265,26 +269,26 @@
     /* Squared and keyed on the spine edge, rounded on the open edge. */
     .cv-page .detail-card {
       border-radius: 3px var(--radius) var(--radius) 3px;
-      border-left: 3px solid var(--cv-copper-soft);
+      border-left: 3px solid var(--cv-accent-soft);
       background:
-        linear-gradient(90deg, var(--cv-copper-wash), transparent 38%),
+        linear-gradient(90deg, var(--cv-accent-wash), transparent 38%),
         rgba(16, 25, 35, 0.62);
       transition: border-left-color 150ms ease;
     }
 
     .cv-page .detail-card:hover {
-      border-left-color: var(--cv-copper);
+      border-left-color: var(--cv-accent);
     }
 
     .cv-page .detail-card h3 {
-      color: var(--cv-copper-text);
+      color: var(--cv-accent-text);
     }
 
     /* ─── Checksums render as receipt strips ────────────────────────────── */
     .cv-page .code-block {
       position: relative;
-      border-color: var(--cv-copper-soft);
-      border-left: 3px solid var(--cv-copper);
+      border-color: var(--cv-accent-soft);
+      border-left: 3px solid var(--cv-accent);
       background: rgba(36, 26, 22, 0.62);
       color: var(--cv-parchment);
     }
@@ -438,10 +442,10 @@
                an E and the opening closes. Decorative — the product name and
                descriptor beside it carry the meaning. -->
           <svg class="cv-mark" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-            <rect x="8.5" y="9" width="4.5" height="30" rx="1.6" fill="var(--cv-copper)" />
-            <rect x="15.5" y="9" width="23" height="7.5" rx="1.8" fill="var(--cv-copper)" />
+            <rect x="8.5" y="9" width="4.5" height="30" rx="1.6" fill="var(--cv-accent)" />
+            <rect x="15.5" y="9" width="23" height="7.5" rx="1.8" fill="var(--cv-accent)" />
             <rect x="20.5" y="20.25" width="8.5" height="7.5" rx="1.8" fill="var(--cv-patina)" />
-            <rect x="15.5" y="31.5" width="23" height="7.5" rx="1.8" fill="var(--cv-copper)" />
+            <rect x="15.5" y="31.5" width="23" height="7.5" rx="1.8" fill="var(--cv-accent)" />
             <circle cx="34.5" cy="24" r="4" fill="var(--gold)" />
           </svg>
           <div>
@@ -465,7 +469,7 @@
         <svg viewBox="0 0 340 300" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
           <g fill="none" stroke-width="1.5" stroke-linecap="round">
             <!-- CAPTURED: the clip that came back out, carrying its stamp -->
-            <rect x="96" y="10" width="150" height="48" rx="4" stroke="var(--cv-copper)" fill="var(--cv-copper-wash)" />
+            <rect x="96" y="10" width="150" height="48" rx="4" stroke="var(--cv-accent)" fill="var(--cv-accent-wash)" />
             <line x1="110" y1="28" x2="198" y2="28" stroke="var(--cv-parchment)" opacity="0.5" />
             <line x1="110" y1="40" x2="174" y2="40" stroke="var(--cv-parchment)" opacity="0.5" />
             <circle cx="224" cy="34" r="11" stroke="var(--gold)" fill="rgba(214, 168, 79, 0.12)" />
@@ -473,7 +477,7 @@
             <circle cx="224" cy="34" r="1.8" stroke="none" fill="var(--gold)" />
 
             <!-- the path back to the drawer it was pulled from -->
-            <line x1="171" y1="58" x2="171" y2="86" stroke="var(--cv-copper)" stroke-dasharray="4 5" opacity="0.75" />
+            <line x1="171" y1="58" x2="171" y2="86" stroke="var(--cv-accent)" stroke-dasharray="4 5" opacity="0.75" />
 
             <!-- RETAINED HISTORY: the cabinet. One drawer keyed, the rest at
                  rest. Each front carries a label plate on the left and a pull
@@ -484,16 +488,16 @@
             <rect x="52" y="108" width="60" height="16" rx="2" stroke="var(--cv-line)" />
             <line x1="246" y1="116" x2="286" y2="116" stroke="var(--cv-line)" stroke-width="2.5" />
 
-            <rect x="40" y="142" width="260" height="40" rx="3" stroke="var(--cv-copper)" fill="var(--cv-copper-wash)" />
+            <rect x="40" y="142" width="260" height="40" rx="3" stroke="var(--cv-accent)" fill="var(--cv-accent-wash)" />
             <rect x="52" y="154" width="60" height="16" rx="2" stroke="var(--cv-parchment)" fill="var(--cv-parchment-soft)" />
-            <line x1="246" y1="162" x2="286" y2="162" stroke="var(--cv-copper)" stroke-width="3" />
+            <line x1="246" y1="162" x2="286" y2="162" stroke="var(--cv-accent)" stroke-width="3" />
 
             <rect x="40" y="188" width="260" height="40" rx="3" stroke="var(--cv-line)" />
             <rect x="52" y="200" width="60" height="16" rx="2" stroke="var(--cv-line)" />
             <line x1="246" y1="208" x2="286" y2="208" stroke="var(--cv-line)" stroke-width="2.5" />
 
             <!-- RETRIEVAL: down to the receipt the retrieval leaves behind -->
-            <line x1="171" y1="242" x2="171" y2="256" stroke="var(--cv-copper)" stroke-dasharray="4 5" opacity="0.75" />
+            <line x1="171" y1="242" x2="171" y2="256" stroke="var(--cv-accent)" stroke-dasharray="4 5" opacity="0.75" />
 
             <!-- RECEIPT: perforated strip, stamped -->
             <rect x="96" y="258" width="150" height="34" rx="3" stroke="var(--cv-patina)" fill="var(--cv-patina-wash)" />
@@ -525,6 +529,28 @@
           <span class="cv-flow-note">Search it, paste it back with Quick Paste, or export it with a stamped receipt.</span>
         </li>
       </ol>
+    </section>
+
+    <section class="product-section" aria-labelledby="evidence-title">
+      <div class="section-head">
+        <h2 id="evidence-title">The product, in use</h2>
+        <p>Screenshots from the real application, running on a clean local profile.</p>
+      </div>
+      <div class="cv-evidence-gallery">
+        <figure class="cv-evidence-shot">
+          <img src="/assets/cache-vault/cv-all-clips.png" alt="Cache Vault All Clips view showing the clipboard history list with search, filters, and the preview pane." width="1650" height="1075" loading="lazy" />
+          <figcaption>All Clips — the full history view. Search, type filters, and the preview pane operate on the local store only.</figcaption>
+        </figure>
+        <figure class="cv-evidence-shot">
+          <img src="/assets/cache-vault/cv-cleanup-suggestions.png" alt="Cache Vault Vault Cleanup Suggestions screen showing a duplicate clip group ready for review." width="1650" height="1075" loading="lazy" onerror="this.closest('figure').style.display='none'" />
+          <figcaption>Vault Cleanup Suggestions — the scan runs only when asked, and surfaces duplicate groups for review before anything is removed.</figcaption>
+        </figure>
+        <figure class="cv-evidence-shot">
+          <img src="/assets/cache-vault/cv-quick-paste.png" alt="Cache Vault Quick Paste popup showing recent clips with a search box and keyboard-first navigation." width="700" height="682" loading="lazy" />
+          <figcaption>Quick Paste — keyboard-first popup for pasting a recent clip without leaving the current window.</figcaption>
+        </figure>
+      </div>
+      <p class="note">Screenshots are from the {{product.versionLabel}} Desktop application running against an isolated profile with fixture data. No production content is shown.</p>
     </section>
 
     <section id="how-it-works" class="product-section" aria-labelledby="what-title">
@@ -611,6 +637,14 @@
           <p>Verify the production-signed CacheVault Mobile v0.2.0 APK before installing it.</p>
           <div class="code-block">{{product.artifacts.1.sha256}}</div>
           <p class="note">Published in the <a href="https://github.com/lazelife420-spec/CacheVault/releases/download/v0.2.0/SHA256SUMS.txt" target="_blank" rel="noopener">v0.2.0 companion SHA256SUMS.txt</a> on GitHub.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Stamp receipt ledger</h3>
+          <p>The receipt ledger records events for every clip: created, copied, exported, pinned, moved, and expired — with the timestamp and the action that produced each event.</p>
+          <figure class="cv-evidence-shot">
+            <img src="/assets/cache-vault/cv-stamped-receipts.png" alt="Cache Vault Stamped Receipts screen showing the per-event ledger with timestamps." width="1650" height="1075" loading="lazy" />
+            <figcaption>Stamped Receipts — a per-event ledger, not a summary. Every action on a clip is recorded and inspectable.</figcaption>
+          </figure>
         </article>
         <article class="detail-card">
           <h3>Release evidence</h3>
