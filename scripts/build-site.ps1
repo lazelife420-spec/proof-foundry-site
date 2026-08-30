@@ -33,7 +33,12 @@ param(
   # invariant tests exercise fixture data without ever writing to the canonical
   # site-manifest.json or the real public/ tree.
   [string]$ManifestPath,
-  [string]$OutDir
+  [string]$OutDir,
+  # Same purpose for the brand authority pair, so the brand invariant tests can
+  # exercise mutated palettes without ever writing to the canonical theme or
+  # stylesheet.
+  [string]$ThemePath,
+  [string]$StylesPath
 )
 
 $ErrorActionPreference = 'Stop'
@@ -44,6 +49,11 @@ Set-Location $root
 $manifestPath = if ($ManifestPath) { (Resolve-Path $ManifestPath).Path } else { Join-Path $root 'site-manifest.json' }
 $partialsDir  = Join-Path $root 'partials'
 $publicDir    = if ($OutDir) { $OutDir } else { Join-Path $root 'public' }
+# An override that does not exist is passed through unresolved on purpose: a
+# missing brand input has to surface as a named [brand] validation error, not as
+# a Resolve-Path exception thrown before the validation block is reached.
+$themePath  = if ($ThemePath)  { if (Test-Path $ThemePath)  { (Resolve-Path $ThemePath).Path }  else { $ThemePath } }  else { Join-Path $root 'brand/proof-foundry.theme.json' }
+$stylesPath = if ($StylesPath) { if (Test-Path $StylesPath) { (Resolve-Path $StylesPath).Path } else { $StylesPath } } else { Join-Path $root 'styles.css' }
 
 if (-not (Test-Path $manifestPath)) { throw "site-manifest.json not found at $manifestPath" }
 # -Encoding UTF8 is mandatory: site-manifest.json is UTF-8 and contains non-ASCII
@@ -355,12 +365,153 @@ foreach ($tpl in @(Get-ChildItem -Path $root -Filter '*.html' -File)) {
   }
 }
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Brand token authority
+# ─────────────────────────────────────────────────────────────────────────────
+# brand/proof-foundry.theme.json declares the palette authority, but until this
+# block nothing read it: styles.css restates the same colours as literals, so the
+# two surfaces could drift with nothing failing. They did. Commit 3af93a2
+# corrected proof_teal in *both* files at once, meaning they agreed with each
+# other while both were wrong — so cross-file equality alone cannot catch this
+# class of defect, and the canonical values are pinned here as well.
+#
+# Hex comparison is case-insensitive throughout (PowerShell -eq/-ne on strings):
+# the property being protected is the colour, not its spelling, so lowercase
+# authoring is not treated as drift.
+#
+# Scope is house tokens only. Product namespaces (--gl-*, --cv-*, --rg-*, --lo-*,
+# --cln-*, --fc-*, --ps-*) live in their own page <style> blocks and are
+# deliberately unpoliced; Cleanroom's --cln-gold legitimately restates the house
+# gold value, and a diversity rule would reject it.
+$brandOk = $true
+$theme   = $null
+
+if (-not (Test-Path $themePath)) {
+  $errors += "[brand] theme file not found at $themePath"
+  $brandOk = $false
+} else {
+  try {
+    $theme = Get-Content $themePath -Raw -Encoding UTF8 | ConvertFrom-Json
+  } catch {
+    $errors += "[brand] theme file at $themePath is not valid JSON: $($_.Exception.Message)"
+    $brandOk = $false
+  }
+}
+if ($brandOk -and ((-not $theme.palette) -or (-not $theme.css_variables))) {
+  $errors += "[brand] theme file at $themePath is missing the required 'palette' and/or 'css_variables' object"
+  $brandOk = $false
+}
+
+$rootDecls = @{}
+if (-not (Test-Path $stylesPath)) {
+  $errors += "[brand] shared stylesheet not found at $stylesPath"
+  $brandOk = $false
+} else {
+  $cssText   = [System.IO.File]::ReadAllText($stylesPath)
+  # :root holds no nested braces, so the first closing brace terminates it.
+  $rootMatch = [regex]::Match($cssText, ':root\s*\{([^}]*)\}')
+  if (-not $rootMatch.Success) {
+    $errors += "[brand] shared stylesheet at $stylesPath declares no :root block; shared house tokens cannot be resolved"
+    $brandOk = $false
+  } else {
+    foreach ($d in [regex]::Matches($rootMatch.Groups[1].Value, '(--[a-z0-9-]+)\s*:\s*([^;]+);')) {
+      $rootDecls[$d.Groups[1].Value] = $d.Groups[2].Value.Trim()
+    }
+  }
+}
+
+if ($brandOk) {
+  # Pinned canonical house values.
+  $canonicalHouse = [ordered]@{
+    'proof_teal'    = '#00D1B2'
+    'stamp_gold'    = '#D6A84F'
+    'foundry_black' = '#0B0F14'
+    'iron_gray'     = '#1C232B'
+    'receipt_white' = '#F4F7F8'
+    'warning_red'   = '#E5484D'
+  }
+  foreach ($k in $canonicalHouse.Keys) {
+    $actual = $theme.palette.$k
+    if ([string]::IsNullOrWhiteSpace($actual)) {
+      $errors += "[brand] palette.$k is missing; the canonical Proof Foundry value is $($canonicalHouse[$k])"
+    } elseif ($actual -ne $canonicalHouse[$k]) {
+      $errors += "[brand] palette.$k is '$actual' but the canonical Proof Foundry value is $($canonicalHouse[$k])"
+    }
+  }
+
+  # The theme states every house colour twice (palette + css_variables). Only
+  # pairs the file itself names identically are checked; --pf-line has no palette
+  # counterpart and is deliberately not given an invented one.
+  $intraFile = [ordered]@{
+    'proof_teal'    = '--pf-teal'
+    'stamp_gold'    = '--pf-gold'
+    'foundry_black' = '--pf-black'
+    'iron_gray'     = '--pf-iron'
+    'receipt_white' = '--pf-white'
+    'warning_red'   = '--pf-red'
+    'deep_field'    = '--pf-field'
+    'panel'         = '--pf-panel'
+    'muted_steel'   = '--pf-muted'
+  }
+  foreach ($k in $intraFile.Keys) {
+    $var = $intraFile[$k]
+    $pv  = $theme.palette.$k
+    $cv  = $theme.css_variables.$var
+    if ([string]::IsNullOrWhiteSpace($cv)) {
+      $errors += "[brand] theme css_variables is missing $var, the declared alias of palette.$k"
+    } elseif ($pv -ne $cv) {
+      $errors += "[brand] theme disagrees with itself: palette.$k is '$pv' but css_variables.$var is '$cv'"
+    }
+  }
+
+  # Theme to shared stylesheet, limited to aliases styles.css actually declares.
+  $crossFile = [ordered]@{
+    '--teal'    = 'proof_teal'
+    '--gold'    = 'stamp_gold'
+    '--bg'      = 'foundry_black'
+    '--text'    = 'receipt_white'
+    '--panel'   = 'panel'
+    '--bg-deep' = 'deep_field'
+    '--muted'   = 'muted_steel'
+  }
+  foreach ($var in $crossFile.Keys) {
+    $k = $crossFile[$var]
+    if (-not $rootDecls.ContainsKey($var)) {
+      $errors += "[brand] styles.css :root does not declare $var, the shared alias of palette.$k"
+    } elseif ($rootDecls[$var] -ne $theme.palette.$k) {
+      $errors += "[brand] styles.css $var is '$($rootDecls[$var])' but the theme declares palette.$k as '$($theme.palette.$k)'"
+    }
+  }
+  # --line is a css_variables-only token; the palette has no counterpart for it.
+  $pfLine = $theme.css_variables.'--pf-line'
+  if (-not $rootDecls.ContainsKey('--line')) {
+    $errors += "[brand] styles.css :root does not declare --line, the shared alias of css_variables.--pf-line"
+  } elseif ($rootDecls['--line'] -ne $pfLine) {
+    $errors += "[brand] styles.css --line is '$($rootDecls['--line'])' but the theme declares css_variables.--pf-line as '$pfLine'"
+  }
+
+  # Named historical regression. #B9823F is the superseded copper that occupied
+  # Proof Teal before 3af93a2. Scoped to Proof Teal and its aliases only: copper
+  # is not a banned colour, it is simply not this token's value.
+  $copper = '#B9823F'
+  $tealSurfaces = @(
+    @{ Surface = 'theme palette.proof_teal';      Value = $theme.palette.proof_teal }
+    @{ Surface = 'theme css_variables.--pf-teal'; Value = $theme.css_variables.'--pf-teal' }
+    @{ Surface = 'styles.css :root --teal';       Value = $(if ($rootDecls.ContainsKey('--teal')) { $rootDecls['--teal'] } else { $null }) }
+  )
+  foreach ($s in $tealSurfaces) {
+    if ($s.Value -and ($s.Value -eq $copper)) {
+      $errors += "[brand] $($s.Surface) is the superseded copper $copper; Proof Teal was corrected to #00D1B2 in 3af93a2 and must not regress"
+    }
+  }
+}
+
 if ($errors.Count -gt 0) {
   Write-Host "==> MANIFEST VALIDATION FAILED" -ForegroundColor Red
   $errors | ForEach-Object { Write-Host "   - $_" -ForegroundColor Red }
   exit 1
 }
-Write-Host "==> Manifest validated: $($manifest.products.Count) products, $($errors.Count) errors" -ForegroundColor Green
+Write-Host "==> Manifest + brand tokens validated: $($manifest.products.Count) products, $($errors.Count) errors" -ForegroundColor Green
 
 if ($ValidateOnly) { exit 0 }
 
@@ -1153,7 +1304,7 @@ Write-Host "==> Generated proof registry: /proof/index.json" -ForegroundColor Gr
 
 # Copy static assets
 # ─────────────────────────────────────────────────────────────────────────────
-Copy-Item (Join-Path $root 'styles.css')     $publicDir -Force
+Copy-Item $stylesPath                        $publicDir -Force
 if (Test-Path (Join-Path $root 'site.js'))   { Copy-Item (Join-Path $root 'site.js') $publicDir -Force }
 Copy-Item (Join-Path $root 'CNAME')          $publicDir -Force
 Copy-Item (Join-Path $root 'robots.txt')     $publicDir -Force
