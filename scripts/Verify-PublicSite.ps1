@@ -243,6 +243,43 @@ function Test-Asset {
     }
 }
 
+# Cache Vault expectations are derived from site-manifest.json instead of pinned
+# here. The previous hardcoded set drifted to v0.2.0 while the manifest and the
+# product repo had both moved to v0.2.2, so the verifier would have failed a
+# correct site. Product-repo authority for v0.2.2 was re-proven independently:
+# annotated tag v0.2.2 peels to 20bb01e, the published GitHub release carries
+# CacheVault-v0.2.2-windows.zip, and that artifact hashes to the manifest sha256.
+$siteRoot = Split-Path -Parent $PSScriptRoot
+$manifestPath = Join-Path $siteRoot 'site-manifest.json'
+if (-not (Test-Path $manifestPath)) {
+    Write-Host "==> VERIFICATION ABORTED: site-manifest.json not found at $manifestPath" -ForegroundColor Red
+    exit 1
+}
+$manifest = Get-Content $manifestPath -Raw | ConvertFrom-Json
+$cacheVault = $manifest.products | Where-Object { $_.name -eq 'Cache Vault' }
+if (-not $cacheVault) {
+    Write-Host "==> VERIFICATION ABORTED: no 'Cache Vault' product in site-manifest.json" -ForegroundColor Red
+    exit 1
+}
+# Selected by platform rather than array position so adding an artifact cannot
+# silently repoint the Windows assertions at the Android companion.
+$cvWindows = $cacheVault.artifacts | Where-Object { $_.platform -eq 'Windows' }
+if (-not $cvWindows -or -not $cvWindows.filename -or -not $cvWindows.sha256) {
+    Write-Host "==> VERIFICATION ABORTED: Cache Vault Windows artifact incomplete in site-manifest.json" -ForegroundColor Red
+    exit 1
+}
+$cvStateLabel = $manifest.stateLabels.PSObject.Properties[$cacheVault.state].Value
+# Last two URL segments give the versioned release path, e.g. v0.2.2/CacheVault-v0.2.2-windows.zip
+$cvReleasePath = ($cvWindows.downloadUrl -split '/' | Select-Object -Last 2) -join '/'
+$cvExpected = @(
+    [regex]::Escape($cacheVault.name)
+    [regex]::Escape($cacheVault.downloadLabel)
+    [regex]::Escape($cvStateLabel)
+    [regex]::Escape($cvReleasePath)
+    [regex]::Escape($cvWindows.sha256)
+)
+Write-Host "Cache Vault expectations (from manifest): v$($cacheVault.release.publicVersion), $($cvWindows.filename)" -ForegroundColor Cyan
+
 # Run the assertions
 foreach ($target in $Targets) {
     Write-Host "`n---> Testing target: $target"
@@ -288,9 +325,10 @@ foreach ($target in $Targets) {
 
     # 9. New internal product routes (canonical, no off-site jumps)
     Test-UrlContent -Url "$target/reality-gate/" -ContainsPatterns @("Reality Gate", "Developer Pilot", "58cc27d22bdee8157ee4598e116e17ff42d0efc95630c97bee4b2bc6be6ce756") -NotContainsPatterns @("SkyFoundry")
-    # Pinned to Cache Vault v0.2.0 release truth: product, versioned download action, state,
-    # download target, and published hash. "Get Cache Vault" was the v0.1.9 CTA and must not return.
-    Test-UrlContent -Url "$target/cache-vault/" -ContainsPatterns @("Cache Vault", "Download v0\.2\.0 \(Windows\)", "Public release", "v0\.2\.0/CacheVault-v0\.2\.0-windows\.zip", "84471c92b84b4414dc59b03170321c388cdf70c4a02918b7294af3c8cde12c12") -NotContainsPatterns @("SkyFoundry", "Get Cache Vault")
+    # Product name, versioned download action, state label, versioned download
+    # target, and published hash, all derived from the manifest above.
+    # "Get Cache Vault" was the v0.1.9 CTA and must not return.
+    Test-UrlContent -Url "$target/cache-vault/" -ContainsPatterns $cvExpected -NotContainsPatterns @("SkyFoundry", "Get Cache Vault")
     Test-UrlContent -Url "$target/cache-vault" -ContainsPatterns @("Cache Vault") -NotContainsPatterns @("SkyFoundry") -FollowRedirects $true
     Test-UrlRedirect -Url "$target/cache-vault" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/cache-vault/"
     Test-UrlRedirect -Url "$target/cache-vault.html" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/cache-vault/"
