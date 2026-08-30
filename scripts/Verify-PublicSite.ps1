@@ -1,7 +1,11 @@
 ﻿param(
     [string[]]$Targets = @("https://theprooffoundry.com", "https://www.theprooffoundry.com", "https://proof-foundry-site.pages.dev"),
-    [string]$ApkUrl = "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk",
-    [string]$ShaUrl = "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk.sha256.txt",
+    # Must match the canonical downloadUrl/sha256Url in site-manifest.json. These
+    # values are echoed into the generated deploy receipt, so a raw provider
+    # hostname here republishes itself on every verification run. build-site.ps1
+    # rejects raw .r2.dev in canonical manifest URLs for the same reason.
+    [string]$ApkUrl = "https://downloads.theprooffoundry.com/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk",
+    [string]$ShaUrl = "https://downloads.theprooffoundry.com/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk.sha256.txt",
     [string]$ExpectedSha = "50ABE59E52B6DC7E8649C0CA63EB065425F8EDC607187E3844D90CE5F1EED833"
 )
 
