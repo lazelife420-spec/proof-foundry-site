@@ -279,8 +279,8 @@
       "artifacts": [
         {
           "filename": "Lights-Out-Portable-v11.1.3-win-x64.zip",
-          "sizeBytes": null,
-          "sha256": "cc3ab6a78d08a6ae17092f0dc79a3ec5f916b7a6ceb27b16307698a62f94add3",
+          "sizeBytes": 158683782,
+          "sha256": "c7872350101906471e83d8c0649e1e65c5f9baa4591e0c02ccfd8780215726d6",
           "downloadUrl": null,
           "sha256Url": null,
           "signingStatus": "UNSIGNED",
@@ -288,9 +288,9 @@
           "distType": "Portable ZIP (unsigned)"
         },
         {
-          "filename": "Lights-Out-v11.1.3-rc3-Reality-Gate-ProofBundle.zip",
-          "sizeBytes": 158591050,
-          "sha256": "176bd7ef53cdab57e0a27e844820ba0f7704cd547937a3eabecad3144eab163d",
+          "filename": "Lights-Out-v11.1.3-rc4-Reality-Gate-ProofBundle.zip",
+          "sizeBytes": 158534697,
+          "sha256": "2b7b15b3e7138185617a3263f6435572d8160948dd533420c0893f18aa75e192",
           "downloadUrl": null,
           "sha256Url": null,
           "signingStatus": "UNSIGNED",
@@ -300,14 +300,14 @@
       ],
       "verification": {
         "status": "VERIFIED",
-        "verifiedAt": "2026-08-26",
+        "verifiedAt": "2026-09-01",
         "verificationType": [
           "ARTIFACT_HASH_PUBLISHED",
           "ARTIFACT_HASH_VERIFIED",
           "RUNTIME_VALIDATION",
           "REALITY_GATE"
         ],
-        "receiptId": "cfb87394-5d3c-4763-aa66-b89500b858f7",
+        "receiptId": "6b67a712-33ba-4cd6-9c4a-81e66f056750",
         "receiptUrl": null
       },
       "tests": [
@@ -318,7 +318,7 @@
       ],
       "evidence": [
         {
-          "label": "Reality Gate receipt cfb87394...",
+          "label": "Reality Gate receipt 6b67a712...",
           "url": null
         }
       ],
@@ -332,19 +332,19 @@
       "downloadLabel": "",
       "disabledDownloadLabel": "Release pending owner authorization",
       "distType": "Portable ZIP (unsigned)",
-      "build": "Electron v11.1.3 · Android Companion v11.1.1",
-      "sha256": "cc3ab6a78d08a6ae17092f0dc79a3ec5f916b7a6ceb27b16307698a62f94add3",
+      "build": "Electron v11.1.3 · Android Companion v11.1.3",
+      "sha256": "c7872350101906471e83d8c0649e1e65c5f9baa4591e0c02ccfd8780215726d6",
       "sha256Url": null,
       "testStatus": "20/20 Reality Gate",
-      "testCount": "Reality Gate Runroom validation: 20 of 20 steps passed on the exact v11.1.3 rc3 source/artifact pairing, including real physical Android companion automation.",
-      "releaseNote": "Lights Out v11.1.3 (source commit c6736ec2, artifact SHA-256 cc3ab6a7...) passed a full Reality Gate Runroom validation: 20 of 20 steps, cryptographically signed receipt independently verified GREEN, real physical Samsung Galaxy S23 companion automation, 0 provider operations, 0 real power actions. This is a Reality-Gate-verified, unsigned Windows portable build -- it is not code-signed, and it is not a re-verification of the earlier, separately frozen v11.1.2 GitHub release ZIP (which remains blocked from anonymous GitHub access for unrelated account-level reasons). Public release awaits separate owner authorization.",
+      "testCount": "Reality Gate Runroom validation: 20 of 20 steps passed on the exact v11.1.3 rc4 source/artifact pairing, including real physical Android companion automation.",
+      "releaseNote": "Lights Out v11.1.3 RC4 (source commit f9048c3, artifact SHA-256 c7872350...) passed a fresh full Reality Gate Runroom validation: 20 of 20 steps, cryptographically signed receipt independently verified GREEN, real physical Samsung Galaxy S23 companion automation, and the production-signed Android companion v11.1.3 passed the full physical Dry Run workflow the same day (0 provider operations, 0 real power actions). RC4 is the current candidate iteration of the post-RC3 work; the Windows bytes are new while the launcher remains byte-identical to RC3 because all candidate changes live in the app payload. This is a Reality-Gate-verified, unsigned Windows portable build -- it is not code-signed, and it is not a re-verification of the earlier, separately frozen v11.1.2 GitHub release ZIP (which remains blocked from anonymous GitHub access for unrelated account-level reasons). Public release awaits separate owner authorization.",
       "proofStatus": "Reality Gate verified · unsigned",
-      "lastVerified": "2026-08-26",
+      "lastVerified": "2026-09-01",
       "proofLinks": [
         "/reports/deploy-receipts/2026-06-30-proof-foundry-site.md"
       ],
       "currentLocalVersion": "11.1.3",
-      "companionVersion": "11.1.1"
+      "companionVersion": "11.1.3"
     },
     {
       "id": "cleanroom",
