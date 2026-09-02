@@ -630,7 +630,7 @@
           <h3>Desktop artifact checksum</h3>
           <p>Verify the {{product.versionLabel}} Windows ZIP before running it.</p>
           {{product.hashBlock}}
-          <p class="note">SHA-256 published with the <a href="https://github.com/lazelife420-spec/CacheVault/releases/tag/v0.2.2" target="_blank" rel="noopener">v0.2.2 release</a> on GitHub.</p>
+          <p class="note">SHA-256 published in the <a href="{{product.sha256Url}}" target="_blank" rel="noopener">candidate SHA256SUMS.txt</a> on Proof Foundry downloads.</p>
         </article>
         <article class="detail-card">
           <h3>Android companion checksum</h3>
@@ -649,9 +649,11 @@
         <article class="detail-card">
           <h3>Release evidence</h3>
           <ul>
-            <li><a href="https://github.com/lazelife420-spec/CacheVault/releases/tag/v0.2.2" target="_blank" rel="noopener">Desktop release (GitHub)</a> (v0.2.2 Windows ZIP)</li>
+            <li><a href="{{product.downloadUrl}}" target="_blank" rel="noopener">Candidate download</a> ({{product.artifacts.0.filename}})</li>
+            <li><a href="{{product.sha256Url}}" target="_blank" rel="noopener">Candidate SHA256SUMS.txt</a> (Proof Foundry downloads)</li>
+            <li><a href="https://theprooffoundry.com/downloads/cache-vault/v0.2.3-rc1/CACHEVAULT_V0.2.3RC1_CANONICAL_RECEIPT.json" target="_blank" rel="noopener">Canonical gate receipt</a> (Reality Gate, 20260901-172536-canonical-05b9ae3)</li>
             <li><a href="https://github.com/lazelife420-spec/CacheVault/releases/download/v0.2.0/SHA256SUMS.txt" target="_blank" rel="noopener">Companion SHA256SUMS.txt</a> (v0.2.0 Android APK)</li>
-            <li>Test suite: {{product.testStatus}} on the v0.2.2 release</li>
+            <li>Test suite: {{product.testStatus}}</li>
             <li>Companion signing continuity and pairing verified on a physical Samsung Galaxy S23</li>
           </ul>
         </article>
@@ -666,12 +668,12 @@
       </div>
       <div class="detail-grid">
         <article class="detail-card">
-          <h3>Current public release</h3>
-          <p>{{product.versionLabel}} is the public desktop release, paired with the public CacheVault Mobile v0.2.0 Android companion. Android v0.2.1 is qualified and publication is on hold. The Windows build is not code-signed, so SmartScreen may prompt on first launch — verify the checksum above first.</p>
+          <h3>Release state</h3>
+          <p>{{product.versionLabel}}-rc1 is a Reality Gate canonical-proven release candidate served from Proof Foundry downloads. Cache Vault v0.2.2 remains the last public desktop release (its GitHub release is currently blocked from anonymous access). The public CacheVault Mobile v0.2.0 Android companion is unchanged; Android v0.2.1 is qualified and publication is on hold. The Windows build is not code-signed, so SmartScreen may prompt on first launch — verify the checksum above first.</p>
         </article>
         <article class="detail-card">
           <h3>Distribution source</h3>
-          <p>The v0.2.2 Windows ZIP is published as a GitHub release. Verify the SHA-256 checksum above against the release before installing it.</p>
+          <p>The v0.2.3-rc1 Windows ZIP is served from Proof Foundry downloads with its published SHA-256 checksum and canonical gate receipt. Verify the SHA-256 checksum above before installing it.</p>
         </article>
         <article class="detail-card">
           <h3>Command Center scope is frozen</h3>
@@ -683,7 +685,7 @@
     <section id="download" class="product-section" aria-labelledby="download-title">
       <div class="section-head">
         <h2 id="download-title">Download / Founder</h2>
-        <p>The desktop v0.2.2 Windows ZIP and the Android companion v0.2.0 APK are both published as GitHub releases.</p>
+        <p>The desktop v0.2.3-rc1 candidate Windows ZIP is served from Proof Foundry downloads; the Android companion v0.2.0 APK remains on its GitHub release.</p>
       </div>
       <div class="download-group">
         {{product.downloadBlock}}

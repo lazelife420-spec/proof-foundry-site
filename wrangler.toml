@@ -5,3 +5,9 @@
 name = "proof-foundry-site"
 compatibility_date = "2026-06-30"
 pages_build_output_dir = "public"
+
+# R2 binding for the /downloads/* Pages Function (functions/downloads/[[path]].js).
+# Serves release artifacts that exceed the Pages 25 MiB static-file cap.
+[[r2_buckets]]
+binding = "DOWNLOADS"
+bucket_name = "proof-foundry-downloads"
