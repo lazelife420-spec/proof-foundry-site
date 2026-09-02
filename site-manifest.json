@@ -552,37 +552,41 @@
         "Android"
       ],
       "platform": "Android",
-      "summary": "Day-planning weather: what to wear, when to go outside, what to bring or skip, and why. Decision-first Today screen, verified with 724 tests.",
+      "summary": "Day-planning weather: what to wear, when to go outside, what to bring or skip, and why. Decision-first Today screen, verified with 883 tests.",
       "cardSummary": "Day-planning weather intelligence: what to wear, when to go outside, and what to bring or skip.",
       "markSvg": "<div class=\"card-mark\" aria-hidden=\"true\"><svg viewBox=\"0 0 120 120\" xmlns=\"http://www.w3.org/2000/svg\" width=\"100%\" height=\"100%\"><defs><linearGradient id=\"fcCardMarkGold\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0%\" stop-color=\"#d6a84f\"/><stop offset=\"100%\" stop-color=\"#9f7e3b\"/></linearGradient></defs><rect x=\"14\" y=\"14\" width=\"92\" height=\"92\" rx=\"16\" fill=\"#0b0f14\" fill-opacity=\"0.95\" stroke=\"#1e2c3a\" stroke-width=\"1.5\"/><line x1=\"42\" y1=\"34\" x2=\"42\" y2=\"86\" stroke=\"#3fbf94\" stroke-width=\"6\" stroke-linecap=\"round\"/><line x1=\"42\" y1=\"38\" x2=\"82\" y2=\"38\" stroke=\"#3fbf94\" stroke-width=\"6\" stroke-linecap=\"round\"/><line x1=\"42\" y1=\"60\" x2=\"70\" y2=\"60\" stroke=\"#3fbf94\" stroke-width=\"5\" stroke-linecap=\"round\"/><line x1=\"30\" y1=\"82\" x2=\"90\" y2=\"82\" stroke=\"#1e2c3a\" stroke-width=\"2\" stroke-dasharray=\"4 4\"/><circle cx=\"70\" cy=\"60\" r=\"4.5\" fill=\"url(#fcCardMarkGold)\"/></svg></div>",
       "cta": "View product",
       "visible": true,
       "release": {
-        "publicVersion": "0.3.3",
-        "candidateVersion": "0.3.4",
-        "releaseStatus": "FROZEN",
-        "publishedAt": "2026-08-28"
+        "publicVersion": "0.3.4",
+        "candidateVersion": null,
+        "releaseStatus": "PUBLIC_RELEASE",
+        "publishedAt": "2026-09-01"
       },
       "artifacts": [
         {
-          "filename": "ForgeCast-Weather-v0.3.3-android-release.apk",
-          "sizeBytes": null,
-          "sha256": "50abe59e52b6dc7e8649c0ca63eb065425f8edc607187e3844d90ce5f1eed833",
-          "downloadUrl": "https://downloads.theprooffoundry.com/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk",
-          "sha256Url": "https://downloads.theprooffoundry.com/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk.sha256.txt",
-          "signingStatus": "DEBUG_SIGNED",
+          "filename": "ForgeCast-Weather-v0.3.4-android-release.apk",
+          "sizeBytes": 77288896,
+          "sha256": "bd065c48c5519f3658c955abbbdad987f3840b4a774d9f3786315a79a92b1354",
+          "downloadUrl": "https://downloads.theprooffoundry.com/forgecast/v0.3.4/ForgeCast-Weather-v0.3.4-android-release.apk",
+          "sha256Url": "https://downloads.theprooffoundry.com/forgecast/v0.3.4/ForgeCast-Weather-v0.3.4-android-release.apk.sha256.txt",
+          "signingStatus": "PRODUCTION_SIGNED",
           "platform": "Android",
-          "distType": "Android APK Package (DebugSigned)"
+          "distType": "Android APK Package (private production signing identity)"
         }
       ],
       "verification": {
         "status": "VERIFIED",
-        "verifiedAt": "2026-08-28",
+        "verifiedAt": "2026-09-01",
         "verificationType": [
           "ARTIFACT_HASH_PUBLISHED",
           "ARTIFACT_HASH_VERIFIED",
+          "ARTIFACT_CUSTODY",
           "RUNTIME_VALIDATION",
-          "PUBLIC_DOWNLOAD"
+          "REALITY_GATE",
+          "PUBLIC_DOWNLOAD",
+          "CODE_SIGNING",
+          "RELEASE_AUTHORIZATION"
         ],
         "receiptId": null,
         "receiptUrl": null
@@ -590,33 +594,42 @@
       "tests": [
         {
           "label": "Full suite",
-          "result": "724/724"
+          "result": "883/883"
         }
       ],
       "evidence": [
         {
-          "label": "SHA256SUMS",
-          "url": "https://downloads.theprooffoundry.com/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk.sha256.txt"
+          "label": "APK download (Proof Foundry)",
+          "url": "https://downloads.theprooffoundry.com/forgecast/v0.3.4/ForgeCast-Weather-v0.3.4-android-release.apk"
+        },
+        {
+          "label": "SHA256SUMS (Proof Foundry)",
+          "url": "https://downloads.theprooffoundry.com/forgecast/v0.3.4/ForgeCast-Weather-v0.3.4-android-release.apk.sha256.txt"
+        },
+        {
+          "label": "GitHub release v0.3.4",
+          "url": "https://github.com/lazelife420-spec/ForgeCast/releases/tag/v0.3.4"
         }
       ],
       "limits": [
-        "APK is DebugSigned for sideload, not a Google Play production signature.",
-        "Source has advanced locally to v0.3.4 (859 tests passed, publication on hold for successor signing).",
-        "Checksum is not a code signature; debug signing is not a publisher trust claim."
+        "Users upgrading from ForgeCast v0.3.3 or earlier must uninstall the old app before installing v0.3.4: the new private signing identity rejects in-place updates (INSTALL_FAILED_UPDATE_INCOMPATIBLE, verified by migration test).",
+        "Because ForgeCast is local-first, uninstalling the old app removes app-local settings and other locally stored data unless separately preserved.",
+        "Checksum is not a code signature.",
+        "GitHub release assets may be unavailable to anonymous visitors due to an account-level restriction; Proof Foundry distribution is the authoritative public download path."
       ],
-      "downloadUrl": "https://downloads.theprooffoundry.com/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk",
-      "downloadLabel": "Download v0.3.3 (APK)",
-      "distType": "Android APK Package (DebugSigned)",
-      "build": "Android APK (v0.3.3 release build, DebugSigned for sideload)",
-      "sha256": "50abe59e52b6dc7e8649c0ca63eb065425f8edc607187e3844d90ce5f1eed833",
-      "sha256Url": "https://downloads.theprooffoundry.com/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk.sha256.txt",
-      "testStatus": "724/724",
-      "testCount": "724/724",
-      "releaseNote": "Public release v0.3.3 (Android APK, DebugSigned). Served via Proof Foundry distribution. Source has advanced locally to v0.3.4 (859 tests passed across 78 suites, publication on hold for successor signing).",
+      "downloadUrl": "https://downloads.theprooffoundry.com/forgecast/v0.3.4/ForgeCast-Weather-v0.3.4-android-release.apk",
+      "downloadLabel": "Download v0.3.4 (APK)",
+      "distType": "Android APK Package (private production signing identity)",
+      "build": "Android APK (v0.3.4 release build, new private ForgeCast signing identity)",
+      "sha256": "bd065c48c5519f3658c955abbbdad987f3840b4a774d9f3786315a79a92b1354",
+      "sha256Url": "https://downloads.theprooffoundry.com/forgecast/v0.3.4/ForgeCast-Weather-v0.3.4-android-release.apk.sha256.txt",
+      "testStatus": "883/883",
+      "testCount": "883/883",
+      "releaseNote": "Public release v0.3.4 (Android APK, new private signing identity). Idle animations now settle (1 frame / 12 s idle on device instead of ~121 fps continuous redraw), plan copy is day-aware, and location follows LAST EXPLICIT USER CHOICE WINS: a manual city beats late GPS across cold starts, and Detect Location re-authorizes GPS. Users upgrading from v0.3.3 or earlier must uninstall the old app first — in-place updates are rejected by the new signing identity, and uninstalling removes app-local settings and data unless separately preserved (verified by an actual migration test). Served via Proof Foundry distribution; the same bytes are attached to the v0.3.4 GitHub release.",
       "proofStatus": "verified",
-      "lastVerified": "2026-08-28",
+      "lastVerified": "2026-09-01",
       "proofLinks": [
-        "https://downloads.theprooffoundry.com/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk.sha256.txt"
+        "https://downloads.theprooffoundry.com/forgecast/v0.3.4/ForgeCast-Weather-v0.3.4-android-release.apk.sha256.txt"
       ],
       "currentLocalVersion": "0.3.4"
     },

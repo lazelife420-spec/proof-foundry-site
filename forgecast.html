@@ -287,8 +287,7 @@
         <p class="product-lede">{{product.summary}}</p>
 
         <div class="fc-truth-pills" aria-label="Release state baseline">
-          <span class="fc-pill fc-pill-public"><span class="fc-pill-dot"></span> Public Release: v0.3.3 (DebugSigned Android APK)</span>
-          <span class="fc-pill fc-pill-local"><span class="fc-pill-dot"></span> Local Work: v0.3.4 (859 tests passed · Publication hold)</span>
+          <span class="fc-pill fc-pill-public"><span class="fc-pill-dot"></span> Public Release: v0.3.4 (private signing identity · Android APK)</span>
         </div>
 
         <div class="download-group">{{product.downloadBlock}}</div>
@@ -441,7 +440,7 @@
           <ul>
             <li>Android 8+ (API 26+)</li>
             <li>Sideload / Install Unknown Apps permission enabled</li>
-            <li>DebugSigned build (Android displays sideload prompt)</li>
+            <li>APK signed with the new private ForgeCast signing identity (Android displays a sideload prompt)</li>
           </ul>
         </article>
         <article class="detail-card">
@@ -461,7 +460,7 @@
         <p>APK and SHA256 are served via Proof Foundry distribution storage.</p>
       </div>
       <div class="download-group">{{product.downloadBlock}}</div>
-      <p class="note">Public APK and checksum are currently served through Proof Foundry's distribution storage (DebugSigned for sideload release). Download the APK, verify its SHA-256 matches the checksum above, then install with your preferred Android installer.</p>
+      <p class="note">Public APK and checksum are served through Proof Foundry's distribution storage (new private ForgeCast signing identity). Users upgrading from v0.3.3 or earlier must uninstall the old ForgeCast app first — in-place updates are rejected by the new signing identity, and uninstalling removes app-local data unless separately preserved. Download the APK, verify its SHA-256 matches the checksum above, then install with your preferred Android installer.</p>
     </section>
 
     <section class="product-section other-products" aria-labelledby="other-title">

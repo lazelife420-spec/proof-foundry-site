@@ -4,9 +4,9 @@
     # values are echoed into the generated deploy receipt, so a raw provider
     # hostname here republishes itself on every verification run. build-site.ps1
     # rejects raw .r2.dev in canonical manifest URLs for the same reason.
-    [string]$ApkUrl = "https://downloads.theprooffoundry.com/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk",
-    [string]$ShaUrl = "https://downloads.theprooffoundry.com/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk.sha256.txt",
-    [string]$ExpectedSha = "50ABE59E52B6DC7E8649C0CA63EB065425F8EDC607187E3844D90CE5F1EED833"
+    [string]$ApkUrl = "https://downloads.theprooffoundry.com/forgecast/v0.3.4/ForgeCast-Weather-v0.3.4-android-release.apk",
+    [string]$ShaUrl = "https://downloads.theprooffoundry.com/forgecast/v0.3.4/ForgeCast-Weather-v0.3.4-android-release.apk.sha256.txt",
+    [string]$ExpectedSha = "BD065C48C5519F3658C955ABBBDAD987F3840B4A774D9F3786315A79A92B1354"
 )
 
 $ErrorActionPreference = "Stop"
