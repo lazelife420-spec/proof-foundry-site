@@ -299,7 +299,7 @@ foreach ($target in $Targets) {
     Test-UrlRedirect -Url "$target/lights-out.html" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/lights-out/"
     
     # 5. ForgeCast landing page
-    Test-UrlContent -Url "$target/forgecast/" -ContainsPatterns @("ForgeCast Weather", "v0.3.3", "50ABE59E52B6DC7E8649C0CA63EB065425F8EDC607187E3844D90CE5F1EED833", "724/724", "v030-today.png") -NotContainsPatterns @("SkyFoundry", "v0.2.9/ForgeCast-Weather-v0.2.9", "v0.3.2/ForgeCast-Weather-v0.3.2-android-release.apk")
+    Test-UrlContent -Url "$target/forgecast/" -ContainsPatterns @("ForgeCast Weather", "v0.3.4", "bd065c48c5519f3658c955abbbdad987f3840b4a774d9f3786315a79a92b1354", "883/883", "v030-today.png") -NotContainsPatterns @("SkyFoundry", "v0.2.9/ForgeCast-Weather-v0.2.9", "v0.3.2/ForgeCast-Weather-v0.3.2-android-release.apk", "v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk")
     Test-UrlContent -Url "$target/forgecast" -ContainsPatterns @("ForgeCast Weather", "v0.3.3") -NotContainsPatterns @("SkyFoundry", "v0.2.9/ForgeCast-Weather-v0.2.9", "v0.3.2/ForgeCast-Weather-v0.3.2-android-release.apk") -FollowRedirects $true
     if ($target -like "*theprooffoundry.com*") {
         Test-UrlContent -Url "$target/sitemap.xml" -ContainsPatterns @("https://theprooffoundry.com/reality-gate/", "https://theprooffoundry.com/cache-vault/", "https://theprooffoundry.com/lights-out/", "https://theprooffoundry.com/cleanroom/", "https://theprooffoundry.com/forgecast/", "https://theprooffoundry.com/proofshot/", "https://theprooffoundry.com/proof/")
