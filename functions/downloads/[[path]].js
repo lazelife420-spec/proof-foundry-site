@@ -39,6 +39,21 @@ async function serve(context, headOnly) {
   const segments = Array.isArray(params.path) ? params.path : [params.path];
   const key = segments.map(decodeURIComponent).join("/");
 
+  // TEMPORARY diagnostics — remove after binding verification.
+  if (key === "_diag") {
+    const bucket = env.DOWNLOADS;
+    const diag = { bindingPresent: Boolean(bucket), list: null, head: null, error: null };
+    try {
+      const l = await bucket.list({ prefix: "cache-vault/", limit: 10 });
+      diag.list = l.objects.map((o) => ({ key: o.key, size: o.size }));
+    } catch (e) { diag.error = String(e); }
+    try {
+      const h = await bucket.head("cache-vault/v0.2.3-rc1/SHA256SUMS.txt");
+      diag.head = h ? { size: h.size } : null;
+    } catch (e) { diag.error = String(e); }
+    return new Response(JSON.stringify(diag, null, 2), { status: 200, headers: { "Content-Type": "application/json" } });
+  }
+
   if (!ALLOWED_PREFIXES.some((prefix) => key.startsWith(prefix) && key !== prefix && !key.startsWith(prefix + ".."))) {
     return new Response("Not found", { status: 404 });
   }
