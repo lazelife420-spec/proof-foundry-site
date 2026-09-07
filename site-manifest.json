@@ -1,107 +1,704 @@
 {
   "brand": "The Proof Foundry",
+  "tagline": "Build it. Prove it. Ship it.",
   "positioning": "Proof over promises. Local-first software with receipts, honest claims, and user-owned workflows.",
   "canonicalUrl": "https://theprooffoundry.com",
+  "proofRegistryPath": "/proof/index.json",
+  "siteVerification": {
+    "receiptDate": "2026-08-20",
+    "receiptPath": "/reports/deploy-receipts/2026-08-20-proof-foundry-site.md"
+  },
+  "stateLabels": {
+    "pilot": "Developer Pilot",
+    "available": "Public release",
+    "frozen": "Public release · Frozen",
+    "testing": "In testing",
+    "proof": "In proof",
+    "coming": "Coming soon"
+  },
+  "statusTaxonomy": {
+    "PUBLIC_RELEASE": "Public release",
+    "RELEASE_CANDIDATE": "Release candidate",
+    "ACTIVE_PROOF": "In proof",
+    "HOLD": "On hold",
+    "FROZEN": "Public release · Frozen",
+    "RESEARCH": "In research",
+    "ROADMAP_DIRECTION": "Roadmap direction",
+    "UNRELEASED": "Unreleased"
+  },
+  "verificationLabels": {
+    "ARTIFACT_HASH_PUBLISHED": "Artifact hash published",
+    "ARTIFACT_HASH_VERIFIED": "Artifact hash verified",
+    "ARTIFACT_CUSTODY": "Artifact custody",
+    "RUNTIME_VALIDATION": "Runtime validation",
+    "REALITY_GATE": "Reality Gate",
+    "PUBLIC_DOWNLOAD": "Public download",
+    "CODE_SIGNING": "Code signing",
+    "RELEASE_AUTHORIZATION": "Release authority",
+    "PUBLICATION_STATUS": "Publication status"
+  },
+  "nav": [
+    {
+      "id": "products",
+      "label": "Products",
+      "href": "/#products"
+    },
+    {
+      "id": "proof-standard",
+      "label": "Proof Standard",
+      "href": "/#proof-standard"
+    },
+    {
+      "id": "receipts",
+      "label": "Receipts",
+      "href": "/proof/"
+    },
+    {
+      "id": "founders",
+      "label": "Founders",
+      "href": "/founders/"
+    }
+  ],
+  "navCta": {
+    "label": "Explore Products",
+    "href": "/#products"
+  },
   "products": [
     {
-      "name": "Lights Out PC",
-      "slug": "lights-out",
-      "status": "public",
-      "route": "/lights-out/",
+      "id": "reality-gate",
+      "name": "Reality Gate",
+      "displayName": "Reality Gate",
+      "route": "/reality-gate/",
+      "state": "pilot",
+      "productStatus": "PUBLIC_RELEASE",
+      "platforms": [
+        "Windows"
+      ],
       "platform": "Windows",
-      "build": "PowerShell compiled (SleepTimer.exe)",
-      "latestVersion": "v1.0.0",
-      "distType": "Windows Executable",
+      "summary": "Local-first developer continuity for the Git workflow you already use. Keep GitHub, GitLab, or Forgejo — Reality Gate maps dependencies, verifies continuity, and keeps signed receipts of what was checked.",
+      "cardSummary": "Local-first developer continuity for the Git workflow you already use. Keep GitHub, GitLab, or Forgejo — Reality Gate maps dependencies, verifies continuity, and keeps signed receipts of what was checked.",
+      "markSvg": "<div class=\"card-mark\" aria-hidden=\"true\"><svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" width=\"100%\" height=\"100%\"><path d=\"M12 28 L50 8 L88 28 L88 38 L81 38 L81 88 L69 88 L69 36 L50 21 L31 36 L31 88 L19 88 L19 38 L12 38 Z\" fill=\"#F2F0EB\"/><rect x=\"14\" y=\"88\" width=\"22\" height=\"5\" rx=\"1\" fill=\"#F2F0EB\"/><rect x=\"64\" y=\"88\" width=\"22\" height=\"5\" rx=\"1\" fill=\"#F2F0EB\"/><path d=\"M31 67 L46 82 L42 86 L31 75 Z\" fill=\"#F2F0EB\"/><path d=\"M69 67 L54 82 L58 86 L69 75 Z\" fill=\"#F2F0EB\"/><polygon points=\"50,35 64,49 50,63 36,49\" fill=\"#C47B57\"/></svg></div>",
+      "cta": "View product",
+      "visible": true,
+      "release": {
+        "publicVersion": "1.1.0",
+        "candidateVersion": null,
+        "releaseStatus": "PUBLIC_RELEASE",
+        "publishedAt": "2026-08-15"
+      },
+      "artifacts": [
+        {
+          "filename": "Reality-Gate-1.1.0-Developer-Pilot.zip",
+          "sizeBytes": null,
+          "sha256": "58cc27d22bdee8157ee4598e116e17ff42d0efc95630c97bee4b2bc6be6ce756",
+          "downloadUrl": "https://downloads.theprooffoundry.com/reality-gate/v1.1.0/Reality-Gate-1.1.0-Developer-Pilot.zip",
+          "sha256Url": "https://downloads.theprooffoundry.com/reality-gate/v1.1.0/Reality-Gate-1.1.0-Developer-Pilot.zip.sha256.txt",
+          "signingStatus": "UNSIGNED",
+          "platform": "Windows",
+          "distType": "Windows Installer ZIP"
+        }
+      ],
+      "verification": {
+        "status": "VERIFIED",
+        "verifiedAt": "2026-08-15",
+        "verificationType": [
+          "ARTIFACT_HASH_PUBLISHED",
+          "ARTIFACT_HASH_VERIFIED",
+          "RUNTIME_VALIDATION",
+          "PUBLIC_DOWNLOAD"
+        ],
+        "receiptId": null,
+        "receiptUrl": null
+      },
+      "tests": [
+        {
+          "label": "Static blocks",
+          "result": "269/269"
+        },
+        {
+          "label": "Live registry",
+          "result": "24/24"
+        },
+        {
+          "label": "Installed runtime",
+          "result": "20/20"
+        }
+      ],
+      "evidence": [
+        {
+          "label": "SHA256SUMS",
+          "url": "https://downloads.theprooffoundry.com/reality-gate/v1.1.0/Reality-Gate-1.1.0-Developer-Pilot.zip.sha256.txt"
+        }
+      ],
+      "limits": [
+        "The SHA-256 is the checksum of the ZIP; the installer EXE inside carries its own checksum in BUILD-INFO.",
+        "Windows SmartScreen may prompt on first launch — verify the ZIP SHA-256 first.",
+        "Checksum is not a code signature."
+      ],
+      "downloadUrl": "https://downloads.theprooffoundry.com/reality-gate/v1.1.0/Reality-Gate-1.1.0-Developer-Pilot.zip",
+      "downloadLabel": "Download Developer Pilot v1.1.0",
+      "distType": "Windows Installer ZIP",
+      "build": "Windows installer EXE delivered inside a ZIP archive. The published SHA-256 is the checksum of the ZIP you download; the installer EXE inside carries its own checksum in the build's BUILD-INFO.",
+      "sha256": "58cc27d22bdee8157ee4598e116e17ff42d0efc95630c97bee4b2bc6be6ce756",
+      "sha256Url": "https://downloads.theprooffoundry.com/reality-gate/v1.1.0/Reality-Gate-1.1.0-Developer-Pilot.zip.sha256.txt",
+      "testStatus": "269/269",
+      "testCount": "269/269",
+      "releaseNote": "Developer Pilot v1.1.0 (Windows). Suite composition: Static 269/269 · Live registry 24/24 · Installed runtime 20/20 (269/269 canonical). Pre-pilot audit: PILOT READY, no blockers, no overstated claims; two non-blocking notes (BUG-001 port discrepancy, BUG-002 IPv4 loopback binding) affect standalone server execution only, not the packaged app. Windows SmartScreen may prompt on first launch — verify the ZIP SHA-256 first.",
       "proofStatus": "verified",
+      "lastVerified": "2026-08-15",
+      "proofLinks": [
+        "https://downloads.theprooffoundry.com/reality-gate/v1.1.0/Reality-Gate-1.1.0-Developer-Pilot.zip.sha256.txt"
+      ]
+    },
+    {
+      "id": "cache-vault",
+      "name": "Cache Vault",
+      "displayName": "Cache Vault",
+      "route": "/cache-vault/",
+      "state": "testing",
+      "productStatus": "RELEASE_CANDIDATE",
+      "platforms": [
+        "Windows",
+        "Android companion"
+      ],
+      "platform": "Windows + Android",
+      "summary": "A local-first clipboard vault with receipts, safes, global search, Quick Paste, image capture, exports, Command Center, and an opt-in LAN-only Mobile Bridge paired to a production-signed Android companion.",
+      "cardSummary": "Local clipboard history, collections, retrieval, and receipts.",
+      "markSvg": "<div class=\"card-mark\" aria-hidden=\"true\"><svg viewBox=\"0 0 48 48\" xmlns=\"http://www.w3.org/2000/svg\" width=\"100%\" height=\"100%\"><rect x=\"8.5\" y=\"9\" width=\"4.5\" height=\"30\" rx=\"1.6\" fill=\"#1A9E8C\"/><rect x=\"15.5\" y=\"9\" width=\"23\" height=\"7.5\" rx=\"1.8\" fill=\"#1A9E8C\"/><rect x=\"20.5\" y=\"20.25\" width=\"8.5\" height=\"7.5\" rx=\"1.8\" fill=\"#5f8f87\"/><rect x=\"15.5\" y=\"31.5\" width=\"23\" height=\"7.5\" rx=\"1.8\" fill=\"#1A9E8C\"/><circle cx=\"34.5\" cy=\"24\" r=\"4\" fill=\"#D6A84F\"/></svg></div>",
+      "description": "A local-first Windows clipboard vault with smart classification, sensitive-content auto-expiry, Quick Paste, Safes, Vault Macros, Command Center (Phase 1: Hotkey Actions), and an opt-in LAN-only Mobile Bridge paired to a production-signed Android companion. No cloud account, no subscription, no telemetry.",
+      "cta": "View product",
+      "visible": true,
+      "release": {
+        "publicVersion": "0.2.3",
+        "candidateVersion": null,
+        "releaseStatus": "RELEASE_CANDIDATE",
+        "publishedAt": "2026-09-01"
+      },
+      "artifacts": [
+        {
+          "filename": "CacheVault-v0.2.3-rc1-windows.zip",
+          "sizeBytes": 43254285,
+          "sha256": "c967d8226d65ff09ab08424a10c84c87e3f5f56af03ff0d29d484de7247e349c",
+          "downloadUrl": "https://theprooffoundry.com/downloads/cache-vault/v0.2.3-rc1/CacheVault-v0.2.3-rc1-windows.zip",
+          "sha256Url": "https://theprooffoundry.com/downloads/cache-vault/v0.2.3-rc1/SHA256SUMS.txt",
+          "signingStatus": "UNSIGNED",
+          "platform": "Windows",
+          "distType": "Windows installer ZIP"
+        },
+        {
+          "filename": "CacheVault-Mobile-v0.2.0-android.apk",
+          "sizeBytes": 12887895,
+          "sha256": "fb6c5a3034b1d25be55db2da8842e17cfb48a0f40d8c479441faf389040524ad",
+          "downloadUrl": "https://github.com/lazelife420-spec/CacheVault/releases/download/v0.2.0/CacheVault-Mobile-v0.2.0-android.apk",
+          "sha256Url": "https://github.com/lazelife420-spec/CacheVault/releases/download/v0.2.0/SHA256SUMS.txt",
+          "signingStatus": "PRODUCTION_SIGNED",
+          "platform": "Android companion",
+          "distType": "Android APK"
+        }
+      ],
+      "verification": {
+        "status": "VERIFIED",
+        "verifiedAt": "2026-09-01",
+        "verificationType": [
+          "ARTIFACT_HASH_PUBLISHED",
+          "ARTIFACT_HASH_VERIFIED",
+          "ARTIFACT_CUSTODY",
+          "RUNTIME_VALIDATION",
+          "REALITY_GATE",
+          "PUBLIC_DOWNLOAD"
+        ],
+        "receiptId": "20260901-172536-canonical-05b9ae3",
+        "receiptUrl": "https://theprooffoundry.com/downloads/cache-vault/v0.2.3-rc1/CACHEVAULT_V0.2.3RC1_CANONICAL_RECEIPT.json"
+      },
+      "tests": [
+        {
+          "label": "Desktop tests",
+          "result": "2089 passed · 2 skipped (canonical gate)"
+        },
+        {
+          "label": "Android companion tests",
+          "result": "88/88 (v0.2.0 companion, unchanged)"
+        }
+      ],
+      "evidence": [
+        {
+          "label": "Candidate download (Proof Foundry)",
+          "url": "https://theprooffoundry.com/downloads/cache-vault/v0.2.3-rc1/CacheVault-v0.2.3-rc1-windows.zip"
+        },
+        {
+          "label": "Candidate SHA256SUMS (Proof Foundry)",
+          "url": "https://theprooffoundry.com/downloads/cache-vault/v0.2.3-rc1/SHA256SUMS.txt"
+        },
+        {
+          "label": "Canonical gate receipt (Proof Foundry)",
+          "url": "https://theprooffoundry.com/downloads/cache-vault/v0.2.3-rc1/CACHEVAULT_V0.2.3RC1_CANONICAL_RECEIPT.json"
+        },
+        {
+          "label": "Companion SHA256SUMS (GitHub v0.2.0)",
+          "url": "https://github.com/lazelife420-spec/CacheVault/releases/download/v0.2.0/SHA256SUMS.txt"
+        }
+      ],
+      "limits": [
+        "The Windows build is not code-signed, so Windows SmartScreen may prompt on first launch.",
+        "Cache Vault v0.2.2 remains the last public desktop release; v0.2.3-rc1 is a release candidate served from Proof Foundry downloads while GitHub release access is blocked for anonymous visitors.",
+        "Command Center is Phase 1 (Hotkey Actions) only.",
+        "Checksum is not a code signature; the production-signed Android companion is a separate artifact.",
+        "The public Android companion is v0.2.0; Android v0.2.1 is qualified and publication is on hold, so it is not a public download."
+      ],
+      "downloadUrl": "https://theprooffoundry.com/downloads/cache-vault/v0.2.3-rc1/CacheVault-v0.2.3-rc1-windows.zip",
+      "downloadLabel": "Download v0.2.3-rc1 (Windows release candidate)",
+      "distType": "Windows installer ZIP + Android APK",
+      "build": "Windows installer delivered inside a ZIP archive, served from Proof Foundry downloads with a Reality Gate canonical receipt (2089 passed / 2 skipped / 0 failed at commit 05b9ae3). The public CacheVault Mobile v0.2.0 Android companion remains on the v0.2.0 GitHub release. The published SHA-256 is the checksum of the ZIP you download.",
+      "sha256": "c967d8226d65ff09ab08424a10c84c87e3f5f56af03ff0d29d484de7247e349c",
+      "sha256Url": "https://theprooffoundry.com/downloads/cache-vault/v0.2.3-rc1/SHA256SUMS.txt",
+      "testStatus": "2089 passed · 2 skipped desktop (canonical gate) · 88/88 Android (v0.2.0)",
+      "testCount": "2089 passed · 2 skipped desktop (canonical gate) · 88/88 Android (v0.2.0)",
+      "releaseNote": "Current download: Cache Vault v0.2.3-rc1 for Windows — a Reality Gate canonical-proven release candidate (window geometry persistence, work-area clamped startup, dialog sizing fixes), served from Proof Foundry downloads. Cache Vault v0.2.2 remains the last public desktop release; its GitHub release is currently blocked from anonymous access. The Windows build is not code-signed, so Windows SmartScreen may prompt on first launch; verify the SHA-256 before running it. The public Android companion is v0.2.0 (unchanged).",
+      "proofStatus": "Verified",
+      "lastVerified": "2026-09-01",
+      "proofLinks": [
+        "https://theprooffoundry.com/downloads/cache-vault/v0.2.3-rc1/CacheVault-v0.2.3-rc1-windows.zip",
+        "https://theprooffoundry.com/downloads/cache-vault/v0.2.3-rc1/SHA256SUMS.txt",
+        "https://theprooffoundry.com/downloads/cache-vault/v0.2.3-rc1/CACHEVAULT_V0.2.3RC1_CANONICAL_RECEIPT.json"
+      ],
+      "currentLocalVersion": null,
+      "companionVersion": "0.2.0"
+    },
+    {
+      "id": "lights-out",
+      "name": "Lights Out PC",
+      "displayName": "Lights Out PC",
+      "route": "/lights-out/",
+      "state": "proof",
+      "productStatus": "ACTIVE_PROOF",
+      "platforms": [
+        "Windows",
+        "Android"
+      ],
+      "platform": "Windows + Android",
+      "summary": "Local-first night control for Windows. Plan tonight's session on your PC, control it from bed with the Android Companion, and wake with First Light. Compatible smart lights, schedule automation, an experimental Wi-Fi Guard, and proof of every run.",
+      "cardSummary": "Local-first night control, bedside companion, scheduled shutdown, and proof of every run.",
+      "markSvg": "<div class='card-mark' aria-hidden='true'><svg viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'><defs><radialGradient id='loCardAmberGlow' cx='50%' cy='50%' r='50%'><stop offset='0%' stop-color='#E8A848' stop-opacity='1'/><stop offset='100%' stop-color='#E8A848' stop-opacity='0'/></radialGradient></defs><rect width='48' height='48' rx='12' fill='#121426' stroke='rgba(155, 147, 214, 0.3)' stroke-width='1.5'/><circle cx='24' cy='24' r='15' fill='none' stroke='#9B93D6' stroke-width='2.5' stroke-dasharray='72 22' transform='rotate(-90 24 24)'/><path d='M 24 9 A 15 15 0 1 1 9 24 A 10 10 0 1 0 24 9 Z' fill='#191C33' opacity='0.85'/><line x1='24' y1='9' x2='24' y2='13' stroke='#9B93D6' stroke-width='2' stroke-linecap='round'/><circle cx='24' cy='24' r='5' fill='url(#loCardAmberGlow)'/><circle cx='24' cy='24' r='3' fill='#E8A848'/></svg></div>",
+      "cta": "View product",
+      "visible": true,
+      "release": {
+        "publicVersion": "11.1.2",
+        "candidateVersion": "11.1.3",
+        "releaseStatus": "HOLD",
+        "publishedAt": null
+      },
+      "artifacts": [
+        {
+          "filename": "Lights-Out-Portable-v11.1.3-win-x64.zip",
+          "sizeBytes": 158683782,
+          "sha256": "c7872350101906471e83d8c0649e1e65c5f9baa4591e0c02ccfd8780215726d6",
+          "downloadUrl": null,
+          "sha256Url": null,
+          "signingStatus": "UNSIGNED",
+          "platform": "Windows",
+          "distType": "Portable ZIP (unsigned)"
+        },
+        {
+          "filename": "Lights-Out-v11.1.3-rc4-Reality-Gate-ProofBundle.zip",
+          "sizeBytes": 158534697,
+          "sha256": "2b7b15b3e7138185617a3263f6435572d8160948dd533420c0893f18aa75e192",
+          "downloadUrl": null,
+          "sha256Url": null,
+          "signingStatus": "UNSIGNED",
+          "platform": "Windows",
+          "distType": "Reality Gate proof bundle"
+        }
+      ],
+      "verification": {
+        "status": "VERIFIED",
+        "verifiedAt": "2026-09-01",
+        "verificationType": [
+          "ARTIFACT_HASH_PUBLISHED",
+          "ARTIFACT_HASH_VERIFIED",
+          "RUNTIME_VALIDATION",
+          "REALITY_GATE"
+        ],
+        "receiptId": "6b67a712-33ba-4cd6-9c4a-81e66f056750",
+        "receiptUrl": null
+      },
+      "tests": [
+        {
+          "label": "Reality Gate Runroom",
+          "result": "20/20"
+        }
+      ],
+      "evidence": [
+        {
+          "label": "Reality Gate receipt 6b67a712...",
+          "url": null
+        }
+      ],
+      "limits": [
+        "This is a Reality-Gate-verified, unsigned Windows portable build — not code-signed.",
+        "Public release awaits separate owner authorization; no download is published yet.",
+        "This verification is not a re-verification of the separately frozen v11.1.2 GitHub release ZIP.",
+        "Reality Gate verification does not equal owner approval or a security certification."
+      ],
+      "downloadUrl": null,
+      "downloadLabel": "",
+      "disabledDownloadLabel": "Release pending owner authorization",
+      "distType": "Portable ZIP (unsigned)",
+      "build": "Electron v11.1.3 · Android Companion v11.1.3",
+      "sha256": "c7872350101906471e83d8c0649e1e65c5f9baa4591e0c02ccfd8780215726d6",
+      "sha256Url": null,
+      "testStatus": "20/20 Reality Gate",
+      "testCount": "Reality Gate Runroom validation: 20 of 20 steps passed on the exact v11.1.3 rc4 source/artifact pairing, including real physical Android companion automation.",
+      "releaseNote": "Lights Out v11.1.3 RC4 (source commit f9048c3, artifact SHA-256 c7872350...) passed a fresh full Reality Gate Runroom validation: 20 of 20 steps, cryptographically signed receipt independently verified GREEN, real physical Samsung Galaxy S23 companion automation, and the production-signed Android companion v11.1.3 passed the full physical Dry Run workflow the same day (0 provider operations, 0 real power actions). RC4 is the current candidate iteration of the post-RC3 work; the Windows bytes are new while the launcher remains byte-identical to RC3 because all candidate changes live in the app payload. This is a Reality-Gate-verified, unsigned Windows portable build -- it is not code-signed, and it is not a re-verification of the earlier, separately frozen v11.1.2 GitHub release ZIP (which remains blocked from anonymous GitHub access for unrelated account-level reasons). Public release awaits separate owner authorization.",
+      "proofStatus": "Reality Gate verified · unsigned",
+      "lastVerified": "2026-09-01",
       "proofLinks": [
         "/reports/deploy-receipts/2026-06-30-proof-foundry-site.md"
       ],
-      "downloadStatus": "coming_soon",
-      "downloadUrl": null,
-      "sha256Status": "unreleased",
-      "sha256": null,
-      "lastVerified": "2026-06-30"
+      "currentLocalVersion": "11.1.3",
+      "companionVersion": "11.1.3"
     },
     {
-      "name": "Cache Vault",
-      "slug": "cache-vault",
-      "status": "public",
-      "route": "https://cache-vault-landing.pages.dev/",
-      "platform": "Windows",
-      "build": "Python compiled (CacheVault.exe)",
-      "latestVersion": "v0.1.4 release.1",
-      "distType": "Windows Portable ZIP",
-      "proofStatus": "verified",
-      "proofLinks": [
-        "https://cache-vault-landing.pages.dev/",
-        "https://github.com/lazelife420-spec/CacheVault/releases/tag/cache-vault-v0.1.4-release.1",
-        "https://github.com/lazelife420-spec/CacheVault/releases/download/cache-vault-v0.1.4-release.1/CacheVault-v0.1.4-windows.sha256"
-      ],
-      "testCount": "740/740",
-      "downloadStatus": "available",
-      "downloadUrl": "https://github.com/lazelife420-spec/CacheVault/releases/download/cache-vault-v0.1.4-release.1/CacheVault-v0.1.4-windows.zip",
-      "sha256Status": "published",
-      "sha256": "710c8988455b30a3fa8589862e3e7c8a36c7faf73b015cfda5024f700a2c81bf",
-      "lastVerified": "2026-06-30"
-    },
-    {
+      "id": "cleanroom",
       "name": "Cleanroom",
-      "slug": "cleanroom",
-      "status": "public",
-      "route": "https://github.com/lazelife420-spec/cleanroom-windows/releases/tag/v1.0.7",
+      "displayName": "Cleanroom",
+      "route": "/cleanroom/",
+      "state": "available",
+      "productStatus": "PUBLIC_RELEASE",
+      "platforms": [
+        "Windows"
+      ],
       "platform": "Windows",
-      "build": "CI-built Windows installer (PyInstaller + Inno Setup). Provenance attested via GitHub Actions.",
-      "latestVersion": "v1.0.7",
+      "summary": "Archive-first Windows cleanup with receipts, custody checks, and rollback. No cloud, no account, no telemetry.",
+      "cardSummary": "Archive-first Windows cleanup with custody receipts and restore support.",
+      "markSvg": "<div class=\"card-mark\" aria-hidden=\"true\"><svg viewBox=\"0 0 120 120\" xmlns=\"http://www.w3.org/2000/svg\" width=\"100%\" height=\"100%\"><defs><linearGradient id=\"clnCardMarkGold\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0%\" stop-color=\"#d6a84f\"/><stop offset=\"100%\" stop-color=\"#9f7e3b\"/></linearGradient></defs><rect x=\"14\" y=\"14\" width=\"92\" height=\"92\" rx=\"16\" fill=\"#0f172a\" fill-opacity=\"0.9\" stroke=\"#334155\" stroke-width=\"1.5\"/><rect x=\"22\" y=\"22\" width=\"76\" height=\"76\" rx=\"10\" fill=\"none\" stroke=\"#34d399\" stroke-width=\"1.2\" stroke-dasharray=\"64 20\"/><path d=\"M 78 38 A 22 22 0 1 0 78 82 L 52 82 L 52 60 L 78 60\" fill=\"none\" stroke=\"#34d399\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><line x1=\"60\" y1=\"32\" x2=\"60\" y2=\"88\" stroke=\"#e2e8f0\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\" opacity=\"0.5\"/><circle cx=\"78\" cy=\"60\" r=\"4.5\" fill=\"url(#clnCardMarkGold)\"/></svg></div>",
+      "cta": "View product",
+      "visible": true,
+      "release": {
+        "publicVersion": "1.0.7",
+        "candidateVersion": "1.0.10",
+        "releaseStatus": "PUBLIC_RELEASE",
+        "publishedAt": "2026-08-28"
+      },
+      "artifacts": [
+        {
+          "filename": "Cleanroom-Setup-1.0.7.exe",
+          "sizeBytes": null,
+          "sha256": "2cd6953015ce0b8e429c869564be11ad10504332aded10b442a58ea2b990a76e",
+          "downloadUrl": "https://downloads.theprooffoundry.com/cleanroom/v1.0.7/Cleanroom-Setup-1.0.7.exe",
+          "sha256Url": "https://downloads.theprooffoundry.com/cleanroom/v1.0.7/SHA256SUMS.txt",
+          "signingStatus": "UNSIGNED",
+          "platform": "Windows",
+          "distType": "Windows Installer EXE"
+        }
+      ],
+      "verification": {
+        "status": "VERIFIED",
+        "verifiedAt": "2026-08-28",
+        "verificationType": [
+          "ARTIFACT_HASH_PUBLISHED",
+          "ARTIFACT_HASH_VERIFIED",
+          "ARTIFACT_CUSTODY",
+          "RUNTIME_VALIDATION",
+          "PUBLIC_DOWNLOAD"
+        ],
+        "receiptId": null,
+        "receiptUrl": null
+      },
+      "tests": [
+        {
+          "label": "Full suite",
+          "result": "366/366"
+        }
+      ],
+      "evidence": [
+        {
+          "label": "Windows installer",
+          "url": "https://downloads.theprooffoundry.com/cleanroom/v1.0.7/Cleanroom-Setup-1.0.7.exe"
+        },
+        {
+          "label": "SHA256SUMS",
+          "url": "https://downloads.theprooffoundry.com/cleanroom/v1.0.7/SHA256SUMS.txt"
+        }
+      ],
+      "limits": [
+        "Source has advanced locally to v1.0.10 (627 tests collected, 608 passed, publication on hold).",
+        "The Windows installer is not Authenticode-signed.",
+        "Checksum is not a code signature."
+      ],
+      "downloadUrl": "https://downloads.theprooffoundry.com/cleanroom/v1.0.7/Cleanroom-Setup-1.0.7.exe",
+      "downloadLabel": "Download v1.0.7",
       "distType": "Windows Installer EXE",
-      "proofStatus": "verified",
-      "proofLinks": [
-        "https://github.com/lazelife420-spec/cleanroom-windows/releases/tag/v1.0.7",
-        "https://github.com/lazelife420-spec/cleanroom-windows/releases/download/v1.0.7/SHA256SUMS.txt"
-      ],
-      "downloadStatus": "available",
-      "downloadUrl": "https://github.com/lazelife420-spec/cleanroom-windows/releases/download/v1.0.7/Cleanroom-Setup-1.0.7.exe",
-      "sha256Status": "published",
+      "build": "CI-built Windows installer (PyInstaller + Inno Setup). Provenance attested via GitHub Actions.",
       "sha256": "2cd6953015ce0b8e429c869564be11ad10504332aded10b442a58ea2b990a76e",
-      "lastVerified": "2026-07-01"
-    },
-    {
-      "name": "HyperSnatch",
-      "slug": "hypersnatch",
-      "status": "in-proof",
-      "route": "#products",
-      "platform": "Windows",
-      "build": "Fast link & file capture utility",
-      "latestVersion": "unreleased",
-      "distType": "N/A",
-      "proofStatus": "verification pending",
-      "proofLinks": [],
-      "downloadStatus": "coming_soon",
-      "downloadUrl": null,
-      "sha256Status": "unreleased",
-      "sha256": null,
-      "lastVerified": null
-    },
-    {
-      "name": "ForgeCast Weather",
-      "slug": "forgecast",
-      "status": "available",
-      "route": "/forgecast/",
-      "platform": "Android",
-      "build": "Android APK (release build)",
-      "latestVersion": "v0.3.3",
-      "distType": "Android APK Package",
+      "sha256Url": "https://downloads.theprooffoundry.com/cleanroom/v1.0.7/SHA256SUMS.txt",
+      "testStatus": "366/366",
+      "testCount": "",
+      "releaseNote": "Public release v1.0.7 (Windows). Served via Proof Foundry distribution while GitHub release access is unavailable. Source has advanced locally to v1.0.10 (627 tests collected, 608 passed, publication on hold).",
       "proofStatus": "verified",
+      "lastVerified": "2026-08-28",
       "proofLinks": [
-        "/forgecast/",
-        "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk.sha256.txt",
-        "https://github.com/lazelife420-spec/ForgeCast/releases/tag/v0.3.3"
+        "https://downloads.theprooffoundry.com/cleanroom/v1.0.7/Cleanroom-Setup-1.0.7.exe",
+        "https://downloads.theprooffoundry.com/cleanroom/v1.0.7/SHA256SUMS.txt"
       ],
-      "testCount": "724/724",
-      "downloadStatus": "available",
-      "downloadUrl": "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk",
-      "sha256Status": "published",
-      "sha256": "50abe59e52b6dc7e8649c0ca63eb065425f8edc607187e3844d90ce5f1eed833",
-      "lastVerified": "2026-07-11"
+      "currentLocalVersion": "1.0.10"
+    },
+    {
+      "id": "ghostlayer",
+      "name": "GhostLayer",
+      "displayName": "GhostLayer",
+      "route": "/ghostlayer/",
+      "state": "available",
+      "productStatus": "PUBLIC_RELEASE",
+      "platforms": [
+        "Windows"
+      ],
+      "platform": "Windows",
+      "summary": "A controllable RAM-backed layer between active work and permanent storage. Stage files in RAM, open them for editing, recover from interruptions, commit safely with multi-select batch workflow and keyboard shortcuts — no cloud, no account, no telemetry.",
+      "cardSummary": "Stage in RAM. Commit on your terms. Multi-select batch workflow with keyboard shortcuts and session recovery — no cloud, no account, no telemetry.",
+      "markSvg": "<div class=\"card-mark\" aria-hidden=\"true\"><svg viewBox=\"0 0 120 120\" xmlns=\"http://www.w3.org/2000/svg\" width=\"100%\" height=\"100%\"><defs><linearGradient id=\"glCardMarkGold\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0%\" stop-color=\"#d6a84f\"/><stop offset=\"100%\" stop-color=\"#9f7e3b\"/></linearGradient></defs><rect x=\"14\" y=\"10\" width=\"72\" height=\"72\" rx=\"12\" fill=\"#62d8ff\" fill-opacity=\"0.07\" stroke=\"#62d8ff\" stroke-width=\"0.75\" stroke-opacity=\"0.25\"/><rect x=\"22\" y=\"18\" width=\"72\" height=\"72\" rx=\"12\" fill=\"#00CC33\" fill-opacity=\"0.05\" stroke=\"#00CC33\" stroke-width=\"0.75\" stroke-opacity=\"0.2\"/><path d=\"M 82 42 A 28 28 0 1 0 82 78 L 60 78 L 60 60 L 82 60\" fill=\"none\" stroke=\"#00CC33\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"82\" cy=\"60\" r=\"3.5\" fill=\"url(#glCardMarkGold)\"/></svg></div>",
+      "cta": "View product",
+      "visible": true,
+      "release": {
+        "publicVersion": "0.4.0",
+        "candidateVersion": null,
+        "releaseStatus": "PUBLIC_RELEASE",
+        "publishedAt": "2026-08-28"
+      },
+      "artifacts": [
+        {
+          "filename": "GhostLayer-Setup-0.4.0.exe",
+          "sizeBytes": null,
+          "sha256": "5c0f00fb7e6e58526f400e25a0f05e9f948c503479c82d6be4eb7d0aa9f06251",
+          "downloadUrl": "https://downloads.theprooffoundry.com/ghostlayer/v0.4.0/GhostLayer-Setup-0.4.0.exe",
+          "sha256Url": null,
+          "signingStatus": "UNSIGNED",
+          "platform": "Windows",
+          "distType": "Windows Installer EXE (unsigned, receipt-backed)"
+        }
+      ],
+      "verification": {
+        "status": "VERIFIED",
+        "verifiedAt": "2026-08-28",
+        "verificationType": [
+          "ARTIFACT_HASH_PUBLISHED",
+          "ARTIFACT_HASH_VERIFIED",
+          "ARTIFACT_CUSTODY",
+          "RUNTIME_VALIDATION",
+          "PUBLIC_DOWNLOAD"
+        ],
+        "receiptId": null,
+        "receiptUrl": "https://downloads.theprooffoundry.com/ghostlayer/v0.4.0/GHOSTLAYER_V0.4.0_PROOF_FOUNDRY_RELEASE_RECEIPT.json"
+      },
+      "tests": [
+        {
+          "label": "Full suite",
+          "result": "188/188"
+        },
+        {
+          "label": "Packaged runtime qualification",
+          "result": "13/13"
+        }
+      ],
+      "evidence": [
+        {
+          "label": "JSON receipt",
+          "url": "https://downloads.theprooffoundry.com/ghostlayer/v0.4.0/GHOSTLAYER_V0.4.0_PROOF_FOUNDRY_RELEASE_RECEIPT.json"
+        },
+        {
+          "label": "Markdown receipt",
+          "url": "https://downloads.theprooffoundry.com/ghostlayer/v0.4.0/GHOSTLAYER_V0.4.0_PROOF_FOUNDRY_RELEASE_RECEIPT.md"
+        },
+        {
+          "label": "Release package manifest",
+          "url": "https://downloads.theprooffoundry.com/ghostlayer/v0.4.0/GHOSTLAYER_V0.4.0_RELEASE_PACKAGE_MANIFEST.md"
+        },
+        {
+          "label": "Release notes",
+          "url": "https://downloads.theprooffoundry.com/ghostlayer/v0.4.0/RELEASE_NOTES_v0.4.0.md"
+        }
+      ],
+      "limits": [
+        "Unsigned by Windows — not Microsoft publisher signed, not SmartScreen trusted.",
+        "Windows SmartScreen may prompt on first launch; choose More info, then Run anyway.",
+        "Checksum is not a code signature.",
+        "Custody receipt does not constitute malware certification or Microsoft signing."
+      ],
+      "downloadUrl": "https://downloads.theprooffoundry.com/ghostlayer/v0.4.0/GhostLayer-Setup-0.4.0.exe",
+      "downloadLabel": "Download v0.4.0",
+      "distType": "Windows Installer EXE (unsigned, receipt-backed)",
+      "build": "Electron v0.4.0 · NSIS installer · receipt-backed",
+      "sha256": "5c0f00fb7e6e58526f400e25a0f05e9f948c503479c82d6be4eb7d0aa9f06251",
+      "sha256Url": null,
+      "testStatus": "188/188",
+      "testCount": "188/188",
+      "releaseNote": "Public release v0.4.0 (Windows). Unsigned by Windows — not Microsoft publisher signed, not SmartScreen trusted. The release was verified with 188/188 tests passing, a clean build, and packaged runtime qualification (13/13 steps). v0.4.0 adds multi-select batch workflow (select, Commit Selected, Discard Selected), keyboard shortcuts (Ctrl+A, Escape, Shift-click range), tray status tooltips (staged/modified/conflict counts), and safer commit routing that prevents renderer-supplied destination redirection. The tray Discard All bypass has been removed. Verify the SHA-256 before running. Windows SmartScreen may prompt on first launch — choose More info, then Run anyway.",
+      "proofStatus": "Receipt-backed · unsigned",
+      "lastVerified": "2026-08-28",
+      "proofLinks": [
+        "https://downloads.theprooffoundry.com/ghostlayer/v0.4.0/GHOSTLAYER_V0.4.0_PROOF_FOUNDRY_RELEASE_RECEIPT.json",
+        "https://downloads.theprooffoundry.com/ghostlayer/v0.4.0/GHOSTLAYER_V0.4.0_PROOF_FOUNDRY_RELEASE_RECEIPT.md",
+        "https://downloads.theprooffoundry.com/ghostlayer/v0.4.0/GHOSTLAYER_V0.4.0_RELEASE_PACKAGE_MANIFEST.md",
+        "https://downloads.theprooffoundry.com/ghostlayer/v0.4.0/RELEASE_NOTES_v0.4.0.md"
+      ]
+    },
+    {
+      "id": "forgecast",
+      "name": "ForgeCast Weather",
+      "displayName": "ForgeCast Weather",
+      "route": "/forgecast/",
+      "state": "available",
+      "productStatus": "PUBLIC_RELEASE",
+      "platforms": [
+        "Android"
+      ],
+      "platform": "Android",
+      "summary": "Day-planning weather that answers you: Ask ForgeCast decisions, Wear/Bring guidance, and dynamic widgets. Decision-first Today screen, verified with 1110 tests.",
+      "cardSummary": "Day-planning weather intelligence: what to wear, when to go outside, and what to bring or skip.",
+      "markSvg": "<div class=\"card-mark\" aria-hidden=\"true\"><svg viewBox=\"0 0 120 120\" xmlns=\"http://www.w3.org/2000/svg\" width=\"100%\" height=\"100%\"><defs><linearGradient id=\"fcCardMarkGold\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0%\" stop-color=\"#d6a84f\"/><stop offset=\"100%\" stop-color=\"#9f7e3b\"/></linearGradient></defs><rect x=\"14\" y=\"14\" width=\"92\" height=\"92\" rx=\"16\" fill=\"#0b0f14\" fill-opacity=\"0.95\" stroke=\"#1e2c3a\" stroke-width=\"1.5\"/><line x1=\"42\" y1=\"34\" x2=\"42\" y2=\"86\" stroke=\"#3fbf94\" stroke-width=\"6\" stroke-linecap=\"round\"/><line x1=\"42\" y1=\"38\" x2=\"82\" y2=\"38\" stroke=\"#3fbf94\" stroke-width=\"6\" stroke-linecap=\"round\"/><line x1=\"42\" y1=\"60\" x2=\"70\" y2=\"60\" stroke=\"#3fbf94\" stroke-width=\"5\" stroke-linecap=\"round\"/><line x1=\"30\" y1=\"82\" x2=\"90\" y2=\"82\" stroke=\"#1e2c3a\" stroke-width=\"2\" stroke-dasharray=\"4 4\"/><circle cx=\"70\" cy=\"60\" r=\"4.5\" fill=\"url(#fcCardMarkGold)\"/></svg></div>",
+      "cta": "View product",
+      "visible": true,
+      "release": {
+        "publicVersion": "0.3.5",
+        "candidateVersion": null,
+        "releaseStatus": "PUBLIC_RELEASE",
+        "publishedAt": "2026-09-02"
+      },
+      "artifacts": [
+        {
+          "filename": "ForgeCast-Weather-v0.3.5-android-release.apk",
+          "sizeBytes": 77331690,
+          "sha256": "a28db27cd16b3e45f3e75cc0d7c7a4b101646573de9954ec40dbf03e5439bea1",
+          "downloadUrl": "https://downloads.theprooffoundry.com/forgecast/v0.3.5/ForgeCast-Weather-v0.3.5-android-release.apk",
+          "sha256Url": "https://downloads.theprooffoundry.com/forgecast/v0.3.5/ForgeCast-Weather-v0.3.5-android-release.apk.sha256.txt",
+          "signingStatus": "PRODUCTION_SIGNED",
+          "platform": "Android",
+          "distType": "Android APK Package (private production signing identity)"
+        }
+      ],
+      "verification": {
+        "status": "VERIFIED",
+        "verifiedAt": "2026-09-02",
+        "verificationType": [
+          "ARTIFACT_HASH_PUBLISHED",
+          "ARTIFACT_HASH_VERIFIED",
+          "ARTIFACT_CUSTODY",
+          "RUNTIME_VALIDATION",
+          "REALITY_GATE",
+          "PUBLIC_DOWNLOAD",
+          "CODE_SIGNING",
+          "RELEASE_AUTHORIZATION"
+        ],
+        "receiptId": null,
+        "receiptUrl": null
+      },
+      "tests": [
+        {
+          "label": "Full suite",
+          "result": "1110/1110"
+        }
+      ],
+      "evidence": [
+        {
+          "label": "APK download (Proof Foundry)",
+          "url": "https://downloads.theprooffoundry.com/forgecast/v0.3.5/ForgeCast-Weather-v0.3.5-android-release.apk"
+        },
+        {
+          "label": "SHA256SUMS (Proof Foundry)",
+          "url": "https://downloads.theprooffoundry.com/forgecast/v0.3.5/ForgeCast-Weather-v0.3.5-android-release.apk.sha256.txt"
+        },
+        {
+          "label": "GitHub release v0.3.5",
+          "url": "https://github.com/lazelife420-spec/ForgeCast/releases/tag/v0.3.5"
+        }
+      ],
+      "limits": [
+        "Users upgrading from ForgeCast v0.3.3 or earlier must uninstall the old app before installing v0.3.5: the signing identity changed at v0.3.4, and v0.3.5 does not restore in-place compatibility with those builds.",
+        "Users upgrading from v0.3.4 can install v0.3.5 normally: same signing identity, settings and data carry over (verified by an on-device upgrade test).",
+        "Because ForgeCast is local-first, uninstalling the old app removes app-local settings and other locally stored data unless separately preserved.",
+        "Checksum is not a code signature.",
+        "GitHub release assets may be unavailable to anonymous visitors due to an account-level restriction; Proof Foundry distribution is the authoritative public download path."
+      ],
+      "downloadUrl": "https://downloads.theprooffoundry.com/forgecast/v0.3.5/ForgeCast-Weather-v0.3.5-android-release.apk",
+      "downloadLabel": "Download v0.3.5 (APK)",
+      "distType": "Android APK Package (private production signing identity)",
+      "build": "Android APK (v0.3.5 release build, private ForgeCast signing identity)",
+      "sha256": "a28db27cd16b3e45f3e75cc0d7c7a4b101646573de9954ec40dbf03e5439bea1",
+      "sha256Url": "https://downloads.theprooffoundry.com/forgecast/v0.3.5/ForgeCast-Weather-v0.3.5-android-release.apk.sha256.txt",
+      "testStatus": "1110/1110",
+      "testCount": "1110/1110",
+      "releaseNote": "Public release v0.3.5 (Android APK). Adds Ask ForgeCast (deterministic weather-decision answers with evidence, no cloud chatbot), condition- and timing-aware Wear/Bring clothing guidance, dynamic decision widgets (Best Window, Wear/Bring, rain and cooling changes ahead, honest stale state), a forecast-aware Ask discovery strip with screen-reader support, and Samsung OneUI widget reliability (native cached-bitmap restore after reboot or background freezing). Upgrading from v0.3.4 keeps settings and data (verified on device); upgrading from v0.3.3 or earlier requires uninstall/reinstall. Served via Proof Foundry distribution; the same bytes are attached to the v0.3.5 GitHub release.",
+      "proofStatus": "verified",
+      "lastVerified": "2026-09-02",
+      "proofLinks": [
+        "https://downloads.theprooffoundry.com/forgecast/v0.3.5/ForgeCast-Weather-v0.3.5-android-release.apk.sha256.txt"
+      ],
+      "currentLocalVersion": "0.3.5"
+    },
+    {
+      "id": "proofshot",
+      "name": "ProofShot",
+      "displayName": "ProofShot",
+      "route": "/proofshot/",
+      "state": "proof",
+      "productStatus": "ACTIVE_PROOF",
+      "platforms": [
+        "Windows"
+      ],
+      "platform": "Windows",
+      "summary": "Local-first Windows proof workstation: capture what matters online, keep a proof bundle with SHA-256 receipts and a Proof Passport, and verify it later without trusting the tool or the internet. Rebrand in progress — the engine currently ships as HyperSnatch v1.6.18 under its legacy name.",
+      "cardSummary": "Local-first proof workstation for web context, SHA-256 proof bundles, and offline verification.",
+      "markSvg": "<div class=\"card-mark\" aria-hidden=\"true\"><svg viewBox=\"0 0 120 120\" xmlns=\"http://www.w3.org/2000/svg\" width=\"100%\" height=\"100%\"><defs><linearGradient id=\"psCardMarkGold\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0%\" stop-color=\"#d6a84f\"/><stop offset=\"100%\" stop-color=\"#9f7e3b\"/></linearGradient></defs><rect x=\"14\" y=\"14\" width=\"92\" height=\"92\" rx=\"16\" fill=\"#0b0f14\" fill-opacity=\"0.95\" stroke=\"#1e2c3a\" stroke-width=\"1.5\"/><path d=\"M 26 42 L 26 26 L 42 26\" stroke=\"#e05244\" stroke-width=\"4\" stroke-linecap=\"round\" fill=\"none\"/><path d=\"M 94 42 L 94 26 L 78 26\" stroke=\"#e05244\" stroke-width=\"4\" stroke-linecap=\"round\" fill=\"none\"/><path d=\"M 26 78 L 26 94 L 42 94\" stroke=\"#e05244\" stroke-width=\"4\" stroke-linecap=\"round\" fill=\"none\"/><path d=\"M 94 78 L 94 94 L 78 94\" stroke=\"#e05244\" stroke-width=\"4\" stroke-linecap=\"round\" fill=\"none\"/><circle cx=\"60\" cy=\"60\" r=\"20\" stroke=\"#40d9fd\" stroke-width=\"2.5\" stroke-dasharray=\"44 12\" fill=\"none\"/><circle cx=\"60\" cy=\"60\" r=\"6\" fill=\"#e05244\"/><circle cx=\"78\" cy=\"42\" r=\"4.5\" fill=\"url(#psCardMarkGold)\"/></svg></div>",
+      "cta": "View product",
+      "visible": true,
+      "release": {
+        "publicVersion": null,
+        "candidateVersion": "1.6.18",
+        "releaseStatus": "UNRELEASED",
+        "publishedAt": null
+      },
+      "artifacts": [],
+      "verification": {
+        "status": "PENDING",
+        "verifiedAt": null,
+        "verificationType": [],
+        "receiptId": null,
+        "receiptUrl": null
+      },
+      "tests": [
+        {
+          "label": "E2E suite",
+          "result": "99/99"
+        }
+      ],
+      "evidence": [],
+      "limits": [
+        "The underlying engine (HyperSnatch v1.6.18) is public under its legacy name, but the ProofShot rebrand has not propagated through packaging and code.",
+        "No release or download is claimed under the ProofShot name.",
+        "ProofForge is a separate project and is not this product."
+      ],
+      "downloadUrl": null,
+      "downloadLabel": "",
+      "distType": "N/A",
+      "build": "Electron desktop application: SmartDecode v2.5.0 extraction pipeline, proof-bundle export (SHA-256 manifests, Proof Passport, offline HTML verifier), 99/99 E2E green. Rebrand in progress — the engine ships as HyperSnatch v1.6.18 under the original brand while ProofShot identity work continues.",
+      "sha256": null,
+      "sha256Url": null,
+      "testStatus": "99/99 E2E",
+      "testCount": "",
+      "releaseNote": "The underlying engine (HyperSnatch v1.6.18) is public under its legacy name, with a 99/99 E2E test suite, SHA-256 checksums, and release receipts. The ProofShot rebrand has not yet propagated through packaging and code, so no release or download is claimed under the ProofShot name. ProofForge is a separate project and is not this product.",
+      "proofStatus": "verification pending",
+      "lastVerified": null,
+      "proofLinks": [],
+      "currentLocalVersion": "1.6.18"
+    }
+  ],
+  "incubating": [
+    {
+      "name": "Sound Assist",
+      "note": "In development"
+    },
+    {
+      "name": "ProofBound",
+      "note": "In development"
     }
   ]
 }

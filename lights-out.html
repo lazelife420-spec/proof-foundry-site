@@ -3,33 +3,723 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lights Out PC — Bedtime Mode for Windows | The Proof Foundry</title>
-  <meta name="description" content="Lights Out PC is a local Windows bedtime shutdown timer. Wind down, start a timed shutdown, cancel safely, and receive proof-style confirmation. A Proof Foundry product." />
+  <title>Lights Out — Night Control for Windows | The Proof Foundry</title>
+  <meta name="description" content="Plan the night on your PC, control it from bed with the Android companion, let compatible smart lights wind down with you, and wake with First Light. Local-first night control for Windows." />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#0B0F14" />
-  <link rel="canonical" href="https://theprooffoundry.com/lights-out" />
+  <link rel="canonical" href="https://theprooffoundry.com/lights-out/" />
 
-  <meta property="og:title" content="Lights Out PC — Bedtime Mode for Windows" />
-  <meta property="og:description" content="Local Windows bedtime shutdown timer. Wind down. Rest easy. A Proof Foundry product." />
+  <meta property="og:title" content="Lights Out — Control your night from the PC, or from bed" />
+  <meta property="og:description" content="Local-first night control for Windows: Tonight sessions, a bedside phone companion, First Light wake alarm, compatible smart lights, schedule automation, and proof of every run." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://theprooffoundry.com/lights-out" />
+  <meta property="og:url" content="https://theprooffoundry.com/lights-out/" />
   <meta property="og:site_name" content="The Proof Foundry" />
   <meta property="og:image" content="https://theprooffoundry.com/assets/lights-out/lights-out-og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Lights Out PC — Bedtime Mode for Windows" />
-  <meta name="twitter:description" content="Local Windows bedtime shutdown timer. Wind down. Rest easy." />
+  <meta name="twitter:title" content="Lights Out — Control your night from the PC, or from bed" />
+  <meta name="twitter:description" content="Local-first night control for Windows: Tonight sessions, a bedside phone companion, First Light wake alarm, compatible smart lights, schedule automation, and proof of every run." />
   <meta name="twitter:image" content="https://theprooffoundry.com/assets/lights-out/lights-out-og-image.png" />
 
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="/styles.css" />
+
+  <style>
+    /* ───────────────────────────────────────────────────────────────────────
+       LIGHTS OUT — Nocturnal Product Identity System
+       
+       Palette:
+       - Nocturnal Black:    #0A0D16
+       - Midnight Surface:   #121426
+       - Elevated Indigo:    #191C33
+       - Moonlight Lavender: #9B93D6
+       - Moonlit Silver:     #C8D2DF
+       - Low-Light Amber:    #E8A848
+       - Shared Studio Gold: #D6A84F
+       ─────────────────────────────────────────────────────────────────────── */
+    .lo-page {
+      --lo-bg-base: #0a0d16;
+      --lo-bg-surface: #121426;
+      --lo-bg-elevated: #191c33;
+      --lo-key: #9b93d6;
+      --lo-key-soft: rgba(155, 147, 214, 0.45);
+      --lo-key-wash: rgba(155, 147, 214, 0.08);
+      --lo-amber: #e8a848;
+      --lo-amber-soft: rgba(232, 168, 72, 0.45);
+      --lo-amber-wash: rgba(232, 168, 72, 0.1);
+      --lo-silver: #c8d2df;
+      --lo-line: rgba(155, 147, 214, 0.2);
+      --lo-line-strong: rgba(155, 147, 214, 0.4);
+    }
+
+    /* Brand mark lockup inside Lights Out page */
+    .lo-page .lo-mark-lockup {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .lo-page .lo-aperture-mark {
+      display: block;
+      flex-shrink: 0;
+    }
+
+    .lo-page .lo-brand-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--lo-key);
+    }
+
+    /* Candidate status banner */
+    .lo-page .lo-candidate-banner {
+      margin-top: 1.25rem;
+      padding: 1.1rem 1.3rem;
+      border: 1px solid var(--lo-line-strong);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 100% 0%, var(--lo-key-wash), transparent 65%),
+        linear-gradient(160deg, rgba(25, 28, 51, 0.95), rgba(18, 20, 38, 0.92));
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+    }
+
+    .lo-page .lo-candidate-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.6rem 0.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .lo-page .lo-pill-status {
+      display: inline-block;
+      padding: 0.22rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(155, 147, 214, 0.15);
+      border: 1px solid var(--lo-key-soft);
+      color: var(--lo-key);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .lo-page .lo-pill-hold {
+      display: inline-block;
+      padding: 0.22rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(232, 168, 72, 0.12);
+      border: 1px solid var(--lo-amber-soft);
+      color: var(--lo-amber);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .lo-page .lo-candidate-copy {
+      font-size: 0.88rem;
+      color: var(--lo-silver);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .lo-page .lo-history-note {
+      margin-top: 0.4rem;
+      font-size: 0.81rem;
+      color: var(--muted);
+    }
+
+    .lo-page .lo-candidate-actions {
+      margin-top: 0.85rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    /* Hero: copy left, real Tonight capture right. */
+    .lo-page .lo-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 36rem);
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .lo-page .section-head h2 {
+      position: relative;
+      padding-bottom: 0.6rem;
+    }
+
+    .lo-page .section-head h2::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: min(18rem, 100%);
+      height: 2px;
+      background: linear-gradient(90deg, var(--lo-key), transparent);
+    }
+
+    .lo-page .lo-trust {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: 0.8rem 1.9rem;
+      margin-block: var(--section-gap);
+      padding: 1rem 1.4rem;
+      border: 1px solid var(--lo-line);
+      border-radius: var(--radius);
+      background: linear-gradient(90deg, var(--lo-key-wash), rgba(18, 20, 38, 0.7) 45%);
+    }
+
+    .lo-page .lo-trust-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--lo-silver);
+    }
+
+    .lo-page .lo-trust-icon {
+      display: inline-flex;
+      font-size: 1rem;
+      color: var(--lo-key);
+    }
+
+    .lo-page .lo-shot {
+      margin: 0;
+      border: 1px solid var(--lo-line);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 100% 0%, var(--lo-key-wash), transparent 55%),
+        linear-gradient(160deg, rgba(18, 20, 38, 0.95), rgba(10, 13, 22, 0.9));
+      box-shadow: var(--shadow);
+      padding: clamp(0.7rem, 1.5vw, 1.1rem);
+    }
+
+    .lo-page .lo-shot img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: calc(var(--radius) - 4px);
+    }
+
+    .lo-page .lo-shot figcaption {
+      margin-top: 0.6rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .lo-page .lo-story {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+      gap: clamp(1.5rem, 3vw, 2.75rem);
+      align-items: center;
+    }
+
+    .lo-page .lo-story.copy-first { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+
+    .lo-page .lo-story-copy p { color: var(--lo-silver); }
+    .lo-page .lo-story-copy p + p { margin-top: 0.7rem; }
+
+    .lo-page .lo-story-list {
+      margin: 0.9rem 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 0.45rem;
+    }
+
+    .lo-page .lo-story-list li {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      align-items: baseline;
+      font-size: 0.92rem;
+      color: var(--lo-silver);
+      min-width: 0;
+    }
+
+    .lo-page .lo-story-list li::before {
+      content: "";
+      flex: 0 0 auto;
+      width: 0.42rem;
+      height: 0.42rem;
+      border-radius: 50%;
+      background: var(--lo-key);
+      transform: translateY(-0.08rem);
+    }
+
+    .lo-page .lo-shot-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+      gap: 1rem;
+    }
+
+    .lo-page .lo-shot-row.standalone {
+      margin-top: 1.25rem;
+    }
+
+    .lo-page .lo-phone-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: clamp(1.2rem, 3vw, 2.25rem);
+    }
+
+    .lo-page .lo-phone {
+      width: min(14.5rem, 62vw);
+    }
+
+    .lo-page .lo-phone img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 1.1rem;
+      border: 1px solid var(--lo-line);
+      box-shadow: var(--shadow);
+    }
+
+    .lo-page .lo-phone figcaption {
+      margin-top: 0.5rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .lo-page .lo-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
+      gap: 0.9rem;
+      margin-top: 1.1rem;
+    }
+
+    .lo-page .lo-card {
+      border: 1px solid var(--lo-line);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 0% 0%, var(--lo-key-wash), transparent 60%),
+        linear-gradient(160deg, rgba(18, 20, 38, 0.95), rgba(10, 13, 22, 0.9));
+      padding: 1rem 1rem 0.9rem;
+    }
+
+    .lo-page .lo-card h3 {
+      font-size: 0.95rem;
+      margin-bottom: 0.35rem;
+      color: #ffffff;
+    }
+
+    .lo-page .lo-card p {
+      color: var(--lo-silver);
+      font-size: 0.85rem;
+      margin: 0;
+    }
+
+    .lo-page .lo-card .lo-card-step {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.4rem;
+      height: 1.4rem;
+      border-radius: 50%;
+      background: var(--lo-key);
+      color: #0a0d16;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    /* First Light / Low-Light Amber accents */
+    .lo-page .lo-amber-card {
+      border-color: rgba(232, 168, 72, 0.3);
+      background:
+        radial-gradient(circle at 100% 0%, var(--lo-amber-wash), transparent 65%),
+        linear-gradient(160deg, rgba(18, 20, 38, 0.95), rgba(10, 13, 22, 0.9));
+    }
+
+    .lo-page .lo-amber-card .lo-card-step {
+      background: var(--lo-amber);
+      color: #0a0d16;
+    }
+
+    .lo-page .lo-badge-exp {
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 0.6rem;
+      padding: 0.14rem 0.55rem;
+      border: 1px solid rgba(214, 168, 79, 0.55);
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .lo-page .lo-statuscards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+      gap: 0.85rem;
+      margin-top: 1.1rem;
+    }
+
+    .lo-page .lo-statuscard {
+      border: 1px solid var(--lo-line);
+      border-radius: var(--radius);
+      background: linear-gradient(160deg, rgba(18, 20, 38, 0.96), rgba(10, 13, 22, 0.9));
+      padding: 0.95rem 1rem;
+    }
+
+    .lo-page .lo-statuscard h3 {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    .lo-page .lo-statuscard dl {
+      margin: 0;
+      display: grid;
+      gap: 0.32rem;
+    }
+
+    .lo-page .lo-statuscard dt {
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .lo-page .lo-statuscard dd {
+      margin: 0;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--lo-silver);
+    }
+
+    .lo-page .lo-statuscard .lo-card-foot {
+      margin-top: 0.55rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .lo-page .lo-safety-list {
+      display: grid;
+      gap: 0.5rem;
+      margin: 0.9rem 0 0;
+      padding: 0;
+      list-style: none;
+      columns: 2;
+      column-gap: 2rem;
+    }
+
+    .lo-page .lo-safety-list li {
+      break-inside: avoid;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      align-items: baseline;
+      font-size: 0.92rem;
+      color: var(--lo-silver);
+      min-width: 0;
+    }
+
+    .lo-page .lo-safety-list li::before {
+      content: "";
+      flex: 0 0 auto;
+      width: 0.42rem;
+      height: 0.42rem;
+      border-radius: 50%;
+      background: var(--lo-key);
+      transform: translateY(-0.08rem);
+    }
+
+    .lo-page .lo-proof-card {
+      max-width: min(52rem, 100%);
+      border: 1px solid rgba(214, 168, 79, 0.45);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 80% 0%, rgba(214, 168, 79, 0.1), transparent 60%),
+        linear-gradient(160deg, rgba(18, 20, 38, 0.96), rgba(10, 13, 22, 0.9));
+      box-shadow: var(--shadow);
+      padding: clamp(1.1rem, 2vw, 1.6rem);
+    }
+
+    .lo-page .lo-proof-fields {
+      display: grid;
+      gap: 0.55rem;
+      border-top: 1px solid var(--lo-line);
+      border-bottom: 1px solid var(--lo-line);
+      padding: 0.85rem 0;
+      margin: 0.8rem 0;
+    }
+
+    .lo-page .lo-proof-fields > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+
+    .lo-page .lo-proof-fields dt {
+      color: var(--muted);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .lo-page .lo-proof-fields dd {
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: right;
+    }
+
+    /* Accessibility focus state & reduced motion */
+    .lo-page a:focus-visible,
+    .lo-page button:focus-visible {
+      outline: 2px solid var(--lo-key);
+      outline-offset: 3px;
+    }
+
+    /* Word wrapping for SHA-256 hashes, code blocks, and notes on mobile */
+    .lo-page strong,
+    .lo-page code,
+    .lo-page .note,
+    .lo-page .code-block,
+    .lo-page .proof-pill,
+    .lo-page .lo-proof-fields dd {
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .lo-page code,
+    .lo-page .code-block {
+      word-break: break-all;
+    }
+
+    .lo-page .lo-shot,
+    .lo-page .lo-candidate-banner,
+    .lo-page .lo-proof-card,
+    .lo-page .lo-card,
+    .lo-page .lo-statuscard {
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .lo-page * {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .lo-page .lo-hero {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+      }
+      .lo-page .lo-hero .lo-shot {
+        order: -1;
+        max-width: 40rem;
+        width: 100%;
+      }
+      .lo-page .lo-story {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.5rem;
+      }
+      .lo-page .lo-story.copy-first { grid-template-columns: minmax(0, 1fr); }
+      .lo-page .lo-safety-list {
+        columns: 1;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .lo-page .lo-trust {
+        gap: 0.6rem 1.1rem;
+        padding: 0.85rem 1rem;
+      }
+    }
+  </style>
+
+    /* Experimental badge — the app itself labels Wi-Fi Guard this way. */
+    .lo-page .lo-badge-exp {
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 0.6rem;
+      padding: 0.14rem 0.55rem;
+      border: 1px solid rgba(214, 168, 79, 0.55);
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* Devices surface — rendered as scoped status cards mirroring the app's
+       layout, beneath the real panel screenshot. */
+    .lo-page .lo-statuscards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+      gap: 0.85rem;
+      margin-top: 1.1rem;
+    }
+
+    .lo-page .lo-statuscard {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(160deg, rgba(16, 25, 35, 0.96), rgba(10, 16, 24, 0.9));
+      padding: 0.95rem 1rem;
+    }
+
+    .lo-page .lo-statuscard h3 {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    .lo-page .lo-statuscard dl {
+      margin: 0;
+      display: grid;
+      gap: 0.32rem;
+    }
+
+    .lo-page .lo-statuscard dt {
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .lo-page .lo-statuscard dd {
+      margin: 0;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #d7dee5;
+    }
+
+    .lo-page .lo-statuscard .lo-card-foot {
+      margin-top: 0.55rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    /* Safety list — two-column on wide screens. */
+    .lo-page .lo-safety-list {
+      display: grid;
+      gap: 0.5rem;
+      margin: 0.9rem 0 0;
+      padding: 0;
+      list-style: none;
+      columns: 2;
+      column-gap: 2rem;
+    }
+
+    .lo-page .lo-safety-list li {
+      break-inside: avoid;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      align-items: baseline;
+      font-size: 0.92rem;
+      color: #c8d2da;
+      min-width: 0;
+    }
+
+    .lo-page .lo-safety-list li::before {
+      content: "";
+      flex: 0 0 auto;
+      width: 0.42rem;
+      height: 0.42rem;
+      border-radius: 50%;
+      background: var(--lo-key);
+      transform: translateY(-0.08rem);
+    }
+
+    /* Gold, not moonlight: proof is a house signal, and it reads the same on
+       every product page. Capped because a five-row label/value list stretched
+       across the full 1360px shell put each label and its value a third of a
+       screen apart. */
+    .lo-page .lo-proof-card {
+      max-width: min(52rem, 100%);
+      border: 1px solid rgba(214, 168, 79, 0.45);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 80% 0%, rgba(214, 168, 79, 0.1), transparent 60%),
+        linear-gradient(160deg, rgba(16, 25, 35, 0.96), rgba(10, 16, 24, 0.9));
+      box-shadow: var(--shadow);
+      padding: clamp(1.1rem, 2vw, 1.6rem);
+    }
+
+    .lo-page .lo-proof-fields {
+      display: grid;
+      gap: 0.55rem;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 0.85rem 0;
+      margin: 0.8rem 0;
+    }
+
+    .lo-page .lo-proof-fields > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+
+    .lo-page .lo-proof-fields dt {
+      color: var(--muted);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .lo-page .lo-proof-fields dd {
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: right;
+    }
+
+    @media (max-width: 980px) {
+      .lo-page .lo-hero {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+      }
+      .lo-page .lo-hero .lo-shot {
+        order: -1;
+        max-width: 40rem;
+        width: 100%;
+      }
+      .lo-page .lo-story {
+        /* minmax(0, 1fr) so tracks can shrink below content min-width at
+           narrow viewports — a plain 1fr keeps an implicit auto minimum and
+           pushes the column past the viewport. */
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.5rem;
+      }
+      .lo-page .lo-story.copy-first { grid-template-columns: minmax(0, 1fr); }
+      .lo-page .lo-safety-list {
+        columns: 1;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .lo-page .lo-trust {
+        gap: 0.6rem 1.1rem;
+        padding: 0.85rem 1rem;
+      }
+    }
+  </style>
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "Lights Out PC",
+    "name": "Lights Out",
     "operatingSystem": "Windows 10, Windows 11",
     "applicationCategory": "UtilitiesApplication",
-    "description": "Bedtime shutdown timer for Windows. Wind down, start a timed shutdown, cancel safely, and receive proof-style confirmation.",
+    "description": "Local-first night control and bedtime automation for Windows: Tonight sessions, a bedside Android companion, a First Light wake alarm, compatible smart lights, schedule automation, and proof of every run.",
     "offers": {
       "@type": "Offer",
       "price": "0",
@@ -44,181 +734,634 @@
   </script>
 </head>
 <body>
-  <header class="site-header" id="top">
-    <div class="container nav-row">
-      <a class="brand-lockup" href="index.html" aria-label="Proof Foundry home">
-        <img class="brand-logo" src="brand/proof-foundry-logo-horizontal.svg" alt="Proof Foundry" />
-      </a>
-      <nav class="top-nav" aria-label="Primary navigation">
-        <a href="index.html">Home</a>
-        <a href="index.html#products">Products</a>
-        <a href="index.html#proof-standard">Proof Standard</a>
-        <a href="founders.html">Founders</a>
-        <a href="/proof/">Receipts</a>
-      </nav>
-      <a class="button button-secondary nav-cta" href="index.html#products">All Products</a>
-    </div>
-  </header>
+  <!-- @page lights-out -->
+  <!-- @product lights-out -->
+  <!-- @include header -->
 
-  <main>
-    <!-- Hero -->
-    <section class="lo-hero container" aria-labelledby="lo-hero-title">
+  <main class="container product-page lo-page">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/#products">Products</a> <span aria-hidden="true">/</span> <span>Lights Out</span>
+    </nav>
+
+    <nav class="product-subnav" aria-label="Product sections">
+      <a href="#overview">Overview</a>
+      <a href="#tonight">Tonight</a>
+      <a href="#companion">Companion</a>
+      <a href="#first-light">First Light</a>
+      <a href="#devices">Devices</a>
+      <a href="#schedule">Routine</a>
+      <a href="#proof-surface">Proof</a>
+      <a href="#safety">Safety</a>
+      <a href="#download">Download</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+
+    <section id="overview" class="product-hero lo-hero" aria-labelledby="product-title">
       <div class="lo-hero-copy">
-        <p class="eyebrow">A Proof Foundry product</p>
-        <h1 id="lo-hero-title">Lights Out PC</h1>
-        <p class="lo-tagline">Bedtime Mode for Windows</p>
-        <p class="lo-secondary">Wind down. Rest easy.</p>
-        <p class="hero-lede">A local Windows bedtime shutdown timer that helps you wind down, start a timed shutdown, cancel safely, and receive proof-style confirmation that it worked.</p>
-        <div class="hero-actions">
-          <span class="button button-muted">Download link coming soon</span>
-          <a class="button button-secondary" href="index.html">Back to Proof Foundry</a>
+        <div class="lo-mark-lockup" aria-hidden="true">
+          <svg class="lo-aperture-mark" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+            <defs>
+              <radialGradient id="loAmberGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#E8A848" stop-opacity="1" />
+                <stop offset="100%" stop-color="#E8A848" stop-opacity="0" />
+              </radialGradient>
+            </defs>
+            <rect width="48" height="48" rx="12" fill="#121426" stroke="rgba(155, 147, 214, 0.25)" stroke-width="1.5" />
+            <circle cx="24" cy="24" r="15" fill="none" stroke="#9B93D6" stroke-width="2.5" stroke-dasharray="72 22" transform="rotate(-90 24 24)" />
+            <path d="M 24 9 A 15 15 0 1 1 9 24 A 10 10 0 1 0 24 9 Z" fill="#191C33" opacity="0.85" />
+            <line x1="24" y1="9" x2="24" y2="13" stroke="#9B93D6" stroke-width="2" stroke-linecap="round" />
+            <circle cx="24" cy="24" r="5" fill="url(#loAmberGlow)" />
+            <circle cx="24" cy="24" r="3" fill="#E8A848" />
+          </svg>
+          <span class="lo-brand-title">LIGHTS OUT PC</span>
+        </div>
+        <h1 id="product-title">Control your night<br /><span>from the PC — or from bed.</span></h1>
+        <p class="product-lede">{{product.summary}}</p>
+
+        <div class="lo-candidate-banner" aria-label="Version candidate release status">
+          <div class="lo-candidate-header">
+            <span class="lo-pill-status">v11.1.3 · REALITY-GATE-VERIFIED CANDIDATE</span>
+            <span class="lo-pill-hold">PUBLICATION ON HOLD</span>
+          </div>
+          <p class="lo-candidate-copy">Qualification: 20/20 Reality Gate steps passed (Receipt <code>6b67a712-33ba-4cd6-9c4a-81e66f056750</code>, GREEN). Physical Samsung Galaxy S23 companion automation verified. RC4 is the current candidate iteration.</p>
+          <p class="lo-history-note">Prior public Windows release: <strong>v11.1.2</strong> · Android companion: <strong>v11.1.1</strong></p>
+          <div class="lo-candidate-actions">
+            <a class="button button-secondary button-sm" href="#release-status">See Candidate Proof &rarr;</a>
+          </div>
+        </div>
+
+        <div class="proof-strip" aria-label="Lights Out v11.1.3 proof status badges" style="margin-top: 1rem;">
+          <span class="proof-pill"><strong>Reality Gate</strong> Verified</span>
+          <span class="proof-pill"><strong>Signing</strong> Unsigned Portable Build</span>
+          <span class="proof-pill"><strong>Hash</strong> SHA-256 Published</span>
+          <span class="proof-pill"><strong>Bundle</strong> Proof Bundle Prepared</span>
+          <span class="proof-pill"><strong>Windows</strong> Portable</span>
+          <span class="proof-pill"><strong>Android</strong> Companion 11.1.1</span>
         </div>
       </div>
-      <div class="lo-hero-visual" aria-hidden="true">
-        <img class="lo-hero-img" src="assets/lights-out/lights-out-keyart-hero-ui.png" alt="Lights Out PC cockpit interface" />
+
+      <figure class="lo-shot" aria-labelledby="shot-hero-cap">
+        <img
+          src="/assets/lights-out/tonight-active-hero.png"
+          alt="The Lights Out Tonight screen mid-session: the timer ring, session name, remaining time, and the pause, snooze and cancel controls."
+          width="1600" height="902" loading="eager" />
+        <figcaption id="shot-hero-cap">Tonight, mid-session — real capture from the v11.1.2 desktop build.</figcaption>
+      </figure>
+    </section>
+
+    <section aria-label="Trust highlights" class="lo-trust">
+      <div class="lo-trust-item">
+        <span class="lo-trust-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="9.5" rx="2" /><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" /></svg>
+        </span>
+        <span>Local-first, no account</span>
+      </div>
+      <div class="lo-trust-item">
+        <span class="lo-trust-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="12" rx="1.6" /><path d="M2 19.5h20" /></svg>
+        </span>
+        <span>Windows desktop + Android companion</span>
+      </div>
+      <div class="lo-trust-item">
+        <span class="lo-trust-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 4.5 21 19.5H3Z" /><path d="M12 10v4M12 16.6v.4" /></svg>
+        </span>
+        <span>Emergency cancel anytime</span>
+      </div>
+      <div class="lo-trust-item">
+        <span class="lo-trust-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" /><path d="M8 12.2l2.8 2.8L16 9.8" /></svg>
+        </span>
+        <span>Proof of every run</span>
       </div>
     </section>
 
-    <!-- Trust Strip -->
-    <section class="lo-trust container" aria-label="Trust highlights">
-      <div class="lo-trust-item">
-        <span class="lo-trust-icon" aria-hidden="true">&#x1F512;</span>
-        <span>Local-first</span>
-      </div>
-      <div class="lo-trust-item">
-        <span class="lo-trust-icon" aria-hidden="true">&#x1F4BB;</span>
-        <span>Windows 10/11</span>
-      </div>
-      <div class="lo-trust-item">
-        <span class="lo-trust-icon" aria-hidden="true">&#x26A0;&#xFE0F;</span>
-        <span>Emergency cancel</span>
-      </div>
-      <div class="lo-trust-item">
-        <span class="lo-trust-icon" aria-hidden="true">&#x2705;</span>
-        <span>Proof-backed release</span>
-      </div>
-    </section>
-
-    <!-- Features -->
-    <section class="lo-features container" aria-labelledby="lo-features-title">
+    <!-- Beat 1 — Tonight -->
+    <section id="tonight" class="product-section" aria-labelledby="tonight-title">
       <div class="section-head">
-        <h2 id="lo-features-title">What Lights Out does</h2>
-        <p>Focused bedtime tooling. No cloud account required.</p>
+        <h2 id="tonight-title">Build tonight's plan.</h2>
+        <p>One screen decides how the night ends — and you can change your mind at any point.</p>
       </div>
-
-      <div class="lo-features-grid">
-        <article class="lo-feature-card">
-          <div class="lo-feature-icon" aria-hidden="true">&#x23F0;</div>
-          <h3>Smart Bedtime Timers</h3>
-          <p>Preset or custom countdowns. Save profiles for different nights. Quick-start from the tray, keyboard shortcuts, or the cockpit dashboard.</p>
-        </article>
-
-        <article class="lo-feature-card">
-          <div class="lo-feature-icon" aria-hidden="true">&#x1F319;</div>
-          <h3>Gentle Wind-Down</h3>
-          <p>Dim phase, warnings, pause, snooze, Cinema mode, and emergency cancel help the shutdown feel controlled instead of abrupt.</p>
-        </article>
-
-        <article class="lo-feature-card">
-          <div class="lo-feature-icon" aria-hidden="true">&#x23FB;</div>
-          <h3>Automatic Shutdown</h3>
-          <p>Shutdown, sleep, hibernate, or restart — with an emergency cancel always available. Force shutdown only when you explicitly ask for it.</p>
-        </article>
-
-        <article class="lo-feature-card">
-          <div class="lo-feature-icon" aria-hidden="true">&#x1F9FE;</div>
-          <h3>Morning Proof</h3>
-          <p>Receipt-style confirmation of every run: what happened, when it happened, and whether you cancelled or followed through. Honest results.</p>
-        </article>
-
-        <article class="lo-feature-card">
-          <div class="lo-feature-icon" aria-hidden="true">&#x1F525;</div>
-          <h3>Streaks &amp; Sleep Score</h3>
-          <p>Track your bedtime consistency with a streak counter, achievements, and a sleep score that only counts real completed nights.</p>
-        </article>
-
-        <article class="lo-feature-card">
-          <div class="lo-feature-icon" aria-hidden="true">&#x1F6AB;</div>
-          <h3>No Cloud Account</h3>
-          <p>Everything runs locally. No sign-in. No telemetry. Your bedtime data stays on your machine.</p>
-        </article>
-      </div>
-    </section>
-
-    <!-- Proof Section -->
-    <section class="lo-proof container" aria-labelledby="lo-proof-title">
-      <div class="lo-proof-card">
-        <p class="eyebrow">Release proof</p>
-        <h2 id="lo-proof-title">Verified status</h2>
-        <dl class="lo-proof-fields">
-          <div>
-            <dt>Runtime UX pass</dt>
-            <dd>Complete</dd>
-          </div>
-          <div>
-            <dt>Smoke suite</dt>
-            <dd>87 passed, 0 failed</dd>
-          </div>
-          <div>
-            <dt>Lint</dt>
-            <dd>0 errors, 15 known warnings remain</dd>
-          </div>
-          <div>
-            <dt>Build</dt>
-            <dd>PowerShell compiled (SleepTimer.exe)</dd>
-          </div>
-          <div>
-            <dt>Public download</dt>
-            <dd>Coming after account-safe distribution is ready</dd>
-          </div>
-        </dl>
-        <p class="lo-proof-note">Download link coming after account-safe distribution is ready. No GitHub release is live at this time.</p>
-      </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="lo-cta container">
-      <div class="lo-cta-card">
-        <img class="lo-cta-wordmark" src="assets/lights-out/lights-out-wordmark-banner.png" alt="Lights Out" />
-        <p>Bedtime Mode for Windows.<br />Built by The Proof Foundry.</p>
-        <div class="hero-actions" style="justify-content:center">
-          <span class="button button-muted">Download coming soon</span>
-          <a class="button button-secondary" href="index.html#products">Explore all products</a>
+      <div class="lo-story">
+        <div class="lo-story-copy">
+          <p>Tonight turns a power action into a session. Pick how long is left, pick what the PC does when the time comes — shutdown, sleep, restart, hibernate, or log out — and either use a Night Mode or start from scratch.</p>
+          <ul class="lo-story-list">
+            <li>One-tap presets: a 45-minute sleep, a 30-minute wind-down, a two-hour shutdown.</li>
+            <li>Night Modes give sessions preset endings — a movie wind-down, a full shutdown, a quiet-house night — or save your own Profile for quick reuse.</li>
+            <li>Set a clock-time target instead of a duration when the clock matters more.</li>
+            <li>While it runs: current phase, remaining time, then pause, snooze, or cancel — always available.</li>
+          </ul>
         </div>
+        <figure class="lo-shot" aria-labelledby="shot-plan-cap">
+          <img
+            src="/assets/lights-out/tonight-plan-projection.png"
+            alt="Tonight's plan projected before a Full Shutdown session starts, showing the action, ending style, clearance, and proof schedule."
+            width="1127" height="1154" loading="lazy" />
+          <figcaption id="shot-plan-cap">The plan, projected before a Full Shutdown session runs.</figcaption>
+        </figure>
+      </div>
+      <div class="lo-shot-row standalone">
+        <figure class="lo-shot" aria-labelledby="shot-movie-cap">
+          <img
+            src="/assets/lights-out/tonight-movie-running.png"
+            alt="A Movie Wind-Down session running: timer counting down with the ending preset active."
+            width="1127" height="1154" loading="lazy" />
+          <figcaption id="shot-movie-cap">Movie Wind-Down, running.</figcaption>
+        </figure>
+        <figure class="lo-shot" aria-labelledby="shot-modes-cap">
+          <img
+            src="/assets/lights-out/night-modes-panel.png"
+            alt="The Night Modes panel showing the preset endings, from Movie Wind-Down and Full Shutdown to Quiet House and School Night."
+            width="1600" height="1002" loading="lazy" />
+          <figcaption id="shot-modes-cap">Night Modes — a six-mode catalogue with four executable endings; Quiet House is coming soon, and School Night remains setup-dependent.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Beat 2 — Phone Companion -->
+    <section id="companion" class="product-section" aria-labelledby="companion-title">
+      <div class="section-head">
+        <h2 id="companion-title">Your phone becomes the bedside remote.</h2>
+        <p>The Android companion runs over your local network — pair it once, then steer Tonight from bed.</p>
+      </div>
+      <div class="lo-story copy-first">
+        <div class="lo-story-copy">
+          <p>Start the session, change the duration, switch the PC action, pause, snooze, or cancel — without getting back out of bed. The companion shows live remaining time, reconnects across LAN changes, and keeps working while the desktop app hides in the tray.</p>
+          <ul class="lo-story-list">
+            <li>Pairing is a one-time device confirmation — no cloud account, no internet hop.</li>
+            <li>Change the Night Mode from the phone and the desktop follows.</li>
+            <li>The desktop can stay hidden in the tray; the session keeps running and stays reachable.</li>
+          </ul>
+          <p class="note">The companion controls Tonight. It does not control smart lights, Wi-Fi Guard, or the proof ledger — those stay on the desktop in this build.</p>
+        </div>
+        <div class="lo-phone-row">
+          <figure class="lo-phone" aria-labelledby="shot-comp-active-cap">
+            <img
+              src="/assets/lights-out/companion-active.png"
+              alt="Android companion showing an active session with the remaining time and session controls."
+              width="390" height="844" loading="lazy" />
+            <figcaption id="shot-comp-active-cap">Active session on the companion.</figcaption>
+          </figure>
+          <figure class="lo-phone" aria-labelledby="shot-comp-snooze-cap">
+            <img
+              src="/assets/lights-out/companion-snoozed.png"
+              alt="Android companion showing a snoozed session with five minutes added."
+              width="390" height="844" loading="lazy" />
+            <figcaption id="shot-comp-snooze-cap">Snoozed +5 from bed.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Beat 3 — First Light -->
+    <section id="first-light" class="product-section" aria-labelledby="firstlight-title">
+      <div class="section-head">
+        <h2 id="firstlight-title">Lights Out at night. First Light in the morning.</h2>
+        <p>The night doesn't end when the PC goes to sleep — Lights Out schedules the morning too.</p>
+      </div>
+      <div class="lo-story">
+        <div class="lo-story-copy">
+          <p>First Light is a real wake alarm. Set a time in the app, and Lights Out registers it with Windows Task Scheduler so the PC can wake from sleep on its own. When it wakes, the app runs a rising First Light sequence — a gradual, warm start instead of a cold alert.</p>
+          <ul class="lo-story-list">
+            <li>On wake, the session shows a morning briefing drawn from your live calendar and sleep-debt state.</li>
+            <li>Smart lights configured for the morning can join the sunrise with a bounded brightness transition.</li>
+            <li>Setting First Light replaces the previous one-time wake task; choosing Remove deletes that task.</li>
+          </ul>
+          <p>Two supporting systems round out the routine: a <strong>Bedtime Reminder</strong> that nudges you before bed (on by default, 15 minutes before), and <strong>Autopilot Bedtime</strong>, which learns your pattern and offers to start the session — off by default until you turn it on.</p>
+        </div>
+        <figure class="lo-shot" aria-labelledby="shot-firstlight-cap">
+          <img
+            src="/assets/lights-out/settings-first-light-automations.png"
+            alt="The Automations settings category: the First Light wake-alarm controls and Autopilot Bedtime."
+            width="1600" height="1002" loading="lazy" />
+          <figcaption id="shot-firstlight-cap">Automations — the First Light wake alarm and Autopilot Bedtime live here.</figcaption>
+        </figure>
+      </div>
+      <div class="lo-cards">
+        <div class="lo-card">
+          <span class="lo-card-step" aria-hidden="true">1</span>
+          <h3>Set the time</h3>
+          <p>A wake time in the app becomes a real scheduled wake event.</p>
+        </div>
+        <div class="lo-card">
+          <span class="lo-card-step" aria-hidden="true">2</span>
+          <h3>Windows wakes the PC</h3>
+          <p>Task Scheduler wakes the machine from sleep or hibernate at the set time.</p>
+        </div>
+        <div class="lo-card">
+          <span class="lo-card-step" aria-hidden="true">3</span>
+          <h3>First Light rises</h3>
+          <p>A gradual brightening sequence runs, followed by the morning briefing.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Beat 4 — Devices -->
+    <section id="devices" class="product-section" aria-labelledby="devices-title">
+      <div class="section-head">
+        <h2 id="devices-title">Your night doesn't stop at the PC.</h2>
+        <p>The Devices panel is a live summary of everything Lights Out can see and talk to.</p>
+      </div>
+      <div class="lo-story copy-first">
+        <div class="lo-story-copy">
+          <p>Open Devices and you get the current state of the whole setup in one place: what this PC will do, whether the companion is connected, and which integrations are configured. Each card routes straight into the matching settings.</p>
+          <p>Smart Lights and Wi-Fi Guard live here as real, configured-or-planned cards: <a href="#smart-lights">Smart Lights</a> and <a href="#wifi-guard">Wi-Fi Guard</a> each show their armed state — never a silent promise that they are active when they are not.</p>
+        </div>
+        <figure class="lo-shot" aria-labelledby="shot-devices-cap">
+          <img
+            src="/assets/lights-out/devices-panel.png"
+            alt="The Devices panel: This PC status, Phone Companion state, Family LAN discovery, Smart Lights, and Wi-Fi Guard cards."
+            width="1600" height="1002" loading="lazy" />
+          <figcaption id="shot-devices-cap">The real Devices panel — every surface Lights Out can talk to in one view.</figcaption>
+        </figure>
+      </div>
+      <div class="lo-statuscards">
+        <div class="lo-statuscard">
+          <h3>This PC</h3>
+          <dl>
+            <div><dt>Status</dt><dd>Idle or running</dd></div>
+            <div><dt>Action</dt><dd>Shutdown · Sleep · Restart</dd></div>
+            <div><dt>Remaining</dt><dd>Live countdown</dd></div>
+          </dl>
+          <p class="lo-card-foot">Dry Run mode shows here when armed.</p>
+        </div>
+        <div class="lo-statuscard">
+          <h3>Phone Companion</h3>
+          <dl>
+            <div><dt>Network</dt><dd>Local LAN state</dd></div>
+            <div><dt>Mode</dt><dd>Off or on</dd></div>
+            <div><dt>Connected devices</dt><dd>Paired phones</dd></div>
+          </dl>
+          <p class="lo-card-foot">Control Tonight from bed once paired.</p>
+        </div>
+        <div class="lo-statuscard">
+          <h3>Family LAN</h3>
+          <dl>
+            <div><dt>Discovery</dt><dd>Scan for peers</dd></div>
+          </dl>
+          <p class="lo-card-foot">Discovers nearby Lights Out peers on your network — not remote household control.</p>
+        </div>
+        <div class="lo-statuscard">
+          <h3>Smart Lights</h3>
+          <dl>
+            <div><dt>Status</dt><dd>Planned or configured</dd></div>
+          </dl>
+          <p class="lo-card-foot">Hue or HTTP integration set up in Settings.</p>
+        </div>
+        <div class="lo-statuscard">
+          <h3>Wi-Fi Guard</h3>
+          <dl>
+            <div><dt>Status</dt><dd>Planned or configured</dd></div>
+          </dl>
+          <p class="lo-card-foot">Experimental router, webhook, or adapter control.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Beat 5 — Smart Lights -->
+    <section id="smart-lights" class="product-section" aria-labelledby="lights-title">
+      <div class="section-head">
+        <h2 id="lights-title">Let the room wind down with you.</h2>
+        <p>Compatible lights can dim and warm as the bedtime session progresses — attached to the session, not on their own schedules.</p>
+      </div>
+      <div class="lo-story">
+        <div class="lo-story-copy">
+          <p>Smart Lights join the session lifecycle. As the timer runs, configured lights can dim toward a warm color temperature where the fixture supports it, and switch off when the session ends — part of the same wind-down you started on the PC.</p>
+          <ul class="lo-story-list">
+            <li>In-app setup exposes <strong>Philips Hue</strong> and <strong>HTTP webhook</strong> integrations today.</li>
+            <li>Smart Lights only arm after a real successful test connection, and any configuration change disarms them until they pass again.</li>
+            <li>Ritual and wind-down steps can trigger light actions as part of the sequence.</li>
+          </ul>
+          <p class="note">Independent per-light schedules — “Bedroom lights off at 11:00 PM, kitchen at 11:30” — are not part of this build. Light behavior is tied to the PC session tonight.</p>
+        </div>
+        <figure class="lo-shot" aria-labelledby="shot-lights-cap">
+          <img
+            src="/assets/lights-out/settings-smart-lights.png"
+            alt="The Smart Lights settings in Wind-Down: the Philips Hue or HTTP webhook provider selection and test-connection gate."
+            width="1600" height="1002" loading="lazy" />
+          <figcaption id="shot-lights-cap">Smart Lights setup — Philips Hue or HTTP webhook, armed only after a passing test.</figcaption>
+        </figure>
+      </div>
+      <div class="lo-cards">
+        <div class="lo-card">
+          <h3>Wind-down</h3>
+          <p>Dim and warm as the countdown progresses, when the fixture supports color temperature.</p>
+        </div>
+        <div class="lo-card">
+          <h3>End of session</h3>
+          <p>Lights off with the session's end, or follow the Night Mode you chose.</p>
+        </div>
+        <div class="lo-card">
+          <h3>Honest arming</h3>
+          <p>Nothing arms without a passing test connection. Configuration changes disarm it.</p>
+        </div>
+        <div class="lo-card">
+          <h3>Setup today</h3>
+          <p>Philips Hue and generic HTTP webhooks are the exposed integrations in this build.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Beat 6 — Wi-Fi Guard -->
+    <section id="wifi-guard" class="product-section" aria-labelledby="wifi-title">
+      <div class="section-head">
+        <h2 id="wifi-title">Make the network part of the wind-down.<span class="lo-badge-exp">Experimental</span></h2>
+        <p>Wi-Fi Guard can put the network to bed with you — through supported router and webhook integrations.</p>
+      </div>
+      <div class="lo-story copy-first">
+        <div class="lo-story-copy">
+          <p>Wi-Fi Guard restricts internet access as part of the bedtime flow — one more reason to actually log off. It supports TP-Link, ASUS, and Netgear routers, custom webhooks, and a local Wi-Fi-adapter fallback, and it restores access when the session ends or is cancelled.</p>
+          <ul class="lo-story-list">
+            <li>It is labelled <strong>Experimental</strong> inside the app: router paths are best-effort and model-dependent.</li>
+            <li>It refuses to arm without a completed provider setup — an unconfigured guard cannot be switched on.</li>
+            <li>No independent per-device internet schedules in this build.</li>
+          </ul>
+        </div>
+        <figure class="lo-shot" aria-labelledby="shot-wifi-cap">
+          <img
+            src="/assets/lights-out/settings-wifi-guard.png"
+            alt="The Wi-Fi Guard settings under Protection: the router, webhook, or local wireless-adapter provider selection."
+            width="1600" height="1002" loading="lazy" />
+          <figcaption id="shot-wifi-cap">Wi-Fi Guard settings, labelled Experimental — TP-Link, ASUS, Netgear, webhook, or local adapter.</figcaption>
+        </figure>
+      </div>
+      <div class="lo-cards">
+        <div class="lo-card">
+          <h3>Router integrations</h3>
+          <p>TP-Link, ASUS, and Netgear paths are implemented and selected per router.</p>
+        </div>
+        <div class="lo-card">
+          <h3>Webhook</h3>
+          <p>A custom HTTP(S) webhook can trigger your own network control.</p>
+        </div>
+        <div class="lo-card">
+          <h3>Local fallback</h3>
+          <p>Disabling the local Wi-Fi adapter works without any router at all.</p>
+        </div>
+        <div class="lo-card">
+          <h3>Recovery</h3>
+          <p>Access is restored when the session ends, is cancelled, or a recurring schedule is no longer active.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Beat 7 — Schedule & automation -->
+    <section id="schedule" class="product-section" aria-labelledby="schedule-title">
+      <div class="section-head">
+        <h2 id="schedule-title">Build a routine, not just a countdown.</h2>
+        <p>Lights Out can start from more than a button — several real scheduling systems give the night a shape.</p>
+      </div>
+      <div class="lo-story">
+        <div class="lo-story-copy">
+          <p>The Schedule screen is where the week gets predictable. It brings together everything that makes a routine stick:</p>
+          <ul class="lo-story-list">
+            <li>One-off and recurring shutdown rules — “at this time, on these days.”</li>
+            <li>A clock-time target alongside the duration timer, and a clock display for the night.</li>
+            <li>Calendar-based behavior: live calendar events feed session decisions and the First Light morning briefing.</li>
+            <li>Content Blocker schedules: blocking windows that restrict distracting sites during wind-down, independently of the timer.</li>
+          </ul>
+          <p class="note">One honest boundary: these systems are independently scheduled, not one saved whole-room timeline. “Kitchen lights dim at 11:00, Wi-Fi off at 11:30, PC sleeps at midnight” as a single plan is future direction — not current copy.</p>
+        </div>
+        <figure class="lo-shot" aria-labelledby="shot-schedule-cap">
+          <img
+            src="/assets/lights-out/schedule-panel.png"
+            alt="The Schedule screen: the date-and-time target, the also-scheduled First Light, Autopilot Bedtime, and Content Blocker rows, and the calendar import section."
+            width="1600" height="1002" loading="lazy" />
+          <figcaption id="shot-schedule-cap">Schedule — a clock-time target, with First Light, Autopilot, and Content Blocker surfaced alongside.</figcaption>
+        </figure>
+      </div>
+      <div class="lo-cards">
+        <div class="lo-card">
+          <h3>Clock-time target</h3>
+          <p>“Shut down at 10:40 PM” instead of “in 45 minutes.”</p>
+        </div>
+        <div class="lo-card">
+          <h3>Recurring rules</h3>
+          <p>Multiple independent rules: at this time, on these days.</p>
+        </div>
+        <div class="lo-card">
+          <h3>Calendar-driven</h3>
+          <p>Live calendar events inform sessions and the morning briefing.</p>
+        </div>
+        <div class="lo-card">
+          <h3>Automations</h3>
+          <p>First Light, Autopilot Bedtime, Bedtime Reminder, and Content Blocker are each scheduled in their own settings.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Beat 8 — Proof -->
+    <section id="proof-surface" class="product-section" aria-labelledby="proofsurface-title">
+      <div class="section-head">
+        <h2 id="proofsurface-title">Know what actually happened.</h2>
+        <p>Automated power actions shouldn't leave you guessing. The Proof screen records the session, and the receipt stays on your machine.</p>
+      </div>
+      <div class="lo-story">
+        <div class="lo-story-copy">
+          <p>Every session produces a real record: what ran, which action, the outcome — including when you cancelled or changed course. Session history and a full ledger stay in the app, and Morning Proof surfaces the last run's results the next morning.</p>
+          <ul class="lo-story-list">
+            <li>Session History with per-run outcome and status.</li>
+            <li>A full ledger for longer-term review.</li>
+            <li>Morning Proof: the results of last night, shown when you're back at the machine.</li>
+            <li>Completion streaks and a routine consistency score, tracked per night.</li>
+          </ul>
+        </div>
+        <div class="lo-shot-row">
+          <figure class="lo-shot" aria-labelledby="shot-proof-cap">
+            <img
+              src="/assets/lights-out/proof-morning-visible.png"
+              alt="The Proof screen showing Morning Proof results from the last session."
+              width="1600" height="902" loading="lazy" />
+            <figcaption id="shot-proof-cap">Morning Proof on the desktop — real capture from the v11.1.2 build.</figcaption>
+          </figure>
+          <figure class="lo-shot" aria-labelledby="shot-history-cap">
+            <img
+              src="/assets/lights-out/proof-session-history.png"
+              alt="The Proof panel showing Session History with per-run outcome, and the View Full Ledger button."
+              width="1600" height="1002" loading="lazy" />
+            <figcaption id="shot-history-cap">Session History — completed, cancelled, and dry-run nights are all recorded; View Full Ledger opens the complete list.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Beat 9 — Safety -->
+    <section id="safety" class="product-section" aria-labelledby="safety-title">
+      <div class="section-head">
+        <h2 id="safety-title">Automation you can still stop.</h2>
+        <p>The system has the power; you keep the controls.</p>
+      </div>
+      <div class="lo-story copy-first">
+        <div class="lo-story-copy">
+          <p>Everything that touches the machine is designed to be interruptible. Before anything runs you confirm it; while it runs you can always stop it.</p>
+          <ul class="lo-safety-list">
+            <li>Final confirmation before the session starts</li>
+            <li>Pause, snooze, and cancel from the app, the tray, or the phone</li>
+            <li>Emergency cancel anywhere: Ctrl+Shift+X global shortcut</li>
+            <li>Dry Run mode — rehearse the full flow without touching the system</li>
+            <li>A 2-minute default grace period before the action (configurable)</li>
+            <li>Force shutdown only when you explicitly opt in</li>
+            <li>Local-only operation — no cloud, no account, no telemetry</li>
+            <li>Status and proof after every run, including cancellations</li>
+          </ul>
+        </div>
+        <div class="lo-shot-row">
+          <figure class="lo-shot" aria-labelledby="shot-dryrun-cap">
+            <img
+              src="/assets/lights-out/tonight-dryrun-running.png"
+              alt="A Dry Run session running: the full timer flow rehearsed in real time without touching the system."
+              width="1600" height="1002" loading="lazy" />
+            <figcaption id="shot-dryrun-cap">A real Dry Run session, running the full flow without touching the system.</figcaption>
+          </figure>
+          <figure class="lo-shot" aria-labelledby="shot-safety-cap">
+            <img
+              src="/assets/lights-out/settings-power-safety-1920.png"
+              alt="The Power &amp; Safety settings screen: action type, grace period, force-shutdown opt-in, and Dry Run."
+              width="2400" height="1350" loading="lazy" />
+            <figcaption id="shot-safety-cap">Power &amp; Safety settings — action, grace period, force-shutdown opt-in, and Dry Run.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="release-status" class="product-section" aria-labelledby="release-title">
+      <div class="section-head">
+        <h2 id="release-title">Release status &amp; evidence</h2>
+        <p>Lights Out v11.1.3 passed a full Reality Gate Runroom validation on the exact candidate artifact below. This is proof of validation, not a public release — see "What this does not claim" further down.</p>
+      </div>
+      <div class="lo-proof-card">
+        <dl class="lo-proof-fields">
+          <div><dt>Reality Gate result</dt><dd>{{product.testStatus}} steps passed</dd></div>
+          <div><dt>Receipt</dt><dd>6b67a712-33ba-4cd6-9c4a-81e66f056750 · verified GREEN</dd></div>
+          <div><dt>Artifact</dt><dd>Lights-Out-Portable-v11.1.3-win-x64.zip</dd></div>
+          <div><dt>Build</dt><dd>{{product.build}}</dd></div>
+          <div><dt>Distribution</dt><dd>Unsigned portable ZIP; manual extraction required</dd></div>
+          <div><dt>Public download</dt><dd>Not yet authorized — pending separate owner publish decision</dd></div>
+        </dl>
+        {{product.releaseNoteBlock}}
+      </div>
+
+      <div class="lo-proof-card">
+        <h3>What Reality Gate proved</h3>
+        <ul class="lo-story-list">
+          <li>Run 6b67a712 (receipt <code>6b67a712-33ba-4cd6-9c4a-81e66f056750</code>) passed all 20 of 20 validation steps against this exact artifact and source pairing.</li>
+          <li>The receipt is cryptographically signed and was independently verified <strong>GREEN</strong>.</li>
+          <li>Validation included real physical Android companion automation on a Samsung Galaxy S23 — not a simulator.</li>
+          <li>Provider operations during validation: <strong>0</strong>. Real Windows power actions during validation: <strong>0</strong>.</li>
+          <li>An earlier run (receipt <code>a9203e13-7661-47f0-aad5-36bbf210ea1b</code>) is kept only as evidence of a runner toolchain issue that was found and fixed (Node 22 rejects shell-less .cmd spawns; resolved with the runner's documented shell-free toolchain override) — it does not count as a passing result and is never cited as one.</li>
+        </ul>
+      </div>
+
+      <div class="lo-proof-card">
+        <h3>Verify the artifact yourself</h3>
+        <p>Before running any Lights Out download, confirm its hash matches exactly:</p>
+        <div class="code-block">Get-FileHash ".\Lights-Out-Portable-v11.1.3-win-x64.zip" -Algorithm SHA256</div>
+        <p>Expected artifact SHA-256:</p>
+        {{product.hashBlock}}
+        <p>Expected Reality Gate proof bundle SHA-256 (optional, for the proof bundle archive if it is published alongside the artifact):</p>
+        <div class="code-block">{{product.artifacts.1.sha256}}</div>
+        <p class="note">If the hash doesn't match exactly, do not run the file — download again or contact the project.</p>
+      </div>
+
+      <div class="lo-proof-card">
+        <h3>Unsigned build disclosure</h3>
+        <p>This build is not Authenticode-signed. Windows may show a "Windows protected your PC" / unrecognized-publisher warning when you run it. No trusted-publisher claim is made, and no SmartScreen reputation is claimed. Please verify the SHA-256 hash above before running the download.</p>
+      </div>
+
+      <div class="lo-proof-card">
+        <h3>What this does not claim</h3>
+        <ul class="lo-story-list">
+          <li>Not a signed Windows release.</li>
+          <li>Not a trusted-publisher build.</li>
+          <li>Not SmartScreen trusted.</li>
+          <li>Not a GitHub release.</li>
+          <li>Not a public release — that requires a later, separately authorized owner decision.</li>
+          <li>Not a re-verification of the earlier, separately frozen v11.1.2 GitHub release ZIP, which remains blocked from anonymous GitHub access for unrelated account-level reasons.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="limitations" class="product-section" aria-labelledby="limits-title">
+      <div class="section-head">
+        <h2 id="limits-title">Known limitations</h2>
+        <p>Honest about what is not ready yet.</p>
+      </div>
+      <div class="detail-grid">
+        <article class="detail-card">
+          <h3>v11.1.3 download not yet authorized</h3>
+          <p>Lights Out v11.1.3 passed full Reality Gate validation, but publishing it is a separate, owner-only decision that hasn't happened yet. No download link is shown until that authorization exists.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Separately: the older v11.1.2 GitHub release is still hidden</h3>
+          <p>The earlier v11.1.2 release and frozen ZIP exist in the publisher's authenticated GitHub control plane, but an external account-level restriction currently makes the owner, repository, release, and asset return 404 to anonymous visitors. This is unrelated to, and unaffected by, the v11.1.3 Reality Gate proof above.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Windows desktop + Android companion</h3>
+          <p>Desktop app runs on Windows 10 and Windows 11. The Android companion ({{product.companionLabel}}) lets you start, pause, snooze, cancel, and switch Night Modes from bed. No macOS or Linux build in this cycle.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Device integrations are scoped</h3>
+          <p>Smart Lights setup covers Philips Hue and HTTP webhooks today. Wi-Fi Guard is experimental and depends on router or webhook support. Neither supports independent per-device schedules in this build.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="download" class="product-section" aria-labelledby="download-title">
+      <div class="section-head">
+        <h2 id="download-title">Download</h2>
+        <p>Lights Out v11.1.3 is Reality-Gate-verified, but the download is not live yet — publication requires a separate, owner-authorized publish/deploy decision.</p>
+      </div>
+      <div class="download-group">{{product.downloadBlock}}</div>
+      <p class="note">Once publication is authorized, this section will link to <strong>Lights-Out-Portable-v11.1.3-win-x64.zip</strong> and its Reality Gate proof bundle. Verify SHA-256 <strong>{{product.artifacts.0.sha256}}</strong> before running the downloaded file, extract it into its own folder, and launch <strong>Lights Out.exe</strong> from the extracted folder — do not run it inside the ZIP. This Windows build is unsigned, so SmartScreen or an Unknown Publisher warning may appear.</p>
+    </section>
+
+    <section id="faq" class="product-section" aria-labelledby="faq-title">
+      <div class="section-head">
+        <h2 id="faq-title">Frequently asked questions</h2>
+      </div>
+      <div class="detail-grid">
+        <article class="detail-card">
+          <h3>Why is Windows warning me when I run this?</h3>
+          <p>Because the build isn't code-signed yet. Windows shows this warning for any unsigned executable, regardless of how it was tested. Verify the SHA-256 hash above before deciding whether to proceed.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Is this signed?</h3>
+          <p>No. It's an unsigned Windows portable build. Code signing is a separate, tracked piece of future work, not something this release claims.</p>
+        </article>
+        <article class="detail-card">
+          <h3>What does "Reality Gate Verified" mean?</h3>
+          <p>It means this exact build passed a full, real, 20-step automated validation pipeline — including packaged-app checks and live physical-phone companion automation — and produced a cryptographically signed, independently verified proof receipt. It does not mean the file is digitally signed, and it has no effect on Windows SmartScreen.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Is this hosted on GitHub?</h3>
+          <p>No. This build is not a GitHub release. Distribution here is provider-neutral by design.</p>
+        </article>
+        <article class="detail-card">
+          <h3>How do I verify the download?</h3>
+          <p>Run the <code>Get-FileHash</code> command in the Release status &amp; evidence section above and compare the result to the published SHA-256. If they don't match exactly, don't run the file.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Is the Android app also v11.1.3?</h3>
+          <p>No. The Android Companion app remains at version 11.1.1 in this release; only the Windows desktop app moved to 11.1.3.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="product-section other-products" aria-labelledby="other-title">
+      <div class="section-head">
+        <h2 id="other-title">Other Proof Foundry products</h2>
+      </div>
+      <div class="other-products-grid">
+        <a class="other-product-chip" href="/reality-gate/">Reality Gate</a>
+        <a class="other-product-chip" href="/cache-vault/">Cache Vault</a>
+        <a class="other-product-chip" href="/cleanroom/">Cleanroom</a>
+        <a class="other-product-chip" href="/forgecast/">ForgeCast Weather</a>
+        <a class="other-product-chip" href="/proofshot/">ProofShot</a>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div class="footer-brand">
-        <img class="footer-logo" src="brand/proof-foundry-logo-horizontal.svg" alt="Proof Foundry" />
-        <p>Build it. Prove it. Ship it.</p>
-      </div>
-
-      <div>
-        <h2>Products</h2>
-        <ul>
-          <li><a href="lights-out.html">Lights Out PC</a></li>
-          <li><a href="https://cache-vault-landing.pages.dev/" target="_blank" rel="noopener">Cache Vault</a></li>
-          <li>Cleanroom</li>
-          <li>HyperSnatch</li>
-          <li><a href="forgecast.html">ForgeCast Weather</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h2>Company</h2>
-        <ul>
-          <li><a href="founders.html">Founders Circle</a></li>
-          <li><a href="index.html#proof-standard">Proof Standard</a></li>
-          <li><a href="/proof/">Receipts</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="container footer-bottom">
-      <p>&copy; 2026 Proof Foundry. All rights reserved.</p>
-    </div>
-  </footer>
+  <!-- @include footer -->
+  <script src="/site.js" defer></script>
 </body>
 </html>

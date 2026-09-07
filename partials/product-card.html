@@ -1,0 +1,12 @@
+<article class="product-card product-{{state}} card-{{id}}">
+  <div class="product-top">
+    <div class="card-title-row">
+      {{markSvg}}
+      <h3><a href="{{route}}">{{name}}</a></h3>
+    </div>
+    <span class="chip chip-{{state}}">{{statusLabel}}</span>
+  </div>
+  <p class="product-promise">{{cardSummary}}</p>
+  <p class="product-meta">{{meta}}</p>
+  <a class="button button-secondary button-sm card-cta" href="{{route}}">{{cta}} &rarr;</a>
+</article>

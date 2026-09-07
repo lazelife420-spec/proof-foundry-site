@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cache Vault — Local-first clipboard vault | The Proof Foundry</title>
+  <meta name="description" content="Cache Vault is a local-first Windows clipboard vault with stamped receipts, safes, global search, Quick Paste, image capture, exports, Command Center, and an opt-in LAN-only Mobile Bridge with a production-signed Android companion. A Proof Foundry product." />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#0B0F14" />
+  <link rel="canonical" href="https://theprooffoundry.com/cache-vault/" />
+
+  <meta property="og:title" content="Cache Vault — Local-first clipboard vault" />
+  <meta property="og:description" content="Local-first Windows clipboard vault with receipts, safes, search, Quick Paste, image capture, exports, Command Center, and a production-signed Android companion." />
+  <meta property="og:type" content="product" />
+  <meta property="og:url" content="https://theprooffoundry.com/cache-vault/" />
+  <meta property="og:site_name" content="The Proof Foundry" />
+  <meta property="og:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
+
+  <link rel="stylesheet" href="/styles.css" />
+
+  <style>
+    /* ───────────────────────────────────────────────────────────────────────
+       CACHE VAULT — product identity layer
+
+       Shared with the rest of the site and deliberately not overridden here:
+       header, footer, nav, breadcrumb, subnav, the manifest-driven proof strip
+       / download block / hash block, typography, container width, and the gold
+       chrome.
+
+       Cache Vault's own world is an archive. The accent is the product's own
+       teal — brand.py PROOF_TEAL, the same accent the shipped desktop app and
+       its icon use — while patina stays the secondary storage accent, parchment
+       is reserved for receipt and index-card detail, and Proof Foundry gold
+       appears only as the provenance stamp. The archive register lives in the
+       parchment, warm substrate, and cabinet structure, not in the accent hue.
+       Where GhostLayer reads volatile and transient, this page reads stored and
+       durable.
+       ─────────────────────────────────────────────────────────────────────── */
+    .cv-page {
+      /* accent = retained / archive structure; brand.py PROOF_TEAL */
+      --cv-accent: #1A9E8C;
+      /* lifted off the base accent so heading text clears AA on the dark shell
+         while the structural accent below stays at its brand value; this is the
+         shipped Cache Vault icon teal */
+      --cv-accent-text: #2DD4BF;
+      --cv-accent-soft: rgba(26, 158, 140, 0.5);
+      --cv-accent-wash: rgba(26, 158, 140, 0.07);
+      /* patina = secondary age / storage accent */
+      --cv-patina: #5f8f87;
+      --cv-patina-soft: rgba(95, 143, 135, 0.45);
+      --cv-patina-wash: rgba(95, 143, 135, 0.07);
+      /* parchment = receipt / index-card detail */
+      --cv-parchment: #d8c7a4;
+      --cv-parchment-soft: rgba(216, 199, 164, 0.3);
+      /* deep storage ground, sitting under the shared graphite shell */
+      --cv-storage: #241a16;
+      /* the shared --line is a cool slate; the cabinet is this page's product
+         artifact, so its at-rest structure uses a warm neutral at comparable
+         luminance instead of drifting cool slate against parchment and the teal accent */
+      --cv-line: #4a3730;
+    }
+
+    /* ─── Hero ──────────────────────────────────────────────────────────── */
+    .cv-page .cv-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 22rem);
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    /* Product lockup: mark, wordmark, descriptor. */
+    .cv-page .cv-identity {
+      display: flex;
+      align-items: center;
+      gap: 0.95rem;
+      margin-bottom: 1.15rem;
+    }
+
+    .cv-page .cv-mark {
+      flex: none;
+      display: block;
+      width: 64px;
+      height: 64px;
+    }
+
+    .cv-page .cv-wordmark {
+      margin: 0;
+      font-family: "Space Grotesk", Inter, "Segoe UI", sans-serif;
+      font-size: clamp(1.45rem, 3.2vw, 1.95rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      color: var(--text);
+    }
+
+    .cv-page .cv-descriptor {
+      margin: 0.18rem 0 0;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--cv-accent-text);
+    }
+
+    /* The three beats of the product, in plain HTML so the meaning never
+       depends on the decorative hero artwork. */
+    .cv-page .cv-beats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 1.15rem;
+      margin: 0 0 1.45rem;
+      color: var(--cv-parchment);
+      font-size: 0.97rem;
+    }
+
+    .cv-page .cv-beats span {
+      position: relative;
+      padding-left: 0.85rem;
+    }
+
+    .cv-page .cv-beats span::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.62em;
+      width: 5px;
+      height: 5px;
+      border-radius: 1px;
+      background: var(--cv-accent);
+    }
+
+    .cv-page .cv-hero-art {
+      position: relative;
+    }
+
+    .cv-page .cv-hero-art svg {
+      position: relative;
+      z-index: 1;
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* Archival grid behind the cabinet — copper-tinted and masked out at the
+       edges, so it reads as ruled storage paper rather than a tech backdrop.
+       Kept inside the box: bleeding it outward pushed the document 4px wide at
+       320px, and the radial mask already fades it to nothing before the edge. */
+    .cv-page .cv-hero-art::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(26, 158, 140, 0.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(26, 158, 140, 0.15) 1px, transparent 1px);
+      background-size: 26px 26px;
+      -webkit-mask-image: radial-gradient(ellipse at 50% 50%, #000 22%, transparent 72%);
+      mask-image: radial-gradient(ellipse at 50% 50%, #000 22%, transparent 72%);
+      pointer-events: none;
+    }
+
+    /* ─── Retained-history flow band ────────────────────────────────────── */
+    .cv-page .cv-flow-band {
+      margin-block: var(--section-gap);
+    }
+
+    .cv-page .cv-flow {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(160deg, rgba(36, 26, 22, 0.5), rgba(16, 25, 35, 0.62));
+      overflow: hidden;
+    }
+
+    /* Each stage is a retained-history row with its own keyed spine. */
+    .cv-page .cv-flow li {
+      position: relative;
+      padding: 1.15rem 1.25rem 1.15rem 1.5rem;
+      border-left: 1px solid var(--line);
+    }
+
+    .cv-page .cv-flow li:first-child {
+      border-left: 0;
+    }
+
+    .cv-page .cv-flow li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--cv-accent);
+      opacity: 0.5;
+    }
+
+    /* The last stage is where provenance lands, so its spine carries the stamp
+       colour instead of the archive colour. */
+    .cv-page .cv-flow li:last-child::before {
+      background: var(--gold);
+      opacity: 0.6;
+    }
+
+    .cv-page .cv-flow-step {
+      display: block;
+      margin-bottom: 0.42rem;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--cv-accent-text);
+    }
+
+    .cv-page .cv-flow li:last-child .cv-flow-step {
+      color: var(--gold);
+    }
+
+    .cv-page .cv-flow-note {
+      display: block;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    /* ─── Section headers read as drawer dividers ───────────────────────── */
+    .cv-page .section-head {
+      position: relative;
+      border-top: 1px solid var(--line);
+      padding-top: 1.15rem;
+    }
+
+    /* A short copper tab seated at the left end of the divider, with a lighter
+       patina tick beside it for the drawer's label-plate edge. */
+    .cv-page .section-head::before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: 0;
+      width: 3.5rem;
+      height: 2px;
+      background: var(--cv-accent);
+    }
+
+    .cv-page .section-head::after {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: 3.9rem;
+      width: 1.6rem;
+      height: 2px;
+      background: var(--cv-patina);
+      opacity: 0.75;
+    }
+
+    /* ─── Index cards seated in a rack ──────────────────────────────────── */
+    /* One track rule for every grid on this page. At the shell width it resolves
+       to three columns, so the seven "What it does" cards fill three clean rows
+       instead of the orphan row the shared 240px floor produced. */
+    .cv-page .detail-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
+    }
+
+    /* Squared and keyed on the spine edge, rounded on the open edge. */
+    .cv-page .detail-card {
+      border-radius: 3px var(--radius) var(--radius) 3px;
+      border-left: 3px solid var(--cv-accent-soft);
+      background:
+        linear-gradient(90deg, var(--cv-accent-wash), transparent 38%),
+        rgba(16, 25, 35, 0.62);
+      transition: border-left-color 150ms ease;
+    }
+
+    .cv-page .detail-card:hover {
+      border-left-color: var(--cv-accent);
+    }
+
+    .cv-page .detail-card h3 {
+      color: var(--cv-accent-text);
+    }
+
+    /* ─── Checksums render as receipt strips ────────────────────────────── */
+    .cv-page .code-block {
+      position: relative;
+      border-color: var(--cv-accent-soft);
+      border-left: 3px solid var(--cv-accent);
+      background: rgba(36, 26, 22, 0.62);
+      color: var(--cv-parchment);
+    }
+
+    /* Perforated top and bottom edges. */
+    .cv-page .code-block::before,
+    .cv-page .code-block::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-image: repeating-linear-gradient(
+        90deg,
+        var(--cv-parchment-soft) 0 4px,
+        transparent 4px 9px
+      );
+    }
+
+    .cv-page .code-block::before { top: 0; }
+    .cv-page .code-block::after  { bottom: 0; }
+
+    /* ─── Desktop / companion relationship, stated without a cloud ──────── */
+    .cv-page .cv-chain {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.4rem 0.5rem;
+      margin: 0.85rem 0 0;
+      font-size: 0.8rem;
+    }
+
+    .cv-page .cv-chain span {
+      padding: 0.26rem 0.62rem;
+      border: 1px solid var(--cv-patina-soft);
+      border-radius: 999px;
+      background: var(--cv-patina-wash);
+      color: var(--cv-parchment);
+    }
+
+    .cv-page .cv-chain .cv-chain-link {
+      border-style: dashed;
+      background: transparent;
+      color: var(--cv-patina);
+    }
+
+    /* Cache Vault keeps the shared gold note rule, but a pending-release note
+       is a limit rather than a highlight, so it is keyed in patina. */
+    .cv-page .note-pending {
+      border-left-color: var(--cv-patina);
+    }
+
+    /* ─── Accessibility ────────────────────────────────────────────────── */
+    .cv-page a:focus-visible,
+    .cv-page .button:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+    }
+
+    /* The shared card rule drops underlines, which is fine for a standalone
+       link row but leaves a link inside a sentence distinguished by colour
+       alone. Every inline link on this page carries an underline instead. */
+    .cv-page .note a,
+    .cv-page .detail-card p a,
+    .cv-page .detail-card li a {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cv-page .detail-card {
+        transition: none;
+      }
+    }
+
+    /* ─── Responsive ───────────────────────────────────────────────────── */
+    @media (max-width: 1100px) {
+      .cv-page .cv-flow {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .cv-page .cv-flow li:nth-child(odd) {
+        border-left: 0;
+      }
+      .cv-page .cv-flow li:nth-child(n + 3) {
+        border-top: 1px solid var(--line);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .cv-page .cv-hero {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+      }
+      .cv-page .cv-hero-art {
+        order: -1;
+        width: min(18rem, 100%);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .cv-page .cv-flow {
+        grid-template-columns: 1fr;
+      }
+      .cv-page .cv-flow li {
+        border-left: 0;
+        border-top: 0;
+      }
+      .cv-page .cv-flow li + li {
+        border-top: 1px solid var(--line);
+      }
+    }
+
+    @media (max-width: 430px) {
+      .cv-page .cv-identity {
+        gap: 0.75rem;
+      }
+      .cv-page .cv-mark {
+        width: 50px;
+        height: 50px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- @page cache-vault -->
+  <!-- @product cache-vault -->
+  <!-- @include header -->
+
+  <main class="container product-page cv-page">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/#products">Products</a> <span aria-hidden="true">/</span> <span>Cache Vault</span>
+    </nav>
+
+    <nav class="product-subnav" aria-label="Product sections">
+      <a href="#overview">Overview</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#proof">Proof</a>
+      <a href="#download">Download</a>
+      <a href="#limitations">Limitations</a>
+    </nav>
+
+    <section id="overview" class="product-hero cv-hero" aria-labelledby="product-title">
+      <div class="cv-hero-copy">
+        <p class="eyebrow">{{product.statusLabel}} · {{product.versionLabel}}</p>
+
+        <div class="cv-identity">
+          <!-- Archive plates on a keyed spine. The spine and the two long plates
+               bracket an opening that reads as a C; the short patina plate and
+               the gold provenance stamp sit inside it. The middle plate is held
+               off the spine on purpose: flush with it the three plates read as
+               an E and the opening closes. Decorative — the product name and
+               descriptor beside it carry the meaning. -->
+          <svg class="cv-mark" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <rect x="8.5" y="9" width="4.5" height="30" rx="1.6" fill="var(--cv-accent)" />
+            <rect x="15.5" y="9" width="23" height="7.5" rx="1.8" fill="var(--cv-accent)" />
+            <rect x="20.5" y="20.25" width="8.5" height="7.5" rx="1.8" fill="var(--cv-patina)" />
+            <rect x="15.5" y="31.5" width="23" height="7.5" rx="1.8" fill="var(--cv-accent)" />
+            <circle cx="34.5" cy="24" r="4" fill="var(--gold)" />
+          </svg>
+          <div>
+            <p class="cv-wordmark">Cache Vault</p>
+            <p class="cv-descriptor">Local clipboard vault</p>
+          </div>
+        </div>
+
+        <h1 id="product-title">Your clipboard,<br /><span>owned and stamped.</span></h1>
+        <p class="product-lede">{{product.summary}}</p>
+        <p class="cv-beats">
+          <span>Capture what matters.</span>
+          <span>Keep it organized.</span>
+          <span>Retrieve it with receipts.</span>
+        </p>
+        <div class="download-group">{{product.downloadBlock}}</div>
+        {{product.proofStrip}}
+      </div>
+
+      <div class="cv-hero-art" aria-hidden="true">
+        <svg viewBox="0 0 340 300" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+          <g fill="none" stroke-width="1.5" stroke-linecap="round">
+            <!-- CAPTURED: the clip that came back out, carrying its stamp -->
+            <rect x="96" y="10" width="150" height="48" rx="4" stroke="var(--cv-accent)" fill="var(--cv-accent-wash)" />
+            <line x1="110" y1="28" x2="198" y2="28" stroke="var(--cv-parchment)" opacity="0.5" />
+            <line x1="110" y1="40" x2="174" y2="40" stroke="var(--cv-parchment)" opacity="0.5" />
+            <circle cx="224" cy="34" r="11" stroke="var(--gold)" fill="rgba(214, 168, 79, 0.12)" />
+            <circle cx="224" cy="34" r="6" stroke="var(--gold)" opacity="0.6" />
+            <circle cx="224" cy="34" r="1.8" stroke="none" fill="var(--gold)" />
+
+            <!-- the path back to the drawer it was pulled from -->
+            <line x1="171" y1="58" x2="171" y2="86" stroke="var(--cv-accent)" stroke-dasharray="4 5" opacity="0.75" />
+
+            <!-- RETAINED HISTORY: the cabinet. One drawer keyed, the rest at
+                 rest. Each front carries a label plate on the left and a pull
+                 on the right, so it reads as filing hardware, not a list. -->
+            <rect x="26" y="86" width="288" height="156" rx="5" stroke="var(--cv-line)" />
+
+            <rect x="40" y="96" width="260" height="40" rx="3" stroke="var(--cv-line)" />
+            <rect x="52" y="108" width="60" height="16" rx="2" stroke="var(--cv-line)" />
+            <line x1="246" y1="116" x2="286" y2="116" stroke="var(--cv-line)" stroke-width="2.5" />
+
+            <rect x="40" y="142" width="260" height="40" rx="3" stroke="var(--cv-accent)" fill="var(--cv-accent-wash)" />
+            <rect x="52" y="154" width="60" height="16" rx="2" stroke="var(--cv-parchment)" fill="var(--cv-parchment-soft)" />
+            <line x1="246" y1="162" x2="286" y2="162" stroke="var(--cv-accent)" stroke-width="3" />
+
+            <rect x="40" y="188" width="260" height="40" rx="3" stroke="var(--cv-line)" />
+            <rect x="52" y="200" width="60" height="16" rx="2" stroke="var(--cv-line)" />
+            <line x1="246" y1="208" x2="286" y2="208" stroke="var(--cv-line)" stroke-width="2.5" />
+
+            <!-- RETRIEVAL: down to the receipt the retrieval leaves behind -->
+            <line x1="171" y1="242" x2="171" y2="256" stroke="var(--cv-accent)" stroke-dasharray="4 5" opacity="0.75" />
+
+            <!-- RECEIPT: perforated strip, stamped -->
+            <rect x="96" y="258" width="150" height="34" rx="3" stroke="var(--cv-patina)" fill="var(--cv-patina-wash)" />
+            <line x1="96" y1="258" x2="246" y2="258" stroke="var(--cv-parchment)" stroke-dasharray="3 5" opacity="0.55" />
+            <line x1="110" y1="272" x2="196" y2="272" stroke="var(--cv-parchment)" opacity="0.45" />
+            <line x1="110" y1="282" x2="166" y2="282" stroke="var(--cv-parchment)" opacity="0.45" />
+            <circle cx="226" cy="277" r="4" stroke="none" fill="var(--gold)" />
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <section class="cv-flow-band" aria-label="How a clip moves through Cache Vault">
+      <ol class="cv-flow">
+        <li>
+          <span class="cv-flow-step">Captured</span>
+          <span class="cv-flow-note">Copied text, code, paths, and images land in local history as you work.</span>
+        </li>
+        <li>
+          <span class="cv-flow-step">Retained</span>
+          <span class="cv-flow-note">Nothing depends on the clipboard still holding it. The vault is durable local files.</span>
+        </li>
+        <li>
+          <span class="cv-flow-step">Organized</span>
+          <span class="cv-flow-note">Promote what matters into named safes and collections instead of one flat pile.</span>
+        </li>
+        <li>
+          <span class="cv-flow-step">Retrievable</span>
+          <span class="cv-flow-note">Search it, paste it back with Quick Paste, or export it with a stamped receipt.</span>
+        </li>
+      </ol>
+    </section>
+
+    <section class="product-section" aria-labelledby="evidence-title">
+      <div class="section-head">
+        <h2 id="evidence-title">The product, in use</h2>
+        <p>Screenshots from the real application, running on a clean local profile.</p>
+      </div>
+      <div class="cv-evidence-gallery">
+        <figure class="cv-evidence-shot">
+          <img src="/assets/cache-vault/cv-all-clips.png" alt="Cache Vault All Clips view showing the clipboard history list with search, filters, and the preview pane." width="1650" height="1075" loading="lazy" />
+          <figcaption>All Clips — the full history view. Search, type filters, and the preview pane operate on the local store only.</figcaption>
+        </figure>
+        <figure class="cv-evidence-shot">
+          <img src="/assets/cache-vault/cv-cleanup-suggestions.png" alt="Cache Vault Vault Cleanup Suggestions screen showing a duplicate clip group ready for review." width="1650" height="1075" loading="lazy" onerror="this.closest('figure').style.display='none'" />
+          <figcaption>Vault Cleanup Suggestions — the scan runs only when asked, and surfaces duplicate groups for review before anything is removed.</figcaption>
+        </figure>
+        <figure class="cv-evidence-shot">
+          <img src="/assets/cache-vault/cv-quick-paste.png" alt="Cache Vault Quick Paste popup showing recent clips with a search box and keyboard-first navigation." width="700" height="682" loading="lazy" />
+          <figcaption>Quick Paste — keyboard-first popup for pasting a recent clip without leaving the current window.</figcaption>
+        </figure>
+      </div>
+      <p class="note">Screenshots are from the v0.2.3 Desktop application running against an isolated profile with fixture data. No production content is shown.</p>
+    </section>
+
+    <section id="how-it-works" class="product-section" aria-labelledby="what-title">
+      <div class="section-head">
+        <h2 id="what-title">What it does</h2>
+        <p>Clipboard history that stays on your machine, with receipts for everything.</p>
+      </div>
+      <div class="detail-grid">
+        <article class="detail-card">
+          <h3>Clipboard history &amp; safes</h3>
+          <p>Capture every clip automatically, then organize the ones that matter into named safes and collections.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Global search &amp; Quick Paste</h3>
+          <p>Find any clip fast across history and safes, and paste it back in one step with Quick Paste.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Command Center</h3>
+          <p>Trigger actions from a single hotkey-driven launcher. Phase 1 ships Hotkey Actions; expansions wait for deliberate scope decisions.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Screenshots &amp; images</h3>
+          <p>Images live alongside text clips, so visual context is never lost between pastes.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Exports &amp; proof packs</h3>
+          <p>Bundle clips into exports and proof-pack workflows with stamped receipts you can inspect later.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Local-first storage</h3>
+          <p>No cloud account, no telemetry. Your clipboard vault lives on your machine in durable files you own.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Android companion</h3>
+          <p>An opt-in Mobile Bridge pairs Cache Vault Desktop with the production-signed CacheVault Mobile v0.2.0 companion (the public companion) over your own local network. Android v0.2.1 is qualified and publication is on hold. There is no cloud relay and no account.</p>
+          <p class="cv-chain">
+            <span>Cache Vault Desktop</span>
+            <span class="cv-chain-link">local network</span>
+            <span>Android companion</span>
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="product-section" aria-labelledby="why-title">
+      <div class="section-head">
+        <h2 id="why-title">Why Cache Vault</h2>
+        <p>Differentiators, not hype.</p>
+      </div>
+      <div class="detail-grid">
+        <article class="detail-card">
+          <h3>Receipts, not just history</h3>
+          <p>Every clip and export can carry a stamped receipt — proof of what was captured and when.</p>
+        </article>
+        <article class="detail-card">
+          <h3>User-owned workflows</h3>
+          <p>Durable local files mean your vault is not hostage to a SaaS shutdown or a pricing change.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Honest claims</h3>
+          <p>What Cache Vault does is tied to tested behavior and visible release proof, not marketing language.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Founder license gate</h3>
+          <p>Advanced features are unlocked offline with an Ed25519 Founder license. No online account or subscription is required for the usable base application.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="proof" class="product-section" aria-labelledby="proof-title">
+      <div class="section-head">
+        <h2 id="proof-title">Proof &amp; release evidence</h2>
+        <p>What the current public release is, and how to verify it before you install.</p>
+      </div>
+      <div class="detail-grid">
+        <article class="detail-card">
+          <h3>Desktop artifact checksum</h3>
+          <p>Verify the {{product.versionLabel}} Windows ZIP before running it.</p>
+          {{product.hashBlock}}
+          <p class="note">SHA-256 published in the <a href="https://theprooffoundry.com/downloads/cache-vault/v0.2.3-rc1/SHA256SUMS.txt" target="_blank" rel="noopener">candidate SHA256SUMS.txt</a> on Proof Foundry downloads.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Android companion checksum</h3>
+          <p>Verify the production-signed CacheVault Mobile v0.2.0 APK before installing it.</p>
+          <div class="code-block">{{product.artifacts.1.sha256}}</div>
+          <p class="note">Published in the <a href="https://github.com/lazelife420-spec/CacheVault/releases/download/v0.2.0/SHA256SUMS.txt" target="_blank" rel="noopener">v0.2.0 companion SHA256SUMS.txt</a> on GitHub.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Stamp receipt ledger</h3>
+          <p>The receipt ledger records events for every clip: created, copied, exported, pinned, moved, and expired — with the timestamp and the action that produced each event.</p>
+          <figure class="cv-evidence-shot">
+            <img src="/assets/cache-vault/cv-stamped-receipts.png" alt="Cache Vault Stamped Receipts screen showing the per-event ledger with timestamps." width="1650" height="1075" loading="lazy" />
+            <figcaption>Stamped Receipts — a per-event ledger, not a summary. Every action on a clip is recorded and inspectable.</figcaption>
+          </figure>
+        </article>
+        <article class="detail-card">
+          <h3>Release evidence</h3>
+          <ul>
+            <li><a href="https://theprooffoundry.com/downloads/cache-vault/v0.2.3-rc1/CacheVault-v0.2.3-rc1-windows.zip" target="_blank" rel="noopener">Candidate download</a> (CacheVault-v0.2.3-rc1-windows.zip)</li>
+            <li><a href="https://theprooffoundry.com/downloads/cache-vault/v0.2.3-rc1/SHA256SUMS.txt" target="_blank" rel="noopener">Candidate SHA256SUMS.txt</a> (Proof Foundry downloads)</li>
+            <li><a href="https://theprooffoundry.com/downloads/cache-vault/v0.2.3-rc1/CACHEVAULT_V0.2.3RC1_CANONICAL_RECEIPT.json" target="_blank" rel="noopener">Canonical gate receipt</a> (Reality Gate, 20260901-172536-canonical-05b9ae3)</li>
+            <li><a href="https://github.com/lazelife420-spec/CacheVault/releases/download/v0.2.0/SHA256SUMS.txt" target="_blank" rel="noopener">Companion SHA256SUMS.txt</a> (v0.2.0 Android APK)</li>
+            <li>Test suite: 2089 passed · 2 skipped desktop (canonical gate) · 88/88 Android (v0.2.0)</li>
+            <li>Companion signing continuity and pairing verified on a physical Samsung Galaxy S23</li>
+          </ul>
+        </article>
+      </div>
+      {{product.releaseNoteBlock}}
+    </section>
+
+    <section id="limitations" class="product-section" aria-labelledby="limits-title">
+      <div class="section-head">
+        <h2 id="limits-title">Current limitations &amp; release state</h2>
+        <p>What is true right now, including what is not yet released.</p>
+      </div>
+      <div class="detail-grid">
+        <article class="detail-card">
+          <h3>Release state</h3>
+          <p>v0.2.3-rc1 is a Reality Gate canonical-proven release candidate served from Proof Foundry downloads. Cache Vault v0.2.2 remains the last public desktop release (its GitHub release is currently blocked from anonymous access). The public CacheVault Mobile v0.2.0 Android companion is unchanged; Android v0.2.1 is qualified and publication is on hold. The Windows build is not code-signed, so SmartScreen may prompt on first launch — verify the checksum above first.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Distribution source</h3>
+          <p>The v0.2.3-rc1 Windows ZIP is served from Proof Foundry downloads with its published SHA-256 checksum and canonical gate receipt. Verify the SHA-256 checksum above before installing it.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Command Center scope is frozen</h3>
+          <p>Command Center is Phase 1 only (Hotkey Actions) in the current release. Later phases such as Text Expansions and Run Log UI are not claimed until they ship.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="download" class="product-section" aria-labelledby="download-title">
+      <div class="section-head">
+        <h2 id="download-title">Download / Founder</h2>
+        <p>The desktop v0.2.3-rc1 candidate Windows ZIP is served from Proof Foundry downloads; the Android companion v0.2.0 APK remains on its GitHub release.</p>
+      </div>
+      <div class="download-group">
+        {{product.downloadBlock}}
+        <a class="button button-secondary" href="https://github.com/lazelife420-spec/CacheVault/releases/download/v0.2.0/CacheVault-Mobile-v0.2.0-android.apk" target="_blank" rel="noopener" download>Android companion v0.2.0 (APK)</a>
+      </div>
+      <p class="note">The Windows installer is inside the ZIP. Verify the SHA-256 of either artifact against the published checksums before installing it.</p>
+      <p class="note note-pending">The public Android companion is v0.2.0; Android v0.2.1 is qualified and publication is on hold, so it is not a public download.</p>
+    </section>
+
+    <section class="product-section other-products" aria-labelledby="other-title">
+      <div class="section-head">
+        <h2 id="other-title">Other Proof Foundry products</h2>
+      </div>
+      <div class="other-products-grid">
+        <a class="other-product-chip" href="/reality-gate/">Reality Gate</a>
+        <a class="other-product-chip" href="/lights-out/">Lights Out PC</a>
+        <a class="other-product-chip" href="/cleanroom/">Cleanroom</a>
+        <a class="other-product-chip" href="/forgecast/">ForgeCast Weather</a>
+        <a class="other-product-chip" href="/proofshot/">ProofShot</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- @include footer -->
+  <script src="/site.js" defer></script>
+</body>
+</html>

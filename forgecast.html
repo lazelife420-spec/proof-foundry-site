@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ForgeCast Weather v0.3.3 — The Proof Foundry</title>
-  <meta name="description" content="Day-planning weather: what to wear, when to go outside, what to bring or skip, and why." />
+  <title>ForgeCast Weather — Decision Intelligence | The Proof Foundry</title>
+  <meta name="description" content="Day-planning weather that answers you: Ask ForgeCast decisions, Wear/Bring guidance, and dynamic widgets. What to wear, when to go outside, what to bring or skip, and why. A Proof Foundry product." />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#0B0F14" />
   <link rel="canonical" href="https://theprooffoundry.com/forgecast/" />
 
-  <meta property="og:title" content="ForgeCast Weather v0.3.3" />
-  <meta property="og:description" content="Day-planning weather: what to wear, when to go outside, what to bring or skip, and why." />
+  <meta property="og:title" content="ForgeCast Weather — Decision Intelligence" />
+  <meta property="og:description" content="Day-planning weather that answers you: Ask ForgeCast decisions, Wear/Bring guidance, and dynamic widgets." />
   <meta property="og:type" content="product" />
   <meta property="og:url" content="https://theprooffoundry.com/forgecast/" />
   <meta property="og:site_name" content="The Proof Foundry" />
@@ -19,254 +19,472 @@
   <meta name="twitter:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
 
   <link rel="stylesheet" href="/styles.css" />
+
   <style>
-    .product-hero {
-      padding: 4.5rem 0 3rem;
+    /* ── ForgeCast Product Identity — Atmospheric Signal & Decision Horizon ───
+       Page-scoped visual system: storm slate backgrounds, pressure band depth,
+       signal teal accents, horizon amber decision pins, and cloud silver typography.
+       ─────────────────────────────────────────────────────────────────────── */
+    .fc-page {
+      --fc-teal: #3fbf94;
+      --fc-teal-soft: rgba(63, 191, 148, 0.35);
+      --fc-teal-wash: rgba(63, 191, 148, 0.08);
+      --fc-slate: #152433;
+      --fc-slate-border: #1e2c3a;
+      --fc-silver: #eef3f7;
+      --fc-silver-sub: #a8b8c4;
+      --fc-gold: #d6a84f;
+      --fc-bg: #0b0f14;
     }
-    .product-hero .eyebrow {
-      color: var(--gold);
-      font-weight: 600;
-      font-size: 0.85rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 0.75rem;
-    }
-    .product-hero h1 {
-      font-size: clamp(2.4rem, 6vw, 4rem);
-      line-height: 1.05;
-      margin-bottom: 1rem;
-    }
-    .product-hero h1 span {
-      color: var(--gold);
-    }
-    .product-lede {
-      color: var(--muted);
-      font-size: 1.15rem;
-      max-width: 640px;
+
+    /* Product subnav spacing */
+    .fc-page .product-subnav {
       margin-bottom: 2rem;
     }
-    .download-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-bottom: 1.25rem;
-    }
-    .release-pending {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding: 0.85rem 1.25rem;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(16, 25, 35, 0.72);
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-    .release-pending strong {
-      color: var(--gold);
-    }
-    .proof-strip {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.25rem;
-      margin-top: 2rem;
-    }
-    .proof-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.45rem 0.85rem;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(16, 25, 35, 0.72);
-      color: var(--muted);
-      font-size: 0.82rem;
-    }
-    .proof-pill strong {
-      color: var(--text);
-    }
-    .detail-grid {
+
+    /* Hero layout */
+    .fc-page .fc-hero {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
-      margin: 3rem 0;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+      gap: 2.5rem;
+      align-items: center;
     }
-    .detail-card {
-      background: rgba(16, 25, 35, 0.62);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-    }
-    .detail-card h3 {
-      font-size: 1rem;
-      color: var(--gold);
+
+    /* Brand header lockup with Atmospheric Signal Mark */
+    .fc-page .fc-brand-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
       margin-bottom: 0.75rem;
     }
-    .detail-card p,
-    .detail-card li {
-      color: var(--muted);
-      font-size: 0.95rem;
+
+    .fc-page .fc-signal-mark {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
     }
-    .detail-card ul {
-      list-style: none;
-      padding: 0;
-    }
-    .detail-card li {
-      padding: 0.35rem 0;
-      border-bottom: 1px solid rgba(38, 55, 70, 0.4);
-    }
-    .detail-card li:last-child {
-      border-bottom: none;
-    }
-    .code-block {
-      background: #070b10;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 1rem 1.25rem;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.85rem;
-      color: var(--text);
-      overflow-x: auto;
-      margin: 1rem 0;
-    }
-    .code-block .dim {
-      color: var(--muted);
-    }
-    .screenshot-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
-    .screenshot-grid img {
+
+    .fc-page .fc-signal-mark svg {
       width: 100%;
-      border-radius: 14px;
-      border: 1px solid var(--line);
-      background: var(--panel);
+      height: 100%;
+      display: block;
     }
-    .screenshot-grid a {
-      text-decoration: none;
+
+    /* Status & Truth Pills */
+    .fc-page .fc-truth-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.75rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.82rem;
     }
-    .note {
-      color: var(--muted);
-      font-size: 0.9rem;
-      border-left: 3px solid var(--gold);
-      padding-left: 1rem;
-      margin: 1.5rem 0;
+
+    .fc-page .fc-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 4px;
+      font-family: monospace;
+      letter-spacing: 0.02em;
+    }
+
+    .fc-page .fc-pill-public {
+      background: rgba(63, 191, 148, 0.12);
+      border: 1px solid rgba(63, 191, 148, 0.4);
+      color: #6ee7b7;
+    }
+
+    .fc-page .fc-pill-local {
+      background: rgba(214, 168, 79, 0.1);
+      border: 1px solid rgba(214, 168, 79, 0.35);
+      color: #f6d387;
+    }
+
+    .fc-page .fc-pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .fc-page .fc-pill-public .fc-pill-dot { background: var(--fc-teal); }
+    .fc-page .fc-pill-local .fc-pill-dot { background: var(--fc-gold); }
+
+    /* Section head carrying the forecast rail motif */
+    .fc-page .section-head {
+      position: relative;
+      padding-bottom: 1.15rem;
+    }
+
+    .fc-page .section-head::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background: var(--fc-slate-border);
+    }
+
+    .fc-page .section-head::after {
+      content: "";
+      position: absolute;
+      left: 2.5rem;
+      bottom: -1px;
+      width: 4.5rem;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--fc-teal);
+    }
+
+    /* Hero SVG Graphic */
+    .fc-page .fc-hero-art svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.6));
+    }
+
+    /* Device Screenshot Lineup */
+    .fc-page .fc-screens-label {
+      margin-bottom: 1rem;
+    }
+
+    .fc-page .screenshot-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, min(15rem, 100%)));
+      gap: 1.25rem;
+      justify-content: start;
+    }
+
+    .fc-page .screenshot-grid figure {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .fc-page .screenshot-grid img {
+      width: 100%;
+      height: auto;
+      border-radius: 18px;
+      border: 1.5px solid var(--fc-slate-border);
+      background: #05080c;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    }
+
+    .fc-page .screenshot-grid figcaption {
+      margin-top: 0.65rem;
+      font-size: 0.82rem;
+      color: var(--fc-silver-sub);
+      line-height: 1.35;
+    }
+
+    /* Quad & Triad card layouts */
+    .fc-page .fc-quad {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .fc-page .fc-triad {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .fc-page .detail-card {
+      position: relative;
+      border-color: var(--fc-teal-soft);
+      background: rgba(21, 36, 51, 0.5);
+    }
+
+    .fc-page .detail-card::before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: 2rem;
+      width: 3rem;
+      height: 2px;
+      background: var(--fc-teal);
+    }
+
+    /* Responsive breakpoints */
+    @media (max-width: 1100px) {
+      .fc-page .screenshot-grid {
+        grid-template-columns: repeat(2, minmax(0, min(15rem, 100%)));
+      }
+      .fc-page .fc-quad {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .fc-page .fc-hero {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+      }
+      .fc-page .fc-hero-art {
+        order: -1;
+        width: min(22rem, 100%);
+        margin: 0 auto;
+      }
+      .fc-page .fc-triad {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .fc-page .fc-quad {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .fc-page .screenshot-grid {
+        grid-template-columns: minmax(0, min(15rem, 100%));
+      }
     }
   </style>
 </head>
 <body>
-  <header class="site-header" id="top">
-    <div class="container nav-row">
-      <a class="brand-lockup" href="/" aria-label="Proof Foundry home">
-        <img class="brand-logo" src="/brand/proof-foundry-logo-horizontal.svg" alt="Proof Foundry" />
-      </a>
-      <nav class="top-nav" aria-label="Primary navigation">
-        <a href="/">Home</a>
-        <a href="/#products">Products</a>
-        <a href="/founders.html">Founders</a>
-        <a href="/proof/">Receipts</a>
-      </nav>
-    </div>
-  </header>
+  <!-- @page forgecast -->
+  <!-- @product forgecast -->
+  <!-- @include header -->
 
-  <main class="container">
-    <section class="product-hero" aria-labelledby="product-title">
-      <p class="eyebrow">ForgeCast Weather · v0.3.3</p>
-      <h1 id="product-title">Weather that plans<br /><span>your day.</span></h1>
-      <p class="product-lede">
-        DayForge UX consolidation: a decision-first Today screen, clearer separation between Today, Plan, Forecast, Widgets, and Settings, improved outfit confidence and cold/wet guidance, and a fixed Bring/Skip contradiction — device-verified on every build.
-      </p>
+  <main class="container product-page fc-page">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/#products">Products</a> <span aria-hidden="true">/</span> <span>ForgeCast Weather</span>
+    </nav>
 
-      <div class="download-group">
-        <a class="button button-primary" href="https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk" download>
-          Download APK
-        </a>
-        <a class="button button-secondary" href="https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk.sha256.txt" target="_blank" rel="noopener">
-          SHA256
-        </a>
+    <nav class="product-subnav" aria-label="Product sections">
+      <a href="#overview">Overview</a>
+      <a href="#on-device">On device</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#proof">Proof</a>
+      <a href="#download">Download</a>
+      <a href="#limitations">Limitations</a>
+    </nav>
+
+    <section id="overview" class="product-hero fc-hero" aria-labelledby="product-title">
+      <div class="fc-hero-copy">
+        <div class="fc-brand-header">
+          <div class="fc-signal-mark" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="4" width="56" height="56" rx="10" fill="#0B0F14" stroke="#1E2C3A" stroke-width="2"/>
+              <!-- Spine & atmospheric bands forming F -->
+              <line x1="20" y1="18" x2="20" y2="48" stroke="#3FBF94" stroke-width="4" stroke-linecap="round"/>
+              <line x1="20" y1="20" x2="46" y2="20" stroke="#3FBF94" stroke-width="4" stroke-linecap="round"/>
+              <line x1="20" y1="33" x2="38" y2="33" stroke="#3FBF94" stroke-width="3" stroke-linecap="round"/>
+              <!-- Pressure horizon dash -->
+              <line x1="14" y1="46" x2="50" y2="46" stroke="#1E2C3A" stroke-width="2" stroke-dasharray="3 3"/>
+              <!-- Horizon decision point marker -->
+              <circle cx="38" cy="33" r="3.5" fill="#D6A84F"/>
+            </svg>
+          </div>
+          <div>
+            <p class="eyebrow" style="margin: 0;">ForgeCast Weather · {{product.statusLabel}}</p>
+          </div>
+        </div>
+
+        <h1 id="product-title">Know the conditions.<br /><span>Find the window. Make the call.</span></h1>
+        
+        <p class="product-lede">{{product.summary}}</p>
+
+        <div class="fc-truth-pills" aria-label="Release state baseline">
+          <span class="fc-pill fc-pill-public"><span class="fc-pill-dot"></span> Public Release: v0.3.5 (private signing identity · Android APK)</span>
+        </div>
+
+        <div class="download-group">{{product.downloadBlock}}</div>
+        {{product.proofStrip}}
       </div>
 
-      <div class="proof-strip">
-        <span class="proof-pill"><strong>Version</strong> 0.3.3</span>
-        <span class="proof-pill"><strong>versionCode</strong> 14</span>
-        <span class="proof-pill"><strong>Tests</strong> 724/724</span>
-        <span class="proof-pill"><strong>APK size</strong> 77,264,536 bytes</span>
-        <span class="proof-pill"><strong>Platform</strong> Android</span>
-        <span class="proof-pill"><strong>Build</strong> release</span>
+      <div class="fc-hero-art" aria-hidden="true">
+        <svg viewBox="0 0 340 270" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+          <g fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Atmospheric Horizon Outer Frame -->
+            <rect x="16" y="16" width="308" height="238" rx="12" fill="#0B0F14" stroke="#1E2C3A" stroke-width="2" />
+
+            <!-- Time Axis Header -->
+            <text x="32" y="44" fill="#EEF3F7" font-size="10" font-family="monospace" letter-spacing="1">ATMOSPHERIC DECISION HORIZON</text>
+            <rect x="238" y="32" width="70" height="18" rx="4" fill="rgba(63, 191, 148, 0.15)" stroke="var(--fc-teal)" stroke-width="1" />
+            <text x="246" y="44" fill="#6EE7B7" font-size="9" font-family="monospace">SIGNAL OK</text>
+
+            <!-- Temperature & Pressure Curve -->
+            <path d="M 32 120 C 70 100 110 80 160 85 S 240 140 308 110" stroke="#1E2C3A" stroke-width="2" stroke-dasharray="4 4"/>
+            <path d="M 32 140 C 70 120 120 95 160 98 S 230 160 308 130" stroke="var(--fc-teal)" stroke-width="2.5"/>
+
+            <!-- Horizon Time Steps -->
+            <line x1="32" y1="170" x2="308" y2="170" stroke="#1E2C3A" stroke-width="2"/>
+            
+            <circle cx="50" cy="170" r="3" fill="#EEF3F7"/>
+            <text x="42" y="186" fill="#A8B8C4" font-size="9" font-family="monospace">NOW</text>
+
+            <circle cx="120" cy="170" r="4" fill="var(--fc-teal)"/>
+            <text x="110" y="186" fill="var(--fc-teal)" font-size="9" font-family="monospace" font-weight="bold">+2H</text>
+
+            <circle cx="210" cy="170" r="3" fill="#EEF3F7"/>
+            <text x="200" y="186" fill="#A8B8C4" font-size="9" font-family="monospace">+6H</text>
+
+            <circle cx="285" cy="170" r="3" fill="#EEF3F7"/>
+            <text x="273" y="186" fill="#A8B8C4" font-size="9" font-family="monospace">+12H</text>
+
+            <!-- Best Outside Window Highlight Box -->
+            <rect x="95" y="65" width="85" height="85" rx="6" fill="rgba(63, 191, 148, 0.08)" stroke="var(--fc-teal)" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <text x="103" y="80" fill="var(--fc-teal)" font-size="9" font-weight="bold" font-family="monospace">BEST WINDOW</text>
+            <circle cx="138" cy="98" r="4.5" fill="var(--fc-gold)"/>
+
+            <!-- Decision Cards Overlay (Wear / Bring / Skip) -->
+            <rect x="32" y="202" width="82" height="38" rx="6" fill="#152433" stroke="#1E2C3A"/>
+            <text x="38" y="216" fill="#A8B8C4" font-size="8" font-family="monospace">WEAR</text>
+            <text x="38" y="230" fill="#EEF3F7" font-size="9" font-weight="bold">Light Jacket</text>
+
+            <rect x="122" y="202" width="82" height="38" rx="6" fill="#152433" stroke="#1E2C3A"/>
+            <text x="128" y="216" fill="#A8B8C4" font-size="8" font-family="monospace">BRING</text>
+            <text x="128" y="230" fill="#EEF3F7" font-size="9" font-weight="bold">Sunglasses</text>
+
+            <rect x="212" y="202" width="96" height="38" rx="6" fill="#152433" stroke="#1E2C3A"/>
+            <text x="218" y="216" fill="#A8B8C4" font-size="8" font-family="monospace">SKIP</text>
+            <text x="218" y="230" fill="#EEF3F7" font-size="9" font-weight="bold">Heavy Coat</text>
+          </g>
+        </svg>
       </div>
     </section>
 
-    <section aria-label="Product screenshots">
-      <p class="eyebrow" style="margin-bottom: 1rem;">On device</p>
+    <section id="on-device" aria-label="Product screenshots" class="product-screens">
+      <div class="section-head">
+        <h2 id="screens-title">On device</h2>
+        <p>Real application interfaces showing decision-first Today, expanded forecast, Plan board, and Android launcher widgets.</p>
+      </div>
       <div class="screenshot-grid">
         <figure>
-          <img src="/assets/forgecast/v030-today.png" alt="ForgeCast Today screen with wear and best-outside tokens" loading="lazy" />
-          <figcaption style="color: var(--muted); font-size: 0.82rem; margin-top: 0.5rem;">Today — wear, best outside, and how the day moves</figcaption>
+          <img src="/assets/forgecast/v030-today.png" alt="ForgeCast Today screen showing outfit recommendations and best-outside timing window" loading="lazy" />
+          <figcaption>Today — wear, best outside window, and day motion timeline</figcaption>
         </figure>
         <figure>
-          <img src="/assets/forgecast/v030-forecast.png" alt="ForgeCast Forecast with expanded day meaning" loading="lazy" />
-          <figcaption style="color: var(--muted); font-size: 0.82rem; margin-top: 0.5rem;">Forecast — expanded rows with outfit and timing meaning</figcaption>
+          <img src="/assets/forgecast/v030-forecast.png" alt="ForgeCast 5-day forecast view with expanded outfit and condition meaning" loading="lazy" />
+          <figcaption>Forecast — expanded rows with outfit and timing meaning</figcaption>
         </figure>
         <figure>
-          <img src="/assets/forgecast/v030-plan.png" alt="ForgeCast Plan PREP board" loading="lazy" />
-          <figcaption style="color: var(--muted); font-size: 0.82rem; margin-top: 0.5rem;">Plan — what to wear, best outside, bring/skip</figcaption>
+          <img src="/assets/forgecast/v030-plan.png" alt="ForgeCast Plan PREP board showing what to wear, best outside, bring/skip" loading="lazy" />
+          <figcaption>Plan — what to wear, best outside, bring/skip</figcaption>
         </figure>
         <figure>
-          <img src="/assets/forgecast/v030-widgets.png" alt="ForgeCast Daily Planner widget preset" loading="lazy" />
-          <figcaption style="color: var(--muted); font-size: 0.82rem; margin-top: 0.5rem;">Widgets — Daily Planner with wear and outside lines</figcaption>
+          <img src="/assets/forgecast/v030-widgets.png" alt="ForgeCast Android home-screen widget presets: SkyClock and SkyCompact" loading="lazy" />
+          <figcaption>Widgets — Daily Planner and Compact Temp launcher widgets</figcaption>
         </figure>
       </div>
     </section>
 
-    <section class="detail-grid" aria-label="Release details">
-      <article class="detail-card">
-        <h3>SHA-256 checksum</h3>
-        <p>Verify the APK before installing.</p>
-        <div class="code-block">
-          50ABE59E52B6DC7E8649C0CA63EB065425F8EDC607187E3844D90CE5F1EED833
-        </div>
-      </article>
-
-      <article class="detail-card">
-        <h3>What’s inside</h3>
-        <ul>
-          <li>DayForge UX consolidation — Today, Plan, Forecast, Widgets, and Settings each do one job instead of overlapping</li>
-          <li>Decision-first Today — what to wear, best outside time, and bring/skip above the fold</li>
-          <li>Three-preset widget setup — Weather Now, Daily Planner, Compact Temp</li>
-          <li>Improved outfit confidence and cold/wet guidance — cold-and-wet days get rain protection and warmth, not rain-only advice</li>
-          <li>Fixed tomorrow leakage and stale-time guidance — no more tomorrow's clock time or stale afternoon copy at night</li>
-          <li>Fixed contradictory Bring/Skip — an item can no longer show up in both lists at once</li>
-          <li>Preserved urgent drive-now road alerts, even when the aggregate road-risk band reads low</li>
-        </ul>
-      </article>
-
-      <article class="detail-card">
-        <h3>Trust</h3>
-        <ul>
-          <li>No background telemetry</li>
-          <li>Community Checks are off and opt-in — no Community Checks backend in this release</li>
-          <li>No fake AI claims</li>
-          <li>No Day Receipts backend</li>
-          <li>No Local Memory backend</li>
-          <li>Hardened device verification — every build's E2E proof is checked against a locked/asleep-screen false-pass before it ships</li>
-        </ul>
-      </article>
-
-      <article class="detail-card">
-        <h3>Requirements</h3>
-        <ul>
-          <li>Android 8+ (API 26+)</li>
-          <li>Sideload permission enabled</li>
-          <li>OpenWeatherMap API key only if building from source</li>
-        </ul>
-      </article>
+    <section id="how-it-works" class="product-section" aria-labelledby="what-title">
+      <div class="section-head">
+        <h2 id="what-title">What it does</h2>
+        <p>Day-planning weather intelligence — each screen does one job instead of overlapping.</p>
+      </div>
+      <div class="detail-grid fc-quad">
+        <article class="detail-card">
+          <h3>Ask ForgeCast</h3>
+          <p>Ask "When should I walk tonight?" or "Do I need a jacket at 8?" — deterministic answers with the evidence behind them. No cloud chatbot, no question telemetry.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Wear / Bring that reads conditions</h3>
+          <p>Clothing advice weighs timing and conditions, not just temperature: bring a hoodie if you'll still be out after sunset.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Dynamic decision widgets</h3>
+          <p>SkyClock and SkyCompact show Best Window, Wear/Bring, and rain or cooling changes ahead — with an honest stale-data state.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Samsung OneUI reliability</h3>
+          <p>Widgets restore natively after reboot or background freezing — no blank tiles, no waiting for the app.</p>
+        </article>
+      </div>
     </section>
 
-    <p class="note">
-      <strong>Public download:</strong> APK and SHA256 are served from Cloudflare R2. Download the APK, verify its SHA256 matches the checksum above, then sideload it with your preferred Android installer. The custom domain <code>downloads.theprooffoundry.com</code> will be enabled later; for now the canonical hosted files are on the verified R2 URL.
-    </p>
+    <section id="proof" class="product-section" aria-labelledby="proof-title">
+      <div class="section-head">
+        <h2 id="proof-title">Proof &amp; release evidence</h2>
+        <p>Verified public build evidence and checksums.</p>
+      </div>
+      <div class="detail-grid fc-triad">
+        <article class="detail-card">
+          <h3>SHA-256 checksum</h3>
+          <p>Verify the APK before installing.</p>
+          {{product.hashBlock}}
+        </article>
+        <article class="detail-card">
+          <h3>What's inside</h3>
+          <ul>
+            <li>Ask ForgeCast: deterministic decision Q&amp;A with evidence, follow-ups, and an Ask strip above your plan</li>
+            <li>Wear / Bring guidance that understands timing, rain risk, and cooling</li>
+            <li>Dynamic forecast-aware widgets with honest stale state; native restore on Samsung OneUI</li>
+            <li>Day-planning UX across Today, Plan, Forecast, Widgets, and Settings</li>
+          </ul>
+        </article>
+        <article class="detail-card">
+          <h3>Trust &amp; Privacy</h3>
+          <ul>
+            <li>No background telemetry or location tracking</li>
+            <li>Community Checks off by default — no backend tracking</li>
+            <li>No fake AI marketing claims</li>
+            <li>Hardened test verification on every build</li>
+          </ul>
+        </article>
+      </div>
+      {{product.releaseNoteBlock}}
+    </section>
+
+    <section id="limitations" class="product-section" aria-labelledby="limits-title">
+      <div class="section-head">
+        <h2 id="limits-title">Known limitations</h2>
+        <p>Honest about what this release does not do.</p>
+      </div>
+      <div class="detail-grid">
+        <article class="detail-card">
+          <h3>Requirements</h3>
+          <ul>
+            <li>Android 8+ (API 26+)</li>
+            <li>Sideload / Install Unknown Apps permission enabled</li>
+            <li>APK signed with the private ForgeCast signing identity (Android displays a sideload prompt)</li>
+          </ul>
+        </article>
+        <article class="detail-card">
+          <h3>Not included</h3>
+          <ul>
+            <li>No Community Checks backend server</li>
+            <li>No Day Receipts cloud sync</li>
+            <li>No automatic background auto-update</li>
+          </ul>
+        </article>
+        <article class="detail-card">
+          <h3>Honest widget scope</h3>
+          <ul>
+            <li>Widgets update with your weather — they are not continuously animated</li>
+            <li>Stale data shows an honest "may be outdated" state instead of pretending to be live</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="download" class="product-section" aria-labelledby="download-title">
+      <div class="section-head">
+        <h2 id="download-title">Download</h2>
+        <p>APK and SHA256 are served via Proof Foundry distribution storage.</p>
+      </div>
+      <div class="download-group">{{product.downloadBlock}}</div>
+      <p class="note">Public APK and checksum are served through Proof Foundry's distribution storage (private ForgeCast signing identity). Upgrading from v0.3.4? Install normally — settings and data carry over (verified on device). Upgrading from v0.3.3 or earlier? Uninstall the old ForgeCast app first: the signing identity changed at v0.3.4, and uninstalling removes app-local data unless separately preserved. Download the APK, verify its SHA-256 matches the checksum above, then install with your preferred Android installer.</p>
+    </section>
+
+    <section class="product-section other-products" aria-labelledby="other-title">
+      <div class="section-head">
+        <h2 id="other-title">Other Proof Foundry products</h2>
+      </div>
+      <div class="other-products-grid">
+        <a class="other-product-chip" href="/reality-gate/">Reality Gate</a>
+        <a class="other-product-chip" href="/cache-vault/">Cache Vault</a>
+        <a class="other-product-chip" href="/lights-out/">Lights Out PC</a>
+        <a class="other-product-chip" href="/cleanroom/">Cleanroom</a>
+        <a class="other-product-chip" href="/proofshot/">ProofShot</a>
+      </div>
+    </section>
   </main>
+
+  <!-- @include footer -->
+  <script src="/site.js" defer></script>
 </body>
 </html>

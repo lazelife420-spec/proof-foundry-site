@@ -1,7 +1,33 @@
-/lights-out/      /lights-out/index.html  200
-/lights-out       /lights-out/            301
-/lights-out.html  /lights-out/            301
+# Pages serves <route>/index.html for <route>/ automatically. Explicit
+# /<route>/ -> /<route>/index.html 200 proxies are rejected as infinite loops,
+# so only the legacy .html and bare-path redirects are declared here.
 
-/proof/           /proof/index.html       200
-/proof            /proof/                 301
-/proof.html       /proof/                 301
+/reality-gate       /reality-gate/            301
+/reality-gate.html  /reality-gate/            301
+
+/cache-vault        /cache-vault/             301
+/cache-vault.html   /cache-vault/             301
+
+/lights-out         /lights-out/              301
+/lights-out.html    /lights-out/              301
+
+/cleanroom          /cleanroom/               301
+/cleanroom.html     /cleanroom/               301
+
+/ghostlayer         /ghostlayer/              301
+/ghostlayer.html    /ghostlayer/              301
+
+/forgecast          /forgecast/               301
+/forgecast.html     /forgecast/               301
+
+/proofshot          /proofshot/               301
+/proofshot.html     /proofshot/               301
+
+/founders           /founders/                301
+/founders.html      /founders/                301
+
+/proof            /proof/                     301
+/proof.html       /proof/                     301
+
+/roadmap          /roadmap/                   301
+/roadmap.html     /roadmap/                   301

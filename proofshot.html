@@ -1,0 +1,901 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ProofShot — Local Proof Workstation | The Proof Foundry</title>
+  <meta name="description" content="Local-first Windows proof workstation: capture web context, export SHA-256 proof bundles with Proof Passports, and verify offline without network access. A Proof Foundry product." />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#0B0F14" />
+  <link rel="canonical" href="https://theprooffoundry.com/proofshot/" />
+
+  <meta property="og:title" content="ProofShot — Capture context. Export proof. Verify offline." />
+  <meta property="og:description" content="Point ProofShot at anything online, keep a receipt-backed proof bundle with SHA-256 manifests and a Proof Passport, and verify it offline anywhere." />
+  <meta property="og:type" content="product" />
+  <meta property="og:url" content="https://theprooffoundry.com/proofshot/" />
+  <meta property="og:site_name" content="The Proof Foundry" />
+  <meta property="og:image" content="https://theprooffoundry.com/assets/proofshot/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ProofShot — Capture context. Export proof. Verify offline." />
+  <meta name="twitter:description" content="Point ProofShot at anything online, keep a receipt-backed proof bundle with SHA-256 manifests and a Proof Passport, and verify it offline anywhere." />
+  <meta name="twitter:image" content="https://theprooffoundry.com/assets/proofshot/og-image.png" />
+
+  <link rel="stylesheet" href="/styles.css" />
+
+  <style>
+    /* ── PROOFSHOT PRODUCT IDENTITY — Framed Evidence & Provenance Overlay ──────
+       Page-scoped visual system: Carbon Black base, Exposure Gray cards,
+       Focus Vermilion primary identity, Aperture Cyan secondary traces, and
+       Proof Foundry Gold passport seals.
+       ─────────────────────────────────────────────────────────────────────── */
+    .ps-page {
+      --ps-vermilion: #e05244;
+      --ps-vermilion-soft: rgba(224, 82, 68, 0.4);
+      --ps-vermilion-wash: rgba(224, 82, 68, 0.08);
+      --ps-cyan: #40d9fd;
+      --ps-cyan-soft: rgba(64, 217, 253, 0.25);
+      --ps-gray: #141b24;
+      --ps-border: #1e2c3a;
+      --ps-silver: #c8d2da;
+      --ps-silver-sub: #9fb0c0;
+      --ps-gold: #d6a84f;
+      --ps-bg: #0b0f14;
+    }
+
+    /* Product subnav spacing */
+    .ps-page .product-subnav {
+      margin-bottom: 2rem;
+    }
+
+    /* Hero layout */
+    .ps-page .ps-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    /* Brand header lockup with Evidence Frame Mark */
+    .ps-page .ps-brand-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .ps-page .ps-frame-mark {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+    }
+
+    .ps-page .ps-frame-mark svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Status & Truth Pills */
+    .ps-page .ps-truth-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.75rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.82rem;
+    }
+
+    .ps-page .ps-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 4px;
+      font-family: monospace;
+      letter-spacing: 0.02em;
+    }
+
+    .ps-page .ps-pill-active {
+      background: rgba(224, 82, 68, 0.12);
+      border: 1px solid rgba(224, 82, 68, 0.4);
+      color: #f87171;
+    }
+
+    .ps-page .ps-pill-rebrand {
+      background: rgba(214, 168, 79, 0.1);
+      border: 1px solid rgba(214, 168, 79, 0.35);
+      color: #f6d387;
+    }
+
+    .ps-page .ps-pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .ps-page .ps-pill-active .ps-pill-dot { background: var(--ps-vermilion); }
+    .ps-page .ps-pill-rebrand .ps-pill-dot { background: var(--ps-gold); }
+
+    /* Action CTAs (No download button!) */
+    .ps-page .ps-hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-block: 1.25rem;
+    }
+
+    /* Section head carrying evidence corner motif */
+    .ps-page .section-head {
+      position: relative;
+      padding-bottom: 1.15rem;
+    }
+
+    .ps-page .section-head::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0.78rem;
+      width: 0.65rem;
+      height: 0.65rem;
+      border: 2px solid var(--ps-vermilion);
+      border-radius: 2px;
+    }
+
+    .ps-page .section-head::after {
+      content: "";
+      position: absolute;
+      left: 0.9rem;
+      bottom: 0.84rem;
+      width: min(17rem, 100%);
+      height: 2px;
+      background: linear-gradient(90deg, var(--ps-vermilion), rgba(224, 82, 68, 0.05));
+    }
+
+    /* Trust strip */
+    .ps-page .ps-trust {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: 0.8rem 1.9rem;
+      margin-block: var(--section-gap);
+      padding: 1rem 1.4rem;
+      border: 1px solid var(--ps-border);
+      border-radius: var(--radius);
+      background: linear-gradient(90deg, var(--ps-vermilion-wash), rgba(20, 27, 36, 0.7) 45%);
+    }
+
+    .ps-page .ps-trust-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--ps-silver);
+    }
+
+    .ps-page .ps-trust-icon {
+      display: inline-flex;
+      font-size: 1rem;
+      color: var(--ps-vermilion);
+    }
+
+    /* Screenshot figures with Evidence Frames */
+    .ps-page .ps-shot {
+      margin: 0;
+      position: relative;
+      border: 1px solid var(--ps-border);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 100% 0%, var(--ps-vermilion-wash), transparent 55%),
+        linear-gradient(160deg, rgba(20, 27, 36, 0.95), rgba(11, 15, 20, 0.88));
+      box-shadow: var(--shadow);
+      padding: clamp(0.7rem, 1.5vw, 1.1rem);
+    }
+
+    /* Crop corner overlays on screenshots */
+    .ps-page .ps-shot::before {
+      content: "";
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      width: 14px;
+      height: 14px;
+      border-top: 2px solid var(--ps-vermilion);
+      border-left: 2px solid var(--ps-vermilion);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .ps-page .ps-shot::after {
+      content: "";
+      position: absolute;
+      bottom: 6px;
+      right: 6px;
+      width: 14px;
+      height: 14px;
+      border-bottom: 2px solid var(--ps-vermilion);
+      border-right: 2px solid var(--ps-vermilion);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .ps-page .ps-shot img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: calc(var(--radius) - 4px);
+    }
+
+    .ps-page .ps-shot figcaption {
+      margin-top: 0.65rem;
+      font-size: 0.82rem;
+      color: var(--ps-silver-sub);
+      line-height: 1.35;
+    }
+
+    /* Story blocks */
+    .ps-page .ps-story {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+      gap: clamp(1.5rem, 3vw, 2.75rem);
+      align-items: center;
+    }
+
+    .ps-page .ps-story.copy-first { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+
+    .ps-page .ps-story-copy p { color: var(--ps-silver); }
+    .ps-page .ps-story-copy p + p { margin-top: 0.7rem; }
+
+    .ps-page .ps-story-list {
+      margin: 0.9rem 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .ps-page .ps-story-list li {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      align-items: baseline;
+      font-size: 0.92rem;
+      color: var(--ps-silver);
+      min-width: 0;
+    }
+
+    .ps-page .ps-story-list li::before {
+      content: "";
+      flex: 0 0 auto;
+      width: 0.42rem;
+      height: 0.42rem;
+      border-radius: 1px;
+      background: var(--ps-vermilion);
+      transform: translateY(-0.08rem);
+    }
+
+    .ps-page .ps-shot-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+      gap: 1rem;
+    }
+
+    .ps-page .ps-shot-row.standalone {
+      margin-top: 1.25rem;
+    }
+
+    /* Capability cards */
+    .ps-page .ps-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
+      gap: 0.9rem;
+      margin-top: 1.1rem;
+    }
+
+    .ps-page .ps-card {
+      position: relative;
+      border: 1px solid var(--ps-border);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 0% 0%, var(--ps-vermilion-wash), transparent 60%),
+        linear-gradient(160deg, rgba(20, 27, 36, 0.95), rgba(11, 15, 20, 0.88));
+      padding: 1rem 1rem 0.9rem;
+    }
+
+    .ps-page .ps-card::before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: 1.5rem;
+      width: 2.5rem;
+      height: 2px;
+      background: var(--ps-vermilion);
+    }
+
+    .ps-page .ps-card h3 {
+      font-size: 0.95rem;
+      margin-bottom: 0.35rem;
+      color: #ffffff;
+    }
+
+    .ps-page .ps-card p {
+      color: var(--ps-silver);
+      font-size: 0.85rem;
+      margin: 0;
+    }
+
+    /* Proof Bundle Tree */
+    .ps-page .ps-bundle-tree {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.8rem;
+      line-height: 1.55;
+      color: var(--ps-silver);
+      white-space: pre;
+      overflow-x: auto;
+      padding: 1rem;
+      background: #070a0e;
+      border-radius: 6px;
+      border: 1px solid var(--ps-border);
+    }
+
+    .ps-page .ps-bundle-tree .ps-tree-dir { color: var(--ps-cyan); font-weight: bold; }
+    .ps-page .ps-bundle-tree .ps-tree-comment { color: var(--ps-silver-sub); }
+
+    /* Naming Table */
+    .ps-page .ps-naming {
+      margin: 0;
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      column-gap: 1.4rem;
+      row-gap: 0.45rem;
+      border-top: 1px solid var(--ps-border);
+      border-bottom: 1px solid var(--ps-border);
+      padding: 0.8rem 0;
+    }
+
+    .ps-page .ps-naming dt {
+      color: var(--ps-silver-sub);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding-top: 0.14rem;
+    }
+
+    .ps-page .ps-naming dd {
+      margin: 0;
+      color: var(--ps-silver);
+      font-size: 0.9rem;
+    }
+
+    /* Proof Passport Card */
+    .ps-page .ps-proof-card {
+      max-width: min(52rem, 100%);
+      border: 1px solid rgba(214, 168, 79, 0.45);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 80% 0%, rgba(214, 168, 79, 0.1), transparent 60%),
+        linear-gradient(160deg, rgba(20, 27, 36, 0.96), rgba(11, 15, 20, 0.9));
+      box-shadow: var(--shadow);
+      padding: clamp(1.1rem, 2vw, 1.6rem);
+    }
+
+    .ps-page .ps-proof-fields {
+      display: grid;
+      gap: 0.55rem;
+      border-top: 1px solid var(--ps-border);
+      border-bottom: 1px solid var(--ps-border);
+      padding: 0.85rem 0;
+      margin: 0.8rem 0;
+    }
+
+    .ps-page .ps-proof-fields > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+
+    .ps-page .ps-proof-fields dt {
+      color: var(--ps-silver-sub);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .ps-page .ps-proof-fields dd {
+      color: var(--ps-silver);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: right;
+    }
+
+    /* Hero SVG Graphic */
+    .ps-page .fc-hero-art svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.6));
+    }
+
+    /* Responsive breakpoints */
+    @media (max-width: 980px) {
+      .ps-page .ps-hero {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+      }
+      .ps-page .ps-hero .ps-hero-art {
+        order: -1;
+        max-width: 32rem;
+        width: 100%;
+        margin: 0 auto;
+      }
+      .ps-page .ps-story {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.5rem;
+      }
+      .ps-page .ps-story.copy-first { grid-template-columns: minmax(0, 1fr); }
+      .ps-page .ps-naming {
+        grid-template-columns: 1fr;
+        row-gap: 0.35rem;
+      }
+      .ps-page .ps-naming dd {
+        margin-bottom: 0.6rem;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .ps-page .ps-trust {
+        gap: 0.6rem 1.1rem;
+        padding: 0.85rem 1rem;
+      }
+    }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ProofShot",
+    "operatingSystem": "Windows 10, Windows 11",
+    "applicationCategory": "UtilitiesApplication",
+    "description": "Local-first Windows proof workstation: capture web context, export SHA-256 proof bundles with Proof Passports, and verify offline without network access.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "The Proof Foundry",
+      "url": "https://theprooffoundry.com"
+    }
+  }
+  </script>
+</head>
+<body>
+  <!-- @page proofshot -->
+  <!-- @product proofshot -->
+  <!-- @include header -->
+
+  <main class="container product-page ps-page">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/#products">Products</a> <span aria-hidden="true">/</span> <span>ProofShot</span>
+    </nav>
+
+    <nav class="product-subnav" aria-label="Product sections">
+      <a href="#overview">Overview</a>
+      <a href="#capture">Capture</a>
+      <a href="#understand">Understand</a>
+      <a href="#organize">Organize</a>
+      <a href="#prove">Prove</a>
+      <a href="#verify">Verify</a>
+      <a href="#identity">Identity</a>
+      <a href="#release-status">Release</a>
+      <a href="#limitations">Limitations</a>
+    </nav>
+
+    <section id="overview" class="product-hero ps-hero" aria-labelledby="product-title">
+      <div class="ps-hero-copy">
+        <div class="ps-brand-header">
+          <div class="ps-frame-mark" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="4" width="56" height="56" rx="10" fill="#0B0F14" stroke="#1E2C3A" stroke-width="2"/>
+              <!-- Crop corners -->
+              <path d="M12 20V12H20" stroke="#E05244" stroke-width="3" stroke-linecap="round"/>
+              <path d="M52 20V12H44" stroke="#E05244" stroke-width="3" stroke-linecap="round"/>
+              <path d="M12 44V52H20" stroke="#E05244" stroke-width="3" stroke-linecap="round"/>
+              <path d="M52 44V52H44" stroke="#E05244" stroke-width="3" stroke-linecap="round"/>
+              <!-- Central focus ring & vermilion focus point -->
+              <circle cx="32" cy="32" r="11" stroke="#40D9FD" stroke-width="2" stroke-dasharray="24 6"/>
+              <circle cx="32" cy="32" r="3.5" fill="#E05244"/>
+              <!-- Proof gold seal notch -->
+              <circle cx="43" cy="21" r="2.5" fill="#D6A84F"/>
+            </svg>
+          </div>
+          <div>
+            <p class="eyebrow" style="margin: 0;">ProofShot · {{product.statusLabel}}</p>
+          </div>
+        </div>
+
+        <h1 id="product-title">Capture the context.<br /><span>Build the evidence. Verify it offline.</span></h1>
+        
+        <p class="product-lede">{{product.summary}}</p>
+
+        <div class="ps-truth-pills" aria-label="Release state baseline">
+          <span class="ps-pill ps-pill-active"><span class="ps-pill-dot"></span> Active Proof: Engine v1.6.18 Qualified</span>
+          <span class="ps-pill ps-pill-rebrand"><span class="ps-pill-dot"></span> Rebrand Migration: ProofShot Package In Progress</span>
+        </div>
+
+        <div class="ps-hero-actions">
+          <a class="button button-primary" href="#capture">Explore the workflow &rarr;</a>
+          <a class="button button-secondary" href="#prove">Inspect proof format</a>
+        </div>
+
+        {{product.proofStrip}}
+      </div>
+
+      <div class="ps-hero-art" aria-hidden="true">
+        <svg viewBox="0 0 340 270" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+          <g fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Evidence Frame Outer Frame -->
+            <rect x="16" y="16" width="308" height="238" rx="12" fill="#0B0F14" stroke="#1E2C3A" stroke-width="2" />
+
+            <!-- Frame Header Bar -->
+            <text x="32" y="44" fill="#C8D2DA" font-size="10" font-family="monospace" letter-spacing="1">EVIDENCE FRAME · WORKBENCH INTAKE</text>
+            <rect x="238" y="32" width="70" height="18" rx="4" fill="rgba(224, 82, 68, 0.15)" stroke="var(--ps-vermilion)" stroke-width="1" />
+            <text x="246" y="44" fill="#F87171" font-size="9" font-family="monospace">99/99 PASS</text>
+
+            <!-- Four Incomplete Crop Corners -->
+            <path d="M 40 75 L 40 60 L 55 60" stroke="var(--ps-vermilion)" stroke-width="2.5" />
+            <path d="M 300 75 L 300 60 L 285 60" stroke="var(--ps-vermilion)" stroke-width="2.5" />
+            <path d="M 40 165 L 40 180 L 55 180" stroke="var(--ps-vermilion)" stroke-width="2.5" />
+            <path d="M 300 165 L 300 180 L 285 180" stroke="var(--ps-vermilion)" stroke-width="2.5" />
+
+            <!-- SmartDecode Extraction Pipeline Flow -->
+            <rect x="65" y="72" width="210" height="96" rx="8" fill="#141B24" stroke="#1E2C3A" />
+            <text x="80" y="92" fill="var(--ps-cyan)" font-size="9" font-family="monospace" font-weight="bold">SMARTDECODE v2.5.0</text>
+            <text x="80" y="108" fill="#9FB0C0" font-size="8" font-family="monospace">2 Candidates Scored · Best Target Selected</text>
+
+            <line x1="80" y1="120" x2="260" y2="120" stroke="#1E2C3A" stroke-dasharray="3 3"/>
+            <text x="80" y="136" fill="var(--ps-vermilion)" font-size="8" font-family="monospace">FOCUS TARGET</text>
+            <text x="80" y="152" fill="#C8D2DA" font-size="9" font-family="monospace">SHA-256 Digest: 5C0F00FB7E6E... Verified</text>
+
+            <!-- Bottom Metadata Strip -->
+            <rect x="32" y="202" width="85" height="38" rx="6" fill="#141B24" stroke="#1E2C3A"/>
+            <text x="38" y="216" fill="#9FB0C0" font-size="8" font-family="monospace">MANIFEST</text>
+            <text x="38" y="230" fill="#C8D2DA" font-size="9" font-weight="bold">SHA-256</text>
+
+            <rect x="125" y="202" width="95" height="38" rx="6" fill="#141B24" stroke="#1E2C3A"/>
+            <text x="131" y="216" fill="#9FB0C0" font-size="8" font-family="monospace">METADATA</text>
+            <text x="131" y="230" fill="var(--ps-gold)" font-size="9" font-weight="bold">Proof Passport</text>
+
+            <rect x="228" y="202" width="80" height="38" rx="6" fill="#141B24" stroke="#1E2C3A"/>
+            <text x="234" y="216" fill="#9FB0C0" font-size="8" font-family="monospace">VERIFY</text>
+            <text x="234" y="230" fill="var(--ps-cyan)" font-size="9" font-weight="bold">Offline HTML</text>
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <section aria-label="Trust highlights" class="ps-trust">
+      <div class="ps-trust-item">
+        <span class="ps-trust-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="9.5" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        </span>
+        <span>Local-first, no account</span>
+      </div>
+      <div class="ps-trust-item">
+        <span class="ps-trust-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 12.2l2.8 2.8L16 9.8" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        </span>
+        <span>Receipts + SHA-256 manifests</span>
+      </div>
+      <div class="ps-trust-item">
+        <span class="ps-trust-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 4.5 21 19.5H3Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 10v4M12 16.6v.4" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        </span>
+        <span>Tamper-evident by design</span>
+      </div>
+      <div class="ps-trust-item">
+        <span class="ps-trust-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="12" rx="1.6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M2 19.5h20" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        </span>
+        <span>Offline verifier in every bundle</span>
+      </div>
+    </section>
+
+    <!-- Beat 1 — Ingest / Capture Context -->
+    <section id="capture" class="product-section" aria-labelledby="capture-title">
+      <div class="section-head">
+        <h2 id="capture-title">One workbench takes it in. Nothing runs by itself.</h2>
+        <p>Paste a URL or a page into the Workbench and SmartDecode reads what the target actually contains — offline.</p>
+      </div>
+      <div class="ps-story">
+        <div class="ps-story-copy">
+          <p>SmartDecode (v2.5.0, built into this release) works on the page's own text. It reads the structure the page declares for itself — scripts, stylesheets, images, links, embedded declarations — and separates what is real from what is not.</p>
+          <ul class="ps-story-list">
+            <li>Everything is resolved locally: no account, no upload, no cloud hop.</li>
+            <li>Refusals are kept apart from candidates, so the operator sees what was dismissed and why.</li>
+            <li>A full capture keeps the page's own artifacts and structure, not just a summary.</li>
+          </ul>
+          <p class="note">Capture is structural, not photographic. This build reads and records the page's own resources and receipts; there is no pixel-screenshot engine in it. What you see below is a real SmartDecode run — two candidates identified, best target selected.</p>
+        </div>
+        <figure class="ps-shot" aria-labelledby="shot-decode-cap">
+          <img
+            src="/assets/proofshot/decode-complete.png"
+            alt="The Workbench intake panel after a real SmartDecode run: status reads Decode complete, two candidates identified, best target selected."
+            width="1440" height="900" loading="lazy" />
+          <figcaption id="shot-decode-cap">A real SmartDecode run on a pasted page: “Decode complete: 2 candidate(s) identified and best target selected.” The input is a synthetic demo page.</figcaption>
+        </figure>
+      </div>
+      <div class="ps-cards">
+        <div class="ps-card">
+          <h3>What it reads</h3>
+          <p>Scripts, stylesheets, images, links, and encoded declarations — the page's own references.</p>
+        </div>
+        <div class="ps-card">
+          <h3>Refusals separated</h3>
+          <p>Incomplete or non-extractable references are refused, listed separately, never mixed into results.</p>
+        </div>
+        <div class="ps-card">
+          <h3>Offline by default</h3>
+          <p>The extraction pipeline runs locally, with no account and no network dependency.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Beat 2 — Understand & Resolve Candidates -->
+    <section id="understand" class="product-section" aria-labelledby="understand-title">
+      <div class="section-head">
+        <h2 id="understand-title">A plan you can read — and run yourself.</h2>
+        <p>Decode produces candidates, ranks them, and says which one is the best target and why. Then it hands you a plan — it never acts on your behalf.</p>
+      </div>
+      <div class="ps-story copy-first">
+        <div class="ps-story-copy">
+          <p>Every candidate gets a confidence score and a place in a deterministic ranking. The best target is selected the same way every time, and the extraction table shows the source and the score. A retrieval plan is generated from the result — a command the operator can run, change, or ignore.</p>
+          <ul class="ps-story-list">
+            <li>Candidate rows show what was found, where it came from, and how confident the engine is.</li>
+            <li>The plan is output, not action. Nothing is fetched, downloaded, or executed automatically.</li>
+            <li>Results are deterministic: the same input produces the same ranking on every run.</li>
+          </ul>
+        </div>
+        <figure class="ps-shot" aria-labelledby="shot-plan-cap">
+          <img
+            src="/assets/proofshot/candidates-plan.png"
+            alt="The candidates table with two scored candidates and the generated retrieval plan above it."
+            width="1440" height="900" loading="lazy" />
+          <figcaption id="shot-plan-cap">Two scored candidates from the real run above, with the generated plan. SmartDecode outputs the plan for the operator — it does not execute automatically.</figcaption>
+        </figure>
+      </div>
+      <div class="ps-cards">
+        <div class="ps-card">
+          <h3>Confidence, with reasons</h3>
+          <p>Scores come from the extraction pipeline itself and sort deterministically.</p>
+        </div>
+        <div class="ps-card">
+          <h3>Best target selected</h3>
+          <p>One candidate is chosen as the best — the one the plan is built around.</p>
+        </div>
+        <div class="ps-card">
+          <h3>Operator runs the plan</h3>
+          <p>The generated plan is a starting point for the operator, never an autonomous action.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Beat 3 — Organize Case -->
+    <section id="organize" class="product-section" aria-labelledby="organize-title">
+      <div class="section-head">
+        <h2 id="organize-title">One folder per engagement.</h2>
+        <p>Everything captured for one matter stays together, locally, in a simple project container.</p>
+      </div>
+      <div class="ps-story">
+        <div class="ps-story-copy">
+          <p>A case is a workspace folder with a name and an ID — created in one click from the Cases panel. Items added to it keep their timestamps, and the case list shows the count at a glance. It is deliberately simple: a container for evidence and its receipts, not a team collaboration system.</p>
+          <ul class="ps-story-list">
+            <li>Create a case, name it, and it appears with its own ID and creation time.</li>
+            <li>Items hold their own hashes and receipts inside the case folder.</li>
+            <li>The whole workspace lives on the machine — no cloud project, no shared account.</li>
+          </ul>
+        </div>
+        <figure class="ps-shot" aria-labelledby="shot-cases-cap">
+          <img
+            src="/assets/proofshot/cases.png"
+            alt="The Cases panel with a real case row: case ID, case name, item count, and timestamp."
+            width="1440" height="900" loading="lazy" />
+          <figcaption id="shot-cases-cap">A real case created in the running build — ID, name, item count, and local timestamp.</figcaption>
+        </figure>
+      </div>
+      <div class="ps-cards">
+        <div class="ps-card">
+          <h3>One-click case</h3>
+          <p>Create a named case from the Cases panel; it appears with its own ID.</p>
+        </div>
+        <div class="ps-card">
+          <h3>Local timestamps</h3>
+          <p>Every item and case carries the machine's own time when it was recorded.</p>
+        </div>
+        <div class="ps-card">
+          <h3>Simple by design</h3>
+          <p>No team workspaces, no shared projects — a container, on purpose, per the product freeze.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Beat 4 — Export Proof Bundle -->
+    <section id="prove" class="product-section" aria-labelledby="prove-title">
+      <div class="section-head">
+        <h2 id="prove-title">Export a bundle you can hand over.</h2>
+        <p>One export writes the whole matter to a folder you choose: the captured page, its artifacts, and the proof files that let anyone check it later.</p>
+      </div>
+      <div class="ps-story">
+        <div class="ps-story-copy">
+          <p>The proof bundle is the product. Its layout is fixed and documented, and every file in it is covered by a SHA-256 manifest. A Proof Passport states what the bundle is, when it was exported, and why — and the bundle carries its own offline verifier so someone with zero software can check it.</p>
+          <ul class="ps-story-list">
+            <li>One export writes the full bundle: artifacts, captured page, receipts, manifests, and the verifier.</li>
+            <li>Proof Passport summarises the matter; SHA256SUMS.txt covers every file.</li>
+            <li>The proof-card stack (passport, tamper trial, diff, nutrition) shows everything that can be proven about the workspace at a glance.</li>
+          </ul>
+        </div>
+        <figure class="ps-shot" aria-labelledby="shot-export-cap">
+          <img
+            src="/assets/proofshot/export-complete.png"
+            alt="The Workbench after a real export: the bundle has been written, Prove It Again and Tamper Trial are now enabled."
+            width="1440" height="900" loading="lazy" />
+          <figcaption id="shot-export-cap">A real export from the running build — the bundle lands in the folder you chose, and Prove It Again and Tamper Trial unlock.</figcaption>
+        </figure>
+      </div>
+      <div class="ps-shot-row standalone">
+        <figure class="ps-shot" aria-labelledby="shot-cards-cap">
+          <img
+            src="/assets/proofshot/workbench-proof-cards.png"
+            alt="The proof-card stack on the Workbench: Proof Passport, Tamper Trial, Proof Bundle Diff, and nutrition cards."
+            width="1440" height="900" loading="lazy" />
+          <figcaption id="shot-cards-cap">The proof-card stack — passport, tamper trial, diff, and nutrition for the loaded workspace.</figcaption>
+        </figure>
+        <figure class="ps-shot" aria-labelledby="shot-bundle-cap">
+          <div class="code-block ps-bundle-tree" role="img" aria-label="The exported proof bundle layout: PROOF-PASSPORT.json, SHA256SUMS.txt, README.txt, VERIFY-HYPERSNATCH.html, artifacts, captured-page, and proof folders."><span class="ps-tree-dir">HyperSnatch-Proof-Bundle-&lt;timestamp&gt;/</span>
+├─ <span class="ps-tree-dir">PROOF-PASSPORT.json</span>   <span class="ps-tree-comment"># what this bundle is, when, and why</span>
+├─ <span class="ps-tree-dir">SHA256SUMS.txt</span>        <span class="ps-tree-comment"># every file, one hash each</span>
+├─ <span class="ps-tree-dir">README.txt</span>            <span class="ps-tree-comment"># how to verify, in plain text</span>
+├─ <span class="ps-tree-dir">VERIFY-HYPERSNATCH.html</span> <span class="ps-tree-comment"># offline verifier (carrying legacy engine filename)</span>
+├─ <span class="ps-tree-dir">artifacts/</span>             <span class="ps-tree-comment"># the captured resources</span>
+├─ <span class="ps-tree-dir">captured-page/</span>         <span class="ps-tree-comment"># what the page actually was</span>
+└─ <span class="ps-tree-dir">proof/</span>                  <span class="ps-tree-comment"># receipts + machine-readable manifest</span></div>
+          <figcaption id="shot-bundle-cap">The exported bundle's fixed anatomy — generated directly by the running build. Note: Filenames like VERIFY-HYPERSNATCH.html preserve the legacy engine identity during rebrand migration.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Beat 5 — Verify Offline & Detect Tampering -->
+    <section id="verify" class="product-section" aria-labelledby="verify-title">
+      <div class="section-head">
+        <h2 id="verify-title">Verify later — without trusting ProofShot or the internet.</h2>
+        <p>The whole point of the bundle is that it outlives the tool that made it.</p>
+      </div>
+      <div class="ps-story copy-first">
+        <div class="ps-story-copy">
+          <p>Proof is checked against the files, not against this product. Prove It Again re-verifies an exported bundle directly from disk, and the offline verifier shipped inside the bundle does the same job on any machine with a browser. The Tamper Trial proves the system sees changes: it runs four temp copies of the bundle — a modified artifact, a missing hashed file, an altered passport, and a deleted verifier — and each tamper is caught.</p>
+          <ul class="ps-story-list">
+            <li>Prove It Again recomputes and compares hashes against the bundle's own manifests.</li>
+            <li>The verifier HTML ships inside every bundle — verification needs no software install.</li>
+            <li>The Tamper Trial is a real self-test: four tampered copies, all detected.</li>
+          </ul>
+        </div>
+        <div class="ps-shot-row">
+          <figure class="ps-shot" aria-labelledby="shot-proveagain-cap">
+            <img
+              src="/assets/proofshot/prove-again.png"
+              alt="Prove It Again re-verifying the exported bundle from disk."
+              width="1440" height="900" loading="lazy" />
+            <figcaption id="shot-proveagain-cap">Prove It Again, run from disk against the exported bundle — a real re-verification.</figcaption>
+          </figure>
+          <figure class="ps-shot" aria-labelledby="shot-tamper-cap">
+            <img
+              src="/assets/proofshot/tamper-trial.png"
+              alt="The Tamper Trial results: modified file, missing file, altered passport, and deleted verifier, each marked as caught."
+              width="1440" height="900" loading="lazy" />
+            <figcaption id="shot-tamper-cap">The Tamper Trial against four temp copies of the export — modified, missing, altered, and deleted files, each caught.</figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="ps-proof-card">
+        <h3>What this product is not</h3>
+        <p>Words matter, and the cheapest way to trust a proof tool is to be exact about its limits:</p>
+        <ul class="ps-story-list">
+          <li><strong>Not court-certified</strong> — nothing here certifies anything for court.</li>
+          <li><strong>Not a legal chain-of-custody</strong> — we record hashes and receipts, not custody.</li>
+          <li><strong>Tamper-evident, not tamper-proof</strong> — changes are detected and reported by SHA-256 hash comparison; nothing is unhackable.</li>
+          <li><strong>Not a legal evidence platform</strong> — verification is the operator's to interpret.</li>
+          <li><strong>Not a media ripping utility</strong> — capture is one input type into a proof bundle, not the product's purpose.</li>
+          <li><strong>Not ProofForge</strong> — that is a separate project; the names are not interchangeable.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Beat 6 — Rebrand Identity & Lineage -->
+    <section id="identity" class="product-section" aria-labelledby="identity-title">
+      <div class="section-head">
+        <h2 id="identity-title">The ProofShot rebrand, stated plainly.</h2>
+        <p>ProofShot is the active product identity for the qualified HyperSnatch v1.6.18 codebase. Packaging and rebrand migration remain in progress.</p>
+      </div>
+      <div class="ps-story">
+        <div class="ps-story-copy">
+          <p>The production brand pack shipped the aperture mark, wordmark, and hero artwork you see on this page. But a rename is not complete until it reaches the installer files people run — so the v1.6.18 application still presents itself as HyperSnatch inside its own UI, and the bundle it exports still carries that legacy name. That is deliberate: UI strings and installer packages are renamed in a controlled release, not patched piecemeal.</p>
+          <dl class="ps-naming">
+            <div><dt>Public name</dt><dd>ProofShot — the active product identity used by this page and the brand pack.</dd></div>
+            <div><dt>Current codebase</dt><dd>HyperSnatch v1.6.18 — the qualified engine (99/99 E2E tests), carrying its legacy name.</dd></div>
+            <div><dt>Rebrand status</dt><dd>Migration in progress — no public ProofShot installer package is served yet.</dd></div>
+            <div><dt>Parent</dt><dd>The Proof Foundry — the studio that produces ProofShot.</dd></div>
+          </dl>
+        </div>
+        <figure class="ps-shot" aria-labelledby="shot-brand-cap">
+          <img
+            src="/assets/proofshot/web-hero.png"
+            alt="The ProofShot production brand hero artwork: the aperture mark over a dark carbon-and-vermilion landscape."
+            width="1920" height="900" loading="lazy" />
+          <figcaption id="shot-brand-cap">The ProofShot brand hero from the production asset pack.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="release-status" class="product-section" aria-labelledby="release-title">
+      <div class="section-head">
+        <h2 id="release-title">Release status &amp; evidence</h2>
+        <p>Current state of the codebase and rebrand migration.</p>
+      </div>
+      <div class="ps-proof-card">
+        <dl class="ps-proof-fields">
+          <div><dt>Public status</dt><dd>ACTIVE PROOF (In Proof)</dd></div>
+          <div><dt>Engine qualification</dt><dd>99 / 99 E2E tests passed</dd></div>
+          <div><dt>Underlying codebase</dt><dd>HyperSnatch v1.6.18 (Electron + SmartDecode v2.5.0)</dd></div>
+          <div><dt>Public ProofShot installer</dt><dd>NOT YET RELEASED — no download served under this name yet</dd></div>
+          <div><dt>Rebrand migration</dt><dd>ACTIVE — packaging and string migration in progress</dd></div>
+          <div><dt>ProofStrip status</dt><dd>{{product.proofStatus}}</dd></div>
+        </dl>
+        {{product.releaseNoteBlock}}
+      </div>
+    </section>
+
+    <section id="limitations" class="product-section" aria-labelledby="limits-title">
+      <div class="section-head">
+        <h2 id="limits-title">Known limitations</h2>
+        <p>Honest about what is not ready.</p>
+      </div>
+      <div class="detail-grid">
+        <article class="detail-card">
+          <h3>No public download under the ProofShot name</h3>
+          <p>ProofShot is the active rebrand of the qualified HyperSnatch v1.6.18 codebase. Rebrand and package migration remain in progress; no public installer is served under the ProofShot name yet.</p>
+        </article>
+        <article class="detail-card">
+          <h3>UI still carries the legacy name</h3>
+          <p>The v1.6.18 app title, shell, and bundle verifier still read HyperSnatch. String migration is held for a controlled rebrand release.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Capture is structural, not photographic</h3>
+          <p>SmartDecode reads and records the page's own resources and structure. There is no pixel-screenshot capture engine in this build.</p>
+        </article>
+        <article class="detail-card">
+          <h3>Scoped by the product freeze</h3>
+          <p>No new extraction engines or automation lanes while the freeze stands. Cases stay simple project containers, and proof means SHA-256 manifests and receipts.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="product-section other-products" aria-labelledby="other-title">
+      <div class="section-head">
+        <h2 id="other-title">Other Proof Foundry products</h2>
+      </div>
+      <div class="other-products-grid">
+        <a class="other-product-chip" href="/reality-gate/">Reality Gate</a>
+        <a class="other-product-chip" href="/cache-vault/">Cache Vault</a>
+        <a class="other-product-chip" href="/lights-out/">Lights Out PC</a>
+        <a class="other-product-chip" href="/cleanroom/">Cleanroom</a>
+        <a class="other-product-chip" href="/forgecast/">ForgeCast Weather</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- @include footer -->
+  <script src="/site.js" defer></script>
+</body>
+</html>

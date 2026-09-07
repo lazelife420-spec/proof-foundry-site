@@ -4,21 +4,26 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Page Not Found — The Proof Foundry</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="icon" type="image/svg+xml" href="/brand/proof-foundry-mark.svg" />
+  <link rel="stylesheet" href="/styles.css" />
 </head>
-<body style="display:flex; align-items:center; justify-content:center; text-align:center;">
-  <main class="container" style="max-width: 480px; padding: 2rem;">
-    <div style="margin-bottom: 2rem;">
-      <img src="brand/proof-foundry-logo-horizontal.svg" alt="The Proof Foundry" style="width: 220px; height: auto;" />
-    </div>
+<body>
+  <!-- @page home -->
+  <!-- @include header -->
+
+  <main class="container" style="max-width: 520px; text-align: center; padding: 5rem 1.5rem;">
     <h1 style="font-size: 2.2rem; margin-bottom: 1rem; color: var(--gold);">404 — Page Not Found</h1>
-    <p style="color: var(--muted); margin-bottom: 2rem;">
+    <p style="color: var(--muted); margin-bottom: 2rem; font-size: 1.05rem;">
       The page you are looking for does not exist, or has been moved to a new route.
     </p>
-    <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center;">
-      <a class="button button-primary" href="index.html">Return Home</a>
-      <a class="button button-secondary" href="forgecast.html">ForgeCast Weather</a>
+    <div class="hero-actions" style="justify-content: center;">
+      <a class="button button-primary" href="/">Return Home</a>
+      <a class="button button-secondary" href="/#products">Explore Products</a>
     </div>
   </main>
+
+  <!-- @include footer -->
+  <script src="/site.js" defer></script>
 </body>
 </html>

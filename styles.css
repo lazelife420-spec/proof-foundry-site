@@ -19,6 +19,14 @@
   --teal: #00D1B2;
   --shadow: 0 24px 54px rgba(0, 0, 0, 0.38);
   --radius: 18px;
+  /* Vertical rhythm between top-level blocks on a product page. Every such
+     block uses this, so a new section cannot introduce its own spacing. */
+  --section-gap: 2.8rem;
+  /* One shell width for every section, so section edges line up down the whole
+     scroll. Prose is held narrower by --measure instead of by a second, wider
+     container, which would misalign left edges against the hero. */
+  --container: 1360px;
+  --measure: 68ch;
 }
 
 html {
@@ -52,7 +60,7 @@ a {
 
 .container {
   width: 100%;
-  max-width: 1160px;
+  max-width: var(--container);
   margin-inline: auto;
   padding-inline: 1.5rem;
 }
@@ -62,7 +70,9 @@ a {
   top: 0;
   z-index: 30;
   border-bottom: 1px solid rgba(38, 55, 70, 0.72);
-  background: rgba(7, 11, 16, 0.74);
+  /* Near-opaque on purpose. At 0.74 the hero artwork and headline read through
+     the bar while scrolling, which made the nav labels hard to pick out. */
+  background: rgba(7, 11, 16, 0.94);
   -webkit-backdrop-filter: blur(18px);
   backdrop-filter: blur(18px);
 }
@@ -87,6 +97,12 @@ a {
   display: block;
 }
 
+.nav-panel {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
 .top-nav {
   display: flex;
   align-items: center;
@@ -97,10 +113,54 @@ a {
   text-decoration: none;
   color: #d6dde3;
   font-size: 0.9rem;
+  padding: 0.2rem 0;
+  border-bottom: 2px solid transparent;
+  transition: color 150ms ease, border-color 150ms ease;
 }
 
 .top-nav a:hover {
   color: var(--gold);
+}
+
+.top-nav a[aria-current="page"] {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+  font-weight: 600;
+}
+
+/* Mobile nav toggle (interactive only — shell stays static) */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  margin-left: auto;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.nav-toggle-bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  margin: 0 auto;
+  background: #d6dde3;
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
 }
 
 .button {
@@ -161,15 +221,30 @@ a {
 }
 
 main {
-  padding: 2.5rem 0 3.8rem;
+  padding: 0 0 3.8rem;
 }
 
 .hero {
+  position: relative;
+  min-height: 640px;
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 1.2rem;
-  align-items: stretch;
-  margin-bottom: 1.35rem;
+  align-items: center;
+  overflow: hidden;
+  margin-bottom: 0;
+  isolation: isolate;
+  background: #050607;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -4;
+  background:
+    radial-gradient(circle at 74% 38%, rgba(214, 168, 79, 0.2), transparent 28rem),
+    radial-gradient(circle at 26% 72%, rgba(255, 255, 255, 0.045), transparent 24rem),
+    repeating-linear-gradient(105deg, rgba(255, 255, 255, 0.018) 0 2px, transparent 2px 34px),
+    linear-gradient(180deg, #07090d 0%, #050607 100%);
 }
 
 .hero > *,
@@ -179,8 +254,6 @@ main {
   min-width: 0;
 }
 
-.hero-copy,
-.hero-visual,
 .pillar-card,
 .product-card,
 .more-tools,
@@ -191,9 +264,60 @@ main {
   box-shadow: var(--shadow);
 }
 
-.hero-copy,
-.hero-visual {
-  padding: clamp(1.25rem, 2vw, 2rem);
+.hero-image {
+  position: absolute;
+  top: 50%;
+  right: max(0px, calc((100vw - var(--container)) / 2 - 18px));
+  z-index: -3;
+  /* 735px is the artwork's native width. It was being drawn at 760px, i.e.
+     upscaled, which softened the edges on large displays. */
+  width: min(59vw, 735px);
+  height: auto;
+  transform: translateY(-48%);
+  filter: saturate(0.94) contrast(1.08) brightness(0.9) drop-shadow(0 36px 70px rgba(0, 0, 0, 0.56));
+  opacity: 0.98;
+  -webkit-mask-image: radial-gradient(ellipse at 56% 50%, #000 0 54%, rgba(0, 0, 0, 0.78) 64%, transparent 78%);
+  mask-image: radial-gradient(ellipse at 56% 50%, #000 0 54%, rgba(0, 0, 0, 0.78) 64%, transparent 78%);
+}
+
+.hero-shade {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    linear-gradient(90deg, rgba(3, 4, 5, 0.98) 0%, rgba(3, 4, 5, 0.86) 33%, rgba(3, 4, 5, 0.28) 68%, rgba(3, 4, 5, 0.04) 100%),
+    linear-gradient(180deg, rgba(3, 4, 5, 0.18) 0%, rgba(3, 4, 5, 0.04) 48%, rgba(3, 4, 5, 0.94) 100%);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  height: 24%;
+  background: linear-gradient(180deg, transparent, #050607 72%);
+  pointer-events: none;
+}
+
+.hero-inner {
+  width: 100%;
+  padding-block: 5.5rem 6.5rem;
+}
+
+.hero-copy {
+  width: min(650px, 100%);
+  position: relative;
+}
+
+.hero h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.06;
+  color: #f2eee5;
+  text-shadow: 0 10px 34px rgba(0, 0, 0, 0.58);
 }
 
 .eyebrow {
@@ -229,38 +353,14 @@ h1 span {
   gap: 0.72rem;
 }
 
-.hero-visual {
-  display: grid;
-  place-items: center;
-  position: relative;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at 50% 45%, rgba(214, 168, 79, 0.28), rgba(214, 168, 79, 0.06) 35%, transparent 70%),
-    linear-gradient(160deg, rgba(12, 17, 24, 0.98), rgba(7, 11, 16, 0.92));
-}
-
-.hero-visual::before {
-  content: "";
-  position: absolute;
-  inset: 12% 14%;
-  border-radius: 20px;
-  border: 1px solid rgba(214, 168, 79, 0.34);
-  background: radial-gradient(circle at 50% 40%, rgba(214, 168, 79, 0.2), rgba(16, 25, 35, 0.3) 70%);
-}
-
-.hero-mark {
-  width: min(248px, 66%);
-  height: auto;
-  position: relative;
-  z-index: 1;
-  filter: drop-shadow(0 0 22px rgba(214, 168, 79, 0.22));
-}
-
 .proof-pillars {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.9rem;
+  margin-top: -1.6rem;
   margin-bottom: 2.2rem;
+  position: relative;
+  z-index: 2;
 }
 
 .pillar-card {
@@ -301,20 +401,24 @@ h1 span {
 .section-head p {
   color: var(--muted);
   font-size: 0.95rem;
+  max-width: var(--measure);
 }
 
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.9rem;
   margin-bottom: 1rem;
 }
 
+/* Flex column rather than grid: `align-content: start` on a grid parks the rows
+   at the top and leaves the slack below, which made `margin-top: auto` on
+   .card-cta inert and left CTAs on a ragged baseline across a row. */
 .product-card {
   padding: 1rem;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 0.72rem;
-  align-content: start;
   min-width: 0;
 }
 
@@ -327,6 +431,17 @@ h1 span {
 
 .product-card h3 {
   font-size: 1.08rem;
+}
+
+/* The whole title stays clickable, but it should read as a card title rather
+   than ordinary inline body text. */
+.product-card h3 a {
+  text-decoration: none;
+}
+
+.product-card h3 a:hover,
+.product-card h3 a:focus-visible {
+  color: var(--gold);
 }
 
 .product-card p {
@@ -365,26 +480,148 @@ h1 span {
   text-transform: uppercase;
   letter-spacing: 0.09em;
   white-space: nowrap;
+  /* A floor rather than a fixed width: short labels stop looking like offcuts
+     next to long ones, but a long label is still allowed to set its own width
+     instead of being truncated. */
+  min-width: 7.5rem;
+  text-align: center;
 }
 
-.chip.available {
-  color: var(--teal);
+/* State chips — single source of truth is site-manifest.json state enum */
+.chip-pilot     { color: var(--teal); }
+.chip-available { color: var(--teal); }
+.chip-frozen    { color: #7fb3d5; }
+.chip-testing   { color: var(--gold); }
+.chip-proof     { color: var(--gold); }
+.chip-coming    { color: var(--muted); }
+
+/* Legacy chip aliases (kept for any older markup) */
+.chip.available      { color: var(--teal); }
+.chip.in-proof       { color: var(--gold); }
+.chip.in-development { color: var(--muted); }
+
+.product-promise {
+  color: #c6d0d8;
+  font-size: 0.9rem;
+  overflow-wrap: normal;
 }
 
-.chip.in-proof {
-  color: var(--gold);
-}
-
-.chip.in-development {
+.product-meta {
   color: var(--muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.01em;
 }
 
-.product-live {
-  border-color: rgba(0, 209, 178, 0.36);
+.card-cta {
+  margin-top: auto;
 }
 
-.product-proof {
-  border-color: rgba(214, 168, 79, 0.36);
+/* Product mark + title row — wraps optional mark and title so the status chip
+   stays on the right via justify-content: space-between on .product-top.
+   For products without a mark the wrapper is invisible (just the h3). */
+.card-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.card-mark {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.card-mark svg {
+  width: 100%;
+  height: 100%;
+}
+
+.product-pilot     { border-color: rgba(0, 209, 178, 0.36); }
+.product-available { border-color: rgba(0, 209, 178, 0.36); }
+.product-frozen    { border-color: rgba(127, 179, 213, 0.36); }
+.product-testing   { border-color: rgba(214, 168, 79, 0.36); }
+.product-proof     { border-color: rgba(214, 168, 79, 0.36); }
+.product-coming    { border-color: rgba(145, 160, 175, 0.36); }
+
+/* Legacy card aliases */
+.product-live  { border-color: rgba(0, 209, 178, 0.36); }
+.product-proof { border-color: rgba(214, 168, 79, 0.36); }
+
+/* GhostLayer card identity — Matrix-green accent inside the shared card
+   architecture, matching the shipped app accent (#00CC33) and its neon
+   highlight (#00FF41). Same dimensions, typography, CTA, and focus as every
+   other card; only the border tint and background atmosphere change. */
+.card-ghostlayer {
+  border-color: rgba(0, 204, 51, 0.28);
+  background:
+    radial-gradient(circle at 85% 0%, rgba(0, 204, 51, 0.05), transparent 45%),
+    radial-gradient(circle at 15% 100%, rgba(0, 255, 65, 0.03), transparent 40%),
+    linear-gradient(160deg, rgba(16, 25, 35, 0.95), rgba(10, 16, 24, 0.88));
+}
+
+/* Cache Vault card identity — restrained Proof Teal accent (brand.py
+   PROOF_TEAL #1A9E8C) inside the shared card architecture, with patina
+   retained as the secondary storage accent so the archive register survives.
+   Same dimensions, typography, CTA, and focus as every other card; only the
+   border tint and background atmosphere change. */
+.card-cache-vault {
+  border-color: rgba(26, 158, 140, 0.28);
+  background:
+    radial-gradient(circle at 85% 0%, rgba(26, 158, 140, 0.05), transparent 45%),
+    radial-gradient(circle at 15% 100%, rgba(95, 143, 135, 0.03), transparent 40%),
+    linear-gradient(160deg, rgba(16, 25, 35, 0.95), rgba(10, 16, 24, 0.88));
+}
+
+/* Lights Out card identity — nocturnal moonlight lavender & low-light amber
+   accent inside the shared card architecture. Same dimensions, typography,
+   CTA, and focus as every other card; only the border tint and background
+   atmosphere change. Moonlight lavender carries nocturnal identity, low-light
+   amber is the quiet-state transition accent, and gold appears only where the
+   card system already uses it. */
+.card-lights-out {
+  border-color: rgba(155, 147, 214, 0.28);
+  background:
+    radial-gradient(circle at 85% 0%, rgba(155, 147, 214, 0.06), transparent 45%),
+    radial-gradient(circle at 15% 100%, rgba(232, 168, 72, 0.03), transparent 40%),
+    linear-gradient(160deg, rgba(18, 20, 38, 0.96), rgba(10, 13, 22, 0.9));
+}
+
+/* Cleanroom card identity — sterile surgical mint & cold mineral instrumentation
+   accent inside the shared card architecture. Same dimensions, typography,
+   CTA, and focus as every other card; dark graphite base card with restrained
+   pale mineral instrumentation highlights, surgical mint border tint, and cold
+   silver details. */
+.card-cleanroom {
+  border-color: rgba(52, 211, 153, 0.28);
+  background:
+    radial-gradient(circle at 85% 0%, rgba(52, 211, 153, 0.06), transparent 45%),
+    radial-gradient(circle at 15% 100%, rgba(226, 232, 240, 0.04), transparent 40%),
+    linear-gradient(160deg, rgba(15, 23, 42, 0.96), rgba(10, 15, 26, 0.9));
+}
+
+/* ForgeCast card identity — atmospheric signal teal & storm slate depth inside
+   the shared card architecture. Same dimensions, typography, CTA, and focus as
+   every other card; dark storm-slate base card with restrained signal-teal
+   border tint, pressure band atmosphere, and a small horizon gold decision pin. */
+.card-forgecast {
+  border-color: rgba(63, 191, 148, 0.28);
+  background:
+    radial-gradient(circle at 85% 0%, rgba(63, 191, 148, 0.06), transparent 45%),
+    radial-gradient(circle at 15% 100%, rgba(30, 44, 58, 0.05), transparent 40%),
+    linear-gradient(160deg, rgba(21, 36, 51, 0.96), rgba(11, 15, 20, 0.9));
+}
+
+/* ProofShot card identity — carbon exposure & vermilion focus identity inside
+   the shared card architecture. Same dimensions, typography, CTA, and focus as
+   every other card; dark exposure carbon base card with vermilion capture border
+   tint, aperture cyan instrumentation trace, and gold provenance seal detail. */
+.card-proofshot {
+  border-color: rgba(224, 82, 68, 0.28);
+  background:
+    radial-gradient(circle at 85% 0%, rgba(224, 82, 68, 0.06), transparent 45%),
+    radial-gradient(circle at 15% 100%, rgba(64, 217, 253, 0.03), transparent 40%),
+    linear-gradient(160deg, rgba(20, 27, 36, 0.96), rgba(11, 15, 20, 0.9));
 }
 
 .more-tools {
@@ -452,6 +689,17 @@ h1 span {
   display: flex;
   flex-wrap: wrap;
   gap: 0.7rem;
+}
+
+.proof-roadmap-link {
+  margin-top: 0.85rem;
+  font-size: 0.92rem;
+}
+
+.proof-roadmap-link a {
+  color: #ccd5dd;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 /* Founders Circle */
@@ -724,32 +972,31 @@ h1 span {
   .nav-row {
     min-height: 64px;
     padding: 0.5rem 0;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
 
-  .top-nav {
-    order: 3;
-    width: 100%;
-    flex-wrap: wrap;
-    gap: 0.55rem 0.9rem;
-    padding-bottom: 0.25rem;
-  }
-
-  .nav-cta {
-    margin-left: auto;
-  }
-
-  .hero,
   .founders-hero {
     grid-template-columns: 1fr;
   }
 
-  .hero-visual {
-    min-height: 300px;
+  .hero {
+    min-height: 720px;
+  }
+
+  .hero-image {
+    width: min(76vw, 720px);
+    right: -8rem;
+    transform: translateY(-42%);
+  }
+
+  .hero-shade {
+    background:
+      linear-gradient(90deg, rgba(3, 4, 5, 0.97) 0%, rgba(3, 4, 5, 0.86) 48%, rgba(3, 4, 5, 0.28) 100%),
+      linear-gradient(180deg, rgba(3, 4, 5, 0.52) 0%, rgba(3, 4, 5, 0.24) 48%, rgba(3, 4, 5, 0.92) 100%);
   }
 
   .proof-pillars {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .proof-standard {
@@ -780,23 +1027,7 @@ h1 span {
 
   .nav-row {
     gap: 0.45rem;
-    align-items: flex-start;
-  }
-
-  .top-nav {
-    order: 3;
-    width: 100%;
-    gap: 0.5rem 0.85rem;
-    padding-top: 0.2rem;
-  }
-
-  .nav-cta {
-    order: 4;
-    width: auto;
-    margin-left: 0;
-    margin-top: 0.2rem;
-    justify-content: center;
-    padding: 0.48rem 0.86rem;
+    align-items: center;
   }
 
   .products-grid {
@@ -804,8 +1035,6 @@ h1 span {
     gap: 0.85rem;
   }
 
-  .hero-copy,
-  .hero-visual,
   .pillar-card,
   .product-card,
   .proof-standard,
@@ -836,12 +1065,19 @@ h1 span {
     max-width: 100%;
   }
 
-  .hero-visual {
-    min-height: 240px;
+  .hero {
+    min-height: 680px;
   }
 
-  .hero-mark {
-    width: min(182px, 56%);
+  .hero-inner {
+    padding-block: 4.5rem 5.25rem;
+  }
+
+  .hero-image {
+    width: min(112vw, 660px);
+    right: -11rem;
+    top: 40%;
+    opacity: 0.72;
   }
 
   .hero-actions {
@@ -883,14 +1119,6 @@ h1 span {
     overflow-wrap: break-word;
   }
 
-  .top-nav a {
-    font-size: 0.82rem;
-  }
-
-  .nav-cta {
-    font-size: 0.8rem;
-  }
-
   .footer-grid {
     grid-template-columns: 1fr;
     gap: 1.15rem;
@@ -902,8 +1130,6 @@ h1 span {
     padding-inline: 1rem;
   }
 
-  .hero-copy,
-  .hero-visual,
   .pillar-card,
   .product-card,
   .proof-standard,
@@ -911,21 +1137,23 @@ h1 span {
     padding: 0.92rem 1rem;
   }
 
-  .top-nav {
-    gap: 0.42rem 0.72rem;
+  .hero {
+    min-height: 640px;
   }
 
-  .top-nav a {
-    font-size: 0.81rem;
+  .hero-inner {
+    padding-block: 3.8rem 5rem;
   }
 
-  .nav-cta {
-    padding: 0.44rem 0.78rem;
-    font-size: 0.78rem;
+  .hero-image {
+    width: 660px;
+    right: -17rem;
+    top: 39%;
+    opacity: 0.58;
   }
 
-  .hero-mark {
-    width: min(168px, 52%);
+  .proof-pillars {
+    grid-template-columns: 1fr;
   }
 
   .product-top h3 {
@@ -933,221 +1161,471 @@ h1 span {
   }
 }
 
+/* Lights Out PC keeps its bespoke rules in its own page head, alongside Reality
+   Gate and Cache Vault. Shared styles.css holds only what more than one page
+   uses. */
+
 /* ───────────────────────────────────────────────────────────────────────────
-   LIGHTS OUT PC LANDING PAGE
+   SHARED PRODUCT PAGE TEMPLATE
+   Used by every product page so the portfolio reads as one family.
    ─────────────────────────────────────────────────────────────────────────── */
-.lo-hero {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 1.2rem;
-  align-items: stretch;
-  margin-bottom: 1.6rem;
+.product-page {
+  padding-top: 1.4rem;
+  padding-bottom: 3rem;
 }
 
-.lo-hero > * {
-  min-width: 0;
-}
-
-.lo-hero-copy {
-  border: 1px solid rgba(38, 55, 70, 0.85);
-  border-radius: var(--radius);
-  background: linear-gradient(160deg, rgba(16, 25, 35, 0.95), rgba(10, 16, 24, 0.88));
-  box-shadow: var(--shadow);
-  padding: clamp(1.25rem, 2vw, 2rem);
-}
-
-.lo-tagline {
-  font-size: clamp(1.15rem, 2vw, 1.6rem);
-  color: var(--gold);
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-}
-
-.lo-secondary {
+.breadcrumb {
+  font-size: 0.82rem;
   color: var(--muted);
-  font-size: 1.05rem;
   margin-bottom: 0.9rem;
 }
-
-.lo-hero-visual {
-  border: 1px solid rgba(107, 211, 255, 0.25);
-  border-radius: var(--radius);
-  background:
-    radial-gradient(circle at 50% 45%, rgba(107, 211, 255, 0.12), transparent 60%),
-    linear-gradient(160deg, rgba(12, 17, 24, 0.98), rgba(7, 11, 16, 0.92));
-  box-shadow: var(--shadow);
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  padding: 1rem;
+.breadcrumb a {
+  color: #c8d2da;
+  text-decoration: none;
+}
+.breadcrumb a:hover {
+  color: var(--gold);
+}
+.breadcrumb span:last-child {
+  color: var(--text);
 }
 
-.lo-hero-img {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-}
-
-/* Trust Strip */
-.lo-trust {
+.product-subnav {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.8rem 1.5rem;
-  margin-bottom: 2.5rem;
-  padding: 1rem 1.5rem;
-  border: 1px solid rgba(38, 55, 70, 0.6);
-  border-radius: var(--radius);
-  background: rgba(16, 25, 35, 0.6);
+  gap: 0.4rem 1.1rem;
+  margin-bottom: 1.6rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid rgba(38, 55, 70, 0.6);
+}
+.product-subnav a {
+  font-size: 0.85rem;
+  color: #b9c4cd;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+.product-subnav a:hover {
+  color: var(--gold);
 }
 
-.lo-trust-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.88rem;
-  color: #c8d2da;
-  font-weight: 500;
+.product-hero {
+  padding: 1.5rem 0 2rem;
 }
-
-.lo-trust-icon {
-  font-size: 1rem;
-}
-
-/* Features */
-.lo-features {
-  margin-bottom: 2.5rem;
-}
-
-.lo-features-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.9rem;
-}
-
-.lo-feature-card {
-  border: 1px solid rgba(38, 55, 70, 0.85);
-  border-radius: var(--radius);
-  background: linear-gradient(160deg, rgba(16, 25, 35, 0.95), rgba(10, 16, 24, 0.88));
-  box-shadow: var(--shadow);
-  padding: 1.1rem 1rem;
-}
-
-.lo-feature-icon {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.lo-feature-card h3 {
-  font-size: 1rem;
-  margin-bottom: 0.4rem;
-}
-
-.lo-feature-card p {
-  color: #c6d0d8;
-  font-size: 0.88rem;
-}
-
-/* Proof Section */
-.lo-proof {
-  margin-bottom: 2.5rem;
-}
-
-.lo-proof-card {
-  border: 1px solid rgba(214, 168, 79, 0.45);
-  border-radius: var(--radius);
-  background:
-    radial-gradient(circle at 80% 0%, rgba(214, 168, 79, 0.1), transparent 60%),
-    linear-gradient(160deg, rgba(16, 25, 35, 0.96), rgba(10, 16, 24, 0.9));
-  box-shadow: var(--shadow);
-  padding: clamp(1.1rem, 2vw, 1.6rem);
-}
-
-.lo-proof-fields {
-  display: grid;
-  gap: 0.55rem;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  padding: 0.85rem 0;
-  margin: 0.8rem 0;
-}
-
-.lo-proof-fields > div {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 0.75rem;
-}
-
-.lo-proof-fields dt {
-  color: var(--muted);
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-.lo-proof-fields dd {
-  color: var(--text);
-  font-size: 0.9rem;
+.product-hero .eyebrow {
+  color: var(--gold);
   font-weight: 600;
-  text-align: right;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
 }
-
-.lo-proof-note {
-  color: var(--muted);
-  font-size: 0.82rem;
-  margin-top: 0.4rem;
-}
-
-/* CTA */
-.lo-cta {
-  margin-bottom: 2rem;
-}
-
-.lo-cta-card {
-  border: 1px solid rgba(38, 55, 70, 0.85);
-  border-radius: var(--radius);
-  background: linear-gradient(160deg, rgba(16, 25, 35, 0.95), rgba(10, 16, 24, 0.88));
-  box-shadow: var(--shadow);
-  padding: 2rem 1.5rem;
-  text-align: center;
-}
-
-.lo-cta-wordmark {
-  width: min(280px, 80%);
-  height: auto;
-  margin-bottom: 0.8rem;
-}
-
-.lo-cta-card > p {
-  color: var(--muted);
-  font-size: 0.95rem;
+.product-hero h1 {
+  font-size: clamp(2.2rem, 5.5vw, 3.8rem);
+  line-height: 1.05;
   margin-bottom: 1rem;
 }
+.product-hero h1 span {
+  color: var(--gold);
+}
+.product-lede {
+  color: var(--muted);
+  font-size: 1.12rem;
+  max-width: 640px;
+  margin-bottom: 1.5rem;
+}
 
-/* Lights Out responsive */
-@media (max-width: 900px) {
-  .lo-hero {
-    grid-template-columns: 1fr;
-  }
+.download-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
 
-  .lo-features-grid {
+.proof-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-top: 1.5rem;
+}
+.proof-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(16, 25, 35, 0.72);
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+.proof-pill strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.product-screens {
+  margin-block: var(--section-gap);
+}
+.screenshot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: 1rem;
+}
+.screenshot-grid figure {
+  margin: 0;
+}
+.screenshot-grid img {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+.screenshot-grid figcaption {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin-top: 0.5rem;
+}
+
+.product-section {
+  margin-block: var(--section-gap);
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  gap: 1.2rem;
+}
+.detail-card {
+  background: rgba(16, 25, 35, 0.62);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.4rem;
+}
+.detail-card h3 {
+  font-size: 1rem;
+  color: var(--gold);
+  margin-bottom: 0.7rem;
+}
+.detail-card p,
+.detail-card li {
+  color: var(--muted);
+  font-size: 0.94rem;
+  line-height: 1.5;
+}
+.detail-card p {
+  margin-bottom: 0.5rem;
+}
+.detail-card ul {
+  list-style: none;
+  padding: 0;
+}
+.detail-card li {
+  padding: 0.35rem 0;
+  border-bottom: 1px solid rgba(38, 55, 70, 0.4);
+}
+.detail-card li:last-child {
+  border-bottom: none;
+}
+.detail-card a {
+  color: #c8d2da;
+  text-decoration: none;
+}
+.detail-card a:hover {
+  color: var(--gold);
+}
+
+.code-block {
+  background: #070b10;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.82rem;
+  color: var(--text);
+  overflow-x: auto;
+  margin: 1rem 0 0;
+  word-break: break-all;
+}
+
+.note {
+  color: var(--muted);
+  font-size: 0.9rem;
+  border-left: 3px solid var(--gold);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  max-width: 760px;
+}
+.note code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  color: #c8d2da;
+}
+
+.other-products-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.other-product-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.95rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(16, 25, 35, 0.6);
+  color: #cdd6dd;
+  font-size: 0.88rem;
+  text-decoration: none;
+  transition: border-color 150ms ease, color 150ms ease;
+}
+.other-product-chip:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* Proof pillars: 4 across on wide desktop, 2x2 on tablet */
+@media (max-width: 1100px) {
+  .proof-pillars {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 760px) {
-  .lo-features-grid {
+/* ───────────────────────────────────────────────────────────────────────────
+   MOBILE NAVIGATION (toggle dropdown — JS only toggles a class)
+   ─────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .nav-toggle {
+    display: flex;
+  }
+
+  /* Links and the CTA collapse together into one dropdown panel, so the
+     collapsed header stays a single row: brand + menu button. */
+  .nav-panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0.5rem 1.5rem 1rem;
+    background: rgb(7, 11, 16);
+    border-bottom: 1px solid rgba(38, 55, 70, 0.85);
+    display: none;
+  }
+
+  .site-header.nav-open .nav-panel {
+    display: flex;
+  }
+
+  .top-nav {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .top-nav a {
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(38, 55, 70, 0.4);
+    font-size: 0.95rem;
+  }
+  .top-nav a[aria-current="page"] {
+    border-bottom-color: var(--gold);
+  }
+
+  .nav-cta {
+    margin-top: 0.9rem;
+    justify-content: center;
+    font-size: 0.9rem;
+    padding: 0.62rem 1.05rem;
+  }
+
+  .product-subnav {
+    gap: 0.35rem 1rem;
+  }
+}
+
+@media (max-width: 430px) {
+  .proof-pillars {
     grid-template-columns: 1fr;
   }
+}
 
-  .lo-hero-copy {
-    padding: 0.95rem 1.05rem;
+/* ── Canonical proof receipt styles ─────────────────────────────────────── */
+.receipt-section {
+  margin-bottom: 1.5rem;
+}
+
+.receipt-section-title {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+}
+
+.verification-matrix {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 0.5rem;
+}
+
+.verification-matrix > div {
+  flex-direction: column;
+  align-items: flex-start;
+  border-bottom: 0;
+  background: rgba(7, 11, 16, 0.45);
+  padding: 0.5rem 0.65rem;
+  border-radius: 6px;
+}
+
+.verification-matrix dt {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.verification-matrix dd {
+  text-align: left;
+  font-size: 0.82rem;
+}
+
+.verification-matrix .status-verified { color: var(--teal); }
+.verification-matrix .status-pending { color: var(--gold); }
+.verification-matrix .status-published { color: #3fc3a6; }
+.verification-matrix .status-not-published { color: #8899a6; }
+
+.status-indicator {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: 99px;
+  border: 1px solid var(--line);
+  background: rgba(7, 11, 16, 0.5);
+  color: var(--text);
+}
+
+.status-indicator.public_release,
+.status-indicator.public-release,
+.status-indicator.frozen { color: var(--teal); border-color: rgba(0, 209, 178, 0.35); }
+.status-indicator.active_proof,
+.status-indicator.in-proof,
+.status-indicator.roadmap_direction,
+.status-indicator.unreleased { color: var(--gold); border-color: rgba(214, 168, 79, 0.35); }
+.status-indicator.hold { color: #8899a6; border-color: rgba(136, 153, 166, 0.35); }
+
+.candidate-version {
+  color: var(--gold);
+  font-size: 0.82rem;
+  margin-top: 0.2rem;
+}
+
+.sha256-block {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+  background: #070b10;
+  border: 1px solid rgba(38, 55, 70, 0.6);
+  border-radius: 6px;
+  padding: 0.35rem;
+  margin-bottom: 0.5rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.8rem;
+  overflow: hidden;
+}
+
+.sha256-block code {
+  flex: 1 1 auto;
+  padding: 0.4rem 0.5rem;
+  color: var(--text);
+  word-break: break-all;
+  line-height: 1.5;
+}
+
+.sha256-copy {
+  flex: 0 0 auto;
+  background: var(--gold);
+  color: #0b0f14;
+  border: 0;
+  border-radius: 4px;
+  padding: 0 0.8rem;
+  font-weight: 600;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.sha256-copy:hover,
+.sha256-copy:focus-visible {
+  background: var(--gold-strong);
+}
+
+.sha256-copy.copied {
+  background: var(--teal);
+}
+
+.sha256-prefix-note {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin-bottom: 0;
+}
+
+.sha256-file {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin-bottom: 0.5rem;
+}
+
+.sha256-filename {
+  color: var(--text);
+  /* Artifact filenames are long single tokens; without this they set the card's
+     min-content width and push it past narrow viewports. */
+  overflow-wrap: anywhere;
+}
+
+/* A checksum that covers a candidate rather than the public release is a
+   non-claim about the public build, so it must not read as neutral detail. */
+.sha256-scope {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.limits-list {
+  list-style: disc;
+  padding-left: 1.2rem;
+  color: var(--muted);
+  font-size: 0.86rem;
+  margin-bottom: 1.5rem;
+}
+
+.limits-list li {
+  margin-bottom: 0.4rem;
+}
+
+.verification-ledger-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+code.inline {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  background: rgba(7, 11, 16, 0.65);
+  padding: 0.15rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+/* Respect reduced motion for copy feedback */
+@media (prefers-reduced-motion: reduce) {
+  .sha256-copy {
+    transition: none;
   }
-
-  .lo-trust {
-    gap: 0.6rem 1rem;
-    padding: 0.8rem 1rem;
+  /* Buttons and the nav toggle transition `transform`, which is movement rather
+     than a colour change. Drop transform from the transition list and keep the
+     colour feedback, so the control still confirms hover/focus without moving. */
+  .button,
+  .nav-toggle-bar {
+    transition-property: border-color, background-color, color, opacity;
   }
 }

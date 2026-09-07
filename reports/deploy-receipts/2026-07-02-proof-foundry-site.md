@@ -1,4 +1,4 @@
-﻿# Deployment Verification Receipt â€” 2026-07-02
+# Deployment Verification Receipt — 2026-07-02
 
 *   **Site Commit**: b591ae8
 *   **Verified Targets**: https://theprooffoundry.com, https://www.theprooffoundry.com, https://proof-foundry-site.pages.dev

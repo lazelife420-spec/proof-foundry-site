@@ -44,11 +44,16 @@
       font-size: 1.2rem;
       max-width: 680px;
     }
+    .receipts-title {
+      font-size: 1.75rem;
+      margin: 3rem 0 0;
+      color: var(--text);
+    }
     .receipts-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
       gap: 1.5rem;
-      margin: 3rem 0;
+      margin: 1.25rem 0 3rem;
     }
     .receipt-card {
       background: rgba(16, 25, 35, 0.62);
@@ -105,17 +110,27 @@
     .receipt-fields > div {
       display: flex;
       justify-content: space-between;
+      gap: 0.75rem;
       border-bottom: 1px solid rgba(38, 55, 70, 0.4);
       padding-bottom: 0.5rem;
+      min-width: 0;
     }
     .receipt-fields dt {
       color: var(--muted);
       font-weight: 500;
+      flex-shrink: 0;
     }
     .receipt-fields dd {
       color: var(--text);
       font-weight: 600;
       text-align: right;
+      min-width: 0;
+      /* Long proof-link filenames (e.g. GHOSTLAYER_V0.4.0_..._RECEIPT.json)
+         are single unbreakable tokens. Without this the dd's min-content width
+         forces its flex row — and therefore the card — past the viewport on
+         narrow screens. `anywhere` (not `break-word`) also shrinks min-content
+         so the flex item can actually shrink. */
+      overflow-wrap: anywhere;
     }
     .receipt-fields dd.code {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -164,6 +179,8 @@
     .status-indicator.receipt-available::before { background: var(--gold); }
     .status-indicator.verification-pending { color: #8899a6; }
     .status-indicator.verification-pending::before { background: #8899a6; }
+    .status-indicator.no-release-artifact { color: #8899a6; }
+    .status-indicator.no-release-artifact::before { background: #8899a6; }
 
     .verification-ledger {
       background: rgba(16, 25, 35, 0.42);
@@ -185,21 +202,8 @@
   </style>
 </head>
 <body>
-  <header class="site-header" id="top">
-    <div class="container nav-row">
-      <a class="brand-lockup" href="/index.html" aria-label="Proof Foundry home">
-        <img class="brand-logo" src="/brand/proof-foundry-logo-horizontal.svg" alt="Proof Foundry" />
-      </a>
-      <nav class="top-nav" aria-label="Primary navigation">
-        <a href="/index.html">Home</a>
-        <a href="/index.html#products">Products</a>
-        <a href="/index.html#proof-standard">Proof Standard</a>
-        <a href="/founders.html">Founders</a>
-        <a href="/proof/" aria-current="page">Receipts</a>
-      </nav>
-      <a class="button button-primary nav-cta" href="/index.html#products">Explore Products</a>
-    </div>
-  </header>
+  <!-- @page receipts -->
+  <!-- @include header -->
 
   <main class="container">
     <section class="proof-hero" aria-labelledby="proof-title">
@@ -208,267 +212,25 @@
       <p>Public proof for what we ship: routes, releases, checksums, receipts, and verification status.</p>
     </section>
 
-    <section class="receipts-grid" id="products-grid">
-      <!-- Loading Skeleton -->
-      <div style="text-align: center; grid-column: 1 / -1; padding: 3rem; color: var(--muted);">
-        Loading manifest proof...
+    <section aria-labelledby="receipts-title">
+      <h2 id="receipts-title" class="receipts-title">Product receipts</h2>
+      <div class="receipts-grid" id="products-grid">
+          <!-- @receipts -->
       </div>
-      <noscript>
-        <article class="receipt-card">
-          <div class="receipt-card-head">
-            <div>
-              <h3>Lights Out PC</h3>
-              <span class="platform-badge">Windows</span>
-            </div>
-            <span class="status-indicator verified">verified</span>
-          </div>
-          <p class="build-desc">PowerShell compiled (SleepTimer.exe)</p>
-          <dl class="receipt-fields">
-            <div><dt>Route</dt><dd><a href="/lights-out/">/lights-out/</a></dd></div>
-            <div><dt>Latest Version</dt><dd>v1.0.0</dd></div>
-            <div><dt>SHA-256 Checksum</dt><dd style="color:var(--muted);">Unreleased</dd></div>
-            <div><dt>Proof Link</dt><dd><a href="/reports/deploy-receipts/2026-06-30-proof-foundry-site.md" target="_blank" rel="noopener">2026-06-30-proof-foundry-site.md</a></dd></div>
-            <div><dt>Last Verified</dt><dd>2026-06-30</dd></div>
-          </dl>
-          <div class="receipt-card-action">
-            <span class="button button-muted" style="display:block; text-align:center;">Coming soon</span>
-          </div>
-        </article>
-
-        <article class="receipt-card">
-          <div class="receipt-card-head">
-            <div>
-              <h3>Cache Vault</h3>
-              <span class="platform-badge">Windows</span>
-            </div>
-            <span class="status-indicator verified">verified</span>
-          </div>
-          <p class="build-desc">Python compiled (CacheVault.exe)</p>
-          <dl class="receipt-fields">
-            <div><dt>Route</dt><dd><a href="https://cache-vault-landing.pages.dev/" target="_blank" rel="noopener">External link</a></dd></div>
-            <div><dt>Latest Version</dt><dd>v0.1.4 release.1</dd></div>
-            <div><dt>SHA-256 Checksum</dt><dd class="code" title="710c8988455b30a3fa8589862e3e7c8a36c7faf73b015cfda5024f700a2c81bf">710c8988455b30a3…</dd></div>
-            <div><dt>Proof Link</dt><dd><a href="https://github.com/lazelife420-spec/CacheVault/releases/tag/cache-vault-v0.1.4-release.1" target="_blank" rel="noopener">release proof</a></dd></div>
-            <div><dt>Last Verified</dt><dd>2026-06-30</dd></div>
-          </dl>
-          <div class="receipt-card-action">
-            <a class="button button-primary" style="display:block; text-align:center;" href="https://github.com/lazelife420-spec/CacheVault/releases/download/cache-vault-v0.1.4-release.1/CacheVault-v0.1.4-windows.zip" target="_blank" rel="noopener">Explore / Download</a>
-          </div>
-        </article>
-
-        <article class="receipt-card">
-          <div class="receipt-card-head">
-            <div>
-              <h3>Cleanroom</h3>
-              <span class="platform-badge">Windows</span>
-            </div>
-            <span class="status-indicator verified">verified</span>
-          </div>
-          <p class="build-desc">CI-built Windows installer (PyInstaller + Inno Setup). Provenance attested via GitHub Actions.</p>
-          <dl class="receipt-fields">
-            <div><dt>Route</dt><dd><a href="https://github.com/lazelife420-spec/cleanroom-windows/releases/tag/v1.0.7" target="_blank" rel="noopener">External link</a></dd></div>
-            <div><dt>Latest Version</dt><dd>v1.0.7</dd></div>
-            <div><dt>SHA-256 Checksum</dt><dd class="code" title="2cd6953015ce0b8e429c869564be11ad10504332aded10b442a58ea2b990a76e">2cd6953015ce0b8e…</dd></div>
-            <div><dt>Proof Link</dt><dd><a href="https://github.com/lazelife420-spec/cleanroom-windows/releases/download/v1.0.7/SHA256SUMS.txt" target="_blank" rel="noopener">SHA256SUMS.txt</a></dd></div>
-            <div><dt>Last Verified</dt><dd>2026-07-01</dd></div>
-          </dl>
-          <div class="receipt-card-action">
-            <a class="button button-primary" style="display:block; text-align:center;" href="https://github.com/lazelife420-spec/cleanroom-windows/releases/download/v1.0.7/Cleanroom-Setup-1.0.7.exe" target="_blank" rel="noopener">Explore / Download</a>
-          </div>
-        </article>
-
-        <article class="receipt-card">
-          <div class="receipt-card-head">
-            <div>
-              <h3>HyperSnatch</h3>
-              <span class="platform-badge">Windows</span>
-            </div>
-            <span class="status-indicator verification-pending">verification pending</span>
-          </div>
-          <p class="build-desc">Fast link &amp; file capture utility</p>
-          <dl class="receipt-fields">
-            <div><dt>Route</dt><dd style="color:var(--muted);">N/A</dd></div>
-            <div><dt>Latest Version</dt><dd>unreleased</dd></div>
-            <div><dt>SHA-256 Checksum</dt><dd style="color:var(--muted);">Unreleased</dd></div>
-            <div><dt>Proof Link</dt><dd style="color:var(--muted);">Not listed yet</dd></div>
-            <div><dt>Last Verified</dt><dd style="color:var(--muted);">N/A</dd></div>
-          </dl>
-          <div class="receipt-card-action">
-            <span class="button button-muted" style="display:block; text-align:center;">Coming soon</span>
-          </div>
-        </article>
-
-        <article class="receipt-card">
-          <div class="receipt-card-head">
-            <div>
-              <h3>ForgeCast Weather</h3>
-              <span class="platform-badge">Android</span>
-            </div>
-            <span class="status-indicator verified">verified</span>
-          </div>
-          <p class="build-desc">Android APK (release build)</p>
-          <dl class="receipt-fields">
-            <div><dt>Route</dt><dd><a href="/forgecast/">/forgecast/</a></dd></div>
-            <div><dt>Latest Version</dt><dd>v0.3.2</dd></div>
-            <div><dt>SHA-256 Checksum</dt><dd class="code" title="7b42ee1ce5f320f3cfd153e9499e67f26f12cd6fe3d8f879156688b9424aaac5">7b42ee1ce5f320f…</dd></div>
-            <div><dt>Proof Link</dt><dd><a href="https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.2/ForgeCast-Weather-v0.3.2-android-release.apk.sha256.txt" target="_blank" rel="noopener">sha256.txt</a></dd></div>
-            <div><dt>Last Verified</dt><dd>2026-07-05</dd></div>
-          </dl>
-          <div class="receipt-card-action">
-            <a class="button button-primary" style="display:block; text-align:center;" href="https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.2/ForgeCast-Weather-v0.3.2-android-release.apk" target="_blank" rel="noopener">Download APK</a>
-          </div>
-        </article>
-      </noscript>
     </section>
 
     <section class="verification-ledger">
       <h2>Latest site verification</h2>
-      <p>Every deployment is automatically verified by our local and edge gate checkers before going live.</p>
-      <a class="button button-secondary" href="/reports/deploy-receipts/2026-07-05-proof-foundry-site.md" target="_blank" rel="noopener">View Verification Receipt (2026-07-05)
-      </a>
+      {{latestVerification.block}}
+      <div class="verification-ledger-actions">
+        {{siteVerification.receiptLink}}
+        <a class="button button-secondary" href="/proof/index.json" target="_blank" rel="noopener" type="application/json">Machine-readable registry (JSON)</a>
+      </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div class="footer-brand">
-        <img class="footer-logo" src="/brand/proof-foundry-logo-horizontal.svg" alt="Proof Foundry" />
-        <p>Build it. Prove it. Ship it.</p>
-      </div>
-
-      <div>
-        <h2>Products</h2>
-        <ul>
-          <li><a href="/lights-out/">Lights Out PC</a></li>
-          <li><a href="https://cache-vault-landing.pages.dev/" target="_blank" rel="noopener">Cache Vault</a></li>
-          <li>Cleanroom</li>
-          <li>HyperSnatch</li>
-          <li><a href="/forgecast/">ForgeCast Weather</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h2>Company</h2>
-        <ul>
-          <li><a href="/founders.html">Founders Circle</a></li>
-          <li><a href="/index.html#proof-standard">Proof Standard</a></li>
-          <li><a href="/proof/">Receipts</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="container footer-bottom">
-      <p>&copy; 2026 Proof Foundry. All rights reserved.</p>
-    </div>
-  </footer>
-
-  <script>
-    async function loadManifest() {
-      const grid = document.getElementById('products-grid');
-      try {
-        const response = await fetch('/site-manifest.json');
-        if (!response.ok) throw new Error('Failed to load site-manifest.json');
-        const data = await response.json();
-        
-        const statusLabels = {
-          'coming_soon': 'Coming soon',
-          'available': 'Available',
-          'unreleased': 'Unreleased',
-          'verification pending': 'Verification pending',
-          'pending': 'Pending'
-        };
-
-        let html = '';
-        data.products.forEach(p => {
-          const statusClass = p.proofStatus ? p.proofStatus.replace(/ /g, '-') : 'verification-pending';
-          const statusLabel = p.proofStatus || 'verification pending';
-          
-          // Download link — only render as anchor if URL is a real http URL
-          let downloadHtml;
-          if (p.downloadUrl && p.downloadUrl.startsWith('http')) {
-            const linkText = p.slug === 'forgecast' ? 'Download APK' : 'Explore / Download';
-            downloadHtml = `<a class="button button-primary" style="display:block; text-align:center;" href="${p.downloadUrl}" target="_blank" rel="noopener">${linkText}</a>`;
-          } else {
-            const label = p.downloadStatus ? (statusLabels[p.downloadStatus] || p.downloadStatus) : 'Download coming soon';
-            downloadHtml = `<span class="button button-muted" style="display:block; text-align:center;">${label}</span>`;
-          }
-
-          // SHA-256 — only render as code if a real hex hash
-          let shaDisplay;
-          if (p.sha256 && /^[0-9a-fA-F]{64}$/.test(p.sha256)) {
-            shaDisplay = `<dd class="code" title="${p.sha256}">${p.sha256.slice(0, 16)}&hellip;</dd>`;
-          } else {
-            const shaLabel = p.sha256Status ? (statusLabels[p.sha256Status] || p.sha256Status) : 'Verification pending';
-            shaDisplay = `<dd style="color:var(--muted);">${shaLabel}</dd>`;
-          }
-
-          let proofLinkHtml = '<dd style="color:var(--muted);">Not listed yet</dd>';
-          if (p.proofLinks && p.proofLinks.length > 0) {
-            const links = p.proofLinks.map(link => {
-              const baseName = link.split('/').pop();
-              return `<a href="${link}" target="_blank" rel="noopener">${baseName}</a>`;
-            }).join(', ');
-            proofLinkHtml = `<dd>${links}</dd>`;
-          }
-
-          const routeHtml = p.route && p.route.startsWith('http') 
-            ? `<a href="${p.route}" target="_blank" rel="noopener">External link</a>`
-            : p.route && p.route !== '#products' 
-              ? `<a href="${p.route}">${p.route}</a>`
-              : '<span style="color:var(--muted);">N/A</span>';
-
-          const lastVerified = p.lastVerified || null;
-
-          html += `
-            <article class="receipt-card">
-              <div class="receipt-card-head">
-                <div>
-                  <h3>${p.name}</h3>
-                  <span class="platform-badge">${p.platform || 'Cross-platform'}</span>
-                </div>
-                <span class="status-indicator ${statusClass}">${statusLabel}</span>
-              </div>
-              <p class="build-desc">${p.build || 'Release details coming soon.'}</p>
-              
-              <dl class="receipt-fields">
-                <div>
-                  <dt>Route</dt>
-                  <dd>${routeHtml}</dd>
-                </div>
-                <div>
-                  <dt>Latest Version</dt>
-                  <dd>${p.latestVersion || '<span style="color:var(--muted);">unknown</span>'}</dd>
-                </div>
-                <div>
-                  <dt>SHA-256 Checksum</dt>
-                  ${shaDisplay}
-                </div>
-                <div>
-                  <dt>Proof Link</dt>
-                  ${proofLinkHtml}
-                </div>
-                <div>
-                  <dt>Last Verified</dt>
-                  <dd>${lastVerified || '<span style="color:var(--muted);">N/A</span>'}</dd>
-                </div>
-              </dl>
-              
-              <div class="receipt-card-action">
-                ${downloadHtml}
-              </div>
-            </article>
-          `;
-        });
-        grid.innerHTML = html;
-      } catch (err) {
-        grid.innerHTML = `
-          <div style="text-align: center; grid-column: 1 / -1; padding: 3rem; color: #ff6b6b; border: 1px dashed #ff6b6b; border-radius: 12px;">
-            Failed to load manifest receipts: ${err.message}. Please refresh or ensure deployment is complete.
-          </div>
-        `;
-      }
-    }
-    
-    document.addEventListener('DOMContentLoaded', loadManifest);
-  </script>
+  <!-- @include footer -->
+  <script src="/site.js" defer></script>
 </body>
 </html>
+
