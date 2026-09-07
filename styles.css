@@ -1280,6 +1280,11 @@ h1 span {
   border: 1px solid var(--line);
   background: var(--panel);
 }
+.cv-evidence-shot img,
+.gl-evidence-figure img {
+  max-width: 100%;
+  height: auto;
+}
 .screenshot-grid figcaption {
   color: var(--muted);
   font-size: 0.82rem;
