@@ -92,6 +92,51 @@ foreach ($p in $manifest.products) {
     if ([string]::IsNullOrWhiteSpace($p.cta))     { $errors += "$tag visible product missing cta" }
   }
 
+  # Presentation block. These fields drive the homepage card, which is the first
+  # and often only thing a visitor reads about a product, so they are validated
+  # with the same seriousness as release data rather than treated as decoration.
+  if ($p.visible) {
+    if (-not $p.presentation) {
+      $errors += "$tag visible product missing presentation block (valueLine, cardImage, cardImageAlt, cardCta)"
+    } else {
+      $pr = $p.presentation
+      if ([string]::IsNullOrWhiteSpace($pr.valueLine)) {
+        $errors += "$tag presentation.valueLine is empty; the card would render without a value proposition"
+      } elseif ($pr.valueLine.Length -gt 150) {
+        $errors += "$tag presentation.valueLine is $($pr.valueLine.Length) chars; keep it under 150 so the card stays a card"
+      }
+      if ([string]::IsNullOrWhiteSpace($pr.cardCta)) {
+        $errors += "$tag presentation.cardCta is empty"
+      }
+      # A card image is a claim that this software exists and looks like this. A
+      # broken path would publish an empty frame, so the file must be present.
+      if ([string]::IsNullOrWhiteSpace($pr.cardImage)) {
+        $errors += "$tag presentation.cardImage is empty; every visible product card shows real product imagery"
+      } else {
+        if ($pr.cardImage -notlike '/assets/*') {
+          $errors += "$tag presentation.cardImage must be a site-absolute /assets/ path: $($pr.cardImage)"
+        }
+        $imgRel  = $pr.cardImage.TrimStart('/')
+        $imgFile = Join-Path $root ($imgRel -replace '/', [IO.Path]::DirectorySeparatorChar)
+        if (-not (Test-Path $imgFile)) {
+          $errors += "$tag presentation.cardImage does not exist in the repository: $($pr.cardImage)"
+        }
+        if ([string]::IsNullOrWhiteSpace($pr.cardImageAlt)) {
+          $errors += "$tag presentation.cardImage is set but cardImageAlt is empty; a product screenshot carries meaning and needs a description"
+        }
+      }
+      # A card CTA that says Download/Get must be backed by an actual artifact.
+      # This is the card-level equivalent of the existing cta/downloadUrl rule and
+      # exists because the card is where a visitor decides whether to trust us.
+      if (($pr.cardCta -like 'Download*' -or $pr.cardCta -like 'Get *') -and [string]::IsNullOrWhiteSpace($p.downloadUrl)) {
+        $errors += "$tag presentation.cardCta '$($pr.cardCta)' promises a download but downloadUrl is empty"
+      }
+      if ($pr.cardCta -match '(?i)release candidate' -and $p.release.releaseStatus -ne 'RELEASE_CANDIDATE') {
+        $errors += "$tag presentation.cardCta '$($pr.cardCta)' offers a release candidate but releaseStatus is $($p.release.releaseStatus)"
+      }
+    }
+  }
+
   # Internal route (starts with /) must have a source template {id}.html
   if ($p.route -like '/*') {
     $src = Join-Path $root ("$($p.id).html")
@@ -291,6 +336,68 @@ foreach ($p in $manifest.products) {
   }
 }
 
+# Visitor-facing presentation guards. The availability taxonomy must label every
+# derived availability, and every visible product must land in exactly one
+# homepage group. Without this a new release state could silently drop a product
+# off the homepage, show it twice, or blank its badge — and still report success.
+# Availability is derived inline here (the shared helpers are defined later in
+# the file) and must stay in sync with VisitorAvailability(): a product is
+# AVAILABLE when a public release exists, regardless of its newest build lane.
+$visibleProducts = @($manifest.products | Where-Object { $_.visible })
+foreach ($p in $visibleProducts) {
+  $rs = if ($p.release -and $p.release.releaseStatus) { $p.release.releaseStatus } else { '' }
+  if ([string]::IsNullOrWhiteSpace($rs)) {
+    $errors += "[$($p.id)] visible product has no release.releaseStatus, so no card state layer can be derived"
+    continue
+  }
+  $pubVersion = if ($p.release -and $p.release.publicVersion) { "$($p.release.publicVersion)" } else { '' }
+  $avail = if (-not [string]::IsNullOrWhiteSpace($pubVersion)) { 'AVAILABLE' } else { 'NO_PUBLIC_RELEASE' }
+  if (-not $manifest.availabilityTaxonomy -or -not $manifest.availabilityTaxonomy.labels.$avail) {
+    $errors += "[$($p.id)] derived availability '$avail' has no availabilityTaxonomy label; the card badge would render blank"
+  }
+  $matchingGroups = @($manifest.productGroups | Where-Object { $_.availability -contains $avail })
+  if ($matchingGroups.Count -eq 0) {
+    $errors += "[$($p.id)] availability '$avail' matches no productGroups entry; the product would vanish from the homepage"
+  } elseif ($matchingGroups.Count -gt 1) {
+    $errors += "[$($p.id)] availability '$avail' matches $($matchingGroups.Count) productGroups ($($matchingGroups.id -join ', ')); it would be listed more than once"
+  }
+
+  # A card CTA that names a version must name a version the manifest actually
+  # authorizes for this product — never an invented or stale number.
+  $ctaText = if ($p.presentation -and $p.presentation.cardCta) { $p.presentation.cardCta } else { '' }
+  if ($ctaText -match 'v(\d[\w.\-]*)') {
+    $ctaVersion = $Matches[1]
+    $authorized = @()
+    if ($p.release -and $p.release.publicVersion)   { $authorized += $p.release.publicVersion }
+    if ($p.release -and $p.release.candidateVersion) { $authorized += $p.release.candidateVersion }
+    if ($authorized -notcontains $ctaVersion) {
+      $errors += "[$($p.id)] cardCta names version v$ctaVersion but the manifest authorizes only: $($authorized -join ', ')"
+    }
+  }
+
+  # The card CTA deep-links into a section of the product page. A missing anchor
+  # would land the visitor at the top of the page with no explanation, so the
+  # target section must actually exist in that product's template.
+  $anchor = if (-not [string]::IsNullOrWhiteSpace($p.downloadUrl)) { 'download' } else { 'release-status' }
+  $tplPath = Join-Path $root ("$($p.id).html")
+  if (Test-Path $tplPath) {
+    $tplBody = [System.IO.File]::ReadAllText($tplPath)
+    if ($tplBody -notmatch ('id\s*=\s*"' + [regex]::Escape($anchor) + '"')) {
+      $errors += "[$($p.id)] card CTA targets #$anchor but $($p.id).html has no element with id=`"$anchor`""
+    }
+  }
+}
+if (-not $manifest.trustStrip -or @($manifest.trustStrip).Count -eq 0) {
+  $errors += "[trustStrip] missing or empty; the homepage trust strip would render as an empty row"
+} else {
+  $tsIndex = 0
+  foreach ($ts in @($manifest.trustStrip)) {
+    if ([string]::IsNullOrWhiteSpace($ts.label)) { $errors += "[trustStrip[$tsIndex]] missing label" }
+    if ([string]::IsNullOrWhiteSpace($ts.note))  { $errors += "[trustStrip[$tsIndex]] missing note" }
+    $tsIndex++
+  }
+}
+
 # Site verification receipt must exist and be self-consistent. The receipt is
 # linked from /proof/ as public evidence, so a missing file would publish a dead
 # evidence link — and the file it points at must be present in a fresh checkout,
@@ -479,6 +586,112 @@ function StatusLine($p) {
 
 function Html-Attr($s) { return ($s -replace '&','&amp;' -replace '<','&lt;' -replace '>','&gt;') }
 
+# ── Visitor-facing presentation ──────────────────────────────────────────────
+# Two distinct concepts live here and must never be conflated:
+#
+#   Availability — does a public release of the PRODUCT exist? Derived from
+#   release.publicVersion, not from the newest build lane. Lights Out has a
+#   public v11.1.2, so it is Available even though its v11.1.3 candidate is on
+#   hold; calling it "in the foundry" would erase a real release.
+#
+#   Development lane — what releaseStatus says the newest build is doing. That
+#   is engineering truth and stays on the card as a second state layer, not as
+#   a mutually exclusive homepage bucket.
+
+function VisitorAvailability($p) {
+  $pub = if ($p.release) { $p.release.publicVersion } else { $null }
+  if (-not [string]::IsNullOrWhiteSpace("$pub")) { return 'AVAILABLE' }
+  return 'NO_PUBLIC_RELEASE'
+}
+
+function VisitorAvailabilityLabel($p) {
+  $a = VisitorAvailability $p
+  if ($manifest.availabilityTaxonomy -and $manifest.availabilityTaxonomy.labels.$a) { return $manifest.availabilityTaxonomy.labels.$a }
+  return $a
+}
+
+function VisitorAvailabilitySlug($p) {
+  $label = VisitorAvailabilityLabel $p
+  return ($label.ToLowerInvariant() -replace '[^a-z0-9]+','-').Trim('-')
+}
+
+function ProductGroupId($p) {
+  $a = VisitorAvailability $p
+  foreach ($g in @($manifest.productGroups)) {
+    if ($g.availability -contains $a) { return $g.id }
+  }
+  return ''
+}
+
+# The headline version on a card is the version of the thing the primary CTA
+# actually serves. For a release candidate whose candidate artifact is the
+# authorized, served download (Cache Vault), that is the candidate. Where no
+# artifact is served (Lights Out), the public release is named so the card
+# never implies the product is unreleased.
+function CardVersionLabel($p) {
+  $rs = if ($p.release -and $p.release.releaseStatus) { $p.release.releaseStatus } else { '' }
+  $pub = if ($p.release -and $p.release.publicVersion) { $p.release.publicVersion } else { '' }
+  if ($rs -eq 'RELEASE_CANDIDATE' -and -not [string]::IsNullOrWhiteSpace($p.downloadUrl) -and $p.release.candidateVersion) {
+    return "v$($p.release.candidateVersion)"
+  }
+  if ($pub) { return "v$pub" }
+  return ''
+}
+
+# The card's second state layer: what the newest build lane is doing, stated
+# without erasing the public release named above it. The separator is spelled as
+# a char literal, not a raw middle dot: this script must survive being read as
+# Windows-1252 by Windows PowerShell 5.1, and a literal UTF-8 dot in source
+# would otherwise emit mojibake into the page.
+function CardDetailLine($p) {
+  $rs   = if ($p.release -and $p.release.releaseStatus) { $p.release.releaseStatus } else { '' }
+  $pub  = if ($p.release -and $p.release.publicVersion) { "v$($p.release.publicVersion)" } else { '' }
+  $cand = if ($p.release -and $p.release.candidateVersion) { "v$($p.release.candidateVersion)" } else { '' }
+  $dot  = [char]0x00B7
+
+  switch ($rs) {
+    'RELEASE_CANDIDATE' {
+      if ($pub) { return "Release candidate $dot last public release $pub" }
+      if ($cand) { return "Release candidate $cand" }
+      return ''
+    }
+    'HOLD' {
+      if ($cand) { return "$cand candidate in proof $dot publication on hold" }
+      return ''
+    }
+    'ACTIVE_PROOF' {
+      if ($cand) { return "$cand candidate in proof" }
+      return ''
+    }
+    'PUBLIC_RELEASE' {
+      if ($cand -and (!$pub -or "v$cand" -ne $pub)) { return "Next build $cand in progress" }
+      return ''
+    }
+    'FROZEN' {
+      if ($cand -and (!$pub -or "v$cand" -ne $pub)) { return "Next build $cand in progress" }
+      return ''
+    }
+    'UNRELEASED' {
+      if ($cand) { return "Engine $cand $dot not yet packaged under this name" }
+      return 'No public release yet'
+    }
+    default { return '' }
+  }
+}
+
+function CardCtaHref($p) {
+  $anchor = if (-not [string]::IsNullOrWhiteSpace($p.downloadUrl)) { 'download' } else { 'release-status' }
+  return "$($p.route)#$anchor"
+}
+
+# The card's secondary action points into the receipts page rather than a
+# per-product proof section, because the receipt anchor is generated for every
+# visible product by Build-ReceiptCards and therefore cannot dead-end. Product
+# pages use different local section names for their proof content.
+function CardProofHref($p) {
+  return "$($manifest.proofRegistryPath -replace 'index\.json$','')#receipt-$($p.id)"
+}
+
 function IsExternalUrl($url) {
   return $url -like 'http://*' -or $url -like 'https://*'
 }
@@ -505,6 +718,17 @@ function ProductTokens($p) {
   $tokens['version']             = $p.version
   $tokens['meta']                = MetaLine $p
   $tokens['statusLine']          = StatusLine $p
+  $tokens['visitorStatusLabel']  = VisitorAvailabilityLabel $p
+  $tokens['visitorStatusSlug']   = VisitorAvailabilitySlug $p
+  $tokens['groupId']             = ProductGroupId $p
+  $tokens['cardVersionLabel']    = CardVersionLabel $p
+  $tokens['cardDetailLine']      = CardDetailLine $p
+  $tokens['cardCtaHref']         = CardCtaHref $p
+  $tokens['cardProofHref']       = CardProofHref $p
+  $tokens['valueLine']           = if ($p.presentation -and $p.presentation.valueLine) { $p.presentation.valueLine } else { $p.cardSummary }
+  $tokens['cardImage']           = if ($p.presentation) { $p.presentation.cardImage } else { '' }
+  $tokens['cardImageAlt']        = if ($p.presentation) { $p.presentation.cardImageAlt } else { '' }
+  $tokens['cardCta']             = if ($p.presentation -and $p.presentation.cardCta) { $p.presentation.cardCta } else { $p.cta }
   $tokens['platform']            = PlatformLabel $p
   $tokens['summary']             = $p.summary
   $tokens['cardSummary']         = if (-not [string]::IsNullOrWhiteSpace($p.cardSummary)) { $p.cardSummary } else { $p.summary }
@@ -680,29 +904,113 @@ function Build-FooterProducts {
   return ($items -join "`n          ")
 }
 
-function Build-ProductCards {
+function Render-ProductCard($p, $cardTemplate) {
+  $t = ProductTokens $p
+  $card = $cardTemplate
+  # cardVersionLabel is substituted before versionLabel would be, and the token
+  # names are distinct, so ordering here is incidental rather than load-bearing.
+  foreach ($key in @(
+    'name','route','state','statusLabel','summary','cardSummary','statusLine','markSvg','id','meta','cta',
+    'visitorStatusLabel','visitorStatusSlug','groupId','cardVersionLabel','cardDetailLine','cardCtaHref',
+    'cardProofHref','valueLine','cardImage','cardImageAlt','cardCta','platform'
+  )) {
+    $card = $card -replace [regex]::Escape("{{$key}}"), $t[$key]
+  }
+  # Optional card regions collapse rather than rendering an empty element, so a
+  # product without a detail line does not leave a blank row in the card.
+  if ([string]::IsNullOrWhiteSpace($t['cardDetailLine'])) {
+    $card = $card -replace '(?s)<!--\s*@if-detail\s*-->.*?<!--\s*@end-detail\s*-->', ''
+  } else {
+    $card = $card -replace '<!--\s*@if-detail\s*-->', '' -replace '<!--\s*@end-detail\s*-->', ''
+  }
+  if ([string]::IsNullOrWhiteSpace($t['cardVersionLabel'])) {
+    $card = $card -replace '(?s)<!--\s*@if-version\s*-->.*?<!--\s*@end-version\s*-->', ''
+  } else {
+    $card = $card -replace '<!--\s*@if-version\s*-->', '' -replace '<!--\s*@end-version\s*-->', ''
+  }
+  return $card
+}
+
+# Emits the cards for one homepage group. Membership is derived from product
+# availability (a public release exists) via manifest productGroups, so a product
+# can never be hand-placed into a group that contradicts its release facts, and a
+# product with a public release is never presented as unreleased just because its
+# newest candidate is not out yet.
+function Build-ProductCards($groupId) {
   $cardTemplate = Read-File (Join-Path $partialsDir 'product-card.html')
   $cards = @()
   foreach ($p in $manifest.products) {
     if (-not $p.visible) { continue }
-    # Reality Gate is featured above the software grid as the studio platform anchor
-    if ($p.id -eq 'reality-gate') { continue }
-    $t = ProductTokens $p
-    $card = $cardTemplate
-    $card = $card -replace [regex]::Escape('{{name}}'),         $t['name']
-    $card = $card -replace [regex]::Escape('{{route}}'),        $t['route']
-    $card = $card -replace [regex]::Escape('{{state}}'),        $t['state']
-    $card = $card -replace [regex]::Escape('{{statusLabel}}'),  $t['statusLabel']
-    $card = $card -replace [regex]::Escape('{{summary}}'),      $t['summary']
-    $card = $card -replace [regex]::Escape('{{cardSummary}}'),  $t['cardSummary']
-    $card = $card -replace [regex]::Escape('{{statusLine}}'),   $t['statusLine']
-    $card = $card -replace [regex]::Escape('{{markSvg}}'),      $t['markSvg']
-    $card = $card -replace [regex]::Escape('{{id}}'),           $t['id']
-    $card = $card -replace [regex]::Escape('{{meta}}'),         $t['meta']
-    $card = $card -replace [regex]::Escape('{{cta}}'),          $t['cta']
-    $cards += $card
+    # The featured product gets its own full-width composition above the groups
+    # rather than a card, so it is not also emitted into the grid.
+    if ($p.featured) { continue }
+    if ($groupId -and (ProductGroupId $p) -ne $groupId) { continue }
+    $cards += (Render-ProductCard $p $cardTemplate)
   }
   return ($cards -join "`n`n          ")
+}
+
+# One group section: heading, note, and grid. Emitted only when the group has
+# members, so an empty category cannot publish a heading with nothing under it.
+function Build-ProductGroupSections {
+  $sections = @()
+  foreach ($g in @($manifest.productGroups)) {
+    $members = @($manifest.products | Where-Object { $_.visible -and -not $_.featured -and (ProductGroupId $_) -eq $g.id })
+    if ($members.Count -eq 0) { continue }
+    $cards = Build-ProductCards $g.id
+    $count = $members.Count
+    $countWord = if ($count -eq 1) { '1 product' } else { "$count products" }
+    $sections += @"
+<section class="product-group product-group-$($g.id)" aria-labelledby="group-$($g.id)-title">
+        <div class="group-head">
+          <h3 id="group-$($g.id)-title" class="group-title">$($g.label)</h3>
+          <p class="group-note">$($g.note)</p>
+          <p class="group-count">$countWord</p>
+        </div>
+        <div class="products-grid">
+          $cards
+        </div>
+      </section>
+"@
+  }
+  return ($sections -join "`n`n      ")
+}
+
+# A concrete, derived statement of how much real software exists. Two separate
+# facts, each counted from its own source of truth:
+#   - downloads ready today = a served artifact exists (downloadUrl non-empty)
+#   - products with a public release = release.publicVersion non-empty
+# These differ on purpose: Lights Out has a public v11.1.2 whose artifact is
+# currently blocked, so it counts as released but not as downloadable. Counting
+# both from the same predicate is what let the old line erase that release.
+function Build-CatalogSummary {
+  $visible     = @($manifest.products | Where-Object { $_.visible })
+  $downloadable = @($visible | Where-Object { -not [string]::IsNullOrWhiteSpace($_.downloadUrl) })
+  $released     = @($visible | Where-Object { $_.release -and -not [string]::IsNullOrWhiteSpace("$($_.release.publicVersion)") })
+  $total        = $visible.Count
+  $dot = [char]0x00B7
+  $parts = @()
+  if ($downloadable.Count -gt 0) {
+    $noun = if ($downloadable.Count -eq 1) { 'download' } else { 'downloads' }
+    $parts += "<strong>$($downloadable.Count)</strong> $noun ready today"
+  }
+  if ($released.Count -gt 0) {
+    $parts += "<strong>$($released.Count)</strong> of $total products have a public release"
+  }
+  return ($parts -join " $dot ")
+}
+
+function Build-TrustStrip {
+  $items = @()
+  foreach ($ts in @($manifest.trustStrip)) {
+    $items += @"
+<li class="trust-item">
+            <span class="trust-label">$($ts.label)</span>
+            <span class="trust-note">$($ts.note)</span>
+          </li>
+"@
+  }
+  return ($items -join "`n          ")
 }
 
 function Build-ProofRegistry {
@@ -1026,7 +1334,7 @@ function Build-ReceiptCards {
     $build = if ($p.build) { $p.build } else { 'Release details coming soon.' }
 
     $cards += @"
-        <article class="receipt-card" data-status="$($p.productStatus)" data-platform="$($t['platform'])">
+        <article class="receipt-card" id="receipt-$($p.id)" data-status="$($p.productStatus)" data-platform="$($t['platform'])">
           <div class="receipt-card-head">
             <div>
               <h3>$($t['name'])</h3>
@@ -1121,8 +1429,11 @@ function Process-Template($srcPath, $srcName) {
   $html = $html -replace '<!--\s*@include header\s*-->', $header
   $html = $html -replace '<!--\s*@include footer\s*-->', $footer
 
-  # Inject product cards (homepage)
-  $html = $html -replace '<!--\s*@products\s*-->', (Build-ProductCards)
+  # Inject product groups (homepage) — grouped sections, then any bare-marker grid
+  $html = $html -replace '<!--\s*@product-groups\s*-->', (Build-ProductGroupSections)
+  $html = $html -replace '<!--\s*@trust-strip\s*-->',    (Build-TrustStrip)
+  $html = $html -replace [regex]::Escape('{{catalogSummary}}'), (Build-CatalogSummary)
+  $html = $html -replace '<!--\s*@products\s*-->', (Build-ProductCards $null)
 
   # Inject receipt cards (receipts page)
   $html = $html -replace '<!--\s*@receipts\s*-->', (Build-ReceiptCards)

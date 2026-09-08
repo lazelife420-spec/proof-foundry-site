@@ -295,6 +295,85 @@
       margin-top: 2rem;
     }
 
+    /* Hero screenshot. The corner brackets are the schematic's boundary steel
+       rails, reduced to their essence: the app shown inside a controlled frame. */
+    .rg-hero-shot {
+      margin: 0;
+      position: relative;
+      border: 1px solid var(--rg-steel);
+      border-radius: 8px;
+      background: #0d1520;
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+    }
+
+    .rg-hero-shot::before,
+    .rg-hero-shot::after,
+    .rg-hero-shot-chrome::before,
+    .rg-hero-shot-chrome::after {
+      content: "";
+      position: absolute;
+      width: 1.4rem;
+      height: 1.4rem;
+      border: 2.5px solid var(--rg-teal);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .rg-hero-shot::before       { top: 8px;    left: 8px;  border-right: 0; border-bottom: 0; }
+    .rg-hero-shot::after        { top: 8px;    right: 8px; border-left: 0;  border-bottom: 0; }
+    .rg-hero-shot-chrome::before { bottom: 8px; left: 8px;  border-right: 0; border-top: 0; }
+    .rg-hero-shot-chrome::after  { bottom: 8px; right: 8px; border-left: 0;  border-top: 0; }
+
+    .rg-hero-shot-chrome {
+      display: flex;
+      align-items: center;
+      gap: 0.38rem;
+      padding: 0.5rem 0.75rem;
+      background: rgba(6, 9, 15, 0.95);
+      border-bottom: 1px solid var(--rg-steel);
+      position: relative;
+    }
+
+    .rg-hero-shot-chrome span {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+      background: rgba(147, 164, 181, 0.4);
+    }
+
+    .rg-hero-shot-chrome span:first-child { background: rgba(217, 164, 65, 0.65); }
+
+    .rg-hero-shot-label {
+      margin-left: 0.35rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--rg-muted);
+    }
+
+    .rg-hero-shot img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .rg-hero-shot figcaption {
+      padding: 0.7rem 0.9rem 0.8rem;
+      font-size: 0.83rem;
+      color: var(--rg-muted);
+      line-height: 1.5;
+      border-top: 1px solid var(--rg-steel);
+      background: rgba(13, 21, 32, 0.6);
+    }
+
+    /* The moved architecture schematic keeps its own column sizing. */
+    .rg-schematic-wrap {
+      max-width: 560px;
+      justify-self: center;
+      width: 100%;
+    }
+
     /* Capability-State Matrix */
     .rg-matrix-section {
       padding-block: 4rem;
@@ -571,57 +650,20 @@
         </div>
       </div>
 
-      <div class="rg-schematic-wrap" aria-hidden="true">
-        <svg viewBox="0 0 380 320" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-          <defs>
-            <linearGradient id="rgPgTeal" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#2dd4bf"/>
-              <stop offset="100%" stop-color="#00e6ff"/>
-            </linearGradient>
-            <linearGradient id="rgPgGold" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#d9a441"/>
-              <stop offset="100%" stop-color="#9f7e3b"/>
-            </linearGradient>
-          </defs>
-
-          <!-- Outer Boundary Steel Rail Box -->
-          <rect x="14" y="14" width="352" height="292" rx="10" fill="#0d1520" stroke="#2a323f" stroke-width="2"/>
-
-          <!-- Boundary Steel Rails [ ] -->
-          <path d="M 36 54 L 36 36 L 68 36" stroke="#2dd4bf" stroke-width="3.5" stroke-linecap="round" fill="none"/>
-          <path d="M 344 54 L 344 36 L 312 36" stroke="#2dd4bf" stroke-width="3.5" stroke-linecap="round" fill="none"/>
-          <path d="M 36 266 L 36 284 L 68 284" stroke="#2dd4bf" stroke-width="3.5" stroke-linecap="round" fill="none"/>
-          <path d="M 344 266 L 344 284 L 312 284" stroke="#2dd4bf" stroke-width="3.5" stroke-linecap="round" fill="none"/>
-
-          <text x="76" y="48" fill="#d9a441" font-size="10" font-family="monospace" font-weight="bold" letter-spacing="1">CONTROLLED BOUNDARY · REALITY GATE</text>
-
-          <!-- Sequence Flow -->
-          <rect x="38" y="76" width="140" height="50" rx="6" fill="#06090f" stroke="#2a323f"/>
-          <text x="50" y="96" fill="#93a4b5" font-size="9" font-family="monospace">1. INTENT</text>
-          <text x="50" y="113" fill="#f2f6f8" font-size="10" font-weight="bold">Git Repo &amp; Remotes</text>
-
-          <rect x="202" y="76" width="140" height="50" rx="6" fill="#06090f" stroke="#2dd4bf" stroke-width="1.5"/>
-          <text x="214" y="96" fill="#2dd4bf" font-size="9" font-family="monospace">2. ISOLATED WORKSPACE</text>
-          <text x="214" y="113" fill="#00e6ff" font-size="10" font-weight="bold">git clone --local</text>
-
-          <path d="M 178 101 L 202 101" stroke="#2dd4bf" stroke-width="2" stroke-dasharray="4 2"/>
-
-          <rect x="38" y="150" width="140" height="50" rx="6" fill="#06090f" stroke="#2a323f"/>
-          <text x="50" y="170" fill="#93a4b5" font-size="9" font-family="monospace">3. CONTROLLED RUN</text>
-          <text x="50" y="187" fill="#f2f6f8" font-size="10" font-weight="bold">Logs &amp; Hashed Artifacts</text>
-
-          <rect x="202" y="150" width="140" height="50" rx="6" fill="#06090f" stroke="#d9a441" stroke-width="1.5"/>
-          <text x="214" y="170" fill="#d9a441" font-size="9" font-family="monospace">4. SIGNED RECEIPT</text>
-          <text x="214" y="187" fill="#d9a441" font-size="10" font-weight="bold">ECDSA P-256 Key</text>
-
-          <path d="M 272 126 L 272 150" stroke="#00e6ff" stroke-width="2"/>
-          <path d="M 178 175 L 202 175" stroke="#d9a441" stroke-width="2"/>
-
-          <rect x="38" y="224" width="304" height="46" rx="6" fill="rgba(13, 21, 32, 0.95)" stroke="#2a323f"/>
-          <circle cx="58" cy="247" r="5" fill="#d9a441"/>
-          <text x="74" y="251" fill="#c8d2da" font-size="10" font-family="monospace">DECISION &amp; PROOF LEDGER: VERIFIED</text>
-        </svg>
-      </div>
+      <figure class="rg-hero-shot">
+        <div class="rg-hero-shot-chrome" aria-hidden="true">
+          <span></span><span></span><span></span>
+          <span class="rg-hero-shot-label">Dependency Map &middot; local control vs provider exposure</span>
+        </div>
+        <img
+          src="/assets/reality-gate/02-dependency-map.png"
+          alt="Reality Gate dependency map classifying parts of a workflow as locally controlled or exposed to a remote provider."
+          width="1440" height="900" loading="eager" decoding="async" />
+        <figcaption>
+          The opening question Reality Gate answers: which parts of your workflow run on your machine,
+          and which quietly depend on a provider you do not control.
+        </figcaption>
+      </figure>
     </section>
 
     <!-- Five Concrete Platform Systems -->
@@ -692,25 +734,56 @@
             </ul>
           </div>
 
-          <div style="background: #06090f; border: 1px solid var(--rg-steel); border-radius: 8px; padding: 1.25rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.82rem; color: #2dd4bf; line-height: 1.6;">
-            REPOSITORY / INTENT<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼<br />
-            &nbsp;&nbsp;ISOLATED WORKSPACE (git clone --local)<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;EXECUTION CONTROL (Runroom)<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;┌───┴───┐<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;▼       ▼<br />
-            &nbsp;&nbsp;LOGS   ARTIFACT HASHES (SHA-256)<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;└───┬───┘<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;DECISION (PASSED / FAILED)<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼<br />
-            &nbsp;&nbsp;SIGNED RECEIPT (ECDSA P-256)<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;PROOF LEDGER &amp; RECOVERY VAULT
+          <div class="rg-schematic-wrap" aria-hidden="true">
+            <svg viewBox="0 0 380 320" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+              <defs>
+                <linearGradient id="rgPgTeal" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#2dd4bf"/>
+                  <stop offset="100%" stop-color="#00e6ff"/>
+                </linearGradient>
+                <linearGradient id="rgPgGold" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#d9a441"/>
+                  <stop offset="100%" stop-color="#9f7e3b"/>
+                </linearGradient>
+              </defs>
+
+              <!-- Outer Boundary Steel Rail Box -->
+              <rect x="14" y="14" width="352" height="292" rx="10" fill="#0d1520" stroke="#2a323f" stroke-width="2"/>
+
+              <!-- Boundary Steel Rails [ ] -->
+              <path d="M 36 54 L 36 36 L 68 36" stroke="#2dd4bf" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+              <path d="M 344 54 L 344 36 L 312 36" stroke="#2dd4bf" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+              <path d="M 36 266 L 36 284 L 68 284" stroke="#2dd4bf" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+              <path d="M 344 266 L 344 284 L 312 284" stroke="#2dd4bf" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+
+              <text x="76" y="48" fill="#d9a441" font-size="10" font-family="monospace" font-weight="bold" letter-spacing="1">CONTROLLED BOUNDARY · REALITY GATE</text>
+
+              <!-- Sequence Flow -->
+              <rect x="38" y="76" width="140" height="50" rx="6" fill="#06090f" stroke="#2a323f"/>
+              <text x="50" y="96" fill="#93a4b5" font-size="9" font-family="monospace">1. INTENT</text>
+              <text x="50" y="113" fill="#f2f6f8" font-size="10" font-weight="bold">Git Repo &amp; Remotes</text>
+
+              <rect x="202" y="76" width="140" height="50" rx="6" fill="#06090f" stroke="#2dd4bf" stroke-width="1.5"/>
+              <text x="214" y="96" fill="#2dd4bf" font-size="9" font-family="monospace">2. ISOLATED WORKSPACE</text>
+              <text x="214" y="113" fill="#00e6ff" font-size="10" font-weight="bold">git clone --local</text>
+
+              <path d="M 178 101 L 202 101" stroke="#2dd4bf" stroke-width="2" stroke-dasharray="4 2"/>
+
+              <rect x="38" y="150" width="140" height="50" rx="6" fill="#06090f" stroke="#2a323f"/>
+              <text x="50" y="170" fill="#93a4b5" font-size="9" font-family="monospace">3. CONTROLLED RUN</text>
+              <text x="50" y="187" fill="#f2f6f8" font-size="10" font-weight="bold">Logs &amp; Hashed Artifacts</text>
+
+              <rect x="202" y="150" width="140" height="50" rx="6" fill="#06090f" stroke="#d9a441" stroke-width="1.5"/>
+              <text x="214" y="170" fill="#d9a441" font-size="9" font-family="monospace">4. SIGNED RECEIPT</text>
+              <text x="214" y="187" fill="#d9a441" font-size="10" font-weight="bold">ECDSA P-256 Key</text>
+
+              <path d="M 272 126 L 272 150" stroke="#00e6ff" stroke-width="2"/>
+              <path d="M 178 175 L 202 175" stroke="#d9a441" stroke-width="2"/>
+
+              <rect x="38" y="224" width="304" height="46" rx="6" fill="rgba(13, 21, 32, 0.95)" stroke="#2a323f"/>
+              <circle cx="58" cy="247" r="5" fill="#d9a441"/>
+              <text x="74" y="251" fill="#c8d2da" font-size="10" font-family="monospace">DECISION &amp; PROOF LEDGER: VERIFIED</text>
+            </svg>
           </div>
         </div>
       </div>

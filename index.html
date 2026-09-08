@@ -30,50 +30,47 @@
   <main>
     <section id="home" class="hero" aria-labelledby="hero-title">
       <div class="hero-art" aria-hidden="true">
-        <img
-          class="hero-image"
-          src="/assets/foundry-strike/forged_pf_emblem_in_smoky_ruins.png"
-          alt=""
-          width="1672"
-          height="941"
-          fetchpriority="high"
-          decoding="async" />
+        <picture>
+          <source
+            type="image/avif"
+            srcset="/assets/foundry-strike/forged_pf_emblem_in_smoky_ruins-1280.avif 1280w,
+                    /assets/foundry-strike/forged_pf_emblem_in_smoky_ruins-1672.avif 1672w"
+            sizes="100vw" />
+          <source
+            type="image/webp"
+            srcset="/assets/foundry-strike/forged_pf_emblem_in_smoky_ruins-1280.webp 1280w,
+                    /assets/foundry-strike/forged_pf_emblem_in_smoky_ruins-1672.webp 1672w"
+            sizes="100vw" />
+          <img
+            class="hero-image"
+            src="/assets/foundry-strike/forged_pf_emblem_in_smoky_ruins.png"
+            alt=""
+            width="1672"
+            height="941"
+            fetchpriority="high"
+            decoding="async" />
+        </picture>
       </div>
       <div class="hero-shade" aria-hidden="true"></div>
       <div class="hero-inner container">
         <div class="hero-copy">
-          <p class="eyebrow">Software. Forged. Verified.</p>
-          <h1 id="hero-title">We build software.<br /><span>We prove it works.</span></h1>
-          <p class="hero-lede">{{brand}} is a software studio that builds local-first tools with visible evidence: receipts, release proof, checksums, and claims you can inspect before you trust them.</p>
+          <p class="eyebrow">A software studio &middot; Windows &amp; Android &middot; Local-first</p>
+          <h1 id="hero-title">Software that runs<br /><span>on your machine.</span></h1>
+          <p class="hero-lede">{{brand}} builds small, sharp local-first tools: a clipboard vault, cleanup that can be undone, night shutdown you drive from bed, RAM-backed file staging, and weather that answers the question you actually have.</p>
+          <p class="hero-catalog">{{catalogSummary}}</p>
           <div class="hero-actions">
-            <a class="button button-primary" href="#products">Explore Products</a>
-            <a class="button button-secondary" href="#proof-standard">View Proof Standard</a>
+            <a class="button button-primary" href="#products">Explore the software</a>
+            <a class="button button-secondary" href="#proof-standard">See how we prove releases</a>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="proof-pillars container" aria-label="Proof standards at a glance">
-      <article class="pillar-card">
-        <p class="pillar-index">01</p>
-        <h2>Built in public</h2>
-        <p>Visible progress, shipped work, and plain-language claims.</p>
-      </article>
-      <article class="pillar-card">
-        <p class="pillar-index">02</p>
-        <h2>Receipts posted</h2>
-        <p>Release notes, deployment records, checksums, and public proof links.</p>
-      </article>
-      <article class="pillar-card">
-        <p class="pillar-index">03</p>
-        <h2>Claims tested</h2>
-        <p>Behavior tied to test gates and evidence instead of hype language.</p>
-      </article>
-      <article class="pillar-card">
-        <p class="pillar-index">04</p>
-        <h2>Local-first tools</h2>
-        <p>Software made for owned workflows, durable files, and user control.</p>
-      </article>
+    <section class="trust-strip-section container" aria-labelledby="trust-strip-title">
+      <h2 id="trust-strip-title" class="visually-hidden">What every Proof Foundry release comes with</h2>
+      <ul class="trust-strip">
+          <!-- @trust-strip -->
+      </ul>
     </section>
 
     <section id="reality-gate" class="rg-featured-anchor container" aria-labelledby="rg-featured-title">
@@ -84,27 +81,17 @@
           </div>
 
           <h2 id="rg-featured-title" class="rg-featured-title">Reality Gate</h2>
-          <div class="rg-featured-subtitle">Local execution. Controlled evidence. Signed outcomes.</div>
+          <div class="rg-featured-subtitle">Run it. Prove it. Keep the receipt.</div>
 
           <p class="rg-featured-lede">
-            Local-first software continuity and execution platform: map provider dependencies, execute work inside isolated clones, record signed receipts, and prepare recovery before it is needed. Works alongside GitHub, GitLab, Forgejo, and ordinary Git.
+            Run a build or a recovery drill inside an isolated local clone of your repository, then keep a signed receipt of exactly what executed and what passed. It works alongside GitHub, GitLab, Forgejo and ordinary Git &mdash; no migration, no handing over credentials.
           </p>
 
-          <div class="rg-qual-grid" aria-label="Developer pilot qualification">
-            <div class="rg-qual-stat">
-              <div class="rg-qual-number">269 / 269</div>
-              <div class="rg-qual-label">Static Blocks</div>
-            </div>
-            <div class="rg-qual-stat">
-              <div class="rg-qual-number">24 / 24</div>
-              <div class="rg-qual-label">Live Registry</div>
-            </div>
-            <div class="rg-qual-stat">
-              <div class="rg-qual-number">20 / 20</div>
-              <div class="rg-qual-label">Installed Runtime</div>
-            </div>
-          </div>
-          <div class="rg-regression-note">Current source regression: 886 assertions · 55 suites green</div>
+          <ul class="rg-featured-points">
+            <li><strong>See what you depend on.</strong> Map which parts of your workflow rely on a provider you do not control.</li>
+            <li><strong>Run without touching the original.</strong> Work executes in a throwaway local clone, so a bad run cannot damage your repo.</li>
+            <li><strong>Keep evidence you can hand to someone.</strong> Every run ends in a signed receipt with the exact source and artifact it covers.</li>
+          </ul>
 
           <div class="rg-featured-ctas">
             {{product.downloadBlock}}
@@ -115,77 +102,43 @@
             <strong>Windows 10/11 x64</strong> &middot; ~113.5 MB ZIP download &middot; Unsigned package &middot; Verify SHA-256 before launch.
           </p>
 
+          <p class="rg-qual-line">
+            <span class="rg-qual-line-label">Pilot qualification</span>
+            <span class="rg-qual-line-values">269/269 static blocks &middot; 24/24 live registry &middot; 20/20 installed runtime &middot; 886 assertions green on current source</span>
+          </p>
+
           <div class="rg-relationship-banner">
-            <strong>Cross-Product Qualification:</strong> Reality Gate can qualify individual Proof Foundry workflows without becoming a runtime dependency of the software catalog. Example: the <strong>Lights Out v11.1.3 candidate</strong> underwent Reality Gate Runroom qualification; publication remains on hold.
+            <strong>Used on our own products:</strong> the <strong>Lights Out v11.1.3 candidate</strong> was qualified through a Reality Gate Runroom before we would consider publishing it &mdash; and it is still on hold. Reality Gate qualifies our releases without becoming something the other products depend on to run.
           </div>
         </div>
 
-        <div class="rg-schematic-wrap" aria-hidden="true">
-          <svg viewBox="0 0 360 300" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-            <defs>
-              <linearGradient id="rgSchemTeal" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#2dd4bf"/>
-                <stop offset="100%" stop-color="#00e6ff"/>
-              </linearGradient>
-              <linearGradient id="rgSchemGold" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#d9a441"/>
-                <stop offset="100%" stop-color="#9f7e3b"/>
-              </linearGradient>
-            </defs>
+        <figure class="rg-featured-shot">
+          <div class="rg-shot-chrome" aria-hidden="true">
+            <span class="rg-shot-dot"></span>
+            <span class="rg-shot-dot"></span>
+            <span class="rg-shot-dot"></span>
+            <span class="rg-shot-chrome-label">Runroom &middot; run complete</span>
+          </div>
+          <img
+            src="/assets/reality-gate/08-ci-run-complete.png"
+            alt="A completed Reality Gate run showing a SUCCESS badge beside a VERIFIED RECEIPT badge."
+            width="1440" height="900" loading="lazy" decoding="async" />
+          <figcaption>A finished run: the outcome and the receipt that proves it, side by side.</figcaption>
+        </figure>
 
-            <!-- Outer Panel Frame with Opposing Boundary Steel Rails -->
-            <rect x="12" y="12" width="336" height="276" rx="10" fill="#0d1520" stroke="#2a323f" stroke-width="2"/>
-            
-            <!-- Boundary Steel Rails [ ] -->
-            <path d="M 32 50 L 32 32 L 60 32" stroke="#2dd4bf" stroke-width="3" stroke-linecap="round" fill="none"/>
-            <path d="M 328 50 L 328 32 L 300 32" stroke="#2dd4bf" stroke-width="3" stroke-linecap="round" fill="none"/>
-            <path d="M 32 250 L 32 268 L 60 268" stroke="#2dd4bf" stroke-width="3" stroke-linecap="round" fill="none"/>
-            <path d="M 328 250 L 328 268 L 300 268" stroke="#2dd4bf" stroke-width="3" stroke-linecap="round" fill="none"/>
-
-            <text x="72" y="44" fill="#d9a441" font-size="10" font-family="monospace" font-weight="bold" letter-spacing="1">CONTROLLED BOUNDARY · REALITY GATE</text>
-
-            <!-- Execution Flow Sequence -->
-            <rect x="36" y="70" width="130" height="48" rx="6" fill="#06090f" stroke="#2a323f"/>
-            <text x="48" y="90" fill="#93a4b5" font-size="9" font-family="monospace">1. INTENT</text>
-            <text x="48" y="106" fill="#f2f6f8" font-size="10" font-weight="bold">Git Repo &amp; Toolchain</text>
-
-            <rect x="194" y="70" width="130" height="48" rx="6" fill="#06090f" stroke="#2dd4bf" stroke-width="1.5"/>
-            <text x="206" y="90" fill="#2dd4bf" font-size="9" font-family="monospace">2. ISOLATION</text>
-            <text x="206" y="106" fill="#00e6ff" font-size="10" font-weight="bold">git clone --local</text>
-
-            <path d="M 166 94 L 194 94" stroke="#2dd4bf" stroke-width="2" stroke-dasharray="4 2"/>
-
-            <rect x="36" y="140" width="130" height="48" rx="6" fill="#06090f" stroke="#2a323f"/>
-            <text x="48" y="160" fill="#93a4b5" font-size="9" font-family="monospace">3. EVIDENCE</text>
-            <text x="48" y="176" fill="#f2f6f8" font-size="10" font-weight="bold">Runroom &amp; SHA-256</text>
-
-            <rect x="194" y="140" width="130" height="48" rx="6" fill="#06090f" stroke="#d9a441" stroke-width="1.5"/>
-            <text x="206" y="160" fill="#d9a441" font-size="9" font-family="monospace">4. SIGNED RECEIPT</text>
-            <text x="206" y="176" fill="#d9a441" font-size="10" font-weight="bold">ECDSA P-256 Key</text>
-
-            <path d="M 259 118 L 259 140" stroke="#00e6ff" stroke-width="2"/>
-            <path d="M 166 164 L 194 164" stroke="#d9a441" stroke-width="2"/>
-
-            <rect x="36" y="210" width="288" height="42" rx="6" fill="rgba(13, 21, 32, 0.9)" stroke="#2a323f"/>
-            <circle cx="56" cy="231" r="5" fill="#d9a441"/>
-            <text x="70" y="235" fill="#c8d2da" font-size="10" font-family="monospace">OUTCOME: VERIFIED RECEIPT PERSISTED</text>
-          </svg>
-        </div>
       </div>
     </section>
 
     <section id="products" class="products container" aria-labelledby="products-title">
       <div class="section-head">
-        <h2 id="products-title">Our Products</h2>
-        <p>Focused tools. Real results. Verifiable proof. Choose by what you need, not by buzzwords.</p>
+        <h2 id="products-title">The software</h2>
+        <p>Grouped by what you can actually do with it right now &mdash; not by how excited we are about it.</p>
       </div>
 
-      <div class="products-grid">
-          <!-- @products -->
-      </div>
+      <!-- @product-groups -->
 
       <div class="more-tools" aria-label="Additional products in progress">
-        <p class="more-tools-title">More tools on the proof track</p>
+        <p class="more-tools-title">Earlier still: not yet on a proof track</p>
         <ul>
           <li>ProofBound <span>In development</span></li>
           <li>Sound Assist <span>In development</span></li>
@@ -198,15 +151,37 @@
         <img class="seal-image" src="/brand/proof-foundry-verified-seal.svg" alt="Proof Foundry verified seal" />
       </div>
       <div class="proof-copy">
-        <p class="eyebrow">The Proof Standard</p>
-        <h2 id="proof-standard-title">Every claim. Every tool. Every time.</h2>
-        <p>Proof Foundry products are shipped with visible evidence where possible: release notes, screenshots, checksums, test results, receipts, and plain-language limits.</p>
-        <p>Because trust is earned through verification, not words.</p>
+        <p class="eyebrow">Why trust a download from here</p>
+        <h2 id="proof-standard-title">You do not have to take our word for it.</h2>
+        <p>Everything we publish is unsigned indie software from a small studio. That is exactly why each release carries a checksum you can compare, a named test result, and a written list of what it does <em>not</em> do.</p>
+        <ol class="proof-layers">
+          <li>
+            <span class="proof-layer-index">1</span>
+            <div>
+              <h3>Know what you are getting</h3>
+              <p>Each product page states the version, the platform, whether it is a public release or a candidate, and what is still missing.</p>
+            </div>
+          </li>
+          <li>
+            <span class="proof-layer-index">2</span>
+            <div>
+              <h3>Check the file matches</h3>
+              <p>Every public download publishes a SHA-256. Compare it before you run the installer, and you know the bytes are ours.</p>
+            </div>
+          </li>
+          <li>
+            <span class="proof-layer-index">3</span>
+            <div>
+              <h3>Read the record if you want to</h3>
+              <p>Test gates, verification records and release receipts are published in full for anyone who wants to go further.</p>
+            </div>
+          </li>
+        </ol>
         <div class="proof-actions">
-          <a class="button button-primary" href="/proof/">Read the Receipts</a>
-          <a class="button button-secondary" href="#products">Explore Products</a>
+          <a class="button button-primary" href="/proof/">Read the receipts</a>
+          <a class="button button-secondary" href="#products">Back to the software</a>
         </div>
-        <p class="proof-roadmap-link"><a href="/roadmap/">See what we're proving next →</a></p>
+        <p class="proof-roadmap-link"><a href="/roadmap/">See what we're proving next &rarr;</a></p>
       </div>
     </section>
   </main>

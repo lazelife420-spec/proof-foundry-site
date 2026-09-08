@@ -26,6 +26,49 @@
     "ROADMAP_DIRECTION": "Roadmap direction",
     "UNRELEASED": "Unreleased"
   },
+  "availabilityTaxonomy": {
+    "derivation": "Availability is about the product, not its newest build lane: a product is AVAILABLE when release.publicVersion names a real public release, even while a newer candidate is also in flight. NO_PUBLIC_RELEASE means no public release of the product exists yet. Whether an artifact is downloadable right now is a separate fact, carried by downloadUrl and stated on the card, never inferred from this taxonomy.",
+    "labels": {
+      "AVAILABLE": "Available",
+      "NO_PUBLIC_RELEASE": "No public release yet"
+    }
+  },
+  "productGroups": [
+    {
+      "id": "available-now",
+      "label": "Available now",
+      "note": "Each of these has a public release. Where a download is blocked or pending, the card says so instead of hiding the product.",
+      "availability": [
+        "AVAILABLE"
+      ]
+    },
+    {
+      "id": "foundry",
+      "label": "In the foundry",
+      "note": "No public release yet — built and proven in the open.",
+      "availability": [
+        "NO_PUBLIC_RELEASE"
+      ]
+    }
+  ],
+  "trustStrip": [
+    {
+      "label": "Local-first",
+      "note": "Software that runs on your machine and keeps your files yours."
+    },
+    {
+      "label": "Published checksums",
+      "note": "Every public download has a SHA-256 you can check before you run it."
+    },
+    {
+      "label": "Tested before release",
+      "note": "Release claims are tied to named test gates, not adjectives."
+    },
+    {
+      "label": "Receipts you can read",
+      "note": "Release and verification records are published, not summarised."
+    }
+  ],
   "verificationLabels": {
     "ARTIFACT_HASH_PUBLISHED": "Artifact hash published",
     "ARTIFACT_HASH_VERIFIED": "Artifact hash verified",
@@ -80,6 +123,13 @@
       "markSvg": "<div class=\"card-mark\" aria-hidden=\"true\"><svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" width=\"100%\" height=\"100%\"><path d=\"M12 28 L50 8 L88 28 L88 38 L81 38 L81 88 L69 88 L69 36 L50 21 L31 36 L31 88 L19 88 L19 38 L12 38 Z\" fill=\"#F2F0EB\"/><rect x=\"14\" y=\"88\" width=\"22\" height=\"5\" rx=\"1\" fill=\"#F2F0EB\"/><rect x=\"64\" y=\"88\" width=\"22\" height=\"5\" rx=\"1\" fill=\"#F2F0EB\"/><path d=\"M31 67 L46 82 L42 86 L31 75 Z\" fill=\"#F2F0EB\"/><path d=\"M69 67 L54 82 L58 86 L69 75 Z\" fill=\"#F2F0EB\"/><polygon points=\"50,35 64,49 50,63 36,49\" fill=\"#C47B57\"/></svg></div>",
       "cta": "View product",
       "visible": true,
+      "featured": true,
+      "presentation": {
+        "valueLine": "Run your build inside an isolated local clone, then keep a signed receipt proving exactly what happened.",
+        "cardImage": "/assets/reality-gate/08-ci-run-complete.png",
+        "cardImageAlt": "Reality Gate run complete, showing a SUCCESS badge beside a VERIFIED RECEIPT badge.",
+        "cardCta": "Download Developer Pilot"
+      },
       "release": {
         "publicVersion": "1.1.0",
         "candidateVersion": null,
@@ -168,6 +218,12 @@
       "description": "A local-first Windows clipboard vault with smart classification, sensitive-content auto-expiry, Quick Paste, Safes, Vault Macros, Command Center (Phase 1: Hotkey Actions), and an opt-in LAN-only Mobile Bridge paired to a production-signed Android companion. No cloud account, no subscription, no telemetry.",
       "cta": "View product",
       "visible": true,
+      "presentation": {
+        "valueLine": "Every clipboard item you copy, kept on your machine, searchable, and filed into safes you control.",
+        "cardImage": "/assets/cache-vault/cv-all-clips.png",
+        "cardImageAlt": "Cache Vault All Clips view: clipboard history list with search, filters, and a preview pane.",
+        "cardCta": "Download v0.2.3-rc1"
+      },
       "release": {
         "publicVersion": "0.2.2",
         "candidateVersion": "0.2.3-rc1",
@@ -281,6 +337,12 @@
       "markSvg": "<div class='card-mark' aria-hidden='true'><svg viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'><defs><radialGradient id='loCardAmberGlow' cx='50%' cy='50%' r='50%'><stop offset='0%' stop-color='#E8A848' stop-opacity='1'/><stop offset='100%' stop-color='#E8A848' stop-opacity='0'/></radialGradient></defs><rect width='48' height='48' rx='12' fill='#121426' stroke='rgba(155, 147, 214, 0.3)' stroke-width='1.5'/><circle cx='24' cy='24' r='15' fill='none' stroke='#9B93D6' stroke-width='2.5' stroke-dasharray='72 22' transform='rotate(-90 24 24)'/><path d='M 24 9 A 15 15 0 1 1 9 24 A 10 10 0 1 0 24 9 Z' fill='#191C33' opacity='0.85'/><line x1='24' y1='9' x2='24' y2='13' stroke='#9B93D6' stroke-width='2' stroke-linecap='round'/><circle cx='24' cy='24' r='5' fill='url(#loCardAmberGlow)'/><circle cx='24' cy='24' r='3' fill='#E8A848'/></svg></div>",
       "cta": "View product",
       "visible": true,
+      "presentation": {
+        "valueLine": "Plan tonight's shutdown at your desk, then run it from bed with the Android companion.",
+        "cardImage": "/assets/lights-out/tonight-active-hero.png",
+        "cardImageAlt": "Lights Out Tonight screen mid-session: countdown ring, session name, remaining time, and session controls.",
+        "cardCta": "See release status"
+      },
       "release": {
         "publicVersion": "11.1.2",
         "candidateVersion": "11.1.3",
@@ -374,6 +436,12 @@
       "markSvg": "<div class=\"card-mark\" aria-hidden=\"true\"><svg viewBox=\"0 0 120 120\" xmlns=\"http://www.w3.org/2000/svg\" width=\"100%\" height=\"100%\"><defs><linearGradient id=\"clnCardMarkGold\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0%\" stop-color=\"#d6a84f\"/><stop offset=\"100%\" stop-color=\"#9f7e3b\"/></linearGradient></defs><rect x=\"14\" y=\"14\" width=\"92\" height=\"92\" rx=\"16\" fill=\"#0f172a\" fill-opacity=\"0.9\" stroke=\"#334155\" stroke-width=\"1.5\"/><rect x=\"22\" y=\"22\" width=\"76\" height=\"76\" rx=\"10\" fill=\"none\" stroke=\"#34d399\" stroke-width=\"1.2\" stroke-dasharray=\"64 20\"/><path d=\"M 78 38 A 22 22 0 1 0 78 82 L 52 82 L 52 60 L 78 60\" fill=\"none\" stroke=\"#34d399\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><line x1=\"60\" y1=\"32\" x2=\"60\" y2=\"88\" stroke=\"#e2e8f0\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\" opacity=\"0.5\"/><circle cx=\"78\" cy=\"60\" r=\"4.5\" fill=\"url(#clnCardMarkGold)\"/></svg></div>",
       "cta": "View product",
       "visible": true,
+      "presentation": {
+        "valueLine": "Clear out Windows clutter with everything archived first, so any cleanup can be put back.",
+        "cardImage": "/assets/cleanroom/cleanroom-review.png",
+        "cardImageAlt": "Cleanroom candidate review screen: file selection list with archive controls.",
+        "cardCta": "Download Cleanroom"
+      },
       "release": {
         "publicVersion": "1.0.7",
         "candidateVersion": "1.0.10",
@@ -459,6 +527,12 @@
       "markSvg": "<div class=\"card-mark\" aria-hidden=\"true\"><svg viewBox=\"0 0 120 120\" xmlns=\"http://www.w3.org/2000/svg\" width=\"100%\" height=\"100%\"><defs><linearGradient id=\"glCardMarkGold\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0%\" stop-color=\"#d6a84f\"/><stop offset=\"100%\" stop-color=\"#9f7e3b\"/></linearGradient></defs><rect x=\"14\" y=\"10\" width=\"72\" height=\"72\" rx=\"12\" fill=\"#62d8ff\" fill-opacity=\"0.07\" stroke=\"#62d8ff\" stroke-width=\"0.75\" stroke-opacity=\"0.25\"/><rect x=\"22\" y=\"18\" width=\"72\" height=\"72\" rx=\"12\" fill=\"#00CC33\" fill-opacity=\"0.05\" stroke=\"#00CC33\" stroke-width=\"0.75\" stroke-opacity=\"0.2\"/><path d=\"M 82 42 A 28 28 0 1 0 82 78 L 60 78 L 60 60 L 82 60\" fill=\"none\" stroke=\"#00CC33\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"82\" cy=\"60\" r=\"3.5\" fill=\"url(#glCardMarkGold)\"/></svg></div>",
       "cta": "View product",
       "visible": true,
+      "presentation": {
+        "valueLine": "Stage files in RAM, work on them safely, then commit only the changes you approve to disk.",
+        "cardImage": "/assets/ghostlayer/gl-staged-files.png",
+        "cardImageAlt": "GhostLayer staged files list showing staged, modified, and selected file states.",
+        "cardCta": "Download GhostLayer"
+      },
       "release": {
         "publicVersion": "0.4.0",
         "candidateVersion": null,
@@ -558,6 +632,12 @@
       "markSvg": "<div class=\"card-mark\" aria-hidden=\"true\"><svg viewBox=\"0 0 120 120\" xmlns=\"http://www.w3.org/2000/svg\" width=\"100%\" height=\"100%\"><defs><linearGradient id=\"fcCardMarkGold\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0%\" stop-color=\"#d6a84f\"/><stop offset=\"100%\" stop-color=\"#9f7e3b\"/></linearGradient></defs><rect x=\"14\" y=\"14\" width=\"92\" height=\"92\" rx=\"16\" fill=\"#0b0f14\" fill-opacity=\"0.95\" stroke=\"#1e2c3a\" stroke-width=\"1.5\"/><line x1=\"42\" y1=\"34\" x2=\"42\" y2=\"86\" stroke=\"#3fbf94\" stroke-width=\"6\" stroke-linecap=\"round\"/><line x1=\"42\" y1=\"38\" x2=\"82\" y2=\"38\" stroke=\"#3fbf94\" stroke-width=\"6\" stroke-linecap=\"round\"/><line x1=\"42\" y1=\"60\" x2=\"70\" y2=\"60\" stroke=\"#3fbf94\" stroke-width=\"5\" stroke-linecap=\"round\"/><line x1=\"30\" y1=\"82\" x2=\"90\" y2=\"82\" stroke=\"#1e2c3a\" stroke-width=\"2\" stroke-dasharray=\"4 4\"/><circle cx=\"70\" cy=\"60\" r=\"4.5\" fill=\"url(#fcCardMarkGold)\"/></svg></div>",
       "cta": "View product",
       "visible": true,
+      "presentation": {
+        "valueLine": "Weather that answers the question you actually have: when to go out, and what to wear.",
+        "cardImage": "/assets/forgecast/v030-today.png",
+        "cardImageAlt": "ForgeCast Today screen showing outfit guidance and the best-outside timing window.",
+        "cardCta": "Get ForgeCast for Android"
+      },
       "release": {
         "publicVersion": "0.3.5",
         "candidateVersion": null,
@@ -651,6 +731,12 @@
       "markSvg": "<div class=\"card-mark\" aria-hidden=\"true\"><svg viewBox=\"0 0 120 120\" xmlns=\"http://www.w3.org/2000/svg\" width=\"100%\" height=\"100%\"><defs><linearGradient id=\"psCardMarkGold\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0%\" stop-color=\"#d6a84f\"/><stop offset=\"100%\" stop-color=\"#9f7e3b\"/></linearGradient></defs><rect x=\"14\" y=\"14\" width=\"92\" height=\"92\" rx=\"16\" fill=\"#0b0f14\" fill-opacity=\"0.95\" stroke=\"#1e2c3a\" stroke-width=\"1.5\"/><path d=\"M 26 42 L 26 26 L 42 26\" stroke=\"#e05244\" stroke-width=\"4\" stroke-linecap=\"round\" fill=\"none\"/><path d=\"M 94 42 L 94 26 L 78 26\" stroke=\"#e05244\" stroke-width=\"4\" stroke-linecap=\"round\" fill=\"none\"/><path d=\"M 26 78 L 26 94 L 42 94\" stroke=\"#e05244\" stroke-width=\"4\" stroke-linecap=\"round\" fill=\"none\"/><path d=\"M 94 78 L 94 94 L 78 94\" stroke=\"#e05244\" stroke-width=\"4\" stroke-linecap=\"round\" fill=\"none\"/><circle cx=\"60\" cy=\"60\" r=\"20\" stroke=\"#40d9fd\" stroke-width=\"2.5\" stroke-dasharray=\"44 12\" fill=\"none\"/><circle cx=\"60\" cy=\"60\" r=\"6\" fill=\"#e05244\"/><circle cx=\"78\" cy=\"42\" r=\"4.5\" fill=\"url(#psCardMarkGold)\"/></svg></div>",
       "cta": "View product",
       "visible": true,
+      "presentation": {
+        "valueLine": "Capture a page's real resources into a sealed proof bundle you can verify offline, years later.",
+        "cardImage": "/assets/proofshot/workbench-home.png",
+        "cardImageAlt": "The ProofShot workbench home screen, showing the capture intake surface of the current engine build.",
+        "cardCta": "See what's being built"
+      },
       "release": {
         "publicVersion": null,
         "candidateVersion": "1.6.18",

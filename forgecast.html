@@ -137,12 +137,77 @@
       background: var(--fc-teal);
     }
 
-    /* Hero SVG Graphic */
-    .fc-page .fc-hero-art svg {
+    /* Hero screenshot: a real phone screen in a horizon frame. The chrome keeps
+       the SVG's SIGNAL OK telemetry language; the frame crops the tall phone
+       capture to the decision region instead of shrinking it into a thumbnail. */
+    .fc-page .fc-hero-shot {
+      margin: 0;
+      border: 1px solid var(--fc-slate-border);
+      border-radius: 14px;
+      background: linear-gradient(160deg, var(--fc-slate), var(--fc-bg));
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+      max-width: 24rem;
+      justify-self: center;
+      width: 100%;
+    }
+
+    .fc-page .fc-hero-shot-chrome {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.55rem 0.85rem;
+      background: rgba(21, 36, 51, 0.9);
+      border-bottom: 1px solid var(--fc-slate-border);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    .fc-page .fc-shot-signal {
+      color: #6ee7b7;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+    }
+
+    .fc-page .fc-shot-signal::before {
+      content: "";
+      display: inline-block;
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 50%;
+      background: var(--fc-teal);
+      margin-right: 0.45rem;
+      vertical-align: 0.08em;
+    }
+
+    .fc-page .fc-shot-label {
+      color: var(--fc-silver-sub);
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .fc-page .fc-hero-shot-frame {
+      aspect-ratio: 3 / 4;
+      overflow: hidden;
+      background: var(--fc-bg);
+    }
+
+    .fc-page .fc-hero-shot-frame img {
       display: block;
       width: 100%;
-      height: auto;
-      filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.6));
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    .fc-page .fc-hero-shot figcaption {
+      padding: 0.7rem 0.9rem 0.8rem;
+      font-size: 0.83rem;
+      color: var(--fc-silver-sub);
+      line-height: 1.5;
+      border-top: 1px solid var(--fc-slate-border);
+      overflow-wrap: normal;
     }
 
     /* Device Screenshot Lineup */
@@ -219,9 +284,8 @@
         grid-template-columns: 1fr;
         gap: 1.75rem;
       }
-      .fc-page .fc-hero-art {
+      .fc-page .fc-hero-shot {
         order: -1;
-        width: min(22rem, 100%);
         margin: 0 auto;
       }
       .fc-page .fc-triad {
@@ -294,56 +358,22 @@
         {{product.proofStrip}}
       </div>
 
-      <div class="fc-hero-art" aria-hidden="true">
-        <svg viewBox="0 0 340 270" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
-          <g fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <!-- Atmospheric Horizon Outer Frame -->
-            <rect x="16" y="16" width="308" height="238" rx="12" fill="#0B0F14" stroke="#1E2C3A" stroke-width="2" />
-
-            <!-- Time Axis Header -->
-            <text x="32" y="44" fill="#EEF3F7" font-size="10" font-family="monospace" letter-spacing="1">ATMOSPHERIC DECISION HORIZON</text>
-            <rect x="238" y="32" width="70" height="18" rx="4" fill="rgba(63, 191, 148, 0.15)" stroke="var(--fc-teal)" stroke-width="1" />
-            <text x="246" y="44" fill="#6EE7B7" font-size="9" font-family="monospace">SIGNAL OK</text>
-
-            <!-- Temperature & Pressure Curve -->
-            <path d="M 32 120 C 70 100 110 80 160 85 S 240 140 308 110" stroke="#1E2C3A" stroke-width="2" stroke-dasharray="4 4"/>
-            <path d="M 32 140 C 70 120 120 95 160 98 S 230 160 308 130" stroke="var(--fc-teal)" stroke-width="2.5"/>
-
-            <!-- Horizon Time Steps -->
-            <line x1="32" y1="170" x2="308" y2="170" stroke="#1E2C3A" stroke-width="2"/>
-            
-            <circle cx="50" cy="170" r="3" fill="#EEF3F7"/>
-            <text x="42" y="186" fill="#A8B8C4" font-size="9" font-family="monospace">NOW</text>
-
-            <circle cx="120" cy="170" r="4" fill="var(--fc-teal)"/>
-            <text x="110" y="186" fill="var(--fc-teal)" font-size="9" font-family="monospace" font-weight="bold">+2H</text>
-
-            <circle cx="210" cy="170" r="3" fill="#EEF3F7"/>
-            <text x="200" y="186" fill="#A8B8C4" font-size="9" font-family="monospace">+6H</text>
-
-            <circle cx="285" cy="170" r="3" fill="#EEF3F7"/>
-            <text x="273" y="186" fill="#A8B8C4" font-size="9" font-family="monospace">+12H</text>
-
-            <!-- Best Outside Window Highlight Box -->
-            <rect x="95" y="65" width="85" height="85" rx="6" fill="rgba(63, 191, 148, 0.08)" stroke="var(--fc-teal)" stroke-width="1.5" stroke-dasharray="4 3"/>
-            <text x="103" y="80" fill="var(--fc-teal)" font-size="9" font-weight="bold" font-family="monospace">BEST WINDOW</text>
-            <circle cx="138" cy="98" r="4.5" fill="var(--fc-gold)"/>
-
-            <!-- Decision Cards Overlay (Wear / Bring / Skip) -->
-            <rect x="32" y="202" width="82" height="38" rx="6" fill="#152433" stroke="#1E2C3A"/>
-            <text x="38" y="216" fill="#A8B8C4" font-size="8" font-family="monospace">WEAR</text>
-            <text x="38" y="230" fill="#EEF3F7" font-size="9" font-weight="bold">Light Jacket</text>
-
-            <rect x="122" y="202" width="82" height="38" rx="6" fill="#152433" stroke="#1E2C3A"/>
-            <text x="128" y="216" fill="#A8B8C4" font-size="8" font-family="monospace">BRING</text>
-            <text x="128" y="230" fill="#EEF3F7" font-size="9" font-weight="bold">Sunglasses</text>
-
-            <rect x="212" y="202" width="96" height="38" rx="6" fill="#152433" stroke="#1E2C3A"/>
-            <text x="218" y="216" fill="#A8B8C4" font-size="8" font-family="monospace">SKIP</text>
-            <text x="218" y="230" fill="#EEF3F7" font-size="9" font-weight="bold">Heavy Coat</text>
-          </g>
-        </svg>
-      </div>
+      <figure class="fc-hero-shot">
+        <div class="fc-hero-shot-chrome" aria-hidden="true">
+          <span class="fc-shot-signal">SIGNAL OK</span>
+          <span class="fc-shot-label">Today &middot; decision-first</span>
+        </div>
+        <div class="fc-hero-shot-frame">
+          <img
+            src="/assets/forgecast/v030-today.png"
+            alt="ForgeCast Today screen: what to wear, the best-outside window, and the day motion timeline."
+            width="1080" height="2340" loading="eager" decoding="async" />
+        </div>
+        <figcaption>
+          Today opens on the decision, not the data: what to wear, when the best outside window
+          is, and how the day moves. The full forecast is one tap away, not in the way.
+        </figcaption>
+      </figure>
     </section>
 
     <section id="on-device" aria-label="Product screenshots" class="product-screens">

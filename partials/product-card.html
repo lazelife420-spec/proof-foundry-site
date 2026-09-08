@@ -1,13 +1,21 @@
-<article class="product-card product-{{state}} card-{{id}}">
-  <div class="product-top">
-    <div class="card-title-row">
+<article class="product-card product-{{state}} card-{{id}}" data-status="{{visitorStatusSlug}}">
+  <figure class="card-shot">
+    <img src="{{cardImage}}" alt="{{cardImageAlt}}" loading="lazy" decoding="async" />
+  </figure>
+  <div class="card-body">
+    <div class="card-head">
       {{markSvg}}
-      <h3><a href="{{route}}">{{name}}</a></h3>
+      <h4 class="card-name"><a href="{{route}}">{{name}}</a></h4>
+      <span class="card-badge badge-{{visitorStatusSlug}}">{{visitorStatusLabel}}</span>
     </div>
-    <span class="chip chip-{{state}}">{{statusLabel}}</span>
+    <p class="card-value">{{valueLine}}</p>
+    <p class="card-facts">
+      <!-- @if-version --><span class="card-version">{{cardVersionLabel}}</span><!-- @end-version --><span class="card-platform">{{platform}}</span>
+    </p>
+    <div class="card-actions">
+      <a class="button button-primary button-sm card-cta" href="{{cardCtaHref}}">{{cardCta}}</a>
+      <a class="card-proof-link" href="{{cardProofHref}}">Verification record</a>
+    </div>
+    <!-- @if-detail --><p class="card-detail">{{cardDetailLine}}</p><!-- @end-detail -->
   </div>
-  <p class="product-promise">{{cardSummary}}</p>
-  <p class="product-meta">{{meta}}</p>
-  <p class="product-state">{{statusLine}}</p>
-  <a class="button button-secondary button-sm card-cta" href="{{route}}">{{cta}} &rarr;</a>
 </article>

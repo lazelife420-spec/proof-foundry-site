@@ -341,6 +341,56 @@
     .gl-rail-step--commit { border-color: rgba(214, 168, 79, 0.2); }
     .gl-rail-step--commit:hover { border-color: var(--gl-gold); }
 
+    /* ─── Hero visual: real staging layer in volatile chrome ──────────────── */
+    .gl-hero-shot {
+      margin: 0;
+      border: 1px solid rgba(0, 204, 51, 0.28);
+      border-radius: 10px;
+      background: #06090f;
+      box-shadow:
+        0 0 0 1px rgba(0, 204, 51, 0.06),
+        0 24px 48px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+    }
+
+    .gl-hero-shot-chrome {
+      display: flex;
+      align-items: baseline;
+      gap: 0.7rem;
+      padding: 0.55rem 0.85rem;
+      background: linear-gradient(180deg, rgba(0, 204, 51, 0.1), rgba(0, 204, 51, 0.04));
+      border-bottom: 1px solid rgba(0, 204, 51, 0.28);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    .gl-shot-state {
+      color: #00CC33;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+    }
+
+    .gl-shot-meta {
+      color: rgba(0, 204, 51, 0.55);
+      font-size: 0.66rem;
+      letter-spacing: 0.06em;
+    }
+
+    .gl-hero-shot img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .gl-hero-shot figcaption {
+      padding: 0.7rem 0.9rem 0.8rem;
+      font-size: 0.83rem;
+      color: #93a4b5;
+      line-height: 1.5;
+      border-top: 1px solid rgba(0, 204, 51, 0.18);
+      overflow-wrap: normal;
+    }
+
     /* ─── Principles ──────────────────────────────────────────────────────── */
     .gl-principles {
       display: grid;
@@ -540,6 +590,9 @@
         order: 1;
         max-width: 320px;
       }
+      .gl-hero-shot {
+        order: -1;
+      }
       .gl-rail {
         flex-direction: column;
         gap: 0;
@@ -571,7 +624,8 @@
     }
 
     @media (prefers-reduced-motion: no-preference) {
-      .gl-hero-visual {
+      .gl-hero-visual,
+      .gl-hero-shot {
         animation: gl-settle 1s ease-out both;
       }
       @keyframes gl-settle {
@@ -673,7 +727,61 @@
         </div>
       </div>
 
-      <!-- Volatile-layer system: large atmospheric hero visual -->
+      <!-- Real staging layer, framed as the volatile layer it is: the chrome
+           reports status the way the app does, in volatile green over dark. -->
+      <figure class="gl-hero-shot">
+        <div class="gl-hero-shot-chrome" aria-hidden="true">
+          <span class="gl-shot-state">STAGING LAYER</span>
+          <span class="gl-shot-meta">volatile &middot; nothing on disk yet</span>
+        </div>
+        <img
+          src="/assets/ghostlayer/gl-staged-files.png"
+          alt="GhostLayer staging list showing two files staged in RAM with IN RAM status"
+          width="1125" height="814" loading="eager" decoding="async" />
+        <figcaption>
+          The staging list is the product: name, size, and IN&nbsp;RAM status. Paths shown are
+          synthetic fixture content. Nothing here exists on disk until you commit it.
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- ═══ What GhostLayer is ═══ -->
+    <section class="gl-section gl-container" id="what-it-is">
+      <h2 class="gl-section-title">A layer you control between RAM and disk.</h2>
+      <p class="gl-section-subtitle">
+        Files dropped into GhostLayer live in a RAM-backed staging layer — volatile,
+        inspectable, and never written to disk until you commit them. Open a staged file
+        in its associated editor and GhostLayer synchronizes your edits back into RAM.
+        Opening for edit creates a temporary disk copy; the temporary is removed when
+        the edit session closes normally. Wipe the layer and the uncommitted files are
+        gone. No residual copies, no background sync, no cloud backup you did not authorize.
+      </p>
+
+      <div class="gl-principles">
+        <div class="gl-principle">
+          <h3>RAM-Backed Staging</h3>
+          <p>Dropped files live in a RAM-backed layer. They are visible, sortable, and
+          manageable inside the app. Opening a file for editing creates a temporary disk
+          copy that is removed when the edit session closes normally.</p>
+        </div>
+        <div class="gl-principle">
+          <h3>Deliberate Commit</h3>
+          <p>Choose which files to write to disk and where. GhostLayer commits exactly
+          what you select, nothing more. Commit destinations are derived from the staged
+          file identity rather than accepted from renderer input. If a destination changed
+          after staging, conflict recovery preserves both versions — no Overwrite, no
+          force commit.</p>
+        </div>
+        <div class="gl-principle">
+          <h3>Instant Wipe</h3>
+          <p>One action clears the staging layer. Uncommitted files are removed from RAM.
+          The layer is empty and ready for the next session. What was not committed
+          was never written.</p>
+        </div>
+      </div>
+
+      <!-- The volatile-layer system diagram, under the principles it illustrates:
+           a volatile working layer above, a deliberate commit vector, permanent disk below. -->
       <div class="gl-hero-visual" aria-hidden="true">
         <svg viewBox="0 0 500 460" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
           <defs>
@@ -776,50 +884,6 @@
           <path d="M 30 440 L 470 440" stroke="#2a323f" stroke-width="2" opacity="0.4"/>
         </svg>
       </div>
-    </section>
-
-    <!-- ═══ What GhostLayer is ═══ -->
-    <section class="gl-section gl-container" id="what-it-is">
-      <h2 class="gl-section-title">A layer you control between RAM and disk.</h2>
-      <p class="gl-section-subtitle">
-        Files dropped into GhostLayer live in a RAM-backed staging layer — volatile,
-        inspectable, and never written to disk until you commit them. Open a staged file
-        in its associated editor and GhostLayer synchronizes your edits back into RAM.
-        Opening for edit creates a temporary disk copy; the temporary is removed when
-        the edit session closes normally. Wipe the layer and the uncommitted files are
-        gone. No residual copies, no background sync, no cloud backup you did not authorize.
-      </p>
-
-      <div class="gl-principles">
-        <div class="gl-principle">
-          <h3>RAM-Backed Staging</h3>
-          <p>Dropped files live in a RAM-backed layer. They are visible, sortable, and
-          manageable inside the app. Opening a file for editing creates a temporary disk
-          copy that is removed when the edit session closes normally.</p>
-        </div>
-        <div class="gl-principle">
-          <h3>Deliberate Commit</h3>
-          <p>Choose which files to write to disk and where. GhostLayer commits exactly
-          what you select, nothing more. Commit destinations are derived from the staged
-          file identity rather than accepted from renderer input. If a destination changed
-          after staging, conflict recovery preserves both versions — no Overwrite, no
-          force commit.</p>
-        </div>
-        <div class="gl-principle">
-          <h3>Instant Wipe</h3>
-          <p>One action clears the staging layer. Uncommitted files are removed from RAM.
-          The layer is empty and ready for the next session. What was not committed
-          was never written.</p>
-        </div>
-      </div>
-
-      <figure class="gl-evidence-figure">
-        <img src="/assets/ghostlayer/gl-staged-files.png"
-             alt="GhostLayer staging list showing two files staged in RAM with IN RAM status"
-             width="1125" height="814" loading="lazy" />
-        <figcaption>Two files staged in the RAM layer. Paths shown are synthetic
-        fixture content; the staging list reports name, size, and IN&nbsp;RAM status.</figcaption>
-      </figure>
     </section>
 
     <!-- ═══ Workflow rail ═══ -->

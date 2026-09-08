@@ -408,12 +408,73 @@
       text-align: right;
     }
 
-    /* Hero SVG Graphic */
-    .ps-page .fc-hero-art svg {
+    /* Hero screenshot in a viewfinder frame: the four vermilion crop corners are
+       the product's own capture marks, so the screenshot sits inside a frame
+       that says "this is what ProofShot takes". */
+    .ps-page .ps-hero-shot {
+      margin: 0;
+      position: relative;
+      border: 1px solid var(--ps-border);
+      border-radius: 10px;
+      background: var(--ps-gray);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+    }
+
+    .ps-page .ps-hero-shot::before,
+    .ps-page .ps-hero-shot::after {
+      content: "";
+      position: absolute;
+      width: 1.6rem;
+      height: 1.6rem;
+      border: 3px solid var(--ps-vermilion);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .ps-page .ps-hero-shot::before { top: 7px;    left: 7px;  border-right: 0; border-bottom: 0; }
+    .ps-page .ps-hero-shot::after  { bottom: 7px; right: 7px; border-left: 0;  border-top: 0; }
+
+    .ps-page .ps-hero-shot-chrome {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.55rem 0.85rem;
+      background: rgba(20, 27, 36, 0.95);
+      border-bottom: 1px solid var(--ps-border);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    .ps-page .ps-shot-pass {
+      color: #f87171;
+      background: rgba(224, 82, 68, 0.15);
+      border: 1px solid var(--ps-vermilion-soft);
+      border-radius: 4px;
+      padding: 0.12rem 0.45rem;
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .ps-page .ps-shot-label {
+      color: var(--ps-silver-sub);
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .ps-page .ps-hero-shot img {
       display: block;
       width: 100%;
       height: auto;
-      filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.6));
+    }
+
+    .ps-page .ps-hero-shot figcaption {
+      padding: 0.7rem 0.9rem 0.8rem;
+      font-size: 0.83rem;
+      color: var(--ps-silver-sub);
+      line-height: 1.5;
+      border-top: 1px solid var(--ps-border);
+      overflow-wrap: normal;
     }
 
     /* Responsive breakpoints */
@@ -422,7 +483,7 @@
         grid-template-columns: 1fr;
         gap: 1.75rem;
       }
-      .ps-page .ps-hero .ps-hero-art {
+      .ps-page .ps-hero .ps-hero-shot {
         order: -1;
         max-width: 32rem;
         width: 100%;
@@ -533,47 +594,20 @@
         {{product.proofStrip}}
       </div>
 
-      <div class="ps-hero-art" aria-hidden="true">
-        <svg viewBox="0 0 340 270" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
-          <g fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <!-- Evidence Frame Outer Frame -->
-            <rect x="16" y="16" width="308" height="238" rx="12" fill="#0B0F14" stroke="#1E2C3A" stroke-width="2" />
-
-            <!-- Frame Header Bar -->
-            <text x="32" y="44" fill="#C8D2DA" font-size="10" font-family="monospace" letter-spacing="1">EVIDENCE FRAME · WORKBENCH INTAKE</text>
-            <rect x="238" y="32" width="70" height="18" rx="4" fill="rgba(224, 82, 68, 0.15)" stroke="var(--ps-vermilion)" stroke-width="1" />
-            <text x="246" y="44" fill="#F87171" font-size="9" font-family="monospace">99/99 PASS</text>
-
-            <!-- Four Incomplete Crop Corners -->
-            <path d="M 40 75 L 40 60 L 55 60" stroke="var(--ps-vermilion)" stroke-width="2.5" />
-            <path d="M 300 75 L 300 60 L 285 60" stroke="var(--ps-vermilion)" stroke-width="2.5" />
-            <path d="M 40 165 L 40 180 L 55 180" stroke="var(--ps-vermilion)" stroke-width="2.5" />
-            <path d="M 300 165 L 300 180 L 285 180" stroke="var(--ps-vermilion)" stroke-width="2.5" />
-
-            <!-- SmartDecode Extraction Pipeline Flow -->
-            <rect x="65" y="72" width="210" height="96" rx="8" fill="#141B24" stroke="#1E2C3A" />
-            <text x="80" y="92" fill="var(--ps-cyan)" font-size="9" font-family="monospace" font-weight="bold">SMARTDECODE v2.5.0</text>
-            <text x="80" y="108" fill="#9FB0C0" font-size="8" font-family="monospace">2 Candidates Scored · Best Target Selected</text>
-
-            <line x1="80" y1="120" x2="260" y2="120" stroke="#1E2C3A" stroke-dasharray="3 3"/>
-            <text x="80" y="136" fill="var(--ps-vermilion)" font-size="8" font-family="monospace">FOCUS TARGET</text>
-            <text x="80" y="152" fill="#C8D2DA" font-size="9" font-family="monospace">SHA-256 Digest: 5C0F00FB7E6E... Verified</text>
-
-            <!-- Bottom Metadata Strip -->
-            <rect x="32" y="202" width="85" height="38" rx="6" fill="#141B24" stroke="#1E2C3A"/>
-            <text x="38" y="216" fill="#9FB0C0" font-size="8" font-family="monospace">MANIFEST</text>
-            <text x="38" y="230" fill="#C8D2DA" font-size="9" font-weight="bold">SHA-256</text>
-
-            <rect x="125" y="202" width="95" height="38" rx="6" fill="#141B24" stroke="#1E2C3A"/>
-            <text x="131" y="216" fill="#9FB0C0" font-size="8" font-family="monospace">METADATA</text>
-            <text x="131" y="230" fill="var(--ps-gold)" font-size="9" font-weight="bold">Proof Passport</text>
-
-            <rect x="228" y="202" width="80" height="38" rx="6" fill="#141B24" stroke="#1E2C3A"/>
-            <text x="234" y="216" fill="#9FB0C0" font-size="8" font-family="monospace">VERIFY</text>
-            <text x="234" y="230" fill="var(--ps-cyan)" font-size="9" font-weight="bold">Offline HTML</text>
-          </g>
-        </svg>
-      </div>
+      <figure class="ps-hero-shot">
+        <div class="ps-hero-shot-chrome" aria-hidden="true">
+          <span class="ps-shot-pass">99/99 PASS</span>
+          <span class="ps-shot-label">SmartDecode &middot; capture complete</span>
+        </div>
+        <img
+          src="/assets/proofshot/decode-complete.png"
+          alt="ProofShot SmartDecode capture complete: the focused region extracted with its verification data."
+          width="1440" height="900" loading="eager" decoding="async" />
+        <figcaption>
+          A finished capture: the region you framed, decoded and pinned with its focus target,
+          ready to join a proof bundle with a SHA-256 manifest.
+        </figcaption>
+      </figure>
     </section>
 
     <section aria-label="Trust highlights" class="ps-trust">

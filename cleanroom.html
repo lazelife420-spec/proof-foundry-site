@@ -228,12 +228,62 @@
       background: var(--cln-mint);
     }
 
-    /* Hero Schematic Graphic */
-    .cln-page .cln-hero-art svg {
+    /* Hero screenshot in a sterile chamber panel — the page's signature
+       high-luminance instrument look, wrapping the real review interface. */
+    .cln-page .cln-hero-shot {
+      margin: 0;
+      background: var(--cln-mineral);
+      color: var(--cln-graphite);
+      border: 2px solid var(--cln-border);
+      border-radius: 12px;
+      padding: 0.85rem;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+    }
+
+    .cln-page .cln-hero-shot-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding-bottom: 0.6rem;
+      margin-bottom: 0.7rem;
+      border-bottom: 2px solid var(--cln-silver);
+    }
+
+    .cln-page .cln-hero-shot-badge {
+      background: #0f172a;
+      color: #34d399;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 0.18rem 0.55rem;
+      border-radius: 3px;
+    }
+
+    .cln-page .cln-hero-shot-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--cln-graphite);
+      opacity: 0.8;
+    }
+
+    .cln-page .cln-hero-shot img {
       display: block;
       width: 100%;
       height: auto;
-      filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5));
+      border-radius: 4px;
+      border: 1px solid var(--cln-silver);
+    }
+
+    .cln-page .cln-hero-shot figcaption {
+      margin-top: 0.7rem;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: var(--cln-graphite);
+      opacity: 0.85;
+      overflow-wrap: normal;
     }
 
     /* Responsive adjustments */
@@ -251,9 +301,9 @@
         grid-template-columns: 1fr;
         gap: 1.75rem;
       }
-      .cln-page .cln-hero-art {
+      .cln-page .cln-hero-shot {
         order: -1;
-        width: min(22rem, 100%);
+        max-width: 34rem;
         margin: 0 auto;
       }
     }
@@ -317,57 +367,20 @@
         {{product.proofStrip}}
       </div>
 
-      <div class="cln-hero-art" aria-hidden="true">
-        <svg viewBox="0 0 340 260" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
-          <g fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <!-- Header containment bracket -->
-            <path d="M20 16V8h300v8" stroke="var(--cln-mint)" stroke-width="2" />
-
-            <!-- Input state: file candidates before entering chamber -->
-            <text x="26" y="38" fill="var(--cln-silver)" font-size="10" font-family="monospace" letter-spacing="1">RAW CANDIDATES</text>
-            <path d="M30 48h28l12 12v34H30z" stroke="var(--cln-mint)" fill="rgba(52, 211, 153, 0.05)" />
-            <path d="M58 48v12h12" stroke="var(--cln-mint)" stroke-width="1" />
-            <path d="M38 72h22" stroke="var(--cln-mint)" stroke-width="2" opacity="0.8" />
-
-            <path d="M84 48h28l12 12v34H84z" stroke="var(--cln-mint)" fill="rgba(52, 211, 153, 0.05)" opacity="0.7"/>
-            <path d="M92 72h22" stroke="var(--cln-mint)" stroke-width="2" opacity="0.5" />
-
-            <!-- Inflow arrow down into cleanroom chamber -->
-            <path d="M170 82v20" stroke="var(--cln-mint)" stroke-width="2" />
-            <path d="M165 97l5 5 5-5" stroke="var(--cln-mint)" stroke-width="2" />
-
-            <!-- Sterile Cleanroom Chamber (High-luminance panel in vector) -->
-            <rect x="20" y="108" width="300" height="96" rx="10" fill="#F8FAFC" stroke="var(--cln-border)" stroke-width="2" />
-            <rect x="26" y="114" width="288" height="84" rx="6" stroke="#CBD5E1" stroke-width="1" fill="none"/>
-            
-            <text x="38" y="134" fill="#0F172A" font-size="11" font-family="monospace" font-weight="bold">CLEANROOM CUSTODY CHAMBER</text>
-            <rect x="240" y="122" width="62" height="16" rx="3" fill="#0F172A" />
-            <text x="246" y="134" fill="#34D399" font-size="9" font-family="monospace">SEALED</text>
-
-            <!-- Internal operations inside chamber -->
-            <rect x="38" y="146" width="70" height="38" rx="4" fill="#FFFFFF" stroke="#CBD5E1" />
-            <text x="44" y="162" fill="#0F172A" font-size="9" font-weight="bold">INSPECT</text>
-            <text x="44" y="174" fill="#334155" font-size="8">Candidates</text>
-
-            <rect x="116" y="146" width="70" height="38" rx="4" fill="#FFFFFF" stroke="#CBD5E1" />
-            <text x="122" y="162" fill="#0F172A" font-size="9" font-weight="bold">ARCHIVE</text>
-            <text x="122" y="174" fill="#334155" font-size="8">Double-wall</text>
-
-            <rect x="194" y="146" width="100" height="38" rx="4" fill="#FFFFFF" stroke="#CBD5E1" />
-            <text x="200" y="162" fill="#0F172A" font-size="9" font-weight="bold">HASH &amp; RECEIPT</text>
-            <text x="200" y="174" fill="#D6A84F" font-size="8" font-family="monospace">SHA-256 Proof</text>
-
-            <!-- Output & Restore arrows -->
-            <path d="M80 204v24" stroke="var(--cln-mint)" stroke-width="2" />
-            <path d="M75 223l5 5 5-5" stroke="var(--cln-mint)" stroke-width="2" />
-            <text x="30" y="244" fill="var(--cln-mint)" font-size="10" font-family="monospace">CLEAN RESULT</text>
-
-            <path d="M260 228v-24" stroke="var(--cln-gold)" stroke-width="2" stroke-dasharray="4 3" />
-            <path d="M255 209l5-5 5 5" stroke="var(--cln-gold)" stroke-width="2" />
-            <text x="216" y="244" fill="var(--cln-gold)" font-size="10" font-family="monospace">RESTORE PATH</text>
-          </g>
-        </svg>
-      </div>
+      <figure class="cln-hero-shot">
+        <div class="cln-hero-shot-header" aria-hidden="true">
+          <span class="cln-hero-shot-badge">SEALED</span>
+          <span class="cln-hero-shot-label">Candidate review &middot; custody logged</span>
+        </div>
+        <img
+          src="/assets/cleanroom/cleanroom-review.png"
+          alt="Cleanroom candidate review interface showing file selection and archive controls."
+          width="1280" height="760" loading="eager" decoding="async" />
+        <figcaption>
+          The review surface: candidates in, archive decisions logged, nothing deleted on
+          instinct. Every action lands in the custody ledger you can read afterwards.
+        </figcaption>
+      </figure>
     </section>
 
     <section id="chamber" class="product-section" aria-labelledby="chamber-title">
