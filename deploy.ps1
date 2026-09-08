@@ -54,18 +54,47 @@ if ($buildExit -ne 0) {
 }
 
 Write-Host "==> Deploying proof-foundry-site to Cloudflare Pages"
-npx --yes wrangler pages deploy .\public --project-name proof-foundry-site --branch main
+$deployOutput = npx --yes wrangler pages deploy .\public --project-name proof-foundry-site --branch main 2>&1
+$deployExit = $LASTEXITCODE
+$deployOutput | ForEach-Object { Write-Host $_ }
+
+# Parse the deployment URL from wrangler output so we can report it even if
+# post-deploy verification fails.  This prevents an agent from mistaking
+# "upload succeeded but verification failed" for "nothing was deployed."
+$deployUrl = $null
+if ($deployOutput -match 'https://([a-f0-9]+)\.proof-foundry-site\.pages\.dev') {
+  $deployUrl = $Matches[0]
+}
+
+if ($deployExit -ne 0) {
+  Write-Host "==> DEPLOYMENT FAILED (wrangler exit $deployExit). Cloudflare did not publish." -ForegroundColor Red
+  exit $deployExit
+}
+
+if ($deployUrl) {
+  Write-Host "==> DEPLOYMENT SUCCEEDED: $deployUrl" -ForegroundColor Green
+} else {
+  Write-Host "==> DEPLOYMENT SUCCEEDED (deployment URL not parsed from output)" -ForegroundColor Green
+}
 
 Write-Host "==> Waiting 10 seconds for edge propagation..."
 Start-Sleep -Seconds 10
 
 Write-Host "==> Running Verification..."
 $ErrorActionPreference = 'Continue'
-& "$PSScriptRoot\scripts\Verify-PublicSite.ps1" -Targets @("https://proof-foundry-site.pages.dev", "https://theprooffoundry.com", "https://www.theprooffoundry.com")
+& "$PSScriptRoot\scripts\Verify-PublicSite.ps1" -Targets "https://proof-foundry-site.pages.dev,https://theprooffoundry.com,https://www.theprooffoundry.com"
 $verifyExit = $LASTEXITCODE
 $ErrorActionPreference = 'Stop'
 if ($verifyExit -ne 0) {
-  Write-Host "==> VERIFICATION FAILED (exit $verifyExit). Check output above." -ForegroundColor Red
+  Write-Host "" -ForegroundColor Red
+  Write-Host "==> POST-DEPLOY VERIFICATION FAILED (exit $verifyExit)." -ForegroundColor Red
+  Write-Host "    IMPORTANT: The Cloudflare upload already succeeded." -ForegroundColor Yellow
+  if ($deployUrl) {
+    Write-Host "    Deployment URL: $deployUrl" -ForegroundColor Yellow
+  }
+  Write-Host "    Production may already be serving the new deployment." -ForegroundColor Yellow
+  Write-Host "    Do NOT retry the deploy command — that creates an unnecessary duplicate deployment." -ForegroundColor Yellow
+  Write-Host "    Investigate the verification failures above and fix the verifier or the site." -ForegroundColor Yellow
   exit $verifyExit
 }
 Write-Host "==> ALL GATES PASSED. Deploy complete." -ForegroundColor Green

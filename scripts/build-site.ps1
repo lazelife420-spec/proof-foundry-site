@@ -126,6 +126,9 @@ foreach ($p in $manifest.products) {
     if ($p.release.candidateVersion -and $p.release.candidateVersion -notmatch '^\d+\.\d+\.\d+(-[a-zA-Z0-9._]+)?$') {
       $errors += "$tag malformed release.candidateVersion '$($p.release.candidateVersion)'"
     }
+    if ($p.release.companionPublicVersion -and $p.release.companionPublicVersion -notmatch '^\d+\.\d+\.\d+$') {
+      $errors += "$tag malformed release.companionPublicVersion '$($p.release.companionPublicVersion)'"
+    }
     if ($p.release.publishedAt -and $p.release.publishedAt -notmatch '^\d{4}-\d{2}-\d{2}$') {
       $errors += "$tag malformed release.publishedAt '$($p.release.publishedAt)' (expected YYYY-MM-DD)"
     }
@@ -193,6 +196,7 @@ foreach ($p in $manifest.products) {
   if ($p.artifacts) {
     $declaredVersions = @(
       $p.release.publicVersion, $p.release.candidateVersion,
+      $p.release.companionPublicVersion,
       $p.companionVersion, $p.currentLocalVersion, $p.version
     ) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
     # A pre-release candidateVersion like "0.2.3-rc1" also declares its base
@@ -203,7 +207,7 @@ foreach ($p in $manifest.products) {
     $declaredVersions = @($declaredVersions + $baseSemvers) | Select-Object -Unique
     # Versions a PUBLIC_RELEASE artifact is allowed to advertise. A candidate-only
     # version must never appear on something the public can download.
-    $publicVersions = @($p.release.publicVersion, $p.companionVersion) |
+    $publicVersions = @($p.release.publicVersion, $p.release.companionPublicVersion, $p.companionVersion) |
       Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
     $aIndex = 0
     foreach ($a in $p.artifacts) {
@@ -407,6 +411,11 @@ function CompanionLabel($p) {
   return "Companion v$($p.companionVersion)"
 }
 
+function CompanionPublicVersionLabel($p) {
+  if ($p.release -and $p.release.companionPublicVersion) { return "v$($p.release.companionPublicVersion)" }
+  return ''
+}
+
 function PlatformLabel($p) {
   # Prefer the platforms array; fall back to the legacy string field.
   if ($p.platforms -is [array] -and $p.platforms.Count -gt 0) {
@@ -492,6 +501,7 @@ function ProductTokens($p) {
   $tokens['candidateVersionLabel'] = CandidateVersionLabel $p
   $tokens['currentVersionLabel'] = CurrentVersionLabel $p
   $tokens['companionLabel']      = CompanionLabel $p
+  $tokens['companionPublicVersionLabel'] = CompanionPublicVersionLabel $p
   $tokens['version']             = $p.version
   $tokens['meta']                = MetaLine $p
   $tokens['statusLine']          = StatusLine $p

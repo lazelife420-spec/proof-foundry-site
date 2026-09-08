@@ -1,64 +1,147 @@
 ﻿param(
-    [string[]]$Targets = @("https://theprooffoundry.com", "https://www.theprooffoundry.com", "https://proof-foundry-site.pages.dev"),
-    [string]$ApkUrl = "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk",
-    [string]$ShaUrl = "https://pub-0273ac689b544b959a93bbe5d953d71e.r2.dev/forgecast/v0.3.3/ForgeCast-Weather-v0.3.3-android-release.apk.sha256.txt",
-    [string]$ExpectedSha = "50ABE59E52B6DC7E8649C0CA63EB065425F8EDC607187E3844D90CE5F1EED833"
+    [string]$Targets = "https://theprooffoundry.com,https://www.theprooffoundry.com,https://proof-foundry-site.pages.dev",
+    [string]$ManifestPath
 )
+
+# ---------------------------------------------------------------------------
+# Manifest-driven expectations
+#
+# Product version, download label, artifact hash, and release-state assertions
+# are derived from site-manifest.json — the same authoritative source used by
+# the site build — so the verifier cannot drift out of sync with the site.
+# ---------------------------------------------------------------------------
+
+# Parse the comma-separated target list into an array.  Using a single string
+# parameter instead of [string[]] ensures correct binding from both `&` calls
+# inside PowerShell and `powershell -File` invocations from the command line,
+# where @(...) array literals are not parsed as arrays.
+# A separate variable ($TargetUrls) is used because the [string] type
+# constraint on $Targets would coerce an array back to a string.
+$TargetUrls = $Targets -split ',' | ForEach-Object { $_.Trim() } | Where-Object { $_ }
+
+if ([string]::IsNullOrWhiteSpace($ManifestPath)) {
+    $ManifestPath = Join-Path (Split-Path -Parent $PSScriptRoot) "site-manifest.json"
+}
+if (-not (Test-Path $ManifestPath)) {
+    Write-Host "==> FATAL: site-manifest.json not found at $ManifestPath" -ForegroundColor Red
+    exit 2
+}
+$manifest = Get-Content $ManifestPath -Raw | ConvertFrom-Json
+
+function Get-Product($id) {
+    return $manifest.products | Where-Object { $_.id -eq $id } | Select-Object -First 1
+}
+
+function Get-PrimaryArtifact($p) {
+    if ($p.artifacts) {
+        foreach ($a in $p.artifacts) {
+            if (-not [string]::IsNullOrWhiteSpace($a.sha256)) { return $a }
+        }
+    }
+    return $null
+}
+
+function Get-StatusLabel($p) {
+    if ($p.productStatus -and $manifest.statusTaxonomy.$($p.productStatus)) {
+        return $manifest.statusTaxonomy.$($p.productStatus)
+    }
+    return $null
+}
+
+function Get-StateLabel($p) {
+    if ($p.state -and $manifest.stateLabels.$($p.state)) {
+        return $manifest.stateLabels.$($p.state)
+    }
+    return $null
+}
+
+function Esc($s) { return [regex]::Escape($s) }
+
+# Derive per-product expectations from the manifest --------------------------
+
+# Cache Vault — release candidate: public v0.2.2, candidate artifact v0.2.3-rc1
+$cv = Get-Product "cache-vault"
+$cvArtifact = Get-PrimaryArtifact $cv
+$cvStatusLabel = Get-StatusLabel $cv
+$cvDownloadPattern = Esc $cv.downloadLabel
+$cvArtifactPattern = Esc $cvArtifact.filename
+$cvSha256 = $cvArtifact.sha256
+
+# Lights Out — active proof / on hold: public Windows v11.1.2, candidate v11.1.3
+# Android public companion v11.1.1 (from release.companionPublicVersion)
+$lo = Get-Product "lights-out"
+$loPublicVer = "v$($lo.release.publicVersion)"
+$loCandidateVer = "v$($lo.release.candidateVersion)"
+$loCompanionPublicVer = "v$($lo.release.companionPublicVersion)"
+
+# Cleanroom — public release: public v1.0.7, next/local v1.0.10
+$cln = Get-Product "cleanroom"
+$clnStatusLabel = Get-StatusLabel $cln
+$clnDownloadPattern = Esc $cln.downloadLabel
+
+# ForgeCast — public release v0.3.5, production-signed APK
+$fc = Get-Product "forgecast"
+$fcArtifact = Get-PrimaryArtifact $fc
+$fcPublicVer = "v$($fc.release.publicVersion)"
+$fcSha256 = $fcArtifact.sha256
+$fcApkUrl = $fcArtifact.downloadUrl
+$fcShaUrl = $fcArtifact.sha256Url
+$fcTestStatus = $fc.testStatus
+
+# Reality Gate — public release / developer pilot v1.1.0
+$rg = Get-Product "reality-gate"
+$rgArtifact = Get-PrimaryArtifact $rg
+$rgSha256 = $rgArtifact.sha256
+$rgStateLabel = Get-StateLabel $rg
+
+# ProofShot — active proof / unreleased
+$ps = Get-Product "proofshot"
+$psStatusLabel = Get-StatusLabel $ps
+
+# ---------------------------------------------------------------------------
+# Test helpers
+# ---------------------------------------------------------------------------
 
 $ErrorActionPreference = "Stop"
 $script:failedCount = 0
 $script:verifiedRoutes = @()
 
 function Write-Fail {
-    param(
-        [string]$Message,
-        [string]$Url
-    )
+    param([string]$Message, [string]$Url)
     Write-Host "[FAIL] ($Message)" -ForegroundColor Red
     $script:failedCount++
     $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = 0; Msg = "FAIL ($Message)" }
 }
 
 function Write-Pass {
-    param(
-        [string]$Message,
-        [string]$Url,
-        [int]$Status
-    )
+    param([string]$Message, [string]$Url, [int]$Status)
     Write-Host "[PASS] ($Message)" -ForegroundColor Green
     $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = $Status; Msg = "PASS ($Message)" }
 }
 
 function Get-PlaintextContent {
-    param(
-        [string]$Url
-    )
+    param([string]$Url)
     $contentLines = curl.exe -s -H "Cache-Control: no-cache" -L $Url
     return $contentLines -join "`n"
 }
 
-Write-Host "==> Starting Public Site Hardened Verification via curl" -ForegroundColor Cyan
-Write-Host "Targets: $($Targets -join ', ')" -ForegroundColor Cyan
-Write-Host "APK URL: $ApkUrl" -ForegroundColor Cyan
-Write-Host "SHA URL: $ShaUrl" -ForegroundColor Cyan
-
 function Test-UrlContent {
     param(
         [string]$Url,
+        [string]$Name = "",
         [string[]]$ContainsPatterns = @(),
         [string[]]$NotContainsPatterns = @(),
         [bool]$FollowRedirects = $true
     )
-    Write-Host "Checking content: $Url (FollowRedirects=$FollowRedirects) ... " -NoNewline
+    $label = if ($Name) { " ($Name)" } else { "" }
+    Write-Host "Checking content${label}: $Url (FollowRedirects=$FollowRedirects) ... " -NoNewline
     try {
-        # Using curl.exe to follow redirects and fetch content
         $curlArgs = @("-s", "-H", "Cache-Control: no-cache")
         if ($FollowRedirects) { $curlArgs += "-L" }
         $curlArgs += $Url
         $contentLines = & curl.exe @curlArgs
         $content = $contentLines -join "`n"
-        
-        # Check if curl failed or returned empty content
+
         if ([string]::IsNullOrWhiteSpace($content)) {
             Write-Host "[FAIL] (Empty response from curl)" -ForegroundColor Red
             $script:failedCount++
@@ -66,7 +149,6 @@ function Test-UrlContent {
             return
         }
 
-        # Assertions
         foreach ($pattern in $ContainsPatterns) {
             if ($content -notmatch $pattern) {
                 Write-Host "[FAIL] (Missing expected content: '$pattern')" -ForegroundColor Red
@@ -102,20 +184,14 @@ function Test-UrlRedirect {
     try {
         $headersText = curl.exe -s -H "Cache-Control: no-cache" -I $Url
         $headersString = $headersText -join "`n"
-        
-        # Extract Status Code
+
         if ($headersString -match "HTTP/\S+\s+(\d+)") {
             $status = [int]$Matches[1]
-        } else {
-            $status = 0
-        }
-        
-        # Extract Location Header
+        } else { $status = 0 }
+
         if ($headersString -match "(?m)^[Ll]ocation:\s*(\S+)") {
             $location = $Matches[1].Trim()
-        } else {
-            $location = ""
-        }
+        } else { $location = "" }
 
         if ($ExpectedStatus -notcontains $status) {
             Write-Host "[FAIL] (Expected status $($ExpectedStatus -join '/'), got $status)" -ForegroundColor Red
@@ -123,14 +199,12 @@ function Test-UrlRedirect {
             $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = $status; Msg = "FAIL (Status)" }
             return
         }
-
         if ($location -ne $ExpectedLocation) {
             Write-Host "[FAIL] (Expected Location '$ExpectedLocation', got '$location')" -ForegroundColor Red
             $script:failedCount++
             $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = $status; Msg = "FAIL (Location)" }
             return
         }
-
         Write-Host "[PASS] (Redirects correctly to $location)" -ForegroundColor Green
         $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = $status; Msg = "PASS (Redirect)" }
     } catch {
@@ -160,76 +234,40 @@ function Test-AssetHead {
             return
         }
     }
-
-    if ($status -ne 200) {
-        Write-Fail "Expected status 200, got $status" -Url $Url
-        return
-    }
-
-    if ($contentType -notlike "*$ExpectedContentType*") {
-        Write-Fail "Expected Content-Type '$ExpectedContentType', got '$contentType'" -Url $Url
-        return
-    }
-
-    if ($contentType -like "*text/html*") {
-        Write-Fail "Asset returned text/html (likely fallback to index.html)" -Url $Url
-        return
-    }
-
+    if ($status -ne 200) { Write-Fail "Expected status 200, got $status" -Url $Url; return }
+    if ($contentType -notlike "*$ExpectedContentType*") { Write-Fail "Expected Content-Type '$ExpectedContentType', got '$contentType'" -Url $Url; return }
+    if ($contentType -like "*text/html*") { Write-Fail "Asset returned text/html (likely fallback to index.html)" -Url $Url; return }
     Write-Pass "$status $contentType" -Url $Url -Status $status
 }
 
 function Test-Asset {
-    param(
-        [string]$Url,
-        [string]$ExpectedContentType = "image/"
-    )
+    param([string]$Url, [string]$ExpectedContentType = "image/")
     Write-Host "Checking asset header & content: $Url ... " -NoNewline
     try {
-        # Fetch headers
         $headersText = curl.exe -s -H "Cache-Control: no-cache" -I $Url
         $headersString = $headersText -join "`n"
-        
-        # Status check
-        if ($headersString -match "HTTP/\S+\s+(\d+)") {
-            $status = [int]$Matches[1]
-        } else {
-            $status = 0
-        }
-        
+        if ($headersString -match "HTTP/\S+\s+(\d+)") { $status = [int]$Matches[1] } else { $status = 0 }
         if ($status -ne 200) {
             Write-Host "[FAIL] (Expected status 200, got $status)" -ForegroundColor Red
             $script:failedCount++
             $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = $status; Msg = "FAIL (Status)" }
             return
         }
-        
-        # Content-Type check
-        if ($headersString -match "(?m)^[Cc]ontent-[Tt]ype:\s*(\S+)") {
-            $contentType = $Matches[1].Trim()
-        } else {
-            $contentType = ""
-        }
-        
+        if ($headersString -match "(?m)^[Cc]ontent-[Tt]ype:\s*(\S+)") { $contentType = $Matches[1].Trim() } else { $contentType = "" }
         if ($contentType -notlike "*$ExpectedContentType*") {
             Write-Host "[FAIL] (Expected Content-Type matches '$ExpectedContentType', got '$contentType')" -ForegroundColor Red
             $script:failedCount++
             $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = $status; Msg = "FAIL (Content-Type)" }
             return
         }
-        
-        # Fetch body content
         $bodyLines = curl.exe -s -H "Cache-Control: no-cache" $Url
         $body = $bodyLines -join "`n"
-        
-        # Fail loudly if an asset request returns HTML content
         if ($body -match "<!doctype html>" -or $body -match "<html\b" -or $body -match "</html>") {
             Write-Host "[FAIL] (Asset request returned HTML content instead of binary data!)" -ForegroundColor Red
             $script:failedCount++
             $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = $status; Msg = "FAIL (Returned HTML)" }
             return
         }
-
         Write-Host "[PASS] (Content-Type: $contentType)" -ForegroundColor Green
         $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = $status; Msg = "PASS" }
     } catch {
@@ -239,85 +277,183 @@ function Test-Asset {
     }
 }
 
+# ---------------------------------------------------------------------------
 # Run the assertions
-foreach ($target in $Targets) {
+# ---------------------------------------------------------------------------
+
+Write-Host "==> Starting Public Site Hardened Verification via curl" -ForegroundColor Cyan
+Write-Host "Targets: $($TargetUrls -join ', ')" -ForegroundColor Cyan
+$manifestRelPath = $ManifestPath.Replace((Split-Path -Parent $PSScriptRoot) + [System.IO.Path]::DirectorySeparatorChar, '')
+Write-Host "Manifest: $manifestRelPath" -ForegroundColor Cyan
+Write-Host "ForgeCast APK URL: $fcApkUrl" -ForegroundColor Cyan
+Write-Host "ForgeCast SHA URL: $fcShaUrl" -ForegroundColor Cyan
+
+foreach ($target in $TargetUrls) {
     Write-Host "`n---> Testing target: $target"
-    
-    # 1. Homepage content check — global nav + full product family + card contract
-    Test-UrlContent -Url "$target/" -ContainsPatterns @("Reality Gate", "Lights Out", "Cache Vault", "Cleanroom", "ForgeCast Weather", "ProofShot", "Proof Standard", "View product") -NotContainsPatterns @("SkyFoundry")
-    
-    # 2. Lights Out canonical slash check
-    Test-UrlContent -Url "$target/lights-out/" -ContainsPatterns @("Wi-Fi Guard", "ForgeCast Weather") -NotContainsPatterns @("Electron packaged", "SkyFoundry", "guided breathing", "breathing ritual", "ambient soundscapes", "soundscapes", "screen shift")
-    
-    # 3. Lights Out redirect content check (follows redirect to canonical route)
-    Test-UrlContent -Url "$target/lights-out" -ContainsPatterns @("Wi-Fi Guard", "ForgeCast Weather") -NotContainsPatterns @("Electron packaged", "SkyFoundry", "guided breathing", "breathing ritual", "ambient soundscapes", "soundscapes", "screen shift") -FollowRedirects $true
-    Test-UrlContent -Url "$target/lights-out.html" -ContainsPatterns @("Wi-Fi Guard", "ForgeCast Weather") -NotContainsPatterns @("Electron packaged", "SkyFoundry", "guided breathing", "breathing ritual", "ambient soundscapes", "soundscapes", "screen shift") -FollowRedirects $true
-    
-    # 4. Redirect headers checks
+
+    # 1. Homepage — global nav + full product family + card contract
+    Test-UrlContent -Url "$target/" -ContainsPatterns @(
+        "Reality Gate", "Lights Out", "Cache Vault", "Cleanroom",
+        "ForgeCast Weather", "ProofShot", "Proof Standard", "View product"
+    ) -NotContainsPatterns @("SkyFoundry")
+
+    # 2. Lights Out — canonical route: feature checks + manifest-derived version truth
+    Test-UrlContent -Url "$target/lights-out/" -Name "product truth" -ContainsPatterns @(
+        "Wi-Fi Guard",
+        "ForgeCast Weather",
+        "Prior public Windows release.*$(Esc $loPublicVer)",
+        "candidate companion.*$(Esc $loCandidateVer)",
+        "public Android companion.*$(Esc $loCompanionPublicVer)",
+        "Neither the Windows $(Esc $loCandidateVer) candidate nor the Android"
+    ) -NotContainsPatterns @(
+        "Electron packaged", "SkyFoundry", "guided breathing",
+        "breathing ritual", "ambient soundscapes", "soundscapes", "screen shift"
+    )
+
+    # 3. Lights Out — redirect routes (follow to canonical, basic content check)
+    Test-UrlContent -Url "$target/lights-out" -ContainsPatterns @(
+        "Wi-Fi Guard", "ForgeCast Weather"
+    ) -NotContainsPatterns @(
+        "Electron packaged", "SkyFoundry", "guided breathing",
+        "breathing ritual", "ambient soundscapes", "soundscapes", "screen shift"
+    ) -FollowRedirects $true
+    Test-UrlContent -Url "$target/lights-out.html" -ContainsPatterns @(
+        "Wi-Fi Guard", "ForgeCast Weather"
+    ) -NotContainsPatterns @(
+        "Electron packaged", "SkyFoundry", "guided breathing",
+        "breathing ritual", "ambient soundscapes", "soundscapes", "screen shift"
+    ) -FollowRedirects $true
+
+    # 4. Redirect headers
     Test-UrlRedirect -Url "$target/lights-out" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/lights-out/"
     Test-UrlRedirect -Url "$target/lights-out.html" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/lights-out/"
-    
-    # 5. ForgeCast landing page
-    Test-UrlContent -Url "$target/forgecast/" -ContainsPatterns @("ForgeCast Weather", "v0.3.3", "50ABE59E52B6DC7E8649C0CA63EB065425F8EDC607187E3844D90CE5F1EED833", "724/724", "v030-today.png") -NotContainsPatterns @("SkyFoundry", "v0.2.9/ForgeCast-Weather-v0.2.9", "v0.3.2/ForgeCast-Weather-v0.3.2-android-release.apk")
-    Test-UrlContent -Url "$target/forgecast" -ContainsPatterns @("ForgeCast Weather", "v0.3.3") -NotContainsPatterns @("SkyFoundry", "v0.2.9/ForgeCast-Weather-v0.2.9", "v0.3.2/ForgeCast-Weather-v0.3.2-android-release.apk") -FollowRedirects $true
+
+    # 5. ForgeCast landing page — manifest-derived version, hash, test count
+    Test-UrlContent -Url "$target/forgecast/" -Name "product truth" -ContainsPatterns @(
+        "ForgeCast Weather",
+        "$(Esc $fcPublicVer)",
+        $fcSha256,
+        $fcTestStatus,
+        "v030-today.png"
+    ) -NotContainsPatterns @(
+        "SkyFoundry",
+        "v0.2.9/ForgeCast-Weather-v0.2.9",
+        "v0.3.2/ForgeCast-Weather-v0.3.2-android-release.apk"
+    )
+    Test-UrlContent -Url "$target/forgecast" -ContainsPatterns @(
+        "ForgeCast Weather", "$(Esc $fcPublicVer)"
+    ) -NotContainsPatterns @(
+        "SkyFoundry",
+        "v0.2.9/ForgeCast-Weather-v0.2.9",
+        "v0.3.2/ForgeCast-Weather-v0.3.2-android-release.apk"
+    ) -FollowRedirects $true
     if ($target -like "*theprooffoundry.com*") {
-        Test-UrlContent -Url "$target/sitemap.xml" -ContainsPatterns @("https://theprooffoundry.com/reality-gate/", "https://theprooffoundry.com/cache-vault/", "https://theprooffoundry.com/lights-out/", "https://theprooffoundry.com/cleanroom/", "https://theprooffoundry.com/forgecast/", "https://theprooffoundry.com/proofshot/", "https://theprooffoundry.com/proof/")
+        Test-UrlContent -Url "$target/sitemap.xml" -ContainsPatterns @(
+            "https://theprooffoundry.com/reality-gate/",
+            "https://theprooffoundry.com/cache-vault/",
+            "https://theprooffoundry.com/lights-out/",
+            "https://theprooffoundry.com/cleanroom/",
+            "https://theprooffoundry.com/forgecast/",
+            "https://theprooffoundry.com/proofshot/",
+            "https://theprooffoundry.com/proof/"
+        )
     } else {
         Test-UrlContent -Url "$target/sitemap.xml"
     }
 
-    # 6. Assets content-type and payload check
+    # 6. Assets
     Test-Asset -Url "$target/assets/lights-out/lights-out-keyart-hero-ui.png" -ExpectedContentType "image/"
     Test-Asset -Url "$target/brand/proof-foundry-logo-horizontal.svg" -ExpectedContentType "image/"
 
-    # 7. 404 page check — should return a branded HTML page
-    Test-UrlContent -Url "$target/this-page-does-not-exist" -ContainsPatterns @("404", "Page Not Found", "The Proof Foundry") -NotContainsPatterns @("SkyFoundry")
+    # 7. 404 page
+    Test-UrlContent -Url "$target/this-page-does-not-exist" -ContainsPatterns @(
+        "404", "Page Not Found", "The Proof Foundry"
+    ) -NotContainsPatterns @("SkyFoundry")
 
-    # 8. Proof/Receipts page checks — generated from the same manifest
-    Test-UrlContent -Url "$target/proof/" -ContainsPatterns @("Proof Foundry Receipts", "Reality Gate", "Lights Out", "Cache Vault", "Cleanroom", "ForgeCast Weather", "ProofShot") -NotContainsPatterns @("Electron packaged", "SkyFoundry", "Guided breathing", "ambient soundscapes", "warm screen shift", "smart light dimming")
-    Test-UrlContent -Url "$target/proof" -ContainsPatterns @("Proof Foundry Receipts", "Reality Gate", "Lights Out", "Cache Vault", "Cleanroom", "ForgeCast Weather", "ProofShot") -NotContainsPatterns @("Electron packaged", "SkyFoundry", "Guided breathing", "ambient soundscapes", "warm screen shift", "smart light dimming") -FollowRedirects $true
-    Test-UrlContent -Url "$target/proof.html" -ContainsPatterns @("Proof Foundry Receipts", "Reality Gate", "Lights Out", "Cache Vault", "Cleanroom", "ForgeCast Weather", "ProofShot") -NotContainsPatterns @("Electron packaged", "SkyFoundry", "Guided breathing", "ambient soundscapes", "warm screen shift", "smart light dimming") -FollowRedirects $true
-    
-    # Redirect headers checks for proof page
+    # 8. Proof/Receipts page
+    Test-UrlContent -Url "$target/proof/" -ContainsPatterns @(
+        "Proof Foundry Receipts", "Reality Gate", "Lights Out", "Cache Vault",
+        "Cleanroom", "ForgeCast Weather", "ProofShot"
+    ) -NotContainsPatterns @(
+        "Electron packaged", "SkyFoundry", "Guided breathing",
+        "ambient soundscapes", "warm screen shift", "smart light dimming"
+    )
+    Test-UrlContent -Url "$target/proof" -ContainsPatterns @(
+        "Proof Foundry Receipts", "Reality Gate", "Lights Out", "Cache Vault",
+        "Cleanroom", "ForgeCast Weather", "ProofShot"
+    ) -NotContainsPatterns @(
+        "Electron packaged", "SkyFoundry", "Guided breathing",
+        "ambient soundscapes", "warm screen shift", "smart light dimming"
+    ) -FollowRedirects $true
+    Test-UrlContent -Url "$target/proof.html" -ContainsPatterns @(
+        "Proof Foundry Receipts", "Reality Gate", "Lights Out", "Cache Vault",
+        "Cleanroom", "ForgeCast Weather", "ProofShot"
+    ) -NotContainsPatterns @(
+        "Electron packaged", "SkyFoundry", "Guided breathing",
+        "ambient soundscapes", "warm screen shift", "smart light dimming"
+    ) -FollowRedirects $true
     Test-UrlRedirect -Url "$target/proof" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/proof/"
     Test-UrlRedirect -Url "$target/proof.html" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/proof/"
 
-    # 9. New internal product routes (canonical, no off-site jumps)
-    Test-UrlContent -Url "$target/reality-gate/" -ContainsPatterns @("Reality Gate", "Developer Pilot", "58cc27d22bdee8157ee4598e116e17ff42d0efc95630c97bee4b2bc6be6ce756") -NotContainsPatterns @("SkyFoundry")
-    # Pinned to Cache Vault v0.2.0 release truth: product, versioned download action, state,
-    # download target, and published hash. "Get Cache Vault" was the v0.1.9 CTA and must not return.
-    Test-UrlContent -Url "$target/cache-vault/" -ContainsPatterns @("Cache Vault", "Download v0\.2\.0 \(Windows\)", "Public release", "v0\.2\.0/CacheVault-v0\.2\.0-windows\.zip", "84471c92b84b4414dc59b03170321c388cdf70c4a02918b7294af3c8cde12c12") -NotContainsPatterns @("SkyFoundry", "Get Cache Vault")
-    Test-UrlContent -Url "$target/cache-vault" -ContainsPatterns @("Cache Vault") -NotContainsPatterns @("SkyFoundry") -FollowRedirects $true
+    # 9. Reality Gate — manifest-derived artifact hash + state label
+    Test-UrlContent -Url "$target/reality-gate/" -ContainsPatterns @(
+        "Reality Gate", $rgStateLabel, $rgSha256
+    ) -NotContainsPatterns @("SkyFoundry")
+
+    # 10. Cache Vault — manifest-derived status, download label, artifact, hash
+    #     The download label, status label, artifact filename, and SHA-256 are
+    #     all derived from site-manifest.json so they track the current release
+    #     state (release candidate v0.2.3-rc1, not the old public v0.2.0).
+    Test-UrlContent -Url "$target/cache-vault/" -Name "product truth" -ContainsPatterns @(
+        "Cache Vault",
+        $cvDownloadPattern,
+        $cvStatusLabel,
+        $cvArtifactPattern,
+        $cvSha256
+    ) -NotContainsPatterns @("SkyFoundry", "Get Cache Vault")
+    Test-UrlContent -Url "$target/cache-vault" -ContainsPatterns @(
+        "Cache Vault"
+    ) -NotContainsPatterns @("SkyFoundry") -FollowRedirects $true
     Test-UrlRedirect -Url "$target/cache-vault" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/cache-vault/"
     Test-UrlRedirect -Url "$target/cache-vault.html" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/cache-vault/"
 
-    Test-UrlContent -Url "$target/cleanroom/" -ContainsPatterns @("Cleanroom", "Download v1.0.7", "Public release") -NotContainsPatterns @("SkyFoundry")
-    Test-UrlContent -Url "$target/cleanroom" -ContainsPatterns @("Cleanroom") -NotContainsPatterns @("SkyFoundry") -FollowRedirects $true
+    # 11. Cleanroom — manifest-derived status + download label
+    Test-UrlContent -Url "$target/cleanroom/" -ContainsPatterns @(
+        "Cleanroom", $clnDownloadPattern, $clnStatusLabel
+    ) -NotContainsPatterns @("SkyFoundry")
+    Test-UrlContent -Url "$target/cleanroom" -ContainsPatterns @(
+        "Cleanroom"
+    ) -NotContainsPatterns @("SkyFoundry") -FollowRedirects $true
     Test-UrlRedirect -Url "$target/cleanroom" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/cleanroom/"
     Test-UrlRedirect -Url "$target/cleanroom.html" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/cleanroom/"
 
-    Test-UrlContent -Url "$target/proofshot/" -ContainsPatterns @("ProofShot", "Rebrand in progress", "In proof") -NotContainsPatterns @("SkyFoundry")
-    Test-UrlContent -Url "$target/proofshot" -ContainsPatterns @("ProofShot") -NotContainsPatterns @("SkyFoundry") -FollowRedirects $true
+    # 12. ProofShot — manifest-derived status label
+    Test-UrlContent -Url "$target/proofshot/" -ContainsPatterns @(
+        "ProofShot", "Rebrand in progress", $psStatusLabel
+    ) -NotContainsPatterns @("SkyFoundry")
+    Test-UrlContent -Url "$target/proofshot" -ContainsPatterns @(
+        "ProofShot"
+    ) -NotContainsPatterns @("SkyFoundry") -FollowRedirects $true
     Test-UrlRedirect -Url "$target/proofshot" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/proofshot/"
     Test-UrlRedirect -Url "$target/proofshot.html" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/proofshot/"
 }
 
-# 8. APK and SHA256 availability (R2 distribution)
+# 13. ForgeCast APK and SHA256 availability (R2 / Proof Foundry distribution)
 Write-Host "`n---> Testing ForgeCast distribution files"
-Test-AssetHead -Url $ApkUrl -Name "APK" -ExpectedContentType "application/"
-Test-UrlContent -Url $ShaUrl -Name "SHA256" -ContainsPatterns @($ExpectedSha)
+Test-AssetHead -Url $fcApkUrl -Name "APK" -ExpectedContentType "application/"
+Test-UrlContent -Url $fcShaUrl -Name "SHA256" -ContainsPatterns @($fcSha256)
 
-# 9. Hash chain: landing page and SHA file both expose the expected SHA
-foreach ($target in $Targets) {
+# 14. Hash chain: landing page and SHA file both expose the expected SHA
+foreach ($target in $TargetUrls) {
     if ($target -like "*theprooffoundry.com*") {
         Write-Host "Checking hash chain for $target/forgecast/ ... " -NoNewline
         try {
             $landingContent = Get-PlaintextContent -Url "$target/forgecast/"
-            $rawContent = (Invoke-WebRequest -Uri $ShaUrl -UseBasicParsing).Content
+            $rawContent = (Invoke-WebRequest -Uri $fcShaUrl -UseBasicParsing).Content
             $shaFileContent = if ($rawContent -is [string]) { $rawContent.Trim() } else { [System.Text.Encoding]::UTF8.GetString($rawContent).Trim() }
 
-            $landingMatch = $landingContent -match [regex]::Escape($ExpectedSha)
-            $shaMatch = $shaFileContent -match [regex]::Escape($ExpectedSha)
+            $landingMatch = $landingContent -match [regex]::Escape($fcSha256)
+            $shaMatch = $shaFileContent -match [regex]::Escape($fcSha256)
 
             if (-not $landingMatch) {
                 Write-Host "[FAIL] (Landing page missing expected SHA)" -ForegroundColor Red
@@ -326,7 +462,7 @@ foreach ($target in $Targets) {
             } elseif (-not $shaMatch) {
                 Write-Host "[FAIL] (SHA file missing expected SHA)" -ForegroundColor Red
                 $script:failedCount++
-                $script:verifiedRoutes += [PSCustomObject]@{ Url = $ShaUrl; Status = 200; Msg = "FAIL (SHA file bad)" }
+                $script:verifiedRoutes += [PSCustomObject]@{ Url = $fcShaUrl; Status = 200; Msg = "FAIL (SHA file bad)" }
             } else {
                 Write-Host "[PASS] (Hash chain OK)" -ForegroundColor Green
                 $script:verifiedRoutes += [PSCustomObject]@{ Url = "$target/forgecast/"; Status = 200; Msg = "PASS (Hash chain)" }
@@ -339,12 +475,16 @@ foreach ($target in $Targets) {
     }
 }
 
+# ---------------------------------------------------------------------------
+# Result
+# ---------------------------------------------------------------------------
+
 if ($script:failedCount -gt 0) {
     Write-Host "==> VERIFICATION FAILED with $script:failedCount error(s). Check output above." -ForegroundColor Red
     exit 1
 } else {
     Write-Host "`n==> ALL GATES PASSED! Verification complete." -ForegroundColor Green
-    
+
     # Generate verification receipt
     $date = Get-Date -Format "yyyy-MM-dd"
     $receiptDir = Join-Path (Split-Path -Parent $PSScriptRoot) "reports\deploy-receipts"
@@ -352,24 +492,25 @@ if ($script:failedCount -gt 0) {
         New-Item -ItemType Directory -Path $receiptDir -Force | Out-Null
     }
     $receiptPath = Join-Path $receiptDir "$date-proof-foundry-site.md"
-    
+
     $commitHash = "unknown"
     try {
         $commitHash = (git -C (Split-Path -Parent $PSScriptRoot) rev-parse --short HEAD 2>$null)
         if (-not $commitHash) { $commitHash = "unknown" }
     } catch { $commitHash = "unknown" }
 
-    $apkStatus = if ($script:verifiedRoutes | Where-Object { $_.Url -eq $ApkUrl -and $_.Msg -like "PASS*" }) { "OK" } else { "FAIL" }
-    $shaStatus = if ($script:verifiedRoutes | Where-Object { $_.Url -eq $ShaUrl -and $_.Msg -like "PASS*" }) { "OK" } else { "FAIL" }
+    $apkStatus = if ($script:verifiedRoutes | Where-Object { $_.Url -eq $fcApkUrl -and $_.Msg -like "PASS*" }) { "OK" } else { "FAIL" }
+    $shaStatus = if ($script:verifiedRoutes | Where-Object { $_.Url -eq $fcShaUrl -and $_.Msg -like "PASS*" }) { "OK" } else { "FAIL" }
 
     $md = @"
 # Deployment Verification Receipt — $date
 
 *   **Site Commit**: $commitHash
-*   **Verified Targets**: $($Targets -join ', ')
-*   **APK URL**: $ApkUrl
-*   **SHA URL**: $ShaUrl
-*   **Expected SHA**: $ExpectedSha
+*   **Verified Targets**: $($TargetUrls -join ', ')
+*   **Manifest**: $manifestRelPath
+*   **ForgeCast APK URL**: $fcApkUrl
+*   **ForgeCast SHA URL**: $fcShaUrl
+*   **Expected SHA**: $fcSha256
 *   **APK Status**: $apkStatus
 *   **SHA Status**: $shaStatus
 *   **Timestamp**: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss K")
@@ -384,8 +525,6 @@ if ($script:failedCount -gt 0) {
         $md += "`n| $($r.Url) | $($r.Status) | **$($r.Msg)** |"
     }
     $md += "`n"
-    # Out-File -Encoding utf8 emits a BOM on Windows PowerShell 5.1; the receipts
-    # are served as plain text, so write UTF-8 without one on every host.
     [System.IO.File]::WriteAllText($receiptPath, $md, (New-Object System.Text.UTF8Encoding($false)))
     Write-Host "==> Verification receipt written to: $receiptPath" -ForegroundColor Green
 }
