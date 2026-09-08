@@ -294,7 +294,7 @@ foreach ($target in $TargetUrls) {
     # 1. Homepage — global nav + full product family + card contract
     Test-UrlContent -Url "$target/" -ContainsPatterns @(
         "Reality Gate", "Lights Out", "Cache Vault", "Cleanroom",
-        "ForgeCast Weather", "ProofShot", "Proof Standard", "View product"
+        "ForgeCast Weather", "ProofShot", "Proof Standard", "Explore the software"
     ) -NotContainsPatterns @("SkyFoundry")
 
     # 2. Lights Out — canonical route: feature checks + manifest-derived version truth

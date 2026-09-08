@@ -62,7 +62,11 @@ $deployOutput | ForEach-Object { Write-Host $_ }
 # post-deploy verification fails.  This prevents an agent from mistaking
 # "upload succeeded but verification failed" for "nothing was deployed."
 $deployUrl = $null
-if ($deployOutput -match 'https://([a-f0-9]+)\.proof-foundry-site\.pages\.dev') {
+# -match populates $Matches only when the left side is a scalar; wrangler output
+# arrives as an array of lines under PowerShell 7, where array -match filters
+# instead and $Matches keeps a stale value. Reduce to one string first.
+$deployText = ($deployOutput | Out-String)
+if ($deployText -match 'https://([a-f0-9]+)\.proof-foundry-site\.pages\.dev') {
   $deployUrl = $Matches[0]
 }
 
