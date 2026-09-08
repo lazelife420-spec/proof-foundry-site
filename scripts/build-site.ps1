@@ -123,7 +123,7 @@ foreach ($p in $manifest.products) {
     if ($p.release.publicVersion -and $p.release.publicVersion -notmatch '^\d+\.\d+\.\d+$') {
       $errors += "$tag malformed release.publicVersion '$($p.release.publicVersion)'"
     }
-    if ($p.release.candidateVersion -and $p.release.candidateVersion -notmatch '^\d+\.\d+\.\d+$') {
+    if ($p.release.candidateVersion -and $p.release.candidateVersion -notmatch '^\d+\.\d+\.\d+(-[a-zA-Z0-9._]+)?$') {
       $errors += "$tag malformed release.candidateVersion '$($p.release.candidateVersion)'"
     }
     if ($p.release.publishedAt -and $p.release.publishedAt -notmatch '^\d{4}-\d{2}-\d{2}$') {
@@ -195,6 +195,12 @@ foreach ($p in $manifest.products) {
       $p.release.publicVersion, $p.release.candidateVersion,
       $p.companionVersion, $p.currentLocalVersion, $p.version
     ) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+    # A pre-release candidateVersion like "0.2.3-rc1" also declares its base
+    # semver "0.2.3", which appears in artifact filenames and URLs.
+    $baseSemvers = @($declaredVersions | ForEach-Object {
+      if ($_ -match '^(\d+\.\d+\.\d+)-') { $Matches[1] }
+    }) | Where-Object { $_ }
+    $declaredVersions = @($declaredVersions + $baseSemvers) | Select-Object -Unique
     # Versions a PUBLIC_RELEASE artifact is allowed to advertise. A candidate-only
     # version must never appear on something the public can download.
     $publicVersions = @($p.release.publicVersion, $p.companionVersion) |
@@ -260,12 +266,19 @@ foreach ($p in $manifest.products) {
     $errors += "$tag cta says Download but downloadUrl is empty"
   }
 
-  # A download label that says "Download" must name the version the manifest
-  # already knows, so the button and the status chip can never disagree.
-  $canonicalPublicVersion = if ($p.release -and $p.release.publicVersion) { $p.release.publicVersion } else { $p.version }
-  if ($p.downloadLabel -like 'Download*' -and -not [string]::IsNullOrWhiteSpace($canonicalPublicVersion)) {
-    if ($p.downloadLabel -notlike "*$canonicalPublicVersion*") {
-      $errors += "$tag downloadLabel '$($p.downloadLabel)' omits canonical public version $canonicalPublicVersion"
+  # A download label must name the version of the artifact it downloads. For a
+  # release candidate, that is the candidate version rather than the last public
+  # release shown in the state line.
+  $canonicalDownloadVersion = if ($p.release -and $p.release.releaseStatus -eq 'RELEASE_CANDIDATE' -and $p.release.candidateVersion) {
+    $p.release.candidateVersion
+  } elseif ($p.release -and $p.release.publicVersion) {
+    $p.release.publicVersion
+  } else {
+    $p.version
+  }
+  if ($p.downloadLabel -like 'Download*' -and -not [string]::IsNullOrWhiteSpace($canonicalDownloadVersion)) {
+    if ($p.downloadLabel -notlike "*$canonicalDownloadVersion*") {
+      $errors += "$tag downloadLabel '$($p.downloadLabel)' omits canonical download version $canonicalDownloadVersion"
     }
   }
 
@@ -422,6 +435,39 @@ function MetaLine($p) {
   return ($parts -join " $dot ")
 }
 
+function StatusLine($p) {
+  $parts = @()
+  $status = if ($p.productStatus -and $manifest.statusTaxonomy.$($p.productStatus)) {
+    $manifest.statusTaxonomy.$($p.productStatus)
+  } else {
+    StateLabel $p.state
+  }
+  if ($status) { $parts += $status }
+
+  $public = VersionLabel $p
+  $candidate = CandidateVersionLabel $p
+  if (-not $public -and $candidate -and $p.release -and $p.release.releaseStatus -eq 'UNRELEASED') {
+    $parts += "no public release"
+    $parts += "engine $candidate"
+  } elseif ($public -and $candidate -and $public -ne $candidate) {
+    $parts += "public $public"
+    if ($p.release -and $p.release.releaseStatus -eq 'PUBLIC_RELEASE') {
+      $parts += "next $candidate"
+    } else {
+      $parts += "candidate $candidate"
+    }
+  } elseif ($public) {
+    $parts += $public
+  } elseif ($candidate) {
+    $parts += $candidate
+  }
+
+  $platform = PlatformLabel $p
+  if ($platform) { $parts += $platform }
+  $dot = [char]0x00B7
+  return ($parts -join " $dot ")
+}
+
 function Html-Attr($s) { return ($s -replace '&','&amp;' -replace '<','&lt;' -replace '>','&gt;') }
 
 function IsExternalUrl($url) {
@@ -448,6 +494,7 @@ function ProductTokens($p) {
   $tokens['companionLabel']      = CompanionLabel $p
   $tokens['version']             = $p.version
   $tokens['meta']                = MetaLine $p
+  $tokens['statusLine']          = StatusLine $p
   $tokens['platform']            = PlatformLabel $p
   $tokens['summary']             = $p.summary
   $tokens['cardSummary']         = if (-not [string]::IsNullOrWhiteSpace($p.cardSummary)) { $p.cardSummary } else { $p.summary }
@@ -509,7 +556,8 @@ function ProductTokens($p) {
   $ver = if ($tokens['versionLabel']) { $tokens['versionLabel'] } else { '&mdash;' }
   $pills += "<span class=`"proof-pill`"><strong>Version</strong> $ver</span>"
   if ($canVer -and $canVer -ne $pubVer) {
-    $pills += "<span class=`"proof-pill`"><strong>Candidate</strong> v$canVer</span>"
+    $candidateLabel = if ($p.release -and $p.release.releaseStatus -eq 'PUBLIC_RELEASE') { 'Next' } else { 'Candidate' }
+    $pills += "<span class=`"proof-pill`"><strong>$candidateLabel</strong> v$canVer</span>"
   }
   $pills += "<span class=`"proof-pill`"><strong>Platform</strong> $($tokens['platform'])</span>"
   if ($tokens['testStatus']) {
@@ -637,6 +685,7 @@ function Build-ProductCards {
     $card = $card -replace [regex]::Escape('{{statusLabel}}'),  $t['statusLabel']
     $card = $card -replace [regex]::Escape('{{summary}}'),      $t['summary']
     $card = $card -replace [regex]::Escape('{{cardSummary}}'),  $t['cardSummary']
+    $card = $card -replace [regex]::Escape('{{statusLine}}'),   $t['statusLine']
     $card = $card -replace [regex]::Escape('{{markSvg}}'),      $t['markSvg']
     $card = $card -replace [regex]::Escape('{{id}}'),           $t['id']
     $card = $card -replace [regex]::Escape('{{meta}}'),         $t['meta']
@@ -866,7 +915,8 @@ function Build-ReceiptCards {
     if ($publicVer) {
       $verHtml = "<dd>v$publicVer</dd>"
       if ($candidateVer -and $candidateVer -ne $publicVer) {
-        $verHtml += "<dd class='candidate-version'>Candidate v$candidateVer</dd>"
+        $candidateLabel = if ($p.release -and $p.release.releaseStatus -eq 'PUBLIC_RELEASE') { 'Next' } else { 'Candidate' }
+        $verHtml += "<dd class='candidate-version'>$candidateLabel v$candidateVer</dd>"
       }
     } else {
       $verHtml = '<dd style="color:var(--muted);">Unreleased</dd>'

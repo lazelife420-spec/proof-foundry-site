@@ -432,7 +432,7 @@
 
     <section id="overview" class="product-hero cv-hero" aria-labelledby="product-title">
       <div class="cv-hero-copy">
-        <p class="eyebrow">{{product.statusLabel}} · {{product.versionLabel}}</p>
+        <p class="eyebrow">{{product.productStatusLabel}} · candidate {{product.candidateVersionLabel}}</p>
 
         <div class="cv-identity">
           <!-- Archive plates on a keyed spine. The spine and the two long plates
@@ -550,7 +550,7 @@
           <figcaption>Quick Paste — keyboard-first popup for pasting a recent clip without leaving the current window.</figcaption>
         </figure>
       </div>
-      <p class="note">Screenshots are from the v0.2.3 Desktop application running against an isolated profile with fixture data. No production content is shown.</p>
+      <p class="note">Screenshots are from the v0.2.3 candidate Desktop application running against an isolated profile with fixture data. No production content is shown.</p>
     </section>
 
     <section id="how-it-works" class="product-section" aria-labelledby="what-title">
@@ -628,7 +628,7 @@
       <div class="detail-grid">
         <article class="detail-card">
           <h3>Desktop artifact checksum</h3>
-          <p>Verify the {{product.versionLabel}} Windows ZIP before running it.</p>
+          <p>Verify the {{product.candidateVersionLabel}} Windows candidate ZIP before running it.</p>
           {{product.hashBlock}}
           <p class="note">SHA-256 published in the <a href="https://theprooffoundry.com/downloads/cache-vault/v0.2.3-rc1/SHA256SUMS.txt" target="_blank" rel="noopener">candidate SHA256SUMS.txt</a> on Proof Foundry downloads.</p>
         </article>
