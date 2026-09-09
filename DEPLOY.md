@@ -77,6 +77,7 @@ ipconfig /flushdns
 
 - `public/` is build output and is regenerated on each deploy.
 - `reports/deploy-receipts/` contains public verification receipts copied into `public/`.
+- New verification events are written under ignored `receipts/deploy-verification/` with unique UTC event names. They include the full commit and tree SHA and never overwrite published historical receipts. `Verify-PublicSite.ps1 -ReceiptPath <path>` can select another new destination.
 - Cloudflare dashboard fallback:
   - Workers & Pages -> `proof-foundry-site` -> create deployment
   - upload the contents of `public/`

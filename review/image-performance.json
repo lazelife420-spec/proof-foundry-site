@@ -1,0 +1,219 @@
+{
+  "scope": "Product imagery actually selected by the browser at each first viewport; excludes icons, fonts and other page resources.",
+  "firstViewProductImagery": [
+    {
+      "page": "home",
+      "viewport": 390,
+      "images": [
+        {
+          "path": "/assets/studio/cv-quick-paste-480.webp",
+          "bytes": 24988
+        }
+      ],
+      "totalImageBytes": 24988
+    },
+    {
+      "page": "reality-gate",
+      "viewport": 1440,
+      "images": [
+        {
+          "path": "/assets/studio/08-ci-run-complete-1440.webp",
+          "bytes": 86972
+        }
+      ],
+      "totalImageBytes": 86972
+    },
+    {
+      "page": "reality-gate",
+      "viewport": 390,
+      "images": [
+        {
+          "path": "/assets/studio/08-ci-run-complete-480.webp",
+          "bytes": 14236
+        }
+      ],
+      "totalImageBytes": 14236
+    },
+    {
+      "page": "cache-vault",
+      "viewport": 1440,
+      "images": [
+        {
+          "path": "/assets/studio/cv-quick-paste-700.webp",
+          "bytes": 43322
+        }
+      ],
+      "totalImageBytes": 43322
+    },
+    {
+      "page": "cache-vault",
+      "viewport": 390,
+      "images": [
+        {
+          "path": "/assets/studio/cv-quick-paste-480.webp",
+          "bytes": 24988
+        }
+      ],
+      "totalImageBytes": 24988
+    },
+    {
+      "page": "lights-out",
+      "viewport": 1440,
+      "images": [
+        {
+          "path": "/assets/studio/tonight-active-hero-960.webp",
+          "bytes": 12832
+        },
+        {
+          "path": "/assets/studio/companion-active-390.webp",
+          "bytes": 17076
+        }
+      ],
+      "totalImageBytes": 29908
+    },
+    {
+      "page": "lights-out",
+      "viewport": 390,
+      "images": [
+        {
+          "path": "/assets/studio/tonight-active-hero-480.webp",
+          "bytes": 4760
+        },
+        {
+          "path": "/assets/studio/companion-active-390.webp",
+          "bytes": 17076
+        }
+      ],
+      "totalImageBytes": 21836
+    },
+    {
+      "page": "cleanroom",
+      "viewport": 1440,
+      "images": [
+        {
+          "path": "/assets/studio/cleanroom-review-960.webp",
+          "bytes": 27378
+        }
+      ],
+      "totalImageBytes": 27378
+    },
+    {
+      "page": "cleanroom",
+      "viewport": 390,
+      "images": [
+        {
+          "path": "/assets/studio/cleanroom-review-480.webp",
+          "bytes": 8876
+        }
+      ],
+      "totalImageBytes": 8876
+    },
+    {
+      "page": "ghostlayer",
+      "viewport": 1440,
+      "images": [
+        {
+          "path": "/assets/studio/gl-staged-files-960.webp",
+          "bytes": 18396
+        }
+      ],
+      "totalImageBytes": 18396
+    },
+    {
+      "page": "ghostlayer",
+      "viewport": 390,
+      "images": [
+        {
+          "path": "/assets/studio/gl-staged-files-480.webp",
+          "bytes": 7078
+        }
+      ],
+      "totalImageBytes": 7078
+    },
+    {
+      "page": "forgecast",
+      "viewport": 1440,
+      "images": [
+        {
+          "path": "/assets/studio/v030-today-480.webp",
+          "bytes": 35038
+        },
+        {
+          "path": "/assets/studio/v030-plan-480.webp",
+          "bytes": 42430
+        }
+      ],
+      "totalImageBytes": 77468
+    },
+    {
+      "page": "forgecast",
+      "viewport": 390,
+      "images": [
+        {
+          "path": "/assets/studio/v030-today-480.webp",
+          "bytes": 35038
+        },
+        {
+          "path": "/assets/studio/v030-plan-480.webp",
+          "bytes": 42430
+        }
+      ],
+      "totalImageBytes": 77468
+    },
+    {
+      "page": "proofshot",
+      "viewport": 1440,
+      "images": [
+        {
+          "path": "/assets/studio/workbench-home-960.webp",
+          "bytes": 43784
+        }
+      ],
+      "totalImageBytes": 43784
+    },
+    {
+      "page": "proofshot",
+      "viewport": 390,
+      "images": [
+        {
+          "path": "/assets/studio/workbench-home-480.webp",
+          "bytes": 14894
+        }
+      ],
+      "totalImageBytes": 14894
+    },
+    {
+      "page": "home",
+      "viewport": 1440,
+      "images": [
+        {
+          "path": "/assets/studio/cv-quick-paste-700.webp",
+          "bytes": 43322
+        }
+      ],
+      "totalImageBytes": 43322
+    }
+  ],
+  "enhancementAssets": [
+    {
+      "path": "site.js",
+      "bytes": 11113,
+      "gzipBytes": 3707
+    },
+    {
+      "path": "experience.js",
+      "bytes": 32646,
+      "gzipBytes": 9436
+    },
+    {
+      "path": "studio.css",
+      "bytes": 46932,
+      "gzipBytes": 10813
+    },
+    {
+      "path": "experience.css",
+      "bytes": 40015,
+      "gzipBytes": 9440
+    }
+  ]
+}

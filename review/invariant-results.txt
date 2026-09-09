@@ -1,0 +1,84 @@
+=== fixture workspace: /tmp/pf-invariants-39dc0d61 ===
+
+--- TEST 1: generated output derives from canonical data ---
+PASS: build succeeds with sentinel version
+PASS: proof page shows sentinel v9.9.9
+PASS: proof page no longer shows old v1.1.0
+PASS: registry shows sentinel v9.9.9
+PASS: homepage shows sentinel v9.9.9
+PASS: product page shows sentinel v9.9.9
+
+--- TEST 2: latest-verification resolver selects the newest date ---
+PASS: build succeeds
+PASS: resolver selects the newest date 2026-12-31
+PASS: resolver names the product holding it
+
+--- TEST 3: malformed verifiedAt is rejected by validation ---
+PASS: build exits non-zero
+PASS: error names the malformed field
+PASS: error names the offending product
+
+--- TEST 4: unprovable data cannot render a Latest claim ---
+PASS: build succeeds with no dates
+PASS: renders the explicit no-verification fallback
+PASS: does not claim a Latest verification event
+
+--- TEST 5: equal timestamps resolve deterministically ---
+PASS: both tie builds succeed
+PASS: tie resolves to a named product
+PASS: tie resolves identically each run
+PASS: tie winner is first in manifest order (cache-vault)
+PASS: tie date is the shared maximum
+
+--- TEST 6: registry covers every visible product ---
+PASS: build succeeds
+PASS: every visible product is in the registry (7)
+PASS: registry productCount matches record count
+PASS: ghostlayer is present
+PASS: every registry sha256 is 64 hex chars
+
+--- TEST 7: generated internal links resolve to real output ---
+PASS: build succeeds
+PASS: no broken internal links in generated output
+
+--- TEST 8: site verification receipt invariants ---
+PASS: missing receipt file fails the build
+PASS: error names the missing receipt path
+PASS: receiptDate/receiptPath mismatch fails
+PASS: error explains the mismatch
+
+--- TEST 9: proof registry is byte-deterministic ---
+PASS: both determinism builds succeed
+PASS: registry identical across builds (ignoring generatedAt)
+PASS: product key order is the declared canonical order
+PASS: registry has no UTF-8 BOM
+
+--- TEST 10: canonical SHA-256 representation is lowercase-only ---
+PASS: uppercase artifact digest fails the build
+PASS: error says lowercase is canonical
+PASS: uppercase display-node digest fails the build
+PASS: display-node error also names lowercase rule
+PASS: malformed-length digest still fails
+PASS: length error is distinct from case error
+
+--- TEST 11: canonical digests cannot be hardcoded in templates ---
+PASS: digest duplicated into a template fails the build
+PASS: error names the offending template
+PASS: error prescribes the artifact-indexed token
+PASS: canonical data itself produces no template errors
+
+--- TEST 12: site verification receipt must be git-tracked ---
+PASS: receipt present but untracked fails the build
+PASS: error states it is not tracked by git
+PASS: error gives the exact remedy command
+PASS: canonical receipt passes the tracked check
+
+--- TEST 13: dangling artifact token fails instead of erasing evidence ---
+PASS: dropping a referenced artifact fails the build
+PASS: error names the unresolved token
+PASS: error lists the artifact token that dangled
+PASS: no page was published with an empty checksum block
+
+PASS: canonical site-manifest.json byte-identical after all tests
+
+=== RESULT: 54 passed, 0 failed ===

@@ -28,3 +28,6 @@ brand/*.pdf
 
 # Reference PDFs (not part of deployed site)
 *.pdf
+
+# Local preview dependencies
+/node_modules/

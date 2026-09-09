@@ -54,7 +54,8 @@ if ($buildExit -ne 0) {
 }
 
 Write-Host "==> Deploying proof-foundry-site to Cloudflare Pages"
-$deployOutput = npx --yes wrangler pages deploy .\public --project-name proof-foundry-site --branch main 2>&1
+$deployDirectory = Join-Path $PSScriptRoot 'public'
+$deployOutput = npx --yes wrangler pages deploy $deployDirectory --project-name proof-foundry-site --branch main 2>&1
 $deployExit = $LASTEXITCODE
 $deployOutput | ForEach-Object { Write-Host $_ }
 

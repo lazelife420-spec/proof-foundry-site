@@ -1,520 +1,97 @@
 <!doctype html>
+<!-- @page forgecast -->
+<!-- @product forgecast -->
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ForgeCast Weather — Decision Intelligence | The Proof Foundry</title>
-  <meta name="description" content="Day-planning weather that answers you: Ask ForgeCast decisions, Wear/Bring guidance, and dynamic widgets. What to wear, when to go outside, what to bring or skip, and why. A Proof Foundry product." />
-  <meta name="robots" content="index, follow" />
-  <meta name="theme-color" content="#0B0F14" />
-  <link rel="canonical" href="https://theprooffoundry.com/forgecast/" />
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>ForgeCast — Make a plan for outside. | The Proof Foundry</title>
+<meta content="Android weather for the decisions you actually make: when to go outside, what to wear and what to bring. ForgeCast public v0.3.5." name="description"/>
+<meta content="index, follow" name="robots"/>
+<meta content="#0B0F14" name="theme-color"/>
+<link href="https://theprooffoundry.com/forgecast/" rel="canonical"/>
+<meta content="ForgeCast — Make a plan for outside." property="og:title"/>
+<meta content="Android weather for the decisions you actually make: when to go outside, what to wear and what to bring. ForgeCast public v0.3.5." property="og:description"/>
+<meta content="product" property="og:type"/>
+<meta content="https://theprooffoundry.com/forgecast/" property="og:url"/>
+<meta content="The Proof Foundry" property="og:site_name"/>
+<meta content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" name="twitter:image"/>
+<link href="/styles.css" rel="stylesheet"/>
 
-  <meta property="og:title" content="ForgeCast Weather — Decision Intelligence" />
-  <meta property="og:description" content="Day-planning weather that answers you: Ask ForgeCast decisions, Wear/Bring guidance, and dynamic widgets." />
-  <meta property="og:type" content="product" />
-  <meta property="og:url" content="https://theprooffoundry.com/forgecast/" />
-  <meta property="og:site_name" content="The Proof Foundry" />
-  <meta property="og:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
-
-  <link rel="stylesheet" href="/styles.css" />
-
-  <style>
-    /* ── ForgeCast Product Identity — Atmospheric Signal & Decision Horizon ───
-       Page-scoped visual system: storm slate backgrounds, pressure band depth,
-       signal teal accents, horizon amber decision pins, and cloud silver typography.
-       ─────────────────────────────────────────────────────────────────────── */
-    .fc-page {
-      --fc-teal: #3fbf94;
-      --fc-teal-soft: rgba(63, 191, 148, 0.35);
-      --fc-teal-wash: rgba(63, 191, 148, 0.08);
-      --fc-slate: #152433;
-      --fc-slate-border: #1e2c3a;
-      --fc-silver: #eef3f7;
-      --fc-silver-sub: #a8b8c4;
-      --fc-gold: #d6a84f;
-      --fc-bg: #0b0f14;
-    }
-
-    /* Product subnav spacing */
-    .fc-page .product-subnav {
-      margin-bottom: 2rem;
-    }
-
-    /* Hero layout */
-    .fc-page .fc-hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-      gap: 2.5rem;
-      align-items: center;
-    }
-
-    /* Brand header lockup with Atmospheric Signal Mark */
-    .fc-page .fc-brand-header {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .fc-page .fc-signal-mark {
-      width: 44px;
-      height: 44px;
-      flex-shrink: 0;
-    }
-
-    .fc-page .fc-signal-mark svg {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    /* Status & Truth Pills */
-    .fc-page .fc-truth-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem 0.75rem;
-      margin-bottom: 1.25rem;
-      font-size: 0.82rem;
-    }
-
-    .fc-page .fc-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.25rem 0.65rem;
-      border-radius: 4px;
-      font-family: monospace;
-      letter-spacing: 0.02em;
-    }
-
-    .fc-page .fc-pill-public {
-      background: rgba(63, 191, 148, 0.12);
-      border: 1px solid rgba(63, 191, 148, 0.4);
-      color: #6ee7b7;
-    }
-
-    .fc-page .fc-pill-local {
-      background: rgba(214, 168, 79, 0.1);
-      border: 1px solid rgba(214, 168, 79, 0.35);
-      color: #f6d387;
-    }
-
-    .fc-page .fc-pill-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-    }
-
-    .fc-page .fc-pill-public .fc-pill-dot { background: var(--fc-teal); }
-    .fc-page .fc-pill-local .fc-pill-dot { background: var(--fc-gold); }
-
-    /* Section head carrying the forecast rail motif */
-    .fc-page .section-head {
-      position: relative;
-      padding-bottom: 1.15rem;
-    }
-
-    .fc-page .section-head::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 1px;
-      background: var(--fc-slate-border);
-    }
-
-    .fc-page .section-head::after {
-      content: "";
-      position: absolute;
-      left: 2.5rem;
-      bottom: -1px;
-      width: 4.5rem;
-      height: 3px;
-      border-radius: 999px;
-      background: var(--fc-teal);
-    }
-
-    /* Hero screenshot: a real phone screen in a horizon frame. The chrome keeps
-       the SVG's SIGNAL OK telemetry language; the frame crops the tall phone
-       capture to the decision region instead of shrinking it into a thumbnail. */
-    .fc-page .fc-hero-shot {
-      margin: 0;
-      border: 1px solid var(--fc-slate-border);
-      border-radius: 14px;
-      background: linear-gradient(160deg, var(--fc-slate), var(--fc-bg));
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
-      overflow: hidden;
-      max-width: 24rem;
-      justify-self: center;
-      width: 100%;
-    }
-
-    .fc-page .fc-hero-shot-chrome {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding: 0.55rem 0.85rem;
-      background: rgba(21, 36, 51, 0.9);
-      border-bottom: 1px solid var(--fc-slate-border);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    }
-
-    .fc-page .fc-shot-signal {
-      color: #6ee7b7;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-    }
-
-    .fc-page .fc-shot-signal::before {
-      content: "";
-      display: inline-block;
-      width: 0.45rem;
-      height: 0.45rem;
-      border-radius: 50%;
-      background: var(--fc-teal);
-      margin-right: 0.45rem;
-      vertical-align: 0.08em;
-    }
-
-    .fc-page .fc-shot-label {
-      color: var(--fc-silver-sub);
-      font-size: 0.68rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    .fc-page .fc-hero-shot-frame {
-      aspect-ratio: 3 / 4;
-      overflow: hidden;
-      background: var(--fc-bg);
-    }
-
-    .fc-page .fc-hero-shot-frame img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: top center;
-    }
-
-    .fc-page .fc-hero-shot figcaption {
-      padding: 0.7rem 0.9rem 0.8rem;
-      font-size: 0.83rem;
-      color: var(--fc-silver-sub);
-      line-height: 1.5;
-      border-top: 1px solid var(--fc-slate-border);
-      overflow-wrap: normal;
-    }
-
-    /* Device Screenshot Lineup */
-    .fc-page .fc-screens-label {
-      margin-bottom: 1rem;
-    }
-
-    .fc-page .screenshot-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, min(15rem, 100%)));
-      gap: 1.25rem;
-      justify-content: start;
-    }
-
-    .fc-page .screenshot-grid figure {
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .fc-page .screenshot-grid img {
-      width: 100%;
-      height: auto;
-      border-radius: 18px;
-      border: 1.5px solid var(--fc-slate-border);
-      background: #05080c;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
-    }
-
-    .fc-page .screenshot-grid figcaption {
-      margin-top: 0.65rem;
-      font-size: 0.82rem;
-      color: var(--fc-silver-sub);
-      line-height: 1.35;
-    }
-
-    /* Quad & Triad card layouts */
-    .fc-page .fc-quad {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-
-    .fc-page .fc-triad {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .fc-page .detail-card {
-      position: relative;
-      border-color: var(--fc-teal-soft);
-      background: rgba(21, 36, 51, 0.5);
-    }
-
-    .fc-page .detail-card::before {
-      content: "";
-      position: absolute;
-      top: -1px;
-      left: 2rem;
-      width: 3rem;
-      height: 2px;
-      background: var(--fc-teal);
-    }
-
-    /* Responsive breakpoints */
-    @media (max-width: 1100px) {
-      .fc-page .screenshot-grid {
-        grid-template-columns: repeat(2, minmax(0, min(15rem, 100%)));
-      }
-      .fc-page .fc-quad {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 900px) {
-      .fc-page .fc-hero {
-        grid-template-columns: 1fr;
-        gap: 1.75rem;
-      }
-      .fc-page .fc-hero-shot {
-        order: -1;
-        margin: 0 auto;
-      }
-      .fc-page .fc-triad {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 620px) {
-      .fc-page .fc-quad {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 560px) {
-      .fc-page .screenshot-grid {
-        grid-template-columns: minmax(0, min(15rem, 100%));
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="/studio.css">
+<link rel="stylesheet" href="/experience.css">
 </head>
-<body>
-  <!-- @page forgecast -->
-  <!-- @product forgecast -->
-  <!-- @include header -->
-
-  <main class="container product-page fc-page">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="/#products">Products</a> <span aria-hidden="true">/</span> <span>ForgeCast Weather</span>
-    </nav>
-
-    <nav class="product-subnav" aria-label="Product sections">
-      <a href="#overview">Overview</a>
-      <a href="#on-device">On device</a>
-      <a href="#how-it-works">How it works</a>
-      <a href="#proof">Proof</a>
-      <a href="#download">Download</a>
-      <a href="#limitations">Limitations</a>
-    </nav>
-
-    <section id="overview" class="product-hero fc-hero" aria-labelledby="product-title">
-      <div class="fc-hero-copy">
-        <div class="fc-brand-header">
-          <div class="fc-signal-mark" aria-hidden="true">
-            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="4" y="4" width="56" height="56" rx="10" fill="#0B0F14" stroke="#1E2C3A" stroke-width="2"/>
-              <!-- Spine & atmospheric bands forming F -->
-              <line x1="20" y1="18" x2="20" y2="48" stroke="#3FBF94" stroke-width="4" stroke-linecap="round"/>
-              <line x1="20" y1="20" x2="46" y2="20" stroke="#3FBF94" stroke-width="4" stroke-linecap="round"/>
-              <line x1="20" y1="33" x2="38" y2="33" stroke="#3FBF94" stroke-width="3" stroke-linecap="round"/>
-              <!-- Pressure horizon dash -->
-              <line x1="14" y1="46" x2="50" y2="46" stroke="#1E2C3A" stroke-width="2" stroke-dasharray="3 3"/>
-              <!-- Horizon decision point marker -->
-              <circle cx="38" cy="33" r="3.5" fill="#D6A84F"/>
-            </svg>
-          </div>
-          <div>
-            <p class="eyebrow" style="margin: 0;">ForgeCast Weather · {{product.statusLabel}}</p>
-          </div>
-        </div>
-
-        <h1 id="product-title">Know the conditions.<br /><span>Find the window. Make the call.</span></h1>
-        
-        <p class="product-lede">{{product.summary}}</p>
-
-        <div class="fc-truth-pills" aria-label="Release state baseline">
-          <span class="fc-pill fc-pill-public"><span class="fc-pill-dot"></span> Public Release: v0.3.5 (private signing identity · Android APK)</span>
-        </div>
-
-        <div class="download-group">{{product.downloadBlock}}</div>
-        {{product.proofStrip}}
-      </div>
-
-      <figure class="fc-hero-shot">
-        <div class="fc-hero-shot-chrome" aria-hidden="true">
-          <span class="fc-shot-signal">SIGNAL OK</span>
-          <span class="fc-shot-label">Today &middot; decision-first</span>
-        </div>
-        <div class="fc-hero-shot-frame">
-          <img
-            src="/assets/forgecast/v030-today.png"
-            alt="ForgeCast Today screen: what to wear, the best-outside window, and the day motion timeline."
-            width="1080" height="2340" loading="eager" decoding="async" />
-        </div>
-        <figcaption>
-          Today opens on the decision, not the data: what to wear, when the best outside window
-          is, and how the day moves. The full forecast is one tap away, not in the way.
-        </figcaption>
-      </figure>
-    </section>
-
-    <section id="on-device" aria-label="Product screenshots" class="product-screens">
-      <div class="section-head">
-        <h2 id="screens-title">On device</h2>
-        <p>Real application interfaces showing decision-first Today, expanded forecast, Plan board, and Android launcher widgets.</p>
-      </div>
-      <div class="screenshot-grid">
-        <figure>
-          <img src="/assets/forgecast/v030-today.png" alt="ForgeCast Today screen showing outfit recommendations and best-outside timing window" loading="lazy" />
-          <figcaption>Today — wear, best outside window, and day motion timeline</figcaption>
-        </figure>
-        <figure>
-          <img src="/assets/forgecast/v030-forecast.png" alt="ForgeCast 5-day forecast view with expanded outfit and condition meaning" loading="lazy" />
-          <figcaption>Forecast — expanded rows with outfit and timing meaning</figcaption>
-        </figure>
-        <figure>
-          <img src="/assets/forgecast/v030-plan.png" alt="ForgeCast Plan PREP board showing what to wear, best outside, bring/skip" loading="lazy" />
-          <figcaption>Plan — what to wear, best outside, bring/skip</figcaption>
-        </figure>
-        <figure>
-          <img src="/assets/forgecast/v030-widgets.png" alt="ForgeCast Android home-screen widget presets: SkyClock and SkyCompact" loading="lazy" />
-          <figcaption>Widgets — Daily Planner and Compact Temp launcher widgets</figcaption>
-        </figure>
-      </div>
-    </section>
-
-    <section id="how-it-works" class="product-section" aria-labelledby="what-title">
-      <div class="section-head">
-        <h2 id="what-title">What it does</h2>
-        <p>Day-planning weather intelligence — each screen does one job instead of overlapping.</p>
-      </div>
-      <div class="detail-grid fc-quad">
-        <article class="detail-card">
-          <h3>Ask ForgeCast</h3>
-          <p>Ask "When should I walk tonight?" or "Do I need a jacket at 8?" — deterministic answers with the evidence behind them. No cloud chatbot, no question telemetry.</p>
-        </article>
-        <article class="detail-card">
-          <h3>Wear / Bring that reads conditions</h3>
-          <p>Clothing advice weighs timing and conditions, not just temperature: bring a hoodie if you'll still be out after sunset.</p>
-        </article>
-        <article class="detail-card">
-          <h3>Dynamic decision widgets</h3>
-          <p>SkyClock and SkyCompact show Best Window, Wear/Bring, and rain or cooling changes ahead — with an honest stale-data state.</p>
-        </article>
-        <article class="detail-card">
-          <h3>Samsung OneUI reliability</h3>
-          <p>Widgets restore natively after reboot or background freezing — no blank tiles, no waiting for the app.</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="proof" class="product-section" aria-labelledby="proof-title">
-      <div class="section-head">
-        <h2 id="proof-title">Proof &amp; release evidence</h2>
-        <p>Verified public build evidence and checksums.</p>
-      </div>
-      <div class="detail-grid fc-triad">
-        <article class="detail-card">
-          <h3>SHA-256 checksum</h3>
-          <p>Verify the APK before installing.</p>
+<body class="studio product-page product-forgecast">
+<!-- @include header -->
+<main id="main-content"><div class="product-shell"><nav class="product-breadcrumb" aria-label="Breadcrumb"><a href="/#products">All software</a><span aria-hidden="true">/</span><span>ForgeCast Weather</span></nav>
+<section class="product-hero" id="overview"><div class="product-identity"><div class="card-mark" aria-hidden="true"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><defs><linearGradient id="fcCardMarkGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#d6a84f"/><stop offset="100%" stop-color="#9f7e3b"/></linearGradient></defs><rect x="14" y="14" width="92" height="92" rx="16" fill="#0b0f14" fill-opacity="0.95" stroke="#1e2c3a" stroke-width="1.5"/><line x1="42" y1="34" x2="42" y2="86" stroke="#3fbf94" stroke-width="6" stroke-linecap="round"/><line x1="42" y1="38" x2="82" y2="38" stroke="#3fbf94" stroke-width="6" stroke-linecap="round"/><line x1="42" y1="60" x2="70" y2="60" stroke="#3fbf94" stroke-width="5" stroke-linecap="round"/><line x1="30" y1="82" x2="90" y2="82" stroke="#1e2c3a" stroke-width="2" stroke-dasharray="4 4"/><circle cx="70" cy="60" r="4.5" fill="url(#fcCardMarkGold)"/></svg></div><span>ForgeCast</span><span class="identity-studio">by The Proof Foundry</span></div><div class="hero-layout"><div class="product-copy"><p class="kicker">Weather for the day you have planned</p><h1>A good day<br><em>to get outside.</em></h1><p class="product-lede">Find your weather window. Know what to wear. Get a useful answer before you head out.</p><div class="studio-actions"><a class="button button-primary" href="#download">Get ForgeCast for Android<span aria-hidden="true">↗</span></a><a class="text-link" href="#try-it">Try the idea <span aria-hidden="true">↓</span></a></div><p class="release-line">Android 8+ · Public {{product.versionLabel}}</p></div><div class="hero-media"><figure class="app-shot hero-product-shot"><a class="screenshot-link" href="/assets/forgecast/v030-today.png" data-screenshot aria-label="Enlarge: ForgeCast Today on Android showing clothing guidance and the best outside window."><img src="/assets/studio/v030-today-1080.webp" srcset="/assets/studio/v030-today-480.webp 480w, /assets/studio/v030-today-960.webp 960w, /assets/studio/v030-today-1080.webp 1080w" sizes="(max-width: 700px) 152px, 235px" width="1080" height="2340" alt="ForgeCast Today on Android showing clothing guidance and the best outside window." loading="eager" fetchpriority="high" decoding="async"></a><figcaption>Today · real Android interface</figcaption></figure><figure class="app-shot weather-plan"><a class="screenshot-link" href="/assets/forgecast/v030-plan.png" data-screenshot aria-label="Enlarge: ForgeCast Plan on Android with wear, bring and best-outside guidance."><img src="/assets/studio/v030-plan-1080.webp" srcset="/assets/studio/v030-plan-480.webp 480w, /assets/studio/v030-plan-960.webp 960w, /assets/studio/v030-plan-1080.webp 1080w" sizes="(max-width: 700px) 34vw, 200px" width="1080" height="2340" alt="ForgeCast Plan on Android with wear, bring and best-outside guidance." loading="eager" fetchpriority="high" decoding="async"></a></figure></div></div></section>
+<button type="button" class="gallery-launch" data-gallery-open hidden><span>Explore the interface</span><span>4 screens <span aria-hidden="true">↗</span></span></button><a class="experience-jump" href="#try-it" data-enhance hidden><span>GET A FEEL FOR IT</span><span>Explore a sample day <span aria-hidden="true">↓</span></span></a><section class="value-section " id="features"><div class="section-heading"><p class="kicker">Made for the way you work</p><h2>The forecast, made useful.</h2><p>Start with the decision. Open the forecast when you want the detail.</p></div><div class="value-grid"><article><span class="step-number">01</span><h3>Find your window</h3><p>See the best time to get outside, with weather changes through the day.</p></article><article><span class="step-number">02</span><h3>Ask before you go</h3><p>Ask when to walk or whether you need a jacket. Get a weather-based answer with the reasons behind it.</p></article><article><span class="step-number">03</span><h3>Wear it. Bring it.</h3><p>Clothing and bring-or-skip guidance account for rain, timing and the temperature later.</p></article></div></section><section class="experience-section forecast-demo" id="try-it" data-demo="forecast" data-hour="1" data-enhance hidden><div class="experience-heading"><p class="kicker">Weather, with a next step</p><h2>Plan around the sky.</h2><p>Move through a sample day. See how a forecast can become a useful decision.</p></div><div class="forecast-scene"><div class="forecast-reading"><span class="forecast-place">A SAMPLE DAY / VICTORIA</span><strong class="forecast-temp">16<span>°</span></strong><p class="forecast-condition">Clouds giving way</p><span class="forecast-time">09:00 · Morning</span></div><div class="forecast-advice" aria-live="polite"><span class="archive-label">BEFORE YOU HEAD OUT</span><h3 class="forecast-headline">Start with a light layer.</h3><p class="forecast-detail">A cool start. Bring a layer you can take off as the day warms up.</p><div class="forecast-metrics"><span>RAIN CHANCE<strong class="forecast-rain">10%</strong></span><span>WIND<strong class="forecast-wind">8 km/h</strong></span></div></div></div><div class="forecast-timeline"><label for="forecast-hour">Explore the sample day <output class="forecast-selected">09:00</output></label><input id="forecast-hour" type="range" min="0" max="4" step="1" value="1"><div aria-hidden="true"><span>06:00</span><span>09:00</span><span>12:00</span><span>15:00</span><span>18:00</span></div></div><p class="demo-scope">Interactive website preview · illustrative forecast, not live weather.</p></section><section class="product-story"><div class="story-copy"><p class="kicker">Beyond the app</p><h2>Your day, at a glance.</h2><p>Check the forecast from your home screen. Widgets surface timing and clothing guidance, and tell you when their weather data may be outdated.</p></div><figure class="app-shot story-shot"><a class="screenshot-link" href="/assets/forgecast/v030-widgets.png" data-screenshot aria-label="Enlarge: ForgeCast Android home-screen widgets showing weather and planning information."><img src="/assets/studio/v030-widgets-1080.webp" srcset="/assets/studio/v030-widgets-480.webp 480w, /assets/studio/v030-widgets-960.webp 960w, /assets/studio/v030-widgets-1080.webp 1080w" sizes="(max-width: 700px) 92vw, 60vw" width="1080" height="2340" alt="ForgeCast Android home-screen widgets showing weather and planning information." loading="lazy"  decoding="async"></a></figure></section><section class="download-section" id="download"><div id="release-status"></div><p class="kicker">Get the software</p><h2>Take the forecast with you.</h2><p class="download-description">Public {{product.versionLabel}} APK for Android 8 and later. Download and install directly on your phone.</p><div class="studio-actions">{{product.downloadBlock}}</div><p class="install-note"><strong>Upgrading?</strong> From v0.3.4, install normally. From v0.3.3 or earlier, the signing change requires uninstalling the old app first; uninstalling removes local settings and data unless separately preserved.</p><details class="checksum-details"><summary>Installation notes &amp; checksum</summary><div><p>This APK uses ForgeCast’s production signing identity. Android may ask you to allow installation from your browser.</p>{{product.hashBlock}}</div></details></section><section class="evidence-area" id="proof"><details class="proof-details"><summary><span><span class="kicker">For a closer look</span><strong>Release evidence &amp; technical details</strong></span><span class="expand-label">Expand <span aria-hidden="true">+</span></span></summary><div class="evidence-content"><p class="evidence-intro">Release records, checksums, detailed scope and qualification evidence. Candidate evidence does not change public availability.</p>{{product.proofStrip}}<section aria-labelledby="proof-title" class="evidence-section" id="release-proof">
+<div class="section-head">
+<h3 id="proof-title">Proof &amp; release evidence</h3>
+<p>Verified public build evidence and checksums.</p>
+</div>
+<div class="detail-grid fc-triad">
+<article class="detail-card">
+<h3>SHA-256 checksum</h3>
+<p>Verify the APK before installing.</p>
           {{product.hashBlock}}
         </article>
-        <article class="detail-card">
-          <h3>What's inside</h3>
-          <ul>
-            <li>Ask ForgeCast: deterministic decision Q&amp;A with evidence, follow-ups, and an Ask strip above your plan</li>
-            <li>Wear / Bring guidance that understands timing, rain risk, and cooling</li>
-            <li>Dynamic forecast-aware widgets with honest stale state; native restore on Samsung OneUI</li>
-            <li>Day-planning UX across Today, Plan, Forecast, Widgets, and Settings</li>
-          </ul>
-        </article>
-        <article class="detail-card">
-          <h3>Trust &amp; Privacy</h3>
-          <ul>
-            <li>No background telemetry or location tracking</li>
-            <li>Community Checks off by default — no backend tracking</li>
-            <li>No fake AI marketing claims</li>
-            <li>Hardened test verification on every build</li>
-          </ul>
-        </article>
-      </div>
+<article class="detail-card">
+<h3>What's inside</h3>
+<ul>
+<li>Ask ForgeCast: deterministic decision Q&amp;A with evidence, follow-ups, and an Ask strip above your plan</li>
+<li>Wear / Bring guidance that understands timing, rain risk, and cooling</li>
+<li>Dynamic forecast-aware widgets with honest stale state; native restore on Samsung OneUI</li>
+<li>Day-planning UX across Today, Plan, Forecast, Widgets, and Settings</li>
+</ul>
+</article>
+<article class="detail-card">
+<h3>Trust &amp; Privacy</h3>
+<ul>
+<li>No background telemetry or location tracking</li>
+<li>Community Checks off by default — no backend tracking</li>
+<li>No fake AI marketing claims</li>
+<li>Hardened test verification on every build</li>
+</ul>
+</article>
+</div>
       {{product.releaseNoteBlock}}
     </section>
-
-    <section id="limitations" class="product-section" aria-labelledby="limits-title">
-      <div class="section-head">
-        <h2 id="limits-title">Known limitations</h2>
-        <p>Honest about what this release does not do.</p>
-      </div>
-      <div class="detail-grid">
-        <article class="detail-card">
-          <h3>Requirements</h3>
-          <ul>
-            <li>Android 8+ (API 26+)</li>
-            <li>Sideload / Install Unknown Apps permission enabled</li>
-            <li>APK signed with the private ForgeCast signing identity (Android displays a sideload prompt)</li>
-          </ul>
-        </article>
-        <article class="detail-card">
-          <h3>Not included</h3>
-          <ul>
-            <li>No Community Checks backend server</li>
-            <li>No Day Receipts cloud sync</li>
-            <li>No automatic background auto-update</li>
-          </ul>
-        </article>
-        <article class="detail-card">
-          <h3>Honest widget scope</h3>
-          <ul>
-            <li>Widgets update with your weather — they are not continuously animated</li>
-            <li>Stale data shows an honest "may be outdated" state instead of pretending to be live</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
-    <section id="download" class="product-section" aria-labelledby="download-title">
-      <div class="section-head">
-        <h2 id="download-title">Download</h2>
-        <p>APK and SHA256 are served via Proof Foundry distribution storage.</p>
-      </div>
-      <div class="download-group">{{product.downloadBlock}}</div>
-      <p class="note">Public APK and checksum are served through Proof Foundry's distribution storage (private ForgeCast signing identity). Upgrading from v0.3.4? Install normally — settings and data carry over (verified on device). Upgrading from v0.3.3 or earlier? Uninstall the old ForgeCast app first: the signing identity changed at v0.3.4, and uninstalling removes app-local data unless separately preserved. Download the APK, verify its SHA-256 matches the checksum above, then install with your preferred Android installer.</p>
-    </section>
-
-    <section class="product-section other-products" aria-labelledby="other-title">
-      <div class="section-head">
-        <h2 id="other-title">Other Proof Foundry products</h2>
-      </div>
-      <div class="other-products-grid">
-        <a class="other-product-chip" href="/reality-gate/">Reality Gate</a>
-        <a class="other-product-chip" href="/cache-vault/">Cache Vault</a>
-        <a class="other-product-chip" href="/lights-out/">Lights Out PC</a>
-        <a class="other-product-chip" href="/cleanroom/">Cleanroom</a>
-        <a class="other-product-chip" href="/proofshot/">ProofShot</a>
-      </div>
-    </section>
-  </main>
-
-  <!-- @include footer -->
-  <script src="/site.js" defer></script>
-</body>
-</html>
+<section aria-labelledby="limits-title" class="evidence-section" id="limitations">
+<div class="section-head">
+<h3 id="limits-title">Known limitations</h3>
+<p>Honest about what this release does not do.</p>
+</div>
+<div class="detail-grid">
+<article class="detail-card">
+<h3>Requirements</h3>
+<ul>
+<li>Android 8+ (API 26+)</li>
+<li>Sideload / Install Unknown Apps permission enabled</li>
+<li>APK signed with the private ForgeCast signing identity (Android displays a sideload prompt)</li>
+</ul>
+</article>
+<article class="detail-card">
+<h3>Not included</h3>
+<ul>
+<li>No Community Checks backend server</li>
+<li>No Day Receipts cloud sync</li>
+<li>No automatic background auto-update</li>
+</ul>
+</article>
+<article class="detail-card">
+<h3>Honest widget scope</h3>
+<ul>
+<li>Widgets update with your weather — they are not continuously animated</li>
+<li>Stale data shows an honest "may be outdated" state instead of pretending to be live</li>
+</ul>
+</article>
+</div>
+</section><p><a class="text-link" href="/proof/#receipt-forgecast">Open the full release record ↗</a></p></div></details></section><nav class="studio-related" aria-label="More software"><span>More from the foundry</span><a href="/reality-gate/">Reality Gate</a><a href="/cache-vault/">Cache Vault</a><a href="/lights-out/">Lights Out PC</a><a href="/cleanroom/">Cleanroom</a><a href="/ghostlayer/">GhostLayer</a><a href="/proofshot/">ProofShot</a></nav></div></main>
+<template id="product-gallery"><a href="/assets/forgecast/v030-today.png" data-thumb="/assets/studio/v030-today-480.webp" data-preview="/assets/studio/v030-today-1080.webp" data-width="1080" data-height="2340" data-title="Today" data-caption="Weather and practical guidance in the actual Android app.">Today</a><a href="/assets/forgecast/v030-plan.png" data-thumb="/assets/studio/v030-plan-480.webp" data-preview="/assets/studio/v030-plan-1080.webp" data-width="1080" data-height="2340" data-title="Plan" data-caption="Outfit guidance and an outside timing window.">Plan</a><a href="/assets/forgecast/v030-forecast.png" data-thumb="/assets/studio/v030-forecast-480.webp" data-preview="/assets/studio/v030-forecast-1080.webp" data-width="1080" data-height="2340" data-title="Forecast" data-caption="The forecast view in the actual Android app.">Forecast</a><a href="/assets/forgecast/v030-widgets.png" data-thumb="/assets/studio/v030-widgets-480.webp" data-preview="/assets/studio/v030-widgets-1080.webp" data-width="1080" data-height="2340" data-title="Widgets" data-caption="The available widget presentation.">Widgets</a></template>
+<!-- @include footer -->
+<script src="/site.js" defer></script>
+<script src="/experience.js" defer></script>
+</body></html>

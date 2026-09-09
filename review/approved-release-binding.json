@@ -1,0 +1,371 @@
+{
+  "approval": "VISUAL ACCEPTANCE GREEN - owner authorized commit, push, Cloudflare deployment and live verification in this conversation",
+  "approvedVisualReviewSha256": "3147c1783c063fb5c8b292c127ea7eedd7a612fc9cbb67f43dbfa2e8888fc661",
+  "approvedArchiveSha256": "933c5fa9b766395920b233a5b1964d88f9ac7577eb6493d8e4e5e77947ee5646",
+  "originalWorktreeArchiveMatches": 362,
+  "rebuiltPublicFiles": 163,
+  "renderedPageAndAssetDifferences": [],
+  "nonVisualBuildTimeDifference": {
+    "path": "proof/index.json",
+    "field": "generatedAt",
+    "approved": "2026-09-08T20:22:16Z",
+    "rebuilt": "2026-09-08T21:25:01Z",
+    "allOtherFieldsEqual": true
+  },
+  "visualReviewPages": 18,
+  "exactEmbeddedCaptureMatches": 36,
+  "postApprovalToolingOnlyChanges": [
+    ".gitattributes",
+    "DEPLOY.md",
+    "deploy.ps1",
+    "scripts/Verify-PublicSite.ps1"
+  ],
+  "deploymentStatus": "NOT DEPLOYED - pending authenticated push and Cloudflare access",
+  "screenshots": [
+    {
+      "page": 1,
+      "capture": "home-hero-1440.jpg",
+      "jpegSha256": "0045ff6626e6be053d4fa6f006426997d69ee764ae6900947749fa6b9b44f228"
+    },
+    {
+      "page": 1,
+      "capture": "home-hero-390.jpg",
+      "jpegSha256": "ad7cb1612430ad98b5e86cae219ec2a3083021bc32e550cb100299863ccb8315"
+    },
+    {
+      "page": 2,
+      "capture": "home-try-390.jpg",
+      "jpegSha256": "176bf3c6cb16bf4b7a449cea366ed154617713cf5aa807700ebf130496b3a5ed"
+    },
+    {
+      "page": 2,
+      "capture": "home-try-1440.jpg",
+      "jpegSha256": "63d7e6e4fe74cb168af0ae49aaabea1eec66f0a90f0bb9ad89beb7287f232dda"
+    },
+    {
+      "page": 3,
+      "capture": "reality-gate-hero-390.jpg",
+      "jpegSha256": "7005bc5ff5895bb1534bbdde9116d8b6d83f497e33c9163462a57fd73046ebad"
+    },
+    {
+      "page": 3,
+      "capture": "reality-gate-hero-1440.jpg",
+      "jpegSha256": "a686b9093bb867a37deb51f58b5ada8319d0018ee932b93767f557268230b414"
+    },
+    {
+      "page": 4,
+      "capture": "reality-gate-try-1440.jpg",
+      "jpegSha256": "88bb0357396e0ca45b6437286c9ce1d7dee25705ff32e1a833fdb19d95dbd507"
+    },
+    {
+      "page": 4,
+      "capture": "reality-gate-try-390.jpg",
+      "jpegSha256": "229da9759ab308932320b121deac5e3a851397f8f2f2eb00acd8b029a4ede469"
+    },
+    {
+      "page": 5,
+      "capture": "cache-vault-hero-390.jpg",
+      "jpegSha256": "27943a82da04c07026ad2371b9ae9d99e54af2d09253140857c9bc59651f7d9f"
+    },
+    {
+      "page": 5,
+      "capture": "cache-vault-hero-1440.jpg",
+      "jpegSha256": "4856b5a4aab85050b0148a63de851c36cd6ad9f30124bf2337d24cc592b831e9"
+    },
+    {
+      "page": 6,
+      "capture": "cache-vault-try-1440.jpg",
+      "jpegSha256": "daf5ff67cf0bae6190bed20b2697db637c33fa0498d0f0baac32983ac0493324"
+    },
+    {
+      "page": 6,
+      "capture": "cache-vault-try-390.jpg",
+      "jpegSha256": "cf906bbdfa4be9a7f7cdb378a7faee532eeb00b36b32a5cb1330c89ae21aaa71"
+    },
+    {
+      "page": 7,
+      "capture": "lights-out-hero-1440.jpg",
+      "jpegSha256": "788e276e9391cb16ae55c82fdd4ccc181e7ff820bd13334a3e728908f159aeb9"
+    },
+    {
+      "page": 7,
+      "capture": "lights-out-hero-390.jpg",
+      "jpegSha256": "fbcbd681ef0f088202b0969ca903519ac0cf748eb404dca98b1783c5f031864e"
+    },
+    {
+      "page": 8,
+      "capture": "lights-out-try-390.jpg",
+      "jpegSha256": "df69aa33a3d4ff510357f117da0167ad4970c0235bc2e8e296ffbd4fcbf4eac0"
+    },
+    {
+      "page": 8,
+      "capture": "lights-out-try-1440.jpg",
+      "jpegSha256": "b7c7e5e3e83484cad6948629cbfb3de5170db084637a0287a7b1ee8af23f6287"
+    },
+    {
+      "page": 9,
+      "capture": "cleanroom-hero-1440.jpg",
+      "jpegSha256": "38f845316e58af90e158b47a78505f21ef8fce095db0fe2f066aa36a0100b5fc"
+    },
+    {
+      "page": 9,
+      "capture": "cleanroom-hero-390.jpg",
+      "jpegSha256": "529a8014555e5c8911e7cb1912e0a7041336f54900acb9062bb7ead8f113a8a3"
+    },
+    {
+      "page": 10,
+      "capture": "cleanroom-try-390.jpg",
+      "jpegSha256": "806b9114b727a2887269d57257bfa4af10cc89d93dd2b69dc267a37422b41d74"
+    },
+    {
+      "page": 10,
+      "capture": "cleanroom-try-1440.jpg",
+      "jpegSha256": "9475f717d958854104ee2266871601c67c862e37c2ffb5d0b192e8e12266b078"
+    },
+    {
+      "page": 11,
+      "capture": "ghostlayer-hero-1440.jpg",
+      "jpegSha256": "584447dcdfeef36579236168eabb19de5c4b6cd28bdd6ad97a8f7d5092bab7d9"
+    },
+    {
+      "page": 11,
+      "capture": "ghostlayer-hero-390.jpg",
+      "jpegSha256": "5041376609880db142aeacebdc6fe44ae9d1b6e07f5909cf8b0ba68166616c5f"
+    },
+    {
+      "page": 12,
+      "capture": "ghostlayer-try-1440.jpg",
+      "jpegSha256": "c799186877fdaca258caa16c16b33d1932e8ba3499b75e48f4d5d05ac8af81db"
+    },
+    {
+      "page": 12,
+      "capture": "ghostlayer-try-390.jpg",
+      "jpegSha256": "4828656032ee45baf697f255b905d3b408654cf8c1a4727d198d7784f08f8e39"
+    },
+    {
+      "page": 13,
+      "capture": "forgecast-hero-390.jpg",
+      "jpegSha256": "511dd656cbab575c45455101f45249aabaca32f45e45fab4646ec0e30e3a81b9"
+    },
+    {
+      "page": 13,
+      "capture": "forgecast-hero-1440.jpg",
+      "jpegSha256": "c59d723143098e2e95c6da919e3ba78cf4feb9256838566520c5d37f26e02b91"
+    },
+    {
+      "page": 14,
+      "capture": "forgecast-try-390.jpg",
+      "jpegSha256": "858676e83fbe588dfb989f74edbc525dd1091dab5204612847c8e962f9bbced8"
+    },
+    {
+      "page": 14,
+      "capture": "forgecast-try-1440.jpg",
+      "jpegSha256": "0a032aa8e2428c1bea487d50d956d763cf0ce282039e37a1b9c875f400833756"
+    },
+    {
+      "page": 15,
+      "capture": "proofshot-hero-390.jpg",
+      "jpegSha256": "a5fd8926b605c014b732b91d2c629af75955ced0e27690337f3a65ea837c7a63"
+    },
+    {
+      "page": 15,
+      "capture": "proofshot-hero-1440.jpg",
+      "jpegSha256": "6aa626edb802c1d6bd5d5d7e445a10658f2bd05d5d7970fb4d465c9a89b7cc64"
+    },
+    {
+      "page": 16,
+      "capture": "proofshot-try-1440.jpg",
+      "jpegSha256": "e9a3940158aca6ca8b8657a00a5aea82c885861ebe453a534f5149984b3173d6"
+    },
+    {
+      "page": 16,
+      "capture": "proofshot-try-390.jpg",
+      "jpegSha256": "c7c4335d16a0cd2547f8a49a51235fd94be83770891c951db70bdff3f47bfc62"
+    },
+    {
+      "page": 17,
+      "capture": "comparison-1440.jpg",
+      "jpegSha256": "439d6edc34a6bfb2cfdb139a074abb57993bce3c04a280b98e8f7511ac48991f"
+    },
+    {
+      "page": 17,
+      "capture": "comparison-390.jpg",
+      "jpegSha256": "b9f9901fc3f0b071f7ed6a426a4f4b889f82a2fe2d66d327a5bb8a1a93351d99"
+    },
+    {
+      "page": 18,
+      "capture": "gallery-390.jpg",
+      "jpegSha256": "17ad5cd26cd9178206cfdfc31c450bf58d4e4b02e8542b07a4ff3f8661676a62"
+    },
+    {
+      "page": 18,
+      "capture": "gallery-1440.jpg",
+      "jpegSha256": "9e862c197d0e1040af3d4a70869b9e0041a1f8e0d0adb7064927253df93abff5"
+    }
+  ],
+  "approvedPublicFileSha256": {
+    "404.html": "e65357a569952941d62d6897af3d371af1366df9efc76f4bc7dae47e3adff2b8",
+    "CNAME": "b5871d17a19ec8ad752fb76db75e26082800a40971e2d45267fb770a289afbef",
+    "_headers": "aeebe24d673a9306884ea16c14604ea40beef602fe6b49b0b5068e06605a03a8",
+    "_redirects": "5be52c4055183640f8db646085ce738387b9166bc9d4bd173d4f81e1804b4f50",
+    "assets/cache-vault/cv-all-clips.png": "0dcf7da713282fc8d6a622702cf7039a3cb3069e85df9722c1e90b272a3bdafc",
+    "assets/cache-vault/cv-cleanup-suggestions.png": "ecd2be2a3b895b4d0fc8b4fa73d0b232519ba39caf5a575f3f083cad2a8e6cff",
+    "assets/cache-vault/cv-quick-paste.png": "05d675e26e69d8467f37e8246115fa97affcf46d03d504220a44b8a1d6e2f72f",
+    "assets/cache-vault/cv-stamped-receipts.png": "67fb7519970f2b010d1cc158149bd998ddbe793300773ae143c6ac0c5fa080c0",
+    "assets/cleanroom/cleanroom-activity-ledger.png": "6fce31f77ed39496e679912bff260b451a9fcbffe96e68ff77a2ca5ceccad65e",
+    "assets/cleanroom/cleanroom-proof-pack-demo.png": "8bb7db90dbee53b9a6b91e9523059a2e1800e1605c093d13c1afa4cfc142e8bd",
+    "assets/cleanroom/cleanroom-review.png": "1c5af82f83836e0020ec74d8d6af9b85fb8bcdd2d524424fe0b83b407c3ba84f",
+    "assets/forgecast/v030-forecast.png": "d0dbdcfb5f4a1c30777df81c060d0cc2a6598db00c07513dab1c4164df09c80c",
+    "assets/forgecast/v030-plan.png": "2bfae750334999f896c13aadeaa398dc4520553f63cb334bb27256a4f8b25ad6",
+    "assets/forgecast/v030-today.png": "0263aa23c473a65d5185c71d2aadb57a4bed7796da83eef9996054fc35bdd00d",
+    "assets/forgecast/v030-widgets.png": "9d073eba882d8c8ab97fe0f1771a086c9505213225230b3a54c6cb8cf61ab123",
+    "assets/foundry-strike/forged_pf_emblem_in_smoky_ruins-1280.avif": "183fe4f9375f84ea388496933dc917223d84c4e4e75f356d6c28a48d60e86c17",
+    "assets/foundry-strike/forged_pf_emblem_in_smoky_ruins-1280.webp": "d89d54be5d40bf90b2be66c3ca42572e3e4c180f518796ba6119d0bce83c99c7",
+    "assets/foundry-strike/forged_pf_emblem_in_smoky_ruins-1672.avif": "73522c9633b0ab70a4e9712f409c7d0d5125167d8f34fa573991949a6e645380",
+    "assets/foundry-strike/forged_pf_emblem_in_smoky_ruins-1672.webp": "b11f3c33e481bff6a2ef0565c34417333f0cfd7b91c8ba03cf7d537fae218c01",
+    "assets/foundry-strike/forged_pf_emblem_in_smoky_ruins.png": "aeb07062a41db6c9fdf59fa836c2edb64fd81b9d1f7f5e643f30d2014e99fa63",
+    "assets/foundry-strike/proof-foundry-forged-artifact.png": "a018726221d0a4d145d7115d0ad6f66609f14ae561309e605770ee24ea92b7bd",
+    "assets/ghostlayer/gl-staged-files.png": "47ee09a8e6c137a7b71cabe2f9fb803793a739db58c878345546b3d6ccd45bbe",
+    "assets/lights-out/companion-active.png": "121c248557713b48bd12e82cfb2eb2ce29092347d83647e773a18b027b2c9587",
+    "assets/lights-out/companion-reconnected.png": "cd92ae548b4a369bb38619b1e816018b83a99518d569c0226e2f7f1fc8ed76cf",
+    "assets/lights-out/companion-snoozed.png": "925617342c0cce32494475545179380b8599da649c6fcfaef5fa03ef9bb8ea8d",
+    "assets/lights-out/devices-panel.png": "6e848ef67f115aa07afd974eac99427141494ed9c017e4d1627b7be1d5cc870a",
+    "assets/lights-out/lights-out-icon-512.png": "5467bee341bed876a507ececbcb5f89ad2ff7a5fc496d3d6105da33fc4e16163",
+    "assets/lights-out/lights-out-keyart-hero-ui.png": "c5982c6756685de967ca03b6292af6f9600d51ce0302dfaa5bacffdea51251bf",
+    "assets/lights-out/lights-out-logo-transparent.png": "c5986979e302c9199adf6080b54387d2a74289dc1dea27edc9a260a65f5e262e",
+    "assets/lights-out/lights-out-og-image.png": "c5982c6756685de967ca03b6292af6f9600d51ce0302dfaa5bacffdea51251bf",
+    "assets/lights-out/lights-out-wordmark-banner.png": "3510cb27e6d87ac0f1f04d0d577c79f2c4f4f44af77f07a64b86de49889f1ea2",
+    "assets/lights-out/night-modes-panel.png": "f70f03d5db4fbe8347bf76435db86eedb83a3ab91111af519633651a8917e57d",
+    "assets/lights-out/proof-morning-visible.png": "7fe9adab2b168238b089d2daef1000ecc22366ce3db3677b8ea28f134a5e21d4",
+    "assets/lights-out/proof-session-history.png": "a1ee359dbaaced07cca9887d2f8fa496a76b23b4d13f99bc351beb074607055b",
+    "assets/lights-out/schedule-panel.png": "73e4716db38ca45aecc0fcd5cddfe34a9afee353cdef93a5a5d69f300a099cac",
+    "assets/lights-out/settings-first-light-automations.png": "e6d37920728e23cd40d92ae26b1e5631d3b6a1777b1adbfb05a188a12478a2a7",
+    "assets/lights-out/settings-power-safety-1920.png": "cd6887a7e9a92ff9d993240edd54307e6d981c589b09a340ddd8c2b5258e8d4a",
+    "assets/lights-out/settings-smart-lights.png": "e058895d742b3c3bfd9c8e2902fe93ac967b1bcbb9b25144a26a1438af6f1cd5",
+    "assets/lights-out/settings-wifi-guard.png": "a7e7929153ab060204b94068e2a1a629a823dac9794603db8f8774aae13f4d4b",
+    "assets/lights-out/tonight-active-hero.png": "a873bd97d1f7685a9ea08a855837f92ad422a292fe04dc3c716a98c03403d719",
+    "assets/lights-out/tonight-dryrun-running.png": "8329d4fb1df02aca7c4609f0cd633d1fb5593cae5341400796ae728fcf4b9662",
+    "assets/lights-out/tonight-movie-running.png": "ca46d2a8ad5c493e1abcaf7143c400db9aea9795e13cd78a63e61c9d9c8c8233",
+    "assets/lights-out/tonight-plan-projection.png": "d82a36ba0762d037da2a9492ac8c23f1645c75399968600a9e1c4ab5a96438cf",
+    "assets/proofshot/candidates-plan.png": "6f86d756fe9fd387e5a2ebf6b6655423a7c2b793b688e33e085a25bd1f47f16d",
+    "assets/proofshot/cases.png": "9ec331f1f3fdddc760955ccc718eefb4f133bea1f6855d413e30b355b541041d",
+    "assets/proofshot/decode-complete.png": "1c9b694ed1149638dcc1139cdf8ef7e76350de4ad768a134aab7ca60a32a5887",
+    "assets/proofshot/export-complete.png": "151c663af9ad2b8d666b45b28492f401fd106869e7934c433c469ba9b307342e",
+    "assets/proofshot/logo-transparent.png": "0c86c332aa4d763990eccdebe1424f2a3098831c0007a4ac00d9e18eef14138f",
+    "assets/proofshot/og-image.png": "6ba76cabc17d4dadf9ed90e505e03395b8dbb895f38b4e8cad3a3af36d519268",
+    "assets/proofshot/prove-again.png": "1bfcf6038c60f01ee9cdade207944d75ddbfcf1af8983dd3cb810e64accf545e",
+    "assets/proofshot/tamper-trial.png": "4dcbf5ad8ed936300b05640a9091a83120469b219bd5eb690e7544a0118c3899",
+    "assets/proofshot/web-hero.png": "1013682f086a93275b4058cc2ab61b150980856623247beee47f61a8067d5326",
+    "assets/proofshot/workbench-home.png": "33ca336d7eecc517a9a1e6caa7ac46f97da8b630342dc6b19477ca57d5baee80",
+    "assets/proofshot/workbench-proof-cards.png": "d18c63f872a56eb593d97cf523357cd73c41a2b26bd6d3839fa1ab91c9d8f3e6",
+    "assets/reality-gate/00-onboarding.png": "4677cd2ad6f5c54c8078120b9dcc18daf54ada854880848c273e4a0fcbf6f987",
+    "assets/reality-gate/01-home-continuity.png": "0bf4d48efd8bd11bf74753ed8ba4be82c60e17afab8ccfaffe9101427e3e8c9d",
+    "assets/reality-gate/02-dependency-map.png": "5529a33bfaa912703a76c4fc4bda5e89b91d85081905577755ccbc0b5f27f763",
+    "assets/reality-gate/03-recovery-drill-receipt.png": "eab471127addc0b47bfc2640d035540dd7c7a01328508205b9409df5d9ead093",
+    "assets/reality-gate/04-recovery-bundle-verified.png": "c48377c10553e48321fe9e116b4ce8e66c6c574017325a62dba38f8b52896fa4",
+    "assets/reality-gate/05-recovery-prove-passed.png": "c48377c10553e48321fe9e116b4ce8e66c6c574017325a62dba38f8b52896fa4",
+    "assets/reality-gate/06-remote-hub.png": "c71880bbe502a6b7d748063286737863ccb71c9aee40682ecb2549dd054d2ebd",
+    "assets/reality-gate/07-about.png": "1aa4a0d08decad7015fd4b5c5f3f725c8cee199c3056fa004c9ca2b381a3366c",
+    "assets/reality-gate/08-ci-run-complete.png": "4d57a0f661ae72677698c0b311bde00edffb8f2b763020939022339f4e19e409",
+    "assets/reality-gate/09-proof-ledger.png": "dd82837a6ce3f7219353a80484fc10985b74cf856a508604cb8c9cd92f82ad35",
+    "assets/studio/01-home-continuity-1440.webp": "9273f0c5217e16ac9687ad23635a274733805400d2b09e89c5120d5b0f31e7ce",
+    "assets/studio/01-home-continuity-480.webp": "2b0f248b71931566efa93ea169401632b4c3742ea3524b57ba2db8044bea4beb",
+    "assets/studio/01-home-continuity-960.webp": "42c0940451d458ebb3841622dddc276b3fe4f29bb2210734b54fdab700c3fabf",
+    "assets/studio/04-recovery-bundle-verified-1440.webp": "6ea0e64ea0237c1376cec124c440010c023f6eadab03fc1812c247c1499efe03",
+    "assets/studio/04-recovery-bundle-verified-480.webp": "d951e284f824759288fc350f1c20a547fc32e2f0c29f8005f0b98fcf56b8fc16",
+    "assets/studio/04-recovery-bundle-verified-960.webp": "67ca22af15755c73f291e94e7a7e575088ab290013b53d49a5d426feee816773",
+    "assets/studio/08-ci-run-complete-1440.webp": "3394e6fb25d1302c2cfe98e328b5049e96258313b5ea0cf28af053be86088215",
+    "assets/studio/08-ci-run-complete-480.webp": "b0cd9c7c89b567fa70103caa134cbd144d564f7f60923bcb4b381f687a9d5e62",
+    "assets/studio/08-ci-run-complete-960.webp": "8d8fc3891d1f29998cf5519ec70d4d07bb189ec9ccc9ec086309f5671d4fee14",
+    "assets/studio/09-proof-ledger-1440.webp": "c060adad674aa3fa358b4385a9c810faa4fcb26582e783e8f103029c2f1ebb6b",
+    "assets/studio/09-proof-ledger-480.webp": "0beee04dbdccb764f9a5943725da5fa948acceff999e352a1abed1df8c1fc152",
+    "assets/studio/09-proof-ledger-960.webp": "cc16e2c054a0a68402e136d4692f2b1e2679b10cc991992f7cdb88a2311a5f57",
+    "assets/studio/candidates-plan-1440.webp": "2c8de452c66d26670857ac3af725a0959218cfba05b35434f724233773294d6a",
+    "assets/studio/candidates-plan-480.webp": "52e879eecb95db75b6c748ecd658021798278032cab0475c384c16acd08af35e",
+    "assets/studio/candidates-plan-960.webp": "a106253c8b053c0fc43fc5d7a02f1b8b3166b0c25ea19faf1de14c19e22800c0",
+    "assets/studio/cleanroom-activity-ledger-1280.webp": "ac400f06d757a6bc3d276fa1c8297bf97261d443149e08150cf7e78e2299bf04",
+    "assets/studio/cleanroom-activity-ledger-480.webp": "28380cdbde3e28e7f78f5fec4c70a2016170e5b2ff24492c4827aae40943dcab",
+    "assets/studio/cleanroom-activity-ledger-960.webp": "89c9ba91eba9bcf20b6b014d98a97cffcb3bef920a23a6d49c82e0419a592059",
+    "assets/studio/cleanroom-review-1280.webp": "a468c1a834055d4843050ebe617ed520adbd8f17d9e6bd271527b2bd54ef1fcc",
+    "assets/studio/cleanroom-review-480.webp": "8535bbcff085db90e1312cdddc7d8b8d83d881c0b4056dcfc7b430f3c7f864e9",
+    "assets/studio/cleanroom-review-960.webp": "639d54fa0d38b808e4bfd2a82d92900ab33077fe30e371207d44100b5fdcfdaa",
+    "assets/studio/companion-active-390.webp": "2681e3e3e426cb1659ac59927e6a558b66f38e21066c9aea05e34290610d3f10",
+    "assets/studio/cv-all-clips-1600.webp": "3ffa4137d554b0d374b44e718fe6447e2d2ce068537d79857f2ecac6ec85f2fc",
+    "assets/studio/cv-all-clips-480.webp": "45f5829e91354dc0d65d5067f0b8bd67e475c4261588f239f48edf3dc91b73f8",
+    "assets/studio/cv-all-clips-960.webp": "68de2bb2d57cb13bca14662dac9b8eb6b01d129d8b73983b089fe3ff3b07e1db",
+    "assets/studio/cv-cleanup-suggestions-1600.webp": "5d514df5a5f71a062d97e9b0f71c8f8008a88dbe239dff451e8c99c781cada7a",
+    "assets/studio/cv-cleanup-suggestions-480.webp": "9189b84bf6cd2cd78692ae4def602679c34c596e74192269f2d0c47cff2ea7d7",
+    "assets/studio/cv-cleanup-suggestions-960.webp": "450eadfa38001e37c6fa0a3e4590f9d9c7bc2ec679e51fb560892c302230f73e",
+    "assets/studio/cv-quick-paste-480.webp": "98edcc286fcb1553062c063a101ee9c2017fefa169a317e01b3150b6b18f549f",
+    "assets/studio/cv-quick-paste-700.webp": "7bb08d515a6595c25aa404ef4c0bc9490352a5c59d5c3743e70b13e370a4f252",
+    "assets/studio/export-complete-1440.webp": "08fb0acbeff5f1cecf994d2a7164ebbc940c8427686ddbce3b8a8972d7600dbd",
+    "assets/studio/export-complete-480.webp": "8afabf7808977f2eb13b61096da9d0d97c6e72c133dd4a6c0aa107e8f87b775e",
+    "assets/studio/export-complete-960.webp": "059513e3cfe9215d4cac34c80f6cd81b0d3f497fd006b12ac9a4836918b7b6bc",
+    "assets/studio/gl-staged-files-1125.webp": "2fa880895c501dfe8b67878975a53502cb18b8cc77d5875b9f659db7a2858d01",
+    "assets/studio/gl-staged-files-480.webp": "7a5921cdfb045db9fc1942380efad7fcddf70411526c3de92ad525662d6f38dc",
+    "assets/studio/gl-staged-files-960.webp": "5ed6b553b298a88abbd1a21c2a0779d4275db40de8443d745333385785cba789",
+    "assets/studio/night-modes-panel-1600.webp": "dcb6f92efdfb28d91afb0da434551500428e8a6240fb02059c221178575dd602",
+    "assets/studio/night-modes-panel-480.webp": "8f862fb49efeaa87f0331ece68627687e6386716f4cd7c141200c910b9a411f3",
+    "assets/studio/night-modes-panel-960.webp": "d92edc12f5dddcd90eeee683ec58b991b2562b800f13d30b22778dc2bac8db7d",
+    "assets/studio/tonight-active-hero-1600.webp": "01af86b2fbecafe8627d493dd0632594b240889b40d29130edd924beff58e974",
+    "assets/studio/tonight-active-hero-480.webp": "551ad22b115c167d38912ace8fec124216c0b95519c74696514bd2fcd3510d32",
+    "assets/studio/tonight-active-hero-960.webp": "183f0d75db548340600be31c9ce4ca032cba10b79f2564c61b28bebbf206c5e3",
+    "assets/studio/v030-forecast-1080.webp": "d8206281e3ad3e1df722243ed76ab601d7f1f20b85e7b7cd338976dcc09b435f",
+    "assets/studio/v030-forecast-480.webp": "c600d19c7217da343258e4290a1a104bfa77a0a56872f0110f4f76e22fcfde48",
+    "assets/studio/v030-forecast-960.webp": "d9f85ec27ae31fc1716cfc88ce44e09c4d8bf73607335f0d419aa48dba6066a7",
+    "assets/studio/v030-plan-1080.webp": "8127f630c510a131cefdecfc6e11f492d8234c38c859e52cfcbd87db74eed5b4",
+    "assets/studio/v030-plan-480.webp": "4d6caa39fd4ad37042afaaf78d441ca40cd48cb24010b9e2f64c11e25a3aa8f7",
+    "assets/studio/v030-plan-960.webp": "866fb6154164f2175a435a08a771a966f43164c9f5db7b156af363aa4a7a776e",
+    "assets/studio/v030-today-1080.webp": "ac0f75878d2f029a3f3858b3623bd2407eca4f6fb99c95a25fbba440558b2ede",
+    "assets/studio/v030-today-480.webp": "ea5ae594f859d068dd7e862a6d34a723289cae81a0e37a9afa4c0286666cd923",
+    "assets/studio/v030-today-960.webp": "2b117f2131c20500b9262d42bb900f6822c84cce88fe99c337d05b65d6ee34fb",
+    "assets/studio/v030-widgets-1080.webp": "598d361652a36cb4d545d3a2fa50b9e0191fb0306302538969717a1969cd5b8c",
+    "assets/studio/v030-widgets-480.webp": "00f80d1dfa889654065f435c379c80a1546c1df17276a16097a36d8f67d0c993",
+    "assets/studio/v030-widgets-960.webp": "ca7466ff97253305fba296fbfcd1766478b79802dad66c8d2358ff613fa90a70",
+    "assets/studio/workbench-home-1440.webp": "ceeceea851270476cee28c54c490de87e358568ee228b0d0334956bfa7414e0f",
+    "assets/studio/workbench-home-480.webp": "3a4a86b881c3fc4a7c6cab9c1272b6684be665b31abd01c264186bfc74933b41",
+    "assets/studio/workbench-home-960.webp": "10503a6c027905089c1ba4d4c526de467aeafbe4b370000d511b70b5fef6eedd",
+    "assets/studio/workbench-proof-cards-1440.webp": "071cc1b8a88dc1cb6ca7fba81180622a0b083a7e6f9ac07466d815f6fa638ddb",
+    "assets/studio/workbench-proof-cards-480.webp": "19f412a08bfcaea8cb491560d914fdca589924658c628d982eba92887c05a1dd",
+    "assets/studio/workbench-proof-cards-960.webp": "180a1ff1298d987ab6dda9e1bbd727af12b2ba7fe9c3bbe99a6e630c20b0d2d5",
+    "brand/proof-foundry-logo-horizontal.svg": "18ba153040fd6ee18211de41f443109a931d44868f94fd11e23b4fd8a6990a81",
+    "brand/proof-foundry-mark.png": "622e0569f547bb0843257178c80453e6aafe0c25c1104a1b7e4f3a72aeda7ff6",
+    "brand/proof-foundry-mark.svg": "4065a558f8b855f0ee5bcd1be265277ecc28acc5eee921f09b0b0079269f2dc8",
+    "brand/proof-foundry-social-card.png": "d68518fa4b2e62cdbfb18d0e3ea94564b38af24515b546da7942af2c426ee8ca",
+    "brand/proof-foundry-verified-seal.svg": "40191b601aab467638e8e655da653dc12e61f6644ac422e5abe93080048fbd9d",
+    "brand/proof-foundry.theme.json": "6f0c069fa6c95d3765f3d37ffee1b87d330374756ce730bc28e2687911d022a7",
+    "cache-vault/index.html": "c2e20385d0d6937aeb2dec02a0c861f9898f1261759d94d9aaacab5675235d94",
+    "cleanroom/index.html": "b0ad07bf1599e59677cfe91073a6888a45a94801f12b0b1b4238374a7c2e0c84",
+    "experience.css": "7ae1caa7977ed10498d77a4ba2879552d5f8bf576427f47e8c6ed81d8ca02ccd",
+    "experience.js": "d119d03dd84b8119a56384ffac34f0d5ebc8d17b9dd93f8274890f700a86d5a2",
+    "forgecast/index.html": "48145bb730ec9e7636549803403cbece33753ea1140ab6fe7151fa1685d413c9",
+    "founders/index.html": "8cbf455c6a4e0ce7c61f77fa2a9951a0df83007c6fbcdecc3334abe31463d516",
+    "ghostlayer/index.html": "34c8ad141fe768f5b6c3ea3e56a4d2f0ebed77b6a1128281257611085298f656",
+    "index.html": "4be6bd2b697edf0abb74c83e5546916f8200915972d6a71677d090437d2f6225",
+    "lights-out/index.html": "870c2ca9e0a72340e73fe2d5eca5a6edf1130660d997ee08d455601482fc88bf",
+    "proof/index.html": "aa055422df7af77eef3494c0997d3e852e271081b0006986e302dd6570f4eeca",
+    "proof/index.json": "8d1476a04168f8e328e9bf85953ef47d22aae990575265acd914f86472a3a219",
+    "proofshot/index.html": "ae67f020f292b9f1b9ba0939d8b0524ead1f1734ac5a45aa7e3bb0bdb8ca608f",
+    "reality-gate/index.html": "5dfd49b6ea8eaa21a4efc8d08d04f6205c3bd912235a6dc2f5fbe79d55d184a2",
+    "reports/deploy-receipts/2026-06-30-proof-foundry-site.md": "1538bb96f731589755a47d1daa3f20e9ab99c536967e98dd0a7a6c5d7d1b22b1",
+    "reports/deploy-receipts/2026-07-01-proof-foundry-site.md": "d4fd9984d97884ea2ced48ca1a62c59f5d57ed25a17e4decbe3f92c6166afbca",
+    "reports/deploy-receipts/2026-07-02-proof-foundry-site.md": "eeff41981cbf1ad9cb0b9662699435b5b743f1218a185959c8b601ec60d6c835",
+    "reports/deploy-receipts/2026-07-04-proof-foundry-site.md": "bc5058f050440ca38ed226e3d6b4acdcef1aca2ac262411f53cb5a24e508b033",
+    "reports/deploy-receipts/2026-07-05-proof-foundry-site.md": "0ee50e572f9e9f3d3a0f840cb420ade30616886f5f46ca5e2157e63e038685e3",
+    "reports/deploy-receipts/2026-08-15-proof-foundry-site.md": "795a9c575af9cb908eac0a464d528af2d910303d96f29aeb5a7546a2d72e64e3",
+    "reports/deploy-receipts/2026-08-16-proof-foundry-site.md": "9e039eb2347107e63779f3369297ef9c52fa5fe5d66cb80070f4cae67de789a3",
+    "reports/deploy-receipts/2026-08-17-proof-foundry-site.md": "0ae0291fa3221868c7f11979afe056377ac8d8ae68f7e60a276bd6f7ff87c875",
+    "reports/deploy-receipts/2026-08-19-proof-foundry-site.md": "3f6dccbb773d7cbb652d0ca6152297681dace4093dfff04d68bdb298e0aec257",
+    "reports/deploy-receipts/2026-08-20-proof-foundry-site.md": "5d16b1059f00e319ebfc3ab694bbcef69d2c49d5cead1d884d398f22e661ae4b",
+    "reports/deploy-receipts/2026-08-27-proof-foundry-site.md": "46a336c591eef52bdf4ee0c099ada08ddad1a14a9a98caba61100fc4445026fe",
+    "reports/deploy-receipts/2026-09-08-proof-foundry-site.md": "1c9b2bf711641e00e133cfbff8eeba22756f3197c9bb7d66badac4ae4786c22c",
+    "reports/deploy-receipts/CACHE_VAULT_REVENUE_LANE_2026-07-01.md": "66e5bea5c76843ef720d1384bb9ade6dcc3f97c9adc65ac2d7c3b401afc6a121",
+    "roadmap/index.html": "65c7a1228d76c0cad1429c770bf907a82e3bc7b7f3d2a1c3f02912afe28620d8",
+    "robots.txt": "bbac4e9e83704d4d597064beaa28a736779b8f3caded733b8a7456c7a6191440",
+    "site-manifest.json": "88bf599962e67f4d3811e51dc01e54666718bb03c4a32182dfc22c7503c40296",
+    "site.js": "3cd8bf1926022841b060ac7be3d55a45c0857587211ebc23b04a68122eb74064",
+    "sitemap.xml": "fab60cbfaeac21fed9ce456ed06db5445216feff130a093dbb6bc61917651253",
+    "studio.css": "64f0be2eb39494e545d0a9166cf3c420ae6952ea9d20bd50c0a8447eb2c6b4f0",
+    "styles.css": "079a9a9013f1be9d69c328d37f58233ff09000fdb99d26be73b55fbe5b775327"
+  }
+}

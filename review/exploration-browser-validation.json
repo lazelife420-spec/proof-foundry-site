@@ -1,0 +1,1594 @@
+{
+  "date": "2026-09-09",
+  "deployment": "not deployed",
+  "viewports": [
+    {
+      "slug": "home",
+      "width": 390,
+      "section": "hero",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#products",
+          "text": "Explore the software↗"
+        }
+      ],
+      "dock": [],
+      "heroImages": [
+        {
+          "bottom": 859,
+          "source": "http://terminal.local:4173/assets/studio/cv-quick-paste-480.webp",
+          "top": 616,
+          "width": 249
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 375,
+      "title": "Good software.On your terms.",
+      "viewportWidth": 375
+    },
+    {
+      "slug": "reality-gate",
+      "width": 1440,
+      "section": "hero",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#download",
+          "text": "Get the Developer Pilot↗"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try the idea ↓"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Get the pilot"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": 1237,
+          "source": "http://terminal.local:4173/assets/studio/08-ci-run-complete-1440.webp",
+          "top": 577,
+          "width": 1118
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 1425,
+      "title": "Run your work.Own the outcome.",
+      "viewportWidth": 1425
+    },
+    {
+      "slug": "reality-gate",
+      "width": 390,
+      "section": "hero",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#download",
+          "text": "Get the Developer Pilot↗"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try the idea ↓"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Get the pilot"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": 815,
+          "source": "http://terminal.local:4173/assets/studio/08-ci-run-complete-480.webp",
+          "top": 609,
+          "width": 329
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 375,
+      "title": "Run your work.Own the outcome.",
+      "viewportWidth": 375
+    },
+    {
+      "slug": "cache-vault",
+      "width": 1440,
+      "section": "hero",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#download",
+          "text": "Check availability↗"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try the idea ↓"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Availability"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": 694,
+          "source": "http://terminal.local:4173/assets/studio/cv-quick-paste-700.webp",
+          "top": 264,
+          "width": 476
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 1425,
+      "title": "You copied it.Keep it.",
+      "viewportWidth": 1425
+    },
+    {
+      "slug": "cache-vault",
+      "width": 390,
+      "section": "hero",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#download",
+          "text": "Check availability↗"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try the idea ↓"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Availability"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": 873,
+          "source": "http://terminal.local:4173/assets/studio/cv-quick-paste-480.webp",
+          "top": 585,
+          "width": 295
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 375,
+      "title": "You copied it.Keep it.",
+      "viewportWidth": 375
+    },
+    {
+      "slug": "lights-out",
+      "width": 1440,
+      "section": "hero",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#download",
+          "text": "View release options↗"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try the idea ↓"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Releases"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": 1016,
+          "source": "http://terminal.local:4173/assets/studio/tonight-active-hero-960.webp",
+          "top": 583,
+          "width": 768
+        },
+        {
+          "bottom": 1020,
+          "source": "http://terminal.local:4173/assets/studio/companion-active-390.webp",
+          "top": 710,
+          "width": 143
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 1425,
+      "title": "Call it a night.",
+      "viewportWidth": 1425
+    },
+    {
+      "slug": "lights-out",
+      "width": 390,
+      "section": "hero",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#download",
+          "text": "View release options↗"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try the idea ↓"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Releases"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": 652,
+          "source": "http://terminal.local:4173/assets/studio/tonight-active-hero-480.webp",
+          "top": 490,
+          "width": 287
+        },
+        {
+          "bottom": 694,
+          "source": "http://terminal.local:4173/assets/studio/companion-active-390.webp",
+          "top": 521,
+          "width": 80
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 375,
+      "title": "Call it a night.",
+      "viewportWidth": 375
+    },
+    {
+      "slug": "cleanroom",
+      "width": 1440,
+      "section": "hero",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#download",
+          "text": "Get Cleanroom for Windows↗"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try the idea ↓"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Get the app"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": 661,
+          "source": "http://terminal.local:4173/assets/studio/cleanroom-review-960.webp",
+          "top": 262,
+          "width": 672
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 1425,
+      "title": "Less clutter.A way back.",
+      "viewportWidth": 1425
+    },
+    {
+      "slug": "cleanroom",
+      "width": 390,
+      "section": "hero",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#download",
+          "text": "Get Cleanroom for Windows↗"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try the idea ↓"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Get the app"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": 734,
+          "source": "http://terminal.local:4173/assets/studio/cleanroom-review-480.webp",
+          "top": 553,
+          "width": 306
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 375,
+      "title": "Less clutter.A way back.",
+      "viewportWidth": 375
+    },
+    {
+      "slug": "ghostlayer",
+      "width": 1440,
+      "section": "hero",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#download",
+          "text": "Get GhostLayer for Windows↗"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try the idea ↓"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Get the app"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": 727,
+          "source": "http://terminal.local:4173/assets/studio/gl-staged-files-960.webp",
+          "top": 267,
+          "width": 635
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 1425,
+      "title": "Choose whatbecomes permanent.",
+      "viewportWidth": 1425
+    },
+    {
+      "slug": "ghostlayer",
+      "width": 390,
+      "section": "hero",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#download",
+          "text": "Get GhostLayer for Windows↗"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try the idea ↓"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Get the app"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": 819,
+          "source": "http://terminal.local:4173/assets/studio/gl-staged-files-480.webp",
+          "top": 596,
+          "width": 309
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 375,
+      "title": "Choose whatbecomes permanent.",
+      "viewportWidth": 375
+    },
+    {
+      "slug": "forgecast",
+      "width": 1440,
+      "section": "hero",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#download",
+          "text": "Get ForgeCast for Android↗"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try the idea ↓"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Get the app"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": 716,
+          "source": "http://terminal.local:4173/assets/studio/v030-today-480.webp",
+          "top": 237,
+          "width": 221
+        },
+        {
+          "bottom": 725,
+          "source": "http://terminal.local:4173/assets/studio/v030-plan-480.webp",
+          "top": 296,
+          "width": 232
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 1425,
+      "title": "A good dayto get outside.",
+      "viewportWidth": 1425
+    },
+    {
+      "slug": "forgecast",
+      "width": 390,
+      "section": "hero",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#download",
+          "text": "Get ForgeCast for Android↗"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try the idea ↓"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Get the app"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": 846,
+          "source": "http://terminal.local:4173/assets/studio/v030-today-480.webp",
+          "top": 539,
+          "width": 142
+        },
+        {
+          "bottom": 835,
+          "source": "http://terminal.local:4173/assets/studio/v030-plan-480.webp",
+          "top": 564,
+          "width": 147
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 375,
+      "title": "A good dayto get outside.",
+      "viewportWidth": 375
+    },
+    {
+      "slug": "proofshot",
+      "width": 1440,
+      "section": "hero",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#try-it",
+          "text": "Explore the workbench↗"
+        },
+        {
+          "href": "#release-status",
+          "text": "See development status"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Status"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": 709,
+          "source": "http://terminal.local:4173/assets/studio/workbench-home-960.webp",
+          "top": 281,
+          "width": 684
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 1425,
+      "title": "Keep the context.Build the evidence.",
+      "viewportWidth": 1425
+    },
+    {
+      "slug": "proofshot",
+      "width": 390,
+      "section": "hero",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#try-it",
+          "text": "Explore the workbench↗"
+        },
+        {
+          "href": "#release-status",
+          "text": "See development status"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Status"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": 835,
+          "source": "http://terminal.local:4173/assets/studio/workbench-home-480.webp",
+          "top": 644,
+          "width": 305
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 375,
+      "title": "Keep the context.Build the evidence.",
+      "viewportWidth": 375
+    },
+    {
+      "slug": "proofshot",
+      "width": 1440,
+      "section": "try",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#try-it",
+          "text": "Explore the workbench↗"
+        },
+        {
+          "href": "#release-status",
+          "text": "See development status"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Status"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": -794,
+          "source": "http://terminal.local:4173/assets/studio/workbench-home-960.webp",
+          "top": -1222,
+          "width": 684
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 1425,
+      "title": "Keep the context.Build the evidence.",
+      "viewportWidth": 1425
+    },
+    {
+      "slug": "proofshot",
+      "width": 390,
+      "section": "try",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#try-it",
+          "text": "Explore the workbench↗"
+        },
+        {
+          "href": "#release-status",
+          "text": "See development status"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Status"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": -1080,
+          "source": "http://terminal.local:4173/assets/studio/workbench-home-480.webp",
+          "top": -1271,
+          "width": 305
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 375,
+      "title": "Keep the context.Build the evidence.",
+      "viewportWidth": 375
+    },
+    {
+      "slug": "forgecast",
+      "width": 1440,
+      "section": "try",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#download",
+          "text": "Get ForgeCast for Android↗"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try the idea ↓"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Get the app"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": -634,
+          "source": "http://terminal.local:4173/assets/studio/v030-today-480.webp",
+          "top": -1113,
+          "width": 221
+        },
+        {
+          "bottom": -625,
+          "source": "http://terminal.local:4173/assets/studio/v030-plan-480.webp",
+          "top": -1054,
+          "width": 232
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 1425,
+      "title": "A good dayto get outside.",
+      "viewportWidth": 1425
+    },
+    {
+      "slug": "forgecast",
+      "width": 390,
+      "section": "try",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#download",
+          "text": "Get ForgeCast for Android↗"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try the idea ↓"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Get the app"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": -936,
+          "source": "http://terminal.local:4173/assets/studio/v030-today-480.webp",
+          "top": -1243,
+          "width": 142
+        },
+        {
+          "bottom": -947,
+          "source": "http://terminal.local:4173/assets/studio/v030-plan-480.webp",
+          "top": -1218,
+          "width": 147
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 375,
+      "title": "A good dayto get outside.",
+      "viewportWidth": 375
+    },
+    {
+      "slug": "ghostlayer",
+      "width": 1440,
+      "section": "try",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#download",
+          "text": "Get GhostLayer for Windows↗"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try the idea ↓"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Get the app"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": -859,
+          "source": "http://terminal.local:4173/assets/studio/gl-staged-files-960.webp",
+          "top": -1319,
+          "width": 635
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 1425,
+      "title": "Choose whatbecomes permanent.",
+      "viewportWidth": 1425
+    },
+    {
+      "slug": "ghostlayer",
+      "width": 390,
+      "section": "try",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#download",
+          "text": "Get GhostLayer for Windows↗"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try the idea ↓"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Get the app"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": -1350,
+          "source": "http://terminal.local:4173/assets/studio/gl-staged-files-480.webp",
+          "top": -1573,
+          "width": 309
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 375,
+      "title": "Choose whatbecomes permanent.",
+      "viewportWidth": 375
+    },
+    {
+      "slug": "cleanroom",
+      "width": 1440,
+      "section": "try",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#download",
+          "text": "Get Cleanroom for Windows↗"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try the idea ↓"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Get the app"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": -733,
+          "source": "http://terminal.local:4173/assets/studio/cleanroom-review-960.webp",
+          "top": -1132,
+          "width": 672
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 1425,
+      "title": "Less clutter.A way back.",
+      "viewportWidth": 1425
+    },
+    {
+      "slug": "cleanroom",
+      "width": 390,
+      "section": "try",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#download",
+          "text": "Get Cleanroom for Windows↗"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try the idea ↓"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Get the app"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": -986,
+          "source": "http://terminal.local:4173/assets/studio/cleanroom-review-480.webp",
+          "top": -1167,
+          "width": 306
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 375,
+      "title": "Less clutter.A way back.",
+      "viewportWidth": 375
+    },
+    {
+      "slug": "lights-out",
+      "width": 1440,
+      "section": "try",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#download",
+          "text": "View release options↗"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try the idea ↓"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Releases"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": -635,
+          "source": "http://terminal.local:4173/assets/studio/tonight-active-hero-960.webp",
+          "top": -1068,
+          "width": 768
+        },
+        {
+          "bottom": -631,
+          "source": "http://terminal.local:4173/assets/studio/companion-active-390.webp",
+          "top": -941,
+          "width": 143
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 1425,
+      "title": "Call it a night.",
+      "viewportWidth": 1425
+    },
+    {
+      "slug": "lights-out",
+      "width": 390,
+      "section": "try",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#download",
+          "text": "View release options↗"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try the idea ↓"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Releases"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": -937,
+          "source": "http://terminal.local:4173/assets/studio/tonight-active-hero-480.webp",
+          "top": -1099,
+          "width": 287
+        },
+        {
+          "bottom": -895,
+          "source": "http://terminal.local:4173/assets/studio/companion-active-390.webp",
+          "top": -1068,
+          "width": 80
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 375,
+      "title": "Call it a night.",
+      "viewportWidth": 375
+    },
+    {
+      "slug": "cache-vault",
+      "width": 1440,
+      "section": "try",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#download",
+          "text": "Check availability↗"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try the idea ↓"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Availability"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": -676,
+          "source": "http://terminal.local:4173/assets/studio/cv-quick-paste-700.webp",
+          "top": -1106,
+          "width": 476
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 1425,
+      "title": "You copied it.Keep it.",
+      "viewportWidth": 1425
+    },
+    {
+      "slug": "cache-vault",
+      "width": 390,
+      "section": "try",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#download",
+          "text": "Check availability↗"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try the idea ↓"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Availability"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": -906,
+          "source": "http://terminal.local:4173/assets/studio/cv-quick-paste-480.webp",
+          "top": -1194,
+          "width": 295
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 375,
+      "title": "You copied it.Keep it.",
+      "viewportWidth": 375
+    },
+    {
+      "slug": "reality-gate",
+      "width": 1440,
+      "section": "try",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#download",
+          "text": "Get the Developer Pilot↗"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try the idea ↓"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Get the pilot"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": -638,
+          "source": "http://terminal.local:4173/assets/studio/08-ci-run-complete-1440.webp",
+          "top": -1298,
+          "width": 1118
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 1425,
+      "title": "Run your work.Own the outcome.",
+      "viewportWidth": 1425
+    },
+    {
+      "slug": "reality-gate",
+      "width": 390,
+      "section": "try",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#download",
+          "text": "Get the Developer Pilot↗"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try the idea ↓"
+        }
+      ],
+      "dock": [
+        {
+          "href": "#overview",
+          "text": "Overview"
+        },
+        {
+          "href": "#try-it",
+          "text": "Try it"
+        },
+        {
+          "href": "#download",
+          "text": "Get the pilot"
+        },
+        {
+          "href": "#proof",
+          "text": "Proof"
+        }
+      ],
+      "heroImages": [
+        {
+          "bottom": -921,
+          "source": "http://terminal.local:4173/assets/studio/08-ci-run-complete-480.webp",
+          "top": -1127,
+          "width": 329
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 375,
+      "title": "Run your work.Own the outcome.",
+      "viewportWidth": 375
+    },
+    {
+      "slug": "home",
+      "width": 1440,
+      "section": "try",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#products",
+          "text": "Explore the software↗"
+        }
+      ],
+      "dock": [],
+      "heroImages": [
+        {
+          "bottom": -41,
+          "source": "http://terminal.local:4173/assets/studio/cv-quick-paste-700.webp",
+          "top": -393,
+          "width": 361
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 1425,
+      "title": "Good software.On your terms.",
+      "viewportWidth": 1425
+    },
+    {
+      "slug": "home",
+      "width": 390,
+      "section": "try",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#products",
+          "text": "Explore the software↗"
+        }
+      ],
+      "dock": [],
+      "heroImages": [
+        {
+          "bottom": -75,
+          "source": "http://terminal.local:4173/assets/studio/cv-quick-paste-480.webp",
+          "top": -318,
+          "width": 249
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 375,
+      "title": "Good software.On your terms.",
+      "viewportWidth": 375
+    },
+    {
+      "slug": "home",
+      "width": 1440,
+      "section": "hero",
+      "brokenImages": [],
+      "ctas": [
+        {
+          "href": "#products",
+          "text": "Explore the software↗"
+        }
+      ],
+      "dock": [],
+      "heroImages": [
+        {
+          "bottom": 832,
+          "source": "http://terminal.local:4173/assets/studio/cv-quick-paste-700.webp",
+          "top": 480,
+          "width": 361
+        }
+      ],
+      "pendingVisible": [],
+      "scrollWidth": 1425,
+      "title": "Good software.On your terms.",
+      "viewportWidth": 1425
+    }
+  ],
+  "galleries": [
+    {
+      "slug": "reality-gate",
+      "title": "Runroom",
+      "preview": true,
+      "original": true
+    },
+    {
+      "slug": "reality-gate",
+      "title": "Home",
+      "preview": true,
+      "original": true
+    },
+    {
+      "slug": "reality-gate",
+      "title": "Recovery",
+      "preview": true,
+      "original": true
+    },
+    {
+      "slug": "reality-gate",
+      "title": "Ledger",
+      "preview": true,
+      "original": true
+    },
+    {
+      "slug": "cache-vault",
+      "title": "Quick Paste",
+      "preview": true,
+      "original": true
+    },
+    {
+      "slug": "cache-vault",
+      "title": "Command Center",
+      "preview": true,
+      "original": true
+    },
+    {
+      "slug": "cache-vault",
+      "title": "Cleanup suggestions",
+      "preview": true,
+      "original": true
+    },
+    {
+      "slug": "lights-out",
+      "title": "Tonight",
+      "preview": true,
+      "original": true
+    },
+    {
+      "slug": "lights-out",
+      "title": "Night modes",
+      "preview": true,
+      "original": true
+    },
+    {
+      "slug": "lights-out",
+      "title": "Android companion",
+      "preview": true,
+      "original": true
+    },
+    {
+      "slug": "cleanroom",
+      "title": "Dashboard",
+      "preview": true,
+      "original": true
+    },
+    {
+      "slug": "cleanroom",
+      "title": "Activity",
+      "preview": true,
+      "original": true
+    },
+    {
+      "slug": "ghostlayer",
+      "title": "Staging",
+      "preview": true,
+      "original": true
+    },
+    {
+      "slug": "forgecast",
+      "title": "Today",
+      "preview": true,
+      "original": true
+    },
+    {
+      "slug": "forgecast",
+      "title": "Plan",
+      "preview": true,
+      "original": true
+    },
+    {
+      "slug": "forgecast",
+      "title": "Forecast",
+      "preview": true,
+      "original": true
+    },
+    {
+      "slug": "forgecast",
+      "title": "Widgets",
+      "preview": true,
+      "original": true
+    },
+    {
+      "slug": "proofshot",
+      "title": "Workbench",
+      "preview": true,
+      "original": true
+    },
+    {
+      "slug": "proofshot",
+      "title": "Candidates",
+      "preview": true,
+      "original": true
+    },
+    {
+      "slug": "proofshot",
+      "title": "Export",
+      "preview": true,
+      "original": true
+    },
+    {
+      "slug": "proofshot",
+      "title": "Records",
+      "preview": true,
+      "original": true
+    }
+  ],
+  "checks": {
+    "comparisonTwoAndThreeProducts": true,
+    "comparisonMaxThree": true,
+    "comparisonClear": true,
+    "comparisonEscape": true,
+    "comparisonMobileOverflow": 0,
+    "comparisonVersionsChecked": [
+      "Cache Vault",
+      "Cleanroom",
+      "Reality Gate",
+      "Lights Out",
+      "ProofShot"
+    ],
+    "galleryKeyboardNavigation": true,
+    "galleryZoomDesktop": true,
+    "galleryFitDesktop": true,
+    "galleryEscapeAllProducts": true,
+    "galleryMobileOverflow": 0,
+    "theaterKeyboardHomeEnd": true,
+    "productDockStatusDestination": true,
+    "productDockProofOpens": true,
+    "applicationConsoleErrors": 0
+  },
+  "priorInteractions": "See dynamic-browser-validation.json for all seven interactive preview workflows and expanded proof checks."
+}

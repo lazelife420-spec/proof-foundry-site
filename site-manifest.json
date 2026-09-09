@@ -29,23 +29,23 @@
   "availabilityTaxonomy": {
     "derivation": "Availability is about the product, not its newest build lane: a product is AVAILABLE when release.publicVersion names a real public release, even while a newer candidate is also in flight. NO_PUBLIC_RELEASE means no public release of the product exists yet. Whether an artifact is downloadable right now is a separate fact, carried by downloadUrl and stated on the card, never inferred from this taxonomy.",
     "labels": {
-      "AVAILABLE": "Available",
+      "AVAILABLE": "Public release",
       "NO_PUBLIC_RELEASE": "No public release yet"
     }
   },
   "productGroups": [
     {
       "id": "available-now",
-      "label": "Available now",
-      "note": "Each of these has a public release. Where a download is blocked or pending, the card says so instead of hiding the product.",
+      "label": "Tools for your everyday",
+      "note": "Built for Windows and Android. Choose a tool to see its features and download options.",
       "availability": [
         "AVAILABLE"
       ]
     },
     {
       "id": "foundry",
-      "label": "In the foundry",
-      "note": "No public release yet — built and proven in the open.",
+      "label": "Taking shape",
+      "note": "A look inside the workbench. ProofShot is still in development.",
       "availability": [
         "NO_PUBLIC_RELEASE"
       ]
@@ -83,27 +83,22 @@
   "nav": [
     {
       "id": "products",
-      "label": "Products",
+      "label": "Software",
       "href": "/#products"
     },
     {
-      "id": "proof-standard",
-      "label": "Proof Standard",
-      "href": "/#proof-standard"
+      "id": "roadmap",
+      "label": "What’s next",
+      "href": "/roadmap/"
     },
     {
       "id": "receipts",
-      "label": "Receipts",
+      "label": "Release records",
       "href": "/proof/"
-    },
-    {
-      "id": "founders",
-      "label": "Founders",
-      "href": "/founders/"
     }
   ],
   "navCta": {
-    "label": "Explore Products",
+    "label": "Find your tool",
     "href": "/#products"
   },
   "products": [
@@ -126,9 +121,11 @@
       "featured": true,
       "presentation": {
         "valueLine": "Run your build inside an isolated local clone, then keep a signed receipt proving exactly what happened.",
-        "cardImage": "/assets/reality-gate/08-ci-run-complete.png",
+        "cardImage": "/assets/studio/08-ci-run-complete-960.webp",
         "cardImageAlt": "Reality Gate run complete, showing a SUCCESS badge beside a VERIFIED RECEIPT badge.",
-        "cardCta": "Download Developer Pilot"
+        "cardCta": "Explore Reality Gate",
+        "cardImageWidth": 960,
+        "cardImageHeight": 600
       },
       "release": {
         "publicVersion": "1.1.0",
@@ -220,9 +217,13 @@
       "visible": true,
       "presentation": {
         "valueLine": "Every clipboard item you copy, kept on your machine, searchable, and filed into safes you control.",
-        "cardImage": "/assets/cache-vault/cv-all-clips.png",
-        "cardImageAlt": "Cache Vault All Clips view: clipboard history list with search, filters, and a preview pane.",
-        "cardCta": "Download v0.2.3-rc1"
+        "cardImage": "/assets/studio/cv-quick-paste-700.webp",
+        "cardImageAlt": "Cache Vault Quick Paste popup with searchable clipboard items and keyboard shortcuts.",
+        "cardCta": "Explore Cache Vault",
+        "cardImageWidth": 700,
+        "cardImageHeight": 682,
+        "downloadUnavailable": true,
+        "downloadNotice": "Download links are currently unavailable. Checked 9 September 2026; public and candidate release classifications are unchanged."
       },
       "release": {
         "publicVersion": "0.2.2",
@@ -339,9 +340,11 @@
       "visible": true,
       "presentation": {
         "valueLine": "Plan tonight's shutdown at your desk, then run it from bed with the Android companion.",
-        "cardImage": "/assets/lights-out/tonight-active-hero.png",
+        "cardImage": "/assets/studio/tonight-active-hero-960.webp",
         "cardImageAlt": "Lights Out Tonight screen mid-session: countdown ring, session name, remaining time, and session controls.",
-        "cardCta": "See release status"
+        "cardCta": "Explore Lights Out",
+        "cardImageWidth": 960,
+        "cardImageHeight": 541
       },
       "release": {
         "publicVersion": "11.1.2",
@@ -437,10 +440,12 @@
       "cta": "View product",
       "visible": true,
       "presentation": {
-        "valueLine": "Clear out Windows clutter with everything archived first, so any cleanup can be put back.",
-        "cardImage": "/assets/cleanroom/cleanroom-review.png",
-        "cardImageAlt": "Cleanroom candidate review screen: file selection list with archive controls.",
-        "cardCta": "Download Cleanroom"
+        "valueLine": "Review Windows clutter, archive what you choose, and restore files to their original paths.",
+        "cardImage": "/assets/studio/cleanroom-review-960.webp",
+        "cardImageAlt": "Cleanroom dashboard showing a completed scan and archive status.",
+        "cardCta": "Explore Cleanroom",
+        "cardImageWidth": 960,
+        "cardImageHeight": 570
       },
       "release": {
         "publicVersion": "1.0.7",
@@ -528,10 +533,12 @@
       "cta": "View product",
       "visible": true,
       "presentation": {
-        "valueLine": "Stage files in RAM, work on them safely, then commit only the changes you approve to disk.",
-        "cardImage": "/assets/ghostlayer/gl-staged-files.png",
-        "cardImageAlt": "GhostLayer staged files list showing staged, modified, and selected file states.",
-        "cardCta": "Download GhostLayer"
+        "valueLine": "Keep files in a temporary RAM layer. Review changes and choose what to commit to disk.",
+        "cardImage": "/assets/studio/gl-staged-files-960.webp",
+        "cardImageAlt": "GhostLayer staging list showing two files in RAM with commit and discard controls.",
+        "cardCta": "Explore GhostLayer",
+        "cardImageWidth": 960,
+        "cardImageHeight": 695
       },
       "release": {
         "publicVersion": "0.4.0",
@@ -634,9 +641,11 @@
       "visible": true,
       "presentation": {
         "valueLine": "Weather that answers the question you actually have: when to go out, and what to wear.",
-        "cardImage": "/assets/forgecast/v030-today.png",
+        "cardImage": "/assets/studio/v030-today-960.webp",
         "cardImageAlt": "ForgeCast Today screen showing outfit guidance and the best-outside timing window.",
-        "cardCta": "Get ForgeCast for Android"
+        "cardCta": "Explore ForgeCast",
+        "cardImageWidth": 960,
+        "cardImageHeight": 2080
       },
       "release": {
         "publicVersion": "0.3.5",
@@ -733,9 +742,11 @@
       "visible": true,
       "presentation": {
         "valueLine": "Capture a page's real resources into a sealed proof bundle you can verify offline, years later.",
-        "cardImage": "/assets/proofshot/workbench-home.png",
+        "cardImage": "/assets/studio/workbench-home-960.webp",
         "cardImageAlt": "The ProofShot workbench home screen, showing the capture intake surface of the current engine build.",
-        "cardCta": "See what's being built"
+        "cardCta": "Explore ProofShot",
+        "cardImageWidth": 960,
+        "cardImageHeight": 600
       },
       "release": {
         "publicVersion": null,

@@ -1,0 +1,154 @@
+[
+  {
+    "product": "reality-gate",
+    "type": "downloadUrl",
+    "url": "https://downloads.theprooffoundry.com/reality-gate/v1.1.0/Reality-Gate-1.1.0-Developer-Pilot.zip",
+    "result": [
+      "HTTP/1.1 200 OK",
+      "HTTP/2 200 ",
+      "content-type: application/zip",
+      "content-length: 113508821",
+      "STATUS:200",
+      "FINAL:https://downloads.theprooffoundry.com/reality-gate/v1.1.0/Reality-Gate-1.1.0-Developer-Pilot.zip"
+    ],
+    "error": ""
+  },
+  {
+    "product": "reality-gate",
+    "type": "sha256Url",
+    "url": "https://downloads.theprooffoundry.com/reality-gate/v1.1.0/Reality-Gate-1.1.0-Developer-Pilot.zip.sha256.txt",
+    "result": [
+      "HTTP/1.1 200 OK",
+      "HTTP/2 200 ",
+      "content-type: text/plain",
+      "content-length: 105",
+      "STATUS:200",
+      "FINAL:https://downloads.theprooffoundry.com/reality-gate/v1.1.0/Reality-Gate-1.1.0-Developer-Pilot.zip.sha256.txt"
+    ],
+    "error": ""
+  },
+  {
+    "product": "cache-vault",
+    "type": "downloadUrl",
+    "url": "https://theprooffoundry.com/downloads/cache-vault/v0.2.3-rc1/CacheVault-v0.2.3-rc1-windows.zip",
+    "result": [
+      "HTTP/1.1 200 OK",
+      "HTTP/2 404 ",
+      "content-type: text/html; charset=utf-8",
+      "STATUS:404",
+      "FINAL:https://theprooffoundry.com/downloads/cache-vault/v0.2.3-rc1/CacheVault-v0.2.3-rc1-windows.zip"
+    ],
+    "error": ""
+  },
+  {
+    "product": "cache-vault",
+    "type": "sha256Url",
+    "url": "https://theprooffoundry.com/downloads/cache-vault/v0.2.3-rc1/SHA256SUMS.txt",
+    "result": [
+      "HTTP/1.1 200 OK",
+      "HTTP/2 404 ",
+      "content-type: text/html; charset=utf-8",
+      "STATUS:404",
+      "FINAL:https://theprooffoundry.com/downloads/cache-vault/v0.2.3-rc1/SHA256SUMS.txt"
+    ],
+    "error": ""
+  },
+  {
+    "product": "cache-vault",
+    "type": "downloadUrl",
+    "url": "https://github.com/lazelife420-spec/CacheVault/releases/download/v0.2.0/CacheVault-Mobile-v0.2.0-android.apk",
+    "result": [
+      "HTTP/1.1 200 OK",
+      "HTTP/2 404 ",
+      "content-type: text/plain; charset=utf-8",
+      "content-length: 9",
+      "STATUS:404",
+      "FINAL:https://github.com/lazelife420-spec/CacheVault/releases/download/v0.2.0/CacheVault-Mobile-v0.2.0-android.apk"
+    ],
+    "error": ""
+  },
+  {
+    "product": "cache-vault",
+    "type": "sha256Url",
+    "url": "https://github.com/lazelife420-spec/CacheVault/releases/download/v0.2.0/SHA256SUMS.txt",
+    "result": [
+      "HTTP/1.1 200 OK",
+      "HTTP/2 404 ",
+      "content-type: text/plain; charset=utf-8",
+      "content-length: 9",
+      "STATUS:404",
+      "FINAL:https://github.com/lazelife420-spec/CacheVault/releases/download/v0.2.0/SHA256SUMS.txt"
+    ],
+    "error": ""
+  },
+  {
+    "product": "cleanroom",
+    "type": "downloadUrl",
+    "url": "https://downloads.theprooffoundry.com/cleanroom/v1.0.7/Cleanroom-Setup-1.0.7.exe",
+    "result": [
+      "HTTP/1.1 200 OK",
+      "HTTP/2 200 ",
+      "content-type: application/x-msdownload",
+      "content-length: 16439764",
+      "STATUS:200",
+      "FINAL:https://downloads.theprooffoundry.com/cleanroom/v1.0.7/Cleanroom-Setup-1.0.7.exe"
+    ],
+    "error": ""
+  },
+  {
+    "product": "cleanroom",
+    "type": "sha256Url",
+    "url": "https://downloads.theprooffoundry.com/cleanroom/v1.0.7/SHA256SUMS.txt",
+    "result": [
+      "HTTP/1.1 200 OK",
+      "HTTP/2 200 ",
+      "content-type: text/plain",
+      "content-length: 231",
+      "STATUS:200",
+      "FINAL:https://downloads.theprooffoundry.com/cleanroom/v1.0.7/SHA256SUMS.txt"
+    ],
+    "error": ""
+  },
+  {
+    "product": "ghostlayer",
+    "type": "downloadUrl",
+    "url": "https://downloads.theprooffoundry.com/ghostlayer/v0.4.0/GhostLayer-Setup-0.4.0.exe",
+    "result": [
+      "HTTP/1.1 200 OK",
+      "HTTP/2 200 ",
+      "content-type: application/x-msdownload",
+      "content-length: 84611988",
+      "STATUS:200",
+      "FINAL:https://downloads.theprooffoundry.com/ghostlayer/v0.4.0/GhostLayer-Setup-0.4.0.exe"
+    ],
+    "error": ""
+  },
+  {
+    "product": "forgecast",
+    "type": "downloadUrl",
+    "url": "https://downloads.theprooffoundry.com/forgecast/v0.3.5/ForgeCast-Weather-v0.3.5-android-release.apk",
+    "result": [
+      "HTTP/1.1 200 OK",
+      "HTTP/2 200 ",
+      "content-type: application/vnd.android.package-archive",
+      "content-length: 77331690",
+      "STATUS:200",
+      "FINAL:https://downloads.theprooffoundry.com/forgecast/v0.3.5/ForgeCast-Weather-v0.3.5-android-release.apk"
+    ],
+    "error": ""
+  },
+  {
+    "product": "forgecast",
+    "type": "sha256Url",
+    "url": "https://downloads.theprooffoundry.com/forgecast/v0.3.5/ForgeCast-Weather-v0.3.5-android-release.apk.sha256.txt",
+    "result": [
+      "HTTP/1.1 200 OK",
+      "HTTP/2 200 ",
+      "content-type: text/plain",
+      "content-length: 112",
+      "STATUS:200",
+      "FINAL:https://downloads.theprooffoundry.com/forgecast/v0.3.5/ForgeCast-Weather-v0.3.5-android-release.apk.sha256.txt"
+    ],
+    "error": ""
+  }
+]

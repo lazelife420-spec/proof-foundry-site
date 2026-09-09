@@ -1,192 +1,34 @@
 <!doctype html>
+<!-- @page home -->
 <!-- @product reality-gate -->
+
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Proof Foundry™ — Proof-first software forged for builders</title>
-  <meta name="description" content="The Proof Foundry™ builds proof-first, local-first software: clipboard vaults, cleanup tools, shutdown timers, capture workflows, and verified formats." />
-  <meta name="robots" content="index, follow" />
-  <meta name="theme-color" content="#0B0F14" />
-  <link rel="canonical" href="https://theprooffoundry.com/" />
-
-  <meta property="og:title" content="The Proof Foundry™" />
-  <meta property="og:description" content="Local-first software with receipts, honest claims, and user-owned workflows." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://theprooffoundry.com/" />
-  <meta property="og:site_name" content="The Proof Foundry" />
-  <meta property="og:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
-
-  <link rel="icon" type="image/svg+xml" href="/brand/proof-foundry-mark.svg" />
-  <link rel="apple-touch-icon" href="/brand/proof-foundry-mark.png" />
-  <link rel="stylesheet" href="/styles.css" />
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>The Proof Foundry — Useful software, on your terms</title>
+<meta content="Independent local-first software for Windows and Android. Explore clipboard tools, reversible cleanup, nightly shutdown, weather and build control." name="description"/>
+<meta content="index, follow" name="robots"/>
+<meta content="#0B0F14" name="theme-color"/>
+<link href="https://theprooffoundry.com/" rel="canonical"/>
+<meta content="The Proof Foundry — Useful software, on your terms" property="og:title"/>
+<meta content="Independent local-first software for Windows and Android. Explore clipboard tools, reversible cleanup, nightly shutdown, weather and build control." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="https://theprooffoundry.com/" property="og:url"/>
+<meta content="The Proof Foundry" property="og:site_name"/>
+<meta content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" name="twitter:image"/>
+<link href="/brand/proof-foundry-mark.svg" rel="icon" type="image/svg+xml"/>
+<link href="/brand/proof-foundry-mark.png" rel="apple-touch-icon"/>
+<link href="/styles.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="/studio.css">
+<link rel="stylesheet" href="/experience.css">
 </head>
-<body>
-  <!-- @page home -->
-  <!-- @include header -->
-
-  <main>
-    <section id="home" class="hero" aria-labelledby="hero-title">
-      <div class="hero-art" aria-hidden="true">
-        <picture>
-          <source
-            type="image/avif"
-            srcset="/assets/foundry-strike/forged_pf_emblem_in_smoky_ruins-1280.avif 1280w,
-                    /assets/foundry-strike/forged_pf_emblem_in_smoky_ruins-1672.avif 1672w"
-            sizes="100vw" />
-          <source
-            type="image/webp"
-            srcset="/assets/foundry-strike/forged_pf_emblem_in_smoky_ruins-1280.webp 1280w,
-                    /assets/foundry-strike/forged_pf_emblem_in_smoky_ruins-1672.webp 1672w"
-            sizes="100vw" />
-          <img
-            class="hero-image"
-            src="/assets/foundry-strike/forged_pf_emblem_in_smoky_ruins.png"
-            alt=""
-            width="1672"
-            height="941"
-            fetchpriority="high"
-            decoding="async" />
-        </picture>
-      </div>
-      <div class="hero-shade" aria-hidden="true"></div>
-      <div class="hero-inner container">
-        <div class="hero-copy">
-          <p class="eyebrow">A software studio &middot; Windows &amp; Android &middot; Local-first</p>
-          <h1 id="hero-title">Software that runs<br /><span>on your machine.</span></h1>
-          <p class="hero-lede">{{brand}} builds small, sharp local-first tools: a clipboard vault, cleanup that can be undone, night shutdown you drive from bed, RAM-backed file staging, and weather that answers the question you actually have.</p>
-          <p class="hero-catalog">{{catalogSummary}}</p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="#products">Explore the software</a>
-            <a class="button button-secondary" href="#proof-standard">See how we prove releases</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="trust-strip-section container" aria-labelledby="trust-strip-title">
-      <h2 id="trust-strip-title" class="visually-hidden">What every Proof Foundry release comes with</h2>
-      <ul class="trust-strip">
-          <!-- @trust-strip -->
-      </ul>
-    </section>
-
-    <section id="reality-gate" class="rg-featured-anchor container" aria-labelledby="rg-featured-title">
-      <div class="rg-featured-grid">
-        <div class="rg-featured-copy">
-          <div class="rg-featured-header">
-            <span class="rg-featured-eyebrow">FEATURED PLATFORM · DEVELOPER PILOT</span>
-          </div>
-
-          <h2 id="rg-featured-title" class="rg-featured-title">Reality Gate</h2>
-          <div class="rg-featured-subtitle">Run it. Prove it. Keep the receipt.</div>
-
-          <p class="rg-featured-lede">
-            Run a build or a recovery drill inside an isolated local clone of your repository, then keep a signed receipt of exactly what executed and what passed. It works alongside GitHub, GitLab, Forgejo and ordinary Git &mdash; no migration, no handing over credentials.
-          </p>
-
-          <ul class="rg-featured-points">
-            <li><strong>See what you depend on.</strong> Map which parts of your workflow rely on a provider you do not control.</li>
-            <li><strong>Run without touching the original.</strong> Work executes in a throwaway local clone, so a bad run cannot damage your repo.</li>
-            <li><strong>Keep evidence you can hand to someone.</strong> Every run ends in a signed receipt with the exact source and artifact it covers.</li>
-          </ul>
-
-          <div class="rg-featured-ctas">
-            {{product.downloadBlock}}
-            <a class="button button-secondary" href="/reality-gate/">Explore Reality Gate &rarr;</a>
-          </div>
-
-          <p class="rg-featured-fineprint">
-            <strong>Windows 10/11 x64</strong> &middot; ~113.5 MB ZIP download &middot; Unsigned package &middot; Verify SHA-256 before launch.
-          </p>
-
-          <p class="rg-qual-line">
-            <span class="rg-qual-line-label">Pilot qualification</span>
-            <span class="rg-qual-line-values">269/269 static blocks &middot; 24/24 live registry &middot; 20/20 installed runtime &middot; 886 assertions green on current source</span>
-          </p>
-
-          <div class="rg-relationship-banner">
-            <strong>Used on our own products:</strong> the <strong>Lights Out v11.1.3 candidate</strong> was qualified through a Reality Gate Runroom before we would consider publishing it &mdash; and it is still on hold. Reality Gate qualifies our releases without becoming something the other products depend on to run.
-          </div>
-        </div>
-
-        <figure class="rg-featured-shot">
-          <div class="rg-shot-chrome" aria-hidden="true">
-            <span class="rg-shot-dot"></span>
-            <span class="rg-shot-dot"></span>
-            <span class="rg-shot-dot"></span>
-            <span class="rg-shot-chrome-label">Runroom &middot; run complete</span>
-          </div>
-          <img
-            src="/assets/reality-gate/08-ci-run-complete.png"
-            alt="A completed Reality Gate run showing a SUCCESS badge beside a VERIFIED RECEIPT badge."
-            width="1440" height="900" loading="lazy" decoding="async" />
-          <figcaption>A finished run: the outcome and the receipt that proves it, side by side.</figcaption>
-        </figure>
-
-      </div>
-    </section>
-
-    <section id="products" class="products container" aria-labelledby="products-title">
-      <div class="section-head">
-        <h2 id="products-title">The software</h2>
-        <p>Grouped by what you can actually do with it right now &mdash; not by how excited we are about it.</p>
-      </div>
-
-      <!-- @product-groups -->
-
-      <div class="more-tools" aria-label="Additional products in progress">
-        <p class="more-tools-title">Earlier still: not yet on a proof track</p>
-        <ul>
-          <li>ProofBound <span>In development</span></li>
-          <li>Sound Assist <span>In development</span></li>
-        </ul>
-      </div>
-    </section>
-
-    <section id="proof-standard" class="proof-standard container" aria-labelledby="proof-standard-title">
-      <div class="proof-seal-wrap">
-        <img class="seal-image" src="/brand/proof-foundry-verified-seal.svg" alt="Proof Foundry verified seal" />
-      </div>
-      <div class="proof-copy">
-        <p class="eyebrow">Why trust a download from here</p>
-        <h2 id="proof-standard-title">You do not have to take our word for it.</h2>
-        <p>Everything we publish is unsigned indie software from a small studio. That is exactly why each release carries a checksum you can compare, a named test result, and a written list of what it does <em>not</em> do.</p>
-        <ol class="proof-layers">
-          <li>
-            <span class="proof-layer-index">1</span>
-            <div>
-              <h3>Know what you are getting</h3>
-              <p>Each product page states the version, the platform, whether it is a public release or a candidate, and what is still missing.</p>
-            </div>
-          </li>
-          <li>
-            <span class="proof-layer-index">2</span>
-            <div>
-              <h3>Check the file matches</h3>
-              <p>Every public download publishes a SHA-256. Compare it before you run the installer, and you know the bytes are ours.</p>
-            </div>
-          </li>
-          <li>
-            <span class="proof-layer-index">3</span>
-            <div>
-              <h3>Read the record if you want to</h3>
-              <p>Test gates, verification records and release receipts are published in full for anyone who wants to go further.</p>
-            </div>
-          </li>
-        </ol>
-        <div class="proof-actions">
-          <a class="button button-primary" href="/proof/">Read the receipts</a>
-          <a class="button button-secondary" href="#products">Back to the software</a>
-        </div>
-        <p class="proof-roadmap-link"><a href="/roadmap/">See what we're proving next &rarr;</a></p>
-      </div>
-    </section>
-  </main>
-
-  <!-- @include footer -->
-  <script src="/site.js" defer></script>
-</body>
-</html>
+<body class="studio storefront">
+<!-- @include header -->
+<main id="main-content"><div class="store-shell"><section class="studio-home-hero"><div class="home-copy"><p class="kicker">Independent software · Windows &amp; Android</p><h1>Good software.<br><em>On your terms.</em></h1><p>Useful tools for your files, your work and your everyday. Built to run on your machine, with you in control.</p><div class="studio-actions"><a class="button button-primary" href="#products">Explore the software<span aria-hidden="true">↗</span></a></div><p class="home-principle">Local-first software. Built around you.</p></div><div class="product-theater" data-theater data-product="cache-vault"><div class="theater-top"><span class="kicker">Inside the foundry</span><span class="theater-index" aria-hidden="true">01 / 07</span></div><div class="theater-stage" data-tilt><figure class="theater-shot"><a class="screenshot-link" href="/assets/cache-vault/cv-quick-paste.png" data-screenshot aria-label="Enlarge: Cache Vault Quick Paste showing searchable sample clips."><img src="/assets/studio/cv-quick-paste-700.webp" srcset="/assets/studio/cv-quick-paste-480.webp 480w, /assets/studio/cv-quick-paste-700.webp 700w" sizes="(max-width: 700px) 90vw, 780px" width="700" height="682" alt="Cache Vault Quick Paste showing searchable sample clips." loading="eager" decoding="async" fetchpriority=high></a></figure></div><div class="theater-description" aria-live="polite"><div><span class="theater-category" data-theater-category>Local clipboard archive</span><h2 data-theater-name>Cache Vault</h2><p data-theater-line>Your clipboard, with a memory.</p></div><a href="/cache-vault/" data-theater-link aria-label="Explore Cache Vault">Explore <span aria-hidden="true">↗</span></a></div><div class="theater-controls" role="group" aria-label="Preview the products" data-enhance hidden><button type="button" data-show-product="cache-vault" aria-pressed="true" aria-label="Show Cache Vault"><span>Cache Vault</span></button><button type="button" data-show-product="reality-gate" aria-pressed="false" aria-label="Show Reality Gate"><span>Reality Gate</span></button><button type="button" data-show-product="lights-out" aria-pressed="false" aria-label="Show Lights Out"><span>Lights Out</span></button><button type="button" data-show-product="cleanroom" aria-pressed="false" aria-label="Show Cleanroom"><span>Cleanroom</span></button><button type="button" data-show-product="ghostlayer" aria-pressed="false" aria-label="Show GhostLayer"><span>GhostLayer</span></button><button type="button" data-show-product="forgecast" aria-pressed="false" aria-label="Show ForgeCast"><span>ForgeCast</span></button><button type="button" data-show-product="proofshot" aria-pressed="false" aria-label="Show ProofShot"><span>ProofShot</span></button></div><p class="experience-error" role="status"></p></div></section><nav class="catalog-nav" aria-label="Software directory"><a href="/reality-gate/">Reality Gate</a><a href="/cache-vault/">Cache Vault</a><a href="/lights-out/">Lights Out</a><a href="/cleanroom/">Cleanroom</a><a href="/ghostlayer/">GhostLayer</a><a href="/forgecast/">ForgeCast</a><a href="/proofshot/">ProofShot</a></nav><section id="products" class="studio-catalog"><div class="catalog-heading"><div><p class="kicker">Meet the software</p><h2>Find your next<br>everyday essential.</h2></div><p>Small, focused tools.<br>A little more control over your day.</p></div><p class="finder-hint" data-enhance hidden>Find a tool for the job. Select two or three to compare.</p><div class="product-finder" data-enhance hidden><div class="finder-intents" role="group" aria-label="Find software by purpose"><button type="button" data-intent="all" aria-pressed="true">All software</button><button type="button" data-intent="memory" aria-pressed="false">Files &amp; memory</button><button type="button" data-intent="build" aria-pressed="false">Build &amp; capture</button><button type="button" data-intent="everyday" aria-pressed="false">Everyday</button></div><div class="finder-platform"><label for="platform-filter">Platform</label><select id="platform-filter"><option value="all">All platforms</option><option value="windows">Windows</option><option value="android">Android</option></select><span class="finder-count" role="status">7 products</span></div></div><div class="finder-empty" hidden><p>No products match that combination.</p><button type="button" data-filter-reset>Show all software</button></div><article class="studio-featured" data-product="reality-gate"><div class="featured-copy"><p class="kicker">For builders · Developer Pilot</p><h3>Reality Gate</h3><p class="feature-headline">Your work.<br>Your control room.</p><p>Run builds in an isolated local workspace. Keep signed run records and a recovery path you can test.</p><a class="button button-primary" href="/reality-gate/">Explore Reality Gate <span aria-hidden="true">↗</span></a><label class="compare-choice" data-compare="reality-gate" data-enhance hidden><input type="checkbox" aria-label="Compare Reality Gate"><span>Compare</span></label><p class="featured-meta">Windows · Developer Pilot {{product.versionLabel}}</p></div><figure class="app-shot featured-shot"><a class="screenshot-link" href="/assets/reality-gate/08-ci-run-complete.png" data-screenshot aria-label="Enlarge: Reality Gate Runroom showing a completed run, execution log and verified receipt."><img src="/assets/studio/08-ci-run-complete-1440.webp" srcset="/assets/studio/08-ci-run-complete-480.webp 480w, /assets/studio/08-ci-run-complete-960.webp 960w, /assets/studio/08-ci-run-complete-1440.webp 1440w" sizes="(max-width: 700px) 92vw, 60vw" width="1440" height="900" alt="Reality Gate Runroom showing a completed run, execution log and verified receipt." loading="lazy"  decoding="async"></a></figure></article><!-- @product-groups --></section><section class="studio-proof-standard" id="proof-standard"><div><p class="kicker">The Proof Foundry standard</p><h2>Useful software.<br>With a record to back it up.</h2></div><div><p>Every product stands on its own. Release records give you the version, download checksum and known limits when you want a closer look.</p><p>Our Windows packages are unsigned. Android signing is stated per product. Checksums help you compare the downloaded file with the published artifact.</p><a class="text-link" href="/proof/">Read the release records ↗</a></div></section></div></main>
+<!-- @include footer -->
+<script src="/site.js" defer></script>
+<script src="/experience.js" defer></script>
+</body></html>

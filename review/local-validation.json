@@ -1,0 +1,69 @@
+{
+  "pages": 12,
+  "internalReferences": 552,
+  "decodedImages": 82,
+  "canonicalProductDataUnchanged": true,
+  "metadata": [
+    {
+      "route": "/",
+      "title": "The Proof Foundry \u2014 Useful software, on your terms",
+      "description": "Independent local-first software for Windows and Android. Explore clipboard tools, reversible cleanup, nightly shutdown, weather and build control."
+    },
+    {
+      "route": "/404.html",
+      "title": "Page Not Found \u2014 The Proof Foundry",
+      "description": "This Proof Foundry page could not be found. Explore our software or return to the homepage."
+    },
+    {
+      "route": "/proof/",
+      "title": "Proof Foundry Receipts \u2014 Proof-first software forged for builders",
+      "description": "Public proof for what we ship: routes, releases, checksums, receipts, and verification status."
+    },
+    {
+      "route": "/reality-gate/",
+      "title": "Reality Gate \u2014 Run your work. Own the outcome. | The Proof Foundry",
+      "description": "Run builds in isolated local workspaces, follow execution in the Runroom, and keep signed receipts. Reality Gate Developer Pilot for Windows."
+    },
+    {
+      "route": "/forgecast/",
+      "title": "ForgeCast \u2014 Make a plan for outside. | The Proof Foundry",
+      "description": "Android weather for the decisions you actually make: when to go outside, what to wear and what to bring. ForgeCast public v0.3.5."
+    },
+    {
+      "route": "/cache-vault/",
+      "title": "Cache Vault \u2014 Keep the things you copy. | The Proof Foundry",
+      "description": "A local clipboard vault for Windows with searchable history, collections and Quick Paste. Public v0.2.2; v0.2.3-rc1 is a release candidate."
+    },
+    {
+      "route": "/founders/",
+      "title": "Founders Circle \u2014 The Proof Foundry\u2122",
+      "description": "The Founders Circle: 100 founding receipts for the first builders to back Proof Foundry products. Real entries are added only after claim."
+    },
+    {
+      "route": "/cleanroom/",
+      "title": "Cleanroom \u2014 Less clutter. A way back. | The Proof Foundry",
+      "description": "Review Windows cleanup candidates, archive selected files and restore them to their original paths. Cleanroom public v1.0.7; next build v1.0.10."
+    },
+    {
+      "route": "/proofshot/",
+      "title": "ProofShot \u2014 Keep the context with the capture. | The Proof Foundry",
+      "description": "An in-development Windows workbench for page resources, evidence bundles and offline verification. No public ProofShot release; underlying engine v1.6.18."
+    },
+    {
+      "route": "/lights-out/",
+      "title": "Lights Out \u2014 Give your night a gentle ending. | The Proof Foundry",
+      "description": "Plan a Windows shutdown or sleep timer, then pause, snooze or cancel from your Android companion. Public Windows v11.1.2; v11.1.3 candidates are on hold."
+    },
+    {
+      "route": "/ghostlayer/",
+      "title": "GhostLayer \u2014 Choose what becomes permanent. | The Proof Foundry",
+      "description": "Stage files in a volatile RAM layer, open them for editing, and deliberately commit selected changes to disk. GhostLayer v0.4.0 for Windows."
+    },
+    {
+      "route": "/roadmap/",
+      "title": "What\u2019s next | The Proof Foundry",
+      "description": "Current public software releases, candidate builds and development plans at The Proof Foundry."
+    }
+  ],
+  "errors": []
+}

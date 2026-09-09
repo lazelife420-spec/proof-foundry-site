@@ -1,4 +1,4 @@
-# scripts/build-site.ps1 — Manifest-driven static site generator for The Proof Foundry.
+﻿# scripts/build-site.ps1 — Manifest-driven static site generator for The Proof Foundry.
 #
 # Source of truth: site-manifest.json (product identity / status / release facts)
 # Shared chrome:    partials/*.html
@@ -419,7 +419,7 @@ if ($manifest.siteVerification) {
       # /proof/ links this file as public evidence, so it must survive a fresh
       # clone; only git can answer that. Repo location is discovered, never
       # hardcoded, so this works in any checkout or CI workspace.
-      $gitCmd = Get-Command git -CommandType Application -ErrorAction SilentlyContinue
+      $gitCmd = Get-Command git -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
       if (-not $gitCmd) {
         $errors += "[siteVerification] cannot prove receipt '$($sv.receiptPath)' is tracked: git executable not found on PATH. Public evidence must be provably committed, so this is treated as a failure rather than assumed valid."
       } else {
@@ -623,19 +623,11 @@ function ProductGroupId($p) {
   return ''
 }
 
-# The headline version on a card is the version of the thing the primary CTA
-# actually serves. For a release candidate whose candidate artifact is the
-# authorized, served download (Cache Vault), that is the candidate. Where no
-# artifact is served (Lights Out), the public release is named so the card
-# never implies the product is unreleased.
+# Cards lead with the public version. Candidate state is a separate detail.
+# Distribution observations never change canonical release classifications.
 function CardVersionLabel($p) {
-  $rs = if ($p.release -and $p.release.releaseStatus) { $p.release.releaseStatus } else { '' }
-  $pub = if ($p.release -and $p.release.publicVersion) { $p.release.publicVersion } else { '' }
-  if ($rs -eq 'RELEASE_CANDIDATE' -and -not [string]::IsNullOrWhiteSpace($p.downloadUrl) -and $p.release.candidateVersion) {
-    return "v$($p.release.candidateVersion)"
-  }
-  if ($pub) { return "v$pub" }
-  return ''
+  if ($p.id -eq 'lights-out') { return "$(VersionLabel $p) (Windows)" }
+  return (VersionLabel $p)
 }
 
 # The card's second state layer: what the newest build lane is doing, stated
@@ -651,12 +643,18 @@ function CardDetailLine($p) {
 
   switch ($rs) {
     'RELEASE_CANDIDATE' {
-      if ($pub) { return "Release candidate $dot last public release $pub" }
+      if ($pub) {
+        if ($p.presentation.downloadUnavailable) { return "Candidate $cand $dot downloads currently unavailable" }
+        return "Candidate $cand available $dot public release remains $pub"
+      }
       if ($cand) { return "Release candidate $cand" }
       return ''
     }
     'HOLD' {
-      if ($cand) { return "$cand candidate in proof $dot publication on hold" }
+      if ($p.id -eq 'lights-out' -and $p.release.companionPublicVersion) {
+        return "Android companion public v$($p.release.companionPublicVersion) $dot Windows and Android $cand candidates on hold $dot public downloads currently unavailable"
+      }
+      if ($cand) { return "Candidate $cand on hold $dot public download currently unavailable" }
       return ''
     }
     'ACTIVE_PROOF' {
@@ -727,6 +725,8 @@ function ProductTokens($p) {
   $tokens['cardProofHref']       = CardProofHref $p
   $tokens['valueLine']           = if ($p.presentation -and $p.presentation.valueLine) { $p.presentation.valueLine } else { $p.cardSummary }
   $tokens['cardImage']           = if ($p.presentation) { $p.presentation.cardImage } else { '' }
+  $tokens['cardImageWidth']      = if ($p.presentation) { $p.presentation.cardImageWidth } else { '' }
+  $tokens['cardImageHeight']     = if ($p.presentation) { $p.presentation.cardImageHeight } else { '' }
   $tokens['cardImageAlt']        = if ($p.presentation) { $p.presentation.cardImageAlt } else { '' }
   $tokens['cardCta']             = if ($p.presentation -and $p.presentation.cardCta) { $p.presentation.cardCta } else { $p.cta }
   $tokens['platform']            = PlatformLabel $p
@@ -805,8 +805,9 @@ function ProductTokens($p) {
 
   # downloadBlock — derive from canonical artifact if available, else legacy fields
   $dlUrl = if ($tokens['artifactDownloadUrl']) { $tokens['artifactDownloadUrl'] } else { $p.downloadUrl }
-  if ([string]::IsNullOrWhiteSpace($dlUrl)) {
-    $mutedLabel = if (-not [string]::IsNullOrWhiteSpace($p.disabledDownloadLabel)) { $p.disabledDownloadLabel }
+  if ($p.presentation.downloadUnavailable -or [string]::IsNullOrWhiteSpace($dlUrl)) {
+    $mutedLabel = if ($p.presentation.downloadUnavailable) { 'Downloads currently unavailable' }
+                  elseif (-not [string]::IsNullOrWhiteSpace($p.disabledDownloadLabel)) { $p.disabledDownloadLabel }
                   elseif ($p.state -eq 'proof') { 'No public build yet' }
                   else { 'Coming soon' }
     $tokens['downloadBlock'] = "<span class=`"button button-muted`" aria-disabled=`"true`">$mutedLabel</span>"
@@ -912,7 +913,7 @@ function Render-ProductCard($p, $cardTemplate) {
   foreach ($key in @(
     'name','route','state','statusLabel','summary','cardSummary','statusLine','markSvg','id','meta','cta',
     'visitorStatusLabel','visitorStatusSlug','groupId','cardVersionLabel','cardDetailLine','cardCtaHref',
-    'cardProofHref','valueLine','cardImage','cardImageAlt','cardCta','platform'
+    'cardProofHref','valueLine','cardImage','cardImageAlt','cardImageWidth','cardImageHeight','cardCta','platform'
   )) {
     $card = $card -replace [regex]::Escape("{{$key}}"), $t[$key]
   }
@@ -985,7 +986,7 @@ function Build-ProductGroupSections {
 # both from the same predicate is what let the old line erase that release.
 function Build-CatalogSummary {
   $visible     = @($manifest.products | Where-Object { $_.visible })
-  $downloadable = @($visible | Where-Object { -not [string]::IsNullOrWhiteSpace($_.downloadUrl) })
+  $downloadable = @($visible | Where-Object { -not $_.presentation.downloadUnavailable -and -not [string]::IsNullOrWhiteSpace($_.downloadUrl) })
   $released     = @($visible | Where-Object { $_.release -and -not [string]::IsNullOrWhiteSpace("$($_.release.publicVersion)") })
   $total        = $visible.Count
   $dot = [char]0x00B7
@@ -1322,8 +1323,8 @@ function Build-ReceiptCards {
 
     # download action
     $dlUrl = if ($primaryArtifact -and $primaryArtifact.downloadUrl) { $primaryArtifact.downloadUrl } else { $p.downloadUrl }
-    if ([string]::IsNullOrWhiteSpace($dlUrl)) {
-      $label = if ($p.state -eq 'proof') { 'No public download yet' } else { 'Download coming soon' }
+    if ($p.presentation.downloadUnavailable -or [string]::IsNullOrWhiteSpace($dlUrl)) {
+      $label = if ($p.presentation.downloadUnavailable) { 'Downloads currently unavailable' } elseif ($p.state -eq 'proof') { 'No public download yet' } else { 'Download coming soon' }
       $action = "<span class=`"button button-muted`" style=`"display:block; text-align:center;`" aria-disabled=`"true`">$label</span>"
     } else {
       $ext = if (IsExternalUrl $dlUrl) { ' target="_blank" rel="noopener"' } else { '' }
@@ -1332,6 +1333,9 @@ function Build-ReceiptCards {
     }
 
     $build = if ($p.build) { $p.build } else { 'Release details coming soon.' }
+    if ($p.presentation.downloadUnavailable) {
+      $build = '<strong>' + $p.presentation.downloadNotice + '</strong> Historical release record: ' + $build
+    }
 
     $cards += @"
         <article class="receipt-card" id="receipt-$($p.id)" data-status="$($p.productStatus)" data-platform="$($t['platform'])">
@@ -1406,6 +1410,14 @@ $footerPartial = Read-File (Join-Path $partialsDir 'footer.html')
 function Process-Template($srcPath, $srcName) {
   $html = Read-File $srcPath
 
+  # Give shared presentation assets content-derived URLs. A cached stylesheet
+  # or script must not leave visitors on a previous design after publication.
+  foreach ($assetName in @('styles.css', 'studio.css', 'site.js', 'experience.css', 'experience.js')) {
+    $assetPath = Join-Path $root $assetName
+    $assetVersion = (Get-FileHash $assetPath -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
+    $html = $html.Replace('"/' + $assetName + '"', '"/' + $assetName + '?v=' + $assetVersion + '"')
+  }
+
   # Extract @page id
   $pageId = ''
   if ($html -match '<!--\s*@page\s+(\S+)\s*-->') { $pageId = $Matches[1] }
@@ -1473,6 +1485,15 @@ function Process-Template($srcPath, $srcName) {
   }
   $html = $html -replace [regex]::Escape('{{siteVerification.receiptLink}}'), $receiptLink
 
+  # Named product tokens for pages discussing several products.
+  foreach ($namedProduct in $manifest.products) {
+    $namedTokens = ProductTokens $namedProduct
+    foreach ($key in $namedTokens.Keys) {
+      $html = $html.Replace('{{products.' + $namedProduct.id + '.' + $key + '}}', [string]$namedTokens[$key])
+    }
+  }
+  if ($html -match '\{\{products\.[^}]+\}\}') { throw "Unresolved named product token in $srcName" }
+
   # Product tokens (if bound)
   if ($productSlug) {
     $bound = $null
@@ -1525,6 +1546,9 @@ Write-Host "==> Generated proof registry: /proof/index.json" -ForegroundColor Gr
 # Copy static assets
 # ─────────────────────────────────────────────────────────────────────────────
 Copy-Item (Join-Path $root 'styles.css')     $publicDir -Force
+Copy-Item (Join-Path $root 'studio.css')     $publicDir -Force
+Copy-Item (Join-Path $root 'experience.css') $publicDir -Force
+Copy-Item (Join-Path $root 'experience.js') $publicDir -Force
 if (Test-Path (Join-Path $root 'site.js'))   { Copy-Item (Join-Path $root 'site.js') $publicDir -Force }
 Copy-Item (Join-Path $root 'CNAME')          $publicDir -Force
 Copy-Item (Join-Path $root 'robots.txt')     $publicDir -Force

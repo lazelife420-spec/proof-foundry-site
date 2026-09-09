@@ -1,6 +1,7 @@
 ﻿param(
     [string]$Targets = "https://theprooffoundry.com,https://www.theprooffoundry.com,https://proof-foundry-site.pages.dev",
-    [string]$ManifestPath
+    [string]$ManifestPath,
+    [string]$ReceiptPath
 )
 
 # ---------------------------------------------------------------------------
@@ -64,6 +65,9 @@ $cv = Get-Product "cache-vault"
 $cvArtifact = Get-PrimaryArtifact $cv
 $cvStatusLabel = Get-StatusLabel $cv
 $cvDownloadPattern = Esc $cv.downloadLabel
+if ($cv.presentation.downloadUnavailable) {
+    $cvDownloadPattern = 'Downloads currently unavailable'
+}
 $cvArtifactPattern = Esc $cvArtifact.filename
 $cvSha256 = $cvArtifact.sha256
 
@@ -97,6 +101,7 @@ $rgStateLabel = Get-StateLabel $rg
 # ProofShot — active proof / unreleased
 $ps = Get-Product "proofshot"
 $psStatusLabel = Get-StatusLabel $ps
+$psEngineVer = "v$($ps.release.candidateVersion)"
 
 # ---------------------------------------------------------------------------
 # Test helpers
@@ -105,6 +110,10 @@ $psStatusLabel = Get-StatusLabel $ps
 $ErrorActionPreference = "Stop"
 $script:failedCount = 0
 $script:verifiedRoutes = @()
+$curlCommand = Get-Command curl.exe -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
+if (-not $curlCommand) { $curlCommand = Get-Command curl -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1 }
+if (-not $curlCommand) { throw 'curl is required for public-site verification.' }
+$script:CurlPath = $curlCommand.Source
 
 function Write-Fail {
     param([string]$Message, [string]$Url)
@@ -121,7 +130,7 @@ function Write-Pass {
 
 function Get-PlaintextContent {
     param([string]$Url)
-    $contentLines = curl.exe -s -H "Cache-Control: no-cache" -L $Url
+    $contentLines = & $script:CurlPath -s -H "Cache-Control: no-cache" -L $Url
     return $contentLines -join "`n"
 }
 
@@ -139,7 +148,7 @@ function Test-UrlContent {
         $curlArgs = @("-s", "-H", "Cache-Control: no-cache")
         if ($FollowRedirects) { $curlArgs += "-L" }
         $curlArgs += $Url
-        $contentLines = & curl.exe @curlArgs
+        $contentLines = & $script:CurlPath @curlArgs
         $content = $contentLines -join "`n"
 
         if ([string]::IsNullOrWhiteSpace($content)) {
@@ -182,7 +191,7 @@ function Test-UrlRedirect {
     )
     Write-Host "Checking redirect headers: $Url ... " -NoNewline
     try {
-        $headersText = curl.exe -s -H "Cache-Control: no-cache" -I $Url
+        $headersText = & $script:CurlPath -s -H "Cache-Control: no-cache" -I $Url
         $headersString = $headersText -join "`n"
 
         if ($headersString -match "HTTP/\S+\s+(\d+)") {
@@ -244,7 +253,7 @@ function Test-Asset {
     param([string]$Url, [string]$ExpectedContentType = "image/")
     Write-Host "Checking asset header & content: $Url ... " -NoNewline
     try {
-        $headersText = curl.exe -s -H "Cache-Control: no-cache" -I $Url
+        $headersText = & $script:CurlPath -s -H "Cache-Control: no-cache" -I $Url
         $headersString = $headersText -join "`n"
         if ($headersString -match "HTTP/\S+\s+(\d+)") { $status = [int]$Matches[1] } else { $status = 0 }
         if ($status -ne 200) {
@@ -260,7 +269,7 @@ function Test-Asset {
             $script:verifiedRoutes += [PSCustomObject]@{ Url = $Url; Status = $status; Msg = "FAIL (Content-Type)" }
             return
         }
-        $bodyLines = curl.exe -s -H "Cache-Control: no-cache" $Url
+        $bodyLines = & $script:CurlPath -s -H "Cache-Control: no-cache" $Url
         $body = $bodyLines -join "`n"
         if ($body -match "<!doctype html>" -or $body -match "<html\b" -or $body -match "</html>") {
             Write-Host "[FAIL] (Asset request returned HTML content instead of binary data!)" -ForegroundColor Red
@@ -301,7 +310,7 @@ foreach ($target in $TargetUrls) {
     Test-UrlContent -Url "$target/lights-out/" -Name "product truth" -ContainsPatterns @(
         "Wi-Fi Guard",
         "ForgeCast Weather",
-        "Prior public Windows release.*$(Esc $loPublicVer)",
+        "Public Windows $(Esc $loPublicVer)",
         "candidate companion.*$(Esc $loCandidateVer)",
         "public Android companion.*$(Esc $loCompanionPublicVer)",
         "Neither the Windows $(Esc $loCandidateVer) candidate nor the Android"
@@ -407,6 +416,8 @@ foreach ($target in $TargetUrls) {
     Test-UrlContent -Url "$target/cache-vault/" -Name "product truth" -ContainsPatterns @(
         "Cache Vault",
         $cvDownloadPattern,
+        "$(Esc ('v' + $cv.release.publicVersion)) remains the public Windows release",
+        "$(Esc ('v' + $cv.release.candidateVersion)) is a release candidate",
         $cvStatusLabel,
         $cvArtifactPattern,
         $cvSha256
@@ -429,7 +440,7 @@ foreach ($target in $TargetUrls) {
 
     # 12. ProofShot — manifest-derived status label
     Test-UrlContent -Url "$target/proofshot/" -ContainsPatterns @(
-        "ProofShot", "Rebrand in progress", $psStatusLabel
+        "ProofShot", "There is no public ProofShot release or installer", "HyperSnatch $(Esc $psEngineVer)", $psStatusLabel
     ) -NotContainsPatterns @("SkyFoundry")
     Test-UrlContent -Url "$target/proofshot" -ContainsPatterns @(
         "ProofShot"
@@ -486,16 +497,25 @@ if ($script:failedCount -gt 0) {
     Write-Host "`n==> ALL GATES PASSED! Verification complete." -ForegroundColor Green
 
     # Generate verification receipt
-    $date = Get-Date -Format "yyyy-MM-dd"
-    $receiptDir = Join-Path (Split-Path -Parent $PSScriptRoot) "reports\deploy-receipts"
+    # Verification is an event after publication. Keep its output outside the
+    # tracked inputs of that publication and never overwrite a previous event.
+    $eventUtc = (Get-Date).ToUniversalTime()
+    $date = $eventUtc.ToString('yyyy-MM-dd')
+    if ([string]::IsNullOrWhiteSpace($ReceiptPath)) {
+        $eventId = $eventUtc.ToString('yyyyMMddTHHmmssfffZ') + '-' + [guid]::NewGuid().ToString('N')
+        $ReceiptPath = Join-Path (Split-Path -Parent $PSScriptRoot) "receipts/deploy-verification/$eventId.md"
+    }
+    $ReceiptPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($ReceiptPath)
+    if (Test-Path $ReceiptPath) { throw "Refusing to overwrite verification receipt: $ReceiptPath" }
+    $receiptDir = Split-Path -Parent $ReceiptPath
     if (-not (Test-Path $receiptDir)) {
         New-Item -ItemType Directory -Path $receiptDir -Force | Out-Null
     }
-    $receiptPath = Join-Path $receiptDir "$date-proof-foundry-site.md"
-
     $commitHash = "unknown"
+    $treeHash = "unknown"
     try {
-        $commitHash = (git -C (Split-Path -Parent $PSScriptRoot) rev-parse --short HEAD 2>$null)
+        $commitHash = (git -C (Split-Path -Parent $PSScriptRoot) rev-parse HEAD 2>$null)
+        $treeHash = (git -C (Split-Path -Parent $PSScriptRoot) rev-parse 'HEAD^{tree}' 2>$null)
         if (-not $commitHash) { $commitHash = "unknown" }
     } catch { $commitHash = "unknown" }
 
@@ -506,6 +526,7 @@ if ($script:failedCount -gt 0) {
 # Deployment Verification Receipt — $date
 
 *   **Site Commit**: $commitHash
+*   **Site Tree**: $treeHash
 *   **Verified Targets**: $($TargetUrls -join ', ')
 *   **Manifest**: $manifestRelPath
 *   **ForgeCast APK URL**: $fcApkUrl
@@ -525,6 +546,8 @@ if ($script:failedCount -gt 0) {
         $md += "`n| $($r.Url) | $($r.Status) | **$($r.Msg)** |"
     }
     $md += "`n"
-    [System.IO.File]::WriteAllText($receiptPath, $md, (New-Object System.Text.UTF8Encoding($false)))
+    $receiptStream = [System.IO.File]::Open($ReceiptPath, [System.IO.FileMode]::CreateNew, [System.IO.FileAccess]::Write)
+    $receiptWriter = [System.IO.StreamWriter]::new($receiptStream, [System.Text.UTF8Encoding]::new($false))
+    try { $receiptWriter.Write($md) } finally { $receiptWriter.Dispose() }
     Write-Host "==> Verification receipt written to: $receiptPath" -ForegroundColor Green
 }
