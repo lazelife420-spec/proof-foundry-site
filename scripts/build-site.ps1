@@ -1575,6 +1575,17 @@ if (Test-Path (Join-Path $root 'reports/deploy-receipts')) {
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Generate _headers
+#
+# Cache-policy contract (2026-09-10): the former /assets/* and /brand/* rules
+# shipped a one-year `immutable` contract for stable, human-readable filenames
+# that are NOT content-fingerprinted. Replacing such a file could not propagate
+# to any browser that had cached it (the 2026-09-10 stale-screenshot incident),
+# so mutable names must never carry `immutable`. Zero fingerprinted asset
+# filenames ship today, so no `immutable` rule is warranted at all: every
+# asset revalidates, and replaced bytes propagate on the next fetch. If a
+# content-fingerprinting convention is ever introduced, give ONLY that
+# fingerprinted subset a long `immutable` rule and leave every mutable stable
+# name on the revalidation policy below.
 # ─────────────────────────────────────────────────────────────────────────────
 $headersContent = @"
 /*
@@ -1606,10 +1617,10 @@ $headersContent = @"
   Cache-Control: no-cache, must-revalidate
 
 /assets/*
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=0, must-revalidate
 
 /brand/*
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=0, must-revalidate
 "@
 # utf8NoBOM explicitly: a BOM at the start of _headers would be read as part of the
 # first rule and silently void it. PowerShell 7's -Encoding UTF8 is already BOM-less,
