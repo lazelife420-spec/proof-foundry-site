@@ -367,5 +367,95 @@
     "sitemap.xml": "fab60cbfaeac21fed9ce456ed06db5445216feff130a093dbb6bc61917651253",
     "studio.css": "64f0be2eb39494e545d0a9166cf3c420ae6952ea9d20bd50c0a8447eb2c6b4f0",
     "styles.css": "079a9a9013f1be9d69c328d37f58233ff09000fdb99d26be73b55fbe5b775327"
-  }
+   },
+  "publicAssetAmendments": {
+  "amendedAt": "2026-09-09",
+  "authority": "Owner directive in review conversation: PUBLIC ASSET PRIVACY CLOSURE ONLY (pre-commit)",
+  "removed": [
+    {
+      "path": "assets/reality-gate/06-remote-hub.png",
+      "sha256WhenApproved": "c71880bbe502a6b7d748063286737863ccb71c9aee40682ecb2549dd054d2ebd",
+      "reason": "Image displays an owner home path; unreferenced by any page but publicly downloadable from the assets bundle",
+      "preservedInternally": "review workspace retired_site_assets/ (outside the production site)"
+    }
+  ],
+  "replaced": [
+    {
+      "reason": "Prior screenshots came from a pre-isolation capture session (owner home paths visible in UI text); replaced with genuine frames from the approved isolated recording environment",
+      "files": [
+        {
+          "path": "assets/reality-gate/01-home-continuity.png",
+          "sha256Now": "71b20e418bbf3799f3a451106fba6117b90f9bc87563f4e68426fbddf22222c4"
+        },
+        {
+          "path": "assets/studio/01-home-continuity-480.webp",
+          "sha256Now": "a570c621fae6439283790c947f107b50f1bad58372b127ce28250927419c38f5"
+        },
+        {
+          "path": "assets/studio/01-home-continuity-960.webp",
+          "sha256Now": "56f4f49417c2ae163ed7f0e4152d22f8dbc7e76ba8922c5aa4938bd0bb997031"
+        },
+        {
+          "path": "assets/studio/01-home-continuity-1440.webp",
+          "sha256Now": "6164ffb655310c8c9163e403b3689984c20c96f5bf7c7c48f24edb1861d932bf"
+        },
+        {
+          "path": "assets/reality-gate/04-recovery-bundle-verified.png",
+          "sha256Now": "b93fd52611a64d33e9d35a9cfab87123d29ce86aa852bfd3eb927e5f599e524a"
+        },
+        {
+          "path": "assets/studio/04-recovery-bundle-verified-480.webp",
+          "sha256Now": "dd9e1fb2e5090026a3275cdb1748996e6b1921d6a90a22373482235f8aa30059"
+        },
+        {
+          "path": "assets/studio/04-recovery-bundle-verified-960.webp",
+          "sha256Now": "c96b6f2132b8009f75dbb6cc978cc3452d5d8a20adb850a917479c75a4577721"
+        },
+        {
+          "path": "assets/studio/04-recovery-bundle-verified-1440.webp",
+          "sha256Now": "895de80d181b111e896df5e6581c2a3827d83eefdb21b75faf75528e5a516f67"
+        },
+        {
+          "path": "assets/reality-gate/08-ci-run-complete.png",
+          "sha256Now": "50deeeef7e10fbe8a785bd41a75f57f565762f0fa83d481e78a4980560b71fe6"
+        },
+        {
+          "path": "assets/studio/08-ci-run-complete-480.webp",
+          "sha256Now": "4e2f84d1f47b8fc7a54c8117d2846d52c5897bde9127b8cd778b84d2af97fb5e"
+        },
+        {
+          "path": "assets/studio/08-ci-run-complete-960.webp",
+          "sha256Now": "5845d5f575adae9fe9bf412f4b1093f85679108597e0247207edd6deb8b6da38"
+        },
+        {
+          "path": "assets/studio/08-ci-run-complete-1440.webp",
+          "sha256Now": "ba292332e91dbc876d986504bc45de97e978b11945ef3a76a01f675e731a82d8"
+        }
+      ]
+    }
+  ],
+  "added": [
+    {
+      "reason": "2026-09-09 media integration tranche (approved real-app films and poster frames)",
+      "files": [
+        {
+          "path": "assets/reality-gate/reality_gate_trailer.mp4",
+          "sha256Now": "961b8fe3f42c9ce9fa905401b69825839f59927cdc7080cebd9b01751b92618a"
+        },
+        {
+          "path": "assets/reality-gate/reality_gate_poster.png",
+          "sha256Now": "29ca92d34db00531d67a8d272420cb50a37dd82e8fe27e70eb1a16ac30055fa1"
+        },
+        {
+          "path": "assets/cache-vault/cache_vault_trailer.mp4",
+          "sha256Now": "f4e96f50143457b56527471702779605fdcc70ed64da5c78260fffa3913adb7d"
+        },
+        {
+          "path": "assets/cache-vault/cache_vault_poster.png",
+          "sha256Now": "d7cfe9b198cb3d0cd9a4f02280ae75d6a68b5c2c9242ed29ef2ff19fa8462e82"
+        }
+      ]
+    }
+  ]
+}
 }
