@@ -121,7 +121,7 @@
       "featured": true,
       "presentation": {
         "valueLine": "Run your build inside an isolated local clone, then keep a signed receipt proving exactly what happened.",
-        "cardImage": "/assets/studio/08-ci-run-complete-960.webp",
+        "cardImage": "/assets/studio/08-ci-run-complete-960.5845d5f575adae9f.webp",
         "cardImageAlt": "Reality Gate run complete, showing a SUCCESS badge beside a VERIFIED RECEIPT badge.",
         "cardCta": "Explore Reality Gate",
         "cardImageWidth": 960,

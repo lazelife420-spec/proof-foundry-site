@@ -458,4 +458,25 @@
     }
   ]
 }
+,
+  "publicAssetFingerprintAmendment": {
+    "amendedAt": "2026-09-10",
+    "authority": "Owner directive: HASHED-ASSET CANDIDATE - FINAL EVIDENCE NORMALIZATION (pre-landing evidence correction; content-hashed URL implementation accepted)",
+    "bindingSemantics": "The base approvedPublicFileSha256 map is the frozen 2026-09-08 visual-acceptance snapshot and is never updated in place. Current public asset identity for amended files is tracked by the dated amendment ledger: publicAssetAmendments (2026-09-09) below, continued by this amendment. This file is an evidence ledger, not a runtime asset manifest; the runtime source of truth for page references is the site source (site-manifest.json, templates, experience.js).",
+    "renamed": [
+      { "from": "assets/reality-gate/01-home-continuity.png", "to": "assets/reality-gate/01-home-continuity.71b20e418bbf3799.png", "sha256": "71b20e418bbf3799f3a451106fba6117b90f9bc87563f4e68426fbddf22222c4" },
+      { "from": "assets/studio/01-home-continuity-480.webp", "to": "assets/studio/01-home-continuity-480.a570c621fae64392.webp", "sha256": "a570c621fae6439283790c947f107b50f1bad58372b127ce28250927419c38f5" },
+      { "from": "assets/studio/01-home-continuity-960.webp", "to": "assets/studio/01-home-continuity-960.56f4f49417c2ae16.webp", "sha256": "56f4f49417c2ae163ed7f0e4152d22f8dbc7e76ba8922c5aa4938bd0bb997031" },
+      { "from": "assets/studio/01-home-continuity-1440.webp", "to": "assets/studio/01-home-continuity-1440.6164ffb655310c8c.webp", "sha256": "6164ffb655310c8c9163e403b3689984c20c96f5bf7c7c48f24edb1861d932bf" },
+      { "from": "assets/reality-gate/04-recovery-bundle-verified.png", "to": "assets/reality-gate/04-recovery-bundle-verified.b93fd52611a64d33.png", "sha256": "b93fd52611a64d33e9d35a9cfab87123d29ce86aa852bfd3eb927e5f599e524a" },
+      { "from": "assets/studio/04-recovery-bundle-verified-480.webp", "to": "assets/studio/04-recovery-bundle-verified-480.dd9e1fb2e5090026.webp", "sha256": "dd9e1fb2e5090026a3275cdb1748996e6b1921d6a90a22373482235f8aa30059" },
+      { "from": "assets/studio/04-recovery-bundle-verified-960.webp", "to": "assets/studio/04-recovery-bundle-verified-960.c96b6f2132b8009f.webp", "sha256": "c96b6f2132b8009f75dbb6cc978cc3452d5d8a20adb850a917479c75a4577721" },
+      { "from": "assets/studio/04-recovery-bundle-verified-1440.webp", "to": "assets/studio/04-recovery-bundle-verified-1440.895de80d181b111e.webp", "sha256": "895de80d181b111e896df5e6581c2a3827d83eefdb21b75faf75528e5a516f67" },
+      { "from": "assets/reality-gate/08-ci-run-complete.png", "to": "assets/reality-gate/08-ci-run-complete.50deeeef7e10fbe8.png", "sha256": "50deeeef7e10fbe8a785bd41a75f57f565762f0fa83d481e78a4980560b71fe6" },
+      { "from": "assets/studio/08-ci-run-complete-480.webp", "to": "assets/studio/08-ci-run-complete-480.4e2f84d1f47b8fc7.webp", "sha256": "4e2f84d1f47b8fc7a54c8117d2846d52c5897bde9127b8cd778b84d2af97fb5e" },
+      { "from": "assets/studio/08-ci-run-complete-960.webp", "to": "assets/studio/08-ci-run-complete-960.5845d5f575adae9f.webp", "sha256": "5845d5f575adae9fe9bf412f4b1093f85679108597e0247207edd6deb8b6da38" },
+      { "from": "assets/studio/08-ci-run-complete-1440.webp", "to": "assets/studio/08-ci-run-complete-1440.ba292332e91dbc87.webp", "sha256": "ba292332e91dbc876d986504bc45de97e978b11945ef3a76a01f675e731a82d8" }
+    ],
+    "note": "New filenames embed the first 16 hex chars of the SHA-256 of the exact file bytes. The sha256 values here are byte-identical to publicAssetAmendments.replaced[].sha256Now (2026-09-09): this amendment renamed public URLs only; it changed no bytes. The 2026-09-09 amendment above is historical record and is preserved unchanged."
+  }
 }
