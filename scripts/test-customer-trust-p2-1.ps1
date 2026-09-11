@@ -90,6 +90,28 @@ $registryJson = Get-Content (Join-Path $publicDir "proof\index.json") -Raw -Enco
 $loRegistry = $registryJson.products | Where-Object { $_.id -eq 'lights-out' }
 Assert-Condition ($loRegistry.release.releaseStatus -eq 'HOLD') "P1 Regression: Lights Out release status remains HOLD"
 
+# 10. Hardened Support Release-Truth Parity Assertions
+Assert-Condition ($supportHtml -match 'Reality Gate[\s\S]*?v1\.1\.0') "Support release truth: Reality Gate v1.1.0"
+Assert-Condition ($supportHtml -match 'Cache Vault[\s\S]*?v0\.2\.2[\s\S]*?v0\.2\.3-rc1[\s\S]*?v0\.2\.0') "Support release truth: Cache Vault v0.2.2 / v0.2.3-rc1 / Android v0.2.0"
+Assert-Condition ($supportHtml -match 'Lights Out[\s\S]*?v11\.1\.2[\s\S]*?v11\.1\.3[\s\S]*?v11\.1\.1') "Support release truth: Lights Out v11.1.2 / v11.1.3 / Android v11.1.1"
+Assert-Condition ($supportHtml -match 'Cleanroom[\s\S]*?v1\.0\.7[\s\S]*?v1\.0\.10') "Support release truth: Cleanroom v1.0.7 / candidate v1.0.10"
+Assert-Condition ($supportHtml -notmatch 'Cleanroom[\s\S]*?v1\.2\.0') "Support release truth: Cleanroom rejects incorrect v1.2.0"
+Assert-Condition ($supportHtml -notmatch 'Cleanroom[\s\S]*?v1\.3\.0') "Support release truth: Cleanroom rejects incorrect v1.3.0"
+Assert-Condition ($supportHtml -match 'GhostLayer[\s\S]*?v0\.4\.0') "Support release truth: GhostLayer v0.4.0"
+Assert-Condition ($supportHtml -notmatch 'GhostLayer[\s\S]*?v1\.0\.0') "Support release truth: GhostLayer rejects incorrect v1.0.0"
+Assert-Condition ($supportHtml -match 'ForgeCast[\s\S]*?v0\.3\.5') "Support release truth: ForgeCast v0.3.5"
+Assert-Condition ($supportHtml -match 'ProofShot[\s\S]*?no public release package') "Support release truth: ProofShot no public release package"
+
+# 11. Hardened Global Navigation Parity Assertions across all generated surfaces
+$allRoutes = @('', 'reality-gate', 'cache-vault', 'lights-out', 'cleanroom', 'ghostlayer', 'forgecast', 'proofshot', 'proof', 'roadmap', 'founders')
+foreach ($r in $allRoutes) {
+    $rPath = if ($r -eq '') { Join-Path $publicDir "index.html" } else { Join-Path $publicDir "$r\index.html" }
+    if (Test-Path $rPath) {
+        $rContent = Get-Content $rPath -Raw -Encoding UTF8
+        Assert-Condition ($rContent -match 'href="/support/"') "Navigation parity: Route '$r' contains header/footer link to /support/"
+    }
+}
+
 $resultColor = if ($failed -eq 0) { 'Green' } else { 'Red' }
 Write-Host "`n=== RESULT: $passed passed, $failed failed ===" -ForegroundColor $resultColor
 if ($failed -gt 0) { exit 1 }
