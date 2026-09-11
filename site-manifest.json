@@ -256,6 +256,8 @@
       "verification": {
         "status": "VERIFIED",
         "verifiedAt": "2026-09-01",
+        "checkedAt": "2026-09-09",
+        "downloadAvailability": "UNAVAILABLE",
         "verificationType": [
           "ARTIFACT_HASH_PUBLISHED",
           "ARTIFACT_HASH_VERIFIED",
@@ -344,7 +346,9 @@
         "cardImageAlt": "Lights Out Tonight screen mid-session: countdown ring, session name, remaining time, and session controls.",
         "cardCta": "Explore Lights Out",
         "cardImageWidth": 960,
-        "cardImageHeight": 541
+        "cardImageHeight": 541,
+        "downloadUnavailable": true,
+        "downloadNotice": "Downloads are currently on hold. Checked 9 September 2026; candidate v11.1.3 is in qualification and publication is on hold."
       },
       "release": {
         "publicVersion": "11.1.2",
@@ -378,6 +382,8 @@
       "verification": {
         "status": "VERIFIED",
         "verifiedAt": "2026-09-01",
+        "checkedAt": "2026-09-09",
+        "downloadAvailability": "UNAVAILABLE",
         "verificationType": [
           "ARTIFACT_HASH_PUBLISHED",
           "ARTIFACT_HASH_VERIFIED",
@@ -395,7 +401,7 @@
       ],
       "evidence": [
         {
-          "label": "Reality Gate receipt 6b67a712...",
+          "label": "Qualification summary (Reality Gate receipt 6b67a712...)",
           "url": null
         }
       ],
@@ -417,9 +423,7 @@
       "releaseNote": "Lights Out v11.1.3 RC4 (source commit f9048c3, artifact SHA-256 c7872350...) passed a fresh full Reality Gate Runroom validation: 20 of 20 steps, cryptographically signed receipt independently verified GREEN, real physical Samsung Galaxy S23 companion automation, and the production-signed Android companion v11.1.3 passed the full physical Dry Run workflow the same day (0 provider operations, 0 real power actions). RC4 is the current candidate iteration of the post-RC3 work; the Windows bytes are new while the launcher remains byte-identical to RC3 because all candidate changes live in the app payload. This is a Reality-Gate-verified, unsigned Windows portable build -- it is not code-signed, and it is not a re-verification of the earlier, separately frozen v11.1.2 GitHub release ZIP (which remains blocked from anonymous GitHub access for unrelated account-level reasons). Public release awaits separate owner authorization.",
       "proofStatus": "Reality Gate verified · unsigned",
       "lastVerified": "2026-09-01",
-      "proofLinks": [
-        "/reports/deploy-receipts/2026-06-30-proof-foundry-site.md"
-      ],
+      "proofLinks": [],
       "currentLocalVersion": "11.1.3",
       "companionVersion": "11.1.3"
     },

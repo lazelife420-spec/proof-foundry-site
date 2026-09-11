@@ -1,4 +1,4 @@
-﻿# scripts/build-site.ps1 — Manifest-driven static site generator for The Proof Foundry.
+# scripts/build-site.ps1 — Manifest-driven static site generator for The Proof Foundry.
 #
 # Source of truth: site-manifest.json (product identity / status / release facts)
 # Shared chrome:    partials/*.html
@@ -1183,9 +1183,14 @@ function Get-VerificationStatus($dimension, $p) {
       $cssClass = if ($hasType) { 'verified' } else { 'pending' }
     }
     'PUBLIC_DOWNLOAD' {
-      $hasDownload = ($p.artifacts -and ($p.artifacts | Where-Object { $_.downloadUrl }).Count -gt 0) -or $p.downloadUrl
-      $value = if ($hasDownload) { 'VERIFIED' } else { 'NOT_PUBLISHED' }
-      $cssClass = if ($hasDownload) { 'verified' } else { 'not-published' }
+      if ($p.presentation -and $p.presentation.downloadUnavailable) {
+        $value = 'UNAVAILABLE'
+        $cssClass = 'not-published'
+      } else {
+        $hasDownload = ($p.artifacts -and ($p.artifacts | Where-Object { $_.downloadUrl }).Count -gt 0) -or $p.downloadUrl
+        $value = if ($hasDownload) { 'VERIFIED' } else { 'NOT_PUBLISHED' }
+        $cssClass = if ($hasDownload) { 'verified' } else { 'not-published' }
+      }
     }
     'CODE_SIGNING' {
       $signing = if ($p.artifacts -and $p.artifacts.Count -gt 0) { $p.artifacts[0].signingStatus } else { 'UNSIGNED' }
