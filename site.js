@@ -172,16 +172,48 @@
     });
   }
 
+  function initTemplateCopy() {
+    var buttons = document.querySelectorAll("[data-copy-target]");
+    if (!buttons.length) return;
+    buttons.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var targetId = btn.getAttribute("data-copy-target");
+        var target = document.getElementById(targetId);
+        if (!target) return;
+        var text = target.value || target.textContent;
+        function selectText() {
+          if (target.select) target.select();
+          btn.textContent = "Text selected";
+        }
+        try {
+          navigator.clipboard.writeText(text).then(function () {
+            var original = btn.textContent;
+            btn.textContent = "Template copied!";
+            btn.classList.add("copied");
+            setTimeout(function () {
+              btn.textContent = original;
+              btn.classList.remove("copied");
+            }, 2000);
+          }).catch(selectText);
+        } catch (err) {
+          selectText();
+        }
+      });
+    });
+  }
+
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", function () {
       initNavToggle();
       initSha256Copy();
+      initTemplateCopy();
       initScreenshots();
       revealDeepLink();
     });
   } else {
     initNavToggle();
     initSha256Copy();
+    initTemplateCopy();
     initScreenshots();
     revealDeepLink();
   }

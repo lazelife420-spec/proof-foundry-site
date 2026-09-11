@@ -1,0 +1,203 @@
+<!doctype html>
+<!-- @page support -->
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Support &amp; Troubleshooting | The Proof Foundry</title>
+<meta content="Help with installation, verification, download status, and problem reporting for Proof Foundry software." name="description"/>
+<meta content="index, follow" name="robots"/>
+<meta content="#0a0d14" name="theme-color"/>
+<link href="https://theprooffoundry.com/support/" rel="canonical"/>
+<link href="/brand/proof-foundry-mark.svg" rel="icon" type="image/svg+xml"/>
+<meta content="Support &amp; Troubleshooting — The Proof Foundry" property="og:title"/>
+<meta content="Help with installation, verification, download status, and problem reporting for Proof Foundry software." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="https://theprooffoundry.com/support/" property="og:url"/>
+<meta content="The Proof Foundry" property="og:site_name"/>
+<meta content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" name="twitter:image"/>
+<link href="/styles.css" rel="stylesheet"/>
+<link href="/studio.css" rel="stylesheet"/>
+</head>
+<body class="studio product-page product-support">
+<!-- @include header -->
+<main id="main-content">
+  <div class="store-shell support-studio">
+    <section class="support-hero" id="overview">
+      <p class="kicker">Self-service help &amp; verification</p>
+      <h1>Support</h1>
+      <p class="support-intro">Help with installation, verification, download status, and problem reporting for Proof Foundry software.</p>
+    </section>
+
+    <!-- SECTION: HELP BY PRODUCT -->
+    <section class="support-section" id="products">
+      <div class="section-heading">
+        <p class="kicker">Product Help</p>
+        <h2>Help by product</h2>
+        <p>Direct guidance for each Proof Foundry software product.</p>
+      </div>
+
+      <div class="support-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+        <article class="detail-card">
+          <h3><a href="/reality-gate/">Reality Gate ↗</a></h3>
+          <p>Local control room for Git project execution, signed receipts, and recovery vault operations.</p>
+          <p class="note">Windows Developer Pilot v1.1.0 available.</p>
+        </article>
+
+        <article class="detail-card">
+          <h3><a href="/cache-vault/">Cache Vault ↗</a></h3>
+          <p>Local clipboard archive and workspace for Windows, with Android companion.</p>
+          <p class="note">Public Windows v0.2.2 available; Candidate v0.2.3-rc1 recorded download unavailable. Public Android companion v0.2.0 available.</p>
+        </article>
+
+        <article class="detail-card">
+          <h3><a href="/lights-out/">Lights Out PC ↗</a></h3>
+          <p>Bedtime enforcement timer with Smart Lights and Wi-Fi Guard support for Windows and Android.</p>
+          <p class="note">Public Windows v11.1.2 available; Candidate v11.1.3 on hold. Public Android companion v11.1.1 available.</p>
+        </article>
+
+        <article class="detail-card">
+          <h3><a href="/cleanroom/">Cleanroom ↗</a></h3>
+          <p>Reversible desktop file cleanup with archive, restore, and activity ledger.</p>
+          <p class="note">Public Windows v1.2.0 available; Candidate v1.3.0 in progress.</p>
+        </article>
+
+        <article class="detail-card">
+          <h3><a href="/ghostlayer/">GhostLayer ↗</a></h3>
+          <p>Volatile RAM staging layer for deliberate disk commits and conflict recovery.</p>
+          <p class="note">Public Windows v1.0.0 available.</p>
+        </article>
+
+        <article class="detail-card">
+          <h3><a href="/forgecast/">ForgeCast Weather ↗</a></h3>
+          <p>Decision-focused weather app for Android with Ask ForgeCast, Wear/Bring guidance, and dynamic widgets.</p>
+          <p class="note">Public Android APK v0.3.5 available.</p>
+        </article>
+
+        <article class="detail-card">
+          <h3><a href="/proofshot/">ProofShot ↗</a></h3>
+          <p>Visual capture and proof stamp suite built on the underlying HyperSnatch engine.</p>
+          <p class="note">In development; no public release package currently published.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- SECTION: WINDOWS SECURITY WARNINGS -->
+    <section class="support-section" id="windows" style="margin-top: 3rem;">
+      <div class="section-heading">
+        <p class="kicker">Windows Guidance</p>
+        <h2>Windows security warnings &amp; SmartScreen</h2>
+      </div>
+      <div class="support-content-box" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 1.5rem; margin-top: 1rem;">
+        <p>Unsigned or low-reputation software executables may trigger Windows SmartScreen prompts ("Windows protected your PC / Unknown Publisher") on launch.</p>
+        <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 1.6; color: var(--muted, #91A0AF);">
+          <li>Verify the artifact identity by checking its SHA-256 checksum on your computer prior to running.</li>
+          <li>A matching SHA-256 checksum confirms that your local file is byte-for-byte identical to the published build artifact.</li>
+          <li>A matching digest does not itself prove safety, publisher identity, or Microsoft SmartScreen reputation.</li>
+          <li>The user must review the SHA-256 match and decide whether to proceed based on local trust requirements.</li>
+        </ul>
+        <p class="note">Note: Proof Foundry software binaries do not instruct users to bypass OS security controls unconditionally.</p>
+      </div>
+    </section>
+
+    <!-- SECTION: ANDROID INSTALL GUIDANCE -->
+    <section class="support-section" id="android" style="margin-top: 3rem;">
+      <div class="section-heading">
+        <p class="kicker">Android Guidance</p>
+        <h2>Android installation &amp; APK verification</h2>
+      </div>
+      <div class="support-content-box" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 1.5rem; margin-top: 1rem;">
+        <p>Installing Android APK packages directly (such as ForgeCast Weather or mobile companion apps) requires granting your web browser or file manager permission to install unknown apps.</p>
+        <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 1.6; color: var(--muted, #91A0AF);">
+          <li>Before installing an APK, verify the SHA-256 digest on a desktop device using PowerShell (<code class="inline">Get-FileHash .\&lt;apk-filename&gt; -Algorithm SHA256</code>) or terminal tools.</li>
+          <li>Phone-native verification guidance is being prepared on the support hub.</li>
+          <li>Seamless in-place app updates require signing continuity across versions. If an app update fails to install over an existing version, verify signing compatibility details on the product page.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SECTION: CHECKSUMS & ARTIFACT IDENTITY -->
+    <section class="support-section" id="checksums" style="margin-top: 3rem;">
+      <div class="section-heading">
+        <p class="kicker">Verification Standard</p>
+        <h2>Checksums &amp; artifact identity</h2>
+      </div>
+      <div class="support-content-box" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 1.5rem; margin-top: 1rem;">
+        <p><strong>SHA-256 match = byte-identity verification against the published digest.</strong></p>
+        <p style="margin-top: 0.5rem; color: var(--text);">A matching SHA-256 confirms that the file you have is byte-for-byte identical to the artifact identified by the published digest.</p>
+
+        <h3 style="margin-top: 1.5rem; font-size: 1.1rem; color: var(--gold, #D6A84F);">The 8-Field Checksum Identity Schema</h3>
+        <p style="font-size: 0.9rem; color: var(--muted, #91A0AF);">Every primary download checksum block presents the following identity context:</p>
+        <ol style="margin: 0.75rem 0 1.5rem 1.5rem; line-height: 1.6; color: var(--muted, #91A0AF);">
+          <li><strong>Product:</strong> The canonical software product name.</li>
+          <li><strong>Version:</strong> Exact semantic version string (e.g. v1.1.0).</li>
+          <li><strong>Release / Channel state:</strong> Public release, release candidate, or pilot.</li>
+          <li><strong>Artifact filename:</strong> The exact expected file name.</li>
+          <li><strong>SHA-256:</strong> The 64-character hex cryptographic hash digest.</li>
+          <li><strong>Match scope:</strong> Confirms local file byte-identity matches the published digest.</li>
+          <li><strong>Signing / Publisher state:</strong> Explains code signature or unsigned status.</li>
+          <li><strong>Verification method:</strong> Platform command (e.g., <code class="inline">Get-FileHash .\file.zip -Algorithm SHA256</code>).</li>
+        </ol>
+
+        <p class="note">Distinction: SHA-256 digest matching verifies file integrity against the published manifest. It is distinct from Authenticode code signing, publisher identity verification, SmartScreen / Play Protect reputation, or third-party security audits. SHA-256 alone is not used to claim an artifact is signed or malware-free.</p>
+      </div>
+    </section>
+
+    <!-- SECTION: DOWNLOAD & RELEASE STATUS -->
+    <section class="support-section" id="downloads" style="margin-top: 3rem;">
+      <div class="section-heading">
+        <p class="kicker">Release Records</p>
+        <h2>Download &amp; release status</h2>
+      </div>
+      <div class="support-content-box" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 1.5rem; margin-top: 1rem;">
+        <p>Check current public versions, candidate status, download availability, and canonical release records on the Release Records page.</p>
+        <p style="margin-top: 1rem;"><a class="button button-secondary" href="/proof/">View canonical release records ↗</a></p>
+      </div>
+    </section>
+
+    <!-- SECTION: REPORT A PROBLEM (STATE A SELF-SERVICE ONLY) -->
+    <section class="support-section" id="report" style="margin-top: 3rem; margin-bottom: 3rem;">
+      <div class="section-heading">
+        <p class="kicker">Self-Service Problem Report</p>
+        <h2>Report a problem</h2>
+      </div>
+      <div class="support-content-box" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 1.5rem; margin-top: 1rem;">
+        <p style="font-weight: 600; color: var(--gold, #D6A84F);">Direct online support submission is not published yet. You can use the diagnostic template below to collect and format the details that will be useful when a support channel is available.</p>
+
+        <div style="margin: 1.5rem 0;">
+          <label for="diagnostic-template" style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Diagnostic Report Template</label>
+          <textarea id="diagnostic-template" readonly rows="16" style="width: 100%; font-family: monospace; font-size: 0.88rem; background: #070b10; color: #d0d0d0; border: 1px solid var(--line, #263746); border-radius: 6px; padding: 1rem; resize: vertical;">Product:
+Version:
+Operating system / Android version:
+Device model (if relevant):
+Install type:
+Where the file came from:
+Did the published SHA-256 match?:
+What happened:
+Steps to reproduce:
+Expected behavior:
+Actual behavior:
+Exact sanitized error text:
+Optional screenshot/log:</textarea>
+          <div style="margin-top: 0.75rem;">
+            <button type="button" class="button button-secondary" data-copy-target="diagnostic-template">Copy template</button>
+          </div>
+        </div>
+
+        <div style="background: rgba(214, 168, 79, 0.08); border-left: 4px solid var(--gold, #D6A84F); padding: 1rem; border-radius: 4px; margin-top: 1rem;">
+          <p style="margin: 0; font-size: 0.9rem; color: #f2f0eb;"><strong>Privacy Warning:</strong> Do not include passwords, API keys, access tokens, private keys, confidential documents, private clipboard contents, or unrelated personal information in your diagnostic report details.</p>
+        </div>
+
+        <p class="note" style="margin-top: 1.25rem;">Product-specific privacy and data-flow details are being documented from source and release evidence.</p>
+      </div>
+    </section>
+
+  </div>
+</main>
+<!-- @include footer -->
+<script src="/site.js" defer></script>
+</body>
+</html>

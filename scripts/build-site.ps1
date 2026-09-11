@@ -828,12 +828,18 @@ function ProductTokens($p) {
   # hashBlock — full primary artifact SHA-256 with copy control wrapper
   $primarySha = if ($tokens['artifactSha256']) { $tokens['artifactSha256'] } else { $p.sha256 }
   if (-not [string]::IsNullOrWhiteSpace($primarySha)) {
+    $platform = PlatformLabel $p
+    $verificationNote = if ($platform -like '*Android*') {
+      "<p class=`"note`">Desktop verification: <code class=`"inline`">Get-FileHash `".\$($tokens['artifactFilename'])`" -Algorithm SHA256</code> (Phone-native verification guidance is being prepared on the <a href=`"/support/#android`" class=`"text-link`">support hub</a>)</p>"
+    } else {
+      "<p class=`"note`">Windows verification: <code class=`"inline`">Get-FileHash `".\$($tokens['artifactFilename'])`" -Algorithm SHA256</code></p>"
+    }
     $tokens['hashBlock'] = @"
 <div class="code-block sha256-block" data-sha256="$primarySha">
   <code class="sha256-value">$primarySha</code>
   <button type="button" class="sha256-copy" aria-label="Copy SHA-256" title="Copy SHA-256">Copy</button>
 </div>
-<p class="note">Windows verification: <code class="inline">Get-FileHash ".\$($tokens['artifactFilename'])" -Algorithm SHA256</code></p>
+$verificationNote
 "@
   } else {
     $tokens['hashBlock'] = ''
@@ -1403,7 +1409,7 @@ if (-not (Test-Path $publicDir)) { New-Item -ItemType Directory $publicDir | Out
 # Process every template
 # ─────────────────────────────────────────────────────────────────────────────
 # Map: source file  ->  output path under public/
-$dirRoutes = @('reality-gate','forgecast','lights-out','cache-vault','cleanroom','ghostlayer','proofshot','founders','proof','roadmap')
+$dirRoutes = @('reality-gate','forgecast','lights-out','cache-vault','cleanroom','ghostlayer','proofshot','founders','proof','roadmap','support')
 $rootFiles = @('index.html','404.html')
 
 # Pre-compute latest site verification so templates can inject it
