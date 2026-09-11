@@ -338,7 +338,31 @@
 <p style="font-size: 0.78rem; color: var(--rg-muted); margin-top: 0.5rem;">
 <em>Note: Illustrative schematic JSON structure demonstrating receipt fields and ECDSA signature envelope.</em>
 </p>
-</section><p><a class="text-link" href="/proof/#receipt-reality-gate">Open the full release record ↗</a></p></div></details></section><nav class="studio-related" aria-label="More software"><span>More from the foundry</span><a href="/cache-vault/">Cache Vault</a><a href="/lights-out/">Lights Out PC</a><a href="/cleanroom/">Cleanroom</a><a href="/ghostlayer/">GhostLayer</a><a href="/forgecast/">ForgeCast Weather</a><a href="/proofshot/">ProofShot</a></nav></div></main>
+</section><p><a class="text-link" href="/proof/#receipt-reality-gate">Open the full release record ↗</a></p></div></details></section><section class="value-section privacy-disclosure-section" id="privacy-data-flow">
+  <div class="section-heading">
+    <p class="kicker">Privacy &amp; Data Flow</p>
+    <h2>Local execution. Verification on your terms.</h2>
+    <p>Evidence-backed behavior for Reality Gate Windows v1.1.0 Developer Pilot.</p>
+  </div>
+  <div class="value-grid">
+    <article>
+      <span class="step-number">01</span>
+      <h3>Stored on your device</h3>
+      <p>Project registries, build/test logs, ECDSA P-256 run receipts, and local keypairs are stored in your local <code>%APPDATA%\RealityGate\</code> directory.</p>
+    </article>
+    <article>
+      <span class="step-number">02</span>
+      <h3>Network &amp; transport boundaries</h3>
+      <p>Core runroom execution runs locally without background cloud sync. Optional read-only MCP adapter listens on <code>127.0.0.1:8765</code> (loopback only). Remote Git sync uses system Git CLI when initiated by the user.</p>
+    </article>
+    <article>
+      <span class="step-number">03</span>
+      <h3>Telemetry &amp; retention</h3>
+      <p>Zero background telemetry, analytics tracking, or ad SDKs found in audited source. Receipts and registries persist locally until cleared by the user.</p>
+    </article>
+  </div>
+</section>
+<nav class="studio-related" aria-label="More software"><span>More from the foundry</span><a href="/cache-vault/">Cache Vault</a><a href="/lights-out/">Lights Out PC</a><a href="/cleanroom/">Cleanroom</a><a href="/ghostlayer/">GhostLayer</a><a href="/forgecast/">ForgeCast Weather</a><a href="/proofshot/">ProofShot</a></nav></div></main>
 <template id="product-gallery"><a href="/assets/reality-gate/08-ci-run-complete.50deeeef7e10fbe8.png" data-thumb="/assets/studio/08-ci-run-complete-480.4e2f84d1f47b8fc7.webp" data-preview="/assets/studio/08-ci-run-complete-1440.ba292332e91dbc87.webp" data-width="1440" data-height="900" data-title="Runroom" data-caption="Recorded execution and its run log.">Runroom</a><a href="/assets/reality-gate/01-home-continuity.71b20e418bbf3799.png" data-thumb="/assets/studio/01-home-continuity-480.a570c621fae64392.webp" data-preview="/assets/studio/01-home-continuity-1440.6164ffb655310c8c.webp" data-width="1440" data-height="900" data-title="Home" data-caption="Repository continuity in the local control room.">Home</a><a href="/assets/reality-gate/04-recovery-bundle-verified.b93fd52611a64d33.png" data-thumb="/assets/studio/04-recovery-bundle-verified-480.dd9e1fb2e5090026.webp" data-preview="/assets/studio/04-recovery-bundle-verified-1440.895de80d181b111e.webp" data-width="1440" data-height="900" data-title="Recovery" data-caption="Recorded bundle details, with their stated outcome.">Recovery</a><a href="/assets/reality-gate/09-proof-ledger.png" data-thumb="/assets/studio/09-proof-ledger-480.webp" data-preview="/assets/studio/09-proof-ledger-1440.webp" data-width="1440" data-height="900" data-title="Ledger" data-caption="Records of previous operations.">Ledger</a></template>
 <!-- @include footer -->
 <script src="/site.js" defer></script>

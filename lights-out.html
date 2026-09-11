@@ -303,7 +303,7 @@
 <li>Dry Run mode — rehearse the full flow without touching the system</li>
 <li>A 2-minute default grace period before the action (configurable)</li>
 <li>Force shutdown only when you explicitly opt in</li>
-<li>Local-only operation — no cloud, no account, no telemetry</li>
+<li>Core local automation — zero background telemetry, analytics tracking, or cloud accounts. Optional LAN, smart lights, and webhook integrations operate over user-configured paths.</li>
 <li>Status and proof after every run, including cancellations</li>
 </ul>
 </div>
@@ -425,7 +425,31 @@
 <p>The public Android companion remains at {{product.companionPublicVersionLabel}}. The candidate companion moved to v11.1.3 alongside the Windows v11.1.3 candidate. Neither the Windows v11.1.3 candidate nor the Android v11.1.3 candidate companion has been publicly released. The current public versions remain Windows v11.1.2 and Android companion {{product.companionPublicVersionLabel}}; publication of the v11.1.3 candidates remains on hold.</p>
 </article>
 </div>
-</section><p><a class="text-link" href="/proof/#receipt-lights-out">Open the full release record ↗</a></p></div></details></section><nav class="studio-related" aria-label="More software"><span>More from the foundry</span><a href="/reality-gate/">Reality Gate</a><a href="/cache-vault/">Cache Vault</a><a href="/cleanroom/">Cleanroom</a><a href="/ghostlayer/">GhostLayer</a><a href="/forgecast/">ForgeCast Weather</a><a href="/proofshot/">ProofShot</a></nav></div></main>
+</section><p><a class="text-link" href="/proof/#receipt-lights-out">Open the full release record ↗</a></p></div></details></section><section class="value-section privacy-disclosure-section" id="privacy-data-flow">
+  <div class="section-heading">
+    <p class="kicker">Privacy &amp; Data Flow</p>
+    <h2>Core local automation. Configured network options.</h2>
+    <p>Evidence-backed behavior for Lights Out Windows v11.1.2 and Android companion v11.1.1.</p>
+  </div>
+  <div class="value-grid">
+    <article>
+      <span class="step-number">01</span>
+      <h3>Stored on your device</h3>
+      <p>Countdown settings, bedtime presets, and session logs persist in <code>%APPDATA%\LightsOut\</code>. First Light wake tasks register in Windows Task Scheduler and self-delete upon execution or cancel.</p>
+    </article>
+    <article>
+      <span class="step-number">02</span>
+      <h3>Network &amp; integration options</h3>
+      <p>Core countdown and power control workflows run locally. Optional integrations (custom HTTP webhooks, Philips Hue smart lights, Family LAN discovery, and Wi-Fi Guard) communicate over user-configured local network paths or endpoints.</p>
+    </article>
+    <article>
+      <span class="step-number">03</span>
+      <h3>Telemetry &amp; control</h3>
+      <p>Zero background telemetry, analytics tracking, or mandatory cloud accounts. Emergency cancel (<code>Ctrl+Shift+X</code>) and dry-run simulation ensure full operator control.</p>
+    </article>
+  </div>
+</section>
+<nav class="studio-related" aria-label="More software"><span>More from the foundry</span><a href="/reality-gate/">Reality Gate</a><a href="/cache-vault/">Cache Vault</a><a href="/cleanroom/">Cleanroom</a><a href="/ghostlayer/">GhostLayer</a><a href="/forgecast/">ForgeCast Weather</a><a href="/proofshot/">ProofShot</a></nav></div></main>
 <template id="product-gallery"><a href="/assets/lights-out/tonight-active-hero.png" data-thumb="/assets/studio/tonight-active-hero-480.webp" data-preview="/assets/studio/tonight-active-hero-1600.webp" data-width="1600" data-height="902" data-title="Tonight" data-caption="The real Windows v11.1.2 countdown interface.">Tonight</a><a href="/assets/lights-out/night-modes-panel.png" data-thumb="/assets/studio/night-modes-panel-480.webp" data-preview="/assets/studio/night-modes-panel-1600.webp" data-width="1600" data-height="1002" data-title="Night modes" data-caption="The night-mode selection panel.">Night modes</a><a href="/assets/lights-out/companion-active.png" data-thumb="/assets/studio/companion-active-390.webp" data-preview="/assets/studio/companion-active-390.webp" data-width="390" data-height="844" data-title="Android companion" data-caption="The companion showing an active session.">Android companion</a></template>
 <!-- @include footer -->
 <script src="/site.js" defer></script>

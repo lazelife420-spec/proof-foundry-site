@@ -52,13 +52,13 @@
 <button type="button" class="gallery-launch" data-gallery-open hidden><span>Explore the interface</span><span>4 screens <span aria-hidden="true">↗</span></span></button><a class="experience-jump" href="#try-it" data-enhance hidden><span>GET A FEEL FOR IT</span><span>Tour the workbench <span aria-hidden="true">↓</span></span></a><section class="value-section " id="features"><div class="section-heading"><p class="kicker">Made for the way you work</p><h2>From page context to a portable record.</h2><p>This engine captures page structure and resources. It does not take pixel screenshots.</p></div><div class="value-grid"><article><span class="step-number">01</span><h3>Inspect the input</h3><p>Read the page’s declared scripts, styles, images and links. Review the candidates and the generated retrieval plan.</p></article><article><span class="step-number">02</span><h3>Organize the case</h3><p>Keep a matter together in a named local folder, with its items and timestamps.</p></article><article><span class="step-number">03</span><h3>Export and check</h3><p>Create a bundle with SHA-256 manifests, a Proof Passport and an offline verifier.</p></article></div></section><section class="experience-section guided-tour tour-proofshot" id="try-it" data-tour="proofshot"><div class="experience-heading"><p class="kicker">Inside the development workbench</p><h2>Follow the work.<br>Keep the context.</h2><p>A guided look at the current engine. These real screens still carry the HyperSnatch name. ProofShot has no public release.</p></div><div class="tour-layout"><div class="tour-menu" role="group" aria-label="Explore the ProofShot interface" data-enhance hidden><button type="button" data-tour-step="0" aria-pressed="true"><span>01</span><strong>Workbench</strong><span aria-hidden="true">↗</span></button><button type="button" data-tour-step="1" aria-pressed="false"><span>02</span><strong>Candidates</strong><span aria-hidden="true">↗</span></button><button type="button" data-tour-step="2" aria-pressed="false"><span>03</span><strong>Export</strong><span aria-hidden="true">↗</span></button><button type="button" data-tour-step="3" aria-pressed="false"><span>04</span><strong>Records</strong><span aria-hidden="true">↗</span></button></div><div class="tour-screen"><figure class="app-shot"><a class="screenshot-link" href="/assets/proofshot/workbench-home.png" data-screenshot aria-label="Enlarge: ProofShot engine workbench under its current HyperSnatch branding."><img src="/assets/studio/workbench-home-1440.webp" srcset="/assets/studio/workbench-home-480.webp 480w, /assets/studio/workbench-home-960.webp 960w, /assets/studio/workbench-home-1440.webp 1440w" sizes="(max-width: 700px) 90vw, 780px" width="1440" height="900" alt="ProofShot engine workbench under its current HyperSnatch branding." loading="lazy" decoding="async" ></a><figcaption data-tour-caption aria-live="polite">Start with the capture workspace and its current artifact context.</figcaption></figure><p class="experience-error" role="status"></p></div></div></section><section class="product-story"><div class="story-copy"><p class="kicker">Inside the workbench</p><h2>The record travels with the work.</h2><p>Keep the files and the checks together. Re-verify an export from disk, or use its included HTML verifier in a browser. Hashes detect changes; they do not establish legal certification.</p></div><figure class="app-shot story-shot"><a class="screenshot-link" href="/assets/proofshot/workbench-proof-cards.png" data-screenshot aria-label="Enlarge: Underlying ProofShot engine showing a workspace with proof passport, tamper trial and verification cards."><img src="/assets/studio/workbench-proof-cards-1440.webp" srcset="/assets/studio/workbench-proof-cards-480.webp 480w, /assets/studio/workbench-proof-cards-960.webp 960w, /assets/studio/workbench-proof-cards-1440.webp 1440w" sizes="(max-width: 700px) 92vw, 60vw" width="1440" height="900" alt="Underlying ProofShot engine showing a workspace with proof passport, tamper trial and verification cards." loading="lazy"  decoding="async"></a></figure></section><section class="download-section" id="download"><div id="release-status"></div><p class="kicker">Development status</p><h2>A workbench in the making.</h2><p class="download-description">There is no public ProofShot release or installer. The underlying engine is HyperSnatch {{product.candidateVersionLabel}}; its interface and exports still use that legacy name while packaging work continues.</p><div class="studio-actions"></div><p><a class="text-link" href="/roadmap/">Follow development on the roadmap ↗</a> &nbsp;·&nbsp; <a class="text-link" href="/support/#report">Support &amp; troubleshooting guide ↗</a></p></section><section class="evidence-area" id="proof"><details class="proof-details"><summary><span><span class="kicker">For a closer look</span><strong>Release evidence &amp; technical details</strong></span><span class="expand-label">Expand <span aria-hidden="true">+</span></span></summary><div class="evidence-content"><p class="evidence-intro">This section documents the underlying HyperSnatch engine. It does not describe a public ProofShot release. Engine records, detailed scope and qualification evidence follow.</p>{{product.proofStrip}}<section aria-labelledby="capture-title" class="evidence-section" id="capture">
 <div class="section-head">
 <h3 id="capture-title">One workbench takes it in. Nothing runs by itself.</h3>
-<p>Paste a URL or a page into the Workbench and SmartDecode reads what the target actually contains — offline.</p>
+<p>SmartDecode parses page structure from supplied HTML locally. Entering a URL generates a retrieval plan for operator review. When the operator runs the capture stage, ProofShot fetches page resources over HTTPS. Exported proof bundles reside on local disk and can be verified 100% offline.</p>
 </div>
 <div class="ps-story">
 <div class="ps-story-copy">
 <p>SmartDecode (v2.5.0, built into this engine) works on the page's own text. It reads the structure the page declares for itself — scripts, stylesheets, images, links, embedded declarations — and separates what is real from what is not.</p>
 <ul class="ps-story-list">
-<li>Everything is resolved locally: no account, no upload, no cloud hop.</li>
+<li>Everything is resolved locally during analysis: no account, no upload, no cloud hop.</li>
 <li>Refusals are kept apart from candidates, so the operator sees what was dismissed and why.</li>
 <li>A full capture keeps the page's own artifacts and structure, not just a summary.</li>
 </ul>
@@ -79,8 +79,8 @@
 <p>Incomplete or non-extractable references are refused, listed separately, never mixed into results.</p>
 </div>
 <div class="ps-card">
-<h3>Offline by default</h3>
-<p>The extraction pipeline runs locally, with no account and no network dependency.</p>
+<h3>Local analysis &amp; offline verification</h3>
+<p>SmartDecode parses HTML locally. Target URL retrieval runs over HTTPS when initiated by the operator. Exported proof bundles verify 100% offline in any browser.</p>
 </div>
 </div>
 </section>
@@ -288,7 +288,31 @@
 <p>No new extraction engines or automation lanes while the freeze stands. Cases stay simple project containers, and proof means SHA-256 manifests and receipts.</p>
 </article>
 </div>
-</section><p><a class="text-link" href="/proof/#receipt-proofshot">Open the full release record ↗</a></p></div></details></section><nav class="studio-related" aria-label="More software"><span>More from the foundry</span><a href="/reality-gate/">Reality Gate</a><a href="/cache-vault/">Cache Vault</a><a href="/lights-out/">Lights Out PC</a><a href="/cleanroom/">Cleanroom</a><a href="/ghostlayer/">GhostLayer</a><a href="/forgecast/">ForgeCast Weather</a></nav></div></main>
+</section><p><a class="text-link" href="/proof/#receipt-proofshot">Open the full release record ↗</a></p></div></details></section><section class="value-section privacy-disclosure-section" id="privacy-data-flow">
+  <div class="section-heading">
+    <p class="kicker">Privacy &amp; Data Flow</p>
+    <h2>Local analysis. HTTPS intake. Offline verification.</h2>
+    <p>Evidence-backed behavior for ProofShot development engine (HyperSnatch v1.6.18).</p>
+  </div>
+  <div class="value-grid">
+    <article>
+      <span class="step-number">01</span>
+      <h3>Local SmartDecode analysis</h3>
+      <p>SmartDecode parses page structure from supplied HTML text locally (<code>LOCAL_PROCESS_ONLY</code>). Pasting a URL generates a retrieval plan for operator review without auto-fetching.</p>
+    </article>
+    <article>
+      <span class="step-number">02</span>
+      <h3>HTTPS URL resource intake</h3>
+      <p>When the operator explicitly runs the retrieval stage, ProofShot fetches page structure, stylesheets, scripts, and images over HTTPS from the target URL.</p>
+    </article>
+    <article>
+      <span class="step-number">03</span>
+      <h3>Offline verification &amp; storage</h3>
+      <p>Captured evidence bundles, Proof Passports, and SHA-256 manifests reside in local Case folders on disk and can be verified 100% offline in any browser.</p>
+    </article>
+  </div>
+</section>
+<nav class="studio-related" aria-label="More software"><span>More from the foundry</span><a href="/reality-gate/">Reality Gate</a><a href="/cache-vault/">Cache Vault</a><a href="/lights-out/">Lights Out PC</a><a href="/cleanroom/">Cleanroom</a><a href="/ghostlayer/">GhostLayer</a><a href="/forgecast/">ForgeCast Weather</a></nav></div></main>
 <template id="product-gallery"><a href="/assets/proofshot/workbench-home.png" data-thumb="/assets/studio/workbench-home-480.webp" data-preview="/assets/studio/workbench-home-1440.webp" data-width="1440" data-height="900" data-title="Workbench" data-caption="HyperSnatch engine v1.6.18, before the ProofShot rebrand.">Workbench</a><a href="/assets/proofshot/candidates-plan.png" data-thumb="/assets/studio/candidates-plan-480.webp" data-preview="/assets/studio/candidates-plan-1440.webp" data-width="1440" data-height="900" data-title="Candidates" data-caption="The engine candidates view with the sample workspace panel.">Candidates</a><a href="/assets/proofshot/export-complete.png" data-thumb="/assets/studio/export-complete-480.webp" data-preview="/assets/studio/export-complete-1440.webp" data-width="1440" data-height="900" data-title="Export" data-caption="A recorded sample export and its artifact tree.">Export</a><a href="/assets/proofshot/workbench-proof-cards.png" data-thumb="/assets/studio/workbench-proof-cards-480.webp" data-preview="/assets/studio/workbench-proof-cards-1440.webp" data-width="1440" data-height="900" data-title="Records" data-caption="The engine workbench and proof cards.">Records</a></template>
 <!-- @include footer -->
 <script src="/site.js" defer></script>
