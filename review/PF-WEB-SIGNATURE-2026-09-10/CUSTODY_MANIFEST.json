@@ -1,0 +1,166 @@
+{
+  "documentId": "PF-WEB-SIGNATURE-2026-09-10",
+  "generatedAt": "2026-09-10",
+  "repository": {
+    "path": "C:\\Users\\KickA\\Projects\\Active\\proof-foundry-site",
+    "branch": "master",
+    "baseCommit": "92cd03e26cd1c7d6bf42f9d904b11a715b7db1c6",
+    "baseTree": "26f346a1177a68939ddc9224baa479a3d263d351",
+    "testedImplementationCommit": null,
+    "workingTreeCandidate": true,
+    "workingTreeStatus": {
+      "source": "git status --porcelain=v1 --untracked-files=all",
+      "modifiedTracked": [
+        "experience.js",
+        "index.html",
+        "partials/footer.html",
+        "partials/product-card.html",
+        "scripts/build-site.ps1"
+      ],
+      "untracked": [
+        "signature.css",
+        "scripts/test-signature-home.ps1",
+        "review/PF-WEB-SIGNATURE-2026-09-10/"
+      ],
+      "staged": [],
+      "note": "signature.css is new and untracked, never committed, therefore not modified. An earlier revision of the report listed it under both categories; that was incorrect. public/ is generated output and is not tracked.",
+      "commitsCreated": 0,
+      "tagsCreated": 0,
+      "branchesCreated": 0,
+      "pushesPerformed": 0,
+      "deploymentsPerformed": 0
+    }
+  },
+  "authority": {
+    "ownerVisualAcceptance": "PENDING",
+    "productionDeployment": "NOT_AUTHORIZED / NOT_PERFORMED",
+    "productReleaseAuthority": "UNCHANGED"
+  },
+  "build": {
+    "command": "npm run build",
+    "generator": "scripts/build-site.ps1",
+    "sourceOfTruth": "index.html + partials + site-manifest.json",
+    "outputDirectory": "public/",
+    "result": "PASS: 7 products, 0 manifest errors, 10 directory routes"
+  },
+  "tools": {
+    "PowerShell": "pwsh",
+    "Node": "node",
+    "Vite": "7.1.3",
+    "Axe": "4.12.1",
+    "Browser": "Chromium via Factory embedded CDP; exact engine build not captured"
+  },
+  "testedSource": [
+    "index.html",
+    "signature.css",
+    "experience.js",
+    "partials/footer.html",
+    "partials/product-card.html",
+    "scripts/build-site.ps1",
+    "scripts/test-signature-home.ps1",
+    "site-manifest.json"
+  ],
+  "testedGeneratedOutput": [
+    "public/index.html",
+    "public/signature.css",
+    "public/experience.js",
+    "public/proof/index.html",
+    "public/reality-gate/index.html",
+    "public/cache-vault/index.html",
+    "public/lights-out/index.html",
+    "public/cleanroom/index.html",
+    "public/ghostlayer/index.html",
+    "public/forgecast/index.html",
+    "public/proofshot/index.html",
+    "public/founders/index.html",
+    "public/roadmap/index.html"
+  ],
+  "evidence": {
+    "beforeScreenshots": [
+      "screenshots/before/home-390x844.png",
+      "screenshots/before/home-1366x768.png",
+      "screenshots/before/home-1440x900.png"
+    ],
+    "afterScreenshots": [
+      "screenshots/after/home-390x844-final.png",
+      "screenshots/after/home-390x844-fixed.png",
+      "screenshots/states/hero-reality-gate-390x844-fixed.png",
+      "screenshots/states/filter-android.png",
+      "screenshots/states/comparison-two-tools.png"
+    ],
+    "qualificationCaptures": [
+      "screenshots/qualification/home-1920x1080.png",
+      "screenshots/qualification/home-1536x864.png",
+      "screenshots/qualification/home-1440x900.png",
+      "screenshots/qualification/home-1366x768.png",
+      "screenshots/qualification/home-1024x768.png",
+      "screenshots/qualification/home-820x1180.png",
+      "screenshots/qualification/home-430x932.png",
+      "screenshots/qualification/home-390x844.png",
+      "screenshots/qualification/home-360x800.png",
+      "screenshots/qualification/home-wrapper-430.png",
+      "screenshots/qualification/home-wrapper-390.png",
+      "screenshots/qualification/home-wrapper-360.png",
+      "screenshots/qualification/home-fullpage-1920.png",
+      "screenshots/qualification/home-fullpage-1440.png",
+      "screenshots/qualification/home-fullpage-1024.png",
+      "screenshots/qualification/home-fullpage-820.png",
+      "screenshots/qualification/home-fullpage-390.png",
+      "screenshots/qualification/home-zoom200-640x360-full.png",
+      "screenshots/qualification/home-reflow-320x256-full.png",
+      "screenshots/qualification/home-nojs-1280.png",
+      "screenshots/qualification/home-nojs-390.png",
+      "screenshots/qualification/home-edge-1440x7600.png"
+    ],
+    "ownerReviewBoard": "OWNER_VISUAL_REVIEW.html",
+    "desktopCaptureNote": "Visual evidence recaptured against HTTP server http://127.0.0.1:4173/ using headless Edge. Root-relative stylesheets and assets fully resolved.",
+    "screenshotQualityControl": "Every capture verified with DOM assertions (stylesheetCount > 0, dark body background rgb(16,17,18), logo/hero naturalWidth > 0, required text present) before saving.",
+    "discardedDefectiveCaptures": [
+      "file:/// file-protocol unstyled captures discarded"
+    ],
+    "evidenceIntegrity": {
+      "filesInReviewDirectory": 51,
+      "hashesInManifest": 50,
+      "manifestSelfExclusion": "SHA256SUMS.txt excludes itself to avoid a circular hash",
+      "digestVerification": "50/50 verified against file contents after regeneration; 0 malformed, 0 missing, 0 mismatched",
+      "screenshotCount": 35,
+      "documentCount": 9,
+      "measurementScriptCount": 4
+    }
+  },
+  "qa": {
+    "receiptInvariants": "54/54 PASS",
+    "signatureChecks": "15/15 PASS",
+    "javascriptSyntax": "PASS",
+    "diffWhitespace": "PASS",
+    "assetContentTypeHomepage": "61/61 PASS",
+    "assetContentSignatureAllOutput": "144/147 PASS",
+    "assetContentSignatureFailures": [
+      "assets/lights-out/companion-active.png contains JPEG data",
+      "assets/lights-out/companion-reconnected.png contains JPEG data",
+      "assets/lights-out/companion-snoozed.png contains JPEG data"
+    ],
+    "assetContentSignatureFailureScope": "Pre-existing, git-tracked, unmodified by this candidate, byte-equal to live since 308d2f1, referenced only by the Lights Out page. Not requested by the homepage. Raised for the owner, deliberately not fixed here.",
+    "axeViolations": 0,
+    "axeIncomplete": 1,
+    "axeIncompleteDetail": "color-contrast, 44 nodes, background not determinable over the product-stage gradient. Adjudicated by hand in CONTRAST_ADJUDICATION.md; persists as long as the gradient does.",
+    "axePasses": 43,
+    "axeInapplicable": 46,
+    "contrastAdjudication": "44/44 nodes meet WCAG AA after correction. One real failure found: .theater-context at 3.91:1, corrected to 5.11:1.",
+    "zoom200": "PASS, 640x360 CSS px, 0px horizontal overflow",
+    "reflow400": "PASS, 320x256 CSS px, 0px horizontal overflow, WCAG 2.1 SC 1.4.10",
+    "phoneWidths": "PASS at 390, 360, 320, 0px horizontal overflow each",
+    "javascriptDisabled": "PASS, 16/16 generated-HTML content assertions, renders verified at 1280 and 390",
+    "imageLoading": "11/11 content images resolve; 12th (.gallery-full) is the on-demand viewer, empty by design",
+    "interactionChecks": "PASS (hero switching, keyboard, mobile menu, filter, comparison, reduced-motion, forced image failure)",
+    "viewportMatrix": "9 fold captures at 360-1920, 5 full-page captures at 390-1920 with images resolved, 3 wrapped phone captures",
+    "secondBrowserSameEngine": "Edge 152 (Blink) matches Chrome 153; confirms build consistency, not engine independence",
+    "independentEngine": "NOT_PERFORMED, no Gecko or WebKit browser on this machine",
+    "physicalDevice": "NOT_PERFORMED",
+    "fieldPerformance": "NOT_PERFORMED",
+    "fullKeyboardTraversal": "NOT_PERFORMED",
+    "productionVerification": "NOT_PERFORMED, nothing deployed",
+    "fullAcceptanceMatrix": "PARTIAL",
+    "ownerVisualAcceptance": "PENDING, see OWNER_VISUAL_REVIEW.html"
+  }
+}

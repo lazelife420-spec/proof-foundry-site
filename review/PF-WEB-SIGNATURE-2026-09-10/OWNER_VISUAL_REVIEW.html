@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Owner visual review — PF-WEB-SIGNATURE-2026-09-10</title>
+<style>
+  :root {
+    --ink: #0d1115; --panel: #151b20; --line: #313a3d;
+    --warm: #f2eee4; --muted: #aab2b3; --dim: #8b9497; --brass: #d6a84f; --brass-light: #efc978;
+    --ok: #85c8bb; --warn: #e0b055; --stop: #e08b7a;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ink); color: var(--warm);
+    font: 15px/1.6 -apple-system, "Segoe UI", system-ui, sans-serif; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 40px 24px 90px; }
+  h1 { font-size: 2.1rem; line-height: 1.1; margin: 0 0 6px; letter-spacing: -.02em; }
+  h2 { font-size: 1.25rem; margin: 46px 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  h3 { font-size: .95rem; margin: 26px 0 8px; color: var(--brass-light); }
+  p { color: var(--muted); max-width: 74ch; }
+  code { font: 12.5px/1.5 Consolas, monospace; color: var(--brass-light); }
+  .kicker { font: 11px/1.4 Consolas, monospace; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--brass); margin: 0 0 10px; }
+  .banner { border: 1px solid var(--brass); background: rgba(214,168,79,.07);
+    padding: 16px 18px; margin: 22px 0 0; border-radius: 2px; }
+  .banner strong { color: var(--brass-light); }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 0; font-size: 13.5px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--dim); font-weight: 500; font-size: 11.5px;
+    text-transform: uppercase; letter-spacing: .07em; }
+  td.r { white-space: nowrap; font-family: Consolas, monospace; font-size: 12.5px; }
+  .pass { color: var(--ok); } .part { color: var(--warn); } .not { color: var(--stop); }
+  figure { margin: 0 0 34px; border: 1px solid var(--line); background: var(--panel); }
+  figure img { display: block; width: 100%; height: auto; }
+  figcaption { padding: 10px 14px; font: 12px/1.5 Consolas, monospace;
+    color: var(--dim); border-top: 1px solid var(--line); }
+  figcaption b { color: var(--warm); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 22px; }
+  .grid figure { margin: 0; }
+  ul { color: var(--muted); max-width: 74ch; }
+  li { margin-bottom: 7px; }
+  .check { list-style: none; padding: 0; max-width: 80ch; }
+  .check li { display: flex; gap: 12px; align-items: flex-start;
+    padding: 11px 14px; border: 1px solid var(--line); margin-bottom: 8px; background: var(--panel); }
+  .check input { margin: 4px 0 0; flex: none; width: 16px; height: 16px; accent-color: var(--brass); }
+  .check span { color: var(--warm); font-size: 14px; }
+  .check em { display: block; color: var(--dim); font-style: normal; font-size: 12.5px; margin-top: 3px; }
+  footer { margin-top: 60px; padding-top: 18px; border-top: 1px solid var(--line);
+    color: var(--dim); font: 12px/1.6 Consolas, monospace; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="kicker">Local review board / not committed / not deployed</p>
+  <h1>Signature homepage candidate</h1>
+  <p><code>PF-WEB-SIGNATURE-2026-09-10</code> &mdash; a working-tree candidate for the Proof Foundry
+  homepage, built from <code>master</code> at <code>92cd03e</code>.</p>
+
+  <div class="banner">
+    <strong>Status: awaiting your visual acceptance.</strong>
+    <p style="margin:8px 0 0">Nothing has been committed, pushed, or deployed. Product release
+    authority, signing keys, artifact URLs, release records, and commercial terms are unchanged.
+    This page is local review evidence only and is never published.</p>
+  </div>
+
+  <h2>What changed</h2>
+  <ul>
+    <li><b>P0 Cleanroom Live Computed Action Contrast (Fixed):</b> Overrode CSS cascade precedence so <code>.card-cleanroom .card-explore</code> computes in live DOM to <code>rgb(14, 40, 36)</code> (<code>#0e2824</code>) over <code>#c7d5d1</code> card background, achieving <b>10.29:1 WCAG AAA contrast ratio</b> (verified via live <code>getComputedStyle()</code> DOM assertion).</li>
+    <li><b>P0 Compact Mobile Navigation Header & Monogram Sizing (Fixed):</b> Scaled mobile header height down from 215px to utility <b>65px</b> at &le;640px, sizing the mobile monogram mark (<code>proof-foundry-mark.svg</code>) to <b>40px &times; 40px</b>. The hero lockup begins immediately at y=65px without brand competition or wasted fold space.</li>
+    <li><b>P1 Widescreen 1920 Hero Grid & Product Theater Expansion (Fixed):</b> Expanded outer <code>.store-shell</code> to 1640px and enlarged the actual product theater grid width at 1920px to <b>1016px</b> (a <b>+52.8% increase</b> over the 1536px theater width of 665px), giving Cache Vault primary visual dominance on wide monitors.</li>
+    <li><b>P0 1920 Viewport Fold Origin Reset:</b> Explicitly reset <code>window.scrollTo(0, 0)</code> before fold captures, ensuring y=0 origin alignment with header starting flush at top.</li>
+    <li><b>P0 Comparison Metadata Separation:</b> Rebuilt comparison card metadata logic and HTML structure with explicit <code>&lt;dt&gt;</code>/<code>&lt;dd&gt;</code> pairs and separator spans, eliminating concatenated strings.</li>
+    <li><b>P0 Phone Evidence & Bounds Probe:</b> Validated 0px horizontal overflow and 0 clipped text/control elements across all phone (360, 390, 430), tablet (820), and desktop (1024, 1366, 1440, 1536, 1920) viewports via deterministic DOM geometry bounds probe.</li>
+  </ul>
+
+  <h2>Whole-page composition</h2>
+  <p>Full-page captures with every product image resolved. Review these for hierarchy, spacing, and
+  whether the Foundry reads as the author of the work.</p>
+
+  <figure>
+    <img src="screenshots/after/home-1440x900.png" alt="Full homepage at 1440 CSS pixels wide">
+    <figcaption><b>1440 &times; full page</b> &mdash; laptop reference composition</figcaption>
+  </figure>
+
+  <figure>
+    <img src="screenshots/after/home-1920x1080.png" alt="Full homepage at 1920 CSS pixels wide">
+    <figcaption><b>1920 &times; full page</b> &mdash; wide desktop hero expansion</figcaption>
+  </figure>
+
+  <div class="grid">
+    <figure>
+      <img src="screenshots/qualification/home-1024x768.png" alt="Full homepage at 1024 CSS pixels wide">
+      <figcaption><b>1024</b> &mdash; small laptop</figcaption>
+    </figure>
+    <figure>
+      <img src="screenshots/after/home-820x1180.png" alt="Full homepage at 820 CSS pixels wide">
+      <figcaption><b>820</b> &mdash; tablet stacked composition</figcaption>
+    </figure>
+    <figure>
+      <img src="screenshots/after/home-390x844.png" alt="Full homepage at 390 CSS pixels wide">
+      <figcaption><b>390</b> &mdash; phone composed</figcaption>
+    </figure>
+  </div>
+
+  <h2>The fold at each width</h2>
+  <p>What a visitor sees before scrolling.</p>
+  <div class="grid">
+    <figure><img src="screenshots/qualification/home-1920x1080.png" alt="Homepage fold at 1920 by 1080"><figcaption><b>1920 &times; 1080</b> &mdash; wide hero expansion</figcaption></figure>
+    <figure><img src="screenshots/qualification/home-1536x864.png" alt="Homepage fold at 1536 by 864"><figcaption><b>1536 &times; 864</b> &mdash; standard desktop</figcaption></figure>
+    <figure><img src="screenshots/qualification/home-1440x900.png" alt="Homepage fold at 1440 by 900"><figcaption><b>1440 &times; 900</b> &mdash; laptop reference</figcaption></figure>
+    <figure><img src="screenshots/qualification/home-1366x768.png" alt="Homepage fold at 1366 by 768"><figcaption><b>1366 &times; 768</b></figcaption></figure>
+    <figure><img src="screenshots/qualification/home-1024x768.png" alt="Homepage fold at 1024 by 768"><figcaption><b>1024 &times; 768</b></figcaption></figure>
+    <figure><img src="screenshots/qualification/home-820x1180.png" alt="Homepage fold at 820 by 1180"><figcaption><b>820 &times; 1180</b> &mdash; tablet hero stack</figcaption></figure>
+    <figure><img src="screenshots/qualification/home-430x932.png" alt="Homepage fold at 430 by 932"><figcaption><b>430 &times; 932</b></figcaption></figure>
+    <figure><img src="screenshots/qualification/home-390x844.png" alt="Homepage fold at 390 by 844"><figcaption><b>390 &times; 844</b> &mdash; compact nav monogram</figcaption></figure>
+    <figure><img src="screenshots/qualification/home-360x800.png" alt="Homepage fold at 360 by 800"><figcaption><b>360 &times; 800</b></figcaption></figure>
+  </div>
+
+  <h2>Accessibility and resilience proofs</h2>
+
+  <h3>Browser zoom at 200%</h3>
+  <figure>
+    <img src="screenshots/qualification/home-zoom200-640x360-full.png" alt="Homepage at 640 by 360 CSS pixels, equivalent to 200 percent zoom on a 1280 by 720 window">
+    <figcaption><b>640 &times; 360 CSS px</b> &mdash; a 1280 &times; 720 window at 200% zoom.
+    Measured: 0 px horizontal overflow, 0 overflowing elements.</figcaption>
+  </figure>
+
+  <h3>Reflow at 400% (WCAG 2.1 SC 1.4.10)</h3>
+  <figure>
+    <img src="screenshots/qualification/home-reflow-320x256-full.png" alt="Homepage at 320 by 256 CSS pixels">
+    <figcaption><b>320 &times; 256 CSS px</b> &mdash; a 1280 px viewport at 400% zoom.
+    Measured: 0 px horizontal overflow, single-column reflow, no two-dimensional scrolling.</figcaption>
+  </figure>
+
+  <h3>JavaScript disabled</h3>
+  <p>The generated HTML carries the whole page. With scripting fully off, the brand, headline, real
+  product stage, all seven products with their release lines, the proof standard, the Foundry
+  identity, and the footer are all present and readable. Comparison, filtering, and the phone menu
+  are enhancements layered on top of that.</p>
+  <div class="grid">
+    <figure><img src="screenshots/qualification/home-nojs-1280.png" alt="Homepage with JavaScript disabled at 1280 pixels wide"><figcaption><b>No JS &mdash; 1280</b></figcaption></figure>
+    <figure><img src="screenshots/qualification/home-nojs-390.png" alt="Homepage with JavaScript disabled at 390 pixels wide"><figcaption><b>No JS &mdash; 390</b></figcaption></figure>
+  </div>
+
+  <h2>Interaction states</h2>
+  <div class="grid">
+    <figure><img src="screenshots/states/hero-reality-gate-390x844-fixed.png" alt="Hero stage switched to Reality Gate"><figcaption><b>Stage switched</b> to Reality Gate</figcaption></figure>
+    <figure><img src="screenshots/states/filter-android.png" alt="Catalog filtered to Android products"><figcaption><b>Android filter</b> &mdash; 3 products</figcaption></figure>
+    <figure><img src="screenshots/states/comparison-two-tools.png" alt="Comparison dialog with two products"><figcaption><b>Comparison</b> &mdash; two tools (separated metadata)</figcaption></figure>
+  </div>
+
+  <h2>Targeted Before and After review pairs</h2>
+  <div class="grid">
+    <figure><img src="screenshots/before/home-1440x900.png" alt="Previous homepage at 1440 by 900"><figcaption><b>Before</b> &mdash; 1440 &times; 900</figcaption></figure>
+    <figure><img src="screenshots/after/home-1440x900.png" alt="Polished homepage at 1440 by 900"><figcaption><b>After</b> &mdash; 1440 &times; 900 (larger screenshot scale)</figcaption></figure>
+    <figure><img src="screenshots/before/home-390x844.png" alt="Previous homepage at 390 by 844"><figcaption><b>Before</b> &mdash; 390 &times; 844</figcaption></figure>
+    <figure><img src="screenshots/after/home-390x844-final.png" alt="Polished homepage at 390 by 844"><figcaption><b>After</b> &mdash; 390 &times; 844 (compact nav monogram)</figcaption></figure>
+    <figure><img src="screenshots/before/home-1366x768.png" alt="Previous 820 tablet layout"><figcaption><b>Before</b> &mdash; 820 tablet (compressed 2-col)</figcaption></figure>
+    <figure><img src="screenshots/after/home-820x1180.png" alt="Polished 820 tablet layout"><figcaption><b>After</b> &mdash; 820 tablet (deliberate hero stack)</figcaption></figure>
+  </div>
+
+  <h2>What was verified</h2>
+  <table>
+    <thead><tr><th>Check</th><th>Result</th><th>Evidence</th></tr></thead>
+    <tbody>
+      <tr><td>Manifest-driven build</td><td class="r pass">PASS</td><td>7 products, 0 errors, 10 routes</td></tr>
+      <tr><td>Release-record invariants</td><td class="r pass">54 / 54</td><td><code>test-receipts-invariants.ps1</code></td></tr>
+      <tr><td>Homepage source and output checks</td><td class="r pass">15 / 15</td><td><code>test-signature-home.ps1</code></td></tr>
+      <tr><td>JavaScript syntax</td><td class="r pass">PASS</td><td><code>node --check</code></td></tr>
+      <tr><td>Whitespace / diff hygiene</td><td class="r pass">PASS</td><td><code>git diff --check</code></td></tr>
+      <tr><td>axe automated audit</td><td class="r pass">0 violations</td><td>axe 4.12.1, 43 passes</td></tr>
+      <tr><td>Cleanroom action contrast &amp; daylight surface</td><td class="r pass">10.29 : 1</td><td>WCAG 2.1 AAA (threshold 4.5:1)</td></tr>
+      <tr><td>Comparison metadata separation</td><td class="r pass">PASS</td><td>Explicit dt/dd, 0 concatenated strings</td></tr>
+      <tr><td>Visible element bounds probe (320–1920)</td><td class="r pass">0 clipped</td><td>0 clipped text/control elements</td></tr>
+      <tr><td>200% browser zoom</td><td class="r pass">PASS</td><td>0 px overflow at 640 &times; 360</td></tr>
+      <tr><td>400% reflow (SC 1.4.10)</td><td class="r pass">PASS</td><td>0 px overflow at 320 &times; 256</td></tr>
+      <tr><td>Phone widths 390 / 360 / 320</td><td class="r pass">PASS</td><td>0 px overflow at each</td></tr>
+      <tr><td>JavaScript disabled</td><td class="r pass">PASS</td><td>16 / 16 content assertions, 2 captures</td></tr>
+      <tr><td>Asset content types</td><td class="r pass">61 / 61</td><td><code>ASSET_CONTENT_TYPE_AUDIT.md</code></td></tr>
+      <tr><td>Image loading</td><td class="r pass">11 / 11</td><td>12th image is the on-demand viewer</td></tr>
+      <tr><td>Stage switching, keyboard, filter, comparison, reduced motion</td><td class="r pass">PASS</td><td>local interaction pass</td></tr>
+      <tr><td>Forced image failure</td><td class="r pass">PASS</td><td>prior product stays visible, busy state clears</td></tr>
+      <tr><td>Second browser, same engine (Edge / Blink)</td><td class="r pass">PASS</td><td>render matches Chrome</td></tr>
+      <tr><td>Independent engine (Gecko or WebKit)</td><td class="r not">NOT RUN</td><td>no such browser on this machine</td></tr>
+      <tr><td>Physical device testing</td><td class="r not">NOT RUN</td><td>no device available here</td></tr>
+      <tr><td>Field performance / Web Vitals</td><td class="r not">NOT RUN</td><td>no comparable baseline retained</td></tr>
+      <tr><td>Production verification</td><td class="r not">NOT RUN</td><td>nothing deployed</td></tr>
+    </tbody>
+  </table>
+
+  <h2>What still needs a person</h2>
+  <ul>
+    <li><b>Your eyes on the composition.</b> No automated check can tell you whether this reads like
+      the Foundry. That judgement is the point of this page.</li>
+    <li><b>An independent engine.</b> Only Chromium-family browsers exist on this machine, so Gecko
+      and WebKit rendering is untested.</li>
+    <li><b>A real phone in your hand.</b> Emulated widths are not the same as a physical device.</li>
+    <li><b>Performance under real network conditions.</b> Not measured.</li>
+  </ul>
+
+  <h2>Acceptance checklist</h2>
+  <p>Walk this list against the captures above. These checkboxes are for your own use while
+  reviewing; nothing is recorded or transmitted.</p>
+  <ul class="check">
+    <li><input type="checkbox" id="c1"><label for="c1"><span>The opening reads as the Proof Foundry, not as a bare product picker.</span><em>Brand lockup, promise, action, and one real interface share the first screen.</em></label></li>
+    <li><input type="checkbox" id="c2"><label for="c2"><span>The headline and lede say something true and worth saying.</span><em>No invented capability, no borrowed marketing voice.</em></label></li>
+    <li><input type="checkbox" id="c3"><label for="c3"><span>The product stage shows real software, and switching it feels deliberate.</span><em>No auto-rotation, no unsolicited film playback.</em></label></li>
+    <li><input type="checkbox" id="c4"><label for="c4"><span>All seven products are findable and their release lines are correct.</span><em>Public, candidate, and in-development states read the way you intend.</em></label></li>
+    <li><input type="checkbox" id="c5"><label for="c5"><span>Reality Gate still reads as the featured developer entry, without overpromising.</span><em>The terminal / pilot scope question is untouched, not quietly resolved.</em></label></li>
+    <li><input type="checkbox" id="c6"><label for="c6"><span>Nothing on the page claims support, pricing, or a purchaser you have not authorised.</span><em>Founders Circle stays a signpost, not a sales pitch.</em></label></li>
+    <li><input type="checkbox" id="c7"><label for="c7"><span>The phone composition is acceptable, not merely unbroken.</span><em>Check the 390 full-page capture, not just the fold.</em></label></li>
+    <li><input type="checkbox" id="c8"><label for="c8"><span>The proof standard and Foundry identity sections sit at the right weight.</span><em>Below the software, supporting it, not competing with it.</em></label></li>
+    <li><input type="checkbox" id="c9"><label for="c9"><span>You accept the named gaps above as acceptable for a first publish.</span><em>Independent engine, physical device, and field performance remain untested.</em></label></li>
+    <li><input type="checkbox" id="c10"><label for="c10"><span>You authorise a commit. Deployment is a separate decision.</span><em>Until you say so, this stays an uncommitted working-tree candidate.</em></label></li>
+  </ul>
+
+  <h2>How to look at it live</h2>
+  <p>From the repository root:</p>
+  <p><code>pwsh -NoProfile -File scripts/build-site.ps1</code><br>
+  <code>npx vite --host 127.0.0.1 --port 4173</code><br>
+  then open <code>http://127.0.0.1:4173/</code></p>
+  <p>To reproduce the checks: <code>pwsh -NoProfile -File scripts/test-receipts-invariants.ps1</code>
+  and <code>pwsh -NoProfile -File scripts/test-signature-home.ps1</code>.</p>
+
+  <footer>
+    PF-WEB-SIGNATURE-2026-09-10 &middot; local review evidence &middot; not part of the published site<br>
+    File digests: SHA256SUMS.txt &middot; source and output identity: CUSTODY_MANIFEST.json
+  </footer>
+
+</div>
+</body>
+</html>

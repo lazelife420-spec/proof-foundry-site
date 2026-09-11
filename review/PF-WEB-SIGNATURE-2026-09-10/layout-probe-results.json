@@ -1,0 +1,1072 @@
+{
+  "1920x1080": {
+    "viewport": {
+      "width": 1920,
+      "height": 1080
+    },
+    "windowInnerWidth": 1920,
+    "documentElementClientWidth": 1905,
+    "documentScrollWidth": 1905,
+    "bodyScrollWidth": 1905,
+    "horizontalOverflowPx": 0,
+    "hasHorizontalScroll": false,
+    "fullPageHeight": 5739,
+    "clippedTextOrControlCount": 0,
+    "clippedTextOrControls": [],
+    "overflowingElementCount": 0,
+    "overflowingElements": [],
+    "probedBounds": {
+      "header": {
+        "left": 0,
+        "top": 0,
+        "right": 1905,
+        "bottom": 89,
+        "width": 1905,
+        "height": 89
+      },
+      "heroLockup": {
+        "left": 181,
+        "top": 201,
+        "right": 661,
+        "bottom": 285,
+        "width": 480,
+        "height": 84
+      },
+      "kicker": {
+        "left": 181,
+        "top": 319,
+        "right": 661,
+        "bottom": 337,
+        "width": 480,
+        "height": 18
+      },
+      "headline": {
+        "left": 181,
+        "top": 357,
+        "right": 661,
+        "bottom": 751,
+        "width": 480,
+        "height": 394
+      },
+      "lede": {
+        "left": 181,
+        "top": 751,
+        "right": 621,
+        "bottom": 802,
+        "width": 440,
+        "height": 51
+      },
+      "primaryCta": {
+        "left": 181,
+        "top": 832,
+        "right": 412,
+        "bottom": 881,
+        "width": 232,
+        "height": 49
+      },
+      "releaseRecordAction": {
+        "left": 436,
+        "top": 845,
+        "right": 604,
+        "bottom": 869,
+        "width": 168,
+        "height": 24
+      },
+      "reassurance": {
+        "left": 181,
+        "top": 998,
+        "right": 1725,
+        "bottom": 1065,
+        "width": 1544,
+        "height": 67
+      },
+      "productTheater": {
+        "left": 709,
+        "top": 207,
+        "right": 1725,
+        "bottom": 928,
+        "width": 1016,
+        "height": 722
+      },
+      "theaterText": {
+        "left": 736,
+        "top": 306,
+        "right": 1032,
+        "bottom": 723,
+        "width": 296,
+        "height": 417
+      },
+      "theaterControls": {
+        "left": 736,
+        "top": 723,
+        "right": 1032,
+        "bottom": 901,
+        "width": 296,
+        "height": 178
+      }
+    }
+  },
+  "1536x864": {
+    "viewport": {
+      "width": 1536,
+      "height": 864
+    },
+    "windowInnerWidth": 1536,
+    "documentElementClientWidth": 1521,
+    "documentScrollWidth": 1521,
+    "bodyScrollWidth": 1521,
+    "horizontalOverflowPx": 0,
+    "hasHorizontalScroll": false,
+    "fullPageHeight": 5649,
+    "clippedTextOrControlCount": 0,
+    "clippedTextOrControls": [],
+    "overflowingElementCount": 0,
+    "overflowingElements": [],
+    "probedBounds": {
+      "header": {
+        "left": 0,
+        "top": 0,
+        "right": 1521,
+        "bottom": 89,
+        "width": 1521,
+        "height": 89
+      },
+      "heroLockup": {
+        "left": 159,
+        "top": 201,
+        "right": 621,
+        "bottom": 285,
+        "width": 462,
+        "height": 84
+      },
+      "kicker": {
+        "left": 159,
+        "top": 319,
+        "right": 621,
+        "bottom": 337,
+        "width": 462,
+        "height": 18
+      },
+      "headline": {
+        "left": 159,
+        "top": 357,
+        "right": 621,
+        "bottom": 738,
+        "width": 462,
+        "height": 381
+      },
+      "lede": {
+        "left": 159,
+        "top": 738,
+        "right": 599,
+        "bottom": 789,
+        "width": 440,
+        "height": 51
+      },
+      "primaryCta": {
+        "left": 159,
+        "top": 819,
+        "right": 390,
+        "bottom": 869,
+        "width": 232,
+        "height": 49
+      },
+      "releaseRecordAction": {
+        "left": 414,
+        "top": 832,
+        "right": 582,
+        "bottom": 856,
+        "width": 168,
+        "height": 24
+      },
+      "reassurance": {
+        "left": 159,
+        "top": 985,
+        "right": 1363,
+        "bottom": 1052,
+        "width": 1204,
+        "height": 67
+      },
+      "productTheater": {
+        "left": 697,
+        "top": 244,
+        "right": 1363,
+        "bottom": 878,
+        "width": 665,
+        "height": 633
+      },
+      "theaterText": {
+        "left": 724,
+        "top": 344,
+        "right": 917,
+        "bottom": 673,
+        "width": 192,
+        "height": 329
+      },
+      "theaterControls": {
+        "left": 724,
+        "top": 673,
+        "right": 917,
+        "bottom": 851,
+        "width": 192,
+        "height": 178
+      }
+    }
+  },
+  "1440x900": {
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "windowInnerWidth": 1440,
+    "documentElementClientWidth": 1425,
+    "documentScrollWidth": 1425,
+    "bodyScrollWidth": 1425,
+    "horizontalOverflowPx": 0,
+    "hasHorizontalScroll": false,
+    "fullPageHeight": 5528,
+    "clippedTextOrControlCount": 0,
+    "clippedTextOrControls": [],
+    "overflowingElementCount": 0,
+    "overflowingElements": [],
+    "probedBounds": {
+      "header": {
+        "left": 0,
+        "top": 0,
+        "right": 1425,
+        "bottom": 89,
+        "width": 1425,
+        "height": 89
+      },
+      "heroLockup": {
+        "left": 110,
+        "top": 201,
+        "right": 575,
+        "bottom": 285,
+        "width": 464,
+        "height": 84
+      },
+      "kicker": {
+        "left": 110,
+        "top": 319,
+        "right": 575,
+        "bottom": 337,
+        "width": 464,
+        "height": 18
+      },
+      "headline": {
+        "left": 110,
+        "top": 357,
+        "right": 575,
+        "bottom": 714,
+        "width": 464,
+        "height": 358
+      },
+      "lede": {
+        "left": 110,
+        "top": 714,
+        "right": 550,
+        "bottom": 765,
+        "width": 440,
+        "height": 51
+      },
+      "primaryCta": {
+        "left": 110,
+        "top": 795,
+        "right": 342,
+        "bottom": 845,
+        "width": 232,
+        "height": 49
+      },
+      "releaseRecordAction": {
+        "left": 366,
+        "top": 808,
+        "right": 534,
+        "bottom": 832,
+        "width": 168,
+        "height": 24
+      },
+      "reassurance": {
+        "left": 110,
+        "top": 961,
+        "right": 1315,
+        "bottom": 1028,
+        "width": 1205,
+        "height": 67
+      },
+      "productTheater": {
+        "left": 647,
+        "top": 236,
+        "right": 1315,
+        "bottom": 862,
+        "width": 668,
+        "height": 627
+      },
+      "theaterText": {
+        "left": 674,
+        "top": 335,
+        "right": 867,
+        "bottom": 657,
+        "width": 193,
+        "height": 322
+      },
+      "theaterControls": {
+        "left": 674,
+        "top": 657,
+        "right": 867,
+        "bottom": 835,
+        "width": 193,
+        "height": 178
+      }
+    }
+  },
+  "1366x768": {
+    "viewport": {
+      "width": 1366,
+      "height": 768
+    },
+    "windowInnerWidth": 1366,
+    "documentElementClientWidth": 1351,
+    "documentScrollWidth": 1351,
+    "bodyScrollWidth": 1351,
+    "horizontalOverflowPx": 0,
+    "hasHorizontalScroll": false,
+    "fullPageHeight": 5447,
+    "clippedTextOrControlCount": 0,
+    "clippedTextOrControls": [],
+    "overflowingElementCount": 0,
+    "overflowingElements": [],
+    "probedBounds": {
+      "header": {
+        "left": 0,
+        "top": 0,
+        "right": 1351,
+        "bottom": 89,
+        "width": 1351,
+        "height": 89
+      },
+      "heroLockup": {
+        "left": 70,
+        "top": 198,
+        "right": 539,
+        "bottom": 282,
+        "width": 468,
+        "height": 84
+      },
+      "kicker": {
+        "left": 70,
+        "top": 316,
+        "right": 539,
+        "bottom": 334,
+        "width": 468,
+        "height": 18
+      },
+      "headline": {
+        "left": 70,
+        "top": 354,
+        "right": 539,
+        "bottom": 693,
+        "width": 468,
+        "height": 339
+      },
+      "lede": {
+        "left": 70,
+        "top": 693,
+        "right": 510,
+        "bottom": 744,
+        "width": 440,
+        "height": 51
+      },
+      "primaryCta": {
+        "left": 70,
+        "top": 774,
+        "right": 302,
+        "bottom": 824,
+        "width": 232,
+        "height": 49
+      },
+      "releaseRecordAction": {
+        "left": 326,
+        "top": 787,
+        "right": 494,
+        "bottom": 811,
+        "width": 168,
+        "height": 24
+      },
+      "reassurance": {
+        "left": 70,
+        "top": 940,
+        "right": 1281,
+        "bottom": 1007,
+        "width": 1211,
+        "height": 67
+      },
+      "productTheater": {
+        "left": 607,
+        "top": 226,
+        "right": 1281,
+        "bottom": 848,
+        "width": 674,
+        "height": 622
+      },
+      "theaterText": {
+        "left": 634,
+        "top": 326,
+        "right": 829,
+        "bottom": 643,
+        "width": 195,
+        "height": 317
+      },
+      "theaterControls": {
+        "left": 634,
+        "top": 643,
+        "right": 829,
+        "bottom": 821,
+        "width": 195,
+        "height": 178
+      }
+    }
+  },
+  "1024x768": {
+    "viewport": {
+      "width": 1024,
+      "height": 768
+    },
+    "windowInnerWidth": 1024,
+    "documentElementClientWidth": 1009,
+    "documentScrollWidth": 1009,
+    "bodyScrollWidth": 1009,
+    "horizontalOverflowPx": 0,
+    "hasHorizontalScroll": false,
+    "fullPageHeight": 5249,
+    "clippedTextOrControlCount": 0,
+    "clippedTextOrControls": [],
+    "overflowingElementCount": 0,
+    "overflowingElements": [],
+    "probedBounds": {
+      "header": {
+        "left": 0,
+        "top": 0,
+        "right": 1009,
+        "bottom": 89,
+        "width": 1009,
+        "height": 89
+      },
+      "heroLockup": {
+        "left": 41,
+        "top": 171,
+        "right": 407,
+        "bottom": 251,
+        "width": 366,
+        "height": 81
+      },
+      "kicker": {
+        "left": 41,
+        "top": 285,
+        "right": 407,
+        "bottom": 303,
+        "width": 366,
+        "height": 18
+      },
+      "headline": {
+        "left": 41,
+        "top": 323,
+        "right": 407,
+        "bottom": 502,
+        "width": 366,
+        "height": 179
+      },
+      "lede": {
+        "left": 41,
+        "top": 502,
+        "right": 407,
+        "bottom": 579,
+        "width": 366,
+        "height": 77
+      },
+      "primaryCta": {
+        "left": 41,
+        "top": 609,
+        "right": 273,
+        "bottom": 658,
+        "width": 232,
+        "height": 49
+      },
+      "releaseRecordAction": {
+        "left": 41,
+        "top": 682,
+        "right": 209,
+        "bottom": 707,
+        "width": 168,
+        "height": 24
+      },
+      "reassurance": {
+        "left": 41,
+        "top": 850,
+        "right": 968,
+        "bottom": 918,
+        "width": 927,
+        "height": 67
+      },
+      "productTheater": {
+        "left": 442,
+        "top": 176,
+        "right": 968,
+        "bottom": 781,
+        "width": 526,
+        "height": 605
+      },
+      "theaterText": {
+        "left": 463,
+        "top": 276,
+        "right": 636,
+        "bottom": 576,
+        "width": 173,
+        "height": 300
+      },
+      "theaterControls": {
+        "left": 463,
+        "top": 576,
+        "right": 636,
+        "bottom": 754,
+        "width": 173,
+        "height": 178
+      }
+    }
+  },
+  "820x1180": {
+    "viewport": {
+      "width": 820,
+      "height": 1180
+    },
+    "windowInnerWidth": 820,
+    "documentElementClientWidth": 805,
+    "documentScrollWidth": 805,
+    "bodyScrollWidth": 805,
+    "horizontalOverflowPx": 0,
+    "hasHorizontalScroll": false,
+    "fullPageHeight": 6155,
+    "clippedTextOrControlCount": 0,
+    "clippedTextOrControls": [],
+    "overflowingElementCount": 0,
+    "overflowingElements": [],
+    "probedBounds": {
+      "header": {
+        "left": 0,
+        "top": 0,
+        "right": 805,
+        "bottom": 77,
+        "width": 805,
+        "height": 77
+      },
+      "heroLockup": {
+        "left": 33,
+        "top": 123,
+        "right": 772,
+        "bottom": 207,
+        "width": 739,
+        "height": 84
+      },
+      "kicker": {
+        "left": 33,
+        "top": 241,
+        "right": 772,
+        "bottom": 259,
+        "width": 739,
+        "height": 18
+      },
+      "headline": {
+        "left": 33,
+        "top": 279,
+        "right": 613,
+        "bottom": 378,
+        "width": 580,
+        "height": 99
+      },
+      "lede": {
+        "left": 33,
+        "top": 378,
+        "right": 473,
+        "bottom": 429,
+        "width": 440,
+        "height": 51
+      },
+      "primaryCta": {
+        "left": 33,
+        "top": 459,
+        "right": 252,
+        "bottom": 507,
+        "width": 220,
+        "height": 48
+      },
+      "releaseRecordAction": {
+        "left": 276,
+        "top": 471,
+        "right": 445,
+        "bottom": 495,
+        "width": 168,
+        "height": 24
+      },
+      "reassurance": {
+        "left": 33,
+        "top": 1252,
+        "right": 772,
+        "bottom": 1319,
+        "width": 739,
+        "height": 67
+      },
+      "productTheater": {
+        "left": 33,
+        "top": 596,
+        "right": 772,
+        "bottom": 1216,
+        "width": 739,
+        "height": 621
+      },
+      "theaterText": {
+        "left": 58,
+        "top": 693,
+        "right": 291,
+        "bottom": 1013,
+        "width": 233,
+        "height": 320
+      },
+      "theaterControls": {
+        "left": 58,
+        "top": 1013,
+        "right": 291,
+        "bottom": 1191,
+        "width": 233,
+        "height": 178
+      }
+    }
+  },
+  "430x932": {
+    "viewport": {
+      "width": 430,
+      "height": 932
+    },
+    "windowInnerWidth": 430,
+    "documentElementClientWidth": 430,
+    "documentScrollWidth": 430,
+    "bodyScrollWidth": 430,
+    "horizontalOverflowPx": 0,
+    "hasHorizontalScroll": false,
+    "fullPageHeight": 7751,
+    "clippedTextOrControlCount": 0,
+    "clippedTextOrControls": [],
+    "overflowingElementCount": 0,
+    "overflowingElements": [],
+    "probedBounds": {
+      "header": {
+        "left": 0,
+        "top": 0,
+        "right": 430,
+        "bottom": 65,
+        "width": 430,
+        "height": 65
+      },
+      "heroLockup": {
+        "left": 20,
+        "top": 103,
+        "right": 410,
+        "bottom": 169,
+        "width": 390,
+        "height": 66
+      },
+      "kicker": {
+        "left": 20,
+        "top": 195,
+        "right": 410,
+        "bottom": 213,
+        "width": 390,
+        "height": 18
+      },
+      "headline": {
+        "left": 20,
+        "top": 229,
+        "right": 410,
+        "bottom": 332,
+        "width": 390,
+        "height": 103
+      },
+      "lede": {
+        "left": 20,
+        "top": 351,
+        "right": 410,
+        "bottom": 428,
+        "width": 390,
+        "height": 77
+      },
+      "primaryCta": {
+        "left": 20,
+        "top": 452,
+        "right": 225,
+        "bottom": 500,
+        "width": 205,
+        "height": 48
+      },
+      "releaseRecordAction": {
+        "left": 20,
+        "top": 516,
+        "right": 171,
+        "bottom": 537,
+        "width": 151,
+        "height": 22
+      },
+      "reassurance": {
+        "left": 20,
+        "top": 1324,
+        "right": 410,
+        "bottom": 1443,
+        "width": 390,
+        "height": 119
+      },
+      "productTheater": {
+        "left": 20,
+        "top": 610,
+        "right": 410,
+        "bottom": 1290,
+        "width": 390,
+        "height": 680
+      },
+      "theaterText": {
+        "left": 35,
+        "top": 957,
+        "right": 395,
+        "bottom": 1074,
+        "width": 360,
+        "height": 117
+      },
+      "theaterControls": {
+        "left": 243,
+        "top": 1074,
+        "right": 395,
+        "bottom": 1272,
+        "width": 152,
+        "height": 198
+      }
+    }
+  },
+  "390x844": {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "windowInnerWidth": 390,
+    "documentElementClientWidth": 390,
+    "documentScrollWidth": 390,
+    "bodyScrollWidth": 390,
+    "horizontalOverflowPx": 0,
+    "hasHorizontalScroll": false,
+    "fullPageHeight": 7964,
+    "clippedTextOrControlCount": 0,
+    "clippedTextOrControls": [],
+    "overflowingElementCount": 0,
+    "overflowingElements": [],
+    "probedBounds": {
+      "header": {
+        "left": 0,
+        "top": 0,
+        "right": 390,
+        "bottom": 65,
+        "width": 390,
+        "height": 65
+      },
+      "heroLockup": {
+        "left": 20,
+        "top": 103,
+        "right": 370,
+        "bottom": 169,
+        "width": 350,
+        "height": 66
+      },
+      "kicker": {
+        "left": 20,
+        "top": 195,
+        "right": 370,
+        "bottom": 213,
+        "width": 350,
+        "height": 18
+      },
+      "headline": {
+        "left": 20,
+        "top": 229,
+        "right": 370,
+        "bottom": 322,
+        "width": 350,
+        "height": 94
+      },
+      "lede": {
+        "left": 20,
+        "top": 341,
+        "right": 370,
+        "bottom": 418,
+        "width": 350,
+        "height": 77
+      },
+      "primaryCta": {
+        "left": 20,
+        "top": 442,
+        "right": 225,
+        "bottom": 490,
+        "width": 205,
+        "height": 48
+      },
+      "releaseRecordAction": {
+        "left": 20,
+        "top": 506,
+        "right": 171,
+        "bottom": 528,
+        "width": 151,
+        "height": 22
+      },
+      "reassurance": {
+        "left": 20,
+        "top": 1337,
+        "right": 370,
+        "bottom": 1456,
+        "width": 350,
+        "height": 119
+      },
+      "productTheater": {
+        "left": 20,
+        "top": 624,
+        "right": 370,
+        "bottom": 1303,
+        "width": 350,
+        "height": 680
+      },
+      "theaterText": {
+        "left": 35,
+        "top": 970,
+        "right": 355,
+        "bottom": 1087,
+        "width": 320,
+        "height": 117
+      },
+      "theaterControls": {
+        "left": 203,
+        "top": 1087,
+        "right": 355,
+        "bottom": 1285,
+        "width": 152,
+        "height": 198
+      }
+    }
+  },
+  "360x800": {
+    "viewport": {
+      "width": 360,
+      "height": 800
+    },
+    "windowInnerWidth": 360,
+    "documentElementClientWidth": 360,
+    "documentScrollWidth": 360,
+    "bodyScrollWidth": 360,
+    "horizontalOverflowPx": 0,
+    "hasHorizontalScroll": false,
+    "fullPageHeight": 8142,
+    "clippedTextOrControlCount": 0,
+    "clippedTextOrControls": [],
+    "overflowingElementCount": 0,
+    "overflowingElements": [],
+    "probedBounds": {
+      "header": {
+        "left": 0,
+        "top": 0,
+        "right": 360,
+        "bottom": 65,
+        "width": 360,
+        "height": 65
+      },
+      "heroLockup": {
+        "left": 20,
+        "top": 103,
+        "right": 340,
+        "bottom": 169,
+        "width": 320,
+        "height": 66
+      },
+      "kicker": {
+        "left": 20,
+        "top": 195,
+        "right": 340,
+        "bottom": 213,
+        "width": 320,
+        "height": 18
+      },
+      "headline": {
+        "left": 20,
+        "top": 229,
+        "right": 340,
+        "bottom": 322,
+        "width": 320,
+        "height": 93
+      },
+      "lede": {
+        "left": 20,
+        "top": 341,
+        "right": 340,
+        "bottom": 417,
+        "width": 320,
+        "height": 77
+      },
+      "primaryCta": {
+        "left": 20,
+        "top": 441,
+        "right": 225,
+        "bottom": 489,
+        "width": 205,
+        "height": 48
+      },
+      "releaseRecordAction": {
+        "left": 20,
+        "top": 505,
+        "right": 171,
+        "bottom": 527,
+        "width": 151,
+        "height": 22
+      },
+      "reassurance": {
+        "left": 20,
+        "top": 1336,
+        "right": 340,
+        "bottom": 1455,
+        "width": 320,
+        "height": 119
+      },
+      "productTheater": {
+        "left": 20,
+        "top": 623,
+        "right": 340,
+        "bottom": 1302,
+        "width": 320,
+        "height": 680
+      },
+      "theaterText": {
+        "left": 35,
+        "top": 969,
+        "right": 325,
+        "bottom": 1086,
+        "width": 290,
+        "height": 117
+      },
+      "theaterControls": {
+        "left": 173,
+        "top": 1086,
+        "right": 325,
+        "bottom": 1284,
+        "width": 152,
+        "height": 198
+      }
+    }
+  },
+  "320x256": {
+    "viewport": {
+      "width": 320,
+      "height": 256
+    },
+    "windowInnerWidth": 320,
+    "documentElementClientWidth": 320,
+    "documentScrollWidth": 320,
+    "bodyScrollWidth": 320,
+    "horizontalOverflowPx": 0,
+    "hasHorizontalScroll": false,
+    "fullPageHeight": 8408,
+    "clippedTextOrControlCount": 0,
+    "clippedTextOrControls": [],
+    "overflowingElementCount": 0,
+    "overflowingElements": [],
+    "probedBounds": {
+      "header": {
+        "left": 0,
+        "top": 0,
+        "right": 320,
+        "bottom": 65,
+        "width": 320,
+        "height": 65
+      },
+      "heroLockup": {
+        "left": 20,
+        "top": 103,
+        "right": 300,
+        "bottom": 165,
+        "width": 280,
+        "height": 62
+      },
+      "kicker": {
+        "left": 20,
+        "top": 191,
+        "right": 300,
+        "bottom": 208,
+        "width": 280,
+        "height": 18
+      },
+      "headline": {
+        "left": 20,
+        "top": 224,
+        "right": 300,
+        "bottom": 364,
+        "width": 280,
+        "height": 139
+      },
+      "lede": {
+        "left": 20,
+        "top": 383,
+        "right": 300,
+        "bottom": 459,
+        "width": 280,
+        "height": 77
+      },
+      "primaryCta": {
+        "left": 20,
+        "top": 483,
+        "right": 225,
+        "bottom": 531,
+        "width": 205,
+        "height": 48
+      },
+      "releaseRecordAction": {
+        "left": 20,
+        "top": 547,
+        "right": 171,
+        "bottom": 569,
+        "width": 151,
+        "height": 22
+      },
+      "reassurance": {
+        "left": 20,
+        "top": 1378,
+        "right": 300,
+        "bottom": 1497,
+        "width": 280,
+        "height": 119
+      },
+      "productTheater": {
+        "left": 20,
+        "top": 665,
+        "right": 300,
+        "bottom": 1344,
+        "width": 280,
+        "height": 680
+      },
+      "theaterText": {
+        "left": 35,
+        "top": 1011,
+        "right": 285,
+        "bottom": 1128,
+        "width": 250,
+        "height": 117
+      },
+      "theaterControls": {
+        "left": 133,
+        "top": 1128,
+        "right": 285,
+        "bottom": 1326,
+        "width": 152,
+        "height": 198
+      }
+    }
+  }
+}

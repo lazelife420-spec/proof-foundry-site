@@ -1412,7 +1412,7 @@ function Process-Template($srcPath, $srcName) {
 
   # Give shared presentation assets content-derived URLs. A cached stylesheet
   # or script must not leave visitors on a previous design after publication.
-  foreach ($assetName in @('styles.css', 'studio.css', 'site.js', 'experience.css', 'experience.js')) {
+  foreach ($assetName in @('styles.css', 'studio.css', 'experience.css', 'signature.css', 'site.js', 'experience.js')) {
     $assetPath = Join-Path $root $assetName
     $assetVersion = (Get-FileHash $assetPath -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
     $html = $html.Replace('"/' + $assetName + '"', '"/' + $assetName + '?v=' + $assetVersion + '"')
@@ -1548,6 +1548,7 @@ Write-Host "==> Generated proof registry: /proof/index.json" -ForegroundColor Gr
 Copy-Item (Join-Path $root 'styles.css')     $publicDir -Force
 Copy-Item (Join-Path $root 'studio.css')     $publicDir -Force
 Copy-Item (Join-Path $root 'experience.css') $publicDir -Force
+Copy-Item (Join-Path $root 'signature.css')  $publicDir -Force
 Copy-Item (Join-Path $root 'experience.js') $publicDir -Force
 if (Test-Path (Join-Path $root 'site.js'))   { Copy-Item (Join-Path $root 'site.js') $publicDir -Force }
 Copy-Item (Join-Path $root 'CNAME')          $publicDir -Force
