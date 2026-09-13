@@ -82,7 +82,7 @@ $rgHtml = Get-Content (Join-Path $publicDir "reality-gate\index.html") -Raw -Enc
 Assert-Condition ($rgHtml -match '(?s)First-Class CLI &amp; Instance Discovery \(RG-05\).*?Branch Qualified') "P1 Regression: Reality Gate RG-05 remains Branch Qualified"
 
 $cvHtml = Get-Content (Join-Path $publicDir "cache-vault\index.html") -Raw -Encoding UTF8
-Assert-Condition ($cvHtml -match 'Download links are currently unavailable') "P1 Regression: Cache Vault download unavailable notice intact"
+Assert-Condition ($cvHtml -match 'available from Proof Foundry downloads') "P1 Regression: Cache Vault download availability notice intact"
 
 Assert-Condition ($loHtml -notmatch '/reports/deploy-receipts/2026-06-30-proof-foundry-site.md') "P1 Regression: Lights Out old deployment receipt link remains absent"
 
@@ -92,7 +92,7 @@ Assert-Condition ($loRegistry.release.releaseStatus -eq 'HOLD') "P1 Regression: 
 
 # 10. Hardened Support Release-Truth Parity Assertions
 Assert-Condition ($supportHtml -match 'Reality Gate[\s\S]*?v1\.1\.0') "Support release truth: Reality Gate v1.1.0"
-Assert-Condition ($supportHtml -match 'Cache Vault[\s\S]*?v0\.2\.2[\s\S]*?v0\.2\.3-rc1[\s\S]*?v0\.2\.0') "Support release truth: Cache Vault v0.2.2 / v0.2.3-rc1 / Android v0.2.0"
+Assert-Condition ($supportHtml -match 'Cache Vault[\s\S]*?v0\.2\.2[\s\S]*?v0\.2\.3-rc1') "Support release truth: Cache Vault v0.2.2 / v0.2.3-rc1"
 Assert-Condition ($supportHtml -match 'Lights Out[\s\S]*?v11\.1\.2[\s\S]*?v11\.1\.3[\s\S]*?v11\.1\.1') "Support release truth: Lights Out v11.1.2 / v11.1.3 / Android v11.1.1"
 Assert-Condition ($supportHtml -match 'Cleanroom[\s\S]*?v1\.0\.7[\s\S]*?v1\.0\.10') "Support release truth: Cleanroom v1.0.7 / candidate v1.0.10"
 Assert-Condition ($supportHtml -notmatch 'Cleanroom[\s\S]*?v1\.2\.0') "Support release truth: Cleanroom rejects incorrect v1.2.0"

@@ -91,7 +91,13 @@ Assert-Condition ($rgDlCount -eq 1) "P2: Reality Gate download button appears ex
 Assert-Condition ($rg -match 'href="#evidence-download"') "P2: Reality Gate defers to the canonical download block"
 
 # ── P2: unavailable-state honesty ───────────────────────────────────────────
-Assert-Condition ($cv -match 'intentionally not linked') "P2: Cache Vault stale 404 references no longer claim to be linked"
+Assert-Condition (
+  $cv -match 'Cache Vault v0\.2\.2 remains the last public desktop release' -and
+  $cv -match 'v0\.2\.3-rc1 is a Reality Gate canonical-proven release candidate' -and
+  $cv -match 'points to Proof Foundry downloads for the v0\.2\.3-rc1 Windows ZIP' -and
+  $cv -match 'recorded download link is currently unavailable' -and
+  $cv -notmatch 'intentionally not linked'
+) "P2: Cache Vault availability copy correctly asserts v0.2.2 public / v0.2.3-rc1 candidate availability and omits stale 404 unlinked copy"
 Assert-Condition ($lo -notmatch 'download again') "P2: Lights Out no longer instructs a download retry while no download exists"
 Assert-Condition ($lo -match '<a href="/support/#report">contact the project</a>') "P2: Lights Out support anchor preserved (P2-1 contract)"
 

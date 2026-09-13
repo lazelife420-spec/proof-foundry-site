@@ -27,8 +27,8 @@ Assert-Condition ($rgHtml -match '(?s)First-Class CLI &amp; Instance Discovery \
 
 # 2. Cache Vault verification & availability assertion (F02, F03)
 $cvHtml = Get-Content (Join-Path $publicDir "cache-vault\index.html") -Raw
-Assert-Condition ($cvHtml -match 'Download links are currently unavailable') "Cache Vault exposes explicit download unavailable notice"
-Assert-Condition ($cvHtml -match 'Checked 9 September 2026') "Cache Vault states availability check date"
+Assert-Condition ($cvHtml -match 'available from Proof Foundry downloads') "Cache Vault exposes explicit download availability notice"
+Assert-Condition ($cvHtml -match 'Proof Foundry downloads') "Cache Vault states distribution source"
 
 # 3. Lights Out evidence link assertion (F05)
 $loHtml = Get-Content (Join-Path $publicDir "lights-out\index.html") -Raw

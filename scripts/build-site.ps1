@@ -1266,7 +1266,7 @@ function Build-ReceiptCards {
       # few lines above, so an unattributed hash reads as the public release's
       # checksum. For a product on HOLD (Lights Out: public v11.1.2, artifacts
       # v11.1.3) that would be a false public claim, so say which build it is.
-      $artifactVersions = @([regex]::Matches("$($primaryArtifact.filename) $($primaryArtifact.downloadUrl)", '(?<![\d.])(\d+\.\d+\.\d+)(?![\d.])') |
+      $artifactVersions = @([regex]::Matches("$($primaryArtifact.filename) $($primaryArtifact.downloadUrl)", '(?<![\d.])(\d+\.\d+\.\d+(?:-[a-zA-Z0-9._]+)?)(?![\d.])') |
                             ForEach-Object { $_.Groups[1].Value } | Select-Object -Unique)
       $scopeNote = ''
       if ($publicVer -and $artifactVersions.Count -gt 0 -and ($artifactVersions -notcontains $publicVer)) {

@@ -95,7 +95,7 @@ Assert-Condition (-not $overclaimFound) "Forbidden overclaim sweep passed across
 # 11. P1 & P2-1 Regression Controls
 Assert-Condition ($spHtml -match 'SHA-256 match = byte-identity verification against the published digest') "P2-1 Checksum byte-identity standard intact"
 Assert-Condition ($rgHtml -match '(?s)First-Class CLI &amp; Instance Discovery \(RG-05\).*?Branch Qualified') "P1 Reality Gate RG-05 status intact"
-Assert-Condition ($cvHtml -match 'Download links are currently unavailable') "P1 Cache Vault download unavailable notice intact"
+Assert-Condition ($cvHtml -match 'available from Proof Foundry downloads') "P1 Cache Vault download availability notice intact"
 
 $resultColor = if ($failed -eq 0) { 'Green' } else { 'Red' }
 Write-Host "`n=== P2-2 TEST RESULT: $passed passed, $failed failed ===" -ForegroundColor $resultColor
