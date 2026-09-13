@@ -1630,6 +1630,8 @@ $headersContent = @"
   Cache-Control: no-cache, must-revalidate
 /roadmap/
   Cache-Control: no-cache, must-revalidate
+/support/
+  Cache-Control: no-cache, must-revalidate
 
 /assets/*
   Cache-Control: public, max-age=0, must-revalidate
