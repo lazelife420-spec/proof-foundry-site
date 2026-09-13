@@ -703,6 +703,8 @@ function ProductTokens($p) {
   $tokens['id']                  = $p.id
   $tokens['name']                = $p.name
   $tokens['displayName']         = $p.displayName
+  # Homepage-facing short label (H2 naming consistency); canonical name stays authoritative elsewhere.
+  $tokens['homeName']            = if ($p.homeName) { $p.homeName } else { $p.name }
   $tokens['route']               = $p.route
   $tokens['state']               = $p.state
   $tokens['statusLabel']         = StateLabel $p.state
@@ -906,7 +908,8 @@ function Build-FooterProducts {
   $items = @()
   foreach ($p in $manifest.products) {
     if (-not $p.visible) { continue }
-    $items += "<li><a href=`"$($p.route)`">$($p.name)</a></li>"
+    $footerName = if ($p.homeName) { $p.homeName } else { $p.name }
+    $items += "<li><a href=`"$($p.route)`">$footerName</a></li>"
   }
   return ($items -join "`n          ")
 }
@@ -917,7 +920,7 @@ function Render-ProductCard($p, $cardTemplate) {
   # cardVersionLabel is substituted before versionLabel would be, and the token
   # names are distinct, so ordering here is incidental rather than load-bearing.
   foreach ($key in @(
-    'name','route','state','statusLabel','summary','cardSummary','statusLine','markSvg','id','meta','cta',
+    'homeName','name','route','state','statusLabel','summary','cardSummary','statusLine','markSvg','id','meta','cta',
     'visitorStatusLabel','visitorStatusSlug','groupId','cardVersionLabel','cardDetailLine','cardCtaHref',
     'cardProofHref','valueLine','cardImage','cardImageAlt','cardImageWidth','cardImageHeight','cardCta','platform'
   )) {

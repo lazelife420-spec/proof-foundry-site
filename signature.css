@@ -536,7 +536,7 @@
 
 .signature-home .card-cleanroom .card-explore,
 .signature-home .card-cleanroom .card-explore * {
-  color: #0e2824 !important;
+  color: #f0e7cf !important;
 }
 
 .signature-home .studio-proof-standard {
@@ -1060,5 +1060,240 @@
   .signature-home .product-theater,
   .signature-home .home-copy h1 {
     animation: none !important;
+  }
+}
+
+/* ==========================================================================
+   H2 — PAGE MATERIAL RHYTHM (2026-09-12)
+   Finishes the recovered H2 scope: the catalog becomes the iron/slate
+   software floor, identity/founders move to a warmer forged field, and
+   restrained index markers seam the zones. H1 hero untouched; the product
+   theater stays the visual peak. No giant color stripes.
+   ========================================================================== */
+
+.signature-home {
+  --pf-iron-floor: #12181e;
+  --pf-iron-floor-hi: #18212a;
+  --pf-iron-edge: #2c3844;
+  --pf-iron-edge-hi: #3d4f60;
+  --pf-iron-frame-edge: #29343f;
+  --pf-forge-edge: #4d3a22;
+}
+
+/* --- Zone seams / index markers ------------------------------------------
+   Small brass index chips straddle each zone's top hairline, continuing the
+   PF / 01 language the reassurance strip already established. */
+
+.signature-home .studio-catalog,
+.signature-home .studio-proof-standard,
+.signature-home .founders-signpost {
+  position: relative;
+}
+
+.signature-home .zone-index {
+  position: absolute;
+  top: 0;
+  left: clamp(22px, 3vw, 46px);
+  transform: translateY(-50%);
+  padding: 2px 9px;
+  border: 1px solid var(--pf-line);
+  background: var(--pf-ink);
+  color: var(--pf-brass);
+  font: 10px/1.6 Consolas, monospace;
+  letter-spacing: .12em;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.signature-home .studio-catalog .zone-index {
+  border-color: var(--pf-iron-edge-hi);
+}
+
+.signature-home .founders-signpost .zone-index {
+  border-color: var(--pf-forge-edge);
+}
+
+/* --- A. Catalog: the iron/slate software floor ------------------------- */
+
+.signature-home .studio-catalog {
+  margin-top: 30px;
+  padding: 78px clamp(22px, 3vw, 46px) 70px;
+  border-top: 1px solid var(--pf-iron-edge);
+  border-bottom: 1px solid #0b1014;
+  background:
+    radial-gradient(1100px 460px at 16% 0%, rgba(99, 126, 150, .13), transparent 62%),
+    radial-gradient(880px 400px at 88% 10%, rgba(58, 78, 96, .09), transparent 58%),
+    linear-gradient(180deg, var(--pf-iron-floor-hi) 0%, var(--pf-iron-floor) 320px, #10161b 100%);
+  box-shadow: inset 0 1px 0 rgba(200, 220, 234, .05);
+}
+
+.signature-home .finder-intents button,
+.signature-home .finder-platform select {
+  background: #131a21;
+  border-color: #35424e;
+}
+
+.signature-home .group-count {
+  color: #8ba0ae;
+}
+
+/* --- B. Card material family ---------------------------------------------
+   One forged-iron family: shared surface, edge and media-frame chrome, with
+   each product keeping a restrained identity tint. The featured Reality Gate
+   panel above the grid is deliberately untouched and remains the peak. */
+
+.signature-home .product-card {
+  border: 1px solid #313e4a;
+  background:
+    radial-gradient(460px 210px at 50% 0%, rgba(103, 128, 152, .08), transparent 72%),
+    linear-gradient(168deg, #202a34 0%, #182027 55%, #151d24 100%);
+  box-shadow: inset 0 1px 0 rgba(203, 221, 234, .05), 0 18px 40px rgba(0, 0, 0, .3);
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.signature-home .product-card:hover {
+  border-color: #4a5f74;
+  box-shadow: inset 0 1px 0 rgba(203, 221, 234, .07), 0 22px 46px rgba(0, 0, 0, .36);
+}
+
+/* Consistent media-frame chrome across the grid cards. The two full-width
+   showcases (ForgeCast, ProofShot) keep their own frame layouts. */
+.signature-home .product-card:not(.card-forgecast):not(.card-proofshot) .catalog-image-link {
+  margin: 0 26px;
+  border: 1px solid var(--pf-iron-frame-edge);
+  border-radius: 3px;
+  background: linear-gradient(180deg, #0f151b, #0b1015);
+  box-shadow: inset 0 1px 0 rgba(203, 221, 234, .04), inset 0 -14px 30px rgba(0, 0, 0, .35);
+  transform: none;
+}
+
+.signature-home .card-cache-vault {
+  background:
+    radial-gradient(460px 210px at 50% 0%, rgba(90, 148, 128, .1), transparent 72%),
+    linear-gradient(168deg, #1e2928 0%, #16201f 55%, #131b1a 100%);
+}
+
+.signature-home .card-lights-out {
+  border-color: #333c52;
+  background:
+    radial-gradient(460px 220px at 50% 0%, rgba(92, 106, 176, .16), transparent 72%),
+    linear-gradient(168deg, #1d2333 0%, #161b28 55%, #12161f 100%);
+}
+
+/* Cleanroom leaves its pale outlier treatment and joins the forged family,
+   keeping a sage tint as its product identity. */
+.signature-home .card-cleanroom {
+  border-color: #35463f;
+  background:
+    radial-gradient(460px 210px at 50% 0%, rgba(136, 172, 156, .12), transparent 72%),
+    linear-gradient(168deg, #1f2a26 0%, #17211e 55%, #131b19 100%);
+}
+
+.signature-home .card-cleanroom :is(.card-topline, .card-value, .card-version, .card-detail) {
+  color: #b7c6c0;
+}
+
+.signature-home .card-cleanroom .card-name a {
+  color: var(--pf-warm);
+}
+
+.signature-home .card-ghostlayer {
+  border-color: #3a3d4e;
+  background:
+    radial-gradient(460px 210px at 50% 0%, rgba(128, 126, 160, .13), transparent 72%),
+    linear-gradient(168deg, #20212e 0%, #181a24 55%, #13151d 100%);
+}
+
+.signature-home .card-forgecast {
+  border-color: #35586b;
+  background:
+    radial-gradient(ellipse at 80% 20%, rgba(74, 118, 142, .5), transparent 62%),
+    linear-gradient(150deg, #1b2a33 0%, #131e26 70%);
+}
+
+.signature-home .card-proofshot {
+  border-color: #373e4b;
+  background:
+    radial-gradient(520px 240px at 30% 0%, rgba(120, 128, 146, .1), transparent 70%),
+    linear-gradient(160deg, #1d212a 0%, #151a21 60%);
+}
+
+.signature-home .card-proofshot .catalog-image-link {
+  border-color: var(--pf-iron-frame-edge);
+  background: linear-gradient(180deg, #0f141a, #0c1015);
+}
+
+/* --- C. Proof Standard: receipt contrast ----------------------------------
+   Stays an open, recessed near-black band so the eye rests between the iron
+   catalog plate and the warmer human layer below. */
+
+.signature-home .studio-proof-standard {
+  margin-top: 36px;
+  border-top-color: #262d31;
+  background: linear-gradient(180deg, rgba(9, 12, 14, .55), rgba(9, 12, 14, 0) 70%);
+}
+
+/* --- D. Identity / Founders: the warmer forged field ----------------------
+   Identity opens the warmth; the founders signpost carries the strongest
+   warm-forged expression; the footer then settles back to neutral. */
+
+.signature-home .studio-identity {
+  margin-top: 36px;
+  border-top-color: #3a2e1f;
+  background:
+    radial-gradient(760px 300px at 12% 0%, rgba(214, 168, 79, .06), transparent 60%),
+    linear-gradient(180deg, #16110c 0%, rgba(22, 17, 12, 0) 88%);
+}
+
+.signature-home .identity-copy p {
+  color: #b3aca0;
+}
+
+.signature-home .founders-signpost {
+  margin-top: 20px;
+  margin-bottom: 44px;
+  padding: 32px clamp(22px, 3vw, 40px) 34px;
+  border: 1px solid var(--pf-forge-edge);
+  border-top-color: #6b5228;
+  background:
+    radial-gradient(640px 240px at 82% 0%, rgba(239, 201, 120, .09), transparent 62%),
+    linear-gradient(172deg, #241a11 0%, #1c1410 55%, #17110d 100%);
+  box-shadow: inset 0 1px 0 rgba(239, 201, 120, .08), 0 16px 36px rgba(0, 0, 0, .3);
+}
+
+.signature-home .founders-signpost p:not(.kicker) {
+  color: #b8b0a2;
+}
+
+/* --- H2 responsive tuning ------------------------------------------------ */
+
+@media (max-width: 940px) and (min-width: 701px) {
+  .signature-home .studio-catalog {
+    padding: 60px 26px 56px;
+  }
+
+  .signature-home .zone-index {
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 700px) {
+  .signature-home .studio-catalog {
+    margin-top: 24px;
+    padding: 48px 16px 46px;
+  }
+
+  .signature-home .product-card:not(.card-forgecast):not(.card-proofshot) .catalog-image-link {
+    margin: 0 20px;
+  }
+
+  .signature-home .zone-index {
+    left: 16px;
+    font-size: 9px;
+  }
+
+  .signature-home .founders-signpost {
+    margin-bottom: 36px;
+    padding: 26px 18px 28px;
   }
 }

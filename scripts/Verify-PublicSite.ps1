@@ -301,9 +301,11 @@ foreach ($target in $TargetUrls) {
     Write-Host "`n---> Testing target: $target"
 
     # 1. Homepage — global nav + full product family + card contract
+    # H2: homepage-facing labels normalized to "Lights Out" / "ForgeCast";
+    # canonical "ForgeCast Weather" remains asserted on the product/proof pages below.
     Test-UrlContent -Url "$target/" -ContainsPatterns @(
         "Reality Gate", "Lights Out", "Cache Vault", "Cleanroom",
-        "ForgeCast Weather", "ProofShot", "Proof Standard", "Explore the software"
+        "ForgeCast", "ProofShot", "Proof Standard", "Explore the software"
     ) -NotContainsPatterns @("SkyFoundry")
 
     # 2. Lights Out — canonical route: feature checks + manifest-derived version truth
