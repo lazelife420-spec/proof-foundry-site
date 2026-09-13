@@ -41,6 +41,36 @@
   z-index: 1;
 }
 
+.signature-home .home-forged-field {
+  position: absolute;
+  top: -45px;
+  left: -60px;
+  width: calc(100% + 120px);
+  height: calc(100% + 90px);
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 12px;
+  opacity: 0.35;
+  mask-image: radial-gradient(ellipse 85% 85% at 40% 40%, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%);
+  -webkit-mask-image: radial-gradient(ellipse 85% 85% at 40% 40%, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%);
+}
+
+.signature-home .forged-hero-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center left;
+  filter: contrast(1.15) brightness(0.85);
+  display: block;
+}
+
+.signature-home .forged-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 35%, transparent 20%, rgba(13, 17, 21, 0.7) 85%);
+}
+
 .signature-home .home-brand-lockup {
   display: flex;
   align-items: center;
@@ -707,6 +737,15 @@
     max-width: 540px;
   }
 
+  /* H1R-D1: bound the forged-field bleed to the tablet shell gutter */
+  .signature-home .home-forged-field {
+    top: -20px;
+    left: -20px;
+    width: calc(100% + 40px);
+    height: calc(100% + 40px);
+    opacity: 0.3;
+  }
+
   .signature-home .product-theater {
     display: grid;
     grid-template-columns: minmax(0, .35fr) minmax(0, .65fr);
@@ -780,6 +819,14 @@
 
   .signature-home .home-brand-lockup {
     margin-bottom: 26px;
+  }
+
+  .signature-home .home-forged-field {
+    top: -20px;
+    left: -20px;
+    width: calc(100% + 40px);
+    height: calc(100% + 40px);
+    opacity: 0.3;
   }
 
   .signature-home .home-brand-lockup img {
