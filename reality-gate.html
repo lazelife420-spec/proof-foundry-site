@@ -13,6 +13,22 @@
 
   <link rel="stylesheet" href="/studio.css">
 <link rel="stylesheet" href="/experience.css">
+<style>
+/* H3 readability correction: the origin-story inline cards were authored with
+   translucent dark fills meant to sit on a darker field. On this page the
+   section surface behind them renders lighter, so the near-white text lost its
+   pairing (measured ~1.2:1). Restore a dark surface under the section so the
+   existing translucent cards and copy regain legible contrast. No copy, layout,
+   or hierarchy change. */
+.product-reality-gate #origin {
+  background: #101418;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.product-reality-gate #origin .section-heading h2,
+.product-reality-gate #origin .section-heading p {
+  color: #f2f0eb;
+}
+</style>
 </head>
 <body class="studio product-page product-reality-gate">
 <!-- @include header -->
@@ -32,7 +48,7 @@
   </figure>
 </section>
 <!-- ORIGIN STORY SECTION -->
-<section class="value-section" id="origin" style="background: rgba(255,255,255,0.02); padding: 3rem 1.5rem; border-radius: 8px; margin: 2rem 0;">
+<section class="value-section" id="origin" style="padding: 3rem 1.5rem; border-radius: 8px; margin: 2rem 0;">
   <div class="section-heading">
     <p class="kicker">The Origin Story</p>
     <h2>Built because the work needed a way to continue.</h2>
@@ -144,7 +160,7 @@
   </div>
 </section>
 
-<button type="button" class="gallery-launch" data-gallery-open hidden><span>Explore the interface</span><span>4 screens <span aria-hidden="true">↗</span></span></button><a class="experience-jump" href="#try-it" data-enhance hidden><span>GET A FEEL FOR IT</span><span>Tour the control room <span aria-hidden="true">↓</span></span></a><section class="experience-section guided-tour tour-reality-gate" id="try-it" data-tour="reality-gate"><div class="experience-heading"><p class="kicker">A look inside Reality Gate</p><h2>One control room.<br>From run to recovery.</h2><p>Follow the actual interface. These are recorded product screens, not a running workspace.</p></div><div class="tour-layout"><div class="tour-menu" role="group" aria-label="Explore the Reality Gate interface" data-enhance hidden><button type="button" data-tour-step="0" aria-pressed="true"><span>01</span><strong>Orient</strong><span aria-hidden="true">↗</span></button><button type="button" data-tour-step="1" aria-pressed="false"><span>02</span><strong>Run</strong><span aria-hidden="true">↗</span></button><button type="button" data-tour-step="2" aria-pressed="false"><span>03</span><strong>Recover</strong><span aria-hidden="true">↗</span></button><button type="button" data-tour-step="3" aria-pressed="false"><span>04</span><strong>Review</strong><span aria-hidden="true">↗</span></button></div><div class="tour-screen"><figure class="app-shot"><a class="screenshot-link" href="/assets/reality-gate/01-home-continuity.71b20e418bbf3799.png" data-screenshot aria-label="Enlarge: Reality Gate Home showing repository continuity status."><img src="/assets/studio/01-home-continuity-1440.6164ffb655310c8c.webp" srcset="/assets/studio/01-home-continuity-480.a570c621fae64392.webp 480w, /assets/studio/01-home-continuity-960.56f4f49417c2ae16.webp 960w, /assets/studio/01-home-continuity-1440.6164ffb655310c8c.webp 1440w" sizes="(max-width: 700px) 90vw, 780px" width="1440" height="900" alt="Reality Gate Home showing repository continuity status." loading="lazy" decoding="async" ></a><figcaption data-tour-caption aria-live="polite">See the repository, its dependencies and continuity status.</figcaption></figure><p class="experience-error" role="status"></p></div></div></section><section class="product-story"><div class="story-copy"><p class="kicker">Ready for recovery</p><h2>Recovery belongs in the control room.</h2><p>Your repository is more useful with a restore path you have actually tried. Keep recovery bundles and their verification records alongside the work they protect.</p></div><figure class="app-shot story-shot"><a class="screenshot-link" href="/assets/reality-gate/04-recovery-bundle-verified.b93fd52611a64d33.png" data-screenshot aria-label="Enlarge: Reality Gate Recovery Vault with a recorded, verified recovery bundle."><img src="/assets/studio/04-recovery-bundle-verified-1440.895de80d181b111e.webp" srcset="/assets/studio/04-recovery-bundle-verified-480.dd9e1fb2e5090026.webp 480w, /assets/studio/04-recovery-bundle-verified-960.c96b6f2132b8009f.webp 960w, /assets/studio/04-recovery-bundle-verified-1440.895de80d181b111e.webp 1440w" sizes="(max-width: 700px) 92vw, (max-width: 1440px) 84vw, 1180px" width="1440" height="900" alt="Reality Gate Recovery Vault with a recorded, verified recovery bundle." loading="lazy"  decoding="async"></a></figure></section><section class="download-section" id="download"><div id="release-status"></div><p class="kicker">Get the software</p><h2>Your next run, under your control.</h2><p class="download-description">Developer Pilot {{product.versionLabel}} for Windows 10/11 x64. Download the ZIP, extract it, and run the installer. Updates are manual.</p><div class="studio-actions">{{product.downloadBlock}}</div><details class="checksum-details"><summary>Installation notes &amp; checksum</summary><div><p>This Windows package is unsigned. Verify its checksum before deciding whether to run it; a matching checksum confirms the file matches the published artifact.</p>{{product.hashBlock}}<p class="note" style="margin-top:0.5rem;"><a href="/support/#report" class="text-link">Need help or troubleshooting? Visit the Support Hub ↗</a></p></div></details></section><section class="evidence-area" id="proof"><details class="proof-details"><summary><span><span class="kicker">For a closer look</span><strong>Release evidence &amp; technical details</strong></span><span class="expand-label">Expand <span aria-hidden="true">+</span></span></summary><div class="evidence-content"><p class="evidence-intro">Release records, checksums, detailed scope and qualification evidence. Candidate evidence does not change public availability.</p>{{product.proofStrip}}<section class="evidence-section" id="architecture">
+<button type="button" class="gallery-launch" data-gallery-open hidden><span>Explore the interface</span><span>4 screens <span aria-hidden="true">↗</span></span></button><a class="experience-jump" href="#try-it" data-enhance hidden><span>GET A FEEL FOR IT</span><span>Tour the control room <span aria-hidden="true">↓</span></span></a><section class="experience-section guided-tour tour-reality-gate" id="try-it" data-tour="reality-gate"><div class="experience-heading"><p class="kicker">A look inside Reality Gate</p><h2>One control room.<br>From run to recovery.</h2><p>Follow the actual interface. These are recorded product screens, not a running workspace.</p></div><div class="tour-layout"><div class="tour-menu" role="group" aria-label="Explore the Reality Gate interface" data-enhance hidden><button type="button" data-tour-step="0" aria-pressed="true"><span>01</span><strong>Orient</strong><span aria-hidden="true">↗</span></button><button type="button" data-tour-step="1" aria-pressed="false"><span>02</span><strong>Run</strong><span aria-hidden="true">↗</span></button><button type="button" data-tour-step="2" aria-pressed="false"><span>03</span><strong>Recover</strong><span aria-hidden="true">↗</span></button><button type="button" data-tour-step="3" aria-pressed="false"><span>04</span><strong>Review</strong><span aria-hidden="true">↗</span></button></div><div class="tour-screen"><figure class="app-shot"><a class="screenshot-link" href="/assets/reality-gate/01-home-continuity.71b20e418bbf3799.png" data-screenshot aria-label="Enlarge: Reality Gate Home showing repository continuity status."><img src="/assets/studio/01-home-continuity-1440.6164ffb655310c8c.webp" srcset="/assets/studio/01-home-continuity-480.a570c621fae64392.webp 480w, /assets/studio/01-home-continuity-960.56f4f49417c2ae16.webp 960w, /assets/studio/01-home-continuity-1440.6164ffb655310c8c.webp 1440w" sizes="(max-width: 700px) 90vw, 780px" width="1440" height="900" alt="Reality Gate Home showing repository continuity status." loading="lazy" decoding="async" ></a><figcaption data-tour-caption aria-live="polite">See the repository, its dependencies and continuity status.</figcaption></figure><p class="experience-error" role="status"></p></div></div></section><section class="product-story"><div class="story-copy"><p class="kicker">Ready for recovery</p><h2>Recovery belongs in the control room.</h2><p>Your repository is more useful with a restore path you have actually tried. Keep recovery bundles and their verification records alongside the work they protect.</p></div><figure class="app-shot story-shot"><a class="screenshot-link" href="/assets/reality-gate/04-recovery-bundle-verified.b93fd52611a64d33.png" data-screenshot aria-label="Enlarge: Reality Gate Recovery Vault with a recorded, verified recovery bundle."><img src="/assets/studio/04-recovery-bundle-verified-1440.895de80d181b111e.webp" srcset="/assets/studio/04-recovery-bundle-verified-480.dd9e1fb2e5090026.webp 480w, /assets/studio/04-recovery-bundle-verified-960.c96b6f2132b8009f.webp 960w, /assets/studio/04-recovery-bundle-verified-1440.895de80d181b111e.webp 1440w" sizes="(max-width: 700px) 92vw, (max-width: 1440px) 84vw, 1180px" width="1440" height="900" alt="Reality Gate Recovery Vault with a recorded, verified recovery bundle." loading="lazy"  decoding="async"></a></figure></section><section class="download-section" id="download"><div id="release-status"></div><p class="kicker">Get the software</p><h2>Your next run, under your control.</h2><p class="download-description">Developer Pilot {{product.versionLabel}} for Windows 10/11 x64. Download the ZIP, extract it, and run the installer. Updates are manual.</p><div class="studio-actions">{{product.downloadBlock}}</div><p class="note" style="margin-top:0.75rem;">The checksum, a copy control, and verification instructions live in the release evidence below.</p><p style="margin-top:0.5rem;"><a class="text-link" href="#evidence-download">Download &amp; verify (canonical) ↓</a></p></section><section class="evidence-area" id="proof"><details class="proof-details"><summary><span><span class="kicker">For a closer look</span><strong>Release evidence &amp; technical details</strong></span><span class="expand-label">Expand <span aria-hidden="true">+</span></span></summary><div class="evidence-content"><p class="evidence-intro">Release records, checksums, detailed scope and qualification evidence. Candidate evidence does not change public availability.</p>{{product.proofStrip}}<section class="evidence-section" id="architecture">
 <div class="rg-arch-container">
 <h3 class="rg-section-title">Execution Architecture &amp; Evidence Flow</h3>
 <p class="rg-section-subtitle">Every node in this architecture corresponds to an implemented capability in the local product runtime.</p>
@@ -243,6 +259,7 @@
 <div class="rg-pilot-badge">v1.1.0 DEVELOPER PILOT</div>
 <h3 class="rg-section-title">Reality Gate Developer Pilot v1.1.0</h3>
 <p>Windows 10/11 x64 · Unsigned Package · Manual Update Model</p>
+<p style="margin: 0.4rem 0 0; font-size: 0.85rem;"><a class="text-link" href="#release-note">What changed in v1.1.0 ↓</a></p>
 <div class="rg-qual-flex">
 <div class="rg-qual-card">
 <div class="rg-qual-val">269 / 269</div>
@@ -257,17 +274,10 @@
 <div class="rg-qual-lbl">Installed Runtime</div>
 </div>
 </div>
-<p>
-          Recorded source regression at pilot qualification: 886 assertions passed green across 55 test suites. SHA reference: <code>7a3e471</code>.
+<p id="release-note">
+          Recorded source regression at pilot qualification: 886 assertions passed green across 55 test suites. SHA reference: <code>7a3e471</code>. {{product.releaseNote}}
         </p>
-<div class="rg-cta-group">
-<a class="rg-btn rg-btn-primary" download="" href="{{product.downloadUrl}}">
-            Download v1.1.0 Developer Pilot
-          </a>
-<a class="rg-btn rg-btn-secondary" href="{{product.sha256Url}}" rel="noopener" target="_blank">
-            Verify SHA-256
-          </a>
-</div>
+<p style="margin-top: 0.75rem;"><a class="text-link" href="#evidence-download">Download and verify this pilot ↓</a></p>
 </div>
 <div class="rg-limits">
 <h3>Explicit Developer Pilot Limits &amp; Plain-Language Boundaries</h3>
@@ -297,12 +307,8 @@
           Verify locally in PowerShell:<br/>
 <code>Get-FileHash .\Reality-Gate-1.1.0-Developer-Pilot.zip -Algorithm SHA256</code>
 </p>
-<div>
-<h3>Local execution. Controlled evidence. Signed outcomes.</h3>
-<a class="rg-btn rg-btn-primary" download="" href="{{product.downloadUrl}}">
-            Download v1.1.0 Developer Pilot
-          </a>
-</div>
+<p style="font-size: 0.85rem; margin-top: 0.5rem;"><a class="text-link" href="/proof/#receipt-reality-gate">Open the full release record ↗</a></p>
+<details class="checksum-details" style="margin-top: 1rem;"><summary>Install, update, uninstall &amp; leftover data</summary><div><dl class="onboarding-list"><dt>Install</dt><dd>Download the ZIP, extract it, and run the installer inside. Windows SmartScreen may prompt on first launch — choose <strong>More info → Run anyway</strong> after verifying the SHA-256.</dd><dt>First run</dt><dd>The Developer Pilot opens to its control-room Home view (repository continuity status). A screen recording of the real interface is available in the product film above; no first-run account, sign-in, or cloud setup is required.</dd><dt>Update</dt><dd>Manual update model: no auto-updater. Updates require a fresh ZIP download and SHA-256 verification (see Download &amp; Verify above).</dd><dt>Uninstall</dt><dd>The public source does not document a dedicated uninstaller. Because the pilot is a portable ZIP package, remove the extracted folder to remove the app. If you installed via an installer stub, use Windows Settings → Apps.</dd><dt>Leftover data</dt><dd>Local data (project registries, run logs, receipts, local keypairs) persists in <code>%APPDATA%\RealityGate\</code> until you clear it; removing the app folder does not delete that directory. Delete <code>%APPDATA%\RealityGate\</code> to remove all local data.</dd></dl></div></details>
 </div>
 </section>
 <section class="evidence-section" style="padding-bottom: 3rem;">

@@ -2155,3 +2155,35 @@ code.inline {
     transition-property: border-color, background-color, color, opacity;
   }
 }
+
+/* H3 onboarding block: compact per-product Install / First run / Update /
+   Uninstall / Leftover data facts, sourced only from existing manifest,
+   privacy, and support truth. Shared across product pages. */
+.onboarding-list {
+  margin: 0.75rem 0 0;
+  padding: 0;
+}
+
+.onboarding-list dt {
+  color: var(--gold, #d6a84f);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-top: 0.85rem;
+}
+
+.onboarding-list dt:first-child {
+  margin-top: 0;
+}
+
+.onboarding-list dd {
+  margin: 0.25rem 0 0;
+  color: var(--muted, #91a0af);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.onboarding-list dd code {
+  font-size: 0.85em;
+}
