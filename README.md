@@ -34,7 +34,7 @@ The existing suite verifies canonical version derivation, evidence custody, chec
 
 ## Distribution observations
 
-Cache Vault's recorded Windows candidate and Android companion links returned HTTP 404 on 9 September 2026. The storefront therefore uses an availability CTA and suppresses its broken primary download buttons. Canonical URLs and digests remain in the source record; `presentation.downloadUnavailable` controls this display independently of release classification. Recheck the URLs before changing that flag.
+Cache Vault's RC-era Windows candidate and Android companion links returned HTTP 404 on 9 September 2026 (historical observation). As of the final public v0.2.3 release (live-checked 14 September 2026), the storefront presents the final Windows ZIP download from Proof Foundry downloads; the Android companion GitHub APK link remains unavailable. Canonical URLs and digests remain in the source record; `presentation.downloadUnavailable` controls this display independently of release classification. Recheck the URLs before changing that flag.
 
 Lights Out's public Windows release remains v11.1.2 and its public Android companion remains v11.1.1. The v11.1.3 candidates remain on hold. No public ProofShot release is claimed; the underlying engine remains v1.6.18.
 

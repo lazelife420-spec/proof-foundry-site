@@ -207,8 +207,8 @@
       "name": "Cache Vault",
       "displayName": "Cache Vault",
       "route": "/cache-vault/",
-      "state": "testing",
-      "productStatus": "RELEASE_CANDIDATE",
+      "state": "available",
+      "productStatus": "PUBLIC_RELEASE",
       "platforms": [
         "Windows",
         "Android companion"
@@ -228,21 +228,21 @@
         "cardImageWidth": 700,
         "cardImageHeight": 682,
         "downloadUnavailable": false,
-        "downloadNotice": "Windows v0.2.3-rc1 candidate is available from Proof Foundry downloads. Android companion APK link is currently unavailable on GitHub."
+        "downloadNotice": "Windows v0.2.3 final public release is available from Proof Foundry downloads. Android companion APK link is currently unavailable on GitHub."
       },
       "release": {
-        "publicVersion": "0.2.2",
-        "candidateVersion": "0.2.3-rc1",
-        "releaseStatus": "RELEASE_CANDIDATE",
-        "publishedAt": "2026-09-01"
+        "publicVersion": "0.2.3",
+        "candidateVersion": null,
+        "releaseStatus": "PUBLIC_RELEASE",
+        "publishedAt": "2026-09-14"
       },
       "artifacts": [
         {
-          "filename": "CacheVault-v0.2.3-rc1-windows.zip",
-          "sizeBytes": 43254285,
-          "sha256": "c967d8226d65ff09ab08424a10c84c87e3f5f56af03ff0d29d484de7247e349c",
-          "downloadUrl": "https://downloads.theprooffoundry.com/cache-vault/v0.2.3-rc1/CacheVault-v0.2.3-rc1-windows.zip",
-          "sha256Url": "https://downloads.theprooffoundry.com/cache-vault/v0.2.3-rc1/SHA256SUMS.txt",
+          "filename": "CacheVault-v0.2.3-windows.zip",
+          "sizeBytes": 43248020,
+          "sha256": "28262e491ad1f7b3f6f4c9f28eabfe2899a61af7c7a26c17c4915d604e00371d",
+          "downloadUrl": "https://downloads.theprooffoundry.com/cache-vault/v0.2.3/CacheVault-v0.2.3-windows.zip",
+          "sha256Url": "https://downloads.theprooffoundry.com/cache-vault/v0.2.3/SHA256SUMS.txt",
           "signingStatus": "UNSIGNED",
           "platform": "Windows",
           "distType": "Windows installer ZIP"
@@ -260,8 +260,8 @@
       ],
       "verification": {
         "status": "VERIFIED",
-        "verifiedAt": "2026-09-01",
-        "checkedAt": "2026-09-13",
+        "verifiedAt": "2026-09-14",
+        "checkedAt": "2026-09-14",
         "downloadAvailability": "VERIFIED",
         "verificationType": [
           "ARTIFACT_HASH_PUBLISHED",
@@ -271,13 +271,13 @@
           "REALITY_GATE",
           "PUBLIC_DOWNLOAD"
         ],
-        "receiptId": "20260901-172536-canonical-05b9ae3",
-        "receiptUrl": "https://downloads.theprooffoundry.com/cache-vault/v0.2.3-rc1/CACHEVAULT_V0.2.3RC1_CANONICAL_RECEIPT.json"
+        "receiptId": "20260914-055914-canonical-099be3a",
+        "receiptUrl": "https://downloads.theprooffoundry.com/cache-vault/v0.2.3/CACHEVAULT_V0.2.3_CANONICAL_RECEIPT.json"
       },
       "tests": [
         {
           "label": "Desktop tests",
-          "result": "2089 passed · 2 skipped (canonical gate)"
+          "result": "2091 passed · 1 skipped (canonical gate)"
         },
         {
           "label": "Android companion tests",
@@ -286,16 +286,16 @@
       ],
       "evidence": [
         {
-          "label": "Candidate download (Proof Foundry)",
-          "url": "https://downloads.theprooffoundry.com/cache-vault/v0.2.3-rc1/CacheVault-v0.2.3-rc1-windows.zip"
+          "label": "Download (Proof Foundry)",
+          "url": "https://downloads.theprooffoundry.com/cache-vault/v0.2.3/CacheVault-v0.2.3-windows.zip"
         },
         {
-          "label": "Candidate SHA256SUMS (Proof Foundry)",
-          "url": "https://downloads.theprooffoundry.com/cache-vault/v0.2.3-rc1/SHA256SUMS.txt"
+          "label": "SHA256SUMS (Proof Foundry)",
+          "url": "https://downloads.theprooffoundry.com/cache-vault/v0.2.3/SHA256SUMS.txt"
         },
         {
           "label": "Canonical gate receipt (Proof Foundry)",
-          "url": "https://downloads.theprooffoundry.com/cache-vault/v0.2.3-rc1/CACHEVAULT_V0.2.3RC1_CANONICAL_RECEIPT.json"
+          "url": "https://downloads.theprooffoundry.com/cache-vault/v0.2.3/CACHEVAULT_V0.2.3_CANONICAL_RECEIPT.json"
         },
         {
           "label": "Companion SHA256SUMS (GitHub v0.2.0)",
@@ -304,26 +304,26 @@
       ],
       "limits": [
         "The Windows build is not code-signed, so Windows SmartScreen may prompt on first launch.",
-        "Cache Vault v0.2.2 remains the last public desktop release; v0.2.3-rc1 is a release candidate served from Proof Foundry downloads while GitHub release access is blocked for anonymous visitors.",
+        "Cache Vault v0.2.3 is the current public Windows release, served from Proof Foundry downloads; v0.2.2 is the previous public release.",
         "Command Center is Phase 1 (Hotkey Actions) only.",
         "Checksum is not a code signature; the production-signed Android companion is a separate artifact.",
         "The public Android companion is v0.2.0; Android v0.2.1 is qualified and publication is on hold, so it is not a public download."
       ],
-      "downloadUrl": "https://downloads.theprooffoundry.com/cache-vault/v0.2.3-rc1/CacheVault-v0.2.3-rc1-windows.zip",
-      "downloadLabel": "Download v0.2.3-rc1 (Windows release candidate)",
+      "downloadUrl": "https://downloads.theprooffoundry.com/cache-vault/v0.2.3/CacheVault-v0.2.3-windows.zip",
+      "downloadLabel": "Download v0.2.3 (Windows)",
       "distType": "Windows installer ZIP + Android APK",
-      "build": "Windows installer delivered inside a ZIP archive, served from Proof Foundry downloads with a Reality Gate canonical receipt (2089 passed / 2 skipped / 0 failed at commit 05b9ae3). The public CacheVault Mobile v0.2.0 Android companion remains on the v0.2.0 GitHub release. The published SHA-256 is the checksum of the ZIP you download.",
-      "sha256": "c967d8226d65ff09ab08424a10c84c87e3f5f56af03ff0d29d484de7247e349c",
-      "sha256Url": "https://downloads.theprooffoundry.com/cache-vault/v0.2.3-rc1/SHA256SUMS.txt",
-      "testStatus": "2089 passed · 2 skipped desktop (canonical gate) · 88/88 Android (v0.2.0)",
-      "testCount": "2089 passed · 2 skipped desktop (canonical gate) · 88/88 Android (v0.2.0)",
-      "releaseNote": "Current download: Cache Vault v0.2.3-rc1 for Windows — a Reality Gate canonical-proven release candidate (window geometry persistence, work-area clamped startup, dialog sizing fixes), served from Proof Foundry downloads. Cache Vault v0.2.2 remains the last public desktop release; its GitHub release is currently blocked from anonymous access. The Windows build is not code-signed, so Windows SmartScreen may prompt on first launch; verify the SHA-256 before running it. The public Android companion is v0.2.0 (unchanged).",
+      "build": "Windows installer delivered inside a ZIP archive, served from Proof Foundry downloads with a Reality Gate canonical receipt (2091 passed / 1 skipped / 0 failed at commit 099be3a). The public CacheVault Mobile v0.2.0 Android companion remains on the v0.2.0 GitHub release. The published SHA-256 is the checksum of the ZIP you download.",
+      "sha256": "28262e491ad1f7b3f6f4c9f28eabfe2899a61af7c7a26c17c4915d604e00371d",
+      "sha256Url": "https://downloads.theprooffoundry.com/cache-vault/v0.2.3/SHA256SUMS.txt",
+      "testStatus": "2091 passed · 1 skipped desktop (canonical gate) · 88/88 Android (v0.2.0)",
+      "testCount": "2091 passed · 1 skipped desktop (canonical gate) · 88/88 Android (v0.2.0)",
+      "releaseNote": "Current download: Cache Vault v0.2.3 for Windows — the final public release (window geometry persistence, work-area clamped startup, dialog sizing fixes), Reality Gate canonical-proven (2091 passed / 1 skipped) and served from Proof Foundry downloads. The Windows build is not code-signed, so Windows SmartScreen may prompt on first launch; verify the SHA-256 before running it. The public Android companion is v0.2.0 (unchanged).",
       "proofStatus": "Verified",
-      "lastVerified": "2026-09-01",
+      "lastVerified": "2026-09-14",
       "proofLinks": [
-        "https://downloads.theprooffoundry.com/cache-vault/v0.2.3-rc1/CacheVault-v0.2.3-rc1-windows.zip",
-        "https://downloads.theprooffoundry.com/cache-vault/v0.2.3-rc1/SHA256SUMS.txt",
-        "https://downloads.theprooffoundry.com/cache-vault/v0.2.3-rc1/CACHEVAULT_V0.2.3RC1_CANONICAL_RECEIPT.json"
+        "https://downloads.theprooffoundry.com/cache-vault/v0.2.3/CacheVault-v0.2.3-windows.zip",
+        "https://downloads.theprooffoundry.com/cache-vault/v0.2.3/SHA256SUMS.txt",
+        "https://downloads.theprooffoundry.com/cache-vault/v0.2.3/CACHEVAULT_V0.2.3_CANONICAL_RECEIPT.json"
       ],
       "currentLocalVersion": null,
       "companionVersion": "0.2.0"

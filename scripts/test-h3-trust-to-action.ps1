@@ -72,11 +72,16 @@ Assert-Condition ($rg -match 'onboarding-list[\s\S]*%APPDATA%\\RealityGate\\') "
 Assert-Condition ($cl -match 'onboarding-list[\s\S]*%APPDATA%\\Cleanroom\\Archive\\') "P1: Cleanroom leftovers cite %APPDATA%\Cleanroom\Archive\"
 Assert-Condition ($gl -match 'onboarding-list[\s\S]*%TEMP%\\GhostLayer\\') "P1: GhostLayer leftovers cite %TEMP%\GhostLayer\"
 Assert-Condition ($fc -match 'onboarding-list[\s\S]*com\.prooffoundry\.forgecast') "P1: ForgeCast leftovers cite app-private storage"
-# Held products get availability-honest onboarding
+# Onboarding stays availability-honest per product: Lights Out is held (no
+# download promised); Cache Vault now ships a final public release, so its
+# onboarding must match the live v0.2.3 download instead of the RC-era
+# "unavailable" wording. The Android companion hold copy is preserved exactly.
 Assert-Condition ($lo -match 'Install, update, uninstall') "P1: Lights Out onboarding block present (held-state honest)"
-Assert-Condition ($cv -match 'Install, update, uninstall') "P1: Cache Vault onboarding block present (unavailable-state honest)"
+Assert-Condition ($cv -match 'Install, update, uninstall') "P1: Cache Vault onboarding block present (final-release honest)"
 Assert-Condition ($lo -match 'not publicly downloadable') "P1: Lights Out onboarding does not promise a download"
-Assert-Condition ($cv -match 'currently unavailable') "P1: Cache Vault onboarding does not promise a download"
+Assert-Condition ($cv -match 'Download v0\.2\.3 \(Windows\)') "P1: Cache Vault onboarding matches the live final v0.2.3 download CTA"
+Assert-Condition ($cv -match 'The public Windows v0\.2\.3 release is available from Proof Foundry downloads') "P1: Cache Vault install guidance names the live v0.2.3 release"
+Assert-Condition ($cv -match 'Android: public companion v0\.2\.0; v0\.2\.1 remains on hold') "P1: Cache Vault keeps the Android hold truth intact"
 
 # ── P1: support next-step guidance ──────────────────────────────────────────
 Assert-Condition ($sup -match 'What to do with it') "P1: support template carries next-step guidance"
@@ -90,14 +95,14 @@ $rgDlCount = ([regex]::Matches($rg, 'Download v1\.1\.0 Developer Pilot')).Count
 Assert-Condition ($rgDlCount -eq 1) "P2: Reality Gate download button appears exactly once — found $rgDlCount"
 Assert-Condition ($rg -match 'href="#evidence-download"') "P2: Reality Gate defers to the canonical download block"
 
-# ── P2: unavailable-state honesty ───────────────────────────────────────────
+# ── P2: final-public availability honesty ──────────────────────────────────
 Assert-Condition (
-  $cv -match 'Cache Vault v0\.2\.2 remains the last public desktop release' -and
-  $cv -match 'v0\.2\.3-rc1 is a Reality Gate canonical-proven release candidate' -and
-  $cv -match 'points to Proof Foundry downloads for the v0\.2\.3-rc1 Windows ZIP' -and
-  $cv -match 'recorded download link is currently unavailable' -and
+  $cv -match 'v0\.2\.3 is the current public Windows release' -and
+  $cv -match 'points to Proof Foundry downloads for the v0\.2\.3 Windows ZIP' -and
+  $cv -match '28262e491ad1f7b3f6f4c9f28eabfe2899a61af7c7a26c17c4915d604e00371d' -and
+  $cv -notmatch 'v0\.2\.3-rc1|v0\.2\.3-rc2' -and
   $cv -notmatch 'intentionally not linked'
-) "P2: Cache Vault availability copy correctly asserts v0.2.2 public / v0.2.3-rc1 candidate availability and omits stale 404 unlinked copy"
+) "P2: Cache Vault availability copy correctly asserts final public v0.2.3 (live URL + published digest) and omits RC-era candidate/404 copy"
 Assert-Condition ($lo -notmatch 'download again') "P2: Lights Out no longer instructs a download retry while no download exists"
 Assert-Condition ($lo -match '<a href="/support/#report">contact the project</a>') "P2: Lights Out support anchor preserved (P2-1 contract)"
 

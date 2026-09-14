@@ -92,7 +92,8 @@ Assert-Condition ($loRegistry.release.releaseStatus -eq 'HOLD') "P1 Regression: 
 
 # 10. Hardened Support Release-Truth Parity Assertions
 Assert-Condition ($supportHtml -match 'Reality Gate[\s\S]*?v1\.1\.0') "Support release truth: Reality Gate v1.1.0"
-Assert-Condition ($supportHtml -match 'Cache Vault[\s\S]*?v0\.2\.2[\s\S]*?v0\.2\.3-rc1') "Support release truth: Cache Vault v0.2.2 / v0.2.3-rc1"
+Assert-Condition ($supportHtml -match 'Cache Vault[\s\S]*?Public Windows v0\.2\.3') "Support release truth: Cache Vault final public v0.2.3"
+Assert-Condition ($supportHtml -notmatch 'v0\.2\.3-rc') "Support release truth: no RC candidate strings for Cache Vault"
 Assert-Condition ($supportHtml -match 'Lights Out[\s\S]*?v11\.1\.2[\s\S]*?v11\.1\.3[\s\S]*?v11\.1\.1') "Support release truth: Lights Out v11.1.2 / v11.1.3 / Android v11.1.1"
 Assert-Condition ($supportHtml -match 'Cleanroom[\s\S]*?v1\.0\.7[\s\S]*?v1\.0\.10') "Support release truth: Cleanroom v1.0.7 / candidate v1.0.10"
 Assert-Condition ($supportHtml -notmatch 'Cleanroom[\s\S]*?v1\.2\.0') "Support release truth: Cleanroom rejects incorrect v1.2.0"

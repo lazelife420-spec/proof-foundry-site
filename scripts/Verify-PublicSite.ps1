@@ -60,7 +60,7 @@ function Esc($s) { return [regex]::Escape($s) }
 
 # Derive per-product expectations from the manifest --------------------------
 
-# Cache Vault — release candidate: public v0.2.2, candidate artifact v0.2.3-rc1
+# Cache Vault — final public release: v0.2.3 (previous public v0.2.2; RC candidate lane closed)
 $cv = Get-Product "cache-vault"
 $cvArtifact = Get-PrimaryArtifact $cv
 $cvStatusLabel = Get-StatusLabel $cv
@@ -414,16 +414,15 @@ foreach ($target in $TargetUrls) {
     # 10. Cache Vault — manifest-derived status, download label, artifact, hash
     #     The download label, status label, artifact filename, and SHA-256 are
     #     all derived from site-manifest.json so they track the current release
-    #     state (release candidate v0.2.3-rc1, not the old public v0.2.0).
+    #     state (final public v0.2.3; the RC candidate lane is closed).
     Test-UrlContent -Url "$target/cache-vault/" -Name "product truth" -ContainsPatterns @(
         "Cache Vault",
         $cvDownloadPattern,
-        "$(Esc ('v' + $cv.release.publicVersion)) remains the public Windows release",
-        "$(Esc ('v' + $cv.release.candidateVersion)) is a release candidate",
+        "$(Esc ('v' + $cv.release.publicVersion)) is the current public Windows release",
         $cvStatusLabel,
         $cvArtifactPattern,
         $cvSha256
-    ) -NotContainsPatterns @("SkyFoundry", "Get Cache Vault")
+    ) -NotContainsPatterns @("SkyFoundry", "Get Cache Vault", "v0\.2\.3-rc1", "v0\.2\.3-rc2", "release candidate")
     Test-UrlContent -Url "$target/cache-vault" -ContainsPatterns @(
         "Cache Vault"
     ) -NotContainsPatterns @("SkyFoundry") -FollowRedirects $true

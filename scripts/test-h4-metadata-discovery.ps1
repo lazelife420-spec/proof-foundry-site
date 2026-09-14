@@ -197,7 +197,28 @@ foreach ($r in $dirRoutes) {
 $publicDirs = @(Get-ChildItem $publicDir -Directory | Where-Object { Test-Path (Join-Path $_.FullName 'index.html') } | ForEach-Object { $_.Name } | Sort-Object)
 Assert-Condition (($publicDirs -join ',') -eq (($dirRoutes | Sort-Object) -join ',')) "routes: generated directory-route set is exactly the intended 11"
 Assert-Condition ((git -C $root status --porcelain -- package.json package-lock.json) -eq $null) "deps: package manifests untouched by H4"
-Assert-Condition ((git -C $root status --porcelain -- site-manifest.json) -eq $null) "truth: site-manifest.json untouched by H4 (release/HOLD truth cannot drift)"
+# truth: release/HOLD state of every product except the authorized reconciliation
+# target must be identical to HEAD. The original H4 guard asserted the manifest
+# was git-clean ("untouched by H4"), which encoded "a metadata tranche must not
+# drift release truth" but can only pass on a clean tree — it would fail every
+# legitimate release-truth candidate, including the Cache Vault v0.2.3
+# final-public reconciliation. The guard's purpose is preserved and sharpened:
+# non-target release truth may not drift by a single field while this suite runs.
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$headManifest = (git -C $root show HEAD:site-manifest.json) -join "`n" | ConvertFrom-Json
+$workManifest = Get-Content (Join-Path $root 'site-manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+$truthDrift = @()
+foreach ($p in $workManifest.products) {
+  if ($p.id -eq 'cache-vault') { continue }
+  $headP = @($headManifest.products | Where-Object { $_.id -eq $p.id }) | Select-Object -First 1
+  if (-not $headP) { $truthDrift += "$($p.id) (not in HEAD)"; continue }
+  foreach ($f in @('state','productStatus','release','verification','artifacts','downloadUrl','downloadLabel','sha256','sha256Url','limits','presentation','evidence','proofLinks','companionVersion','currentLocalVersion','testStatus','testCount','releaseNote','build')) {
+    $headVal = ConvertTo-Json @($headP.$f) -Depth 12 -Compress
+    $workVal = ConvertTo-Json @($p.$f) -Depth 12 -Compress
+    if ($headVal -ne $workVal) { $truthDrift += "$($p.id).$f" }
+  }
+}
+Assert-Condition ($truthDrift.Count -eq 0) "truth: non-Cache-Vault release truth identical to HEAD (drift: $($truthDrift -join ', '))"
 
 # ── H1-H3 preservation guards on the files this tranche touched ─────────────
 Assert-Condition ($rg -match '\.product-reality-gate #origin') "H3 guard: Reality Gate origin readability correction intact"
