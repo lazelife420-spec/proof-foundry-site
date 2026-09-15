@@ -119,6 +119,23 @@ if (finder) {
   let intent = 'all';
   const platform = $('#platform-filter');
   const cards = $$('#products [data-product]');
+  // H7A-R mobile curation: on small screens the catalog leads with the featured
+  // tool and the first two cards; the rest sit behind a "See all 7 tools"
+  // disclosure. No product is removed - the toggle, any finder use, or a wider
+  // viewport always reveals everything.
+  const catalogToggle = $('[data-catalog-toggle]');
+  const deferredCards = $$('.product-card').slice(2);
+  const mobileCatalog = window.matchMedia('(max-width: 700px)');
+  let curated = mobileCatalog.matches;
+  function syncToggle() {
+    if (!catalogToggle) return;
+    catalogToggle.hidden = false;
+    catalogToggle.setAttribute('aria-expanded', String(!curated));
+    catalogToggle.textContent = curated ? 'See all 7 tools' : 'Show featured tools';
+  }
+  function uncurate() {
+    if (curated) { curated = false; syncToggle(); }
+  }
   function filter() {
     let count = 0;
     cards.forEach(card => {
@@ -126,6 +143,7 @@ if (finder) {
       card.hidden = !(intent === 'all' || tags.includes(intent)) || !(platform.value === 'all' || tags.includes(platform.value));
       if (!card.hidden) count++;
     });
+    if (curated && intent === 'all' && platform.value === 'all') deferredCards.forEach(card => { card.hidden = true; });
     $$('.product-group').forEach(group => {
       const matches = $$('.product-card', group).filter(card => !card.hidden).length;
       group.hidden = matches === 0;
@@ -135,9 +153,15 @@ if (finder) {
     $('.finder-empty').hidden = count !== 0;
     $$('[data-intent]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.intent === intent)));
   }
-  $$('[data-intent]').forEach(b => b.addEventListener('click', () => { intent = b.dataset.intent; filter(); }));
-  platform.addEventListener('change', filter);
-  $('[data-filter-reset]').addEventListener('click', () => { intent = 'all'; platform.value = 'all'; filter(); $('[data-intent="all"]').focus(); });
+  $$('[data-intent]').forEach(b => b.addEventListener('click', () => { intent = b.dataset.intent; uncurate(); filter(); }));
+  platform.addEventListener('change', () => { uncurate(); filter(); });
+  $('[data-filter-reset]').addEventListener('click', () => { intent = 'all'; platform.value = 'all'; curated = mobileCatalog.matches; syncToggle(); filter(); $('[data-intent="all"]').focus(); });
+  if (catalogToggle) {
+    catalogToggle.addEventListener('click', () => { curated = !curated; syncToggle(); filter(); });
+    mobileCatalog.addEventListener('change', () => { curated = mobileCatalog.matches; syncToggle(); filter(); });
+    syncToggle();
+    filter();
+  }
 }
 const archive = $('[data-demo="archive"]');
 if (archive) {

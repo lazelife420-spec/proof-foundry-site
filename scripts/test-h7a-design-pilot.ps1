@@ -15,6 +15,9 @@ $files = @{
   OutputSignature = Join-Path $public 'signature.css'
   SourceExperience = Join-Path $root 'experience.css'
   OutputExperience = Join-Path $public 'experience.css'
+  CardTemplate = Join-Path $root 'partials\product-card.html'
+  SourceExperienceJs = Join-Path $root 'experience.js'
+  OutputExperienceJs = Join-Path $public 'experience.js'
 }
 
 foreach ($path in $files.Values) {
@@ -27,6 +30,9 @@ $signature = Get-Content -LiteralPath $files.SourceSignature -Raw -Encoding UTF8
 $outputSignature = Get-Content -LiteralPath $files.OutputSignature -Raw -Encoding UTF8
 $experience = Get-Content -LiteralPath $files.SourceExperience -Raw -Encoding UTF8
 $outputExperience = Get-Content -LiteralPath $files.OutputExperience -Raw -Encoding UTF8
+$cardTemplate = Get-Content -LiteralPath $files.CardTemplate -Raw -Encoding UTF8
+$experienceJs = Get-Content -LiteralPath $files.SourceExperienceJs -Raw -Encoding UTF8
+$outputExperienceJs = Get-Content -LiteralPath $files.OutputExperienceJs -Raw -Encoding UTF8
 
 $script:passed = 0
 $script:failed = 0
@@ -63,7 +69,18 @@ Assert-Condition ($outputSignature -match 'H7A — PROFESSIONAL DESIGN SYSTEM \+
 Assert-Condition ($signature -match '--h7a-space-7:\s*5\.5rem') 'source: compact spacing scale is defined'
 Assert-Condition ($signature -match '--h7a-accent:\s*#e4b85f') 'source: one core brand accent is defined'
 Assert-Condition ($signature -match '(?s)\.signature-home \.product-card.*?border-radius:\s*8px') 'source: homepage card radius is deliberate'
-Assert-Condition ($signature -match '(?s)@media \(max-width: 700px\).*?\.signature-home \.card-facts,\s*\.signature-home \.card-detail\s*\{\s*display:\s*none') 'source: mobile progressively hides secondary card facts'
+Assert-Condition ($signature -match 'H7A-R — OWNER REFINEMENT: SIMPLER CARDS \+ CURATED MOBILE CATALOG') 'source: H7A-R refinement layer is present'
+Assert-Condition ($outputSignature -match 'H7A-R — OWNER REFINEMENT: SIMPLER CARDS \+ CURATED MOBILE CATALOG') 'output: H7A-R refinement layer survives build'
+Assert-Condition ($cardTemplate -match '<details class="card-more"><summary>Details</summary>') 'source: card template puts secondary facts behind native disclosure'
+Assert-Condition ($cardTemplate -notmatch 'card-topline') 'source: card template drops the old topline row'
+Assert-Condition (([regex]::Matches($outputHome, '<details class="card-more">')).Count -eq 6) 'output: all six cards render the details disclosure'
+Assert-Condition ($outputHome -notmatch 'card-topline') 'output: no card renders the old topline row'
+Assert-Condition ($sourceHome -match 'data-catalog-toggle') 'source: catalog curation toggle is present'
+Assert-Condition ($outputHome -match 'data-catalog-toggle' -and $outputHome -match 'See all 7 tools') 'output: catalog curation toggle survives build'
+Assert-Condition ($signature -match '\.signature-home \.catalog-toggle') 'source: catalog toggle styles exist'
+Assert-Condition ($signature -match '(?s)@media \(max-width: 700px\)\s*\{\s*\.signature-home \.catalog-toggle') 'source: catalog toggle only appears at small widths'
+Assert-Condition ($experienceJs -match 'data-catalog-toggle' -and $experienceJs -match 'matchMedia\(''\(max-width: 700px\)''\)') 'source: mobile curation is runtime-driven and viewport-gated'
+Assert-Condition ($outputExperienceJs -match 'data-catalog-toggle') 'output: curation logic survives build'
 Assert-Condition ($sourceHome -match 'Find your next tool\.') 'source: catalog has an editorial product-first heading'
 Assert-Condition ($sourceHome -match 'Know what you are downloading\.') 'source: proof is concise and subordinate'
 Assert-Condition ($sourceHome -match 'Find the right tool\.') 'source: homepage ends with one clear product invitation'

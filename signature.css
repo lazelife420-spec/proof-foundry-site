@@ -1693,8 +1693,10 @@
     padding: 18px;
   }
 
-  .signature-home .card-facts,
-  .signature-home .card-detail {
+  /* H7A-R: card detail lines now live behind an explicit <details> disclosure
+     at every width, so the always-on mobile hide is retired. (.card-facts is
+     vestigial; kept hidden for safety.) */
+  .signature-home .card-facts {
     display: none;
   }
 
@@ -1963,5 +1965,121 @@
   .signature-home .founders-signpost {
     margin-bottom: 36px;
     padding: 26px 18px 28px;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   H7A-R — OWNER REFINEMENT: SIMPLER CARDS + CURATED MOBILE CATALOG
+   Owner decision 2026-09-14: ACCEPTED_WITH_MINOR_REFINEMENT.
+   Card default view: image / name / one-line outcome / availability / action.
+   Platform, version, and detail lines move behind a native <details>
+   disclosure. On small screens the catalog leads with the featured tool and
+   the first two cards; the rest sit behind a "See all 7 tools" disclosure
+   (driven by experience.js, with full no-JS visibility as the fallback).
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* Availability: a quiet standalone line between outcome and action. */
+.signature-home .card-body > .card-availability {
+  margin-top: -.15rem;
+}
+
+/* Card details: native disclosure, quiet summary, stacked content. */
+.signature-home .card-more {
+  margin-top: var(--h7a-space-2);
+  padding-top: .55rem;
+  border-top: 1px solid var(--h7a-line);
+}
+
+.signature-home .card-more summary {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  min-height: 32px;
+  cursor: pointer;
+  list-style: none;
+  color: var(--h7a-quiet);
+  font: 600 .72rem/1.4 Inter, "Segoe UI", sans-serif;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.signature-home .card-more summary::-webkit-details-marker {
+  display: none;
+}
+
+.signature-home .card-more summary::after {
+  content: "+";
+  color: var(--h7a-accent);
+  font-size: .85rem;
+  line-height: 1;
+}
+
+.signature-home .card-more[open] summary::after {
+  content: "\2013";
+}
+
+.signature-home .card-more summary:hover {
+  color: var(--h7a-muted);
+}
+
+.signature-home .card-more summary:focus-visible {
+  outline: 2px solid var(--h7a-accent-strong);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+.signature-home .card-more .card-platform,
+.signature-home .card-more .card-version,
+.signature-home .card-more .card-detail {
+  display: block;
+  margin: .4rem 0 0;
+  color: var(--h7a-quiet);
+  font-size: .78rem;
+  line-height: 1.5;
+}
+
+/* Catalog curation toggle: hidden by default (and without JS), presented as
+   one calm full-width control at small widths only. */
+.signature-home .catalog-toggle {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .signature-home .catalog-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    width: 100%;
+    min-height: 46px;
+    margin-top: var(--h7a-space-4);
+    padding: 10px 16px;
+    border: 1px solid var(--h7a-line);
+    border-radius: 8px;
+    background: none;
+    color: var(--h7a-text);
+    font: 600 .88rem/1.4 Inter, "Segoe UI", sans-serif;
+    letter-spacing: .02em;
+    cursor: pointer;
+  }
+
+  .signature-home .catalog-toggle::after {
+    content: "+";
+    color: var(--h7a-accent);
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  .signature-home .catalog-toggle[aria-expanded="true"]::after {
+    content: "\2013";
+  }
+
+  .signature-home .catalog-toggle:hover {
+    border-color: rgba(228, 184, 95, .7);
+  }
+
+  .signature-home .catalog-toggle:focus-visible {
+    outline: 2px solid var(--h7a-accent-strong);
+    outline-offset: 3px;
   }
 }
