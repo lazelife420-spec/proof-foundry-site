@@ -117,6 +117,14 @@ Assert-Condition ($cvShaMatches -eq 2) "CV - v0.2.3 SHA-256 rendered by exactly 
 Assert-Condition ($cv -match 'v0\.2\.3 is the current public Windows release') "CV - final public release state intact"
 Assert-Condition ($rg -match 'Download v1\.1\.0 Developer Pilot') "RG - canonical pilot download action intact"
 
+# --- Reality Gate recovery evidence labeling guards ---
+Assert-Condition ($rg -match 'Subject:\s*<strong>Demo Widget Service</strong>' -and $rg -match 'Status:\s*<strong>Interface demonstration</strong>') "RG - recovery screenshot is identified as Demo Widget Service interface demonstration"
+Assert-Condition ($rg -notmatch 'RECORDED &amp; VERIFIED RECOVERY BUNDLE') "RG - old RECORDED & VERIFIED RECOVERY BUNDLE screenshot badge is absent"
+Assert-Condition ($rg -notmatch 'real recovery bundle verification record') "RG - old real recovery bundle verification record caption is absent"
+$rgCardMatch = [regex]::Match($rg, '(?s)<div class="pp-story-evidence-card">.*?</div>\s*</div>').Value
+Assert-Condition ($rgCardMatch -notmatch 'b93fd52611a64d33') "RG - asset SHA b93fd52611a64d33 is not rendered as the recovery evidence-card digest"
+Assert-Condition ([regex]::Match($rg, '(?s)<figure class="[^"]*story-shot[^"]*">\s*<a[^>]*>\s*<img[^>]*src="[^"]+04-recovery-bundle-verified[^"]*"[^>]*loading="eager"').Success) "RG - recovery screenshot remains eager-loaded and non-empty"
+
 # --- shared stylesheet integrity ---
 Assert-Condition ($ppCss -match '(?s)@media \(max-width: 700px\).*?\.pp-onboard \.onboarding-list') "product-page.css - mobile single-column onboarding rule present"
 Assert-Condition ($ppCss -match '(?s)@media \(max-width: 900px\).*?\.pp-hero-layout') "product-page.css - mobile single-column hero rule present"
