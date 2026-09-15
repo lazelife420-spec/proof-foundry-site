@@ -41,35 +41,10 @@
   z-index: 1;
 }
 
-.signature-home .home-forged-field {
-  position: absolute;
-  top: -45px;
-  left: -60px;
-  width: calc(100% + 120px);
-  height: calc(100% + 90px);
-  z-index: -1;
-  pointer-events: none;
-  overflow: hidden;
-  border-radius: 12px;
-  opacity: 0.35;
-  mask-image: radial-gradient(ellipse 85% 85% at 40% 40%, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%);
-  -webkit-mask-image: radial-gradient(ellipse 85% 85% at 40% 40%, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%);
-}
-
-.signature-home .forged-hero-bg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center left;
-  filter: contrast(1.15) brightness(0.85);
-  display: block;
-}
-
-.signature-home .forged-vignette {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 30% 35%, transparent 20%, rgba(13, 17, 21, 0.7) 85%);
-}
+/* H7A-MARK: the legacy dimmed-background forged-field treatment (absolute,
+   opacity .35, masked, vignetted — and later display:none under H7A) is removed.
+   The emblem now renders at full presence as the hero's brand image;
+   see the H7A-MARK block in the H7A layer below. */
 
 .signature-home .home-brand-lockup {
   display: flex;
@@ -737,14 +712,7 @@
     max-width: 540px;
   }
 
-  /* H1R-D1: bound the forged-field bleed to the tablet shell gutter */
-  .signature-home .home-forged-field {
-    top: -20px;
-    left: -20px;
-    width: calc(100% + 40px);
-    height: calc(100% + 40px);
-    opacity: 0.3;
-  }
+  /* H7A-MARK: tablet forged-field bleed override removed with the legacy treatment. */
 
   .signature-home .product-theater {
     display: grid;
@@ -821,13 +789,7 @@
     margin-bottom: 26px;
   }
 
-  .signature-home .home-forged-field {
-    top: -20px;
-    left: -20px;
-    width: calc(100% + 40px);
-    height: calc(100% + 40px);
-    opacity: 0.3;
-  }
+  /* H7A-MARK: mobile forged-field bleed override removed with the legacy treatment. */
 
   .signature-home .home-brand-lockup img {
     width: min(100%, 300px);
@@ -1151,16 +1113,59 @@
   color: var(--h7a-accent-strong);
 }
 
-/* Hero: identity, promise, explanation, action, authentic product view. */
+/* Hero: studio identity and promise opposite the forged PF brand mark.
+   The authentic product view becomes the next beat below (H7A-MARK). */
 .signature-home .studio-home-hero {
-  grid-template-columns: minmax(0, .88fr) minmax(0, 1.12fr);
+  grid-template-columns: minmax(0, 1.04fr) minmax(0, .96fr);
   gap: clamp(48px, 7vw, 96px);
   min-height: 650px;
   padding: clamp(72px, 9vw, 132px) 0 var(--h7a-space-7);
 }
 
+/* H7A-MARK — the forged-metal PF emblem returns as the hero's brand image.
+   Full presence opposite the copy; edges feather into the black field.
+   No card, border, drop shadow, glow, or animation. Decorative: the adjacent
+   lockup already names the studio, so the field stays aria-hidden. */
 .signature-home .home-forged-field {
-  display: none;
+  position: relative;
+  top: auto;
+  left: auto;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 0;
+  opacity: 1;
+  pointer-events: none;
+  aspect-ratio: 1 / 1.02;
+  mask-image: radial-gradient(ellipse 98% 98% at 50% 48%, rgba(0, 0, 0, 1) 58%, rgba(0, 0, 0, 0) 96%);
+  -webkit-mask-image: radial-gradient(ellipse 98% 98% at 50% 48%, rgba(0, 0, 0, 1) 58%, rgba(0, 0, 0, 0) 96%);
+}
+
+.signature-home .home-forged-field picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.signature-home .forged-hero-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 63% 46%;
+  filter: brightness(.97) contrast(1.03);
+  display: block;
+}
+
+/* H7A-MARK: the featured product view moves out of the brand hero into its
+   own product-discovery beat directly below it. */
+.signature-home .studio-product-beat {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 0 var(--h7a-space-7);
 }
 
 .signature-home .home-brand-lockup {
@@ -1579,6 +1584,13 @@
     min-height: 0;
   }
 
+  /* H7A-MARK: stacked composition — copy and actions, then the forged mark. */
+  .signature-home .home-forged-field {
+    width: min(100%, 600px);
+    margin-top: var(--h7a-space-4);
+    aspect-ratio: 16 / 10;
+  }
+
   .signature-home .product-theater {
     grid-template-rows: minmax(320px, 1fr) auto;
   }
@@ -1600,6 +1612,18 @@
   .signature-home .studio-home-hero {
     gap: var(--h7a-space-5);
     padding: 52px 0 var(--h7a-space-6);
+  }
+
+  /* H7A-MARK: mobile keeps the mark recognizable without recreating the old
+     overly-long first screen; the tighter artifact source loads ≤480px. */
+  .signature-home .home-forged-field {
+    width: min(100%, 430px);
+    margin: var(--h7a-space-5) auto 0;
+    aspect-ratio: 1 / 0.78;
+  }
+
+  .signature-home .studio-product-beat {
+    padding-bottom: var(--h7a-space-6);
   }
 
   .signature-home .home-brand-lockup {
