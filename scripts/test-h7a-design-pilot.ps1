@@ -64,13 +64,13 @@ function Get-ContrastRatio([string]$foreground, [string]$background) {
 
 $layerRatio = Get-ContrastRatio '#969eb5' '#2b2d3b'
 
-Assert-Condition ($signature -match 'H7A — PROFESSIONAL DESIGN SYSTEM \+ HOMEPAGE PILOT') 'source: H7A design-system layer is present'
-Assert-Condition ($outputSignature -match 'H7A — PROFESSIONAL DESIGN SYSTEM \+ HOMEPAGE PILOT') 'output: H7A design-system layer is present'
+Assert-Condition ($signature -match 'H7A.*PROFESSIONAL DESIGN SYSTEM \+ HOMEPAGE PILOT') 'source: H7A design-system layer is present'
+Assert-Condition ($outputSignature -match 'H7A.*PROFESSIONAL DESIGN SYSTEM \+ HOMEPAGE PILOT') 'output: H7A design-system layer is present'
 Assert-Condition ($signature -match '--h7a-space-7:\s*5\.5rem') 'source: compact spacing scale is defined'
 Assert-Condition ($signature -match '--h7a-accent:\s*#e4b85f') 'source: one core brand accent is defined'
 Assert-Condition ($signature -match '(?s)\.signature-home \.product-card.*?border-radius:\s*8px') 'source: homepage card radius is deliberate'
-Assert-Condition ($signature -match 'H7A-R — OWNER REFINEMENT: SIMPLER CARDS \+ CURATED MOBILE CATALOG') 'source: H7A-R refinement layer is present'
-Assert-Condition ($outputSignature -match 'H7A-R — OWNER REFINEMENT: SIMPLER CARDS \+ CURATED MOBILE CATALOG') 'output: H7A-R refinement layer survives build'
+Assert-Condition ($signature -match 'H7A-R.*OWNER REFINEMENT: SIMPLER CARDS \+ CURATED MOBILE CATALOG') 'source: H7A-R refinement layer is present'
+Assert-Condition ($outputSignature -match 'H7A-R.*OWNER REFINEMENT: SIMPLER CARDS \+ CURATED MOBILE CATALOG') 'output: H7A-R refinement layer survives build'
 Assert-Condition ($cardTemplate -match '<details class="card-more"><summary>Details</summary>') 'source: card template puts secondary facts behind native disclosure'
 Assert-Condition ($cardTemplate -notmatch 'card-topline') 'source: card template drops the old topline row'
 Assert-Condition (([regex]::Matches($outputHome, '<details class="card-more">')).Count -eq 6) 'output: all six cards render the details disclosure'

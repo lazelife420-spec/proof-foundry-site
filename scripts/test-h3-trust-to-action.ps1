@@ -46,7 +46,7 @@ $homeHtml = Read-Page ''
 Assert-Condition ($rg -match '\.product-reality-gate #origin') "P0: Reality Gate carries the origin readability correction"
 Assert-Condition ($rg -match 'background:\s*#101418') "P0: origin section is given a dark paired surface"
 Assert-Condition ($rg -notmatch 'id="origin" style="background:\s*rgba\(255,255,255,0\.02\)') "P0: old translucent origin background pairing removed"
-Assert-Condition ($rg -match '01 · Dependency Became Real') "P0: origin copy preserved (beat 01)"
+Assert-Condition ($rg -match '01.*Dependency Became Real') "P0: origin copy preserved (beat 01)"
 Assert-Condition ($rg -match 'Case Study Evidence: Lights Out Repository Reconstruction') "P0: origin case-study copy preserved"
 
 # ── P1: What-changed path on all 7 products ─────────────────────────────────

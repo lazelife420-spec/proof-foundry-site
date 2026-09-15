@@ -42,5 +42,13 @@
     "proof-foundry-mark.svg",
     "proof-foundry-logo-horizontal.svg",
     "proof-foundry-verified-seal.svg"
-  ]
+  ],
+  "web_authority": {
+    "controlling_system": "H7A signature homepage + H7B shared product-page system (shipped 2026-09-15, commit 272a9a6)",
+    "web_primary_accent": "#D6A84F",
+    "web_primary_accent_light": "#EFC978",
+    "web_field": "#0D1115",
+    "supersedes": "Any historical guidance that treats a teal hue as the primary public website accent.",
+    "note": "The keys proof_teal and --pf-teal below are legacy names whose values (#B9823F) are bronze/gold-family, not teal; they are retained for historical continuity only. On shipped web surfaces, warm gold is the dominant accent and signature.css uses #85C8BB strictly as a secondary support tone. Do not revert website colors toward a teal-primary system based on the legacy key names."
+  }
 }

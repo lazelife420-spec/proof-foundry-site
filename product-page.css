@@ -1,0 +1,872 @@
+/* ==========================================================================
+   H7B — Shared product-page system (pilots: Reality Gate, Cache Vault)
+   One editorial architecture aligned to the shipped H7A homepage language.
+   Scopes under body.pp-system; legacy studio.css product themes do not apply
+   to pp-* structure. Native <details> disclosures: keyboard operable, state
+   exposed, no JS required.
+   ========================================================================== */
+
+body.pp-system {
+  --pp-ink: #0d1115;
+  --pp-panel: #151b20;
+  --pp-raised: #1b2429;
+  --pp-warm: #f2eee4;
+  --pp-muted: #aab2b3;
+  --pp-dim: #758083;
+  --pp-gold: #d6a84f;
+  --pp-gold-light: #efc978;
+  --pp-line: #313a3d;
+  --pp-accent: var(--pp-gold);
+  /* Re-seat the shared studio tokens so header/footer/buttons harmonize. */
+  --bg: var(--pp-ink);
+  --text: var(--pp-warm);
+  --muted: var(--pp-muted);
+  --line: var(--pp-line);
+  background:
+    radial-gradient(circle at 78% 7%, rgba(78, 93, 76, .18), transparent 25rem),
+    linear-gradient(180deg, #101417 0%, var(--pp-ink) 58%, #11181a 100%);
+  color: var(--pp-warm);
+}
+
+body.pp-system.product-reality-gate { --pp-accent: #d9906b; }
+body.pp-system.product-cache-vault { --pp-accent: #a9c48f; }
+
+body.pp-system .site-header {
+  background: rgba(13, 17, 21, .94);
+  border-bottom-color: rgba(214, 168, 79, .2);
+}
+
+/* ---------- shared type + rhythm ---------- */
+
+.pp-system main {
+  display: block;
+}
+
+.pp-kicker {
+  font-size: .72rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--pp-accent);
+  margin: 0 0 14px;
+  font-weight: 600;
+}
+
+.pp-h2 {
+  font-size: clamp(2rem, 3.4vw, 2.9rem);
+  line-height: 1.08;
+  letter-spacing: -.02em;
+  font-weight: 600;
+  margin: 0;
+}
+
+.pp-lede {
+  color: var(--pp-muted);
+  font-size: 1.06rem;
+  line-height: 1.7;
+  max-width: 36rem;
+}
+
+.pp-section {
+  padding: clamp(56px, 7vw, 96px) 0;
+  border-top: 1px solid var(--pp-line);
+}
+
+.pp-section-head {
+  max-width: 44rem;
+  margin-bottom: clamp(30px, 4vw, 48px);
+}
+
+.pp-section-head > p:last-child {
+  margin-top: 18px;
+}
+
+/* ---------- 1 · PRODUCT HERO ---------- */
+
+.pp-hero {
+  padding: clamp(40px, 6vw, 84px) 0 clamp(48px, 6vw, 88px);
+  border-top: 0;
+}
+
+.pp-hero .product-identity {
+  margin-bottom: clamp(22px, 3vw, 34px);
+}
+
+.pp-hero-layout {
+  display: grid;
+  grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+  gap: clamp(36px, 5vw, 80px);
+  align-items: center;
+}
+
+/* The legacy per-product studio themes carry higher-specificity hero rules
+   (e.g. .product-reality-gate .product-copy h1, .product-cache-vault h1, and
+   their <=900/<=700 media variants). body.studio.pp-system out-specifies them
+   so both pilots share one hero type scale. */
+body.studio.pp-system .pp-hero .product-copy {
+  display: block;
+  max-width: none;
+}
+
+body.studio.pp-system .pp-hero h1 {
+  font-size: clamp(2.7rem, 4.8vw, 4.4rem);
+  line-height: 1.04;
+  letter-spacing: -.03em;
+  font-weight: 620;
+  margin: 0;
+  color: var(--pp-warm);
+}
+
+body.studio.pp-system .pp-hero h1 em {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--pp-gold-light);
+}
+
+.pp-hero .product-lede {
+  max-width: 34rem !important;
+  margin-top: 24px;
+  color: var(--pp-muted);
+  font-size: 1.09rem;
+  line-height: 1.7;
+}
+
+.pp-hero .studio-actions {
+  margin-top: 30px;
+}
+
+/* PRODUCT STATUS / AVAILABILITY */
+.pp-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin-top: 26px;
+  padding-top: 18px;
+  border-top: 1px solid var(--pp-line);
+  font: 12px/1.6 Consolas, monospace;
+  letter-spacing: .04em;
+  color: var(--pp-dim);
+  max-width: 34rem;
+}
+
+.pp-status strong {
+  color: var(--pp-muted);
+  font-weight: 600;
+}
+
+/* shared CTA language — the H7A gold, both pilots */
+body.pp-system .button-primary {
+  background: var(--pp-gold);
+  border-color: var(--pp-gold);
+  color: #1a1408;
+}
+
+body.pp-system .button-primary:hover {
+  background: var(--pp-gold-light);
+  border-color: var(--pp-gold-light);
+}
+
+body.pp-system .text-link {
+  color: var(--pp-gold-light);
+}
+
+/* runroom band: kept as authentic product vocabulary, quieted */
+.pp-band {
+  display: flex;
+  gap: 34px;
+  font: 11px/1.5 Consolas, monospace;
+  letter-spacing: .16em;
+  color: var(--pp-dim);
+  border-top: 1px solid var(--pp-line);
+  padding-top: 16px;
+  margin-top: 34px;
+  max-width: 34rem;
+}
+
+/* ---------- MEDIA STAGE ---------- */
+
+.pp-media-frame,
+body.pp-system .hero-product-shot,
+body.pp-system .film-shot,
+body.pp-system .story-shot {
+  border: 1px solid var(--pp-line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--pp-panel);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, .45);
+  transform: none;
+}
+
+body.pp-system .hero-product-shot figcaption,
+body.pp-system .film-shot figcaption,
+body.pp-system .story-shot figcaption {
+  background: var(--pp-raised);
+  color: var(--pp-muted);
+  padding: 13px 18px;
+  font-size: .78rem;
+  letter-spacing: .02em;
+}
+
+body.pp-system .hero-product-shot img,
+body.pp-system .story-shot img {
+  width: 100%;
+  max-height: none;
+  object-fit: cover;
+  object-position: top;
+}
+
+/* neutralize the legacy Cache Vault archive-device hero chrome */
+body.pp-system.product-cache-vault .hero-media {
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  max-width: none;
+  justify-self: stretch;
+}
+
+body.pp-system.product-cache-vault .hero-media::before {
+  content: none;
+}
+
+/* ---------- 3 · OUTCOMES ---------- */
+
+.pp-outcome-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--pp-line);
+  border: 1px solid var(--pp-line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.pp-outcome-grid article {
+  background: var(--pp-panel);
+  padding: clamp(22px, 2.6vw, 34px);
+}
+
+.pp-outcome-grid .step-number {
+  display: block;
+  font: 12px/1.5 Consolas, monospace;
+  letter-spacing: .12em;
+  color: var(--pp-accent);
+  margin-bottom: 16px;
+}
+
+.pp-outcome-grid h3 {
+  font-size: 1.28rem;
+  letter-spacing: -.01em;
+  margin: 0 0 12px;
+  color: var(--pp-warm);
+}
+
+.pp-outcome-grid p {
+  color: var(--pp-muted);
+  font-size: .95rem;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.pp-outcome-grid p + p {
+  margin-top: 10px;
+}
+
+.pp-scope-note {
+  font-size: .8rem !important;
+  /* AA on --pp-panel: --pp-dim fell short (axe color-contrast); muted passes. */
+  color: var(--pp-muted) !important;
+}
+
+/* ---------- 4/5 · HOW IT WORKS + STORY ---------- */
+
+.pp-how .experience-heading {
+  max-width: 44rem;
+  margin-bottom: clamp(28px, 4vw, 44px);
+}
+
+/* H7B-R: Eliminate empty 210px left-column grid space when tour-menu is hidden */
+body.pp-system .guided-tour {
+  background: var(--pp-panel);
+  border: 1px solid var(--pp-line);
+  border-radius: 10px;
+  padding: clamp(24px, 4vw, 44px);
+}
+
+body.pp-system .guided-tour .tour-layout {
+  display: block;
+}
+
+body.pp-system .guided-tour .tour-menu[hidden] {
+  display: none !important;
+}
+
+body.pp-system .guided-tour .tour-screen {
+  width: 100%;
+}
+
+body.pp-system .guided-tour .tour-screen .app-shot {
+  margin: 0;
+  border: 1px solid var(--pp-line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--pp-ink);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, .4);
+}
+
+body.pp-system .guided-tour .tour-screen .app-shot > a {
+  aspect-ratio: auto;
+  background: transparent;
+  border: none;
+  display: block;
+}
+
+body.pp-system .guided-tour .tour-screen img {
+  width: 100%;
+  height: auto;
+  max-height: none;
+  display: block;
+  object-fit: cover;
+}
+
+/* H7B-R: Product story layout & high-contrast evidence card */
+body.pp-system .pp-story {
+  display: grid;
+  grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+  gap: clamp(28px, 4vw, 56px);
+  align-items: center;
+}
+
+body.pp-system .story-shot {
+  border: 1px solid var(--pp-line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--pp-raised);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, .4);
+}
+
+body.pp-system .story-shot img {
+  width: 100%;
+  height: auto;
+  max-height: none;
+  display: block;
+  object-fit: cover;
+}
+
+.pp-story .story-copy > p:last-child {
+  margin-top: 20px;
+  color: var(--pp-muted);
+  font-size: 1.02rem;
+  line-height: 1.7;
+}
+
+.pp-story-evidence-card {
+  margin-top: 22px;
+  padding: 16px 20px;
+  background: var(--pp-panel);
+  border: 1px solid var(--pp-line);
+  border-radius: 8px;
+  border-left: 3px solid var(--pp-accent);
+}
+
+.pp-evidence-badge {
+  font: 11px/1.5 Consolas, monospace;
+  letter-spacing: .12em;
+  color: #7fc98f;
+  margin-bottom: 8px;
+}
+
+.pp-evidence-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: .84rem;
+  color: var(--pp-muted);
+}
+
+.pp-evidence-meta code {
+  font-size: .78rem;
+  color: var(--pp-gold-light);
+}
+
+/* ---------- 6 · ORIGIN / NARRATIVE BAND (reduced weight) ---------- */
+
+.pp-origin {
+  border-radius: 12px;
+  padding: clamp(34px, 4.5vw, 56px);
+  margin: clamp(20px, 3vw, 36px) 0;
+}
+
+.pp-origin-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-top: 34px;
+}
+
+.pp-origin-beat {
+  border-left: 2px solid var(--pp-accent);
+  padding-left: 18px;
+}
+
+.pp-origin-beat .pp-beat-label {
+  font: 11px/1.5 Consolas, monospace;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--pp-accent);
+  margin: 0 0 10px;
+}
+
+.pp-origin-beat p:last-child {
+  color: var(--pp-muted);
+  font-size: .92rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.pp-case {
+  margin-top: 34px;
+  border: 1px solid var(--pp-line);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, .28);
+  padding: clamp(22px, 3vw, 32px);
+}
+
+.pp-case h3 {
+  font-size: 1.05rem;
+  margin: 0 0 18px;
+  color: var(--pp-warm);
+}
+
+.pp-case-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.pp-case-col {
+  border: 1px solid var(--pp-line);
+  border-radius: 8px;
+  padding: 18px 20px;
+}
+
+.pp-case-col h4 {
+  margin: 0 0 10px;
+  font-size: .82rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.pp-case-col ul {
+  margin: 0;
+  padding-left: 1.15rem;
+  color: var(--pp-muted);
+  font-size: .9rem;
+  line-height: 1.6;
+}
+
+.pp-case-col.is-pass h4 { color: #7fc98f; }
+.pp-case-col.is-gap h4 { color: #e08a8a; }
+
+/* ---------- 7 · GET / DOWNLOAD ---------- */
+
+.pp-get {
+  border: 1px solid var(--pp-line);
+  border-radius: 12px;
+  background: linear-gradient(180deg, var(--pp-raised), var(--pp-panel));
+  padding: clamp(34px, 4.6vw, 56px);
+  max-width: 62rem;
+  margin: clamp(48px, 6vw, 88px) auto;
+}
+
+.pp-get .download-description {
+  color: var(--pp-muted);
+  font-size: 1.03rem;
+  line-height: 1.7;
+  max-width: 44rem !important;
+  margin-top: 20px;
+}
+
+.pp-get .studio-actions {
+  margin-top: 28px;
+}
+
+/* availability/warning line — always visible, never inside a disclosure */
+.pp-warning {
+  margin-top: 22px;
+  border-left: 3px solid var(--pp-gold);
+  padding: 4px 0 4px 18px;
+  color: var(--pp-muted);
+  font-size: .92rem;
+  line-height: 1.65;
+  max-width: 44rem;
+}
+
+.pp-get .install-note,
+.pp-get .availability-note {
+  border-left: 0;
+  padding-left: 0;
+  color: var(--pp-muted);
+  font-size: .9rem;
+  margin-top: 18px;
+  max-width: 44rem !important;
+}
+
+/* ---------- shared disclosure pattern (verify / tech / sub) ---------- */
+
+.pp-details {
+  border-top: 1px solid var(--pp-line);
+  margin-top: 24px;
+}
+
+.pp-details > summary {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  cursor: pointer;
+  padding: 18px 0;
+  color: var(--pp-warm);
+  font-size: .98rem;
+  font-weight: 550;
+}
+
+.pp-details > summary::-webkit-details-marker { display: none; }
+
+.pp-details > summary::after {
+  content: '+';
+  font-size: 1.35rem;
+  line-height: 1;
+  color: var(--pp-gold-light);
+  flex: none;
+}
+
+.pp-details[open] > summary::after { content: '–'; }
+
+.pp-details > summary:focus-visible,
+.pp-tech > summary:focus-visible,
+.pp-sub > summary:focus-visible {
+  outline: 2px solid var(--pp-gold-light);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.pp-details > div { padding: 4px 0 26px; }
+.pp-details p { color: var(--pp-muted); font-size: .92rem; line-height: 1.65; }
+
+/* ---------- 8 · ONBOARDING ---------- */
+
+.pp-onboard .onboarding-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--pp-line);
+  border: 1px solid var(--pp-line);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 34px;
+}
+
+.pp-onboard .onboarding-list dt {
+  background: var(--pp-panel);
+  color: var(--pp-warm);
+  font-weight: 600;
+  font-size: .95rem;
+  padding: 18px 22px 0;
+}
+
+.pp-onboard .onboarding-list dd {
+  background: var(--pp-panel);
+  color: var(--pp-muted);
+  font-size: .9rem;
+  line-height: 1.65;
+  margin: 0;
+  padding: 10px 22px 22px;
+}
+
+/* dt+dd pairing: keep each pair in one cell */
+.pp-onboard .onboarding-list dt { grid-row: auto; }
+
+/* ---------- 9 · SUPPORT LINKAGE / FAQ ---------- */
+
+.pp-support {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 28px;
+  border: 1px solid var(--pp-line);
+  border-radius: 10px;
+  padding: 22px 26px;
+  background: var(--pp-panel);
+  font-size: .95rem;
+  color: var(--pp-muted);
+}
+
+.pp-support strong { color: var(--pp-warm); font-weight: 600; }
+
+.pp-faq .pp-faq-item {
+  border-top: 1px solid var(--pp-line);
+  padding: 22px 0;
+}
+
+.pp-faq .pp-faq-item:first-of-type { border-top: 0; }
+
+.pp-faq h3 {
+  font-size: 1.06rem;
+  margin: 0 0 8px;
+  color: var(--pp-warm);
+  font-weight: 600;
+}
+
+.pp-faq p {
+  color: var(--pp-muted);
+  font-size: .95rem;
+  line-height: 1.65;
+  margin: 0;
+  max-width: 46rem;
+}
+
+/* ---------- 10 · TECHNICAL VERIFICATION ---------- */
+
+.pp-tech {
+  max-width: 62rem;
+  margin: 0 auto;
+}
+
+.pp-system .proof-details {
+  border-top: 1px solid var(--pp-line);
+  border-bottom: 1px solid var(--pp-line);
+  background: transparent;
+}
+
+.pp-system .proof-details > summary strong { color: var(--pp-warm); }
+.pp-system .expand-label { color: var(--pp-dim); }
+
+.pp-system .evidence-content .proof-strip { margin-bottom: 8px; }
+
+.pp-sub {
+  border-top: 1px solid var(--pp-line);
+}
+
+.pp-sub > summary {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  cursor: pointer;
+  padding: 20px 0;
+  color: var(--pp-warm);
+  font-size: 1.02rem;
+  font-weight: 550;
+}
+
+.pp-sub > summary::-webkit-details-marker { display: none; }
+
+.pp-sub > summary .pp-sub-hint {
+  font-size: .8rem;
+  color: var(--pp-dim);
+  font-weight: 400;
+  margin-left: 12px;
+}
+
+.pp-sub > summary::after {
+  content: '+';
+  font-size: 1.3rem;
+  color: var(--pp-gold-light);
+  flex: none;
+  margin-left: auto;
+}
+
+.pp-sub[open] > summary::after { content: '–'; }
+
+.pp-sub > div { padding: 6px 0 30px; }
+
+.pp-sub h3, .pp-sub h4 { color: var(--pp-warm); }
+.pp-sub p, .pp-sub li { color: var(--pp-muted); }
+
+/* receipt / hash component */
+.pp-hashwell {
+  border: 1px solid var(--pp-line);
+  border-radius: 10px;
+  background: var(--pp-panel);
+  padding: 20px 22px;
+  margin: 18px 0;
+}
+
+.pp-hashwell .code-block,
+.pp-tech .code-block {
+  font-family: Consolas, monospace;
+  font-size: .78rem;
+  overflow-wrap: anywhere;
+  word-break: break-all;
+  background: #0b0f12;
+  border: 1px solid var(--pp-line);
+  border-radius: 6px;
+  padding: 14px 16px;
+  color: var(--pp-muted);
+}
+
+.pp-qual-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 22px 0;
+}
+
+.pp-qual-card {
+  border: 1px solid var(--pp-line);
+  border-radius: 8px;
+  background: var(--pp-panel);
+  padding: 16px 22px;
+  min-width: 140px;
+}
+
+.pp-qual-card .pp-qual-val {
+  font-size: 1.35rem;
+  font-weight: 620;
+  color: var(--pp-gold-light);
+  letter-spacing: -.01em;
+}
+
+.pp-qual-card .pp-qual-lbl {
+  font: 11px/1.5 Consolas, monospace;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--pp-dim);
+  margin-top: 6px;
+}
+
+.pp-badge {
+  display: inline-block;
+  font: 11px/1.5 Consolas, monospace;
+  letter-spacing: .14em;
+  color: #1a1408;
+  background: var(--pp-gold);
+  border-radius: 4px;
+  padding: 5px 10px;
+  margin-bottom: 18px;
+}
+
+/* matrix + receipt specimen inside the tech tier */
+.pp-tech .rg-matrix-wrap {
+  overflow-x: auto;
+}
+
+.pp-tech .rg-receipt-specimen pre {
+  background: #0b0f12;
+  border: 1px solid var(--pp-line);
+  border-radius: 8px;
+  padding: 18px;
+  font-size: .78rem;
+  overflow-x: auto;
+}
+
+/* ---------- 11 · PRIVACY ---------- */
+
+.pp-privacy .value-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--pp-line);
+  border: 1px solid var(--pp-line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.pp-privacy .value-grid article {
+  background: var(--pp-panel);
+  padding: clamp(22px, 2.6vw, 32px);
+}
+
+.pp-privacy .value-grid .step-number {
+  display: block;
+  font: 12px/1.5 Consolas, monospace;
+  letter-spacing: .12em;
+  color: var(--pp-accent);
+  margin-bottom: 14px;
+}
+
+.pp-privacy .value-grid h3 {
+  font-size: 1.12rem;
+  margin: 0 0 10px;
+  color: var(--pp-warm);
+}
+
+.pp-privacy .value-grid p {
+  color: var(--pp-muted);
+  font-size: .92rem;
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ---------- 12 · FINAL CTA ---------- */
+
+.pp-final-cta {
+  text-align: center;
+  padding: clamp(64px, 8vw, 110px) 0;
+  border-top: 1px solid var(--pp-line);
+}
+
+.pp-final-cta .pp-h2 { margin: 0 auto; max-width: 40rem; }
+
+.pp-final-cta .pp-lede { margin: 20px auto 0; text-align: center; }
+
+.pp-final-cta .studio-actions {
+  justify-content: center;
+  margin-top: 34px;
+}
+
+/* related nav harmonization */
+body.pp-system .studio-related {
+  border-top: 1px solid var(--pp-line);
+}
+
+/* small shared utilities (replace the last inline styles on pilot pages) */
+.pp-link-row { margin-top: 1rem; }
+.pp-link-row-spaced { margin-top: 1.2rem; }
+.pp-small-note { font-size: .85rem; margin-top: .5rem; color: var(--pp-muted); }
+.pp-specimen-note { font-size: .78rem; color: var(--pp-dim); margin-top: .5rem; }
+.pp-support-flush { margin-top: 26px; }
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 1100px) {
+  body.studio.pp-system .pp-hero h1 { font-size: clamp(2.5rem, 4.4vw, 3.9rem); }
+  .pp-hero-layout { gap: 40px; }
+}
+
+@media (max-width: 900px) {
+  .pp-hero-layout {
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+  body.studio.pp-system .pp-hero h1 { font-size: clamp(2.4rem, 7vw, 3.4rem); }
+  .pp-hero .product-lede { max-width: none !important; }
+  .pp-status { max-width: none; }
+  .pp-origin-grid { grid-template-columns: 1fr; gap: 18px; }
+  .pp-story { grid-template-columns: 1fr; gap: 28px; }
+  .pp-privacy .value-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 700px) {
+  .pp-hero { padding-top: 30px; padding-bottom: 40px; }
+  body.studio.pp-system .pp-hero h1 { font-size: clamp(2.3rem, 9vw, 3rem); }
+  /* mobile tightening: keep every tier, spend fewer pixels on chrome */
+  .pp-section { padding: 44px 0; }
+  .pp-get { margin: 40px auto; }
+  .pp-outcome-grid article { padding: 18px 20px; }
+  .pp-onboard .onboarding-list dt { padding: 14px 18px 0; }
+  .pp-onboard .onboarding-list dd { padding: 8px 18px 16px; }
+  .pp-final-cta { padding: 52px 0; }
+  .pp-origin { padding: 26px 20px; }
+  .pp-outcome-grid { grid-template-columns: 1fr; }
+  .pp-onboard .onboarding-list { grid-template-columns: 1fr; }
+  .pp-case-cols { grid-template-columns: 1fr; }
+  .pp-get { padding: 28px 22px; }
+  .pp-system .studio-actions .button { width: 100%; text-align: center; }
+  .pp-system .studio-actions { display: flex; flex-direction: column; align-items: stretch; gap: 12px; }
+  .pp-system .studio-actions .text-link { text-align: center; padding: 6px 0; }
+  .pp-details > summary, .pp-sub > summary { padding: 16px 0; }
+  .pp-band { gap: 18px; font-size: .6rem; letter-spacing: .1em; }
+}
