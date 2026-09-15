@@ -81,6 +81,11 @@ Assert-Condition ($signature -match '\.signature-home \.catalog-toggle') 'source
 Assert-Condition ($signature -match '(?s)@media \(max-width: 700px\)\s*\{\s*\.signature-home \.catalog-toggle') 'source: catalog toggle only appears at small widths'
 Assert-Condition ($experienceJs -match 'data-catalog-toggle' -and $experienceJs -match 'matchMedia\(''\(max-width: 700px\)''\)') 'source: mobile curation is runtime-driven and viewport-gated'
 Assert-Condition ($outputExperienceJs -match 'data-catalog-toggle') 'output: curation logic survives build'
+# No-JS invariants (NC-3): without JavaScript every product stays accessible.
+# Curation may only ever happen at runtime; nothing may ship pre-hidden.
+Assert-Condition ($cardTemplate -notmatch '<article hidden') 'source: card template never ships pre-hidden products'
+Assert-Condition (($outputHome -notmatch '<article[^>]*\shidden[\s>][^>]*class="product-card') -and ($outputHome -notmatch '<article[^>]*class="product-card[^>]*"[^>]*\shidden[\s>]')) 'output: no generated product card is hidden by default'
+Assert-Condition ($sourceHome -match 'class="catalog-toggle" data-catalog-toggle aria-expanded="false" aria-controls="products" hidden') 'source: curation toggle ships hidden so no-JS visitors see the full catalog'
 Assert-Condition ($sourceHome -match 'Find your next tool\.') 'source: catalog has an editorial product-first heading'
 Assert-Condition ($sourceHome -match 'Know what you are downloading\.') 'source: proof is concise and subordinate'
 Assert-Condition ($sourceHome -match 'Find the right tool\.') 'source: homepage ends with one clear product invitation'
