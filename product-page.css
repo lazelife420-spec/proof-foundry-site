@@ -31,6 +31,43 @@ body.pp-system {
 body.pp-system.product-reality-gate { --pp-accent: #d9906b; }
 body.pp-system.product-cache-vault { --pp-accent: #a9c48f; }
 
+body.pp-system.product-lights-out {
+  --pp-accent: #9b93d6;
+  background:
+    radial-gradient(circle at 78% 7%, rgba(155, 147, 214, .16), transparent 30rem),
+    radial-gradient(circle at 20% 45%, rgba(232, 168, 72, .06), transparent 24rem),
+    linear-gradient(180deg, #0b0e18 0%, var(--pp-ink) 58%, #080a12 100%);
+}
+
+body.pp-system.product-cleanroom {
+  --pp-accent: #34d399;
+  background:
+    radial-gradient(circle at 78% 7%, rgba(52, 211, 153, .14), transparent 28rem),
+    linear-gradient(180deg, #081212 0%, var(--pp-ink) 58%, #071012 100%);
+}
+
+body.pp-system.product-ghostlayer {
+  --pp-accent: #00cc33;
+  background:
+    radial-gradient(circle at 78% 7%, rgba(0, 204, 51, .15), transparent 28rem),
+    linear-gradient(180deg, #08120a 0%, var(--pp-ink) 58%, #070e08 100%);
+}
+
+body.pp-system.product-forgecast {
+  --pp-accent: #38bdf8;
+  background:
+    radial-gradient(circle at 78% 7%, rgba(56, 189, 248, .15), transparent 30rem),
+    radial-gradient(circle at 22% 45%, rgba(245, 158, 11, .06), transparent 25rem),
+    linear-gradient(180deg, #09131c 0%, var(--pp-ink) 58%, #081017 100%);
+}
+
+body.pp-system.product-proofshot {
+  --pp-accent: #f97316;
+  background:
+    radial-gradient(circle at 78% 7%, rgba(249, 115, 22, .14), transparent 28rem),
+    linear-gradient(180deg, #150d0a 0%, var(--pp-ink) 58%, #110a08 100%);
+}
+
 body.pp-system .site-header {
   background: rgba(13, 17, 21, .94);
   border-bottom-color: rgba(214, 168, 79, .2);
@@ -870,3 +907,75 @@ body.pp-system .studio-related {
   .pp-details > summary, .pp-sub > summary { padding: 16px 0; }
   .pp-band { gap: 18px; font-size: .6rem; letter-spacing: .1em; }
 }
+
+/* ---------- Cleanroom Demo Readability Correction (H7C-R2) ---------- */
+.product-cleanroom .cleanup-demo {
+  color: #1a3628;
+}
+
+.product-cleanroom .cleanup-demo .experience-heading .kicker {
+  color: #2b543d;
+}
+
+.product-cleanroom .cleanup-demo .experience-heading h2 {
+  color: #0d291b;
+}
+
+.product-cleanroom .cleanup-demo .experience-heading p {
+  color: #244634;
+}
+
+.product-cleanroom .cleanup-demo .cleanup-bar span {
+  color: #2b4f3b;
+}
+
+.product-cleanroom .cleanup-demo .cleanup-bar span:first-child,
+.product-cleanroom .cleanup-demo[data-archived="true"] .cleanup-bar span:nth-child(2) {
+  color: #0b2416;
+  background: #c7dece;
+}
+
+.product-cleanroom .cleanup-list h3 {
+  color: #0f2b1c;
+}
+
+.product-cleanroom .cleanup-list > p {
+  color: #2b4e3a;
+}
+
+.product-cleanroom .cleanup-list label > span {
+  color: #0e2619;
+}
+
+.product-cleanroom .cleanup-list label small {
+  color: #2d4f3b;
+}
+
+.product-cleanroom .cleanup-list label .file-type {
+  color: #345743;
+}
+
+.product-cleanroom .cleanup-summary {
+  color: #0e291b;
+}
+
+.product-cleanroom .cleanup-summary .archive-label {
+  color: #244733;
+}
+
+.product-cleanroom .cleanup-summary strong {
+  color: #0a2115;
+}
+
+.product-cleanroom .cleanup-summary p {
+  color: #2b4c39;
+}
+
+.product-cleanroom .cleanup-summary .cleanup-status {
+  color: #234533;
+}
+
+.product-cleanroom .cleanup-foot {
+  color: #2d4f3c;
+}
+

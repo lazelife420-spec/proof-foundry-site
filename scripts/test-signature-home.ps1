@@ -30,7 +30,7 @@ function Assert-Home([string]$name, [bool]$condition) {
 Assert-Home 'signature stylesheet is linked with a content version' ($homeHtml -match 'href="/signature\.css\?v=[0-9a-f]{12}"')
 Assert-Home 'generated signature stylesheet contains the workbench system' ($css -match '\.signature-home \.product-theater')
 Assert-Home 'Foundry identity is present in the opening composition' ($homeHtml -match 'home-brand-lockup')
-Assert-Home 'real Cache Vault stage is present before enhancement' ($homeHtml -match 'cv-quick-paste-700\.webp')
+Assert-Home 'real Cache Vault stage is present before enhancement' ($homeHtml -match 'cv-quick-paste-card-960\.png')
 Assert-Home 'contextual film link is present' ($homeHtml -match 'data-theater-film')
 Assert-Home 'catalog heading uses the broader tool framing' ($homeHtml -match 'Find your next tool\.')
 Assert-Home 'Reality Gate retains featured hierarchy' ($homeHtml -match 'class="studio-featured" data-product="reality-gate"')

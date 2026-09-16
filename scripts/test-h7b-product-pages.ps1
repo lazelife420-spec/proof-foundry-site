@@ -3,9 +3,11 @@
 # mutated copies without touching the real build.
 [CmdletBinding()]
 param(
-  [string]$PublicDir = (Join-Path $PSScriptRoot '..\public'),
-  [string]$Root = (Join-Path $PSScriptRoot '..')
+  [string]$PublicDir = '',
+  [string]$Root = ''
 )
+if (-not $PublicDir) { $PublicDir = Join-Path $PSScriptRoot '..\public' }
+if (-not $Root) { $Root = Join-Path $PSScriptRoot '..' }
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
