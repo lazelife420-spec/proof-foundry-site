@@ -1412,7 +1412,7 @@ if (-not (Test-Path $publicDir)) { New-Item -ItemType Directory $publicDir | Out
 # Process every template
 # ─────────────────────────────────────────────────────────────────────────────
 # Map: source file  ->  output path under public/
-$dirRoutes = @('reality-gate','forgecast','lights-out','cache-vault','cleanroom','ghostlayer','proofshot','founders','proof','roadmap','support')
+$dirRoutes = @('reality-gate','forgecast','lights-out','cache-vault','cleanroom','ghostlayer','proofshot','founders','proof','roadmap','support','about','proof-standard')
 $rootFiles = @('index.html','404.html')
 
 # Pre-compute latest site verification so templates can inject it
@@ -1632,6 +1632,10 @@ $headersContent = @"
 /roadmap/
   Cache-Control: no-cache, must-revalidate
 /support/
+  Cache-Control: no-cache, must-revalidate
+/about/
+  Cache-Control: no-cache, must-revalidate
+/proof-standard/
   Cache-Control: no-cache, must-revalidate
 
 /assets/*

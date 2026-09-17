@@ -40,7 +40,7 @@
         <p>Direct guidance for each Proof Foundry software product.</p>
       </div>
 
-      <div class="support-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+      <div class="support-grid support-products-grid">
         <article class="detail-card">
           <h3><a href="/reality-gate/">Reality Gate ↗</a></h3>
           <p>Local control room for Git project execution, signed receipts, and recovery vault operations.</p>
@@ -79,21 +79,21 @@
 
         <article class="detail-card">
           <h3><a href="/proofshot/">ProofShot ↗</a></h3>
-          <p>Visual capture and proof stamp suite built on the underlying HyperSnatch engine.</p>
+          <p>Structural page-resource capture and portable proof-bundle workbench built on the underlying HyperSnatch engine.</p>
           <p class="note">In development; no public release package currently published.</p>
         </article>
       </div>
     </section>
 
     <!-- SECTION: PRIVACY & DATA FLOW DISCLOSURES -->
-    <section class="support-section" id="privacy" style="margin-top: 3rem;">
+    <section class="support-section support-section-mt3" id="privacy">
       <div class="section-heading">
         <p class="kicker">Product Transparency</p>
         <h2>Privacy &amp; Data Flow disclosures</h2>
       </div>
-      <div class="support-content-box" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 1.5rem; margin-top: 1rem;">
+      <div class="support-content-box support-box-dark">
         <p>Read evidence-backed disclosures for what stays on your device, what uses local or remote network connections, and how storage operates across our products:</p>
-        <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 1.8; color: var(--text, #E2E8F0);">
+        <ul class="support-list-styled">
           <li><a class="text-link" href="/reality-gate/#privacy-data-flow">Reality Gate Privacy &amp; Data Flow ↗</a> — Local runroom execution, ECDSA receipts, loopback MCP adapter, user-directed Git sync.</li>
           <li><a class="text-link" href="/cache-vault/#privacy-data-flow">Cache Vault Privacy &amp; Data Flow ↗</a> — Local clipboard AppData storage, optional LAN companion sync over local Wi-Fi.</li>
           <li><a class="text-link" href="/lights-out/#privacy-data-flow">Lights Out Privacy &amp; Data Flow ↗</a> — Core local power automation, optional LAN, Hue smart lights, and webhook integrations.</li>
@@ -106,32 +106,32 @@
     </section>
 
     <!-- SECTION: WINDOWS SECURITY WARNINGS -->
-    <section class="support-section" id="windows" style="margin-top: 3rem;">
+    <section class="support-section support-section-mt3" id="windows">
       <div class="section-heading">
         <p class="kicker">Windows Guidance</p>
         <h2>Windows security warnings &amp; SmartScreen</h2>
       </div>
-      <div class="support-content-box" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 1.5rem; margin-top: 1rem;">
+      <div class="support-content-box support-box-dark">
         <p>Unsigned or low-reputation software executables may trigger Windows SmartScreen prompts ("Windows protected your PC / Unknown Publisher") on launch.</p>
-        <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 1.6; color: var(--muted, #91A0AF);">
+        <ul class="support-list-muted">
           <li>Verify the artifact identity by checking its SHA-256 checksum on your computer prior to running.</li>
           <li>A matching SHA-256 checksum confirms that your local file is byte-for-byte identical to the published build artifact.</li>
           <li>A matching digest does not itself prove safety, publisher identity, or Microsoft SmartScreen reputation.</li>
           <li>The user must review the SHA-256 match and decide whether to proceed based on local trust requirements.</li>
         </ul>
-        <p class="note">Note: Proof Foundry software binaries do not instruct users to bypass OS security controls unconditionally.</p>
+        <p class="note">Note: Proof Foundry software binaries do not instruct users to bypass OS security controls unconditionally. See <a class="text-link" href="/proof-standard/">The Proof Standard ↗</a> for our complete verification doctrine.</p>
       </div>
     </section>
 
     <!-- SECTION: ANDROID INSTALL GUIDANCE -->
-    <section class="support-section" id="android" style="margin-top: 3rem;">
+    <section class="support-section support-section-mt3" id="android">
       <div class="section-heading">
         <p class="kicker">Android Guidance</p>
         <h2>Android installation &amp; APK verification</h2>
       </div>
-      <div class="support-content-box" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 1.5rem; margin-top: 1rem;">
+      <div class="support-content-box support-box-dark">
         <p>Installing Android APK packages directly (such as ForgeCast Weather or mobile companion apps) requires granting your web browser or file manager permission to install unknown apps.</p>
-        <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 1.6; color: var(--muted, #91A0AF);">
+        <ul class="support-list-muted">
           <li>Before installing an APK, verify the SHA-256 digest on a desktop device using PowerShell (<code class="inline">Get-FileHash .\&lt;apk-filename&gt; -Algorithm SHA256</code>) or terminal tools.</li>
           <li>Phone-native verification guidance is being prepared on the support hub.</li>
           <li>Seamless in-place app updates require signing continuity across versions. If an app update fails to install over an existing version, verify signing compatibility details on the product page.</li>
@@ -140,18 +140,18 @@
     </section>
 
     <!-- SECTION: CHECKSUMS & ARTIFACT IDENTITY -->
-    <section class="support-section" id="checksums" style="margin-top: 3rem;">
+    <section class="support-section support-section-mt3" id="checksums">
       <div class="section-heading">
         <p class="kicker">Verification Standard</p>
         <h2>Checksums &amp; artifact identity</h2>
       </div>
-      <div class="support-content-box" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 1.5rem; margin-top: 1rem;">
+      <div class="support-content-box support-box-dark">
         <p><strong>SHA-256 match = byte-identity verification against the published digest.</strong></p>
-        <p style="margin-top: 0.5rem; color: var(--text);">A matching SHA-256 confirms that the file you have is byte-for-byte identical to the artifact identified by the published digest.</p>
+        <p>A matching SHA-256 confirms that the file you have is byte-for-byte identical to the artifact identified by the published digest.</p>
 
-        <h3 style="margin-top: 1.5rem; font-size: 1.1rem; color: var(--gold, #D6A84F);">The 8-Field Checksum Identity Schema</h3>
-        <p style="font-size: 0.9rem; color: var(--muted, #91A0AF);">Every primary download checksum block presents the following identity context:</p>
-        <ol style="margin: 0.75rem 0 1.5rem 1.5rem; line-height: 1.6; color: var(--muted, #91A0AF);">
+        <h3>The 8-Field Checksum Identity Schema</h3>
+        <p class="note-muted">Every primary download checksum block presents the following identity context:</p>
+        <ol class="support-list-ordered">
           <li><strong>Product:</strong> The canonical software product name.</li>
           <li><strong>Version:</strong> Exact semantic version string (e.g. v1.1.0).</li>
           <li><strong>Release / Channel state:</strong> Public release, release candidate, or pilot.</li>
@@ -167,29 +167,29 @@
     </section>
 
     <!-- SECTION: DOWNLOAD & RELEASE STATUS -->
-    <section class="support-section" id="downloads" style="margin-top: 3rem;">
+    <section class="support-section support-section-mt3" id="downloads">
       <div class="section-heading">
         <p class="kicker">Release Records</p>
         <h2>Download &amp; release status</h2>
       </div>
-      <div class="support-content-box" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 1.5rem; margin-top: 1rem;">
+      <div class="support-content-box support-box-dark">
         <p>Check current public versions, candidate status, download availability, and canonical release records on the Release Records page.</p>
-        <p style="margin-top: 1rem;"><a class="button button-secondary" href="/proof/">View canonical release records ↗</a></p>
+        <p class="support-copy-row"><a class="button button-secondary" href="/proof/">View canonical release records ↗</a></p>
       </div>
     </section>
 
     <!-- SECTION: REPORT A PROBLEM (STATE A SELF-SERVICE ONLY) -->
-    <section class="support-section" id="report" style="margin-top: 3rem; margin-bottom: 3rem;">
+    <section class="support-section support-section-mt3 support-section-mb4" id="report">
       <div class="section-heading">
         <p class="kicker">Self-Service Problem Report</p>
         <h2>Report a problem</h2>
       </div>
-      <div class="support-content-box" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 1.5rem; margin-top: 1rem;">
-        <p style="font-weight: 600; color: var(--gold, #D6A84F);">Direct online support submission is not published yet. You can use the diagnostic template below to collect and format the details that will be useful when a support channel is available.</p>
+      <div class="support-content-box support-box-dark">
+        <p class="support-warning-lead">Direct online support submission is not published yet. You can use the diagnostic template below to collect and format the details that will be useful when a support channel is available.</p>
 
-        <div style="margin: 1.5rem 0;">
-          <label for="diagnostic-template" style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Diagnostic Report Template</label>
-          <textarea id="diagnostic-template" readonly rows="16" style="width: 100%; font-family: monospace; font-size: 0.88rem; background: #070b10; color: #d0d0d0; border: 1px solid var(--line, #263746); border-radius: 6px; padding: 1rem; resize: vertical;">Product:
+        <div class="support-copy-row">
+          <label for="diagnostic-template" class="support-diagnostic-label">Diagnostic Report Template</label>
+          <textarea id="diagnostic-template" readonly rows="16" class="support-diagnostic-textarea">Product:
 Version:
 Operating system / Android version:
 Device model (if relevant):
@@ -202,17 +202,17 @@ Expected behavior:
 Actual behavior:
 Exact sanitized error text:
 Optional screenshot/log:</textarea>
-          <div style="margin-top: 0.75rem;">
+          <div class="support-copy-row">
             <button type="button" class="button button-secondary" data-copy-target="diagnostic-template">Copy template</button>
           </div>
         </div>
 
-        <div style="background: rgba(214, 168, 79, 0.08); border-left: 4px solid var(--gold, #D6A84F); padding: 1rem; border-radius: 4px; margin-top: 1rem;">
-          <p style="margin: 0; font-size: 0.9rem; color: #f2f0eb;"><strong>Privacy Warning:</strong> Do not include passwords, API keys, access tokens, private keys, confidential documents, private clipboard contents, or unrelated personal information in your diagnostic report details.</p>
+        <div class="support-privacy-callout">
+          <p><strong>Privacy Warning:</strong> Do not include passwords, API keys, access tokens, private keys, confidential documents, private clipboard contents, or unrelated personal information in your diagnostic report details.</p>
         </div>
 
-        <p class="note" style="margin-top: 1.25rem;"><strong>What to do with it:</strong> copy the filled template and keep it with the affected product's name and version. When a direct support channel is published it will be announced on the <a class="text-link" href="/roadmap/">roadmap</a> and linked from this page. Until then, the sections above — installation, SmartScreen, checksums, release status — resolve the most common problems without a submission.</p>
-        <p class="note" style="margin-top: 0.75rem;">Product-specific privacy and data-flow details are being documented from source and release evidence.</p>
+        <p class="note"><strong>What to do with it:</strong> copy the filled template and keep it with the affected product's name and version. When a direct support channel is published it will be announced on the <a class="text-link" href="/roadmap/">roadmap</a> and linked from this page. Until then, the sections above — installation, SmartScreen, checksums, release status — resolve the most common problems without a submission.</p>
+        <p class="note">Product-specific privacy and data-flow disclosures are provided above per product.</p>
       </div>
     </section>
 

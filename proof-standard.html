@@ -1,0 +1,137 @@
+<!doctype html>
+<!-- @page proof-standard -->
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Proof Standard — Proof over rented trust | The Proof Foundry</title>
+<meta content="The Proof Standard doctrine: verification philosophy, artifact identity, checksum integrity, and evidence custody for Proof Foundry software." name="description"/>
+<meta content="index, follow" name="robots"/>
+<meta content="#0B0F14" name="theme-color"/>
+<link href="https://theprooffoundry.com/proof-standard/" rel="canonical"/>
+<link href="/brand/proof-foundry-mark.svg" rel="icon" type="image/svg+xml"/>
+<meta content="The Proof Standard — The Proof Foundry" property="og:title"/>
+<meta content="Verification philosophy, artifact identity, checksum integrity, and evidence custody for Proof Foundry software." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="https://theprooffoundry.com/proof-standard/" property="og:url"/>
+<meta content="The Proof Foundry" property="og:site_name"/>
+<meta content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" name="twitter:image"/>
+<link href="/styles.css" rel="stylesheet"/>
+<link href="/studio.css" rel="stylesheet"/>
+</head>
+<body class="studio secondary-page product-page">
+<!-- @include header -->
+
+<main id="main-content">
+  <div class="store-shell">
+    <section class="support-hero" aria-labelledby="standard-title">
+      <p class="kicker">Doctrine &amp; Verification Philosophy</p>
+      <h1 id="standard-title">The Proof Standard</h1>
+      <p class="support-intro">Proof over rented trust. Verification standards and release principles for software forged at The Proof Foundry.</p>
+    </section>
+
+    <!-- CORE DOCTRINE SUMMARY BOX -->
+    <section class="support-section standard-doctrine-box">
+      <div class="support-content-box standard-doctrine-card">
+        <h2 class="doctrine-heading">Core Trust Philosophy</h2>
+        <p class="doctrine-lead">"Proof over rented trust."</p>
+        <p class="doctrine-standards">No fake claims. No missing receipts. Ship with proof.</p>
+        <p class="doctrine-rule">If it matters, keep the receipt.</p>
+        <p class="doctrine-body">The Proof Standard is our studio engineering commitment: software claims are backed by measured empirical evidence and published checksums rather than adjective-heavy marketing or unverified promises.</p>
+        <p class="doctrine-platform-note"><em>Windows distribution note:</em> Unsigned by Windows. Receipt-backed by Proof Foundry.</p>
+      </div>
+    </section>
+
+    <!-- THE 7 PRINCIPLES -->
+    <section class="support-section standard-principles-section">
+      <div class="section-heading">
+        <p class="kicker">Verification Principles</p>
+        <h2>The Seven Principles of Proof</h2>
+        <p>How we measure, document, and publish software release evidence.</p>
+      </div>
+
+      <div class="support-grid standard-principles-grid">
+        <article class="detail-card standard-card">
+          <h3>1. Claim only what was measured</h3>
+          <p>Release claims are tied strictly to named execution gates and empirical test passes. We do not use vague marketing adjectives to describe release readiness.</p>
+        </article>
+
+        <article class="detail-card standard-card">
+          <h3>2. Identify the exact artifact</h3>
+          <p>Every downloadable binary asset is bound to its canonical filename and its 64-character hex SHA-256 cryptographic digest.</p>
+        </article>
+
+        <article class="detail-card standard-card">
+          <h3>3. Publish checksums where artifacts exist</h3>
+          <p>When a file is offered for public download, its SHA-256 checksum is published alongside it so builders can verify byte-identity before running the file.</p>
+        </article>
+
+        <article class="detail-card standard-card">
+          <h3>4. Separate trust dimensions</h3>
+          <p>We explicitly distinguish artifact identity, evidence custody, publisher signing, platform reputation (SmartScreen), runtime gate passes, and security claims.</p>
+        </article>
+
+        <article class="detail-card standard-card">
+          <h3>5. Candidate proof != release authority</h3>
+          <p>A successful build candidate or internal test pass does not create public release authority. Candidates on hold remain clearly labeled as unreleased.</p>
+        </article>
+
+        <article class="detail-card standard-card">
+          <h3>6. Record known limitations</h3>
+          <p>Every product publishes its known boundaries and operational constraints so users understand exact capabilities before installation.</p>
+        </article>
+
+        <article class="detail-card standard-card standard-card-full">
+          <h3>7. Keep reproducible evidence for independent verification</h3>
+          <p>Where verification records, test counts, manifests, or release receipts are published, use open/readable formats and enough identifying context to show which artifact and which claim the evidence covers.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- TRUST BOUNDARY & DISCLAIMERS -->
+    <section class="support-section standard-boundary-section">
+      <div class="section-heading">
+        <p class="kicker">Honest Boundaries</p>
+        <h2>What a Checksum Proves (and What it Does Not)</h2>
+      </div>
+      <div class="support-content-box standard-boundary-card">
+        <ul class="standard-boundary-list">
+          <li><strong>SHA-256 match = byte-identity verification.</strong> It proves your local download is byte-for-byte identical to our published build artifact.</li>
+          <li><strong>Checksum match is NOT malware certification.</strong> Digest matching confirms integrity against our published manifest, not a third-party security audit.</li>
+          <li><strong>Unsigned status &amp; Windows SmartScreen:</strong> Some Proof Foundry Windows builds are distributed unsigned. SmartScreen may warn when a downloaded file or publisher does not yet have established reputation. That warning is a Microsoft reputation signal; it does not by itself establish that the software is malicious or safe. Verify the published artifact identity and review the product's disclosed behavior and limitations.</li>
+          <li><strong>SmartScreen reputation &amp; receipts:</strong> Microsoft SmartScreen uses its own reputation signals, including file/hash reputation and publisher/signing reputation. Proof Foundry receipts are a separate evidence system; neither substitutes for the other.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ROUTE DISTINCTIONS -->
+    <section class="support-section standard-routes-section">
+      <div class="section-heading">
+        <p class="kicker">Information Architecture</p>
+        <h2>Navigating Proof &amp; Support</h2>
+      </div>
+      <div class="support-grid standard-routes-grid">
+        <div class="standard-route-card">
+          <h3><a href="/proof-standard/">Proof Standard ↗</a></h3>
+          <p>The doctrine and verification philosophy governing how we build, test, and publish software.</p>
+        </div>
+        <div class="standard-route-card">
+          <h3><a href="/proof/">Release Records ↗</a></h3>
+          <p>Canonical release records, checksums, test gate counts, and cryptographic evidence receipts for every product.</p>
+        </div>
+        <div class="standard-route-card">
+          <h3><a href="/support/">Support Hub ↗</a></h3>
+          <p>Practical installation, SmartScreen handling, APK verification commands, and problem reporting templates.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- @include footer -->
+<script src="/site.js" defer></script>
+</body>
+</html>

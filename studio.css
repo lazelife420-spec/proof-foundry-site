@@ -92,3 +92,80 @@ body.studio.product-page{padding:0}
 .film-shot video{display:block;width:100%;height:auto;background:#11151c}
 .film-shot figcaption{font-size:.78rem;line-height:1.6;color:var(--muted);padding:12px 18px;letter-spacing:.01em}
 @media(max-width:700px){.film-shot{border-radius:5px}.film-shot figcaption{font-size:.66rem;line-height:1.55;padding:10px 12px}}
+
+/* --- H8-B-R1 Studio Secondary Pages Design & Layout Utility Classes --- */
+.support-section-spaced{margin-top:2.5rem}
+.support-section-mt3{margin-top:3rem}
+.support-section-mb4{margin-bottom:4rem}
+
+/* Proof Standard & Doctrine Cards */
+.standard-doctrine-box{margin-top:2rem}
+.standard-doctrine-card{background:rgba(16,25,35,0.62);border:1px solid var(--line);border-radius:8px;padding:2rem}
+.doctrine-heading{color:var(--text);font-size:1.5rem;margin-bottom:1rem}
+.doctrine-lead{color:var(--gold);font-size:1.4rem;font-weight:600;margin-bottom:.75rem}
+.doctrine-standards{color:var(--gold);font-size:1.1rem;font-weight:500;margin-bottom:.5rem}
+.doctrine-rule{color:var(--text);font-size:1.05rem;font-style:italic;margin-bottom:1rem}
+.doctrine-body{color:var(--muted);font-size:1rem;line-height:1.7;margin-bottom:1rem}
+.doctrine-platform-note{color:var(--muted);font-size:.88rem;line-height:1.5;border-top:1px solid var(--line);padding-top:.75rem;margin-top:.75rem}
+
+.standard-principles-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem;margin-top:1.5rem}
+.standard-card{background:rgba(16,25,35,0.62);border:1px solid var(--line);border-radius:8px;padding:1.5rem}
+.standard-card h3{color:var(--gold);font-size:1.15rem;margin-bottom:.5rem}
+.standard-card p{color:var(--muted);font-size:.92rem;line-height:1.6}
+.standard-card-full{grid-column:1/-1}
+
+.standard-boundary-card{background:rgba(16,25,35,0.62);border:1px solid var(--line);border-radius:8px;padding:1.5rem}
+.standard-boundary-list{margin:0;padding-left:1.25rem;color:var(--muted);font-size:.95rem;line-height:1.7}
+
+.standard-routes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-top:1.5rem}
+.standard-route-card{background:rgba(16,25,35,0.62);border:1px solid var(--line);border-radius:8px;padding:1.25rem}
+.standard-route-card h3{color:var(--gold);font-size:1.1rem;margin-bottom:.5rem}
+.standard-route-card p{color:var(--muted);font-size:.88rem;line-height:1.5}
+
+/* About Page */
+.about-intro-section{margin-top:2rem}
+.about-intro-box{background:rgba(16,25,35,0.62);border:1px solid var(--line);border-radius:8px;padding:2rem}
+.about-intro-box h2{color:var(--text);font-size:1.5rem;margin-bottom:1rem}
+.about-intro-box p{color:var(--muted);font-size:1.05rem;line-height:1.7;margin-bottom:1rem}
+
+.about-values-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem;margin-top:1.5rem}
+.about-card{background:rgba(16,25,35,0.62);border:1px solid var(--line);border-radius:8px;padding:1.5rem}
+.about-card h3{color:var(--gold);font-size:1.15rem;margin-bottom:.5rem}
+.about-card p{color:var(--muted);font-size:.92rem;line-height:1.6}
+
+.about-nav-section{margin-top:3rem;margin-bottom:4rem}
+.about-nav-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-top:1.5rem}
+.about-nav-card{background:rgba(16,25,35,0.62);border:1px solid var(--line);border-radius:8px;padding:1.25rem}
+.about-nav-card h3{color:var(--gold);font-size:1.1rem;margin-bottom:.5rem}
+.about-nav-card p{color:var(--muted);font-size:.88rem;line-height:1.5}
+
+/* Founders Page Boundary Section */
+.founders-boundary{margin-top:2rem;margin-bottom:2rem;padding:1.5rem 2rem;background:rgba(16,25,35,0.62);border:1px solid var(--line);border-radius:var(--radius)}
+.founders-boundary h2{color:var(--gold,#D6A84F);font-size:1.25rem;margin-bottom:.75rem}
+.founders-boundary p{color:var(--muted,#91A0AF);font-size:.95rem;line-height:1.6;margin:0}
+
+/* Roadmap Directions Section */
+.roadmap-directions-details{margin-top:3rem}
+.roadmap-directions-list{margin:.5rem 0 1.5rem 1.5rem;line-height:1.7;color:var(--muted)}
+
+/* Proof Page Verification State & Note */
+.receipts-note{color:var(--muted);font-size:.92rem;margin-top:.5rem;max-width:720px;line-height:1.5}
+.state-verified-text{color:var(--teal)}
+.state-pending-text{color:#8899a6}
+
+/* Support Hub Reusable Presentation Classes */
+.support-products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:1.5rem}
+.support-box-dark{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:1.5rem;margin-top:1rem}
+.support-box-dark p{color:var(--text)}
+.support-box-dark .note-muted{color:var(--muted)}
+.support-box-dark h3{font-size:1.1rem;color:var(--gold);margin-top:1.5rem}
+.support-list-styled{margin:1rem 0 1rem 1.5rem;line-height:1.8;color:var(--text)}
+.support-list-muted{margin:1rem 0 1rem 1.5rem;line-height:1.6;color:var(--muted)}
+.support-list-ordered{margin:.75rem 0 1.5rem 1.5rem;line-height:1.6;color:var(--muted)}
+.support-diagnostic-label{display:block;font-weight:600;margin-bottom:.5rem;color:var(--text)}
+.support-diagnostic-textarea{width:100%;font-family:monospace;font-size:.88rem;background:#070b10;color:#d0d0d0;border:1px solid var(--line);border-radius:6px;padding:1rem;resize:vertical}
+.support-copy-row{margin-top:.75rem}
+.support-warning-lead{color:var(--gold,#D6A84F);font-size:1.1rem;font-weight:500;margin-bottom:.5rem}
+.support-privacy-callout{background:rgba(214,168,79,0.08);border-left:4px solid var(--gold);padding:1rem;border-radius:4px;margin-top:1rem}
+.support-privacy-callout p{margin:0;font-size:.9rem;color:#f2f0eb}
+
