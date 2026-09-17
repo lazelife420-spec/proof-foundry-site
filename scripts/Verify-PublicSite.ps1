@@ -98,10 +98,10 @@ $rgArtifact = Get-PrimaryArtifact $rg
 $rgSha256 = $rgArtifact.sha256
 $rgStateLabel = Get-StateLabel $rg
 
-# ProofShot — active proof / unreleased
+# ProofShot — public release v2.0.0
 $ps = Get-Product "proofshot"
 $psStatusLabel = Get-StatusLabel $ps
-$psEngineVer = "v$($ps.release.candidateVersion)"
+$psPublicVer = $ps.release.publicVersion
 
 # ---------------------------------------------------------------------------
 # Test helpers
@@ -439,10 +439,10 @@ foreach ($target in $TargetUrls) {
     Test-UrlRedirect -Url "$target/cleanroom" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/cleanroom/"
     Test-UrlRedirect -Url "$target/cleanroom.html" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/cleanroom/"
 
-    # 12. ProofShot — manifest-derived status label
+    # 12. ProofShot — manifest-derived release truth (public release since 2026-09-17)
     Test-UrlContent -Url "$target/proofshot/" -ContainsPatterns @(
-        "ProofShot", "There is no public ProofShot release or installer", "HyperSnatch $(Esc $psEngineVer)", $psStatusLabel
-    ) -NotContainsPatterns @("SkyFoundry")
+        "ProofShot", "Download ProofShot v$(Esc $psPublicVer)", (Esc $ps.downloadUrl), (Esc $ps.sha256), $psStatusLabel
+    ) -NotContainsPatterns @("SkyFoundry", "no public ProofShot release", "NOT YET RELEASED")
     Test-UrlContent -Url "$target/proofshot" -ContainsPatterns @(
         "ProofShot"
     ) -NotContainsPatterns @("SkyFoundry") -FollowRedirects $true
@@ -454,6 +454,11 @@ foreach ($target in $TargetUrls) {
 Write-Host "`n---> Testing ForgeCast distribution files"
 Test-AssetHead -Url $fcApkUrl -Name "APK" -ExpectedContentType "application/"
 Test-UrlContent -Url $fcShaUrl -Name "SHA256" -ContainsPatterns @($fcSha256)
+
+# 13b. ProofShot installer and SHA256 availability (R2 / Proof Foundry distribution)
+Write-Host "`n---> Testing ProofShot distribution files"
+Test-AssetHead -Url $ps.downloadUrl -Name "ProofShot installer" -ExpectedContentType "application/"
+Test-UrlContent -Url $ps.sha256Url -Name "ProofShot SHA256" -ContainsPatterns @($ps.sha256)
 
 # 14. Hash chain: landing page and SHA file both expose the expected SHA
 foreach ($target in $TargetUrls) {
