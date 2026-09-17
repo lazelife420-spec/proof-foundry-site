@@ -740,14 +740,14 @@
       "name": "ProofShot",
       "displayName": "ProofShot",
       "route": "/proofshot/",
-      "state": "proof",
-      "productStatus": "ACTIVE_PROOF",
+      "state": "available",
+      "productStatus": "PUBLIC_RELEASE",
       "platforms": [
         "Windows"
       ],
       "platform": "Windows",
-      "summary": "Local-first Windows proof workstation: capture what matters online, keep a proof bundle with SHA-256 receipts and a Proof Passport, and verify it later without trusting the tool or the internet. Rebrand in progress — the engine currently ships as HyperSnatch v1.6.18 under its legacy name.",
-      "cardSummary": "Local proof workstation for web context, SHA-256 bundles, and offline verification; ProofShot packaging is still in progress.",
+      "summary": "Local-first Windows proof workstation: capture what matters online, keep a proof bundle with SHA-256 receipts and a Proof Passport, and verify it later without trusting the tool or the internet. Public release v2.0.0 — the hardened HyperSnatch rebrand.",
+      "cardSummary": "Local proof workstation for web context, SHA-256 bundles, and offline verification. v2.0.0 public release for Windows.",
       "markSvg": "<div class=\"card-mark\" aria-hidden=\"true\"><svg viewBox=\"0 0 120 120\" xmlns=\"http://www.w3.org/2000/svg\" width=\"100%\" height=\"100%\"><defs><linearGradient id=\"psCardMarkGold\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0%\" stop-color=\"#d6a84f\"/><stop offset=\"100%\" stop-color=\"#9f7e3b\"/></linearGradient></defs><rect x=\"14\" y=\"14\" width=\"92\" height=\"92\" rx=\"16\" fill=\"#0b0f14\" fill-opacity=\"0.95\" stroke=\"#1e2c3a\" stroke-width=\"1.5\"/><path d=\"M 26 42 L 26 26 L 42 26\" stroke=\"#e05244\" stroke-width=\"4\" stroke-linecap=\"round\" fill=\"none\"/><path d=\"M 94 42 L 94 26 L 78 26\" stroke=\"#e05244\" stroke-width=\"4\" stroke-linecap=\"round\" fill=\"none\"/><path d=\"M 26 78 L 26 94 L 42 94\" stroke=\"#e05244\" stroke-width=\"4\" stroke-linecap=\"round\" fill=\"none\"/><path d=\"M 94 78 L 94 94 L 78 94\" stroke=\"#e05244\" stroke-width=\"4\" stroke-linecap=\"round\" fill=\"none\"/><circle cx=\"60\" cy=\"60\" r=\"20\" stroke=\"#40d9fd\" stroke-width=\"2.5\" stroke-dasharray=\"44 12\" fill=\"none\"/><circle cx=\"60\" cy=\"60\" r=\"6\" fill=\"#e05244\"/><circle cx=\"78\" cy=\"42\" r=\"4.5\" fill=\"url(#psCardMarkGold)\"/></svg></div>",
       "cta": "View product",
       "visible": true,
@@ -760,44 +760,77 @@
         "cardImageHeight": 540
       },
       "release": {
-        "publicVersion": null,
-        "candidateVersion": "1.6.18",
-        "releaseStatus": "UNRELEASED",
-        "publishedAt": null
+        "publicVersion": "2.0.0",
+        "candidateVersion": null,
+        "releaseStatus": "PUBLIC_RELEASE",
+        "publishedAt": "2026-09-17"
       },
-      "artifacts": [],
+      "artifacts": [
+        {
+          "filename": "ProofShot-Setup-2.0.0.exe",
+          "sizeBytes": 121733716,
+          "sha256": "fa20dc7e44440f0ed96fa08db67a77339d595f8eb27090e24120104ea6744701",
+          "downloadUrl": "https://downloads.theprooffoundry.com/proofshot/v2.0.0/ProofShot-Setup-2.0.0.exe",
+          "sha256Url": "https://downloads.theprooffoundry.com/proofshot/v2.0.0/SHA256SUMS.txt",
+          "signingStatus": "UNSIGNED",
+          "platform": "Windows",
+          "distType": "NSIS installer"
+        }
+      ],
       "verification": {
-        "status": "PENDING",
-        "verifiedAt": null,
-        "verificationType": [],
-        "receiptId": null,
-        "receiptUrl": null
+        "status": "VERIFIED",
+        "verifiedAt": "2026-09-17",
+        "verificationType": [
+          "ARTIFACT_HASH_PUBLISHED",
+          "ARTIFACT_HASH_VERIFIED",
+          "ARTIFACT_CUSTODY",
+          "RUNTIME_VALIDATION",
+          "REALITY_GATE",
+          "PUBLIC_DOWNLOAD"
+        ],
+        "receiptId": "14162b59-f382-4c1d-92b3-308a9899351c",
+        "receiptUrl": "https://downloads.theprooffoundry.com/proofshot/v2.0.0/RELEASE-MANIFEST.json"
       },
       "tests": [
         {
-          "label": "E2E suite",
-          "result": "99/99"
+          "label": "Unit suite",
+          "result": "262/262"
+        },
+        {
+          "label": "Packaged E2E",
+          "result": "45/45"
+        },
+        {
+          "label": "Tamper / authority / migration",
+          "result": "60/60"
         }
       ],
-      "evidence": [],
+      "evidence": [
+        "https://downloads.theprooffoundry.com/proofshot/v2.0.0/SHA256SUMS.txt",
+        "https://downloads.theprooffoundry.com/proofshot/v2.0.0/RELEASE-MANIFEST.json",
+        "https://github.com/lazelife420-spec/ProofShot/releases/tag/v2.0.0"
+      ],
       "limits": [
-        "The underlying engine (HyperSnatch v1.6.18) is public under its legacy name, but the ProofShot rebrand has not propagated through packaging and code.",
-        "No release or download is claimed under the ProofShot name.",
+        "The Windows installer is not code-signed; Windows SmartScreen will prompt on first launch. Verify the SHA-256 before running.",
+        "Capture is structural, not photographic — SmartDecode records the page's own resources and structure; there is no pixel-screenshot capture engine.",
         "ProofForge is a separate project and is not this product."
       ],
-      "downloadUrl": null,
-      "downloadLabel": "",
-      "distType": "N/A",
-      "build": "Electron desktop application: SmartDecode v2.5.0 extraction pipeline, proof-bundle export (SHA-256 manifests, Proof Passport, offline HTML verifier), 99/99 E2E green. Rebrand in progress — the engine ships as HyperSnatch v1.6.18 under the original brand while ProofShot identity work continues.",
-      "sha256": null,
-      "sha256Url": null,
-      "testStatus": "99/99 E2E",
+      "downloadUrl": "https://downloads.theprooffoundry.com/proofshot/v2.0.0/ProofShot-Setup-2.0.0.exe",
+      "downloadLabel": "Download v2.0.0 (Windows)",
+      "distType": "Windows installer (NSIS, unsigned)",
+      "build": "Electron desktop application: SmartDecode extraction pipeline, proof-bundle export (SHA-256 manifests, Proof Passport, offline HTML verifier). Public release v2.0.0 — the hardened ProofShot rebrand of the qualified HyperSnatch engine, with deterministic app.asar, Electron fuses enforced, and Reality Gate source→build→artifact custody.",
+      "sha256": "fa20dc7e44440f0ed96fa08db67a77339d595f8eb27090e24120104ea6744701",
+      "sha256Url": "https://downloads.theprooffoundry.com/proofshot/v2.0.0/SHA256SUMS.txt",
+      "testStatus": "262/262 unit · 45/45 packaged E2E · 60/60 tamper+authority+migration",
       "testCount": "",
-      "releaseNote": "The underlying engine (HyperSnatch v1.6.18) is public under its legacy name, with a 99/99 E2E test suite, SHA-256 checksums, and release receipts. The ProofShot rebrand has not yet propagated through packaging and code, so no release or download is claimed under the ProofShot name. ProofForge is a separate project and is not this product.",
-      "proofStatus": "verification pending",
-      "lastVerified": null,
-      "proofLinks": [],
-      "currentLocalVersion": "1.6.18"
+      "releaseNote": "Public release v2.0.0 (Windows). Unsigned installer — Windows SmartScreen will prompt; verify the SHA-256 first (More info → Run anyway). Custody: source 6e7fc6bf, deterministic asar, fuses enforced, independent adversarial gate green. Migrates existing HyperSnatch profiles non-destructively on first launch.",
+      "proofStatus": "Reality Gate custody · unsigned",
+      "lastVerified": "2026-09-17",
+      "proofLinks": [
+        "https://downloads.theprooffoundry.com/proofshot/v2.0.0/SHA256SUMS.txt",
+        "https://downloads.theprooffoundry.com/proofshot/v2.0.0/RELEASE-MANIFEST.json"
+      ],
+      "currentLocalVersion": null
     }
   ],
   "incubating": [
