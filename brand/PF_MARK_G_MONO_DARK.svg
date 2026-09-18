@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Proof Foundry PF mark">
+  <g fill="none" stroke-linejoin="miter">
+    <path d="M42 34H116C157 34 181 56 181 91C181 126 157 148 116 148H82V222H42V34ZM82 70V112H115C132 112 141 104 141 91C141 78 132 70 115 70H82Z" fill="#111418"/>
+    <path d="M146 34H226V72H186V106H218V143H186V222H146V34Z" fill="#111418"/>
+    <path d="M138 70H186V106H138Z" fill="#111418" opacity=".96"/>
+  </g>
+</svg>

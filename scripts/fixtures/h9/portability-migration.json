@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "acceptedOwnerPackageSha256": "3416bfbd2159c5cb8c1f659062edebf9fbcaf6b44897fd459be050aae2bd1ec8",
+  "migrations": [
+    {
+      "path": "scripts/test-h9-binding.ps1",
+      "accepted": {
+        "sha256": "c1ec6abc3ec40b4771c71680b43b33fb3c721a0ef4e801f6e0e635266f29051d",
+        "bytes": 12375,
+        "comparison": "utf8-lf",
+        "lfSha256": "c1ec6abc3ec40b4771c71680b43b33fb3c721a0ef4e801f6e0e635266f29051d"
+      },
+      "current": {
+        "sha256": "11448ea0b6f491f67bde9087a607384013a61e920a8e2987c695e30e45d19d86",
+        "bytes": 11796,
+        "comparison": "utf8-lf",
+        "lfSha256": "11448ea0b6f491f67bde9087a607384013a61e920a8e2987c695e30e45d19d86"
+      },
+      "reason": "Source-custody fixture portability and Git newline handling only; semantic predicates and historical failure labels preserved."
+    },
+    {
+      "path": "scripts/test-h9-cinematic.ps1",
+      "accepted": {
+        "sha256": "046d24b69768c33e875c6f52fbbccc911979a9ca45dbda5a7d7ae684f50317ec",
+        "bytes": 9503,
+        "comparison": "utf8-lf",
+        "lfSha256": "046d24b69768c33e875c6f52fbbccc911979a9ca45dbda5a7d7ae684f50317ec"
+      },
+      "current": {
+        "sha256": "63b76e79c04f3852ed717235caa97f6ca50707f91cbae63238108f2918a7154d",
+        "bytes": 9023,
+        "comparison": "utf8-lf",
+        "lfSha256": "63b76e79c04f3852ed717235caa97f6ca50707f91cbae63238108f2918a7154d"
+      },
+      "reason": "Source-custody fixture portability and Git newline handling only; semantic predicates and historical failure labels preserved."
+    },
+    {
+      "path": "scripts/test-h9-production-reconciliation.ps1",
+      "accepted": {
+        "sha256": "eccd353c55072aaaaa9a055e82876c58796d7e64bcf62c268c84120a20e36c3a",
+        "bytes": 7503,
+        "comparison": "utf8-lf",
+        "lfSha256": "eccd353c55072aaaaa9a055e82876c58796d7e64bcf62c268c84120a20e36c3a"
+      },
+      "current": {
+        "sha256": "b6f5b93676907c1838559806063cc30040fc5211fd91a36d68781445a7f7efe0",
+        "bytes": 8822,
+        "comparison": "utf8-lf",
+        "lfSha256": "b6f5b93676907c1838559806063cc30040fc5211fd91a36d68781445a7f7efe0"
+      },
+      "reason": "Source-custody fixture portability and Git newline handling only; semantic predicates and historical failure labels preserved."
+    }
+  ],
+  "patchSha256": "28efd10bd461c3cd9e7c22cbeb7b5891b24355437574a78f48f3d77e99b8eb8f"
+}

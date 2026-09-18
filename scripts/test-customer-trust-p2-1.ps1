@@ -92,7 +92,7 @@ Assert-Condition ($loRegistry.release.releaseStatus -eq 'HOLD') "P1 Regression: 
 
 # 10. Hardened Support Release-Truth Parity Assertions
 Assert-Condition ($supportHtml -match 'Reality Gate[\s\S]*?v1\.1\.0') "Support release truth: Reality Gate v1.1.0"
-Assert-Condition ($supportHtml -match 'Cache Vault[\s\S]*?Public Windows v0\.2\.3') "Support release truth: Cache Vault final public v0.2.3"
+Assert-Condition ($supportHtml -match 'Cache Vault[\s\S]*?Public Windows v0\.2\.4') "Support release truth: Cache Vault final public v0.2.4"
 Assert-Condition ($supportHtml -notmatch 'v0\.2\.3-rc') "Support release truth: no RC candidate strings for Cache Vault"
 Assert-Condition ($supportHtml -match 'Lights Out[\s\S]*?v11\.1\.2[\s\S]*?v11\.1\.3[\s\S]*?v11\.1\.1') "Support release truth: Lights Out v11.1.2 / v11.1.3 / Android v11.1.1"
 Assert-Condition ($supportHtml -match 'Cleanroom[\s\S]*?v1\.0\.7[\s\S]*?v1\.0\.10') "Support release truth: Cleanroom v1.0.7 / candidate v1.0.10"
@@ -101,10 +101,10 @@ Assert-Condition ($supportHtml -notmatch 'Cleanroom[\s\S]*?v1\.3\.0') "Support r
 Assert-Condition ($supportHtml -match 'GhostLayer[\s\S]*?v0\.4\.0') "Support release truth: GhostLayer v0.4.0"
 Assert-Condition ($supportHtml -notmatch 'GhostLayer[\s\S]*?v1\.0\.0') "Support release truth: GhostLayer rejects incorrect v1.0.0"
 Assert-Condition ($supportHtml -match 'ForgeCast[\s\S]*?v0\.3\.5') "Support release truth: ForgeCast v0.3.5"
-Assert-Condition ($supportHtml -match 'ProofShot[\s\S]*?no public release package') "Support release truth: ProofShot no public release package"
+Assert-Condition ($supportHtml -match 'ProofShot[\s\S]*?Public Windows v2\.0\.0' -and $supportHtml -notmatch 'no public release package') "Support release truth: ProofShot public Windows v2.0.0"
 
 # 11. Hardened Global Navigation Parity Assertions across all generated surfaces
-$allRoutes = @('', 'reality-gate', 'cache-vault', 'lights-out', 'cleanroom', 'ghostlayer', 'forgecast', 'proofshot', 'proof', 'roadmap', 'founders')
+$allRoutes = @('', 'software', 'reality-gate', 'cache-vault', 'lights-out', 'cleanroom', 'ghostlayer', 'forgecast', 'proofshot', 'proof', 'roadmap', 'founders', 'support', 'about', 'proof-standard')
 foreach ($r in $allRoutes) {
     $rPath = if ($r -eq '') { Join-Path $publicDir "index.html" } else { Join-Path $publicDir "$r\index.html" }
     if (Test-Path $rPath) {

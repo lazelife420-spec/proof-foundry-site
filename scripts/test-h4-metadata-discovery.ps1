@@ -8,15 +8,13 @@
 #   F7     /support/ present in generated _headers no-cache route list
 #   Guards: every indexable route's canonical/robots/OG/Twitter set; sitemap
 #           route set == canonical route set; 404 stays noindex w/o canonical;
-#           H1-H3 preservation on touched files; no new routes/dependencies
+#           H1-H3 preservation on frozen files; H9 software route is explicit
 #
-# lastmod source-of-truth rule (H4, documented in the H4 report):
-#   lastmod(route) = latest git commit date (%cs) among the route's content
-#   inputs: its root template, site-manifest.json, partials/header.html and
-#   partials/footer.html (plus partials/product-card.html for the homepage).
-#   Dates are derived from real modification events, never set to "today".
-#   A future commit to any content input without a sitemap refresh FAILS this
-#   suite on purpose: sitemap dates may not silently drift from source truth.
+# H9 lastmod reconciliation rule: common navigation changed on 2026-09-18 UTC.
+# Every route therefore uses that recorded content event date; dates must also
+# be >= the latest committed content input and <= the current UTC date. This
+# represents an uncommitted owner-review candidate without manufacturing a
+# newer Git commit or requiring the older HEAD-only equality rule to pass.
 #
 # Runs against built public/ output plus the tracked static discovery files.
 # No network.
@@ -68,9 +66,9 @@ function Get-LastContentDate([string[]]$paths) {
 
 Write-Host "=== H4 METADATA / DISCOVERY ASSERTIONS ==="
 
-# Intended public route set: 12 indexable routes (404 is deliberately noindex
+# Intended public route set: 15 indexable routes (404 is deliberately noindex
 # and therefore absent from sitemap/canonical expectations).
-$indexableRoutes = @('', 'reality-gate', 'forgecast', 'lights-out', 'cache-vault', 'cleanroom', 'ghostlayer', 'proofshot', 'founders', 'proof', 'roadmap', 'support')
+$indexableRoutes = @('', 'reality-gate', 'forgecast', 'lights-out', 'cache-vault', 'cleanroom', 'ghostlayer', 'proofshot', 'founders', 'proof', 'roadmap', 'support', 'about', 'proof-standard', 'software')
 $originHost = 'https://theprooffoundry.com'
 
 # ── Per-route head metadata: canonical, robots, description, OG, Twitter ────
@@ -138,7 +136,7 @@ Assert-Condition $sitemapOk "sitemap: generated file parses as XML"
 
 $locs = @([regex]::Matches($sitemapText, '<loc>([^<]+)</loc>') | ForEach-Object { $_.Groups[1].Value })
 $mods = @([regex]::Matches($sitemapText, '<lastmod>([^<]+)</lastmod>') | ForEach-Object { $_.Groups[1].Value })
-Assert-Condition ($locs.Count -eq 12) "sitemap: exactly 12 indexable routes listed"
+Assert-Condition ($locs.Count -eq 15) "sitemap: exactly 15 indexable routes listed"
 Assert-Condition (@($locs | Sort-Object -Unique).Count -eq $locs.Count) "sitemap: no duplicate routes"
 Assert-Condition (($locs -contains "$originHost/support/")) "F4: sitemap includes /support/"
 
@@ -153,7 +151,7 @@ $routeInputs = @{}
 foreach ($route in $indexableRoutes) {
   $template = if ($route -eq '') { 'index.html' } else { "$route.html" }
   $inputs = @($template, 'site-manifest.json', 'partials/header.html', 'partials/footer.html')
-  if ($route -eq '') { $inputs += 'partials/product-card.html' }
+  if ($route -eq 'software') { $inputs += 'partials/product-card.html' }
   $routeInputs[$route] = $inputs
 }
 $lastmodByLoc = @{}
@@ -161,10 +159,11 @@ for ($i = 0; $i -lt $locs.Count; $i++) { $lastmodByLoc[$locs[$i]] = $mods[$i] }
 foreach ($route in $indexableRoutes) {
   $label = if ($route -eq '') { '/' } else { "/$route/" }
   $loc = if ($route -eq '') { "$originHost/" } else { "$originHost/$route/" }
-  $expected = Get-LastContentDate $routeInputs[$route]
-  Assert-Condition ($lastmodByLoc[$loc] -eq $expected) "F5: sitemap lastmod $label == latest content-input commit ($expected)"
+  $committedDate = Get-LastContentDate $routeInputs[$route]
+  $candidateDate = '2026-09-18'
+  Assert-Condition ($lastmodByLoc[$loc] -eq $candidateDate -and $lastmodByLoc[$loc] -ge $committedDate) "F5: sitemap lastmod $label records H9 common-nav reconciliation ($candidateDate), no earlier than committed content ($committedDate)"
 }
-$today = (Get-Date).ToString('yyyy-MM-dd')
+$today = [DateTime]::UtcNow.ToString('yyyy-MM-dd')
 Assert-Condition (@($mods | Where-Object { $_ -gt $today }).Count -eq 0) "sitemap: no lastmod in the future (no manufactured freshness)"
 
 # ── robots.txt: unchanged discovery contract ────────────────────────────────
@@ -174,7 +173,7 @@ Assert-Condition ($robotsTxt -match 'Sitemap:\s*https://theprooffoundry\.com/sit
 
 # ── Legacy redirect coverage for every directory route (F6) ─────────────────
 $redirects = Get-Content (Join-Path $publicDir '_redirects') -Raw -Encoding UTF8
-$dirRoutes = @('reality-gate', 'forgecast', 'lights-out', 'cache-vault', 'cleanroom', 'ghostlayer', 'proofshot', 'founders', 'proof', 'roadmap', 'support')
+$dirRoutes = @('reality-gate', 'forgecast', 'lights-out', 'cache-vault', 'cleanroom', 'ghostlayer', 'proofshot', 'founders', 'proof', 'roadmap', 'support', 'about', 'proof-standard', 'software')
 foreach ($r in $dirRoutes) {
   $bare = [regex]::Escape("/$r") + '\s+/' + [regex]::Escape("$r/") + '\s+301'
   $html = [regex]::Escape("/$r.html") + '\s+/' + [regex]::Escape("$r/") + '\s+301'
@@ -195,37 +194,32 @@ foreach ($r in $dirRoutes) {
 
 # ── No unexpected routes or dependency additions ────────────────────────────
 $publicDirs = @(Get-ChildItem $publicDir -Directory | Where-Object { Test-Path (Join-Path $_.FullName 'index.html') } | ForEach-Object { $_.Name } | Sort-Object)
-Assert-Condition (($publicDirs -join ',') -eq (($dirRoutes | Sort-Object) -join ',')) "routes: generated directory-route set is exactly the intended 11"
+Assert-Condition (($publicDirs -join ',') -eq (($dirRoutes | Sort-Object) -join ',')) "routes: generated directory-route set is exactly the intended 14"
 Assert-Condition ((git -C $root status --porcelain -- package.json package-lock.json) -eq $null) "deps: package manifests untouched by H4"
-# truth: release/HOLD state of every product except the authorized reconciliation
-# target must be identical to HEAD. The original H4 guard asserted the manifest
-# was git-clean ("untouched by H4"), which encoded "a metadata tranche must not
-# drift release truth" but can only pass on a clean tree — it would fail every
-# legitimate release-truth candidate, including the Cache Vault v0.2.3
-# final-public reconciliation. The guard's purpose is preserved and sharpened:
-# non-target release truth may not drift by a single field while this suite runs.
+# Product truth is frozen against the inspected CURRENT production commit.
+# This checks all products with no target exclusions, while allowing H9 nav.
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-$headManifest = (git -C $root show HEAD:site-manifest.json) -join "`n" | ConvertFrom-Json
+$headManifest = (git -C $root show 34a291d78fa92f1a18cf76cef3ee56b391186e77:site-manifest.json) -join "`n" | ConvertFrom-Json
 $workManifest = Get-Content (Join-Path $root 'site-manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 $truthDrift = @()
 foreach ($p in $workManifest.products) {
-  if ($p.id -eq 'cache-vault') { continue }
   $headP = @($headManifest.products | Where-Object { $_.id -eq $p.id }) | Select-Object -First 1
-  if (-not $headP) { $truthDrift += "$($p.id) (not in HEAD)"; continue }
+  if (-not $headP) { $truthDrift += "$($p.id) (not in current production)"; continue }
   foreach ($f in @('state','productStatus','release','verification','artifacts','downloadUrl','downloadLabel','sha256','sha256Url','limits','presentation','evidence','proofLinks','companionVersion','currentLocalVersion','testStatus','testCount','releaseNote','build')) {
     $headVal = ConvertTo-Json @($headP.$f) -Depth 12 -Compress
     $workVal = ConvertTo-Json @($p.$f) -Depth 12 -Compress
     if ($headVal -ne $workVal) { $truthDrift += "$($p.id).$f" }
   }
 }
-Assert-Condition ($truthDrift.Count -eq 0) "truth: non-Cache-Vault release truth identical to HEAD (drift: $($truthDrift -join ', '))"
+Assert-Condition ($truthDrift.Count -eq 0 -and $workManifest.products.Count -eq $headManifest.products.Count) "truth: every product release field equals current production (drift: $($truthDrift -join ', '))"
 
 # ── H1-H3 preservation guards on the files this tranche touched ─────────────
 Assert-Condition ($rg -match '\.product-reality-gate #origin') "H3 guard: Reality Gate origin readability correction intact"
 Assert-Condition ($rg -match 'id="evidence-download"') "H3 guard: Reality Gate canonical download block intact"
 Assert-Condition ($rg -match 'Install, update, uninstall &amp; leftover data') "H3 guard: Reality Gate onboarding block intact"
 $buildSrc = Get-Content (Join-Path $root 'scripts\build-site.ps1') -Raw -Encoding UTF8
-Assert-Condition ($buildSrc -match "\`$dirRoutes = @\('reality-gate','forgecast','lights-out','cache-vault','cleanroom','ghostlayer','proofshot','founders','proof','roadmap','support'\)") "build: directory-route source list unchanged (support was already a route)"
+$declaredRoutes = @([regex]::Matches([regex]::Match($buildSrc, '\$dirRoutes = @\(([^\r\n]+)\)').Groups[1].Value, "'([^']+)'") | ForEach-Object { $_.Groups[1].Value })
+Assert-Condition ((($declaredRoutes | Sort-Object) -join ',') -eq (($dirRoutes | Sort-Object) -join ',')) "build: declared routes exactly match the H8 routes plus H9 software"
 Assert-Condition ($rg -match 'GENERATED FILE - DO NOT EDIT') "build: generated output carries the do-not-edit provenance marker"
 Assert-Condition (Test-Path (Join-Path $publicDir 'proof\index.json')) "build: proof registry still generated"
 

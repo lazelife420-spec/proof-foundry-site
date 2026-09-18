@@ -54,8 +54,8 @@ Assert-Condition ($glHtml -notmatch 'never touches disk') "GhostLayer rejects 'n
 
 # 6. ProofShot Staged Network Pipeline Wording Repair
 $psHtml = Get-Content (Join-Path $publicDir "proofshot\index.html") -Raw -Encoding UTF8
-Assert-Condition ($psHtml -match 'SmartDecode parses page structure from supplied HTML locally') "ProofShot discloses local SmartDecode HTML analysis"
-Assert-Condition ($psHtml -match 'fetches page resources over HTTPS') "ProofShot discloses HTTPS target URL resource intake during capture"
+Assert-Condition ($psHtml -match 'SmartDecode parses page structure from supplied HTML text locally') "ProofShot discloses local SmartDecode HTML analysis"
+Assert-Condition ($psHtml -match 'When the operator explicitly runs the retrieval stage, ProofShot fetches page structure, stylesheets, scripts, and images over HTTPS from the target URL') "ProofShot discloses operator-directed HTTPS target resource intake"
 Assert-Condition ($psHtml -match 'verified 100% offline') "ProofShot discloses offline bundle verification"
 Assert-Condition ($psHtml -notmatch 'reads what the target actually contains — offline') "ProofShot rejects contradictory 'reads target URL offline' claim"
 Assert-Condition ($psHtml -notmatch 'with no account and no network dependency') "ProofShot rejects unqualified 'no network dependency' claim for extraction pipeline"

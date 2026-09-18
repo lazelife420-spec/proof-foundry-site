@@ -1,0 +1,143 @@
+/* H9 catalog: matte, legible utility. Product and release data stay canonical. */
+.software-catalog-page{background:#090d10;color:#f0eee7;color-scheme:dark}
+.software-catalog-page .site-header{background:#090d10f5;border-bottom-color:#ffffff15;backdrop-filter:blur(16px)}
+.software-catalog-page .brand-lockup picture{display:none}
+.software-catalog-page .brand-lockup{display:flex;align-items:center;gap:12px}
+.software-catalog-page .brand-lockup:before{content:"";width:38px;height:38px;background:url('/brand/PF_MARK_G_MASTER.svg') center/contain no-repeat}
+.software-catalog-page .brand-lockup:after{content:"PROOF\a FOUNDRY";white-space:pre;font:400 .9rem/1.15 Georgia,serif;letter-spacing:.15em;color:#f3efe7}
+.h9-software-wrap{width:min(1280px,calc(100% - 64px));margin:auto}
+.h9-software-hero{padding:44px 0 38px;border-bottom:1px solid #ffffff15;background:radial-gradient(ellipse at 85% 0,#95694712,transparent 60%)}
+.h9-software-kicker{font:400 .69rem/1.5 var(--font-mono,monospace);text-transform:uppercase;letter-spacing:.16em;color:#c6a887;margin:0 0 16px}
+.software-catalog-page .h9-software-hero h1{font:400 clamp(2.7rem,4.7vw,4.4rem)/1.04 Georgia,'Times New Roman',serif;letter-spacing:-.035em;margin:0 0 17px;color:#f2eee5}
+.h9-software-hero p:last-child{font-size:1rem;line-height:1.6;color:#b9c2c6;max-width:660px;margin:0}
+.h9-software-body{padding:30px 0 72px}
+.h9-catalog-heading{display:flex;align-items:baseline;justify-content:space-between;gap:24px;margin-bottom:21px}
+.software-catalog-page .h9-catalog-heading h2{font-size:1.3rem;letter-spacing:-.015em;margin:0;white-space:nowrap}
+.h9-catalog-heading>p{font-size:.82rem;color:#b0bdc2;line-height:1.5;margin:0;max-width:550px}
+.h9-product-finder{display:grid;grid-template-columns:minmax(250px,1fr) auto;gap:16px 24px;padding:20px 0 22px;margin:0 0 24px;border-top:1px solid #ffffff20;border-bottom:1px solid #ffffff20}
+.h9-search>label,.software-catalog-page .finder-platform>label{display:block;font-size:.76rem;color:#c3cbd0;line-height:1.3;margin-bottom:8px}
+.h9-search-field{display:flex;align-items:center;gap:11px;min-height:48px;padding:0 13px;border:1px solid #52616a;background:#0b1014;border-radius:3px}
+.h9-search-field:focus-within{outline:2px solid #d3af87;outline-offset:3px}
+.h9-search-field>svg{color:#a8bbc5;flex:none}
+.h9-search-field input{min-width:0;width:100%;padding:11px 0;border:0;background:transparent;color:#edf1f0;font-size:16px;font-family:inherit;line-height:1.5;outline:none;box-shadow:none}
+.h9-search-field input:focus{outline:none;box-shadow:none}
+.h9-search-field input::placeholder{color:#96a7b2;opacity:1}
+.h9-search-field input::-webkit-search-cancel-button{-webkit-appearance:none}
+.h9-search-field button{border:0;border-left:1px solid #41515c;background:transparent;color:#cbd9de;min-height:44px;padding:8px 4px 8px 13px;font-size:.8rem}
+.software-catalog-page .finder-platform{display:block;margin:0;width:auto;color:#c3cbd0}
+.software-catalog-page .finder-platform select{min-width:172px;min-height:48px;width:100%;background:#0b1014;color:#edf1f0;border:1px solid #52616a;border-radius:3px;font-size:.9rem;padding:10px 32px 10px 12px}
+.software-catalog-page .finder-intents{display:flex;gap:7px;flex-wrap:wrap;width:auto;align-items:center}
+.software-catalog-page .finder-intents button{min-height:44px;padding:10px 15px;font-size:.81rem;color:#c5d0d5;border:1px solid #43515a;background:transparent;border-radius:3px}
+.software-catalog-page .finder-intents button:hover{border-color:#b6c1c2;color:#fff}
+.software-catalog-page .finder-intents button[aria-pressed=true]{color:#091c1e;background:#abd4cf;border-color:#abd4cf}
+.h9-finder-summary{display:flex;gap:18px;align-items:center;justify-content:flex-end}
+.software-catalog-page .finder-count{font:400 .8rem/1.5 var(--font-mono,monospace);color:#c6d1d7;min-width:0;white-space:nowrap;margin:0}
+.h9-finder-summary button{min-height:44px;padding:8px 0;border:0;background:transparent;color:#d1b191;font-size:.8rem;text-decoration:underline;text-underline-offset:4px}
+.h9-finder-summary button:disabled{color:#89969e;text-decoration:none;cursor:default}
+.h9-compare-hint{grid-column:1/-1;font-size:.78rem;color:#aebac0;margin:-3px 0 0}
+.software-catalog-page .products-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.software-catalog-page .product-card{--text:#f0eee7;display:grid;grid-template-columns:minmax(170px,.78fr) minmax(0,1.22fr);min-width:0;border:1px solid #35414a;border-radius:3px;overflow:hidden;background:#10161b;color:#e9edec;padding:0;gap:0;box-shadow:none;transform:none}
+.software-catalog-page .product-card:hover,.software-catalog-page .product-card:focus-within{border-color:#748d96;transform:none;box-shadow:none}
+.software-catalog-page .catalog-image-link{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-height:215px;margin:0;padding:0;background:#090e12;border:0;border-right:1px solid #ffffff0c;border-radius:0;box-shadow:none;transform:none}
+.software-catalog-page .catalog-image-link img{display:block;width:100%;height:100%;max-height:285px;padding:0;object-fit:contain;transform:none}
+.software-catalog-page .card-body{display:flex;min-width:0;padding:20px;flex-direction:column;gap:0}
+.software-catalog-page .card-head{gap:9px;margin:0 0 11px;align-items:center}
+.software-catalog-page .card-head svg{width:24px;height:24px;flex:none}
+.software-catalog-page .card-name{font-size:1.4rem;letter-spacing:-.03em;line-height:1.2;color:#f2f1eb}
+.software-catalog-page .card-name a,.software-catalog-page .card-cleanroom .card-name a{color:#f2f1eb}
+.software-catalog-page .card-value,.software-catalog-page .card-cleanroom .card-value{font-size:.86rem;line-height:1.55;min-height:0;color:#bdc8cd;margin:0 0 14px;flex:1}
+.h9-card-meta{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:12px;row-gap:4px;margin:0 0 10px}
+.software-catalog-page .card-platform,.software-catalog-page .card-version{font:400 .74rem/1.5 var(--font-mono,monospace);color:#cbd8dc}
+.software-catalog-page .card-platform{color:#a4b7c0}
+.software-catalog-page .card-availability{font-size:.78rem;line-height:1.4;color:#b1c9bd;margin-bottom:12px}
+.software-catalog-page .card-bottom{margin-top:0;padding-top:0;border-top:0}
+.software-catalog-page .card-explore{display:inline-flex;align-items:center;min-height:44px;font-size:.84rem;color:#eee9dd;font-weight:500}
+.software-catalog-page .card-explore span{margin-left:9px}
+.software-catalog-page .card-more{margin-top:0;font-size:.8rem;color:#ced5d8}
+.software-catalog-page .card-more summary{cursor:pointer;min-height:44px;padding:12px 0;line-height:20px;color:#d4bfaa}
+.software-catalog-page .card-more .card-platform,.software-catalog-page .card-more .card-version{display:block}
+.software-catalog-page .card-detail,.software-catalog-page .card-cleanroom .card-detail{font-size:.78rem;line-height:1.6;color:#b9c6cc;margin:0 0 10px}
+.software-catalog-page .compare-choice,.software-catalog-page .card-cleanroom .compare-choice{min-height:44px;margin-top:4px;color:#c6d3d8;font-size:.82rem}
+.software-catalog-page .compare-choice input{accent-color:#a5d4cd}
+.software-catalog-page .finder-empty{margin:24px 0 0;padding:40px 20px;border:1px dashed #647078;color:#bfccd0;text-align:center}
+.software-catalog-page .finder-empty h3{font-size:1.2rem;letter-spacing:-.02em;color:#ecece5;margin:0 0 12px}
+.software-catalog-page .finder-empty p{margin:0;font-size:.95rem}
+.software-catalog-page .finder-empty button{min-height:44px;padding:12px 20px;background:#abd4cf;color:#091c1e;border:1px solid #abd4cf;border-radius:3px;margin-top:20px}
+.software-catalog-page :is(a,button,select,input,summary):focus-visible{outline:2px solid #e0b990;outline-offset:4px}
+.software-catalog-page .h9-search-field input:focus-visible{outline:0}
+.software-catalog-page .compare-tray{background:#e6e5dc;color:#182a2d;border-color:#cbd1c9;border-radius:4px}
+.software-catalog-page .compare-open{background:#1e494a;border-color:#1e494a;color:#f1f5ec}
+.software-catalog-page .compare-chip{background:#d1dad5;color:#294645;border-color:#b0c1b9}
+.software-catalog-page .compare-clear{color:#364d49}
+.software-catalog-page .compare-dialog{border-color:#60757b;border-radius:4px;background:#10181c;color:#e2e9e8}
+.software-catalog-page .compare-header{background:#10181c;border-color:#3a4c52}
+.software-catalog-page .compare-header .kicker{color:#b5c7c8}
+.software-catalog-page .compare-header button{border-color:#6d8388;color:#e3ecec;border-radius:3px}
+.software-catalog-page .comparison-product{border-color:#455962;border-radius:3px;background:#18262b;color:#e1e9e7}
+.software-catalog-page .comparison-product :is(h3,.comparison-value,dd){color:#dfe9e7}
+.software-catalog-page .comparison-product :is(.comparison-category,dt){color:#b1c7c9}
+.software-catalog-page .comparison-media{background:#0b1418}
+.software-catalog-page .comparison-value{min-height:88px}
+.software-catalog-page .comparison-product dl{border-color:#455962}
+.software-catalog-page .comparison-link{background:#24464a;border-color:#66898b;color:#f1f3e9;border-radius:3px}
+.software-catalog-page .footer-logo{display:none}
+.software-catalog-page .footer-brand{position:relative;padding:36px 0 0 52px;min-height:70px}
+.software-catalog-page .footer-brand:before{content:"";position:absolute;left:0;top:0;width:37px;height:37px;background:url('/brand/PF_MARK_G_MASTER.svg') center/contain no-repeat}
+.software-catalog-page .footer-brand:after{content:"PROOF FOUNDRY";position:absolute;top:7px;left:52px;font:400 .93rem/1.2 Georgia,serif;letter-spacing:.13em;color:#e5e7df}
+.software-catalog-page .footer-brand p{margin:0}
+.software-catalog-page [hidden]{display:none!important}
+@media(max-width:1050px){
+  .software-catalog-page .products-grid{grid-template-columns:1fr}
+  .software-catalog-page .product-card{grid-template-columns:minmax(200px,.5fr) minmax(0,1fr)}
+  .h9-finder-summary{gap:12px}
+  .software-catalog-page .finder-intents button{padding-inline:11px}
+}
+@media(max-width:700px){
+  .h9-software-wrap{width:calc(100% - 32px)}
+  .h9-software-hero{padding:30px 0 25px}
+  .h9-software-kicker{font-size:.64rem;letter-spacing:.1em;margin-bottom:13px}
+  .software-catalog-page .h9-software-hero h1{font-size:2.8rem;margin-bottom:14px}
+  .h9-software-hero p:last-child{font-size:.93rem;line-height:1.5;max-width:420px}
+  .h9-software-body{padding:24px 0 48px}
+  .h9-catalog-heading{display:block;margin-bottom:18px}
+  .software-catalog-page .h9-catalog-heading h2{font-size:1.16rem;margin-bottom:9px}
+  .h9-catalog-heading>p{font-size:.78rem;line-height:1.5;max-width:440px}
+  .h9-product-finder{grid-template-columns:minmax(0,1fr) auto;gap:13px 14px;padding:17px 0;margin-bottom:20px}
+  .h9-search{grid-column:1/-1}
+  .software-catalog-page .finder-platform{grid-column:1}
+  .software-catalog-page .finder-platform>label{margin-bottom:7px}
+  .software-catalog-page .finder-platform select{min-width:0;font-size:.87rem}
+  .software-catalog-page .finder-intents{grid-column:1/-1;grid-row:2;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .software-catalog-page .finder-intents button{font-size:.8rem;padding:10px 7px;min-height:44px}
+  .h9-finder-summary{grid-column:2;align-self:end;flex-direction:column;align-items:flex-end;gap:0}
+  .h9-finder-summary button{min-height:44px;padding-block:8px;font-size:.76rem}
+  .h9-compare-hint{font-size:.75rem;margin:0}
+  .software-catalog-page .products-grid{gap:12px}
+  .software-catalog-page .product-card{grid-template-columns:100px minmax(0,1fr);align-items:stretch}
+  .software-catalog-page .catalog-image-link{min-height:0;height:100%;width:100%;border-radius:0;border-right:1px solid #ffffff0c;align-items:flex-start;padding-top:20px}
+  .software-catalog-page .catalog-image-link img{height:130px;max-height:none;object-fit:contain}
+  .software-catalog-page .card-body{padding:16px 14px 12px}
+  .software-catalog-page .card-head{gap:7px;margin-bottom:9px;align-items:flex-start}
+  .software-catalog-page .card-head svg{width:19px;height:19px;margin-top:2px}
+  .software-catalog-page .card-name{font-size:1.2rem;line-height:1.2}
+  .software-catalog-page .card-value,.software-catalog-page .card-cleanroom .card-value{font-size:.81rem;line-height:1.5;margin-bottom:12px}
+  .h9-card-meta{display:block;margin-bottom:8px}
+  .h9-card-meta>span{display:block}
+  .software-catalog-page .card-platform,.software-catalog-page .card-version{font-size:.71rem;line-height:1.5}
+  .software-catalog-page .card-availability{font-size:.74rem;margin-bottom:3px}
+  .software-catalog-page .card-explore{font-size:.78rem;min-height:44px;line-height:1.4}
+  .software-catalog-page .card-explore span{margin-left:7px}
+  .software-catalog-page .compare-choice,.software-catalog-page .card-cleanroom .compare-choice{font-size:.8rem;margin-top:0}
+  .software-catalog-page .compare-tray{max-width:calc(100vw - 20px);bottom:max(10px,env(safe-area-inset-bottom));gap:8px}
+  .software-catalog-page .compare-dialog{border:0;border-radius:0;width:100vw;height:100dvh;max-width:100vw;max-height:100dvh}
+  .software-catalog-page .compare-columns,.software-catalog-page .compare-columns[data-count="2"]{grid-template-columns:1fr;padding:15px;gap:15px}
+  .software-catalog-page .comparison-value{min-height:0}
+  .software-catalog-page .comparison-media{height:150px}
+  .software-catalog-page .comparison-copy{padding:21px}
+  .software-catalog-page .comparison-product dl{font-size:.87rem}
+}
+@media(max-width:374px){
+  .software-catalog-page .product-card{grid-template-columns:82px minmax(0,1fr)}
+  .software-catalog-page .card-body{padding-left:12px;padding-right:12px}
+  .software-catalog-page .card-name{font-size:1.15rem}
+}

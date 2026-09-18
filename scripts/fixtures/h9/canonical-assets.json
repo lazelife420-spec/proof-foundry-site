@@ -1,0 +1,1206 @@
+{
+  "schemaVersion": 1,
+  "canonicalProduction": "34a291d78fa92f1a18cf76cef3ee56b391186e77",
+  "acceptedOwnerPackageSha256": "3416bfbd2159c5cb8c1f659062edebf9fbcaf6b44897fd459be050aae2bd1ec8",
+  "canonical": [
+    {
+      "path": "assets/cache-vault/cache_vault_poster.png",
+      "sha256": "d7cfe9b198cb3d0cd9a4f02280ae75d6a68b5c2c9242ed29ef2ff19fa8462e82",
+      "bytes": 391207,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/cache-vault/cache_vault_trailer.mp4",
+      "sha256": "f4e96f50143457b56527471702779605fdcc70ed64da5c78260fffa3913adb7d",
+      "bytes": 2436350,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/cache-vault/cv-all-clips.png",
+      "sha256": "0dcf7da713282fc8d6a622702cf7039a3cb3069e85df9722c1e90b272a3bdafc",
+      "bytes": 55833,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/cache-vault/cv-cleanup-suggestions.png",
+      "sha256": "ecd2be2a3b895b4d0fc8b4fa73d0b232519ba39caf5a575f3f083cad2a8e6cff",
+      "bytes": 59943,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/cache-vault/cv-quick-paste.png",
+      "sha256": "05d675e26e69d8467f37e8246115fa97affcf46d03d504220a44b8a1d6e2f72f",
+      "bytes": 41329,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/cache-vault/cv-stamped-receipts.png",
+      "sha256": "67fb7519970f2b010d1cc158149bd998ddbe793300773ae143c6ac0c5fa080c0",
+      "bytes": 81716,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/cleanroom/cleanroom-activity-ledger.png",
+      "sha256": "6fce31f77ed39496e679912bff260b451a9fcbffe96e68ff77a2ca5ceccad65e",
+      "bytes": 176034,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/cleanroom/cleanroom-proof-pack-demo.png",
+      "sha256": "8bb7db90dbee53b9a6b91e9523059a2e1800e1605c093d13c1afa4cfc142e8bd",
+      "bytes": 44179,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/cleanroom/cleanroom-review.png",
+      "sha256": "1c5af82f83836e0020ec74d8d6af9b85fb8bcdd2d524424fe0b83b407c3ba84f",
+      "bytes": 160945,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/forgecast/v030-forecast.png",
+      "sha256": "d0dbdcfb5f4a1c30777df81c060d0cc2a6598db00c07513dab1c4164df09c80c",
+      "bytes": 231862,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/forgecast/v030-plan.png",
+      "sha256": "2bfae750334999f896c13aadeaa398dc4520553f63cb334bb27256a4f8b25ad6",
+      "bytes": 184345,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/forgecast/v030-today.png",
+      "sha256": "0263aa23c473a65d5185c71d2aadb57a4bed7796da83eef9996054fc35bdd00d",
+      "bytes": 245862,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/forgecast/v030-widgets.png",
+      "sha256": "9d073eba882d8c8ab97fe0f1771a086c9505213225230b3a54c6cb8cf61ab123",
+      "bytes": 220662,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/foundry-strike/forged_pf_emblem_in_smoky_ruins-1280.avif",
+      "sha256": "183fe4f9375f84ea388496933dc917223d84c4e4e75f356d6c28a48d60e86c17",
+      "bytes": 27753,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/foundry-strike/forged_pf_emblem_in_smoky_ruins-1280.webp",
+      "sha256": "d89d54be5d40bf90b2be66c3ca42572e3e4c180f518796ba6119d0bce83c99c7",
+      "bytes": 81020,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/foundry-strike/forged_pf_emblem_in_smoky_ruins-1672.avif",
+      "sha256": "73522c9633b0ab70a4e9712f409c7d0d5125167d8f34fa573991949a6e645380",
+      "bytes": 42486,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/foundry-strike/forged_pf_emblem_in_smoky_ruins-1672.webp",
+      "sha256": "b11f3c33e481bff6a2ef0565c34417333f0cfd7b91c8ba03cf7d537fae218c01",
+      "bytes": 125836,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/foundry-strike/forged_pf_emblem_in_smoky_ruins.png",
+      "sha256": "aeb07062a41db6c9fdf59fa836c2edb64fd81b9d1f7f5e643f30d2014e99fa63",
+      "bytes": 1910469,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/foundry-strike/proof-foundry-forged-artifact.png",
+      "sha256": "a018726221d0a4d145d7115d0ad6f66609f14ae561309e605770ee24ea92b7bd",
+      "bytes": 676198,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/ghostlayer/gl-staged-files.png",
+      "sha256": "47ee09a8e6c137a7b71cabe2f9fb803793a739db58c878345546b3d6ccd45bbe",
+      "bytes": 53748,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/lights-out/companion-active.png",
+      "sha256": "121c248557713b48bd12e82cfb2eb2ce29092347d83647e773a18b027b2c9587",
+      "bytes": 23413,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/lights-out/companion-reconnected.png",
+      "sha256": "cd92ae548b4a369bb38619b1e816018b83a99518d569c0226e2f7f1fc8ed76cf",
+      "bytes": 30225,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/lights-out/companion-snoozed.png",
+      "sha256": "925617342c0cce32494475545179380b8599da649c6fcfaef5fa03ef9bb8ea8d",
+      "bytes": 30130,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/lights-out/devices-panel.png",
+      "sha256": "6e848ef67f115aa07afd974eac99427141494ed9c017e4d1627b7be1d5cc870a",
+      "bytes": 427628,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/lights-out/lights-out-icon-512.png",
+      "sha256": "5467bee341bed876a507ececbcb5f89ad2ff7a5fc496d3d6105da33fc4e16163",
+      "bytes": 77617,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/lights-out/lights-out-keyart-hero-ui.png",
+      "sha256": "c5982c6756685de967ca03b6292af6f9600d51ce0302dfaa5bacffdea51251bf",
+      "bytes": 1539165,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/lights-out/lights-out-logo-transparent.png",
+      "sha256": "c5986979e302c9199adf6080b54387d2a74289dc1dea27edc9a260a65f5e262e",
+      "bytes": 2024453,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/lights-out/lights-out-og-image.png",
+      "sha256": "c5982c6756685de967ca03b6292af6f9600d51ce0302dfaa5bacffdea51251bf",
+      "bytes": 1539165,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/lights-out/lights-out-wordmark-banner.png",
+      "sha256": "3510cb27e6d87ac0f1f04d0d577c79f2c4f4f44af77f07a64b86de49889f1ea2",
+      "bytes": 1144577,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/lights-out/night-modes-panel.png",
+      "sha256": "f70f03d5db4fbe8347bf76435db86eedb83a3ab91111af519633651a8917e57d",
+      "bytes": 206057,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/lights-out/proof-morning-visible.png",
+      "sha256": "7fe9adab2b168238b089d2daef1000ecc22366ce3db3677b8ea28f134a5e21d4",
+      "bytes": 333054,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/lights-out/proof-session-history.png",
+      "sha256": "a1ee359dbaaced07cca9887d2f8fa496a76b23b4d13f99bc351beb074607055b",
+      "bytes": 195644,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/lights-out/schedule-panel.png",
+      "sha256": "73e4716db38ca45aecc0fcd5cddfe34a9afee353cdef93a5a5d69f300a099cac",
+      "bytes": 168560,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/lights-out/settings-first-light-automations.png",
+      "sha256": "e6d37920728e23cd40d92ae26b1e5631d3b6a1777b1adbfb05a188a12478a2a7",
+      "bytes": 131470,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/lights-out/settings-power-safety-1920.png",
+      "sha256": "cd6887a7e9a92ff9d993240edd54307e6d981c589b09a340ddd8c2b5258e8d4a",
+      "bytes": 88255,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/lights-out/settings-smart-lights.png",
+      "sha256": "e058895d742b3c3bfd9c8e2902fe93ac967b1bcbb9b25144a26a1438af6f1cd5",
+      "bytes": 160298,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/lights-out/settings-wifi-guard.png",
+      "sha256": "a7e7929153ab060204b94068e2a1a629a823dac9794603db8f8774aae13f4d4b",
+      "bytes": 151648,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/lights-out/tonight-active-hero.png",
+      "sha256": "a873bd97d1f7685a9ea08a855837f92ad422a292fe04dc3c716a98c03403d719",
+      "bytes": 216285,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/lights-out/tonight-dryrun-running.png",
+      "sha256": "8329d4fb1df02aca7c4609f0cd633d1fb5593cae5341400796ae728fcf4b9662",
+      "bytes": 341486,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/lights-out/tonight-movie-running.png",
+      "sha256": "ca46d2a8ad5c493e1abcaf7143c400db9aea9795e13cd78a63e61c9d9c8c8233",
+      "bytes": 214334,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/lights-out/tonight-plan-projection.png",
+      "sha256": "d82a36ba0762d037da2a9492ac8c23f1645c75399968600a9e1c4ab5a96438cf",
+      "bytes": 332237,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/proofshot/candidates-plan.png",
+      "sha256": "6f86d756fe9fd387e5a2ebf6b6655423a7c2b793b688e33e085a25bd1f47f16d",
+      "bytes": 299895,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/proofshot/cases.png",
+      "sha256": "9ec331f1f3fdddc760955ccc718eefb4f133bea1f6855d413e30b355b541041d",
+      "bytes": 413042,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/proofshot/decode-complete.png",
+      "sha256": "1c9b694ed1149638dcc1139cdf8ef7e76350de4ad768a134aab7ca60a32a5887",
+      "bytes": 300551,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/proofshot/export-complete.png",
+      "sha256": "151c663af9ad2b8d666b45b28492f401fd106869e7934c433c469ba9b307342e",
+      "bytes": 362416,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/proofshot/logo-transparent.png",
+      "sha256": "0c86c332aa4d763990eccdebe1424f2a3098831c0007a4ac00d9e18eef14138f",
+      "bytes": 178582,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/proofshot/og-image.png",
+      "sha256": "6ba76cabc17d4dadf9ed90e505e03395b8dbb895f38b4e8cad3a3af36d519268",
+      "bytes": 166403,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/proofshot/prove-again.png",
+      "sha256": "1bfcf6038c60f01ee9cdade207944d75ddbfcf1af8983dd3cb810e64accf545e",
+      "bytes": 310131,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/proofshot/tamper-trial.png",
+      "sha256": "4dcbf5ad8ed936300b05640a9091a83120469b219bd5eb690e7544a0118c3899",
+      "bytes": 324899,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/proofshot/web-hero.png",
+      "sha256": "1013682f086a93275b4058cc2ab61b150980856623247beee47f61a8067d5326",
+      "bytes": 374829,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/proofshot/workbench-home.png",
+      "sha256": "33ca336d7eecc517a9a1e6caa7ac46f97da8b630342dc6b19477ca57d5baee80",
+      "bytes": 343506,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/proofshot/workbench-proof-cards.png",
+      "sha256": "d18c63f872a56eb593d97cf523357cd73c41a2b26bd6d3839fa1ab91c9d8f3e6",
+      "bytes": 305945,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/reality-gate/00-onboarding.png",
+      "sha256": "4677cd2ad6f5c54c8078120b9dcc18daf54ada854880848c273e4a0fcbf6f987",
+      "bytes": 36525,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/reality-gate/01-home-continuity.71b20e418bbf3799.png",
+      "sha256": "71b20e418bbf3799f3a451106fba6117b90f9bc87563f4e68426fbddf22222c4",
+      "bytes": 367770,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/reality-gate/02-dependency-map.png",
+      "sha256": "5529a33bfaa912703a76c4fc4bda5e89b91d85081905577755ccbc0b5f27f763",
+      "bytes": 95277,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/reality-gate/03-recovery-drill-receipt.png",
+      "sha256": "eab471127addc0b47bfc2640d035540dd7c7a01328508205b9409df5d9ead093",
+      "bytes": 109693,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/reality-gate/04-recovery-bundle-verified.b93fd52611a64d33.png",
+      "sha256": "b93fd52611a64d33e9d35a9cfab87123d29ce86aa852bfd3eb927e5f599e524a",
+      "bytes": 304682,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/reality-gate/05-recovery-prove-passed.png",
+      "sha256": "c48377c10553e48321fe9e116b4ce8e66c6c574017325a62dba38f8b52896fa4",
+      "bytes": 109462,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/reality-gate/07-about.png",
+      "sha256": "1aa4a0d08decad7015fd4b5c5f3f725c8cee199c3056fa004c9ca2b381a3366c",
+      "bytes": 98224,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/reality-gate/08-ci-run-complete.50deeeef7e10fbe8.png",
+      "sha256": "50deeeef7e10fbe8a785bd41a75f57f565762f0fa83d481e78a4980560b71fe6",
+      "bytes": 446147,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/reality-gate/09-proof-ledger.png",
+      "sha256": "dd82837a6ce3f7219353a80484fc10985b74cf856a508604cb8c9cd92f82ad35",
+      "bytes": 127914,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/reality-gate/reality_gate_poster.png",
+      "sha256": "29ca92d34db00531d67a8d272420cb50a37dd82e8fe27e70eb1a16ac30055fa1",
+      "bytes": 515095,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/reality-gate/reality_gate_trailer.mp4",
+      "sha256": "961b8fe3f42c9ce9fa905401b69825839f59927cdc7080cebd9b01751b92618a",
+      "bytes": 1511016,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/01-home-continuity-1440.6164ffb655310c8c.webp",
+      "sha256": "6164ffb655310c8c9163e403b3689984c20c96f5bf7c7c48f24edb1861d932bf",
+      "bytes": 54940,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/01-home-continuity-480.a570c621fae64392.webp",
+      "sha256": "a570c621fae6439283790c947f107b50f1bad58372b127ce28250927419c38f5",
+      "bytes": 9744,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/01-home-continuity-960.56f4f49417c2ae16.webp",
+      "sha256": "56f4f49417c2ae163ed7f0e4152d22f8dbc7e76ba8922c5aa4938bd0bb997031",
+      "bytes": 30552,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/04-recovery-bundle-verified-1440.895de80d181b111e.webp",
+      "sha256": "895de80d181b111e896df5e6581c2a3827d83eefdb21b75faf75528e5a516f67",
+      "bytes": 47258,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/04-recovery-bundle-verified-480.dd9e1fb2e5090026.webp",
+      "sha256": "dd9e1fb2e5090026a3275cdb1748996e6b1921d6a90a22373482235f8aa30059",
+      "bytes": 7766,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/04-recovery-bundle-verified-960.c96b6f2132b8009f.webp",
+      "sha256": "c96b6f2132b8009f75dbb6cc978cc3452d5d8a20adb850a917479c75a4577721",
+      "bytes": 25028,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/08-ci-run-complete-1440.ba292332e91dbc87.webp",
+      "sha256": "ba292332e91dbc876d986504bc45de97e978b11945ef3a76a01f675e731a82d8",
+      "bytes": 72534,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/08-ci-run-complete-480.4e2f84d1f47b8fc7.webp",
+      "sha256": "4e2f84d1f47b8fc7a54c8117d2846d52c5897bde9127b8cd778b84d2af97fb5e",
+      "bytes": 11548,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/08-ci-run-complete-960.5845d5f575adae9f.webp",
+      "sha256": "5845d5f575adae9fe9bf412f4b1093f85679108597e0247207edd6deb8b6da38",
+      "bytes": 38516,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/08-ci-run-complete-card-960.png",
+      "sha256": "db1aba661f44b23d3d93aad12ec46d57c6476b1d1b7cc8a257d40c6558c3d1df",
+      "bytes": 205885,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/09-proof-ledger-1440.webp",
+      "sha256": "c060adad674aa3fa358b4385a9c810faa4fcb26582e783e8f103029c2f1ebb6b",
+      "bytes": 69816,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/09-proof-ledger-480.webp",
+      "sha256": "0beee04dbdccb764f9a5943725da5fa948acceff999e352a1abed1df8c1fc152",
+      "bytes": 11498,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/09-proof-ledger-960.webp",
+      "sha256": "cc16e2c054a0a68402e136d4692f2b1e2679b10cc991992f7cdb88a2311a5f57",
+      "bytes": 37840,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/candidates-plan-1440.webp",
+      "sha256": "2c8de452c66d26670857ac3af725a0959218cfba05b35434f724233773294d6a",
+      "bytes": 52932,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/candidates-plan-480.webp",
+      "sha256": "52e879eecb95db75b6c748ecd658021798278032cab0475c384c16acd08af35e",
+      "bytes": 10546,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/candidates-plan-960.webp",
+      "sha256": "a106253c8b053c0fc43fc5d7a02f1b8b3166b0c25ea19faf1de14c19e22800c0",
+      "bytes": 30992,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/cleanroom-activity-ledger-1280.webp",
+      "sha256": "ac400f06d757a6bc3d276fa1c8297bf97261d443149e08150cf7e78e2299bf04",
+      "bytes": 46878,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/cleanroom-activity-ledger-480.webp",
+      "sha256": "28380cdbde3e28e7f78f5fec4c70a2016170e5b2ff24492c4827aae40943dcab",
+      "bytes": 8986,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/cleanroom-activity-ledger-960.webp",
+      "sha256": "89c9ba91eba9bcf20b6b014d98a97cffcb3bef920a23a6d49c82e0419a592059",
+      "bytes": 29800,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/cleanroom-review-1280.webp",
+      "sha256": "a468c1a834055d4843050ebe617ed520adbd8f17d9e6bd271527b2bd54ef1fcc",
+      "bytes": 42146,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/cleanroom-review-480.webp",
+      "sha256": "8535bbcff085db90e1312cdddc7d8b8d83d881c0b4056dcfc7b430f3c7f864e9",
+      "bytes": 8876,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/cleanroom-review-960.webp",
+      "sha256": "639d54fa0d38b808e4bfd2a82d92900ab33077fe30e371207d44100b5fdcfdaa",
+      "bytes": 27378,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/cleanroom-review-card-960.png",
+      "sha256": "93b196b3fdc0983fde374ca308730b2bc3495af0bd049befcb83233fb11fa018",
+      "bytes": 105769,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/companion-active-390.webp",
+      "sha256": "2681e3e3e426cb1659ac59927e6a558b66f38e21066c9aea05e34290610d3f10",
+      "bytes": 17076,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/cv-all-clips-1600.webp",
+      "sha256": "3ffa4137d554b0d374b44e718fe6447e2d2ce068537d79857f2ecac6ec85f2fc",
+      "bytes": 44262,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/cv-all-clips-480.webp",
+      "sha256": "45f5829e91354dc0d65d5067f0b8bd67e475c4261588f239f48edf3dc91b73f8",
+      "bytes": 5844,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/cv-all-clips-960.webp",
+      "sha256": "68de2bb2d57cb13bca14662dac9b8eb6b01d129d8b73983b089fe3ff3b07e1db",
+      "bytes": 19378,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/cv-cleanup-suggestions-1600.webp",
+      "sha256": "5d514df5a5f71a062d97e9b0f71c8f8008a88dbe239dff451e8c99c781cada7a",
+      "bytes": 56804,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/cv-cleanup-suggestions-480.webp",
+      "sha256": "9189b84bf6cd2cd78692ae4def602679c34c596e74192269f2d0c47cff2ea7d7",
+      "bytes": 7766,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/cv-cleanup-suggestions-960.webp",
+      "sha256": "450eadfa38001e37c6fa0a3e4590f9d9c7bc2ec679e51fb560892c302230f73e",
+      "bytes": 25270,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/cv-quick-paste-480.webp",
+      "sha256": "98edcc286fcb1553062c063a101ee9c2017fefa169a317e01b3150b6b18f549f",
+      "bytes": 24988,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/cv-quick-paste-700.webp",
+      "sha256": "7bb08d515a6595c25aa404ef4c0bc9490352a5c59d5c3743e70b13e370a4f252",
+      "bytes": 43322,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/cv-quick-paste-card-960.png",
+      "sha256": "b7991e6b1836d9ec3d028e81a258e286eec2d341730e1daa5b448f9c9aafac87",
+      "bytes": 123318,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/export-complete-1440.webp",
+      "sha256": "08fb0acbeff5f1cecf994d2a7164ebbc940c8427686ddbce3b8a8972d7600dbd",
+      "bytes": 73298,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/export-complete-480.webp",
+      "sha256": "8afabf7808977f2eb13b61096da9d0d97c6e72c133dd4a6c0aa107e8f87b775e",
+      "bytes": 13714,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/export-complete-960.webp",
+      "sha256": "059513e3cfe9215d4cac34c80f6cd81b0d3f497fd006b12ac9a4836918b7b6bc",
+      "bytes": 41314,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/gl-staged-files-1125.webp",
+      "sha256": "2fa880895c501dfe8b67878975a53502cb18b8cc77d5875b9f659db7a2858d01",
+      "bytes": 22188,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/gl-staged-files-480.webp",
+      "sha256": "7a5921cdfb045db9fc1942380efad7fcddf70411526c3de92ad525662d6f38dc",
+      "bytes": 7078,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/gl-staged-files-960.webp",
+      "sha256": "5ed6b553b298a88abbd1a21c2a0779d4275db40de8443d745333385785cba789",
+      "bytes": 18396,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/gl-staged-files-card-960.png",
+      "sha256": "67a5f8bc823dd4e7a616ab52cd59c9bcb69acc3dd9490fbf959754c18d5eca40",
+      "bytes": 52018,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/night-modes-panel-1600.webp",
+      "sha256": "dcb6f92efdfb28d91afb0da434551500428e8a6240fb02059c221178575dd602",
+      "bytes": 53634,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/night-modes-panel-480.webp",
+      "sha256": "8f862fb49efeaa87f0331ece68627687e6386716f4cd7c141200c910b9a411f3",
+      "bytes": 8082,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/night-modes-panel-960.webp",
+      "sha256": "d92edc12f5dddcd90eeee683ec58b991b2562b800f13d30b22778dc2bac8db7d",
+      "bytes": 25030,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/tonight-active-hero-1600.webp",
+      "sha256": "01af86b2fbecafe8627d493dd0632594b240889b40d29130edd924beff58e974",
+      "bytes": 25086,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/tonight-active-hero-480.webp",
+      "sha256": "551ad22b115c167d38912ace8fec124216c0b95519c74696514bd2fcd3510d32",
+      "bytes": 4760,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/tonight-active-hero-960.webp",
+      "sha256": "183f0d75db548340600be31c9ce4ca032cba10b79f2564c61b28bebbf206c5e3",
+      "bytes": 12832,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/tonight-active-hero-card-960.png",
+      "sha256": "c75d59d9d335e37b44c128920e3f5a6724d97250a0532790d15ff93f740556d9",
+      "bytes": 222622,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/v030-forecast-1080.webp",
+      "sha256": "d8206281e3ad3e1df722243ed76ab601d7f1f20b85e7b7cd338976dcc09b435f",
+      "bytes": 84596,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/v030-forecast-480.webp",
+      "sha256": "c600d19c7217da343258e4290a1a104bfa77a0a56872f0110f4f76e22fcfde48",
+      "bytes": 34922,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/v030-forecast-960.webp",
+      "sha256": "d9f85ec27ae31fc1716cfc88ce44e09c4d8bf73607335f0d419aa48dba6066a7",
+      "bytes": 75912,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/v030-plan-1080.webp",
+      "sha256": "8127f630c510a131cefdecfc6e11f492d8234c38c859e52cfcbd87db74eed5b4",
+      "bytes": 105392,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/v030-plan-480.webp",
+      "sha256": "4d6caa39fd4ad37042afaaf78d441ca40cd48cb24010b9e2f64c11e25a3aa8f7",
+      "bytes": 42430,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/v030-plan-960.webp",
+      "sha256": "866fb6154164f2175a435a08a771a966f43164c9f5db7b156af363aa4a7a776e",
+      "bytes": 92978,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/v030-today-1080.webp",
+      "sha256": "ac0f75878d2f029a3f3858b3623bd2407eca4f6fb99c95a25fbba440558b2ede",
+      "bytes": 84796,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/v030-today-480.webp",
+      "sha256": "ea5ae594f859d068dd7e862a6d34a723289cae81a0e37a9afa4c0286666cd923",
+      "bytes": 35038,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/v030-today-960.webp",
+      "sha256": "2b117f2131c20500b9262d42bb900f6822c84cce88fe99c337d05b65d6ee34fb",
+      "bytes": 75302,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/v030-today-card-960.png",
+      "sha256": "5ba588600539320db3146ff99a6ecc97064b06668d5957fd6ef170951029aeb4",
+      "bytes": 77413,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/v030-widgets-1080.webp",
+      "sha256": "598d361652a36cb4d545d3a2fa50b9e0191fb0306302538969717a1969cd5b8c",
+      "bytes": 112016,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/v030-widgets-480.webp",
+      "sha256": "00f80d1dfa889654065f435c379c80a1546c1df17276a16097a36d8f67d0c993",
+      "bytes": 44158,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/v030-widgets-960.webp",
+      "sha256": "ca7466ff97253305fba296fbfcd1766478b79802dad66c8d2358ff613fa90a70",
+      "bytes": 97966,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/workbench-home-1440.webp",
+      "sha256": "ceeceea851270476cee28c54c490de87e358568ee228b0d0334956bfa7414e0f",
+      "bytes": 75146,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/workbench-home-480.webp",
+      "sha256": "3a4a86b881c3fc4a7c6cab9c1272b6684be665b31abd01c264186bfc74933b41",
+      "bytes": 14894,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/workbench-home-960.webp",
+      "sha256": "10503a6c027905089c1ba4d4c526de467aeafbe4b370000d511b70b5fef6eedd",
+      "bytes": 43784,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/workbench-home-card-960.png",
+      "sha256": "fe390305617449c16347708617be38518a538c3bb601eb44ebf825b38e1bdbd3",
+      "bytes": 247623,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/workbench-proof-cards-1440.webp",
+      "sha256": "071cc1b8a88dc1cb6ca7fba81180622a0b083a7e6f9ac07466d815f6fa638ddb",
+      "bytes": 75116,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/workbench-proof-cards-480.webp",
+      "sha256": "19f412a08bfcaea8cb491560d914fdca589924658c628d982eba92887c05a1dd",
+      "bytes": 15144,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "assets/studio/workbench-proof-cards-960.webp",
+      "sha256": "180a1ff1298d987ab6dda9e1bbd727af12b2ba7fe9c3bbe99a6e630c20b0d2d5",
+      "bytes": 44792,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "brand/proof-foundry-logo-horizontal.svg",
+      "sha256": "18ba153040fd6ee18211de41f443109a931d44868f94fd11e23b4fd8a6990a81",
+      "bytes": 1188,
+      "comparison": "utf8-lf",
+      "lfSha256": "18ba153040fd6ee18211de41f443109a931d44868f94fd11e23b4fd8a6990a81",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "brand/proof-foundry-mark.png",
+      "sha256": "622e0569f547bb0843257178c80453e6aafe0c25c1104a1b7e4f3a72aeda7ff6",
+      "bytes": 61023,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "brand/proof-foundry-mark.svg",
+      "sha256": "4065a558f8b855f0ee5bcd1be265277ecc28acc5eee921f09b0b0079269f2dc8",
+      "bytes": 1001,
+      "comparison": "utf8-lf",
+      "lfSha256": "4065a558f8b855f0ee5bcd1be265277ecc28acc5eee921f09b0b0079269f2dc8",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "brand/proof-foundry-social-card.png",
+      "sha256": "d68518fa4b2e62cdbfb18d0e3ea94564b38af24515b546da7942af2c426ee8ca",
+      "bytes": 93673,
+      "comparison": "binary",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "brand/proof-foundry-verified-seal.svg",
+      "sha256": "40191b601aab467638e8e655da653dc12e61f6644ac422e5abe93080048fbd9d",
+      "bytes": 762,
+      "comparison": "utf8-lf",
+      "lfSha256": "40191b601aab467638e8e655da653dc12e61f6644ac422e5abe93080048fbd9d",
+      "origin": "canonical-production-git-object"
+    },
+    {
+      "path": "brand/proof-foundry.theme.json",
+      "sha256": "ffc7d3cf649dff616fc0590e515dcff98c9cb34a79f9222f5363dc0ef758aef7",
+      "bytes": 1953,
+      "comparison": "utf8-lf",
+      "lfSha256": "ffc7d3cf649dff616fc0590e515dcff98c9cb34a79f9222f5363dc0ef758aef7",
+      "origin": "canonical-production-git-object"
+    }
+  ],
+  "additions": [
+    {
+      "path": "assets/binding-foundry/foundry-ledger.webp",
+      "sha256": "2073f7846fbe6242b486a755f4eaeb9dead671ba216a523ce970d2ceb635a76a",
+      "bytes": 201594,
+      "comparison": "binary",
+      "origin": "accepted-owner-package",
+      "packageMember": "candidate-files/assets/binding-foundry/foundry-ledger.webp"
+    },
+    {
+      "path": "assets/binding-foundry/studio-horizon.webp",
+      "sha256": "41f1594618e270b0879d86c574f2015b6da9d20c9dd07da1289173e07b64f363",
+      "bytes": 240710,
+      "comparison": "binary",
+      "origin": "accepted-owner-package",
+      "packageMember": "candidate-files/assets/binding-foundry/studio-horizon.webp"
+    },
+    {
+      "path": "assets/binding-foundry/weather-horizon.webp",
+      "sha256": "f1b59990616064a6d45ec2d76386670e3737a0f20885e158fa0fb6a1a2950c26",
+      "bytes": 161826,
+      "comparison": "binary",
+      "origin": "accepted-owner-package",
+      "packageMember": "candidate-files/assets/binding-foundry/weather-horizon.webp"
+    },
+    {
+      "path": "brand/PF_MARK_G_FORGED.svg",
+      "sha256": "da8bbde069ebe205cdf955fd88162f387a24ed1d0bc649da80df062f22fb88fa",
+      "bytes": 1631,
+      "comparison": "utf8-lf",
+      "lfSha256": "da8bbde069ebe205cdf955fd88162f387a24ed1d0bc649da80df062f22fb88fa",
+      "origin": "accepted-owner-package",
+      "packageMember": "candidate-files/brand/PF_MARK_G_FORGED.svg"
+    },
+    {
+      "path": "brand/PF_MARK_G_MASTER.svg",
+      "sha256": "575d90ae4754216811634d6ab33a3b966b1932e335aff3a04317be03314239a1",
+      "bytes": 471,
+      "comparison": "utf8-lf",
+      "lfSha256": "575d90ae4754216811634d6ab33a3b966b1932e335aff3a04317be03314239a1",
+      "origin": "accepted-owner-package",
+      "packageMember": "candidate-files/brand/PF_MARK_G_MASTER.svg"
+    },
+    {
+      "path": "brand/PF_MARK_G_MONO_DARK.svg",
+      "sha256": "9ebbb300e52016494a63cada1c7aba7d01ecc70c3e6a5ab2227ee2dd28ada6fe",
+      "bytes": 471,
+      "comparison": "utf8-lf",
+      "lfSha256": "9ebbb300e52016494a63cada1c7aba7d01ecc70c3e6a5ab2227ee2dd28ada6fe",
+      "origin": "accepted-owner-package",
+      "packageMember": "candidate-files/brand/PF_MARK_G_MONO_DARK.svg"
+    },
+    {
+      "path": "brand/PF_MARK_G_MONO_LIGHT.svg",
+      "sha256": "9cdf61259893ae2ed5515a2661dcb20498381a6e913543c080ee4d1c590b1e17",
+      "bytes": 471,
+      "comparison": "utf8-lf",
+      "lfSha256": "9cdf61259893ae2ed5515a2661dcb20498381a6e913543c080ee4d1c590b1e17",
+      "origin": "accepted-owner-package",
+      "packageMember": "candidate-files/brand/PF_MARK_G_MONO_LIGHT.svg"
+    }
+  ],
+  "excludedReviewArtifacts": [
+    {
+      "path": "brand/PF_MARK_A_FORGED.svg",
+      "sha256": "b5969617c5f097319607d7c6f9afae7091bf8cc1cfb7ed05efa61bc9c34498a3",
+      "bytes": 1922,
+      "comparison": "utf8-lf",
+      "lfSha256": "b5969617c5f097319607d7c6f9afae7091bf8cc1cfb7ed05efa61bc9c34498a3",
+      "origin": "original-entry-inventory",
+      "reason": "Unselected PF identity experiment or contact sheet; owner authorized selected G only."
+    },
+    {
+      "path": "brand/PF_MARK_A_MASTER.svg",
+      "sha256": "c2d750ac8cd38891a67670ed2f16160a904d10f5c66b01b1ea80a8e9a8ad564f",
+      "bytes": 940,
+      "comparison": "utf8-lf",
+      "lfSha256": "c2d750ac8cd38891a67670ed2f16160a904d10f5c66b01b1ea80a8e9a8ad564f",
+      "origin": "original-entry-inventory",
+      "reason": "Unselected PF identity experiment or contact sheet; owner authorized selected G only."
+    },
+    {
+      "path": "brand/PF_MARK_B_FORGED.svg",
+      "sha256": "2d556dd7103f3331b1d03d13b59b42967380fbdd14b879eefc1477aa3a6ff5a7",
+      "bytes": 1932,
+      "comparison": "utf8-lf",
+      "lfSha256": "2d556dd7103f3331b1d03d13b59b42967380fbdd14b879eefc1477aa3a6ff5a7",
+      "origin": "original-entry-inventory",
+      "reason": "Unselected PF identity experiment or contact sheet; owner authorized selected G only."
+    },
+    {
+      "path": "brand/PF_MARK_B_MASTER.svg",
+      "sha256": "49410eecccc64b21baa5e4c32428db194fa77d37f48888af4d344421009592d3",
+      "bytes": 965,
+      "comparison": "utf8-lf",
+      "lfSha256": "49410eecccc64b21baa5e4c32428db194fa77d37f48888af4d344421009592d3",
+      "origin": "original-entry-inventory",
+      "reason": "Unselected PF identity experiment or contact sheet; owner authorized selected G only."
+    },
+    {
+      "path": "brand/PF_MARK_C_FORGED.svg",
+      "sha256": "bc0ec03e1cc33868eb5d50cf7fc7576a3bd9bf15b04c8eaad372264606e6dc74",
+      "bytes": 1835,
+      "comparison": "utf8-lf",
+      "lfSha256": "bc0ec03e1cc33868eb5d50cf7fc7576a3bd9bf15b04c8eaad372264606e6dc74",
+      "origin": "original-entry-inventory",
+      "reason": "Unselected PF identity experiment or contact sheet; owner authorized selected G only."
+    },
+    {
+      "path": "brand/PF_MARK_C_MASTER.svg",
+      "sha256": "b486e5d2965734ef619c5d537d1d20f999e27da9c5ec3b801488fd8fcd58ab6d",
+      "bytes": 925,
+      "comparison": "utf8-lf",
+      "lfSha256": "b486e5d2965734ef619c5d537d1d20f999e27da9c5ec3b801488fd8fcd58ab6d",
+      "origin": "original-entry-inventory",
+      "reason": "Unselected PF identity experiment or contact sheet; owner authorized selected G only."
+    },
+    {
+      "path": "brand/PF_MARK_D_FORGED.svg",
+      "sha256": "3f8b655d42d3c3964ef8a4c845128ffbbdf08a20d905fc8933506791ba540ac9",
+      "bytes": 1654,
+      "comparison": "utf8-lf",
+      "lfSha256": "3f8b655d42d3c3964ef8a4c845128ffbbdf08a20d905fc8933506791ba540ac9",
+      "origin": "original-entry-inventory",
+      "reason": "Unselected PF identity experiment or contact sheet; owner authorized selected G only."
+    },
+    {
+      "path": "brand/PF_MARK_D_MASTER.svg",
+      "sha256": "22f80cbb92d30222453e629d32f85f62322b7faa78661d7147585d747e658a31",
+      "bytes": 597,
+      "comparison": "utf8-lf",
+      "lfSha256": "22f80cbb92d30222453e629d32f85f62322b7faa78661d7147585d747e658a31",
+      "origin": "original-entry-inventory",
+      "reason": "Unselected PF identity experiment or contact sheet; owner authorized selected G only."
+    },
+    {
+      "path": "brand/PF_MARK_E_FORGED.svg",
+      "sha256": "baded72bbc03514652ada4a3f52f23cd8a4a37ed5d8eaf5705bbdb405f9171c0",
+      "bytes": 1146,
+      "comparison": "utf8-lf",
+      "lfSha256": "baded72bbc03514652ada4a3f52f23cd8a4a37ed5d8eaf5705bbdb405f9171c0",
+      "origin": "original-entry-inventory",
+      "reason": "Unselected PF identity experiment or contact sheet; owner authorized selected G only."
+    },
+    {
+      "path": "brand/PF_MARK_E_MASTER.svg",
+      "sha256": "98a100f18ecf0b2c07513e53631568ca0c654b80b59c325263cc8b6e662ac762",
+      "bytes": 541,
+      "comparison": "utf8-lf",
+      "lfSha256": "98a100f18ecf0b2c07513e53631568ca0c654b80b59c325263cc8b6e662ac762",
+      "origin": "original-entry-inventory",
+      "reason": "Unselected PF identity experiment or contact sheet; owner authorized selected G only."
+    },
+    {
+      "path": "brand/PF_MARK_FORGED_HERO.svg",
+      "sha256": "4bdb76cdf6a50c7454b3e629ef03042718e8ef88cfc65ce414609881be55f9e4",
+      "bytes": 2409,
+      "comparison": "utf8-lf",
+      "lfSha256": "4bdb76cdf6a50c7454b3e629ef03042718e8ef88cfc65ce414609881be55f9e4",
+      "origin": "original-entry-inventory",
+      "reason": "Unselected PF identity experiment or contact sheet; owner authorized selected G only."
+    },
+    {
+      "path": "brand/PF_MARK_F_FORGED.svg",
+      "sha256": "88e6545c19f4a2f3d0a4712dbd7da4d4d47d94b58a020d0b0dcedd71ea82228a",
+      "bytes": 1185,
+      "comparison": "utf8-lf",
+      "lfSha256": "88e6545c19f4a2f3d0a4712dbd7da4d4d47d94b58a020d0b0dcedd71ea82228a",
+      "origin": "original-entry-inventory",
+      "reason": "Unselected PF identity experiment or contact sheet; owner authorized selected G only."
+    },
+    {
+      "path": "brand/PF_MARK_F_MASTER.svg",
+      "sha256": "a8a4c3ac527a3440e6021a1f2bee4345a1579103a6ec558e6c60fd435b57f358",
+      "bytes": 614,
+      "comparison": "utf8-lf",
+      "lfSha256": "a8a4c3ac527a3440e6021a1f2bee4345a1579103a6ec558e6c60fd435b57f358",
+      "origin": "original-entry-inventory",
+      "reason": "Unselected PF identity experiment or contact sheet; owner authorized selected G only."
+    },
+    {
+      "path": "brand/PF_MARK_G_CONTACT_SHEET.png",
+      "sha256": "efabd1051c4903d16e6dc9090919498511d1e9f39a846df90942ae2fda39bded",
+      "bytes": 11466,
+      "comparison": "binary",
+      "origin": "original-entry-inventory",
+      "reason": "Unselected PF identity experiment or contact sheet; owner authorized selected G only."
+    },
+    {
+      "path": "brand/PF_MARK_MASTER.svg",
+      "sha256": "605d1a0c9f8a50feee5d5713652181ec18379ea1595df6ac74727a58f3f8da8d",
+      "bytes": 1272,
+      "comparison": "utf8-lf",
+      "lfSha256": "605d1a0c9f8a50feee5d5713652181ec18379ea1595df6ac74727a58f3f8da8d",
+      "origin": "original-entry-inventory",
+      "reason": "Unselected PF identity experiment or contact sheet; owner authorized selected G only."
+    },
+    {
+      "path": "brand/PF_MARK_MASTER_MONO_DARK.svg",
+      "sha256": "83e9319bca13f829aee4929231025fcac648ab4ff35af297c8bad961a580f7b7",
+      "bytes": 973,
+      "comparison": "utf8-lf",
+      "lfSha256": "83e9319bca13f829aee4929231025fcac648ab4ff35af297c8bad961a580f7b7",
+      "origin": "original-entry-inventory",
+      "reason": "Unselected PF identity experiment or contact sheet; owner authorized selected G only."
+    },
+    {
+      "path": "brand/PF_MARK_MASTER_MONO_LIGHT.svg",
+      "sha256": "0dcfe73b4add469a423573e39b534726be2128b608c81717795241f369603ac0",
+      "bytes": 974,
+      "comparison": "utf8-lf",
+      "lfSha256": "0dcfe73b4add469a423573e39b534726be2128b608c81717795241f369603ac0",
+      "origin": "original-entry-inventory",
+      "reason": "Unselected PF identity experiment or contact sheet; owner authorized selected G only."
+    },
+    {
+      "path": "brand/PF_MARK_SELECTION_SHEET.html",
+      "sha256": "6807599e051c8972e2dda56624827fd50b132f61f6e38676d6f794e0157e1ba9",
+      "bytes": 8248,
+      "comparison": "utf8-lf",
+      "lfSha256": "6807599e051c8972e2dda56624827fd50b132f61f6e38676d6f794e0157e1ba9",
+      "origin": "original-entry-inventory",
+      "reason": "Unselected PF identity experiment or contact sheet; owner authorized selected G only."
+    },
+    {
+      "path": "brand/PF_MARK_SELECTION_SHEET_R2.html",
+      "sha256": "8aa151cb6fb6b714d92a982c30a99587ec4187206334d92314c3ac72b246ea0a",
+      "bytes": 8300,
+      "comparison": "utf8-lf",
+      "lfSha256": "8aa151cb6fb6b714d92a982c30a99587ec4187206334d92314c3ac72b246ea0a",
+      "origin": "original-entry-inventory",
+      "reason": "Unselected PF identity experiment or contact sheet; owner authorized selected G only."
+    },
+    {
+      "path": "brand/pf-mark-contact-sheet.html",
+      "sha256": "855ab2e37c02d673f7c37437a42469615865ffd3eb7f8d7f7682471451e8c228",
+      "bytes": 2583,
+      "comparison": "utf8-lf",
+      "lfSha256": "855ab2e37c02d673f7c37437a42469615865ffd3eb7f8d7f7682471451e8c228",
+      "origin": "original-entry-inventory",
+      "reason": "Unselected PF identity experiment or contact sheet; owner authorized selected G only."
+    }
+  ]
+}

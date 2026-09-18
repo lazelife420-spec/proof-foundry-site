@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Forged Proof Foundry PF mark">
+<defs>
+ <linearGradient id="steel" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f1ede3"/><stop offset=".24" stop-color="#8c8172"/><stop offset=".5" stop-color="#3b3a3b"/><stop offset=".72" stop-color="#c5b49b"/><stop offset="1" stop-color="#5a4b3f"/></linearGradient>
+ <linearGradient id="fire" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe0a0"/><stop offset=".25" stop-color="#d6a84f"/><stop offset=".7" stop-color="#8f522b"/><stop offset="1" stop-color="#3b251b"/></linearGradient>
+ <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency=".6" numOctaves="2" seed="8" result="n"/><feComposite in="n" in2="SourceGraphic" operator="in" result="t"/><feBlend in="SourceGraphic" in2="t" mode="multiply"/></filter>
+</defs>
+<path d="M42 34H116C157 34 181 56 181 91C181 126 157 148 116 148H82V222H42V34ZM82 70V112H115C132 112 141 104 141 91C141 78 132 70 115 70H82Z" fill="url(#steel)" stroke="#1c1714" stroke-width="4" filter="url(#rough)"/>
+<path d="M146 34H226V72H186V106H218V143H186V222H146V34Z" fill="url(#fire)" stroke="#25170e" stroke-width="4" filter="url(#rough)"/>
+<path d="M138 70H186V106H138Z" fill="#f0e2cb" opacity=".92"/>
+<path d="M150 38L222 38" stroke="#ffb54a" stroke-width="3" opacity=".72" filter="url(#glow)"/>
+<path d="M48 38L112 38" stroke="#f7d7a1" stroke-width="2" opacity=".4"/>
+</svg>

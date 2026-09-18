@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 1,
+  "acceptedOwnerPackageSha256": "3416bfbd2159c5cb8c1f659062edebf9fbcaf6b44897fd459be050aae2bd1ec8",
+  "acceptedSummaryMember": "tests/final/summary.json",
+  "acceptedSummarySha256": "96ad51a92f8edc50e7ec61102842ee741287e63c8a65536530bd577a34b37e93",
+  "historicalBindingSha256": "44c2c840b8df874fabe75a556710cd08d84b6d6cf52188c2faa90f47e9d3cebc",
+  "tests": [
+    {
+      "script": "test-customer-trust-p2-1.ps1",
+      "acceptedAssertions": 58,
+      "assertions": 58,
+      "passed": 57,
+      "failed": 1,
+      "exitCode": 1
+    },
+    {
+      "script": "test-customer-trust-p2-2.ps1",
+      "acceptedAssertions": 54,
+      "assertions": 54,
+      "passed": 54,
+      "failed": 0,
+      "exitCode": 0
+    },
+    {
+      "script": "test-h2-material-rhythm.ps1",
+      "acceptedAssertions": 25,
+      "assertions": 25,
+      "passed": 24,
+      "failed": 1,
+      "exitCode": 1
+    },
+    {
+      "script": "test-h3-trust-to-action.ps1",
+      "acceptedAssertions": 56,
+      "assertions": 56,
+      "passed": 55,
+      "failed": 1,
+      "exitCode": 1
+    },
+    {
+      "script": "test-h4-metadata-discovery.ps1",
+      "acceptedAssertions": 292,
+      "assertions": 292,
+      "passed": 292,
+      "failed": 0,
+      "exitCode": 0
+    },
+    {
+      "script": "test-h5-jsonld-truth.ps1",
+      "acceptedAssertions": 71,
+      "assertions": 71,
+      "passed": 71,
+      "failed": 0,
+      "exitCode": 0
+    },
+    {
+      "script": "test-h6-p4-polish.ps1",
+      "acceptedAssertions": 8,
+      "assertions": 8,
+      "passed": 8,
+      "failed": 0,
+      "exitCode": 0
+    },
+    {
+      "script": "test-h7a-design-pilot.ps1",
+      "acceptedAssertions": 29,
+      "assertions": 29,
+      "passed": 24,
+      "failed": 5,
+      "exitCode": 1
+    },
+    {
+      "script": "test-h7b-product-pages.ps1",
+      "acceptedAssertions": 59,
+      "assertions": 59,
+      "passed": 59,
+      "failed": 0,
+      "exitCode": 0
+    },
+    {
+      "script": "test-h7c-product-pages.ps1",
+      "acceptedAssertions": 53,
+      "assertions": 53,
+      "passed": 53,
+      "failed": 0,
+      "exitCode": 0
+    },
+    {
+      "script": "test-h8b-continuity-and-discovery.ps1",
+      "acceptedAssertions": 45,
+      "assertions": 45,
+      "passed": 45,
+      "failed": 0,
+      "exitCode": 0
+    },
+    {
+      "script": "test-h9-binding.ps1",
+      "acceptedAssertions": 291,
+      "assertions": 273,
+      "passed": 273,
+      "failed": 0,
+      "exitCode": 0
+    },
+    {
+      "script": "test-h9-cinematic.ps1",
+      "acceptedAssertions": 271,
+      "assertions": 251,
+      "passed": 248,
+      "failed": 3,
+      "exitCode": 1
+    },
+    {
+      "script": "test-h9-homepage.ps1",
+      "acceptedAssertions": 31,
+      "assertions": 31,
+      "passed": 29,
+      "failed": 2,
+      "exitCode": 1
+    },
+    {
+      "script": "test-h9-production-reconciliation.ps1",
+      "acceptedAssertions": 52,
+      "assertions": 61,
+      "passed": 57,
+      "failed": 4,
+      "exitCode": 1
+    },
+    {
+      "script": "test-receipts-invariants.ps1",
+      "acceptedAssertions": 54,
+      "assertions": 54,
+      "passed": 54,
+      "failed": 0,
+      "exitCode": 0
+    },
+    {
+      "script": "test-release-truth.ps1",
+      "acceptedAssertions": 29,
+      "assertions": 29,
+      "passed": 29,
+      "failed": 0,
+      "exitCode": 0
+    },
+    {
+      "script": "test-signature-home.ps1",
+      "acceptedAssertions": 15,
+      "assertions": 15,
+      "passed": 14,
+      "failed": 1,
+      "exitCode": 1
+    }
+  ],
+  "expectedAssertions": 1464,
+  "expectedPassed": 1446,
+  "expectedFailed": 18,
+  "expectedBrowserAssertions": 378,
+  "adjustments": [
+    {
+      "script": "test-h9-binding.ps1",
+      "excludedReviewCustody": 22,
+      "newMandatoryCustody": 4
+    },
+    {
+      "script": "test-h9-cinematic.ps1",
+      "excludedReviewCustody": 20,
+      "newMandatoryCustody": 0
+    },
+    {
+      "script": "test-h9-production-reconciliation.ps1",
+      "excludedReviewCustody": 0,
+      "newMandatoryCustody": 9
+    }
+  ]
+}

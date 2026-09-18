@@ -161,8 +161,15 @@ Write-Host ""
 Write-Host "--- TEST 5: equal timestamps resolve deterministically ---"
 $tieMutate = {
   param($o)
-  ($o.products | Where-Object { $_.id -eq 'cache-vault' }).verification.verifiedAt = '2026-09-09'
-  ($o.products | Where-Object { $_.id -eq 'ghostlayer' }).verification.verifiedAt = '2026-09-09'
+  # The previous 2026-09-09 fixture ceased to be the maximum after later releases.
+  # Make every non-target event earlier so the test truly exercises a tie.
+  foreach ($p in $o.products) {
+    if ($p.verification.verifiedAt) { $p.verification.verifiedAt = '2026-01-01' }
+    if ($p.release.publishedAt) { $p.release.publishedAt = '2026-01-01' }
+    if ($p.lastVerified) { $p.lastVerified = '2026-01-01' }
+  }
+  ($o.products | Where-Object { $_.id -eq 'cache-vault' }).verification.verifiedAt = '2026-12-30'
+  ($o.products | Where-Object { $_.id -eq 'ghostlayer' }).verification.verifiedAt = '2026-12-30'
   $o
 }
 $r1 = Invoke-FixtureBuild 'tie1' $tieMutate
@@ -174,7 +181,7 @@ if (($r1.Exit -eq 0) -and ($r2.Exit -eq 0)) {
   Assert 'tie resolves to a named product'   ($m1.Success -and $m2.Success)
   Assert 'tie resolves identically each run' ($m1.Groups[1].Value -eq $m2.Groups[1].Value) "run1='$($m1.Groups[1].Value)' run2='$($m2.Groups[1].Value)'"
   Assert 'tie winner is first in manifest order (cache-vault)' ($m1.Groups[1].Value -match 'Cache Vault') "got '$($m1.Groups[1].Value)'"
-  Assert 'tie date is the shared maximum'    ($r1.ProofHtml -match '2026-09-09')
+  Assert 'tie date is the shared maximum'    ($r1.ProofHtml -match 'Latest verification event:.*?<time datetime="2026-12-30">')
 }
 Write-Host ""
 

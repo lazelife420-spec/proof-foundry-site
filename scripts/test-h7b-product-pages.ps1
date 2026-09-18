@@ -113,10 +113,10 @@ Assert-Condition ($cv -match 'id="faq"') "CV - FAQ retained in support tier"
 Assert-Condition ($cv.IndexOf('id="faq"') -gt $cv.IndexOf('id="download"')) "CV - FAQ sits in support tier after get block"
 
 # --- truth anchoring ---
-Assert-Condition ($cv -match 'https://downloads\.theprooffoundry\.com/cache-vault/v0\.2\.3/CacheVault-v0\.2\.3-windows\.zip') "CV - v0.2.3 Windows ZIP URL intact"
-$cvShaMatches = ([regex]::Matches($cv, '28262e491ad1f7b3f6f4c9f28eabfe2899a61af7c7a26c17c4915d604e00371d')).Count
-Assert-Condition ($cvShaMatches -eq 2) "CV - v0.2.3 SHA-256 rendered by exactly one canonical verify block"
-Assert-Condition ($cv -match 'v0\.2\.3 is the current public Windows release') "CV - final public release state intact"
+Assert-Condition ($cv -match 'https://downloads\.theprooffoundry\.com/cache-vault/v0\.2\.4/CacheVault-v0\.2\.4-windows\.zip') "CV - v0.2.4 Windows ZIP URL intact"
+$cvShaMatches = ([regex]::Matches($cv, '717ed13efd3d8d4e5a16d4e412ed5be0fd20b0219918f913d7d2b44f021cae7e')).Count
+Assert-Condition ($cvShaMatches -eq 2) "CV - v0.2.4 SHA-256 rendered by exactly one canonical verify block"
+Assert-Condition ($cv -match 'v0\.2\.4 is the current public Windows release') "CV - final public release state intact"
 Assert-Condition ($rg -match 'Download v1\.1\.0 Developer Pilot') "RG - canonical pilot download action intact"
 
 # --- Reality Gate recovery evidence labeling guards ---

@@ -53,7 +53,7 @@ function Test-OfferAuthorized($product) {
 
 Write-Host "=== H5 JSON-LD TRUTH ASSERTIONS ==="
 
-$allRoutes = @('', 'reality-gate', 'forgecast', 'lights-out', 'cache-vault', 'cleanroom', 'ghostlayer', 'proofshot', 'founders', 'proof', 'roadmap', 'support')
+$allRoutes = @('', 'software', 'reality-gate', 'forgecast', 'lights-out', 'cache-vault', 'cleanroom', 'ghostlayer', 'proofshot', 'founders', 'proof', 'roadmap', 'support', 'about', 'proof-standard')
 $jsonldRoutes = @()
 
 foreach ($route in $allRoutes) {
@@ -82,7 +82,7 @@ foreach ($p in $manifest.products) {
   if ($emitsOffer) {
     Assert-Condition (Test-OfferAuthorized $p) "F9: $($p.id) emits an Offer and canonical truth authorizes it (public release + downloadable artifact)"
   } else {
-    Assert-Condition $true "F9: $($p.id) emits no Offer (nothing to offer while no downloadable artifact is authorized)"
+    Assert-Condition (-not $emitsOffer) "F9: $($p.id) makes no schema.org Offer claim"
   }
 }
 
@@ -103,8 +103,8 @@ Assert-Condition ($psBlock -notmatch '"offers"') "F9: ProofShot JSON-LD no longe
 Assert-Condition ($psJson.name -eq 'ProofShot') "F9: ProofShot JSON-LD identity (name) preserved"
 Assert-Condition ($psJson.author.name -eq 'The Proof Foundry') "F9: ProofShot JSON-LD author preserved"
 Assert-Condition (-not [string]::IsNullOrWhiteSpace($psJson.description)) "F9: ProofShot JSON-LD description preserved"
-Assert-Condition ($ps -match 'No public ProofShot release') "F9: ProofShot visible copy still states no-public-release truth"
-Assert-Condition ($ps -match 'no changelog yet') "H3 guard: ProofShot explicit no-changelog statement intact"
+Assert-Condition ($ps -match 'Download ProofShot v2\.0\.0' -and $ps -notmatch 'No public ProofShot release') "F9: ProofShot visible copy states its public v2.0.0 release"
+Assert-Condition ($ps -match 'href="#release-status"' -and $ps -match 'id="release-status"' -and $ps -notmatch 'no changelog yet') "H3 guard: ProofShot release-details path replaces the no-release statement"
 
 # Meta-layer consistency: meta descriptions must not contradict structured data
 Assert-Condition (@(Get-JsonLdBlocks $ps)[0] -notmatch 'available|in stock|InStock') "F9: ProofShot JSON-LD carries no availability language"
@@ -117,8 +117,10 @@ Assert-Condition ($rg -match 'name="robots"') "H4 guard: Reality Gate robots met
 Assert-Condition ($lo -match 'Install, update, uninstall &amp; leftover data') "H3 guard: Lights Out onboarding block intact"
 Assert-Condition ($lo -match 'href="#release-note"') "H3 guard: Lights Out what-changed link intact"
 
-# Canonical truth source untouched by H5
-Assert-Condition ((git -C $root status --porcelain -- site-manifest.json) -eq $null) "truth: site-manifest.json untouched by H5"
+# H9 may change navigation while all current production product truth is frozen.
+# A git-clean check would reject every authorized uncommitted review candidate.
+$canonical = (git -C $root show 34a291d78fa92f1a18cf76cef3ee56b391186e77:site-manifest.json) -join "`n" | ConvertFrom-Json
+Assert-Condition (($manifest.products | ConvertTo-Json -Depth 30 -Compress) -ceq ($canonical.products | ConvertTo-Json -Depth 30 -Compress)) "truth: every product equals current production, including all release fields"
 
 Write-Host ""
 Write-Host "=== RESULT: $($script:passed) passed, $($script:failed) failed ==="

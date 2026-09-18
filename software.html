@@ -1,0 +1,59 @@
+<!doctype html>
+<!-- @page software -->
+<html lang="en"><head>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Software — The Proof Foundry</title>
+<meta content="Browse all seven Proof Foundry tools by job, platform, and release state. Compare products and inspect exact availability." name="description"/>
+<meta content="index, follow" name="robots"/><meta content="#07090b" name="theme-color"/>
+<link href="https://theprooffoundry.com/software/" rel="canonical"/>
+<meta content="Software — The Proof Foundry" property="og:title"/><meta content="Browse all seven Proof Foundry tools by job, platform, and release state." property="og:description"/><meta content="website" property="og:type"/><meta content="https://theprooffoundry.com/software/" property="og:url"/><meta content="The Proof Foundry" property="og:site_name"/><meta content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" property="og:image"/><meta content="summary_large_image" name="twitter:card"/><meta content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" name="twitter:image"/>
+<link href="/brand/PF_MARK_G_MASTER.svg" rel="icon" type="image/svg+xml"/><link href="/brand/proof-foundry-mark.png" rel="apple-touch-icon"/>
+<link href="/styles.css" rel="stylesheet"/><link href="/studio.css" rel="stylesheet"/><link href="/experience.css" rel="stylesheet"/><link href="/h9-software.css" rel="stylesheet"/>
+</head><body class="studio storefront software-catalog-page">
+<!-- @include header -->
+<main id="main-content">
+<section class="h9-software-hero">
+  <div class="h9-software-wrap">
+    <p class="h9-software-kicker">The Proof Foundry / Software</p>
+    <h1>Find your tool.</h1>
+    <p>Seven tools for work and everyday life. Find a match by job or platform, then compare the details.</p>
+  </div>
+</section>
+<section id="products" class="h9-software-body" aria-labelledby="catalog-title">
+<div class="h9-software-wrap">
+  <div class="h9-catalog-heading">
+    <h2 id="catalog-title">All software</h2>
+    <p>Reality Gate is a Developer Pilot. App previews may show earlier builds; ProofShot's preview retains its earlier HyperSnatch name. Current public versions are listed below.</p>
+  </div>
+  <div class="h9-product-finder" data-h9-enhance hidden>
+    <div class="h9-search">
+      <label for="product-search">Search software</label>
+      <div class="h9-search-field">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>
+        <input id="product-search" type="search" placeholder="Name, task, or version" autocomplete="off" spellcheck="false" aria-controls="software-results"/>
+        <button id="product-search-clear" type="button" aria-label="Clear software search" hidden>Clear</button>
+      </div>
+    </div>
+    <div class="finder-platform">
+      <label for="platform-filter">Platform</label>
+      <select id="platform-filter" aria-controls="software-results"><option value="all">All platforms</option><option value="windows">Windows</option><option value="android">Android</option></select>
+    </div>
+    <div class="finder-intents" role="group" aria-label="Filter by job">
+      <button type="button" data-intent="all" aria-pressed="true" aria-controls="software-results">All jobs</button>
+      <button type="button" data-intent="memory" aria-pressed="false" aria-controls="software-results">Files &amp; memory</button>
+      <button type="button" data-intent="everyday" aria-pressed="false" aria-controls="software-results">Everyday</button>
+      <button type="button" data-intent="build" aria-pressed="false" aria-controls="software-results">Build &amp; capture</button>
+    </div>
+    <div class="h9-finder-summary"><span class="finder-count" role="status" aria-live="polite" aria-atomic="true">7 products</span><button type="button" data-filter-reset disabled>Reset filters</button></div>
+    <p class="h9-compare-hint">Choose up to three tools to compare.</p>
+  </div>
+  <div class="products-grid" id="software-results">
+<!-- @all-products -->
+  </div>
+  <div class="finder-empty" hidden><h3>No matching tools.</h3><p>Try a different search, job, or platform.</p><button type="button" data-filter-reset>Reset filters</button></div>
+</div>
+</section>
+</main>
+<!-- @include footer -->
+<script src="/experience.js" type="module"></script><script src="/h9-software.js" type="module"></script><script src="/site.js" type="module"></script>
+</body></html>

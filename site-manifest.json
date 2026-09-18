@@ -45,7 +45,7 @@
     {
       "id": "foundry",
       "label": "Taking shape",
-      "note": "A look inside the workbench. ProofShot is still in development.",
+      "note": "A look inside the workbench. ProofShot v2.0.0 is publicly available for Windows.",
       "availability": [
         "NO_PUBLIC_RELEASE"
       ]
@@ -84,7 +84,7 @@
     {
       "id": "products",
       "label": "Software",
-      "href": "/#products"
+      "href": "/software/"
     },
     {
       "id": "roadmap",
@@ -104,7 +104,7 @@
   ],
   "navCta": {
     "label": "Find your tool",
-    "href": "/#products"
+    "href": "/software/"
   },
   "products": [
     {

@@ -1,0 +1,83 @@
+--- accepted/scripts/test-h9-binding.ps1
++++ portable/scripts/test-h9-binding.ps1
+@@ -19,7 +19,8 @@
+ $manifest = (Read-Source 'site-manifest.json') | ConvertFrom-Json
+ $canonical = ((& git -C $Root show "${production}:site-manifest.json") -join "`n") | ConvertFrom-Json
+ $registry = (Read-Built 'proof/index.json') | ConvertFrom-Json
+-$entry = (Read-Source 'receipts/h9-binding-20260918/entry-source-inventory.json') | ConvertFrom-Json
++. (Join-Path $Root 'scripts/fixtures/h9/custody.ps1')
++$custody = (Read-Source 'scripts/fixtures/h9/binding-custody.json') | ConvertFrom-Json
+ Write-Host '=== CURRENT H9 BINDING GUARD ==='
+ Assert-Binding 'authority: canonical master is still the inspected production commit' ((& git -C $Root rev-parse master) -ceq $production)
+ Assert-Binding 'authority: complete product objects equal current production' ((Json $manifest.products) -ceq (Json $canonical.products))
+@@ -30,11 +31,9 @@
+   Assert-Binding "truth: $($product.id) registry release/status/candidate parity" ((Json $actual.release) -ceq (Json $expectedRelease))
+   Assert-Binding "truth: $($product.id) registry artifact URLs/digests/signing/size parity" ((Json $actual.artifacts) -ceq (Json $product.artifacts))
+ }
+-$frozen = @('about.html','proof-standard.html','proof.html','founders.html','roadmap.html','reality-gate.html','lights-out.html','cleanroom.html','ghostlayer.html','forgecast.html','proofshot.html','cache-vault.html','support.html','404.html','styles.css','studio.css','signature.css','experience.css','product-page.css','site.js','experience.js','partials/header.html','partials/footer.html','partials/product-card.html','_redirects','sitemap.xml','scripts/Verify-PublicSite.ps1','software.html','h9-software.css','h9-software.js')
+-foreach ($file in $entry) {
+-  if ($file.path -in $frozen -or $file.path -like 'scripts/test-*.ps1' -or $file.path -like 'scripts/capture-*.mjs' -or $file.path -like 'assets/*' -or $file.path -like 'brand/*') {
+-    Assert-Binding "custody: entry bytes preserved for $($file.path)" ((Digest $file.path) -ceq $file.sha256)
+-  }
++# The fixture retains the original baseline hashes and explicitly accounts for excluded review assets.
++foreach ($file in $custody.entries) {
++  Assert-Binding "custody: entry bytes preserved for $($file.path)" (Test-H9Custody $Root $file)
+ }
+ $expectedIds = @('cache-vault','reality-gate','forgecast','lights-out','cleanroom','ghostlayer','proofshot')
+ foreach ($page in @(@{name='homepage';html=$homeHtml},@{name='software';html=$software})) {
+--- accepted/scripts/test-h9-cinematic.ps1
++++ portable/scripts/test-h9-cinematic.ps1
+@@ -19,7 +19,8 @@
+ $manifest = (Read-Source 'site-manifest.json') | ConvertFrom-Json
+ $canonical = ((& git -C $Root show "${production}:site-manifest.json") -join "`n") | ConvertFrom-Json
+ $registry = (Read-Built 'proof/index.json') | ConvertFrom-Json
+-$entry = (Read-Source 'receipts/h9-11of10-20260918/entry-source-inventory.json') | ConvertFrom-Json
++. (Join-Path $Root 'scripts/fixtures/h9/custody.ps1')
++$custody = (Read-Source 'scripts/fixtures/h9/cinematic-custody.json') | ConvertFrom-Json
+ Write-Host '=== CURRENT H9 CINEMATIC GUARD ==='
+ Assert-Cinematic 'authority: canonical master is still the inspected production commit' ((& git -C $Root rev-parse master) -ceq $production)
+ Assert-Cinematic 'authority: complete product objects equal current production' ((Json $manifest.products) -ceq (Json $canonical.products))
+@@ -30,11 +31,9 @@
+   Assert-Cinematic "truth: $($product.id) registry release/status/candidate parity" ((Json $actual.release) -ceq (Json $expectedRelease))
+   Assert-Cinematic "truth: $($product.id) registry artifact URLs/digests/signing/size parity" ((Json $actual.artifacts) -ceq (Json $product.artifacts))
+ }
+-$frozen = @('about.html','proof-standard.html','proof.html','founders.html','roadmap.html','reality-gate.html','lights-out.html','cleanroom.html','ghostlayer.html','forgecast.html','proofshot.html','cache-vault.html','support.html','404.html','styles.css','studio.css','signature.css','experience.css','product-page.css','site.js','experience.js','partials/header.html','partials/footer.html','partials/product-card.html','_redirects','sitemap.xml','scripts/Verify-PublicSite.ps1')
+-foreach ($file in $entry) {
+-  if ($file.path -in $frozen -or $file.path -like 'scripts/test-*.ps1' -or $file.path -like 'assets/*' -or $file.path -like 'brand/*') {
+-    Assert-Cinematic "custody: entry bytes preserved for $($file.path)" ((Digest $file.path) -ceq $file.sha256)
+-  }
++# The fixture retains the original baseline hashes and explicitly accounts for excluded review assets.
++foreach ($file in $custody.entries) {
++  Assert-Cinematic "custody: entry bytes preserved for $($file.path)" (Test-H9Custody $Root $file)
+ }
+ $expectedIds = @('cache-vault','reality-gate','forgecast','lights-out','cleanroom','ghostlayer','proofshot')
+ foreach ($page in @(@{name='homepage';html=$homeHtml},@{name='software';html=$software})) {
+--- accepted/scripts/test-h9-production-reconciliation.ps1
++++ portable/scripts/test-h9-production-reconciliation.ps1
+@@ -49,8 +49,25 @@
+ foreach ($path in $frozen) {
+   Assert-Reconciled "${path}: current production source preserved" ((Read-Source $path) -ceq (Read-Production $path))
+ }
+-$assetChanges = @(& git -C $Root diff --name-only $production -- assets brand)
++. (Join-Path $Root 'scripts/fixtures/h9/custody.ps1')
++$assetCustody = Get-Content (Join-Path $Root 'scripts/fixtures/h9/canonical-assets.json') -Raw -Encoding UTF8 | ConvertFrom-Json
++# Check actual source bytes, not the original worktree's index when qualifying an isolated staged tree.
++$assetChanges = @($assetCustody.canonical | Where-Object { -not (Test-H9Custody $Root $_) })
+ Assert-Reconciled 'all existing canonical image and brand assets remain unchanged' ($assetChanges.Count -eq 0)
++$excludedReviewPaths = @($assetCustody.excludedReviewArtifacts.path)
++$trackedExcludedAssets = @(& git -C $Root ls-files -- $excludedReviewPaths)
++Assert-Reconciled 'excluded brand review artifacts are absent from repository custody' ($LASTEXITCODE -eq 0 -and $trackedExcludedAssets.Count -eq 0)
++$knownAssetPaths = @($assetCustody.canonical.path) + @($assetCustody.additions.path) + @($assetCustody.excludedReviewArtifacts.path)
++$unexpectedAssets = @(foreach ($directory in @('assets','brand')) {
++  Get-ChildItem -LiteralPath (Join-Path $Root $directory) -Recurse -File | ForEach-Object {
++    $relative = [IO.Path]::GetRelativePath($Root, $_.FullName).Replace('\','/')
++    if ($relative -cnotin $knownAssetPaths) { $relative }
++  }
++})
++Assert-Reconciled 'new asset paths are limited to the seven approved H9 additions' ($unexpectedAssets.Count -eq 0)
++foreach ($asset in $assetCustody.additions) {
++  Assert-Reconciled "approved addition: $($asset.path) retains accepted owner-package bytes" (Test-H9Custody $Root $asset)
++}
+ 
+ # Only these precise stale statements are superseded on frozen shared surfaces.
+ $supportExpected = (Read-Production 'support.html').Replace('In development; no public release package currently published.', 'Public Windows v{{products.proofshot.publicVersion}} is available from Proof Foundry downloads. The installer is unsigned; verify its SHA-256 before running.')

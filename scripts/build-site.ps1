@@ -890,6 +890,7 @@ function Replace-ProductTokens($text, $tokens, [switch]$Strict) {
 # Build nav links + footer products
 # ─────────────────────────────────────────────────────────────────────────────
 function Build-NavLinks($activeId) {
+  if ($activeId -eq 'software') { $activeId = 'products' }
   # Product pages map to the "products" nav item
   $productIds = @()
   foreach ($p in $manifest.products) { $productIds += $p.id }
@@ -946,14 +947,14 @@ function Render-ProductCard($p, $cardTemplate) {
 # can never be hand-placed into a group that contradicts its release facts, and a
 # product with a public release is never presented as unreleased just because its
 # newest candidate is not out yet.
-function Build-ProductCards($groupId) {
+function Build-ProductCards($groupId, [bool]$includeFeatured = $false) {
   $cardTemplate = Read-File (Join-Path $partialsDir 'product-card.html')
   $cards = @()
   foreach ($p in $manifest.products) {
     if (-not $p.visible) { continue }
     # The featured product gets its own full-width composition above the groups
     # rather than a card, so it is not also emitted into the grid.
-    if ($p.featured) { continue }
+    if ($p.featured -and -not $includeFeatured) { continue }
     if ($groupId -and (ProductGroupId $p) -ne $groupId) { continue }
     $cards += (Render-ProductCard $p $cardTemplate)
   }
@@ -1412,7 +1413,7 @@ if (-not (Test-Path $publicDir)) { New-Item -ItemType Directory $publicDir | Out
 # Process every template
 # ─────────────────────────────────────────────────────────────────────────────
 # Map: source file  ->  output path under public/
-$dirRoutes = @('reality-gate','forgecast','lights-out','cache-vault','cleanroom','ghostlayer','proofshot','founders','proof','roadmap','support','about','proof-standard')
+$dirRoutes = @('reality-gate','forgecast','lights-out','cache-vault','cleanroom','ghostlayer','proofshot','founders','proof','roadmap','support','about','proof-standard','software')
 $rootFiles = @('index.html','404.html')
 
 # Pre-compute latest site verification so templates can inject it
@@ -1426,7 +1427,7 @@ function Process-Template($srcPath, $srcName) {
 
   # Give shared presentation assets content-derived URLs. A cached stylesheet
   # or script must not leave visitors on a previous design after publication.
-  foreach ($assetName in @('styles.css', 'studio.css', 'experience.css', 'signature.css', 'product-page.css', 'site.js', 'experience.js')) {
+  foreach ($assetName in @('styles.css', 'studio.css', 'experience.css', 'signature.css', 'product-page.css', 'site.js', 'experience.js', 'h9-homepage.css', 'h9-software.css', 'h9-homepage.js', 'h9-software.js')) {
     $assetPath = Join-Path $root $assetName
     $assetVersion = (Get-FileHash $assetPath -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
     $html = $html.Replace('"/' + $assetName + '"', '"/' + $assetName + '?v=' + $assetVersion + '"')
@@ -1455,10 +1456,16 @@ function Process-Template($srcPath, $srcName) {
   $html = $html -replace '<!--\s*@include header\s*-->', $header
   $html = $html -replace '<!--\s*@include footer\s*-->', $footer
 
+  # The H9 catalog moved to its own route; preserve frozen page source markup.
+  $html = $html.Replace('href="/#products"', 'href="/software/"')
+
   # Inject product groups (homepage) — grouped sections, then any bare-marker grid
   $html = $html -replace '<!--\s*@product-groups\s*-->', (Build-ProductGroupSections)
   $html = $html -replace '<!--\s*@trust-strip\s*-->',    (Build-TrustStrip)
   $html = $html -replace [regex]::Escape('{{catalogSummary}}'), (Build-CatalogSummary)
+  # The standalone catalog includes the featured product as a normal card.
+  $catalogCards = (Build-ProductCards $null $true) -replace '<h4 class="card-name">', '<h3 class="card-name">' -replace '</h4>', '</h3>'
+  $html = $html -replace '<!--\s*@all-products\s*-->', $catalogCards
   $html = $html -replace '<!--\s*@products\s*-->', (Build-ProductCards $null)
 
   # Inject receipt cards (receipts page)
@@ -1565,6 +1572,10 @@ Copy-Item (Join-Path $root 'experience.css') $publicDir -Force
 Copy-Item (Join-Path $root 'signature.css')  $publicDir -Force
 Copy-Item (Join-Path $root 'product-page.css') $publicDir -Force
 Copy-Item (Join-Path $root 'experience.js') $publicDir -Force
+if (Test-Path (Join-Path $root 'h9-homepage.css')) { Copy-Item (Join-Path $root 'h9-homepage.css') $publicDir -Force }
+if (Test-Path (Join-Path $root 'h9-software.css')) { Copy-Item (Join-Path $root 'h9-software.css') $publicDir -Force }
+if (Test-Path (Join-Path $root 'h9-homepage.js'))  { Copy-Item (Join-Path $root 'h9-homepage.js')  $publicDir -Force }
+if (Test-Path (Join-Path $root 'h9-software.js'))  { Copy-Item (Join-Path $root 'h9-software.js')  $publicDir -Force }
 if (Test-Path (Join-Path $root 'site.js'))   { Copy-Item (Join-Path $root 'site.js') $publicDir -Force }
 Copy-Item (Join-Path $root 'CNAME')          $publicDir -Force
 Copy-Item (Join-Path $root 'robots.txt')     $publicDir -Force
@@ -1636,6 +1647,8 @@ $headersContent = @"
 /about/
   Cache-Control: no-cache, must-revalidate
 /proof-standard/
+  Cache-Control: no-cache, must-revalidate
+/software/
   Cache-Control: no-cache, must-revalidate
 
 /assets/*

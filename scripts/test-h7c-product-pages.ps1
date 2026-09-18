@@ -21,8 +21,9 @@ function Assert-Condition([bool]$condition, [string]$msg) {
 
 $ppCssPath = Join-Path $Root 'product-page.css'
 $ppCss = if (Test-Path $ppCssPath) { [IO.File]::ReadAllText($ppCssPath) } else { '' }
-$homePath = Join-Path $PublicDir 'index.html'
-$homeHtml = if (Test-Path $homePath) { [IO.File]::ReadAllText($homePath) } else { '' }
+# H9 moved the functional catalog to /software/; product-page guards stay here.
+$catalogPath = Join-Path $PublicDir 'software/index.html'
+$catalogHtml = if (Test-Path $catalogPath) { [IO.File]::ReadAllText($catalogPath) } else { '' }
 
 # 1. Product-specific thematic identity tokens in product-page.css
 $themes = @(
@@ -56,7 +57,7 @@ $h7cProducts = @(
   @{ Name = 'Cleanroom'; Slug = 'cleanroom'; PublicVer = 'v1.0.7'; CandidateVer = 'v1.0.10'; Unreleased = $false },
   @{ Name = 'GhostLayer'; Slug = 'ghostlayer'; PublicVer = 'v0.4.0'; CandidateVer = 'v0.4.0'; Unreleased = $false },
   @{ Name = 'ForgeCast'; Slug = 'forgecast'; PublicVer = 'v0.3.5'; CandidateVer = 'v0.3.5'; Unreleased = $false },
-  @{ Name = 'ProofShot'; Slug = 'proofshot'; PublicVer = ''; CandidateVer = 'v1.6.18'; Unreleased = $true }
+  @{ Name = 'ProofShot'; Slug = 'proofshot'; PublicVer = 'v2.0.0'; CandidateVer = ''; Unreleased = $false }
 )
 
 foreach ($p in $h7cProducts) {
@@ -72,7 +73,7 @@ foreach ($p in $h7cProducts) {
   Assert-Condition ($html -match "product-$slug") "$name - body carries product-$slug identity class"
 
   # Hierarchy check
-  if ($p.Unreleased) {
+  if ($slug -eq 'proofshot') {
     Test-Order $html @('id="overview"', 'id="features"', 'id="try-it"', 'pp-story', 'id="download"', 'id="identity"', 'id="proof"', 'id="privacy-data-flow"', 'pp-final-cta') "$name hierarchy"
   } elseif ($slug -eq 'ghostlayer') {
     Test-Order $html @('id="overview"', 'id="features"', 'layer-boundary', 'id="try-it"', 'id="download"', 'id="onboarding"', 'id="proof"', 'id="privacy-data-flow"') "$name hierarchy"
@@ -85,11 +86,11 @@ foreach ($p in $h7cProducts) {
     Assert-Condition ($html -match 'class="pp-warning"') "$name - critical warning visible outside disclosures"
   }
 
-  # ProofShot specific truth check
-  if ($p.Unreleased) {
-    Assert-Condition ($html -match 'HyperSnatch') "$name - engine truth HyperSnatch preserved"
-    Assert-Condition ($html -notmatch 'Download ProofShot') "$name - no fake download CTA"
-    Assert-Condition ($html -match 'Follow development') "$name - truthful roadmap development CTA present"
+  # Current production keeps the identity/migration tier while shipping v2.0.0.
+  if ($slug -eq 'proofshot') {
+    Assert-Condition ($html -match 'HyperSnatch' -and $html -match 'Screenshots predate the rebrand') "$name - legacy engine imagery is explicitly disclosed"
+    Assert-Condition ($html -match 'Download ProofShot v2\.0\.0') "$name - real public download CTA present"
+    Assert-Condition ($html -match 'ProofShot-Setup-2\.0\.0\.exe' -and $html -notmatch 'Follow development|no public ProofShot release') "$name - current public installer supersedes development-only CTA"
   }
 
   # Technical evidence disclosure closed by default
@@ -97,14 +98,14 @@ foreach ($p in $h7cProducts) {
   Assert-Condition ($html -notmatch '<details class="proof-details"\s+open>') "$name - technical verification disclosure closed by default"
 }
 
-# 4. Homepage catalog geometry & card consistency checks
-Assert-Condition ($homeHtml -match 'class="products-grid"') "Homepage contains products-grid container"
-Assert-Condition ($homeHtml -match 'data-product="cache-vault"') "Homepage card present for Cache Vault"
-Assert-Condition ($homeHtml -match 'data-product="lights-out"') "Homepage card present for Lights Out"
-Assert-Condition ($homeHtml -match 'data-product="cleanroom"') "Homepage card present for Cleanroom"
-Assert-Condition ($homeHtml -match 'data-product="ghostlayer"') "Homepage card present for GhostLayer"
-Assert-Condition ($homeHtml -match 'data-product="forgecast"') "Homepage card present for ForgeCast"
-Assert-Condition ($homeHtml -match 'data-product="proofshot"') "Homepage card present for ProofShot"
+# 4. The functional catalog's geometry & card consistency checks moved with it.
+Assert-Condition ($catalogHtml -match 'class="products-grid"') "Software catalog contains products-grid container"
+Assert-Condition ($catalogHtml -match 'data-product="cache-vault"') "Software catalog card present for Cache Vault"
+Assert-Condition ($catalogHtml -match 'data-product="lights-out"') "Software catalog card present for Lights Out"
+Assert-Condition ($catalogHtml -match 'data-product="cleanroom"') "Software catalog card present for Cleanroom"
+Assert-Condition ($catalogHtml -match 'data-product="ghostlayer"') "Software catalog card present for GhostLayer"
+Assert-Condition ($catalogHtml -match 'data-product="forgecast"') "Software catalog card present for ForgeCast"
+Assert-Condition ($catalogHtml -match 'data-product="proofshot"') "Software catalog card present for ProofShot"
 
 # Unbiased card geometry: ForgeCast & ProofShot do not force 2-column grid span in studio.css
 $studioCss = [IO.File]::ReadAllText((Join-Path $PublicDir 'studio.css'))

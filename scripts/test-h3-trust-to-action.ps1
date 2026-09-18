@@ -41,6 +41,7 @@ $fc  = Read-Page 'forgecast'
 $ps  = Read-Page 'proofshot'
 $sup = Read-Page 'support'
 $homeHtml = Read-Page ''
+$catalogHtml = Read-Page 'software'
 
 # ── P0: Reality Gate origin readability ─────────────────────────────────────
 Assert-Condition ($rg -match '\.product-reality-gate #origin') "P0: Reality Gate carries the origin readability correction"
@@ -57,7 +58,7 @@ Assert-Condition ($lo -match 'href="#release-note"') "P1: Lights Out what-change
 Assert-Condition ($cl -match 'href="#release-note"') "P1: Cleanroom what-changed link present"
 Assert-Condition ($gl -match 'RELEASE_NOTES_v0\.4\.0\.md[^"]*"[^>]*>\s*What changed in v0\.4\.0') "P1: GhostLayer what-changed link to RELEASE_NOTES present"
 Assert-Condition ($fc -match 'github\.com/lazelife420-spec/ForgeCast/releases/tag/v0\.3\.5[^"]*"[^>]*>\s*What changed in v0\.3\.5') "P1: ForgeCast what-changed link to GitHub release present"
-Assert-Condition ($ps -match 'no changelog yet') "P1: ProofShot explicitly states no changelog (no release)"
+Assert-Condition ($ps -match 'href="#release-status"' -and $ps -match 'id="release-status"' -and $ps -match 'first public ProofShot release') "P1: ProofShot exposes release details for the shipped v2.0.0 release"
 
 # ── P1: onboarding blocks (released products get full 5-field block) ────────
 $released = @{ 'reality-gate' = $rg; 'cleanroom' = $cl; 'ghostlayer' = $gl; 'forgecast' = $fc }
@@ -74,13 +75,13 @@ Assert-Condition ($gl -match 'onboarding-list[\s\S]*%TEMP%\\GhostLayer\\') "P1: 
 Assert-Condition ($fc -match 'onboarding-list[\s\S]*com\.prooffoundry\.forgecast') "P1: ForgeCast leftovers cite app-private storage"
 # Onboarding stays availability-honest per product: Lights Out is held (no
 # download promised); Cache Vault now ships a final public release, so its
-# onboarding must match the live v0.2.3 download instead of the RC-era
+# onboarding must match the live v0.2.4 download instead of the RC-era
 # "unavailable" wording. The Android companion hold copy is preserved exactly.
 Assert-Condition ($lo -match 'Install, update, uninstall') "P1: Lights Out onboarding block present (held-state honest)"
 Assert-Condition ($cv -match 'Install, update, uninstall') "P1: Cache Vault onboarding block present (final-release honest)"
 Assert-Condition ($lo -match 'not publicly downloadable') "P1: Lights Out onboarding does not promise a download"
-Assert-Condition ($cv -match 'Download v0\.2\.3 \(Windows\)') "P1: Cache Vault onboarding matches the live final v0.2.3 download CTA"
-Assert-Condition ($cv -match 'The public Windows v0\.2\.3 release is available from Proof Foundry downloads') "P1: Cache Vault install guidance names the live v0.2.3 release"
+Assert-Condition ($cv -match 'Download v0\.2\.4 \(Windows\)') "P1: Cache Vault onboarding matches the live final v0.2.4 download CTA"
+Assert-Condition ($cv -match 'The public Windows v0\.2\.4 release is available from Proof Foundry downloads') "P1: Cache Vault install guidance names the live v0.2.4 release"
 Assert-Condition ($cv -match 'Android: public companion v0\.2\.0; v0\.2\.1 remains on hold') "P1: Cache Vault keeps the Android hold truth intact"
 
 # ── P1: support next-step guidance ──────────────────────────────────────────
@@ -97,18 +98,18 @@ Assert-Condition ($rg -match 'href="#evidence-download"') "P2: Reality Gate defe
 
 # ── P2: final-public availability honesty ──────────────────────────────────
 Assert-Condition (
-  $cv -match 'v0\.2\.3 is the current public Windows release' -and
-  $cv -match 'points to Proof Foundry downloads for the v0\.2\.3 Windows ZIP' -and
-  $cv -match '28262e491ad1f7b3f6f4c9f28eabfe2899a61af7c7a26c17c4915d604e00371d' -and
+  $cv -match 'v0\.2\.4 is the current public Windows release' -and
+  $cv -match 'points to Proof Foundry downloads for the v0\.2\.4 Windows ZIP' -and
+  $cv -match '717ed13efd3d8d4e5a16d4e412ed5be0fd20b0219918f913d7d2b44f021cae7e' -and
   $cv -notmatch 'v0\.2\.3-rc1|v0\.2\.3-rc2' -and
   $cv -notmatch 'intentionally not linked'
-) "P2: Cache Vault availability copy correctly asserts final public v0.2.3 (live URL + published digest) and omits RC-era candidate/404 copy"
+) "P2: Cache Vault availability copy correctly asserts final public v0.2.4 (live URL + published digest) and omits RC-era candidate/404 copy"
 Assert-Condition ($lo -notmatch 'download again') "P2: Lights Out no longer instructs a download retry while no download exists"
 Assert-Condition ($lo -match '<a href="/support/#report">contact the project</a>') "P2: Lights Out support anchor preserved (P2-1 contract)"
 
 # ── P2: discovery affordances ────────────────────────────────────────────────
-Assert-Condition ($homeHtml -match 'class="finder-hint"') "P2: compare/finder hint present in homepage markup"
-Assert-Condition ($homeHtml -match 'Compare two or three') "P2: compare hint copy present"
+Assert-Condition ($catalogHtml -match 'class="finder-intents"' -and $catalogHtml -match 'data-compare=') "P2: functional filtering and comparison live on /software/"
+Assert-Condition ($catalogHtml -match 'compare up to three products side by side') "P2: software catalog explains the comparison limit"
 # Mobile CTA parity: studio.css no longer hides the nav CTA
 $studioCss = Get-Content (Join-Path $root 'studio.css') -Raw -Encoding UTF8
 Assert-Condition ($studioCss -notmatch '\.studio \.nav-cta\{display:none\}') "P2: mobile nav CTA no longer hidden at <=900px"
@@ -119,15 +120,16 @@ $stylesCss = Get-Content (Join-Path $root 'styles.css') -Raw -Encoding UTF8
 Assert-Condition ($stylesCss -match '\.onboarding-list dt') "shared onboarding-list styles present"
 
 # ── H1/H2 preservation guards (this tranche touches shared files) ───────────
-Assert-Condition ($homeHtml -match 'zone-index') "H2 preserved: zone index markers still present on homepage"
-Assert-Condition ($homeHtml -match 'PF / 01') "H2 preserved: PF/01 rhythm marker present"
-Assert-Condition ($homeHtml -match 'Good software\.') "H1 preserved: hero headline untouched"
+# H9 intentionally supersedes the old numbered homepage zones; protect the
+# editorial sequence and catalog handoff rather than requiring obsolete markup.
+Assert-Condition ($homeHtml.IndexOf('class="h9-hero"') -lt $homeHtml.IndexOf('h9-scene-forgecast') -and $homeHtml.IndexOf('h9-scene-forgecast') -lt $homeHtml.IndexOf('h9-scene-reality')) "H9: product-led hero, ForgeCast, Reality Gate sequence preserved"
+Assert-Condition ($homeHtml -match '(?s)class="h9-final".*?href="/software/"') "H9: final product invitation reaches the functional catalog"
+Assert-Condition ($homeHtml -match 'Useful software\.' -and $homeHtml -match 'On your terms\.') "H9: editorial hero headline preserved"
 Assert-Condition ($homeHtml -notmatch 'Lights Out PC <span aria-hidden="true">') "H2 preserved: homepage short naming intact"
 Assert-Condition ($rg -match 'Your projects\.<br><em>Your execution\. Your way back\.</em>') "H1/H2 preserved: Reality Gate hero headline untouched"
 Assert-Condition ($gl -match 'Public v0\.4\.0') "truth preserved: GhostLayer version claim intact"
-Assert-Condition ($ps -match 'There is no public ProofShot release or installer') "truth preserved: ProofShot no-release claim intact"
+Assert-Condition ($ps -match 'Download ProofShot v2\.0\.0' -and $ps -notmatch 'There is no public ProofShot release or installer') "truth preserved: ProofShot public release supersedes the no-release claim"
 
 Write-Host ""
 Write-Host "=== H3 RESULT: $($script:passed) passed, $($script:failed) failed ==="
 if ($script:failed -gt 0) { exit 1 }
-

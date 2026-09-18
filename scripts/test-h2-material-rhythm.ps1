@@ -11,6 +11,7 @@ if (-not (Test-Path $homePath)) { throw "Generated homepage missing: $homePath" 
 if (-not (Test-Path $cssPath)) { throw "Generated signature stylesheet missing: $cssPath" }
 
 $homeHtml = Get-Content $homePath -Raw -Encoding UTF8
+$catalogHtml = Get-Content (Join-Path $public 'software/index.html') -Raw -Encoding UTF8
 $css = Get-Content $cssPath -Raw -Encoding UTF8
 $pass = 0
 $fail = 0
@@ -33,25 +34,26 @@ Assert-H2 'founders signpost carries the warm forged field' ($css -match '(?s)\.
 Assert-H2 'card family shares the forged-iron surface' ($css -match '(?s)\.signature-home \.product-card \{[^}]*linear-gradient')
 Assert-H2 'Cleanroom pale outlier treatment is gone' ($css -notmatch '#c7d5d1')
 
-# --- Seam / index markers present and sequenced ---
-Assert-H2 'catalog index marker PF / 02 present' ($homeHtml -match 'zone-index[^>]*>PF / 02')
-Assert-H2 'proof standard index marker PF / 03 present' ($homeHtml -match 'zone-index[^>]*>PF / 03')
-Assert-H2 'identity index renumbered PF / 04' ($homeHtml -match 'identity-index">PF / 04')
-Assert-H2 'founders index marker PF / 05 present' ($homeHtml -match 'zone-index[^>]*>PF / 05')
-Assert-H2 'reassurance PF / 01 marker unchanged' ($homeHtml -match 'reassurance-index">PF / 01')
+# H9 replaces the numbered H2 seams with explicit editorial sections. Protect
+# that navigation/section contract instead of resurrecting obsolete PF indices.
+Assert-H2 'H9 collection links to the functional software catalog' ($homeHtml -match 'href="/software/"' -and $catalogHtml -match 'id="catalog-title"')
+Assert-H2 'H9 proof section has a labelled heading' ($homeHtml -match 'aria-labelledby="proof-title"' -and $homeHtml -match 'id="proof-title"')
+Assert-H2 'H9 studio identity uses the selected G monogram' ($homeHtml -match 'h9-studio-chip' -and $homeHtml -match 'PF_MARK_G_MASTER\.svg')
+Assert-H2 'frozen founders route remains discoverable' ($homeHtml -match 'href="/founders/"')
+Assert-H2 'H9 principles remain labelled' ($homeHtml -match 'class="h9-principles" aria-label="Studio principles"')
 
 # --- Released-product media states not empty ---
-$cardImgs = [regex]::Matches($homeHtml, 'catalog-image-link"[^>]*>\s*<img src="(?<src>/assets/[^"]+)" alt="(?<alt>[^"]+)"')
-Assert-H2 'seven catalog cards carry imagery slots (6 grid + featured handled separately)' ($cardImgs.Count -ge 6)
+$cardImgs = [regex]::Matches($catalogHtml, 'catalog-image-link"[^>]*>\s*<img src="(?<src>/assets/[^"]+)" alt="(?<alt>[^"]+)"')
+Assert-H2 'all seven software catalog cards carry real imagery slots' ($cardImgs.Count -eq 7)
 $releasedIds = @('lights-out', 'cleanroom', 'ghostlayer')
 foreach ($rid in $releasedIds) {
-  $cardBlock = [regex]::Match($homeHtml, "(?s)product-card card-$rid.*?</article>").Value
+  $cardBlock = [regex]::Match($catalogHtml, "(?s)product-card card-$rid.*?</article>").Value
   $hasImg = $cardBlock -match 'catalog-image-link" href="[^"]+"[^>]*>\s*<img src="/assets/studio/[^"]+"'
   $imgEmpty = $cardBlock -match '<img src=""' -or $cardBlock -match 'catalog-image-link[^>]*>\s*</a>'
   Assert-H2 "$rid media frame carries real imagery" ($hasImg -and -not $imgEmpty)
 }
-$proofshotBlock = [regex]::Match($homeHtml, '(?s)product-card card-proofshot.*?</article>').Value
-Assert-H2 'ProofShot pre-release frame uses the workbench capture deliberately' ($proofshotBlock -match 'workbench-home' -and $proofshotBlock -match 'data-availability="no-public-release-yet"')
+$proofshotBlock = [regex]::Match($catalogHtml, '(?s)product-card card-proofshot.*?</article>').Value
+Assert-H2 'ProofShot catalog frame pairs legacy workbench imagery with public release truth' ($proofshotBlock -match 'workbench-home' -and $proofshotBlock -match 'data-availability="public-release"' -and $proofshotBlock -match 'Public v2\.0\.0')
 
 # --- Naming consistency (homepage-facing only) ---
 Assert-H2 'homepage card/footer labels use Lights Out (not Lights Out PC)' ($homeHtml -notmatch 'Lights Out PC' -and $homeHtml -match 'Lights Out')
@@ -61,10 +63,11 @@ $forgecastPage = Get-Content (Join-Path $public 'forgecast/index.html') -Raw -En
 Assert-H2 'canonical Lights Out PC naming preserved on its product page' ($lightsOutPage -match 'Lights Out PC')
 Assert-H2 'canonical ForgeCast Weather naming preserved on its product page' ($forgecastPage -match 'ForgeCast Weather')
 
-# --- H1 preservation (regression only; H1 remains frozen) ---
-Assert-H2 'H1 forged field markup untouched' ($homeHtml -match 'home-forged-field' -and $homeHtml -match 'forged-hero-bg')
-Assert-H2 'H1 hero copy untouched' ($homeHtml -match 'Good software\.' -and $homeHtml -match 'On your terms\.')
-Assert-H2 'H1 theater controls unchanged (7 products)' (([regex]::Matches($homeHtml, 'data-show-product=')).Count -eq 7)
+# H9 supersedes H1 homepage composition; its real media and seven-product
+# discovery are now protected in the editorial home and functional catalog.
+Assert-H2 'H9 forged field retains real hero artwork' ($homeHtml -match 'h9-hero-forge' -and $homeHtml -match 'forged_pf_emblem_in_smoky_ruins')
+Assert-H2 'H9 editorial hero copy preserved' ($homeHtml -match 'Useful software\.' -and $homeHtml -match 'On your terms\.')
+Assert-H2 'H9 catalog exposes seven comparison choices' (([regex]::Matches($catalogHtml, 'data-compare=')).Count -eq 7)
 Assert-H2 'D1 tablet containment override still served' ($css -match '@media \(max-width: 940px\) and \(min-width: 701px\)')
 Assert-H2 'H1 hero composition rules intact' ($css -match '(?s)\.signature-home \.studio-home-hero \{[^}]*min-height: 680px')
 
