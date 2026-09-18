@@ -22,7 +22,10 @@ $registry = (Read-Built 'proof/index.json') | ConvertFrom-Json
 . (Join-Path $Root 'scripts/fixtures/h9/custody.ps1')
 $custody = (Read-Source 'scripts/fixtures/h9/binding-custody.json') | ConvertFrom-Json
 Write-Host '=== CURRENT H9 BINDING GUARD ==='
-Assert-Binding 'authority: canonical master is still the inspected production commit' ((& git -C $Root rev-parse master) -ceq $production)
+# The reviewed production object stays pinned; a legitimate landing advances master.
+& git -C $Root merge-base --is-ancestor $production HEAD
+$productionAncestryExit = $LASTEXITCODE
+Assert-Binding 'authority: inspected production commit is an ancestor of candidate HEAD' ($productionAncestryExit -eq 0)
 Assert-Binding 'authority: complete product objects equal current production' ((Json $manifest.products) -ceq (Json $canonical.products))
 Assert-Binding 'authority: seven registry identities equal production' ((($registry.products.id | Sort-Object) -join ',') -ceq (($canonical.products.id | Sort-Object) -join ','))
 foreach ($product in $canonical.products) {

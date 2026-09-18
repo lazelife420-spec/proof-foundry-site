@@ -1279,11 +1279,18 @@
       "lfSha256": "046d24b69768c33e875c6f52fbbccc911979a9ca45dbda5a7d7ae684f50317ec",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "63b76e79c04f3852ed717235caa97f6ca50707f91cbae63238108f2918a7154d",
-        "bytes": 9023,
+        "sha256": "d819472cdff836c1e8d19c9f4e073b6c504f6b761ee451f4982b88554abf6d30",
+        "bytes": 9187,
         "comparison": "utf8-lf",
-        "lfSha256": "63b76e79c04f3852ed717235caa97f6ca50707f91cbae63238108f2918a7154d",
-        "reason": "Explicit qualification-portability migration; see portability-migration.json and portability.patch."
+        "lfSha256": "d819472cdff836c1e8d19c9f4e073b6c504f6b761ee451f4982b88554abf6d30",
+        "reason": "Explicit post-landing ancestry migration; see landing-authority-migration.json and landing-authority.patch.",
+        "previousMigration": {
+          "sha256": "63b76e79c04f3852ed717235caa97f6ca50707f91cbae63238108f2918a7154d",
+          "bytes": 9023,
+          "comparison": "utf8-lf",
+          "lfSha256": "63b76e79c04f3852ed717235caa97f6ca50707f91cbae63238108f2918a7154d",
+          "reason": "Explicit qualification-portability migration; see portability-migration.json and portability.patch."
+        }
       }
     },
     {

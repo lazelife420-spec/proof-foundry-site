@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "acceptedOwnerPackageSha256": "3416bfbd2159c5cb8c1f659062edebf9fbcaf6b44897fd459be050aae2bd1ec8",
+  "acceptedLocalCommit": "d571c3b742434b6c400ddde8ece1226d96554731",
+  "acceptedLocalTree": "9de5a014d2f18bd9f916367ebb808322b84c147d",
+  "pinnedProductionCommit": "34a291d78fa92f1a18cf76cef3ee56b391186e77",
+  "predicate": "git merge-base --is-ancestor <pinned production> HEAD; only exit 0 passes",
+  "assertionCountsChanged": false,
+  "historicalGuardBindingSha256": "44c2c840b8df874fabe75a556710cd08d84b6d6cf52188c2faa90f47e9d3cebc",
+  "migrations": [
+    {
+      "path": "scripts/test-h9-binding.ps1",
+      "acceptedLocalCommit": {
+        "sha256": "11448ea0b6f491f67bde9087a607384013a61e920a8e2987c695e30e45d19d86",
+        "bytes": 11796,
+        "comparison": "utf8-lf",
+        "lfSha256": "11448ea0b6f491f67bde9087a607384013a61e920a8e2987c695e30e45d19d86"
+      },
+      "current": {
+        "sha256": "ce0145c950f1944dc7ede6d5efdc37e4bb8afb8291267aa322f351d596638315",
+        "bytes": 11960,
+        "comparison": "utf8-lf",
+        "lfSha256": "ce0145c950f1944dc7ede6d5efdc37e4bb8afb8291267aa322f351d596638315"
+      },
+      "reason": "Replace pre-landing master reference equality with fail-closed pinned-production ancestry at candidate HEAD; preserve the canonical manifest and all other assertions."
+    },
+    {
+      "path": "scripts/test-h9-cinematic.ps1",
+      "acceptedLocalCommit": {
+        "sha256": "63b76e79c04f3852ed717235caa97f6ca50707f91cbae63238108f2918a7154d",
+        "bytes": 9023,
+        "comparison": "utf8-lf",
+        "lfSha256": "63b76e79c04f3852ed717235caa97f6ca50707f91cbae63238108f2918a7154d"
+      },
+      "current": {
+        "sha256": "d819472cdff836c1e8d19c9f4e073b6c504f6b761ee451f4982b88554abf6d30",
+        "bytes": 9187,
+        "comparison": "utf8-lf",
+        "lfSha256": "d819472cdff836c1e8d19c9f4e073b6c504f6b761ee451f4982b88554abf6d30"
+      },
+      "reason": "Replace pre-landing master reference equality with fail-closed pinned-production ancestry at candidate HEAD; preserve the canonical manifest and all other assertions."
+    }
+  ],
+  "patchSha256": "5e7066554d2d03b913c6b7068a7317e02e7e0ac08c2f4275901fc987e6412192"
+}

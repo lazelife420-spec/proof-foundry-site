@@ -10,7 +10,7 @@ Accepted package: `PF_H9_BINDING_WEB_DESIGN_OWNER_REVIEW.zip`, SHA-256 `3416bfbd
 
 This permits Git's normal text line-ending conversion without approving content drift. Both accepted raw and normalized hashes remain available for audit. Every retained runtime/product/media baseline remains the originally reviewed value. Four additional current-custody entries are pinned directly to accepted owner-package payloads: the three new environment WebPs and `scripts/capture-h9-binding.mjs`.
 
-Only the three guard sources listed in `portability-migration.json` change. That manifest pins their before/after raw and normalized hashes. `portability.patch` records the exact text delta. Where an entry fixture already froze one of those guards, its original baseline remains intact and an explicit `migration` object supplies the new expected hash. No other entry is rebaselined. The current binding guard is new relative to both entry inventories and therefore has its migration recorded without introducing a self-hash cycle.
+The accepted local commit's portability changes affect only the three guard sources listed in `portability-migration.json`. That historical manifest pins their before/after raw and normalized hashes. `portability.patch` records that exact text delta. Where an entry fixture already froze one of those guards, its original baseline remains intact and an explicit `migration` object supplies the new expected hash. The subsequent landing-authority migration is recorded separately below. The current binding guard is new relative to both entry inventories and therefore has its migration recorded without introducing a self-hash cycle.
 
 The changes replace ignored inventory reads with these fixtures and the shared `custody.ps1` helper. All non-custody semantic assertions, canonical product/registry comparisons, receipt fields, catalog behavior requirements and historical failure labels remain unchanged.
 
@@ -28,7 +28,13 @@ Every excluded assertion is retained as an object in its fixture's `exclusions` 
 
 The existing single canonical-asset preservation assertion remains, now backed by those canonical file hashes. Nine assertions are added: one rejects unexpected asset paths, one verifies that none of the explicitly excluded brand artifacts is tracked/staged, and seven require the exact approved additions. The 20 explicitly listed historical brand/contact-sheet artifacts are ignored only for this source-directory inventory; they are not authorized for staging. The staged-path manifest must exclude them, and a clean checkout will not contain them. All new runtime assets are mandatory, not optional exceptions.
 
-Git is still used read-only to retrieve canonical production manifest/source objects and inspect the canonical `master` reference. A clean staged snapshot must have access to that production object and reference. The guard does not rely on the original repository's index.
+Git is used read-only to retrieve the pinned canonical production manifest/source objects and require that the inspected production commit is an ancestor of candidate `HEAD`. A clean staged snapshot must have access to those objects and their ancestry. A legitimate fast-forward landing may advance `master` without invalidating qualification. The guard does not rely on the original repository's index or the current position of `master`.
+
+## Landed ancestry qualification
+
+The original guard required local `master` to remain at the pre-H9 production commit. That assertion became invalid when the accepted H9 commit was legitimately landed. `landing-authority-migration.json` and `landing-authority.patch` record the exact two-guard repair from accepted commit `d571c3b742434b6c400ddde8ece1226d96554731`: `git merge-base --is-ancestor` must succeed for pinned production `34a291d78fa92f1a18cf76cef3ee56b391186e77` and candidate `HEAD`. Every nonzero Git result fails the assertion. No reference is reset or fabricated for qualification.
+
+The pinned manifest comparison, product/artifact truth, assertion totals, historical failure labels and 18 replacement mappings remain unchanged. The binding fixture's cinematic-guard entry retains its original baseline and prior portability migration; only its explicitly documented current migration advances to the repaired guard hash. The binding guard's own transition is recorded separately to avoid self-hashing.
 
 ## Honest assertion totals
 
