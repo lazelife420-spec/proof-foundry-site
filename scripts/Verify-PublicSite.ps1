@@ -305,7 +305,7 @@ foreach ($target in $TargetUrls) {
     # canonical "ForgeCast Weather" remains asserted on the product/proof pages below.
     Test-UrlContent -Url "$target/" -ContainsPatterns @(
         "Reality Gate", "Lights Out", "Cache Vault", "Cleanroom",
-        "ForgeCast", "ProofShot", "Proof Standard", "Explore the software"
+        "ForgeCast", "ProofShot", "Proof Standard", "Explore our software"
     ) -NotContainsPatterns @("SkyFoundry")
 
     # 2. Lights Out — canonical route: feature checks + manifest-derived version truth

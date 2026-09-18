@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "fromCommit": "169b99f778b0169e76b6415d834a8c0ba78d115f",
+  "fromTree": "53548e950cad3fcad1b0699321ae6c1ca8c5178a",
+  "pinnedProductionCommit": "34a291d78fa92f1a18cf76cef3ee56b391186e77",
+  "scope": "Conditional existing-icon declaration in shared rendered HTML head; one-word accepted homepage CTA correction in verifier; exact verifier substitution in reconciliation guard. No page-source edit, new asset, redesign, product/artifact truth change or historical failure waiver.",
+  "assertionCountsChanged": false,
+  "historicalGuardBindingSha256": "44c2c840b8df874fabe75a556710cd08d84b6d6cf52188c2faa90f47e9d3cebc",
+  "migrations": [
+    {
+      "path": "scripts/build-site.ps1",
+      "before": {
+        "sha256": "202bd4386f03558b7011be366f4abc2301a5190dd8987cd12d08c26e733e6236",
+        "bytes": 85442,
+        "comparison": "utf8-lf",
+        "lfSha256": "202bd4386f03558b7011be366f4abc2301a5190dd8987cd12d08c26e733e6236"
+      },
+      "current": {
+        "sha256": "5f22155b80ea5377eaa3ae82ef2c0563d4e13e4cbae45aecac66fba8f92d5c27",
+        "bytes": 86149,
+        "comparison": "utf8-lf",
+        "lfSha256": "5f22155b80ea5377eaa3ae82ef2c0563d4e13e4cbae45aecac66fba8f92d5c27"
+      }
+    },
+    {
+      "path": "scripts/Verify-PublicSite.ps1",
+      "before": {
+        "sha256": "5500b37be23f2762c1a68f9f584bfb7ccd2d0fc155aa91113f5f472fdb988da6",
+        "bytes": 26698,
+        "comparison": "utf8-lf",
+        "lfSha256": "5500b37be23f2762c1a68f9f584bfb7ccd2d0fc155aa91113f5f472fdb988da6"
+      },
+      "current": {
+        "sha256": "7f0afe515cd078f127964c3e9218140acf1c2ec42d3dd06c13a6337693a579bd",
+        "bytes": 26698,
+        "comparison": "utf8-lf",
+        "lfSha256": "7f0afe515cd078f127964c3e9218140acf1c2ec42d3dd06c13a6337693a579bd"
+      }
+    },
+    {
+      "path": "scripts/test-h9-production-reconciliation.ps1",
+      "before": {
+        "sha256": "b6f5b93676907c1838559806063cc30040fc5211fd91a36d68781445a7f7efe0",
+        "bytes": 8822,
+        "comparison": "utf8-lf",
+        "lfSha256": "b6f5b93676907c1838559806063cc30040fc5211fd91a36d68781445a7f7efe0"
+      },
+      "current": {
+        "sha256": "49e83275cc07f219dbf5da6cd9f5f316f0cc1c8006bf3c54458ff0c0957e99b4",
+        "bytes": 9064,
+        "comparison": "utf8-lf",
+        "lfSha256": "49e83275cc07f219dbf5da6cd9f5f316f0cc1c8006bf3c54458ff0c0957e99b4"
+      }
+    }
+  ],
+  "patchSha256": "167be34a13ce5f0c3da3d3c9cfcac1c285830b5f6728f4727636925854a7599b"
+}

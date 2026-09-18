@@ -47,7 +47,10 @@ $frozen = @('about.html','proof-standard.html','proof.html','founders.html',
   'styles.css','studio.css','signature.css','experience.css','product-page.css',
   'site.js','scripts/Verify-PublicSite.ps1','partials/header.html','partials/footer.html','partials/product-card.html')
 foreach ($path in $frozen) {
-  Assert-Reconciled "${path}: current production source preserved" ((Read-Source $path) -ceq (Read-Production $path))
+  $expected = Read-Production $path
+  # Only the accepted homepage CTA expectation may differ from the pinned verifier.
+  if ($path -ceq 'scripts/Verify-PublicSite.ps1') { $expected = $expected.Replace('"Explore the software"', '"Explore our software"') }
+  Assert-Reconciled "${path}: current production source preserved" ((Read-Source $path) -ceq $expected)
 }
 . (Join-Path $Root 'scripts/fixtures/h9/custody.ps1')
 $assetCustody = Get-Content (Join-Path $Root 'scripts/fixtures/h9/canonical-assets.json') -Raw -Encoding UTF8 | ConvertFrom-Json

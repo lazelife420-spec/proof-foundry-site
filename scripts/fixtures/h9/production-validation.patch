@@ -1,0 +1,26 @@
+--- before/scripts/build-site.ps1
++++ repaired/scripts/build-site.ps1
+@@ -1528,0 +1529,10 @@
++  # Avoid implicit /favicon.ico requests while preserving each page's explicit icon.
++  $head = [regex]::Match($html, '(?is)<head\b[^>]*>.*?</head>')
++  if (-not $head.Success) { throw "Missing HTML head in $srcName" }
++  $iconLinks = @([regex]::Matches($head.Value, '(?is)<link\b[^>]*\brel\s*=\s*["'']([^"'']*)["'']') | Where-Object { ($_.Groups[1].Value -split '\s+') -contains 'icon' })
++  if ($iconLinks.Count -eq 0) {
++    $defaultIcon = '<link href="/brand/proof-foundry-mark.svg" rel="icon" type="image/svg+xml"/>' + "`n"
++    $headWithIcon = [regex]::Replace($head.Value, '(?i)</head>', $defaultIcon + '</head>')
++    $html = $html.Remove($head.Index, $head.Length).Insert($head.Index, $headWithIcon)
++  }
++
+--- before/scripts/Verify-PublicSite.ps1
++++ repaired/scripts/Verify-PublicSite.ps1
+@@ -308 +308 @@
+-        "ForgeCast", "ProofShot", "Proof Standard", "Explore the software"
++        "ForgeCast", "ProofShot", "Proof Standard", "Explore our software"
+--- before/scripts/test-h9-production-reconciliation.ps1
++++ repaired/scripts/test-h9-production-reconciliation.ps1
+@@ -50 +50,4 @@
+-  Assert-Reconciled "${path}: current production source preserved" ((Read-Source $path) -ceq (Read-Production $path))
++  $expected = Read-Production $path
++  # Only the accepted homepage CTA expectation may differ from the pinned verifier.
++  if ($path -ceq 'scripts/Verify-PublicSite.ps1') { $expected = $expected.Replace('"Explore the software"', '"Explore our software"') }
++  Assert-Reconciled "${path}: current production source preserved" ((Read-Source $path) -ceq $expected)

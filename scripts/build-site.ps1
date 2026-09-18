@@ -1526,6 +1526,16 @@ function Process-Template($srcPath, $srcName) {
     $html = Replace-ProductTokens $html @{}
   }
 
+  # Avoid implicit /favicon.ico requests while preserving each page's explicit icon.
+  $head = [regex]::Match($html, '(?is)<head\b[^>]*>.*?</head>')
+  if (-not $head.Success) { throw "Missing HTML head in $srcName" }
+  $iconLinks = @([regex]::Matches($head.Value, '(?is)<link\b[^>]*\brel\s*=\s*["'']([^"'']*)["'']') | Where-Object { ($_.Groups[1].Value -split '\s+') -contains 'icon' })
+  if ($iconLinks.Count -eq 0) {
+    $defaultIcon = '<link href="/brand/proof-foundry-mark.svg" rel="icon" type="image/svg+xml"/>' + "`n"
+    $headWithIcon = [regex]::Replace($head.Value, '(?i)</head>', $defaultIcon + '</head>')
+    $html = $html.Remove($head.Index, $head.Length).Insert($head.Index, $headWithIcon)
+  }
+
   # Generated-file warning (after doctype)
   $warning = "<!-- GENERATED FILE - DO NOT EDIT. Source: $srcName + site-manifest.json. Run scripts/build-site.ps1 to rebuild. -->`r`n"
   $html = $html -replace '(<!doctype[^>]*>\s*\r?\n)', "`$1$warning"

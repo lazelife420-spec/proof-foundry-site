@@ -36,6 +36,12 @@ The original guard required local `master` to remain at the pre-H9 production co
 
 The pinned manifest comparison, product/artifact truth, assertion totals, historical failure labels and 18 replacement mappings remain unchanged. The binding fixture's cinematic-guard entry retains its original baseline and prior portability migration; only its explicitly documented current migration advances to the repaired guard hash. The binding guard's own transition is recorded separately to avoid self-hashing.
 
+## Production validation repair
+
+Production browser verification exposed missing icon declarations on `/proof/`, `/founders/`, `/cleanroom/`, `/forgecast/` and `/lights-out/`, triggering browser requests for nonexistent `/favicon.ico`. The shared build finalization now supplies the same existing `/brand/proof-foundry-mark.svg` icon only when a rendered HTML head has no icon declaration. Existing selected G and legacy declarations remain untouched, and all five page source files remain frozen. The public-site verifier also still expected `Explore the software` although the accepted H9 homepage says `Explore our software`; that one-word expectation is corrected without changing homepage copy.
+
+`production-validation-migration.json` and `production-validation.patch` pin the three exact source transitions from commit `169b99f778b0169e76b6415d834a8c0ba78d115f`: conditional existing-icon metadata in the shared builder, the verifier's one-word CTA expectation, and the reconciliation guard's allowance for precisely that verifier substitution against the pinned production object. Both custody fixtures retain original baselines and any previous migration while recording the new expected bytes. No page source or other frozen source is relaxed. Assertion counts, canonical manifest/artifact comparisons and all 18 historical failure mappings remain unchanged.
+
 ## Honest assertion totals
 
 | Guard | Accepted owner package | Custody exclusions | Added mandatory checks | Portable result |
