@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "fromCommit": "60ef274c6bc7c39a2ccb5bdba9925909041d9c69",
+  "fromTree": "f478e65f9872178a424271df2dcd43e6b9defe0d",
+  "pinnedProductionCommit": "34a291d78fa92f1a18cf76cef3ee56b391186e77",
+  "scope": "Correct the Lights Out support card so public version records are not described as downloadable while canonical downloadUnavailable is true; bind the copy to manifest-derived tokens; strengthen the existing support release-truth assertion; and permit only that exact support correction in the reconciliation guard. No design, product version, artifact, digest, release status or historical failure change.",
+  "assertionCountsChanged": false,
+  "historicalGuardBindingSha256": "44c2c840b8df874fabe75a556710cd08d84b6d6cf52188c2faa90f47e9d3cebc",
+  "migrations": [
+    {
+      "path": "support.html",
+      "before": {
+        "sha256": "3f3f92cf6ce91f6ec92675abf9708c4d315d15a79f4e03db00fdb68413164474",
+        "bytes": 14017,
+        "comparison": "utf8-lf",
+        "lfSha256": "3f3f92cf6ce91f6ec92675abf9708c4d315d15a79f4e03db00fdb68413164474"
+      },
+      "current": {
+        "sha256": "a51a3fcc3f70b22fdb696ded72ef737c883c1a1dd93251b7341aab630c54402a",
+        "bytes": 14007,
+        "comparison": "utf8-lf",
+        "lfSha256": "a51a3fcc3f70b22fdb696ded72ef737c883c1a1dd93251b7341aab630c54402a"
+      }
+    },
+    {
+      "path": "scripts/test-customer-trust-p2-1.ps1",
+      "before": {
+        "sha256": "926d8054b6a0f115663d7484257b312a16666085f71bad8378da02acdae2d220",
+        "bytes": 7554,
+        "comparison": "utf8-lf",
+        "lfSha256": "926d8054b6a0f115663d7484257b312a16666085f71bad8378da02acdae2d220"
+      },
+      "current": {
+        "sha256": "8349eb1ac7d4571c71bd63ef6ac51682303833b8baec6d41bdbb7dfa4f143f61",
+        "bytes": 7972,
+        "comparison": "utf8-lf",
+        "lfSha256": "8349eb1ac7d4571c71bd63ef6ac51682303833b8baec6d41bdbb7dfa4f143f61"
+      }
+    },
+    {
+      "path": "scripts/test-h9-production-reconciliation.ps1",
+      "before": {
+        "sha256": "49e83275cc07f219dbf5da6cd9f5f316f0cc1c8006bf3c54458ff0c0957e99b4",
+        "bytes": 9064,
+        "comparison": "utf8-lf",
+        "lfSha256": "49e83275cc07f219dbf5da6cd9f5f316f0cc1c8006bf3c54458ff0c0957e99b4"
+      },
+      "current": {
+        "sha256": "c4742d6972790c346841ec2ce1b40ecbbda2e99b6826fa6123c3bd97cb3324c8",
+        "bytes": 9310,
+        "comparison": "utf8-lf",
+        "lfSha256": "c4742d6972790c346841ec2ce1b40ecbbda2e99b6826fa6123c3bd97cb3324c8"
+      }
+    }
+  ],
+  "patchSha256": "fc5871c8245bfcff8a4798e03cf09971b0d231518a5d5fdf3c65abb4d3da0344"
+}

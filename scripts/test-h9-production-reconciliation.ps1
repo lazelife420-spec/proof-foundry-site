@@ -73,8 +73,8 @@ foreach ($asset in $assetCustody.additions) {
 }
 
 # Only these precise stale statements are superseded on frozen shared surfaces.
-$supportExpected = (Read-Production 'support.html').Replace('In development; no public release package currently published.', 'Public Windows v{{products.proofshot.publicVersion}} is available from Proof Foundry downloads. The installer is unsigned; verify its SHA-256 before running.')
-Assert-Reconciled 'support source differs only by ProofShot public release correction' ((Read-Source 'support.html') -ceq $supportExpected)
+$supportExpected = (Read-Production 'support.html').Replace('In development; no public release package currently published.', 'Public Windows v{{products.proofshot.publicVersion}} is available from Proof Foundry downloads. The installer is unsigned; verify its SHA-256 before running.').Replace('Public Windows v11.1.2 available; Candidate v11.1.3 on hold. Public Android companion v11.1.1 available.', 'Public Windows v{{products.lights-out.publicVersion}}. {{products.lights-out.cardDetailLine}}.')
+Assert-Reconciled 'support source differs only by ProofShot release correction and Lights Out availability correction' ((Read-Source 'support.html') -ceq $supportExpected)
 $favicon = '<link href="/brand/proof-foundry-mark.svg" rel="icon" type="image/svg+xml"/>' + "`n"
 $psExpected = (Read-Production 'proofshot.html').Replace('under its current HyperSnatch branding.', 'in an earlier HyperSnatch-branded preview.').Replace('</head>', $favicon + '</head>')
 Assert-Reconciled 'ProofShot source differs only by historical-preview alt and existing-icon metadata' ((Read-Source 'proofshot.html') -ceq $psExpected)

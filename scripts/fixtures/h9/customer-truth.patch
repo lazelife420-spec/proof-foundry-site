@@ -1,0 +1,24 @@
+diff --git a/scripts/test-customer-trust-p2-1.ps1 b/scripts/test-customer-trust-p2-1.ps1
+index fe5595b..cf05361 100644
+--- a/scripts/test-customer-trust-p2-1.ps1
++++ b/scripts/test-customer-trust-p2-1.ps1
+@@ -97 +97,2 @@ Assert-Condition ($supportHtml -notmatch 'v0\.2\.3-rc') "Support release truth:
+-Assert-Condition ($supportHtml -match 'Lights Out[\s\S]*?v11\.1\.2[\s\S]*?v11\.1\.3[\s\S]*?v11\.1\.1') "Support release truth: Lights Out v11.1.2 / v11.1.3 / Android v11.1.1"
++$loSupportCard = [regex]::Match($supportHtml, '(?s)<article class="detail-card">\s*<h3><a href="/lights-out/">.*?</article>').Value
++Assert-Condition ((-not [string]::IsNullOrWhiteSpace($loSupportCard)) -and ($loSupportCard -match 'Public Windows v11\.1\.2\.[\s\S]*?Android companion public v11\.1\.1[\s\S]*?v11\.1\.3 candidates on hold[\s\S]*?public downloads currently unavailable') -and ($loSupportCard -notmatch '(?:v11\.1\.2|v11\.1\.1)\s+available')) "Support release truth: Lights Out public versions, held candidate and download unavailability agree without false artifact availability"
+diff --git a/scripts/test-h9-production-reconciliation.ps1 b/scripts/test-h9-production-reconciliation.ps1
+index 3ac5f00..7df0829 100644
+--- a/scripts/test-h9-production-reconciliation.ps1
++++ b/scripts/test-h9-production-reconciliation.ps1
+@@ -76,2 +76,2 @@ foreach ($asset in $assetCustody.additions) {
+-$supportExpected = (Read-Production 'support.html').Replace('In development; no public release package currently published.', 'Public Windows v{{products.proofshot.publicVersion}} is available from Proof Foundry downloads. The installer is unsigned; verify its SHA-256 before running.')
+-Assert-Reconciled 'support source differs only by ProofShot public release correction' ((Read-Source 'support.html') -ceq $supportExpected)
++$supportExpected = (Read-Production 'support.html').Replace('In development; no public release package currently published.', 'Public Windows v{{products.proofshot.publicVersion}} is available from Proof Foundry downloads. The installer is unsigned; verify its SHA-256 before running.').Replace('Public Windows v11.1.2 available; Candidate v11.1.3 on hold. Public Android companion v11.1.1 available.', 'Public Windows v{{products.lights-out.publicVersion}}. {{products.lights-out.cardDetailLine}}.')
++Assert-Reconciled 'support source differs only by ProofShot release correction and Lights Out availability correction' ((Read-Source 'support.html') -ceq $supportExpected)
+diff --git a/support.html b/support.html
+index f446bfa..119940b 100644
+--- a/support.html
++++ b/support.html
+@@ -59 +59 @@
+-          <p class="note">Public Windows v11.1.2 available; Candidate v11.1.3 on hold. Public Android companion v11.1.1 available.</p>
++          <p class="note">Public Windows v{{products.lights-out.publicVersion}}. {{products.lights-out.cardDetailLine}}.</p>

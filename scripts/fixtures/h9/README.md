@@ -42,6 +42,12 @@ Production browser verification exposed missing icon declarations on `/proof/`, 
 
 `production-validation-migration.json` and `production-validation.patch` pin the three exact source transitions from commit `169b99f778b0169e76b6415d834a8c0ba78d115f`: conditional existing-icon metadata in the shared builder, the verifier's one-word CTA expectation, and the reconciliation guard's allowance for precisely that verifier substitution against the pinned production object. Both custody fixtures retain original baselines and any previous migration while recording the new expected bytes. No page source or other frozen source is relaxed. Assertion counts, canonical manifest/artifact comparisons and all 18 historical failure mappings remain unchanged.
 
+## Customer truth repair
+
+A direct production walkthrough found one additional preexisting contradiction on `/support/`: the Lights Out card called Windows v11.1.2 and Android companion v11.1.1 “available” although canonical truth has `presentation.downloadUnavailable=true`, no product download URL and no Android artifact URL. `customer-truth-migration.json` and `customer-truth.patch` pin the exact correction from commit `60ef274c6bc7c39a2ccb5bdba9925909041d9c69`.
+
+The support sentence now renders its Windows public version and complete availability detail from named manifest tokens. The existing customer-trust assertion is strengthened in place, without changing its assertion count, to require the public versions, held v11.1.3 candidate and download unavailability while rejecting the two false “available” phrases. The reconciliation guard permits only this exact second support correction against the same pinned production object. No release status, version, artifact, digest, visual surface or historical failure mapping changes.
+
 ## Honest assertion totals
 
 | Guard | Accepted owner package | Custody exclusions | Added mandatory checks | Portable result |

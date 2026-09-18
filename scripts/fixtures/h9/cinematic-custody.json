@@ -1180,7 +1180,14 @@
       "bytes": 7554,
       "comparison": "utf8-lf",
       "lfSha256": "926d8054b6a0f115663d7484257b312a16666085f71bad8378da02acdae2d220",
-      "origin": "original-entry-inventory"
+      "origin": "original-entry-inventory",
+      "migration": {
+        "sha256": "8349eb1ac7d4571c71bd63ef6ac51682303833b8baec6d41bdbb7dfa4f143f61",
+        "bytes": 7972,
+        "comparison": "utf8-lf",
+        "lfSha256": "8349eb1ac7d4571c71bd63ef6ac51682303833b8baec6d41bdbb7dfa4f143f61",
+        "reason": "Explicit customer-truth repair; see customer-truth-migration.json and customer-truth.patch."
+      }
     },
     {
       "path": "scripts/test-customer-trust-p2-2.ps1",
@@ -1278,17 +1285,24 @@
       "lfSha256": "eccd353c55072aaaaa9a055e82876c58796d7e64bcf62c268c84120a20e36c3a",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "49e83275cc07f219dbf5da6cd9f5f316f0cc1c8006bf3c54458ff0c0957e99b4",
-        "bytes": 9064,
+        "sha256": "c4742d6972790c346841ec2ce1b40ecbbda2e99b6826fa6123c3bd97cb3324c8",
+        "bytes": 9310,
         "comparison": "utf8-lf",
-        "lfSha256": "49e83275cc07f219dbf5da6cd9f5f316f0cc1c8006bf3c54458ff0c0957e99b4",
-        "reason": "Explicit production-validation repair; see production-validation-migration.json and production-validation.patch.",
+        "lfSha256": "c4742d6972790c346841ec2ce1b40ecbbda2e99b6826fa6123c3bd97cb3324c8",
+        "reason": "Explicit customer-truth repair; see customer-truth-migration.json and customer-truth.patch.",
         "previousMigration": {
-          "sha256": "b6f5b93676907c1838559806063cc30040fc5211fd91a36d68781445a7f7efe0",
-          "bytes": 8822,
+          "sha256": "49e83275cc07f219dbf5da6cd9f5f316f0cc1c8006bf3c54458ff0c0957e99b4",
+          "bytes": 9064,
           "comparison": "utf8-lf",
-          "lfSha256": "b6f5b93676907c1838559806063cc30040fc5211fd91a36d68781445a7f7efe0",
-          "reason": "Explicit qualification-portability migration; see portability-migration.json and portability.patch."
+          "lfSha256": "49e83275cc07f219dbf5da6cd9f5f316f0cc1c8006bf3c54458ff0c0957e99b4",
+          "reason": "Explicit production-validation repair; see production-validation-migration.json and production-validation.patch.",
+          "previousMigration": {
+            "sha256": "b6f5b93676907c1838559806063cc30040fc5211fd91a36d68781445a7f7efe0",
+            "bytes": 8822,
+            "comparison": "utf8-lf",
+            "lfSha256": "b6f5b93676907c1838559806063cc30040fc5211fd91a36d68781445a7f7efe0",
+            "reason": "Explicit qualification-portability migration; see portability-migration.json and portability.patch."
+          }
         }
       }
     },
@@ -1362,7 +1376,14 @@
       "bytes": 14017,
       "comparison": "utf8-lf",
       "lfSha256": "3f3f92cf6ce91f6ec92675abf9708c4d315d15a79f4e03db00fdb68413164474",
-      "origin": "original-entry-inventory"
+      "origin": "original-entry-inventory",
+      "migration": {
+        "sha256": "a51a3fcc3f70b22fdb696ded72ef737c883c1a1dd93251b7341aab630c54402a",
+        "bytes": 14007,
+        "comparison": "utf8-lf",
+        "lfSha256": "a51a3fcc3f70b22fdb696ded72ef737c883c1a1dd93251b7341aab630c54402a",
+        "reason": "Explicit customer-truth repair; see customer-truth-migration.json and customer-truth.patch."
+      }
     }
   ],
   "exclusions": [
