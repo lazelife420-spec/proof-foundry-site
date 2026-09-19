@@ -26,7 +26,16 @@ Write-Host '=== CURRENT H9 BINDING GUARD ==='
 & git -C $Root merge-base --is-ancestor $production HEAD
 $productionAncestryExit = $LASTEXITCODE
 Assert-Binding 'authority: inspected production commit is an ancestor of candidate HEAD' ($productionAncestryExit -eq 0)
-Assert-Binding 'authority: complete product objects equal current production' ((Json $manifest.products) -ceq (Json $canonical.products))
+# ForgeCast decision-first copy tranche 2026-09-19 (owner-authorized): the
+# forgecast summary / cardSummary / presentation.valueLine fields carry the
+# approved new positioning. Neutralize exactly those copy fields on both
+# sides; all release, artifact, signing and availability truth must still be
+# byte-identical to the pinned production object.
+foreach ($set in @(@($manifest.products), @($canonical.products))) {
+  $fcP = @($set | Where-Object { $_.id -eq 'forgecast' }) | Select-Object -First 1
+  if ($fcP) { $fcP.summary = $null; $fcP.cardSummary = $null; if ($fcP.presentation) { $fcP.presentation.valueLine = $null } }
+}
+Assert-Binding 'authority: complete product objects equal current production (authorized: forgecast copy fields only)' ((Json $manifest.products) -ceq (Json $canonical.products))
 Assert-Binding 'authority: seven registry identities equal production' ((($registry.products.id | Sort-Object) -join ',') -ceq (($canonical.products.id | Sort-Object) -join ','))
 foreach ($product in $canonical.products) {
   $actual = @($registry.products | Where-Object id -eq $product.id)[0]

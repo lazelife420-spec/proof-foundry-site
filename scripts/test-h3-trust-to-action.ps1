@@ -72,7 +72,7 @@ foreach ($k in $released.Keys) {
 Assert-Condition ($rg -match 'onboarding-list[\s\S]*%APPDATA%\\RealityGate\\') "P1: Reality Gate leftovers cite %APPDATA%\RealityGate\"
 Assert-Condition ($cl -match 'onboarding-list[\s\S]*%APPDATA%\\Cleanroom\\Archive\\') "P1: Cleanroom leftovers cite %APPDATA%\Cleanroom\Archive\"
 Assert-Condition ($gl -match 'onboarding-list[\s\S]*%TEMP%\\GhostLayer\\') "P1: GhostLayer leftovers cite %TEMP%\GhostLayer\"
-Assert-Condition ($fc -match 'onboarding-list[\s\S]*com\.prooffoundry\.forgecast') "P1: ForgeCast leftovers cite app-private storage"
+Assert-Condition ($fc -match 'onboarding-list[\s\S]*com\.prooffoundry\.skyfoundry') "P1: ForgeCast leftovers cite app-private storage"
 # Onboarding stays availability-honest per product: Lights Out is held (no
 # download promised); Cache Vault now ships a final public release, so its
 # onboarding must match the live v0.2.4 download instead of the RC-era

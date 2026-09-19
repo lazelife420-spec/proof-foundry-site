@@ -160,8 +160,10 @@ foreach ($route in $indexableRoutes) {
   $label = if ($route -eq '') { '/' } else { "/$route/" }
   $loc = if ($route -eq '') { "$originHost/" } else { "$originHost/$route/" }
   $committedDate = Get-LastContentDate $routeInputs[$route]
-  $candidateDate = '2026-09-18'
-  Assert-Condition ($lastmodByLoc[$loc] -eq $candidateDate -and $lastmodByLoc[$loc] -ge $committedDate) "F5: sitemap lastmod $label records H9 common-nav reconciliation ($candidateDate), no earlier than committed content ($committedDate)"
+  # 2026-09-19: ForgeCast decision-first copy tranche is the latest recorded
+  # content event (site-manifest.json is an input to every route).
+  $candidateDate = '2026-09-19'
+  Assert-Condition ($lastmodByLoc[$loc] -eq $candidateDate -and $lastmodByLoc[$loc] -ge $committedDate) "F5: sitemap lastmod $label records latest content reconciliation ($candidateDate), no earlier than committed content ($committedDate)"
 }
 $today = [DateTime]::UtcNow.ToString('yyyy-MM-dd')
 Assert-Condition (@($mods | Where-Object { $_ -gt $today }).Count -eq 0) "sitemap: no lastmod in the future (no manufactured freshness)"
@@ -198,6 +200,11 @@ Assert-Condition (($publicDirs -join ',') -eq (($dirRoutes | Sort-Object) -join 
 Assert-Condition ((git -C $root status --porcelain -- package.json package-lock.json) -eq $null) "deps: package manifests untouched by H4"
 # Product truth is frozen against the inspected CURRENT production commit.
 # This checks all products with no target exclusions, while allowing H9 nav.
+# Authorized drift (site copy tranche 2026-09-19, owner-authorized ForgeCast
+# decision-first repositioning): forgecast.presentation.valueLine carries the
+# approved card copy. Every other frozen field — release, sha256, artifacts,
+# downloads — remains byte-identical to the pinned production baseline.
+$authorizedDrift = @('forgecast.presentation')
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $headManifest = (git -C $root show 34a291d78fa92f1a18cf76cef3ee56b391186e77:site-manifest.json) -join "`n" | ConvertFrom-Json
 $workManifest = Get-Content (Join-Path $root 'site-manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
@@ -208,7 +215,7 @@ foreach ($p in $workManifest.products) {
   foreach ($f in @('state','productStatus','release','verification','artifacts','downloadUrl','downloadLabel','sha256','sha256Url','limits','presentation','evidence','proofLinks','companionVersion','currentLocalVersion','testStatus','testCount','releaseNote','build')) {
     $headVal = ConvertTo-Json @($headP.$f) -Depth 12 -Compress
     $workVal = ConvertTo-Json @($p.$f) -Depth 12 -Compress
-    if ($headVal -ne $workVal) { $truthDrift += "$($p.id).$f" }
+    if ($headVal -ne $workVal -and -not ($authorizedDrift -contains "$($p.id).$f")) { $truthDrift += "$($p.id).$f" }
   }
 }
 Assert-Condition ($truthDrift.Count -eq 0 -and $workManifest.products.Count -eq $headManifest.products.Count) "truth: every product release field equals current production (drift: $($truthDrift -join ', '))"

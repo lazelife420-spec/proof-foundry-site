@@ -1061,7 +1061,14 @@
       "bytes": 18846,
       "comparison": "utf8-lf",
       "lfSha256": "1b42817b0d02980a418ebdd653be826dbc35fedfb99454fceb007ee4be78870c",
-      "origin": "original-entry-inventory"
+      "origin": "original-entry-inventory",
+      "migration": {
+        "sha256": "dc80b2911931b20a80f149f47d716f2a3de3348cf8cfc47855bcd62aadb3b222",
+        "bytes": 19366,
+        "comparison": "utf8-lf",
+        "lfSha256": "dc80b2911931b20a80f149f47d716f2a3de3348cf8cfc47855bcd62aadb3b222",
+        "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919."
+      }
     },
     {
       "path": "founders.html",
@@ -1211,7 +1218,14 @@
       "bytes": 10569,
       "comparison": "utf8-lf",
       "lfSha256": "e7bd8f7f422adaab0c022b2c4eb608da8b0d31c88fc28d2b4eb9c75490f80720",
-      "origin": "original-entry-inventory"
+      "origin": "original-entry-inventory",
+      "migration": {
+        "sha256": "78242dbcc87e899b9c62b8d21142e416c0309899ba6c9f578ade0bc50aa2c97d",
+        "bytes": 10570,
+        "comparison": "utf8-lf",
+        "lfSha256": "78242dbcc87e899b9c62b8d21142e416c0309899ba6c9f578ade0bc50aa2c97d",
+        "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919."
+      }
     },
     {
       "path": "scripts/test-h4-metadata-discovery.ps1",
@@ -1219,7 +1233,14 @@
       "bytes": 14113,
       "comparison": "utf8-lf",
       "lfSha256": "9a1c62f516b426b0eed377834ffc19c9fdaf0f25f0ecf19b7c56a7aff3014a03",
-      "origin": "original-entry-inventory"
+      "origin": "original-entry-inventory",
+      "migration": {
+        "sha256": "b17e3c7b88e88e6b0a6c489f1e26e869d9513b41c423e74a6b63e77c55648fab",
+        "bytes": 14666,
+        "comparison": "utf8-lf",
+        "lfSha256": "b17e3c7b88e88e6b0a6c489f1e26e869d9513b41c423e74a6b63e77c55648fab",
+        "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919."
+      }
     },
     {
       "path": "scripts/test-h5-jsonld-truth.ps1",
@@ -1227,7 +1248,14 @@
       "bytes": 7521,
       "comparison": "utf8-lf",
       "lfSha256": "14d373ddcea8d50f4db20f3d42f3713e62baa5eae2c5e46bcc8fb09ac718648a",
-      "origin": "original-entry-inventory"
+      "origin": "original-entry-inventory",
+      "migration": {
+        "sha256": "15e6ce180b4d58e3f5ad0bb4a1cc2a280e3adb8464cdb329049baea2b553cdb2",
+        "bytes": 8280,
+        "comparison": "utf8-lf",
+        "lfSha256": "15e6ce180b4d58e3f5ad0bb4a1cc2a280e3adb8464cdb329049baea2b553cdb2",
+        "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919."
+      }
     },
     {
       "path": "scripts/test-h6-p4-polish.ps1",
@@ -1285,25 +1313,32 @@
       "lfSha256": "eccd353c55072aaaaa9a055e82876c58796d7e64bcf62c268c84120a20e36c3a",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "c4742d6972790c346841ec2ce1b40ecbbda2e99b6826fa6123c3bd97cb3324c8",
-        "bytes": 9310,
+        "sha256": "94fa84d3f5a52bbc0249d41f1f99883cc0758b336161f076e51f9a2157909193",
+        "bytes": 15195,
         "comparison": "utf8-lf",
-        "lfSha256": "c4742d6972790c346841ec2ce1b40ecbbda2e99b6826fa6123c3bd97cb3324c8",
-        "reason": "Explicit customer-truth repair; see customer-truth-migration.json and customer-truth.patch.",
-        "previousMigration": {
-          "sha256": "49e83275cc07f219dbf5da6cd9f5f316f0cc1c8006bf3c54458ff0c0957e99b4",
-          "bytes": 9064,
-          "comparison": "utf8-lf",
-          "lfSha256": "49e83275cc07f219dbf5da6cd9f5f316f0cc1c8006bf3c54458ff0c0957e99b4",
-          "reason": "Explicit production-validation repair; see production-validation-migration.json and production-validation.patch.",
-          "previousMigration": {
-            "sha256": "b6f5b93676907c1838559806063cc30040fc5211fd91a36d68781445a7f7efe0",
-            "bytes": 8822,
-            "comparison": "utf8-lf",
-            "lfSha256": "b6f5b93676907c1838559806063cc30040fc5211fd91a36d68781445a7f7efe0",
-            "reason": "Explicit qualification-portability migration; see portability-migration.json and portability.patch."
-          }
-        }
+        "lfSha256": "94fa84d3f5a52bbc0249d41f1f99883cc0758b336161f076e51f9a2157909193",
+        "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919.",
+              "previousMigration": {
+                "sha256": "c4742d6972790c346841ec2ce1b40ecbbda2e99b6826fa6123c3bd97cb3324c8",
+                "bytes": 9310,
+                "comparison": "utf8-lf",
+                "lfSha256": "c4742d6972790c346841ec2ce1b40ecbbda2e99b6826fa6123c3bd97cb3324c8",
+                "reason": "Explicit customer-truth repair; see customer-truth-migration.json and customer-truth.patch.",
+                "previousMigration": {
+                  "sha256": "49e83275cc07f219dbf5da6cd9f5f316f0cc1c8006bf3c54458ff0c0957e99b4",
+                  "bytes": 9064,
+                  "comparison": "utf8-lf",
+                  "lfSha256": "49e83275cc07f219dbf5da6cd9f5f316f0cc1c8006bf3c54458ff0c0957e99b4",
+                  "reason": "Explicit production-validation repair; see production-validation-migration.json and production-validation.patch.",
+                  "previousMigration": {
+                    "sha256": "b6f5b93676907c1838559806063cc30040fc5211fd91a36d68781445a7f7efe0",
+                    "bytes": 8822,
+                    "comparison": "utf8-lf",
+                    "lfSha256": "b6f5b93676907c1838559806063cc30040fc5211fd91a36d68781445a7f7efe0",
+                    "reason": "Explicit qualification-portability migration; see portability-migration.json and portability.patch."
+                  }
+                }
+              }
       }
     },
     {
@@ -1352,7 +1387,14 @@
       "bytes": 2108,
       "comparison": "utf8-lf",
       "lfSha256": "4fec8064191591e88cb03bd4268ef08d564b1e7e2b43bf9b0f5cef8150311bc8",
-      "origin": "original-entry-inventory"
+      "origin": "original-entry-inventory",
+      "migration": {
+        "sha256": "6f746134a9153d27cedac4b171b5f1315583e904d128dcfd1010bae3b3f206a8",
+        "bytes": 2108,
+        "comparison": "utf8-lf",
+        "lfSha256": "6f746134a9153d27cedac4b171b5f1315583e904d128dcfd1010bae3b3f206a8",
+        "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919."
+      }
     },
     {
       "path": "studio.css",
@@ -1378,11 +1420,18 @@
       "lfSha256": "3f3f92cf6ce91f6ec92675abf9708c4d315d15a79f4e03db00fdb68413164474",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "a51a3fcc3f70b22fdb696ded72ef737c883c1a1dd93251b7341aab630c54402a",
-        "bytes": 14007,
+        "sha256": "f0ad9c222b317f799dad8e04f08375b55f2616d3af1110e5b47907eab3306f73",
+        "bytes": 14063,
         "comparison": "utf8-lf",
-        "lfSha256": "a51a3fcc3f70b22fdb696ded72ef737c883c1a1dd93251b7341aab630c54402a",
-        "reason": "Explicit customer-truth repair; see customer-truth-migration.json and customer-truth.patch."
+        "lfSha256": "f0ad9c222b317f799dad8e04f08375b55f2616d3af1110e5b47907eab3306f73",
+        "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919.",
+              "previousMigration": {
+                "sha256": "a51a3fcc3f70b22fdb696ded72ef737c883c1a1dd93251b7341aab630c54402a",
+                "bytes": 14007,
+                "comparison": "utf8-lf",
+                "lfSha256": "a51a3fcc3f70b22fdb696ded72ef737c883c1a1dd93251b7341aab630c54402a",
+                "reason": "Explicit customer-truth repair; see customer-truth-migration.json and customer-truth.patch."
+              }
       }
     }
   ],

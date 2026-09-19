@@ -29,7 +29,18 @@ Write-Host "=== H9 CURRENT-PRODUCTION RECONCILIATION GUARD ==="
 $canonical = (Read-Production 'site-manifest.json') | ConvertFrom-Json
 $manifest = (Read-Source 'site-manifest.json') | ConvertFrom-Json
 $registry = Get-Content (Join-Path $PublicDir 'proof/index.json') -Raw -Encoding UTF8 | ConvertFrom-Json
-Assert-Reconciled 'all seven canonical product objects are preserved exactly' (($manifest.products | ConvertTo-Json -Depth 40 -Compress) -ceq ($canonical.products | ConvertTo-Json -Depth 40 -Compress))
+# ForgeCast decision-first copy tranche 2026-09-19 (owner-authorized): the
+# forgecast summary / cardSummary / presentation.valueLine fields carry the
+# approved new positioning. Neutralize exactly those copy fields on both
+# sides; all release, artifact, signing and availability truth must still be
+# byte-identical to the pinned production object.
+$manifestProducts = @($manifest.products)
+$canonicalProducts = @($canonical.products)
+foreach ($set in @($manifestProducts, $canonicalProducts)) {
+  $fcP = @($set | Where-Object { $_.id -eq 'forgecast' }) | Select-Object -First 1
+  if ($fcP) { $fcP.summary = $null; $fcP.cardSummary = $null; if ($fcP.presentation) { $fcP.presentation.valueLine = $null } }
+}
+Assert-Reconciled 'all seven canonical product objects are preserved exactly (authorized: forgecast copy fields only)' (($manifestProducts | ConvertTo-Json -Depth 40 -Compress) -ceq ($canonicalProducts | ConvertTo-Json -Depth 40 -Compress))
 Assert-Reconciled 'registry covers exactly the canonical product identities' ((($registry.products.id | Sort-Object) -join ',') -ceq (($canonical.products.id | Sort-Object) -join ','))
 foreach ($p in $canonical.products) {
   $rendered = @($registry.products | Where-Object id -eq $p.id)[0]
@@ -43,7 +54,7 @@ foreach ($p in $canonical.products) {
 # Frozen surfaces are compared to CURRENT production, including its release edits.
 $frozen = @('about.html','proof-standard.html','proof.html','founders.html',
   'roadmap.html','reality-gate.html','lights-out.html',
-  'cleanroom.html','ghostlayer.html','forgecast.html','404.html',
+  'cleanroom.html','ghostlayer.html','404.html',
   'styles.css','studio.css','signature.css','experience.css','product-page.css',
   'site.js','scripts/Verify-PublicSite.ps1','partials/header.html','partials/footer.html','partials/product-card.html')
 foreach ($path in $frozen) {
@@ -73,8 +84,23 @@ foreach ($asset in $assetCustody.additions) {
 }
 
 # Only these precise stale statements are superseded on frozen shared surfaces.
-$supportExpected = (Read-Production 'support.html').Replace('In development; no public release package currently published.', 'Public Windows v{{products.proofshot.publicVersion}} is available from Proof Foundry downloads. The installer is unsigned; verify its SHA-256 before running.').Replace('Public Windows v11.1.2 available; Candidate v11.1.3 on hold. Public Android companion v11.1.1 available.', 'Public Windows v{{products.lights-out.publicVersion}}. {{products.lights-out.cardDetailLine}}.')
-Assert-Reconciled 'support source differs only by ProofShot release correction and Lights Out availability correction' ((Read-Source 'support.html') -ceq $supportExpected)
+$supportExpected = (Read-Production 'support.html').Replace('In development; no public release package currently published.', 'Public Windows v{{products.proofshot.publicVersion}} is available from Proof Foundry downloads. The installer is unsigned; verify its SHA-256 before running.').Replace('Public Windows v11.1.2 available; Candidate v11.1.3 on hold. Public Android companion v11.1.1 available.', 'Public Windows v{{products.lights-out.publicVersion}}. {{products.lights-out.cardDetailLine}}.').Replace('Decision-focused weather app for Android with Ask ForgeCast, Wear/Bring guidance, and dynamic widgets.', 'Decision-focused weather for Android. See when to head outside, what to wear now, what to bring later, and ask weather questions with forecast-backed reasons.')
+Assert-Reconciled 'support source differs only by ProofShot release correction, Lights Out availability correction, and authorized ForgeCast catalog copy' ((Read-Source 'support.html') -ceq $supportExpected)
+
+# ForgeCast decision-first copy tranche 2026-09-19: production page plus the
+# owner-authorized deltas only — skyfoundry package-path truth correction
+# (transplanted from 194018e), new decision-first hero/metadata, the five-block
+# outcome grid, and matching final-CTA copy. Everything else byte-identical.
+$fcExpected = (Read-Production 'forgecast.html')
+$fcExpected = $fcExpected.Replace('<title>ForgeCast — Make a plan for outside. | The Proof Foundry</title>', '<title>ForgeCast — What to Wear, What to Bring &amp; When to Go Outside | The Proof Foundry</title>')
+$fcExpected = $fcExpected.Replace('<meta content="Android weather for the decisions you actually make: when to go outside, what to wear and what to bring. ForgeCast public v0.3.5." name="description"/>', '<meta content="ForgeCast turns weather forecasts into practical decisions: when to go outside, what to wear now, what to bring later, and why. Available for Android." name="description"/>')
+$fcExpected = $fcExpected.Replace('<meta content="ForgeCast — Make a plan for outside." property="og:title"/>', '<meta content="ForgeCast — What to Wear, What to Bring &amp; When to Go Outside" property="og:title"/>')
+$fcExpected = $fcExpected.Replace('<meta content="Android weather for the decisions you actually make: when to go outside, what to wear and what to bring. ForgeCast public v0.3.5." property="og:description"/>', '<meta content="ForgeCast turns weather forecasts into practical decisions: when to go outside, what to wear now, what to bring later, and why. Available for Android." property="og:description"/>')
+$fcExpected = $fcExpected.Replace('<p class="kicker pp-kicker">Weather for the day you have planned</p><h1>A good day<br><em>to get outside.</em></h1><p class="product-lede">Find your weather window. Know what to wear. Get a useful answer before you head out.</p>', '<p class="kicker pp-kicker">Weather for what you do</p><h1>Know what to wear now.<br><em>What to bring later.</em></h1><p class="product-lede">ForgeCast turns changing weather into practical decisions — when to head out, what makes sense to wear now, what you may want later, and why.</p>')
+$fcExpected = $fcExpected.Replace('<p>Start with the decision. Open the forecast when you want the detail.</p></div><div class="pp-outcome-grid"><article><span class="step-number">01</span><h3>Find your window</h3><p>See the best time to get outside, with weather changes through the day.</p></article><article><span class="step-number">02</span><h3>Ask before you go</h3><p>Ask when to walk or whether you need a jacket. Get a weather-based answer with the reasons behind it.</p></article><article><span class="step-number">03</span><h3>Wear it. Bring it.</h3><p>Clothing and bring-or-skip guidance account for rain, timing and the temperature later.</p></article><article><span class="step-number">04</span><h3>Glanceable widgets</h3><p>Home-screen widgets surface timing and clothing guidance — and say honestly when their data may be outdated.</p></article></div></section>', '<p>Start with what the weather means for your day. See the best window to get outside, what to wear now, what to bring for later, and the conditions behind the recommendation.</p></div><div class="pp-outcome-grid"><article><span class="step-number">01</span><h3>Find your window</h3><p>See when conditions are most useful for your plans — and what changes through the day.</p></article><article><span class="step-number">02</span><h3>Know what to wear</h3><p>Get clothing guidance based on current conditions, rain risk, timing, and what is coming later.</p></article><article><span class="step-number">03</span><h3>Wear now. Bring later.</h3><p>ForgeCast separates what makes sense right now from what you may want if conditions change.</p></article><article><span class="step-number">04</span><h3>Ask before you go</h3><p>Ask about a walk, an outfit, rain, timing, or the rest of your day. ForgeCast answers from the forecast and shows the reasons behind the recommendation.</p></article><article><span class="step-number">05</span><h3>Glance from your home screen</h3><p>Forecast-aware widgets surface useful decisions without pretending stale weather is current.</p></article></div></section>')
+$fcExpected = $fcExpected.Replace('<p class="kicker pp-kicker">Weather for the day you have planned</p>' + "`n" + '  <h2 class="pp-h2">A good day<br><em>to get outside.</em></h2>', '<p class="kicker pp-kicker">Weather for what you do</p>' + "`n" + '  <h2 class="pp-h2">Know what to wear now.<br><em>What to bring later.</em></h2>')
+$fcExpected = $fcExpected.Replace('com.prooffoundry.forgecast/', 'com.prooffoundry.skyfoundry/')
+Assert-Reconciled 'forgecast.html: production source plus authorized copy tranche and package-path correction only' ((Read-Source 'forgecast.html') -ceq $fcExpected)
 $favicon = '<link href="/brand/proof-foundry-mark.svg" rel="icon" type="image/svg+xml"/>' + "`n"
 $psExpected = (Read-Production 'proofshot.html').Replace('under its current HyperSnatch branding.', 'in an earlier HyperSnatch-branded preview.').Replace('</head>', $favicon + '</head>')
 Assert-Reconciled 'ProofShot source differs only by historical-preview alt and existing-icon metadata' ((Read-Source 'proofshot.html') -ceq $psExpected)

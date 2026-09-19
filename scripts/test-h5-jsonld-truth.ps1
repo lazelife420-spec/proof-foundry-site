@@ -119,8 +119,19 @@ Assert-Condition ($lo -match 'href="#release-note"') "H3 guard: Lights Out what-
 
 # H9 may change navigation while all current production product truth is frozen.
 # A git-clean check would reject every authorized uncommitted review candidate.
+# Authorized drift (site copy tranche 2026-09-19, owner-authorized ForgeCast
+# decision-first repositioning): forgecast summary / cardSummary /
+# presentation.valueLine carry approved copy. Those three copy fields are
+# neutralized on both sides before comparison; every other field — release,
+# sha256, artifacts, downloads — must still match the pinned baseline exactly.
 $canonical = (git -C $root show 34a291d78fa92f1a18cf76cef3ee56b391186e77:site-manifest.json) -join "`n" | ConvertFrom-Json
-Assert-Condition (($manifest.products | ConvertTo-Json -Depth 30 -Compress) -ceq ($canonical.products | ConvertTo-Json -Depth 30 -Compress)) "truth: every product equals current production, including all release fields"
+$workProducts = @($manifest.products)
+$baseProducts = @($canonical.products)
+foreach ($set in @($workProducts, $baseProducts)) {
+  $fc = @($set | Where-Object { $_.id -eq 'forgecast' }) | Select-Object -First 1
+  if ($fc) { $fc.summary = $null; $fc.cardSummary = $null; if ($fc.presentation) { $fc.presentation.valueLine = $null } }
+}
+Assert-Condition (($workProducts | ConvertTo-Json -Depth 30 -Compress) -ceq ($baseProducts | ConvertTo-Json -Depth 30 -Compress)) "truth: every product equals current production, except authorized ForgeCast copy fields (summary, cardSummary, presentation.valueLine)"
 
 Write-Host ""
 Write-Host "=== RESULT: $($script:passed) passed, $($script:failed) failed ==="
