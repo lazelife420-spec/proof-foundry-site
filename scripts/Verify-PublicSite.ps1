@@ -1,4 +1,4 @@
-﻿param(
+param(
     [string]$Targets = "https://theprooffoundry.com,https://www.theprooffoundry.com,https://proof-foundry-site.pages.dev",
     [string]$ManifestPath,
     [string]$ReceiptPath
@@ -306,7 +306,7 @@ foreach ($target in $TargetUrls) {
     Test-UrlContent -Url "$target/" -ContainsPatterns @(
         "Reality Gate", "Lights Out", "Cache Vault", "Cleanroom",
         "ForgeCast", "ProofShot", "Proof Standard", "Explore our software"
-    ) -NotContainsPatterns @("SkyFoundry")
+    ) -NotContainsPatterns @("(?<!prooffoundry\.)SkyFoundry")
 
     # 2. Lights Out — canonical route: feature checks + manifest-derived version truth
     Test-UrlContent -Url "$target/lights-out/" -Name "product truth" -ContainsPatterns @(
@@ -317,7 +317,7 @@ foreach ($target in $TargetUrls) {
         "public Android companion.*$(Esc $loCompanionPublicVer)",
         "Neither the Windows $(Esc $loCandidateVer) candidate nor the Android"
     ) -NotContainsPatterns @(
-        "Electron packaged", "SkyFoundry", "guided breathing",
+        "Electron packaged", "(?<!prooffoundry\.)SkyFoundry", "guided breathing",
         "breathing ritual", "ambient soundscapes", "soundscapes", "screen shift"
     )
 
@@ -325,13 +325,13 @@ foreach ($target in $TargetUrls) {
     Test-UrlContent -Url "$target/lights-out" -ContainsPatterns @(
         "Wi-Fi Guard", "ForgeCast Weather"
     ) -NotContainsPatterns @(
-        "Electron packaged", "SkyFoundry", "guided breathing",
+        "Electron packaged", "(?<!prooffoundry\.)SkyFoundry", "guided breathing",
         "breathing ritual", "ambient soundscapes", "soundscapes", "screen shift"
     ) -FollowRedirects $true
     Test-UrlContent -Url "$target/lights-out.html" -ContainsPatterns @(
         "Wi-Fi Guard", "ForgeCast Weather"
     ) -NotContainsPatterns @(
-        "Electron packaged", "SkyFoundry", "guided breathing",
+        "Electron packaged", "(?<!prooffoundry\.)SkyFoundry", "guided breathing",
         "breathing ritual", "ambient soundscapes", "soundscapes", "screen shift"
     ) -FollowRedirects $true
 
@@ -347,14 +347,14 @@ foreach ($target in $TargetUrls) {
         $fcTestStatus,
         "v030-today.png"
     ) -NotContainsPatterns @(
-        "SkyFoundry",
+        "(?<!prooffoundry\.)SkyFoundry",
         "v0.2.9/ForgeCast-Weather-v0.2.9",
         "v0.3.2/ForgeCast-Weather-v0.3.2-android-release.apk"
     )
     Test-UrlContent -Url "$target/forgecast" -ContainsPatterns @(
         "ForgeCast Weather", "$(Esc $fcPublicVer)"
     ) -NotContainsPatterns @(
-        "SkyFoundry",
+        "(?<!prooffoundry\.)SkyFoundry",
         "v0.2.9/ForgeCast-Weather-v0.2.9",
         "v0.3.2/ForgeCast-Weather-v0.3.2-android-release.apk"
     ) -FollowRedirects $true
@@ -379,28 +379,28 @@ foreach ($target in $TargetUrls) {
     # 7. 404 page
     Test-UrlContent -Url "$target/this-page-does-not-exist" -ContainsPatterns @(
         "404", "Page Not Found", "The Proof Foundry"
-    ) -NotContainsPatterns @("SkyFoundry")
+    ) -NotContainsPatterns @("(?<!prooffoundry\.)SkyFoundry")
 
     # 8. Proof/Receipts page
     Test-UrlContent -Url "$target/proof/" -ContainsPatterns @(
         "Proof Foundry Receipts", "Reality Gate", "Lights Out", "Cache Vault",
         "Cleanroom", "ForgeCast Weather", "ProofShot"
     ) -NotContainsPatterns @(
-        "Electron packaged", "SkyFoundry", "Guided breathing",
+        "Electron packaged", "(?<!prooffoundry\.)SkyFoundry", "Guided breathing",
         "ambient soundscapes", "warm screen shift", "smart light dimming"
     )
     Test-UrlContent -Url "$target/proof" -ContainsPatterns @(
         "Proof Foundry Receipts", "Reality Gate", "Lights Out", "Cache Vault",
         "Cleanroom", "ForgeCast Weather", "ProofShot"
     ) -NotContainsPatterns @(
-        "Electron packaged", "SkyFoundry", "Guided breathing",
+        "Electron packaged", "(?<!prooffoundry\.)SkyFoundry", "Guided breathing",
         "ambient soundscapes", "warm screen shift", "smart light dimming"
     ) -FollowRedirects $true
     Test-UrlContent -Url "$target/proof.html" -ContainsPatterns @(
         "Proof Foundry Receipts", "Reality Gate", "Lights Out", "Cache Vault",
         "Cleanroom", "ForgeCast Weather", "ProofShot"
     ) -NotContainsPatterns @(
-        "Electron packaged", "SkyFoundry", "Guided breathing",
+        "Electron packaged", "(?<!prooffoundry\.)SkyFoundry", "Guided breathing",
         "ambient soundscapes", "warm screen shift", "smart light dimming"
     ) -FollowRedirects $true
     Test-UrlRedirect -Url "$target/proof" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/proof/"
@@ -409,7 +409,7 @@ foreach ($target in $TargetUrls) {
     # 9. Reality Gate — manifest-derived artifact hash + state label
     Test-UrlContent -Url "$target/reality-gate/" -ContainsPatterns @(
         "Reality Gate", $rgStateLabel, $rgSha256
-    ) -NotContainsPatterns @("SkyFoundry")
+    ) -NotContainsPatterns @("(?<!prooffoundry\.)SkyFoundry")
 
     # 10. Cache Vault — manifest-derived status, download label, artifact, hash
     #     The download label, status label, artifact filename, and SHA-256 are
@@ -422,30 +422,30 @@ foreach ($target in $TargetUrls) {
         $cvStatusLabel,
         $cvArtifactPattern,
         $cvSha256
-    ) -NotContainsPatterns @("SkyFoundry", "Get Cache Vault", "v0\.2\.3-rc1", "v0\.2\.3-rc2", "release candidate")
+    ) -NotContainsPatterns @("(?<!prooffoundry\.)SkyFoundry", "Get Cache Vault", "v0\.2\.3-rc1", "v0\.2\.3-rc2", "release candidate")
     Test-UrlContent -Url "$target/cache-vault" -ContainsPatterns @(
         "Cache Vault"
-    ) -NotContainsPatterns @("SkyFoundry") -FollowRedirects $true
+    ) -NotContainsPatterns @("(?<!prooffoundry\.)SkyFoundry") -FollowRedirects $true
     Test-UrlRedirect -Url "$target/cache-vault" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/cache-vault/"
     Test-UrlRedirect -Url "$target/cache-vault.html" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/cache-vault/"
 
     # 11. Cleanroom — manifest-derived status + download label
     Test-UrlContent -Url "$target/cleanroom/" -ContainsPatterns @(
         "Cleanroom", $clnDownloadPattern, $clnStatusLabel
-    ) -NotContainsPatterns @("SkyFoundry")
+    ) -NotContainsPatterns @("(?<!prooffoundry\.)SkyFoundry")
     Test-UrlContent -Url "$target/cleanroom" -ContainsPatterns @(
         "Cleanroom"
-    ) -NotContainsPatterns @("SkyFoundry") -FollowRedirects $true
+    ) -NotContainsPatterns @("(?<!prooffoundry\.)SkyFoundry") -FollowRedirects $true
     Test-UrlRedirect -Url "$target/cleanroom" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/cleanroom/"
     Test-UrlRedirect -Url "$target/cleanroom.html" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/cleanroom/"
 
     # 12. ProofShot — manifest-derived release truth (public release since 2026-09-17)
     Test-UrlContent -Url "$target/proofshot/" -ContainsPatterns @(
         "ProofShot", "Download ProofShot v$(Esc $psPublicVer)", (Esc $ps.downloadUrl), (Esc $ps.sha256), $psStatusLabel
-    ) -NotContainsPatterns @("SkyFoundry", "no public ProofShot release", "NOT YET RELEASED")
+    ) -NotContainsPatterns @("(?<!prooffoundry\.)SkyFoundry", "no public ProofShot release", "NOT YET RELEASED")
     Test-UrlContent -Url "$target/proofshot" -ContainsPatterns @(
         "ProofShot"
-    ) -NotContainsPatterns @("SkyFoundry") -FollowRedirects $true
+    ) -NotContainsPatterns @("(?<!prooffoundry\.)SkyFoundry") -FollowRedirects $true
     Test-UrlRedirect -Url "$target/proofshot" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/proofshot/"
     Test-UrlRedirect -Url "$target/proofshot.html" -ExpectedStatus @(301, 302, 307, 308) -ExpectedLocation "/proofshot/"
 }

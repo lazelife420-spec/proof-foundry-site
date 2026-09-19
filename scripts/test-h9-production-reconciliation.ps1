@@ -60,7 +60,7 @@ $frozen = @('about.html','proof-standard.html','proof.html','founders.html',
 foreach ($path in $frozen) {
   $expected = Read-Production $path
   # Only the accepted homepage CTA expectation may differ from the pinned verifier.
-  if ($path -ceq 'scripts/Verify-PublicSite.ps1') { $expected = $expected.Replace('"Explore the software"', '"Explore our software"') }
+  if ($path -ceq 'scripts/Verify-PublicSite.ps1') { $expected = $expected.Replace('"Explore the software"', '"Explore our software"').Replace('"SkyFoundry"', '"(?<!prooffoundry\.)SkyFoundry"') }
   Assert-Reconciled "${path}: current production source preserved" ((Read-Source $path) -ceq $expected)
 }
 . (Join-Path $Root 'scripts/fixtures/h9/custody.ps1')
