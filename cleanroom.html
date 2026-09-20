@@ -6,12 +6,12 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>Cleanroom — Less clutter. A way back. | The Proof Foundry</title>
-<meta content="Review Windows cleanup candidates, archive selected files and restore them to their original paths. Cleanroom public v1.0.7; next build v1.0.10." name="description"/>
+<meta content="Review Windows cleanup candidates, archive selected files and restore them to their original paths. Cleanroom public {{product.versionLabel}}; next build {{product.candidateVersionLabel}}." name="description"/>
 <meta content="index, follow" name="robots"/>
 <meta content="#0B0F14" name="theme-color"/>
 <link href="https://theprooffoundry.com/cleanroom/" rel="canonical"/>
 <meta content="Cleanroom — Less clutter. A way back." property="og:title"/>
-<meta content="Review Windows cleanup candidates, archive selected files and restore them to their original paths. Cleanroom public v1.0.7; next build v1.0.10." property="og:description"/>
+<meta content="Review Windows cleanup candidates, archive selected files and restore them to their original paths. Cleanroom public {{product.versionLabel}}; next build {{product.candidateVersionLabel}}." property="og:description"/>
 <meta content="product" property="og:type"/>
 <meta content="https://theprooffoundry.com/cleanroom/" property="og:url"/>
 <meta content="The Proof Foundry" property="og:site_name"/>
@@ -50,7 +50,7 @@
     <p class="kicker pp-kicker">Set up and keep it yours</p>
     <h2>Install, update, uninstall &amp; leftover data</h2>
   </div>
-  <dl class="onboarding-list"><dt>Install</dt><dd>Run the downloaded <code>Cleanroom-Setup-1.0.7.exe</code> installer. The installer is not Authenticode-signed, so Windows SmartScreen may prompt — choose <strong>More info → Run anyway</strong> after verifying the SHA-256.</dd><dt>First run</dt><dd>First-launch behavior beyond the installer is not described in the public source; the Inspect → Archive → Restore workflow is the main loop. If anything unexpected appears, use the diagnostic template on the support page.</dd><dt>Update</dt><dd>The public source does not describe an updater. The next build (v1.0.10) is in progress; watch the roadmap or release record for a new published installer and verify its SHA-256 before running it.</dd><dt>Uninstall</dt><dd>Uninstall via Windows Settings → Apps (standard for an Inno Setup installer). The public source does not document a separate uninstall step.</dd><dt>Leftover data</dt><dd>Archived files remain on local disk in <code>%APPDATA%\Cleanroom\Archive\</code> until restored or explicitly purged by you. Uninstalling the app does not restore or delete that archive; restore what you need first, then remove the directory if you want it gone.</dd></dl>
+  <dl class="onboarding-list"><dt>Install</dt><dd>Run the downloaded <code>{{product.artifacts.0.filename}}</code> installer. The installer is not Authenticode-signed, so Windows SmartScreen may prompt — choose <strong>More info → Run anyway</strong> after verifying the SHA-256.</dd><dt>First run</dt><dd>First-launch behavior beyond the installer is not described in the public source; the Inspect → Archive → Restore workflow is the main loop. If anything unexpected appears, use the diagnostic template on the support page.</dd><dt>Update</dt><dd>The public source does not describe an updater. The next build ({{product.candidateVersionLabel}}) is in progress; watch the roadmap or release record for a new published installer and verify its SHA-256 before running it.</dd><dt>Uninstall</dt><dd>Uninstall via Windows Settings → Apps (standard for an Inno Setup installer). The public source does not document a separate uninstall step.</dd><dt>Leftover data</dt><dd>Archived files remain on local disk in <code>%APPDATA%\Cleanroom\Archive\</code> until restored or explicitly purged by you. Uninstalling the app does not restore or delete that archive; restore what you need first, then remove the directory if you want it gone.</dd></dl>
   <div class="pp-support pp-support-flush"><strong>Questions or a problem?</strong><span>The Support Hub covers checksums, downloads, and problem reports for every product.</span><a class="text-link" href="/support/">Visit the Support Hub ↗</a></div>
 </section>
 
@@ -65,13 +65,13 @@
 <article class="detail-card">
 <h3>SHA-256 checksum</h3>
 <p>The canonical checksum for the {{product.versionLabel}} Windows installer, with a copy control, lives in the Verify this download block in Get the software above.</p>
-          <p class="note">SHA-256 published in the v1.0.7 SHA256SUMS.txt on Proof Foundry downloads.</p>
+          <p class="note">SHA-256 published in the {{product.versionLabel}} SHA256SUMS.txt on Proof Foundry downloads.</p>
 </article>
 <article class="detail-card">
 <h3>Release evidence</h3>
 <ul>
-<li><a href="https://downloads.theprooffoundry.com/cleanroom/v1.0.7/Cleanroom-Setup-1.0.7.exe" rel="noopener" target="_blank">Proof Foundry release: v1.0.7</a></li>
-<li><a href="https://downloads.theprooffoundry.com/cleanroom/v1.0.7/SHA256SUMS.txt" rel="noopener" target="_blank">Published SHA256SUMS</a></li>
+<li><a href="{{product.downloadUrl}}" rel="noopener" target="_blank">Proof Foundry release: {{product.versionLabel}}</a></li>
+<li><a href="{{product.sha256Url}}" rel="noopener" target="_blank">Published SHA256SUMS</a></li>
 <li>CI-built Windows installer (PyInstaller + Inno Setup); provenance attested via GitHub Actions</li>
 </ul>
 </article>
@@ -102,7 +102,7 @@
   <div class="section-heading pp-section-head">
     <p class="kicker pp-kicker">Privacy &amp; Data Flow</p>
     <h2>Local cleanup. Reversible local archives.</h2>
-    <p>Evidence-backed behavior for Cleanroom Windows v1.0.7.</p>
+    <p>Evidence-backed behavior for Cleanroom Windows {{product.versionLabel}}.</p>
   </div>
   <div class="value-grid">
     <article>
@@ -113,7 +113,7 @@
     <article>
       <span class="step-number">02</span>
       <h3>Network boundary</h3>
-      <p>No application network path was found in the audited public v1.0.7 source and packaged dependency surface. Performs zero background uploads or cloud requests.</p>
+      <p>No application network path was found in the audited public {{product.versionLabel}} source and packaged dependency surface. Performs zero background uploads or cloud requests.</p>
     </article>
     <article>
       <span class="step-number">03</span>

@@ -34,8 +34,20 @@ Assert-Cinematic 'authority: inspected production commit is an ancestor of candi
 foreach ($set in @(@($manifest.products), @($canonical.products))) {
   $fcP = @($set | Where-Object { $_.id -eq 'forgecast' }) | Select-Object -First 1
   if ($fcP) { $fcP.summary = $null; $fcP.cardSummary = $null; if ($fcP.presentation) { $fcP.presentation.valueLine = $null } }
+  # H10 truth consolidation (2026-09-20): narrow manifest fields added as
+  # canonical owners for facts pages previously hardcoded —
+  # release.sourceCommit / release.companionCandidateVersion (cache-vault) and
+  # packageId (forgecast). Production's manifest predates them; drop them on
+  # both sides so all other truth still requires byte equality.
+  foreach ($pp in $set) {
+    if ($pp.release) {
+      $pp.release.PSObject.Properties.Remove('companionCandidateVersion')
+      $pp.release.PSObject.Properties.Remove('sourceCommit')
+    }
+    $pp.PSObject.Properties.Remove('packageId')
+  }
 }
-Assert-Cinematic 'authority: complete product objects equal current production (authorized: forgecast copy fields only)' ((Json $manifest.products) -ceq (Json $canonical.products))
+Assert-Cinematic 'authority: complete product objects equal current production (authorized: forgecast copy fields + H10 truth fields only)' ((Json $manifest.products) -ceq (Json $canonical.products))
 Assert-Cinematic 'authority: seven registry identities equal production' ((($registry.products.id | Sort-Object) -join ',') -ceq (($canonical.products.id | Sort-Object) -join ','))
 foreach ($product in $canonical.products) {
   $actual = @($registry.products | Where-Object id -eq $product.id)[0]

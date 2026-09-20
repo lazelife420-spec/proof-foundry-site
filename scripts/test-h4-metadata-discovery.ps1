@@ -160,9 +160,11 @@ foreach ($route in $indexableRoutes) {
   $label = if ($route -eq '') { '/' } else { "/$route/" }
   $loc = if ($route -eq '') { "$originHost/" } else { "$originHost/$route/" }
   $committedDate = Get-LastContentDate $routeInputs[$route]
-  # 2026-09-19: ForgeCast decision-first copy tranche is the latest recorded
-  # content event (site-manifest.json is an input to every route).
-  $candidateDate = '2026-09-19'
+  # 2026-09-19: ForgeCast decision-first copy tranche is the baseline recorded
+  # content event (site-manifest.json is an input to every route). Routes whose
+  # own template committed later (index.html + roadmap.html in the 2026-09-20
+  # roadmap tranche) carry that route's committed date as their lastmod.
+  $candidateDate = if ($committedDate -gt '2026-09-19') { $committedDate } else { '2026-09-19' }
   Assert-Condition ($lastmodByLoc[$loc] -eq $candidateDate -and $lastmodByLoc[$loc] -ge $committedDate) "F5: sitemap lastmod $label records latest content reconciliation ($candidateDate), no earlier than committed content ($committedDate)"
 }
 $today = [DateTime]::UtcNow.ToString('yyyy-MM-dd')
@@ -208,6 +210,15 @@ $authorizedDrift = @('forgecast.presentation')
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $headManifest = (git -C $root show 34a291d78fa92f1a18cf76cef3ee56b391186e77:site-manifest.json) -join "`n" | ConvertFrom-Json
 $workManifest = Get-Content (Join-Path $root 'site-manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+# H10 truth consolidation (2026-09-20): new canonical fields — release.sourceCommit
+# and release.companionCandidateVersion — are absent from the pinned production
+# manifest; remove them from both sides before field comparison.
+foreach ($pp in @($workManifest.products) + @($headManifest.products)) {
+  if ($pp.release) {
+    $pp.release.PSObject.Properties.Remove('companionCandidateVersion')
+    $pp.release.PSObject.Properties.Remove('sourceCommit')
+  }
+}
 $truthDrift = @()
 foreach ($p in $workManifest.products) {
   $headP = @($headManifest.products | Where-Object { $_.id -eq $p.id }) | Select-Object -First 1

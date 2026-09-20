@@ -39,8 +39,20 @@ $canonicalProducts = @($canonical.products)
 foreach ($set in @($manifestProducts, $canonicalProducts)) {
   $fcP = @($set | Where-Object { $_.id -eq 'forgecast' }) | Select-Object -First 1
   if ($fcP) { $fcP.summary = $null; $fcP.cardSummary = $null; if ($fcP.presentation) { $fcP.presentation.valueLine = $null } }
+  # H10 truth consolidation (2026-09-20): three narrow manifest fields were added
+  # as canonical owners for facts pages previously hardcoded — release.sourceCommit
+  # and release.companionCandidateVersion (cache-vault), packageId (forgecast).
+  # Production's manifest predates them; neutralize on both sides so all other
+  # release/artifact truth still requires byte equality.
+  foreach ($pp in $set) {
+    if ($pp.release) {
+      $pp.release.PSObject.Properties.Remove('companionCandidateVersion')
+      $pp.release.PSObject.Properties.Remove('sourceCommit')
+    }
+    $pp.PSObject.Properties.Remove('packageId')
+  }
 }
-Assert-Reconciled 'all seven canonical product objects are preserved exactly (authorized: forgecast copy fields only)' (($manifestProducts | ConvertTo-Json -Depth 40 -Compress) -ceq ($canonicalProducts | ConvertTo-Json -Depth 40 -Compress))
+Assert-Reconciled 'all seven canonical product objects are preserved exactly (authorized: forgecast copy fields + H10 truth fields only)' (($manifestProducts | ConvertTo-Json -Depth 40 -Compress) -ceq ($canonicalProducts | ConvertTo-Json -Depth 40 -Compress))
 Assert-Reconciled 'registry covers exactly the canonical product identities' ((($registry.products.id | Sort-Object) -join ',') -ceq (($canonical.products.id | Sort-Object) -join ','))
 foreach ($p in $canonical.products) {
   $rendered = @($registry.products | Where-Object id -eq $p.id)[0]
@@ -52,8 +64,9 @@ foreach ($p in $canonical.products) {
 }
 
 # Frozen surfaces are compared to CURRENT production, including its release edits.
-$frozen = @('about.html','proof-standard.html','proof.html','founders.html',
-  'reality-gate.html','lights-out.html','cleanroom.html','ghostlayer.html','404.html',
+# (H10 truth consolidation 2026-09-20 moved the four edited product pages to
+# exact source-byte pins below; they intentionally diverge from production.)
+$frozen = @('about.html','proof-standard.html','proof.html','founders.html','404.html',
   'styles.css','studio.css','signature.css','experience.css','product-page.css',
   'site.js','scripts/Verify-PublicSite.ps1','partials/header.html','partials/footer.html','partials/product-card.html')
 foreach ($path in $frozen) {
@@ -68,7 +81,25 @@ foreach ($path in $frozen) {
 # intentionally diverges from pinned production; pin the exact approved source
 # bytes (LF-normalized SHA-256) so drift past the approved state still fails.
 $roadmapSha = Sha256 ([Text.Encoding]::UTF8.GetBytes((Read-Source 'roadmap.html')))
-Assert-Reconciled 'roadmap.html: owner-approved roadmap truth repair preserved' ($roadmapSha -ceq '356d4d432e5fffe092401435730b698f2e13a478d3e80fa0c23c5227656fa2e9')
+Assert-Reconciled 'roadmap.html: owner-approved roadmap truth repair + H10 publish-date tokenization preserved' ($roadmapSha -ceq '968da8807246b02235c9cff1f50a34e59b86bdc3482aa8faa8a40db2cdcd5608')
+
+# H10 public-truth consolidation (2026-09-20): the pages below carry authorized
+# edits that replace duplicated current-state literals (versions, dates, artifact
+# filenames, canonical URLs, receipt ids, package path) with manifest tokens. Each
+# is pinned to its exact authorized source bytes; any drift past this state fails.
+$h10Pins = [ordered]@{
+  'reality-gate.html' = '5be55df6d237cd451cceec0930f4b6d8891da3ff1ec333a2417405a4cdfc9e43'
+  'lights-out.html'   = 'e38c8e7463ae1f546dcbaab3e6026de5ff4b487019a2d68a0513291068ab8132'
+  'cleanroom.html'    = 'bc851044e14c7b5c7a684c6d0e36f2a71d51e3f839d371a2184c3a508ce89f0f'
+  'ghostlayer.html'   = '25e8ec7f307db8cbfb89b1ff4c9e87a1c8f6a2b0399137740c2ce6707e6925e0'
+  'cache-vault.html'  = '3a2dd0d461a93a29668ac0380b283fefc588ce9c6a0475e2043ebbae66b1219d'
+  'forgecast.html'    = '038a6fec24e81edd85eea70d3e50d7d70faa71a860d32dec983bb2764aab43d3'
+  'proofshot.html'    = '18cd26064f048e8d56a990f9220093053f7eb40b2452d4455a7ac7de5e6ed7fa'
+  'support.html'      = '28d93bb322b0371fb3bf2fa845155a6235ab1e29b8252017ad9c55c0bf117bd8'
+}
+foreach ($p in $h10Pins.Keys) {
+  Assert-Reconciled "${p}: H10 truth-consolidation source bytes preserved" ((Sha256 ([Text.Encoding]::UTF8.GetBytes((Read-Source $p)))) -ceq $h10Pins[$p])
+}
 . (Join-Path $Root 'scripts/fixtures/h9/custody.ps1')
 $assetCustody = Get-Content (Join-Path $Root 'scripts/fixtures/h9/canonical-assets.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 # Check actual source bytes, not the original worktree's index when qualifying an isolated staged tree.
@@ -89,29 +120,10 @@ foreach ($asset in $assetCustody.additions) {
   Assert-Reconciled "approved addition: $($asset.path) retains accepted owner-package bytes" (Test-H9Custody $Root $asset)
 }
 
-# Only these precise stale statements are superseded on frozen shared surfaces.
-$supportExpected = (Read-Production 'support.html').Replace('In development; no public release package currently published.', 'Public Windows v{{products.proofshot.publicVersion}} is available from Proof Foundry downloads. The installer is unsigned; verify its SHA-256 before running.').Replace('Public Windows v11.1.2 available; Candidate v11.1.3 on hold. Public Android companion v11.1.1 available.', 'Public Windows v{{products.lights-out.publicVersion}}. {{products.lights-out.cardDetailLine}}.').Replace('Decision-focused weather app for Android with Ask ForgeCast, Wear/Bring guidance, and dynamic widgets.', 'Decision-focused weather for Android. See when to head outside, what to wear now, what to bring later, and ask weather questions with forecast-backed reasons.')
-Assert-Reconciled 'support source differs only by ProofShot release correction, Lights Out availability correction, and authorized ForgeCast catalog copy' ((Read-Source 'support.html') -ceq $supportExpected)
-
-# ForgeCast decision-first copy tranche 2026-09-19: production page plus the
-# owner-authorized deltas only — skyfoundry package-path truth correction
-# (transplanted from 194018e), new decision-first hero/metadata, the five-block
-# outcome grid, and matching final-CTA copy. Everything else byte-identical.
-$fcExpected = (Read-Production 'forgecast.html')
-$fcExpected = $fcExpected.Replace('<title>ForgeCast — Make a plan for outside. | The Proof Foundry</title>', '<title>ForgeCast — What to Wear, What to Bring &amp; When to Go Outside | The Proof Foundry</title>')
-$fcExpected = $fcExpected.Replace('<meta content="Android weather for the decisions you actually make: when to go outside, what to wear and what to bring. ForgeCast public v0.3.5." name="description"/>', '<meta content="ForgeCast turns weather forecasts into practical decisions: when to go outside, what to wear now, what to bring later, and why. Available for Android." name="description"/>')
-$fcExpected = $fcExpected.Replace('<meta content="ForgeCast — Make a plan for outside." property="og:title"/>', '<meta content="ForgeCast — What to Wear, What to Bring &amp; When to Go Outside" property="og:title"/>')
-$fcExpected = $fcExpected.Replace('<meta content="Android weather for the decisions you actually make: when to go outside, what to wear and what to bring. ForgeCast public v0.3.5." property="og:description"/>', '<meta content="ForgeCast turns weather forecasts into practical decisions: when to go outside, what to wear now, what to bring later, and why. Available for Android." property="og:description"/>')
-$fcExpected = $fcExpected.Replace('<p class="kicker pp-kicker">Weather for the day you have planned</p><h1>A good day<br><em>to get outside.</em></h1><p class="product-lede">Find your weather window. Know what to wear. Get a useful answer before you head out.</p>', '<p class="kicker pp-kicker">Weather for what you do</p><h1>Know what to wear now.<br><em>What to bring later.</em></h1><p class="product-lede">ForgeCast turns changing weather into practical decisions — when to head out, what makes sense to wear now, what you may want later, and why.</p>')
-$fcExpected = $fcExpected.Replace('<p>Start with the decision. Open the forecast when you want the detail.</p></div><div class="pp-outcome-grid"><article><span class="step-number">01</span><h3>Find your window</h3><p>See the best time to get outside, with weather changes through the day.</p></article><article><span class="step-number">02</span><h3>Ask before you go</h3><p>Ask when to walk or whether you need a jacket. Get a weather-based answer with the reasons behind it.</p></article><article><span class="step-number">03</span><h3>Wear it. Bring it.</h3><p>Clothing and bring-or-skip guidance account for rain, timing and the temperature later.</p></article><article><span class="step-number">04</span><h3>Glanceable widgets</h3><p>Home-screen widgets surface timing and clothing guidance — and say honestly when their data may be outdated.</p></article></div></section>', '<p>Start with what the weather means for your day. See the best window to get outside, what to wear now, what to bring for later, and the conditions behind the recommendation.</p></div><div class="pp-outcome-grid"><article><span class="step-number">01</span><h3>Find your window</h3><p>See when conditions are most useful for your plans — and what changes through the day.</p></article><article><span class="step-number">02</span><h3>Know what to wear</h3><p>Get clothing guidance based on current conditions, rain risk, timing, and what is coming later.</p></article><article><span class="step-number">03</span><h3>Wear now. Bring later.</h3><p>ForgeCast separates what makes sense right now from what you may want if conditions change.</p></article><article><span class="step-number">04</span><h3>Ask before you go</h3><p>Ask about a walk, an outfit, rain, timing, or the rest of your day. ForgeCast answers from the forecast and shows the reasons behind the recommendation.</p></article><article><span class="step-number">05</span><h3>Glance from your home screen</h3><p>Forecast-aware widgets surface useful decisions without pretending stale weather is current.</p></article></div></section>')
-$fcExpected = $fcExpected.Replace('<p class="kicker pp-kicker">Weather for the day you have planned</p>' + "`n" + '  <h2 class="pp-h2">A good day<br><em>to get outside.</em></h2>', '<p class="kicker pp-kicker">Weather for what you do</p>' + "`n" + '  <h2 class="pp-h2">Know what to wear now.<br><em>What to bring later.</em></h2>')
-$fcExpected = $fcExpected.Replace('com.prooffoundry.forgecast/', 'com.prooffoundry.skyfoundry/')
-Assert-Reconciled 'forgecast.html: production source plus authorized copy tranche and package-path correction only' ((Read-Source 'forgecast.html') -ceq $fcExpected)
-$favicon = '<link href="/brand/proof-foundry-mark.svg" rel="icon" type="image/svg+xml"/>' + "`n"
-$psExpected = (Read-Production 'proofshot.html').Replace('under its current HyperSnatch branding.', 'in an earlier HyperSnatch-branded preview.').Replace('</head>', $favicon + '</head>')
-Assert-Reconciled 'ProofShot source differs only by historical-preview alt and existing-icon metadata' ((Read-Source 'proofshot.html') -ceq $psExpected)
-$cvExpected = (Read-Production 'cache-vault.html').Replace('</head>', $favicon + '</head>')
-Assert-Reconciled 'Cache Vault source differs only by existing-icon metadata' ((Read-Source 'cache-vault.html') -ceq $cvExpected)
+# The pre-H10 transform chains for support.html, forgecast.html, proofshot.html
+# and cache-vault.html are superseded by the H10 exact-byte pins declared above:
+# those pages now carry manifest tokens instead of duplicated literals, so their
+# authorized state is the pinned source bytes rather than production + deltas.
 $experienceExpected = (Read-Production 'experience.js').Replace('Capture workbench · in development', 'Structural capture & proof bundles').Replace('A capture workbench, taking shape.', 'Capture context. Keep a verifiable record.').Replace('under its current HyperSnatch branding.', 'in an earlier HyperSnatch-branded preview.')
 Assert-Reconciled 'experience logic preserved; only stale ProofShot descriptive strings change' ((Read-Source 'experience.js') -ceq $experienceExpected)
 

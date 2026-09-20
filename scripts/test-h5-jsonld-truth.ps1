@@ -130,8 +130,19 @@ $baseProducts = @($canonical.products)
 foreach ($set in @($workProducts, $baseProducts)) {
   $fc = @($set | Where-Object { $_.id -eq 'forgecast' }) | Select-Object -First 1
   if ($fc) { $fc.summary = $null; $fc.cardSummary = $null; if ($fc.presentation) { $fc.presentation.valueLine = $null } }
+  # H10 truth consolidation (2026-09-20): narrow manifest fields added as
+  # canonical owners for facts pages previously hardcoded —
+  # release.sourceCommit / release.companionCandidateVersion (cache-vault) and
+  # packageId (forgecast). Pinned production predates them; drop on both sides.
+  foreach ($pp in $set) {
+    if ($pp.release) {
+      $pp.release.PSObject.Properties.Remove('companionCandidateVersion')
+      $pp.release.PSObject.Properties.Remove('sourceCommit')
+    }
+    $pp.PSObject.Properties.Remove('packageId')
+  }
 }
-Assert-Condition (($workProducts | ConvertTo-Json -Depth 30 -Compress) -ceq ($baseProducts | ConvertTo-Json -Depth 30 -Compress)) "truth: every product equals current production, except authorized ForgeCast copy fields (summary, cardSummary, presentation.valueLine)"
+Assert-Condition (($workProducts | ConvertTo-Json -Depth 30 -Compress) -ceq ($baseProducts | ConvertTo-Json -Depth 30 -Compress)) "truth: every product equals current production, except authorized ForgeCast copy fields (summary, cardSummary, presentation.valueLine) and H10 truth fields"
 
 Write-Host ""
 Write-Host "=== RESULT: $($script:passed) passed, $($script:failed) failed ==="

@@ -60,7 +60,7 @@
 <!-- 3 · USER OUTCOMES: capabilities available in the public Developer Pilot -->
 <section class="pp-outcomes pp-section" id="features">
   <div class="section-heading pp-section-head">
-    <p class="kicker pp-kicker">Available in Developer Pilot v1.1.0</p>
+    <p class="kicker pp-kicker">Available in Developer Pilot {{product.versionLabel}}</p>
     <h2>Local control room for your software projects.</h2>
     <p>Bring an ordinary Git repository. Keep the tools and remotes you already use.</p>
   </div>
@@ -139,7 +139,7 @@
 </section>
 
 <!-- 7 · GET / DOWNLOAD -->
-<section class="pp-get" id="download"><div id="release-status"></div><p class="kicker pp-kicker">Get the software</p><h2 class="pp-h2">Your next run, under your control.</h2><p class="download-description">Developer Pilot {{product.versionLabel}} for Windows 10/11 x64. Download the ZIP, extract it, and run the installer. Updates are manual.</p><div class="studio-actions">{{product.downloadBlock}}</div><p class="pp-warning">Unsigned package: Windows SmartScreen may prompt on first launch. Verify the SHA-256 checksum before running — the checksum and verification instructions live in the release evidence below.</p><p class="pp-link-row"><a class="text-link" href="#evidence-download">Download &amp; verify (canonical) ↓</a> &nbsp;·&nbsp; <a class="text-link" href="#release-note">What changed in v1.1.0 ↓</a></p></section>
+<section class="pp-get" id="download"><div id="release-status"></div><p class="kicker pp-kicker">Get the software</p><h2 class="pp-h2">Your next run, under your control.</h2><p class="download-description">Developer Pilot {{product.versionLabel}} for Windows 10/11 x64. Download the ZIP, extract it, and run the installer. Updates are manual.</p><div class="studio-actions">{{product.downloadBlock}}</div><p class="pp-warning">Unsigned package: Windows SmartScreen may prompt on first launch. Verify the SHA-256 checksum before running — the checksum and verification instructions live in the release evidence below.</p><p class="pp-link-row"><a class="text-link" href="#evidence-download">Download &amp; verify (canonical) ↓</a> &nbsp;·&nbsp; <a class="text-link" href="#release-note">What changed in {{product.versionLabel}} ↓</a></p></section>
 
 <!-- 8 · ONBOARDING -->
 <section class="pp-onboard pp-section" id="onboarding">
@@ -158,8 +158,8 @@
 <!-- 10 · TECHNICAL VERIFICATION (progressive disclosure; deep evidence on demand) -->
 <section class="evidence-area pp-tech" id="proof"><details class="proof-details"><summary><span><span class="kicker">For a closer look</span><strong>Release evidence &amp; technical details</strong></span><span class="expand-label">Expand <span aria-hidden="true">+</span></span></summary><div class="evidence-content"><p class="evidence-intro">Release records, checksums, detailed scope and qualification evidence. Candidate evidence does not change public availability.</p>{{product.proofStrip}}<details class="pp-sub" id="release"><summary>Release &amp; qualification<span class="pp-sub-hint">pilot scope, limits, what changed</span></summary><div>
 <div class="rg-pilot-panel">
-<div class="rg-pilot-badge">v1.1.0 DEVELOPER PILOT</div>
-<h3 class="rg-section-title">Reality Gate Developer Pilot v1.1.0</h3>
+<div class="rg-pilot-badge">{{product.versionLabel}} DEVELOPER PILOT</div>
+<h3 class="rg-section-title">Reality Gate Developer Pilot {{product.versionLabel}}</h3>
 <p>Windows 10/11 x64 · Unsigned Package · Manual Update Model</p>
 <div class="rg-qual-flex">
 <div class="rg-qual-card">
@@ -194,7 +194,7 @@
 <p class="rg-section-subtitle">Verify the downloaded ZIP archive using PowerShell before executing the installer inside.</p>
 <div class="rg-cta-group">
 <a class="rg-btn rg-btn-primary" download="" href="{{product.downloadUrl}}">
-            Download v1.1.0 Developer Pilot
+            Download {{product.versionLabel}} Developer Pilot
           </a>
 <a class="rg-btn rg-btn-secondary" href="{{product.sha256Url}}" rel="noopener" target="_blank">
             SHA-256 Checksum File
@@ -203,7 +203,7 @@
 {{product.hashBlock}}
 <p>
           Verify locally in PowerShell:<br/>
-<code>Get-FileHash .\Reality-Gate-1.1.0-Developer-Pilot.zip -Algorithm SHA256</code>
+<code>Get-FileHash .\{{product.artifacts.0.filename}} -Algorithm SHA256</code>
 </p>
 <p class="pp-small-note"><a class="text-link" href="/proof/#receipt-reality-gate">Open the full release record ↗</a></p>
 </div></details><details class="pp-sub" id="architecture"><summary>Architecture &amp; capability matrix<span class="pp-sub-hint">execution flow, public status per capability</span></summary><div>
@@ -289,7 +289,7 @@
 </div>
 </section>
 </div></details><details class="pp-sub" id="development-scope"><summary>Development scope beyond the public pilot<span class="pp-sub-hint">branch-qualified capabilities</span></summary><div>
-<p>Capabilities progressing on separate development branches beyond the public v1.1.0 desktop pilot artifact.</p>
+<p>Capabilities progressing on separate development branches beyond the public {{product.versionLabel}} desktop pilot artifact.</p>
 <div class="pp-outcome-grid">
     <article>
       <span class="step-number">05</span>
@@ -362,7 +362,7 @@
   <div class="section-heading pp-section-head">
     <p class="kicker pp-kicker">Privacy &amp; Data Flow</p>
     <h2>Local execution. Verification on your terms.</h2>
-    <p>Evidence-backed behavior for Reality Gate Windows v1.1.0 Developer Pilot.</p>
+    <p>Evidence-backed behavior for Reality Gate Windows {{product.versionLabel}} Developer Pilot.</p>
   </div>
   <div class="value-grid">
     <article>

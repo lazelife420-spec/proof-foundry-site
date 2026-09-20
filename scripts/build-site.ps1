@@ -177,6 +177,15 @@ foreach ($p in $manifest.products) {
     if ($p.release.publishedAt -and $p.release.publishedAt -notmatch '^\d{4}-\d{2}-\d{2}$') {
       $errors += "$tag malformed release.publishedAt '$($p.release.publishedAt)' (expected YYYY-MM-DD)"
     }
+    if ($p.release.companionCandidateVersion -and $p.release.companionCandidateVersion -notmatch '^\d+\.\d+\.\d+(-[a-zA-Z0-9._]+)?$') {
+      $errors += "$tag malformed release.companionCandidateVersion '$($p.release.companionCandidateVersion)'"
+    }
+    if ($p.release.sourceCommit -and $p.release.sourceCommit -notmatch '^[0-9a-f]{40}$') {
+      $errors += "$tag malformed release.sourceCommit '$($p.release.sourceCommit)' (expected 40 lowercase hex chars)"
+    }
+    if ($p.packageId -and $p.packageId -notmatch '^[a-z][a-z0-9]*(\.[a-z][a-z0-9]*)+$') {
+      $errors += "$tag malformed packageId '$($p.packageId)' (expected reverse-domain id like com.example.app)"
+    }
 
     # PUBLIC_RELEASE must have public version and at least one downloadable artifact
     if ($p.release.releaseStatus -eq 'PUBLIC_RELEASE') {
@@ -479,6 +488,37 @@ foreach ($tpl in @(Get-ChildItem -Path $root -Filter '*.html' -File)) {
   }
 }
 
+# Canonical literal guard (H10): URLs, artifact filenames and receipt ids that are
+# manifest-owned must not be retyped in templates — a stale copy is exactly the
+# failure mode H10 exists to prevent. Report the token that should be used.
+$canonicalLiterals = @{}
+foreach ($p in $manifest.products) {
+  $litTag = "$($p.id)"
+  if ($p.downloadUrl) { $canonicalLiterals[$p.downloadUrl] = "$litTag product downloadUrl" }
+  if ($p.sha256Url)   { $canonicalLiterals[$p.sha256Url]   = "$litTag product sha256Url" }
+  if ($p.verification -and $p.verification.receiptId) { $canonicalLiterals[$p.verification.receiptId] = "$litTag verification.receiptId" }
+  if ($p.release -and $p.release.sourceCommit) { $canonicalLiterals[$p.release.sourceCommit] = "$litTag release.sourceCommit" }
+  if ($p.packageId) { $canonicalLiterals[$p.packageId] = "$litTag packageId" }
+  $ai = 0
+  foreach ($a in @($p.artifacts)) {
+    if ($a.filename)    { $canonicalLiterals[$a.filename]    = "$litTag artifact[$ai] filename" }
+    if ($a.downloadUrl) { $canonicalLiterals[$a.downloadUrl] = "$litTag artifact[$ai] downloadUrl" }
+    if ($a.sha256Url)   { $canonicalLiterals[$a.sha256Url]   = "$litTag artifact[$ai] sha256Url" }
+    $ai++
+  }
+  $pi = 0
+  foreach ($u in @($p.proofLinks)) { if ($u) { $canonicalLiterals[$u] = "$litTag proofLinks[$pi]" }; $pi++ }
+  if ($p.evidence -is [array]) { $ei = 0; foreach ($e in $p.evidence) { if ($e.url) { $canonicalLiterals[$e.url] = "$litTag evidence[$ei].url" }; $ei++ } }
+}
+foreach ($tpl in @(Get-ChildItem -Path $root -Filter '*.html' -File)) {
+  $tplText = [System.IO.File]::ReadAllText($tpl.FullName)
+  foreach ($lit in $canonicalLiterals.Keys) {
+    if ($tplText.Contains($lit)) {
+      $errors += "[template] $($tpl.Name) hardcodes canonical literal '$lit' ($($canonicalLiterals[$lit])); render it through the matching product token instead so it cannot drift from the manifest"
+    }
+  }
+}
+
 if ($errors.Count -gt 0) {
   Write-Host "==> MANIFEST VALIDATION FAILED" -ForegroundColor Red
   $errors | ForEach-Object { Write-Host "   - $_" -ForegroundColor Red }
@@ -693,6 +733,12 @@ function CardProofHref($p) {
 function IsExternalUrl($url) {
   return $url -like 'http://*' -or $url -like 'https://*'
 }
+
+# ISO date (YYYY-MM-DD) to the site's long display form ("17 September 2026").
+function IsoDateLabel([string]$iso) {
+  if ([string]::IsNullOrWhiteSpace($iso)) { return '' }
+  return [datetime]::ParseExact($iso, 'yyyy-MM-dd', [Globalization.CultureInfo]::InvariantCulture).ToString('d MMMM yyyy', [Globalization.CultureInfo]::InvariantCulture)
+}
 function IsFileDownload($url) {
   return $url -like '*.zip' -or $url -like '*.exe' -or $url -like '*.apk'
 }
@@ -715,6 +761,15 @@ function ProductTokens($p) {
   $tokens['currentVersionLabel'] = CurrentVersionLabel $p
   $tokens['companionLabel']      = CompanionLabel $p
   $tokens['companionPublicVersionLabel'] = CompanionPublicVersionLabel $p
+  # H10 public-truth tokens — narrow fields and derivations for current-state facts.
+  $tokens['companionVersion']    = if ($p.companionVersion) { $p.companionVersion } else { '' }
+  $tokens['companionCandidateVersion'] = if ($p.release -and $p.release.companionCandidateVersion) { $p.release.companionCandidateVersion } else { '' }
+  $tokens['companionCandidateVersionLabel'] = if ($tokens['companionCandidateVersion']) { "v$($tokens['companionCandidateVersion'])" } else { '' }
+  $tokens['sourceCommit']        = if ($p.release -and $p.release.sourceCommit) { $p.release.sourceCommit } else { '' }
+  $tokens['receiptId']           = if ($p.verification -and $p.verification.receiptId) { $p.verification.receiptId } else { '' }
+  $tokens['packageId']           = if ($p.packageId) { $p.packageId } else { '' }
+  $tokens['publishedAtLabel']    = IsoDateLabel $p.release.publishedAt
+  $tokens['checkedAtLabel']      = if ($p.verification -and $p.verification.checkedAt) { IsoDateLabel $p.verification.checkedAt } else { '' }
   $tokens['version']             = $p.version
   $tokens['meta']                = MetaLine $p
   $tokens['statusLine']          = StatusLine $p
@@ -783,6 +838,31 @@ function ProductTokens($p) {
       $tokens["artifacts.$ai.sha256Url"]     = if ($art.sha256Url)     { $art.sha256Url }     else { '' }
       $tokens["artifacts.$ai.signingStatus"] = if ($art.signingStatus) { $art.signingStatus } else { 'UNSIGNED' }
       $tokens["artifacts.$ai.platform"]      = if ($art.platform)      { $art.platform }      else { '' }
+    }
+  }
+
+  # proofLinks-indexed tokens: {{product.proofLinks.N}} → canonical release-record URL.
+  if ($p.proofLinks) {
+    for ($li = 0; $li -lt @($p.proofLinks).Count; $li++) {
+      $tokens["proofLinks.$li"] = $p.proofLinks[$li]
+    }
+  }
+
+  # tests-indexed tokens: {{product.tests.N.label}} / {{product.tests.N.result}}.
+  if ($p.tests -is [array]) {
+    for ($ti = 0; $ti -lt @($p.tests).Count; $ti++) {
+      $tEntry = @($p.tests)[$ti]
+      $tokens["tests.$ti.label"]  = if ($tEntry.label)  { $tEntry.label }  else { '' }
+      $tokens["tests.$ti.result"] = if ($tEntry.result) { $tEntry.result } else { '' }
+    }
+  }
+
+  # evidence-indexed tokens: {{product.evidence.N.label}} / {{product.evidence.N.url}}.
+  if ($p.evidence -is [array]) {
+    for ($ei = 0; $ei -lt @($p.evidence).Count; $ei++) {
+      $eEntry = @($p.evidence)[$ei]
+      $tokens["evidence.$ei.label"] = if ($eEntry.label) { $eEntry.label } else { '' }
+      $tokens["evidence.$ei.url"]   = if ($eEntry.url)   { $eEntry.url }   else { '' }
     }
   }
 

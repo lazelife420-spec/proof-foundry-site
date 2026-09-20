@@ -1029,7 +1029,14 @@
       "bytes": 23883,
       "comparison": "utf8-lf",
       "lfSha256": "6e34f112887312c6757842be2c21f110071165b1fe5699190fab1e9cae9e3f47",
-      "origin": "original-entry-inventory"
+      "origin": "original-entry-inventory",
+      "migration": {
+        "sha256": "bb375369bd0728c6ffafda92a9de4acd82008665075a61752b1134d27b62f356",
+        "bytes": 24279,
+        "comparison": "utf8-lf",
+        "lfSha256": "bb375369bd0728c6ffafda92a9de4acd82008665075a61752b1134d27b62f356",
+        "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/."
+      }
     },
     {
       "path": "cleanroom.html",
@@ -1037,7 +1044,14 @@
       "bytes": 17347,
       "comparison": "utf8-lf",
       "lfSha256": "dd226c02ba94fbf4d73cee255f42330f541413102108b567758ace7c6ce01bfc",
-      "origin": "original-entry-inventory"
+      "origin": "original-entry-inventory",
+      "migration": {
+        "sha256": "36d366d6ff5d77874dfa842906206100025e6751259c905c2cc9f0daec35292d",
+        "bytes": 17435,
+        "comparison": "utf8-lf",
+        "lfSha256": "36d366d6ff5d77874dfa842906206100025e6751259c905c2cc9f0daec35292d",
+        "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/."
+      }
     },
     {
       "path": "experience.css",
@@ -1063,11 +1077,18 @@
       "lfSha256": "1b42817b0d02980a418ebdd653be826dbc35fedfb99454fceb007ee4be78870c",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "dc80b2911931b20a80f149f47d716f2a3de3348cf8cfc47855bcd62aadb3b222",
-        "bytes": 19366,
+        "sha256": "7bb55a3ff1ce1f34fbc244d04b12b5a7b454b84f31fada5e2c72c95d6dca6e88",
+        "bytes": 19351,
         "comparison": "utf8-lf",
-        "lfSha256": "dc80b2911931b20a80f149f47d716f2a3de3348cf8cfc47855bcd62aadb3b222",
-        "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919."
+        "lfSha256": "7bb55a3ff1ce1f34fbc244d04b12b5a7b454b84f31fada5e2c72c95d6dca6e88",
+        "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/.",
+        "previousMigration": {
+          "sha256": "dc80b2911931b20a80f149f47d716f2a3de3348cf8cfc47855bcd62aadb3b222",
+          "bytes": 19366,
+          "comparison": "utf8-lf",
+          "lfSha256": "dc80b2911931b20a80f149f47d716f2a3de3348cf8cfc47855bcd62aadb3b222",
+          "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919."
+        }
       }
     },
     {
@@ -1084,7 +1105,14 @@
       "bytes": 19617,
       "comparison": "utf8-lf",
       "lfSha256": "c85be2d875b2032bb860e31bca1d0ba3323dc9d456be0f8cf68796dbafff17ff",
-      "origin": "original-entry-inventory"
+      "origin": "original-entry-inventory",
+      "migration": {
+        "sha256": "4650d27044aac0fb3f1283db5c2a9d4d3a197fdcd863a7f56bb195606dc66092",
+        "bytes": 19382,
+        "comparison": "utf8-lf",
+        "lfSha256": "4650d27044aac0fb3f1283db5c2a9d4d3a197fdcd863a7f56bb195606dc66092",
+        "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/."
+      }
     },
     {
       "path": "lights-out.html",
@@ -1092,7 +1120,14 @@
       "bytes": 40839,
       "comparison": "utf8-lf",
       "lfSha256": "bc08d12dce3e35c8f36719029438463b22a779ce8ce89a71102b46c9a27b90aa",
-      "origin": "original-entry-inventory"
+      "origin": "original-entry-inventory",
+      "migration": {
+        "sha256": "77c81a959a003f73deb2a45467eb8a21bec99a2b87a306f6fa6094e7c031a3a3",
+        "bytes": 41344,
+        "comparison": "utf8-lf",
+        "lfSha256": "77c81a959a003f73deb2a45467eb8a21bec99a2b87a306f6fa6094e7c031a3a3",
+        "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/."
+      }
     },
     {
       "path": "partials/footer.html",
@@ -1148,7 +1183,14 @@
       "bytes": 33618,
       "comparison": "utf8-lf",
       "lfSha256": "5a5a0b90ddec2a8bffcfdb005b0cee2a20c544bf20357613a02b5415dc5dd08e",
-      "origin": "original-entry-inventory"
+      "origin": "original-entry-inventory",
+      "migration": {
+        "sha256": "8c70198d08b1f75160e1d8071cf1c6b5aeaa62d32709061cc50d90cbcc78777a",
+        "bytes": 33989,
+        "comparison": "utf8-lf",
+        "lfSha256": "8c70198d08b1f75160e1d8071cf1c6b5aeaa62d32709061cc50d90cbcc78777a",
+        "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/."
+      }
     },
     {
       "path": "reality-gate.html",
@@ -1156,7 +1198,14 @@
       "bytes": 31940,
       "comparison": "utf8-lf",
       "lfSha256": "beb0fc088cf570f4c293d25d95555cf340428b8abf1e610d148368205cee2771",
-      "origin": "original-entry-inventory"
+      "origin": "original-entry-inventory",
+      "migration": {
+        "sha256": "374ee636036c9dfaf023d1df537db460dbe4eda7f69e13ffc7ffcb2c8c0fd513",
+        "bytes": 32060,
+        "comparison": "utf8-lf",
+        "lfSha256": "374ee636036c9dfaf023d1df537db460dbe4eda7f69e13ffc7ffcb2c8c0fd513",
+        "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/."
+      }
     },
     {
       "path": "roadmap.html",
@@ -1166,11 +1215,18 @@
       "lfSha256": "faf8f7558fe7a7faea8291375e56fe4eef9b5342db4d8dc6e56760fe0da4dc80",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "25e7ac0fbe5559152f34469a9fd36fc83a77dac8ad057af3ca274401162b2a9b",
-        "bytes": 7802,
+        "sha256": "387f9d523af113234e973d8e88b7c8b833d2b4568324fea737ef4dc816e6204d",
+        "bytes": 7824,
         "comparison": "utf8-lf",
-        "lfSha256": "25e7ac0fbe5559152f34469a9fd36fc83a77dac8ad057af3ca274401162b2a9b",
-        "reason": "Public roadmap truth tranche 2026-09-20: owner-approved roadmap.html repair; stale hardcoded release truth removed, Available now / In progress grouping and closing proof note added."
+        "lfSha256": "387f9d523af113234e973d8e88b7c8b833d2b4568324fea737ef4dc816e6204d",
+        "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/.",
+        "previousMigration": {
+          "sha256": "25e7ac0fbe5559152f34469a9fd36fc83a77dac8ad057af3ca274401162b2a9b",
+          "bytes": 7802,
+          "comparison": "utf8-lf",
+          "lfSha256": "25e7ac0fbe5559152f34469a9fd36fc83a77dac8ad057af3ca274401162b2a9b",
+          "reason": "Public roadmap truth tranche 2026-09-20: owner-approved roadmap.html repair; stale hardcoded release truth removed, Available now / In progress grouping and closing proof note added."
+        }
       }
     },
     {
@@ -1249,11 +1305,18 @@
       "lfSha256": "9a1c62f516b426b0eed377834ffc19c9fdaf0f25f0ecf19b7c56a7aff3014a03",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "b17e3c7b88e88e6b0a6c489f1e26e869d9513b41c423e74a6b63e77c55648fab",
-        "bytes": 14666,
+        "sha256": "1913e837cbdc7b5b467818acb207be3b58cda6521e87306c2fd679f1a63dcde8",
+        "bytes": 15361,
         "comparison": "utf8-lf",
-        "lfSha256": "b17e3c7b88e88e6b0a6c489f1e26e869d9513b41c423e74a6b63e77c55648fab",
-        "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919."
+        "lfSha256": "1913e837cbdc7b5b467818acb207be3b58cda6521e87306c2fd679f1a63dcde8",
+        "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/.",
+        "previousMigration": {
+          "sha256": "b17e3c7b88e88e6b0a6c489f1e26e869d9513b41c423e74a6b63e77c55648fab",
+          "bytes": 14666,
+          "comparison": "utf8-lf",
+          "lfSha256": "b17e3c7b88e88e6b0a6c489f1e26e869d9513b41c423e74a6b63e77c55648fab",
+          "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919."
+        }
       }
     },
     {
@@ -1264,11 +1327,18 @@
       "lfSha256": "14d373ddcea8d50f4db20f3d42f3713e62baa5eae2c5e46bcc8fb09ac718648a",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "15e6ce180b4d58e3f5ad0bb4a1cc2a280e3adb8464cdb329049baea2b553cdb2",
-        "bytes": 8280,
+        "sha256": "ef58738775b2ece87177e8c45f24beb371a1fcdb66d1f348239232464f62ceb3",
+        "bytes": 8838,
         "comparison": "utf8-lf",
-        "lfSha256": "15e6ce180b4d58e3f5ad0bb4a1cc2a280e3adb8464cdb329049baea2b553cdb2",
-        "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919."
+        "lfSha256": "ef58738775b2ece87177e8c45f24beb371a1fcdb66d1f348239232464f62ceb3",
+        "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/.",
+        "previousMigration": {
+          "sha256": "15e6ce180b4d58e3f5ad0bb4a1cc2a280e3adb8464cdb329049baea2b553cdb2",
+          "bytes": 8280,
+          "comparison": "utf8-lf",
+          "lfSha256": "15e6ce180b4d58e3f5ad0bb4a1cc2a280e3adb8464cdb329049baea2b553cdb2",
+          "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919."
+        }
       }
     },
     {
@@ -1327,46 +1397,54 @@
       "lfSha256": "eccd353c55072aaaaa9a055e82876c58796d7e64bcf62c268c84120a20e36c3a",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "b14ac8ac7e3aeda3176e04ecbb8729a75f1f53c13f07aeb549d37fb40fef7af5",
-        "bytes": 15872,
+        "sha256": "99c4f4d6cff98189f4fdd201e62ad197e1e361b45feb5c07018e686c6359792f",
+        "bytes": 11653,
         "comparison": "utf8-lf",
-        "lfSha256": "b14ac8ac7e3aeda3176e04ecbb8729a75f1f53c13f07aeb549d37fb40fef7af5",
-        "reason": "Public roadmap truth tranche 2026-09-20: roadmap.html frozen-pin repointed at the owner-approved roadmap source bytes (approved-bytes hash pin, same exact-match discipline).",
+        "lfSha256": "99c4f4d6cff98189f4fdd201e62ad197e1e361b45feb5c07018e686c6359792f",
+        "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/.",
         "previousMigration": {
-          "sha256": "0791227b5a69ac9bc883aa13b7f7f8ab21e669b813a3efeda475da1d32e676cc",
-          "bytes": 15254,
+          "sha256": "b14ac8ac7e3aeda3176e04ecbb8729a75f1f53c13f07aeb549d37fb40fef7af5",
+          "bytes": 15872,
           "comparison": "utf8-lf",
-          "lfSha256": "0791227b5a69ac9bc883aa13b7f7f8ab21e669b813a3efeda475da1d32e676cc",
-          "reason": "ForgeCast copy tranche 2026-09-19: SkyFoundry ban scoped to standalone branding (package path com.prooffoundry.skyfoundry is factual); verifier + recon anchor updated accordingly.",
+          "lfSha256": "b14ac8ac7e3aeda3176e04ecbb8729a75f1f53c13f07aeb549d37fb40fef7af5",
+          "reason": "Public roadmap truth tranche 2026-09-20: roadmap.html frozen-pin repointed at the owner-approved roadmap source bytes (approved-bytes hash pin, same exact-match discipline).",
           "previousMigration": {
-            "sha256": "94fa84d3f5a52bbc0249d41f1f99883cc0758b336161f076e51f9a2157909193",
-            "bytes": 15195,
+            "sha256": "0791227b5a69ac9bc883aa13b7f7f8ab21e669b813a3efeda475da1d32e676cc",
+            "bytes": 15254,
             "comparison": "utf8-lf",
-            "lfSha256": "94fa84d3f5a52bbc0249d41f1f99883cc0758b336161f076e51f9a2157909193",
-            "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919.",
+            "lfSha256": "0791227b5a69ac9bc883aa13b7f7f8ab21e669b813a3efeda475da1d32e676cc",
+            "reason": "ForgeCast copy tranche 2026-09-19: SkyFoundry ban scoped to standalone branding (package path com.prooffoundry.skyfoundry is factual); verifier + recon anchor updated accordingly.",
             "previousMigration": {
-              "sha256": "c4742d6972790c346841ec2ce1b40ecbbda2e99b6826fa6123c3bd97cb3324c8",
-              "bytes": 9310,
+              "sha256": "94fa84d3f5a52bbc0249d41f1f99883cc0758b336161f076e51f9a2157909193",
+              "bytes": 15195,
               "comparison": "utf8-lf",
-              "lfSha256": "c4742d6972790c346841ec2ce1b40ecbbda2e99b6826fa6123c3bd97cb3324c8",
-              "reason": "Explicit customer-truth repair; see customer-truth-migration.json and customer-truth.patch.",
+              "lfSha256": "94fa84d3f5a52bbc0249d41f1f99883cc0758b336161f076e51f9a2157909193",
+              "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919.",
               "previousMigration": {
-                "sha256": "49e83275cc07f219dbf5da6cd9f5f316f0cc1c8006bf3c54458ff0c0957e99b4",
-                "bytes": 9064,
+                "sha256": "c4742d6972790c346841ec2ce1b40ecbbda2e99b6826fa6123c3bd97cb3324c8",
+                "bytes": 9310,
                 "comparison": "utf8-lf",
-                "lfSha256": "49e83275cc07f219dbf5da6cd9f5f316f0cc1c8006bf3c54458ff0c0957e99b4",
-                "reason": "Explicit production-validation repair; see production-validation-migration.json and production-validation.patch.",
+                "lfSha256": "c4742d6972790c346841ec2ce1b40ecbbda2e99b6826fa6123c3bd97cb3324c8",
+                "reason": "Explicit customer-truth repair; see customer-truth-migration.json and customer-truth.patch.",
                 "previousMigration": {
-                  "sha256": "b6f5b93676907c1838559806063cc30040fc5211fd91a36d68781445a7f7efe0",
-                  "bytes": 8822,
+                  "sha256": "49e83275cc07f219dbf5da6cd9f5f316f0cc1c8006bf3c54458ff0c0957e99b4",
+                  "bytes": 9064,
                   "comparison": "utf8-lf",
-                  "lfSha256": "b6f5b93676907c1838559806063cc30040fc5211fd91a36d68781445a7f7efe0",
-                  "reason": "Explicit qualification-portability migration; see portability-migration.json and portability.patch."
+                  "lfSha256": "49e83275cc07f219dbf5da6cd9f5f316f0cc1c8006bf3c54458ff0c0957e99b4",
+                  "reason": "Explicit production-validation repair; see production-validation-migration.json and production-validation.patch.",
+                  "previousMigration": {
+                    "sha256": "b6f5b93676907c1838559806063cc30040fc5211fd91a36d68781445a7f7efe0",
+                    "bytes": 8822,
+                    "comparison": "utf8-lf",
+                    "lfSha256": "b6f5b93676907c1838559806063cc30040fc5211fd91a36d68781445a7f7efe0",
+                    "reason": "Explicit qualification-portability migration; see portability-migration.json and portability.patch."
+                  }
                 }
               }
             }
           }
-        }      }
+        }
+      }
     },
     {
       "path": "scripts/test-receipts-invariants.ps1",
@@ -1416,11 +1494,18 @@
       "lfSha256": "4fec8064191591e88cb03bd4268ef08d564b1e7e2b43bf9b0f5cef8150311bc8",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "6f746134a9153d27cedac4b171b5f1315583e904d128dcfd1010bae3b3f206a8",
+        "sha256": "a14b049339fe0298049cd264397b068548feaf01ffd431e841ea7f91a3cb9dc9",
         "bytes": 2108,
         "comparison": "utf8-lf",
-        "lfSha256": "6f746134a9153d27cedac4b171b5f1315583e904d128dcfd1010bae3b3f206a8",
-        "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919."
+        "lfSha256": "a14b049339fe0298049cd264397b068548feaf01ffd431e841ea7f91a3cb9dc9",
+        "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/.",
+        "previousMigration": {
+          "sha256": "6f746134a9153d27cedac4b171b5f1315583e904d128dcfd1010bae3b3f206a8",
+          "bytes": 2108,
+          "comparison": "utf8-lf",
+          "lfSha256": "6f746134a9153d27cedac4b171b5f1315583e904d128dcfd1010bae3b3f206a8",
+          "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919."
+        }
       }
     },
     {
@@ -1447,17 +1532,24 @@
       "lfSha256": "3f3f92cf6ce91f6ec92675abf9708c4d315d15a79f4e03db00fdb68413164474",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "f0ad9c222b317f799dad8e04f08375b55f2616d3af1110e5b47907eab3306f73",
-        "bytes": 14063,
+        "sha256": "16359dfd025340487b11f4d45f1788901c4d4222e782dd520fa4379d8647549a",
+        "bytes": 14251,
         "comparison": "utf8-lf",
-        "lfSha256": "f0ad9c222b317f799dad8e04f08375b55f2616d3af1110e5b47907eab3306f73",
-        "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919.",
+        "lfSha256": "16359dfd025340487b11f4d45f1788901c4d4222e782dd520fa4379d8647549a",
+        "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/.",
         "previousMigration": {
-          "sha256": "a51a3fcc3f70b22fdb696ded72ef737c883c1a1dd93251b7341aab630c54402a",
-          "bytes": 14007,
+          "sha256": "f0ad9c222b317f799dad8e04f08375b55f2616d3af1110e5b47907eab3306f73",
+          "bytes": 14063,
           "comparison": "utf8-lf",
-          "lfSha256": "a51a3fcc3f70b22fdb696ded72ef737c883c1a1dd93251b7341aab630c54402a",
-          "reason": "Explicit customer-truth repair; see customer-truth-migration.json and customer-truth.patch."
+          "lfSha256": "f0ad9c222b317f799dad8e04f08375b55f2616d3af1110e5b47907eab3306f73",
+          "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919.",
+          "previousMigration": {
+            "sha256": "a51a3fcc3f70b22fdb696ded72ef737c883c1a1dd93251b7341aab630c54402a",
+            "bytes": 14007,
+            "comparison": "utf8-lf",
+            "lfSha256": "a51a3fcc3f70b22fdb696ded72ef737c883c1a1dd93251b7341aab630c54402a",
+            "reason": "Explicit customer-truth repair; see customer-truth-migration.json and customer-truth.patch."
+          }
         }
       }
     }
