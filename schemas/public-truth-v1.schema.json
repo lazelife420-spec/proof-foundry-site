@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://theprooffoundry.com/truth/schema-v1.json",
+  "title": "Proof Foundry Public Truth v1",
+  "description": "Machine-readable public product truth generated from site-manifest.json. Facts only — no marketing prose, no presentation fields, no internal values. Every field is constructed from an explicit allowlist; manifest fields not listed here never appear in public truth output.",
+  "type": "object",
+  "$defs": {
+    "sourceIdentity": {
+      "type": "object",
+      "required": ["commit", "tree", "committedAt"],
+      "additionalProperties": false,
+      "description": "Published-source identity. Published Public Truth is only valid when generated for deployment from a tracked-clean committed checkout; local preview builds are review artifacts, not custody claims. See schemas/PUBLIC_TRUTH_VERSIONING.md.",
+      "properties": {
+        "commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "tree": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "committedAt": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}([+-]\\d{2}:?\\d{2}|Z)$" }
+      }
+    },
+    "isoDate": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "semverOrNull": { "type": ["string", "null"], "pattern": "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9._]+)?$" },
+    "publicUrl": { "type": "string", "pattern": "^https://[^\\s]+$" },
+    "artifact": {
+      "type": "object",
+      "required": ["filename", "sizeBytes", "sha256", "downloadUrl", "sha256Url", "signingStatus", "platform", "distType"],
+      "additionalProperties": false,
+      "properties": {
+        "filename": { "type": "string", "minLength": 1 },
+        "sizeBytes": { "type": ["integer", "null"], "minimum": 0 },
+        "sha256": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
+        "downloadUrl": { "$ref": "#/$defs/publicUrl" },
+        "sha256Url": { "type": ["string", "null"], "pattern": "^https://[^\\s]+$" },
+        "signingStatus": { "type": ["string", "null"] },
+        "platform": { "type": ["string", "null"] },
+        "distType": { "type": ["string", "null"] }
+      }
+    },
+    "link": {
+      "type": "object",
+      "required": ["label", "url"],
+      "additionalProperties": false,
+      "properties": {
+        "label": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "minLength": 1 }
+      }
+    },
+    "testResult": {
+      "type": "object",
+      "required": ["label", "result"],
+      "additionalProperties": false,
+      "properties": {
+        "label": { "type": "string", "minLength": 1 },
+        "result": { "type": "string", "minLength": 1 }
+      }
+    },
+    "productTruth": {
+      "type": "object",
+      "required": ["schemaVersion", "id", "name", "state", "status", "version", "pageUrl", "truthUrl", "source"],
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": { "const": 1 },
+        "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "name": { "type": "string", "minLength": 1 },
+        "state": { "type": "string", "minLength": 1 },
+        "status": { "type": "string", "minLength": 1 },
+        "version": { "type": ["string", "null"] },
+        "platforms": { "type": "array", "items": { "type": "string" } },
+        "packageId": { "type": ["string", "null"], "pattern": "^[a-z][a-z0-9]*(\\.[a-z][a-z0-9]*)+$" },
+        "pageUrl": { "type": "string", "pattern": "^/[a-z0-9-]+/$" },
+        "truthUrl": { "type": "string", "pattern": "^/truth/products/[a-z0-9-]+\\.json$" },
+        "release": {
+          "type": ["object", "null"],
+          "required": ["releaseStatus", "publicVersion", "candidateVersion", "publishedAt"],
+          "additionalProperties": false,
+          "properties": {
+            "releaseStatus": { "type": "string" },
+            "publicVersion": { "$ref": "#/$defs/semverOrNull" },
+            "candidateVersion": { "$ref": "#/$defs/semverOrNull" },
+            "companionCandidateVersion": { "$ref": "#/$defs/semverOrNull" },
+            "companionPublicVersion": { "$ref": "#/$defs/semverOrNull" },
+            "publishedAt": { "type": ["string", "null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+            "sourceCommit": { "type": ["string", "null"], "pattern": "^[0-9a-f]{40}$" }
+          }
+        },
+        "download": {
+          "type": "object",
+          "required": ["available"],
+          "additionalProperties": false,
+          "properties": {
+            "available": { "type": "boolean" },
+            "url": { "type": ["string", "null"], "pattern": "^https://[^\\s]+$" },
+            "sha256": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
+            "sha256Url": { "type": ["string", "null"], "pattern": "^https://[^\\s]+$" },
+            "label": { "type": ["string", "null"] }
+          }
+        },
+        "artifacts": { "type": "array", "items": { "$ref": "#/$defs/artifact" } },
+        "verification": {
+          "type": ["object", "null"],
+          "required": ["status"],
+          "additionalProperties": false,
+          "properties": {
+            "status": { "type": ["string", "null"] },
+            "verifiedAt": { "type": ["string", "null"] },
+            "checkedAt": { "type": ["string", "null"] },
+            "verificationType": { "type": ["array", "null"], "items": { "type": "string" } },
+            "downloadAvailability": { "type": ["string", "null"] },
+            "receiptId": { "type": ["string", "null"] },
+            "receiptUrl": { "type": ["string", "null"], "pattern": "^https://[^\\s]+$" }
+          }
+        },
+        "tests": { "type": "array", "items": { "$ref": "#/$defs/testResult" } },
+        "evidence": { "type": "array", "items": { "$ref": "#/$defs/link" } },
+        "proofLinks": { "type": "array", "items": { "$ref": "#/$defs/publicUrl" } },
+        "source": { "$ref": "#/$defs/sourceIdentity" }
+      }
+    },
+    "indexEntry": {
+      "type": "object",
+      "required": ["id", "name", "state", "status", "version", "pageUrl", "truthUrl"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "name": { "type": "string", "minLength": 1 },
+        "state": { "type": "string", "minLength": 1 },
+        "status": { "type": "string", "minLength": 1 },
+        "version": { "type": ["string", "null"] },
+        "pageUrl": { "type": "string", "pattern": "^/[a-z0-9-]+/$" },
+        "truthUrl": { "type": "string", "pattern": "^/truth/products/[a-z0-9-]+\\.json$" }
+      }
+    },
+    "truthIndex": {
+      "type": "object",
+      "required": ["schemaVersion", "generatedFrom", "schemaUrl", "source", "productCount", "products"],
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": { "const": 1 },
+        "generatedFrom": { "const": "site-manifest.json" },
+        "schemaUrl": { "const": "/truth/schema-v1.json" },
+        "canonicalUrl": { "type": "string", "pattern": "^https://[^\\s]+$" },
+        "source": { "$ref": "#/$defs/sourceIdentity" },
+        "productCount": { "type": "integer", "minimum": 0 },
+        "products": { "type": "array", "items": { "$ref": "#/$defs/indexEntry" } }
+      }
+    }
+  },
+  "oneOf": [
+    { "$ref": "#/$defs/truthIndex" },
+    { "$ref": "#/$defs/productTruth" }
+  ]
+}

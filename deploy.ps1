@@ -29,19 +29,33 @@ if ($LASTEXITCODE -ne 0) {
   Write-Host "==> DEPLOY BLOCKED: 'git status' failed (exit $LASTEXITCODE). Is $PSScriptRoot a git repository?" -ForegroundColor Red
   exit 1
 }
-if ($dirty -and -not $AllowDirtyDeploy) {
-  Write-Host "==> DEPLOY BLOCKED: working tree is not clean." -ForegroundColor Red
-  Write-Host "    build-site.ps1 builds public/ from whatever is on disk right now, not from" -ForegroundColor Red
-  Write-Host "    git HEAD -- every file below would be included in this deploy, reviewed or not:" -ForegroundColor Red
-  $dirty | ForEach-Object { Write-Host "      $_" -ForegroundColor Red }
-  Write-Host "    Run 'git status' for full details. Commit, stash, or revert these changes first." -ForegroundColor Red
-  Write-Host "    Only if you have explicitly reviewed and accept shipping every file listed" -ForegroundColor Red
-  Write-Host "    above, re-run with -AllowDirtyDeploy." -ForegroundColor Red
+# H11 source-binding doctrine (2026-09-20): published Public Truth must be
+# generated from a tracked-clean committed checkout, because /truth/* binds
+# source.commit/tree to git HEAD. Tracked changes (staged or unstaged) can
+# therefore NEVER ship — no flag overrides them. -AllowDirtyDeploy only covers
+# untracked material (preserved custody/evidence/review files that never enter
+# public/ output and do not alter tracked source bytes).
+$trackedDirty = @($dirty | Where-Object { $_ -notmatch '^\?\?' })
+$untrackedOnly = @($dirty | Where-Object { $_ -match '^\?\?' })
+if ($trackedDirty.Count -gt 0) {
+  Write-Host "==> DEPLOY BLOCKED: tracked source is not clean." -ForegroundColor Red
+  Write-Host "    Published public truth must be generated from the committed tree —" -ForegroundColor Red
+  Write-Host "    these tracked changes would deploy uncommitted content and misstate" -ForegroundColor Red
+  Write-Host "    source.commit/tree. Commit, stash, or revert them first:" -ForegroundColor Red
+  $trackedDirty | ForEach-Object { Write-Host "      $_" -ForegroundColor Red }
   exit 1
 }
-if ($dirty -and $AllowDirtyDeploy) {
-  Write-Host "==> WARNING: -AllowDirtyDeploy set. Deploying with a dirty working tree:" -ForegroundColor Yellow
-  $dirty | ForEach-Object { Write-Host "      $_" -ForegroundColor Yellow }
+if ($untrackedOnly.Count -gt 0 -and -not $AllowDirtyDeploy) {
+  Write-Host "==> DEPLOY BLOCKED: untracked files present." -ForegroundColor Red
+  Write-Host "    build-site.ps1 builds public/ from whatever is on disk right now, not from" -ForegroundColor Red
+  Write-Host "    git HEAD -- review the untracked files below; if all are custody/evidence" -ForegroundColor Red
+  Write-Host "    material that never enters public/ output, re-run with -AllowDirtyDeploy:" -ForegroundColor Red
+  $untrackedOnly | ForEach-Object { Write-Host "      $_" -ForegroundColor Red }
+  exit 1
+}
+if ($untrackedOnly.Count -gt 0 -and $AllowDirtyDeploy) {
+  Write-Host "==> WARNING: -AllowDirtyDeploy set. Deploying with untracked files present (tracked source is clean):" -ForegroundColor Yellow
+  $untrackedOnly | ForEach-Object { Write-Host "      $_" -ForegroundColor Yellow }
 }
 
 Write-Host "==> Building public/ (manifest-driven)"

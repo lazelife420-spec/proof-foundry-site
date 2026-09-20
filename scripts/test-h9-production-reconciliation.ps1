@@ -66,7 +66,7 @@ foreach ($p in $canonical.products) {
 # Frozen surfaces are compared to CURRENT production, including its release edits.
 # (H10 truth consolidation 2026-09-20 moved the four edited product pages to
 # exact source-byte pins below; they intentionally diverge from production.)
-$frozen = @('about.html','proof-standard.html','proof.html','founders.html','404.html',
+$frozen = @('about.html','proof.html','founders.html','404.html',
   'styles.css','studio.css','signature.css','experience.css','product-page.css',
   'site.js','scripts/Verify-PublicSite.ps1','partials/header.html','partials/footer.html','partials/product-card.html')
 foreach ($path in $frozen) {
@@ -99,6 +99,16 @@ $h10Pins = [ordered]@{
 }
 foreach ($p in $h10Pins.Keys) {
   Assert-Reconciled "${p}: H10 truth-consolidation source bytes preserved" ((Sha256 ([Text.Encoding]::UTF8.GetBytes((Read-Source $p)))) -ceq $h10Pins[$p])
+}
+# H11 public-truth surface (2026-09-20): proof-standard.html carries one
+# authorized edit — a Public Truth discovery card in the related-routes grid.
+# It intentionally diverges from pinned production; pin the exact approved
+# source bytes so drift past the approved state still fails.
+$h11Pins = [ordered]@{
+  'proof-standard.html' = '60f05fa68aa1d7e4c000da6f833f465997bda9bfb87d8bfd00582b7c44e5c4d7'
+}
+foreach ($p in $h11Pins.Keys) {
+  Assert-Reconciled "${p}: H11 public-truth discovery link preserved" ((Sha256 ([Text.Encoding]::UTF8.GetBytes((Read-Source $p)))) -ceq $h11Pins[$p])
 }
 . (Join-Path $Root 'scripts/fixtures/h9/custody.ps1')
 $assetCustody = Get-Content (Join-Path $Root 'scripts/fixtures/h9/canonical-assets.json') -Raw -Encoding UTF8 | ConvertFrom-Json

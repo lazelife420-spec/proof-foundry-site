@@ -33,7 +33,14 @@ param(
   # invariant tests exercise fixture data without ever writing to the canonical
   # site-manifest.json or the real public/ tree.
   [string]$ManifestPath,
-  [string]$OutDir
+  [string]$OutDir,
+  # Deterministic source-identity overrides for the public truth outputs. When
+  # unset, identity is derived from Git (HEAD commit/tree/commit timestamp +
+  # worktree-dirty flag). Tests pass explicit values so fixture builds are
+  # byte-reproducible regardless of the surrounding repository state.
+  [string]$TruthCommit,
+  [string]$TruthTree,
+  [string]$TruthCommittedAt
 )
 
 $ErrorActionPreference = 'Stop'
@@ -1211,6 +1218,179 @@ function Build-ProofRegistry {
   }
 }
 
+# ─────────────────────────────────────────────────────────────────────────────
+# H11 public truth surface
+#
+# /truth/* is the site's versioned, sanitized, deterministic machine-readable
+# contract. It is constructed field-by-field from an explicit allowlist — the
+# manifest is never serialized wholesale, so future internal fields cannot leak.
+# Truth bytes carry no wall-clock data: identity binds to the Git commit/tree,
+# and committedAt is the commit timestamp, so the same tree yields the same
+# bytes on every build.
+# ─────────────────────────────────────────────────────────────────────────────
+function Get-SourceIdentity {
+  if ($TruthCommit -or $TruthTree -or $TruthCommittedAt) {
+    foreach ($pair in @(@('TruthCommit',$TruthCommit), @('TruthTree',$TruthTree), @('TruthCommittedAt',$TruthCommittedAt))) {
+      if (-not $pair[1]) { throw "Truth identity override incomplete: -$($pair[0]) missing (all of -TruthCommit, -TruthTree, -TruthCommittedAt are required together)" }
+    }
+    return [ordered]@{
+      commit        = $TruthCommit
+      tree          = $TruthTree
+      committedAt   = $TruthCommittedAt
+    }
+  }
+  $commit = (& git -C $root rev-parse HEAD 2>$null)
+  $tree   = (& git -C $root rev-parse 'HEAD^{tree}' 2>$null)
+  $at     = (& git -C $root show -s '--format=%cI' HEAD 2>$null)
+  if (-not $commit -or -not $tree -or -not $at -or $commit -notmatch '^[0-9a-f]{40}$') {
+    throw "Public truth source identity requires a Git repository (or explicit -TruthCommit/-TruthTree/-TruthCommittedAt overrides). Refusing to publish truth without provable provenance."
+  }
+  # Local worktree state is deliberately NOT part of the public contract:
+  # published truth claims only the committed source identity. Whether a build
+  # may deploy from a tracked-dirty tree is enforced at deploy.ps1 preflight,
+  # not in public JSON. See schemas/PUBLIC_TRUTH_VERSIONING.md.
+  return [ordered]@{
+    commit        = $commit
+    tree          = $tree
+    committedAt   = $at
+  }
+}
+
+# Fields allowed to leave the manifest into public truth. Anything not listed
+# here is internal/presentation and must never reach /truth/*.
+$script:PublicTruthSafePattern = 'C:\\|file://|localhost|127\.0\.0\.1|0\.0\.0\.0|::1|api[_-]?key|secret|bearer\s+[A-Za-z0-9]|password'
+function Test-PublicTruthSafe([string]$json, [string]$what) {
+  if ($json -match $script:PublicTruthSafePattern) {
+    throw "Public truth output '$what' contains a private/unsafe pattern (local path, loopback, or credential-like token). Refusing to emit it."
+  }
+}
+
+function Build-PublicTruthProduct($p, $source) {
+  $pubVer  = if ($p.release -and $p.release.publicVersion) { $p.release.publicVersion } else { $null }
+  $canVer  = if ($p.release -and $p.release.candidateVersion) { $p.release.candidateVersion } else { $null }
+  $rel = if ($p.release) {
+    [ordered]@{
+      releaseStatus              = $p.release.releaseStatus
+      publicVersion              = $pubVer
+      candidateVersion           = $canVer
+      companionCandidateVersion  = if ($p.release.companionCandidateVersion) { $p.release.companionCandidateVersion } else { $null }
+      companionPublicVersion     = if ($p.release.companionPublicVersion) { $p.release.companionPublicVersion } else { $null }
+      publishedAt                = if ($p.release.publishedAt) { $p.release.publishedAt } else { $null }
+      sourceCommit               = if ($p.release.sourceCommit) { $p.release.sourceCommit } else { $null }
+    }
+  } else { $null }
+
+  $artifactEntries = @()
+  foreach ($a in @($p.artifacts)) {
+    $artifactEntries += [ordered]@{
+      filename      = $a.filename
+      sizeBytes     = $a.sizeBytes
+      sha256        = $a.sha256
+      downloadUrl   = $a.downloadUrl
+      sha256Url     = $a.sha256Url
+      signingStatus = $a.signingStatus
+      platform      = $a.platform
+      distType      = $a.distType
+    }
+  }
+
+  $verification = if ($p.verification) {
+    [ordered]@{
+      status               = $p.verification.status
+      verifiedAt           = $p.verification.verifiedAt
+      checkedAt            = if ($p.verification.checkedAt) { $p.verification.checkedAt } else { $null }
+      verificationType     = if ($p.verification.verificationType) { @($p.verification.verificationType) } else { $null }
+      downloadAvailability = if ($p.verification.downloadAvailability) { $p.verification.downloadAvailability } else { $null }
+      receiptId            = $p.verification.receiptId
+      receiptUrl           = $p.verification.receiptUrl
+    }
+  } else { $null }
+
+  # Array fields must be bound from variables, not if/else expressions: an
+  # if-branch emitting nothing assigns $null and serializes as null, not [].
+  $platformsArr = @(); if ($p.platforms) { $platformsArr = @($p.platforms) }
+  $testsArr = @(); if ($p.tests) { $testsArr = @($p.tests | ForEach-Object { [ordered]@{ label = $_.label; result = $_.result } }) }
+  $evidenceArr = @(); if ($p.evidence) { $evidenceArr = @($p.evidence | ForEach-Object { if ($_ -is [string]) { [ordered]@{ label = ($_ -split '/')[-1]; url = $_ } } else { [ordered]@{ label = $_.label; url = $_.url } } }) }
+  $proofLinksArr = @(); if ($p.proofLinks) { $proofLinksArr = @($p.proofLinks) }
+
+  return [ordered]@{
+    schemaVersion = 1
+    id            = $p.id
+    name          = $p.name
+    state         = $p.state
+    status        = $p.productStatus
+    version       = $pubVer
+    platforms     = $platformsArr
+    packageId     = if ($p.packageId) { $p.packageId } else { $null }
+    pageUrl       = "/$($p.id)/"
+    truthUrl      = "/truth/products/$($p.id).json"
+    release       = $rel
+    download      = [ordered]@{
+      available = -not [string]::IsNullOrWhiteSpace($p.downloadUrl)
+      url       = if ($p.downloadUrl) { $p.downloadUrl } else { $null }
+      sha256    = if ($p.sha256) { $p.sha256 } else { $null }
+      sha256Url = if ($p.sha256Url) { $p.sha256Url } else { $null }
+      label     = if ($p.downloadLabel) { $p.downloadLabel } else { $null }
+    }
+    artifacts     = $artifactEntries
+    verification  = $verification
+    tests         = $testsArr
+    evidence      = $evidenceArr
+    proofLinks    = $proofLinksArr
+    source        = $source
+  }
+}
+
+function Build-PublicTruth($source) {
+  $indexEntries = @()
+  $productDocs  = @()
+  foreach ($p in $manifest.products) {
+    if (-not $p.visible) { continue }
+    $pubVer = if ($p.release -and $p.release.publicVersion) { $p.release.publicVersion } else { $null }
+    $indexEntries += [ordered]@{
+      id       = $p.id
+      name     = $p.name
+      state    = $p.state
+      status   = $p.productStatus
+      version  = $pubVer
+      pageUrl  = "/$($p.id)/"
+      truthUrl = "/truth/products/$($p.id).json"
+    }
+    $productDocs += Build-PublicTruthProduct $p $source
+  }
+  $index = [ordered]@{
+    schemaVersion = 1
+    generatedFrom = 'site-manifest.json'
+    schemaUrl     = '/truth/schema-v1.json'
+    canonicalUrl  = $manifest.canonicalUrl
+    source        = $source
+    productCount  = $indexEntries.Count
+    products      = $indexEntries
+  }
+  return [ordered]@{ index = $index; products = $productDocs }
+}
+
+# Human index cards for /truth/ — rendered from the same manifest model as the
+# JSON so the page cannot disagree with the machine-readable surface.
+function Build-TruthIndexCards {
+  $cards = ''
+  foreach ($p in $manifest.products) {
+    if (-not $p.visible) { continue }
+    $statusLabel = if ($manifest.statusTaxonomy -and $manifest.statusTaxonomy.PSObject.Properties[$p.productStatus]) { $manifest.statusTaxonomy.($p.productStatus) } else { $p.productStatus }
+    $ver = if ($p.release -and $p.release.publicVersion) { "v$($p.release.publicVersion)" } else { 'Unreleased' }
+    $artCount = @($p.artifacts).Count
+    $artWord = if ($artCount -eq 1) { 'artifact' } else { 'artifacts' }
+    $cards += @"
+        <article class="detail-card">
+          <h3>$($p.name)</h3>
+          <p>$statusLabel · $ver · $artCount public $artWord</p>
+          <p><a class="text-link" href="/truth/products/$($p.id).json">View JSON ↗</a> · <a class="text-link" href="/$($p.id)/">Product page ↗</a></p>
+        </article>
+"@
+  }
+  return $cards
+}
+
 function Build-LatestVerification {
   # Return a generated "latest site verification" summary based on the most recent
   # verification.verifiedAt or release.publishedAt across all visible products.
@@ -1493,7 +1673,7 @@ if (-not (Test-Path $publicDir)) { New-Item -ItemType Directory $publicDir | Out
 # Process every template
 # ─────────────────────────────────────────────────────────────────────────────
 # Map: source file  ->  output path under public/
-$dirRoutes = @('reality-gate','forgecast','lights-out','cache-vault','cleanroom','ghostlayer','proofshot','founders','proof','roadmap','support','about','proof-standard','software')
+$dirRoutes = @('reality-gate','forgecast','lights-out','cache-vault','cleanroom','ghostlayer','proofshot','founders','proof','roadmap','support','about','proof-standard','software','truth')
 $rootFiles = @('index.html','404.html')
 
 # Pre-compute latest site verification so templates can inject it
@@ -1550,6 +1730,9 @@ function Process-Template($srcPath, $srcName) {
 
   # Inject receipt cards (receipts page)
   $html = $html -replace '<!--\s*@receipts\s*-->', (Build-ReceiptCards)
+
+  # Public truth index cards (/truth/ page) — same manifest model as the JSON
+  $html = $html -replace '<!--\s*@truth-products\s*-->', (Build-TruthIndexCards)
 
   # Brand-level tokens
   $html = $html -replace [regex]::Escape('{{brand}}'),       $manifest.brand
@@ -1654,6 +1837,26 @@ $noBom = [System.Text.UTF8Encoding]::new($false)
 [System.IO.File]::WriteAllText((Join-Path $proofDir 'index.json'), $registryJson, $noBom)
 Write-Host "==> Generated proof registry: /proof/index.json" -ForegroundColor Green
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Public truth surface (H11): deterministic, sanitized, versioned JSON contract.
+# ─────────────────────────────────────────────────────────────────────────────
+$truthSource = Get-SourceIdentity
+$truth = Build-PublicTruth $truthSource
+$truthDir = Join-Path $publicDir 'truth'
+$truthProductsDir = Join-Path $truthDir 'products'
+New-Item -ItemType Directory $truthProductsDir -Force | Out-Null
+
+$truthIndexJson = $truth.index | ConvertTo-Json -Depth 12
+Test-PublicTruthSafe $truthIndexJson 'truth/index.json'
+[System.IO.File]::WriteAllText((Join-Path $truthDir 'index.json'), ($truthIndexJson + "`n"), $noBom)
+foreach ($doc in $truth.products) {
+  $docJson = $doc | ConvertTo-Json -Depth 12
+  Test-PublicTruthSafe $docJson "truth/products/$($doc.id).json"
+  [System.IO.File]::WriteAllText((Join-Path $truthProductsDir "$($doc.id).json"), ($docJson + "`n"), $noBom)
+}
+Copy-Item (Join-Path $root 'schemas\public-truth-v1.schema.json') (Join-Path $truthDir 'schema-v1.json') -Force
+Write-Host "==> Generated public truth: /truth/index.json + $($truth.products.Count) product records + schema-v1.json" -ForegroundColor Green
+
 # Copy static assets
 # ─────────────────────────────────────────────────────────────────────────────
 Copy-Item (Join-Path $root 'styles.css')     $publicDir -Force
@@ -1739,6 +1942,10 @@ $headersContent = @"
 /proof-standard/
   Cache-Control: no-cache, must-revalidate
 /software/
+  Cache-Control: no-cache, must-revalidate
+/truth/
+  Cache-Control: no-cache, must-revalidate
+/truth/*
   Cache-Control: no-cache, must-revalidate
 
 /assets/*

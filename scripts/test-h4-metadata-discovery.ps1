@@ -66,9 +66,10 @@ function Get-LastContentDate([string[]]$paths) {
 
 Write-Host "=== H4 METADATA / DISCOVERY ASSERTIONS ==="
 
-# Intended public route set: 15 indexable routes (404 is deliberately noindex
-# and therefore absent from sitemap/canonical expectations).
-$indexableRoutes = @('', 'reality-gate', 'forgecast', 'lights-out', 'cache-vault', 'cleanroom', 'ghostlayer', 'proofshot', 'founders', 'proof', 'roadmap', 'support', 'about', 'proof-standard', 'software')
+# Intended public route set: 16 indexable routes (404 is deliberately noindex
+# and therefore absent from sitemap/canonical expectations). H11 (2026-09-20)
+# added /truth/ — the human Public Truth page.
+$indexableRoutes = @('', 'reality-gate', 'forgecast', 'lights-out', 'cache-vault', 'cleanroom', 'ghostlayer', 'proofshot', 'founders', 'proof', 'roadmap', 'support', 'about', 'proof-standard', 'software', 'truth')
 $originHost = 'https://theprooffoundry.com'
 
 # ── Per-route head metadata: canonical, robots, description, OG, Twitter ────
@@ -136,7 +137,7 @@ Assert-Condition $sitemapOk "sitemap: generated file parses as XML"
 
 $locs = @([regex]::Matches($sitemapText, '<loc>([^<]+)</loc>') | ForEach-Object { $_.Groups[1].Value })
 $mods = @([regex]::Matches($sitemapText, '<lastmod>([^<]+)</lastmod>') | ForEach-Object { $_.Groups[1].Value })
-Assert-Condition ($locs.Count -eq 15) "sitemap: exactly 15 indexable routes listed"
+Assert-Condition ($locs.Count -eq 16) "sitemap: exactly 16 indexable routes listed"
 Assert-Condition (@($locs | Sort-Object -Unique).Count -eq $locs.Count) "sitemap: no duplicate routes"
 Assert-Condition (($locs -contains "$originHost/support/")) "F4: sitemap includes /support/"
 
@@ -146,26 +147,19 @@ $setsEqual = ($locs.Count -eq $canonicalSet.Count)
 if ($setsEqual) { foreach ($k in $canonicalSet.Keys) { if (-not $sitemapSet.ContainsKey($k)) { $setsEqual = $false } } }
 Assert-Condition $setsEqual "sitemap: route inventory matches the pages' canonical identities exactly"
 
-# lastmod rule: latest content-input commit date per route
-$routeInputs = @{}
-foreach ($route in $indexableRoutes) {
-  $template = if ($route -eq '') { 'index.html' } else { "$route.html" }
-  $inputs = @($template, 'site-manifest.json', 'partials/header.html', 'partials/footer.html')
-  if ($route -eq 'software') { $inputs += 'partials/product-card.html' }
-  $routeInputs[$route] = $inputs
-}
+# lastmod truth rule (corrected H11-R1): a sitemap lastmod must reflect a real
+# page-content event — a shared build input (site-manifest.json, partials)
+# changing does NOT prove the rendered page changed. This test therefore asserts
+# only what is locally provable: every listed route is a real human route,
+# each lastmod is a valid ISO date, and none is in the future. Route-specific
+# expected dates live in tranche tests (H11 owns /truth/ and /proof-standard/).
 $lastmodByLoc = @{}
 for ($i = 0; $i -lt $locs.Count; $i++) { $lastmodByLoc[$locs[$i]] = $mods[$i] }
 foreach ($route in $indexableRoutes) {
   $label = if ($route -eq '') { '/' } else { "/$route/" }
   $loc = if ($route -eq '') { "$originHost/" } else { "$originHost/$route/" }
-  $committedDate = Get-LastContentDate $routeInputs[$route]
-  # 2026-09-19: ForgeCast decision-first copy tranche is the baseline recorded
-  # content event (site-manifest.json is an input to every route). Routes whose
-  # own template committed later (index.html + roadmap.html in the 2026-09-20
-  # roadmap tranche) carry that route's committed date as their lastmod.
-  $candidateDate = if ($committedDate -gt '2026-09-19') { $committedDate } else { '2026-09-19' }
-  Assert-Condition ($lastmodByLoc[$loc] -eq $candidateDate -and $lastmodByLoc[$loc] -ge $committedDate) "F5: sitemap lastmod $label records latest content reconciliation ($candidateDate), no earlier than committed content ($committedDate)"
+  Assert-Condition ($lastmodByLoc.ContainsKey($loc)) "F5: sitemap lists human route $label"
+  Assert-Condition ($lastmodByLoc[$loc] -match '^\d{4}-\d{2}-\d{2}$') "F5: sitemap lastmod for $label is a valid ISO date"
 }
 $today = [DateTime]::UtcNow.ToString('yyyy-MM-dd')
 Assert-Condition (@($mods | Where-Object { $_ -gt $today }).Count -eq 0) "sitemap: no lastmod in the future (no manufactured freshness)"
@@ -177,7 +171,7 @@ Assert-Condition ($robotsTxt -match 'Sitemap:\s*https://theprooffoundry\.com/sit
 
 # ── Legacy redirect coverage for every directory route (F6) ─────────────────
 $redirects = Get-Content (Join-Path $publicDir '_redirects') -Raw -Encoding UTF8
-$dirRoutes = @('reality-gate', 'forgecast', 'lights-out', 'cache-vault', 'cleanroom', 'ghostlayer', 'proofshot', 'founders', 'proof', 'roadmap', 'support', 'about', 'proof-standard', 'software')
+$dirRoutes = @('reality-gate', 'forgecast', 'lights-out', 'cache-vault', 'cleanroom', 'ghostlayer', 'proofshot', 'founders', 'proof', 'roadmap', 'support', 'about', 'proof-standard', 'software', 'truth')
 foreach ($r in $dirRoutes) {
   $bare = [regex]::Escape("/$r") + '\s+/' + [regex]::Escape("$r/") + '\s+301'
   $html = [regex]::Escape("/$r.html") + '\s+/' + [regex]::Escape("$r/") + '\s+301'
@@ -198,7 +192,7 @@ foreach ($r in $dirRoutes) {
 
 # ── No unexpected routes or dependency additions ────────────────────────────
 $publicDirs = @(Get-ChildItem $publicDir -Directory | Where-Object { Test-Path (Join-Path $_.FullName 'index.html') } | ForEach-Object { $_.Name } | Sort-Object)
-Assert-Condition (($publicDirs -join ',') -eq (($dirRoutes | Sort-Object) -join ',')) "routes: generated directory-route set is exactly the intended 14"
+Assert-Condition (($publicDirs -join ',') -eq (($dirRoutes | Sort-Object) -join ',')) "routes: generated directory-route set is exactly the intended 15"
 Assert-Condition ((git -C $root status --porcelain -- package.json package-lock.json) -eq $null) "deps: package manifests untouched by H4"
 # Product truth is frozen against the inspected CURRENT production commit.
 # This checks all products with no target exclusions, while allowing H9 nav.
