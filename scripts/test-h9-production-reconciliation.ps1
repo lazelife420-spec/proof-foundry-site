@@ -53,8 +53,7 @@ foreach ($p in $canonical.products) {
 
 # Frozen surfaces are compared to CURRENT production, including its release edits.
 $frozen = @('about.html','proof-standard.html','proof.html','founders.html',
-  'roadmap.html','reality-gate.html','lights-out.html',
-  'cleanroom.html','ghostlayer.html','404.html',
+  'reality-gate.html','lights-out.html','cleanroom.html','ghostlayer.html','404.html',
   'styles.css','studio.css','signature.css','experience.css','product-page.css',
   'site.js','scripts/Verify-PublicSite.ps1','partials/header.html','partials/footer.html','partials/product-card.html')
 foreach ($path in $frozen) {
@@ -63,6 +62,13 @@ foreach ($path in $frozen) {
   if ($path -ceq 'scripts/Verify-PublicSite.ps1') { $expected = $expected.Replace('"Explore the software"', '"Explore our software"').Replace('"SkyFoundry"', '"(?<!prooffoundry\.)SkyFoundry"') }
   Assert-Reconciled "${path}: current production source preserved" ((Read-Source $path) -ceq $expected)
 }
+# roadmap.html carries the owner-approved public roadmap truth repair
+# (2026-09-20): stale hardcoded release truth replaced by manifest-driven copy,
+# "Available now" / "In progress" grouping, and a closing proof note. The page
+# intentionally diverges from pinned production; pin the exact approved source
+# bytes (LF-normalized SHA-256) so drift past the approved state still fails.
+$roadmapSha = Sha256 ([Text.Encoding]::UTF8.GetBytes((Read-Source 'roadmap.html')))
+Assert-Reconciled 'roadmap.html: owner-approved roadmap truth repair preserved' ($roadmapSha -ceq '356d4d432e5fffe092401435730b698f2e13a478d3e80fa0c23c5227656fa2e9')
 . (Join-Path $Root 'scripts/fixtures/h9/custody.ps1')
 $assetCustody = Get-Content (Join-Path $Root 'scripts/fixtures/h9/canonical-assets.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 # Check actual source bytes, not the original worktree's index when qualifying an isolated staged tree.

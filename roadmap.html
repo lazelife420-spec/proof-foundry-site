@@ -31,6 +31,7 @@
     <p class="roadmap-intro">Public releases, candidate builds and work still taking shape. A candidate is not a public release.</p>
 
     <!-- CURRENT PRODUCT PIPELINE -->
+    <p class="kicker">Available now</p>
     <div class="roadmap-list">
       <article>
         <div>
@@ -45,15 +46,7 @@
           <p class="kicker">Public Windows {{products.cache-vault.versionLabel}}</p>
           <h2><a href="/cache-vault/">Cache Vault ↗</a></h2>
         </div>
-        <p>The public Windows release is v0.2.4, available from Proof Foundry downloads. The public Android companion remains v0.2.0; v0.2.1 publication is on hold.</p>
-      </article>
-
-      <article>
-        <div>
-          <p class="kicker">Public Windows {{products.lights-out.versionLabel}} · Candidate {{products.lights-out.candidateVersionLabel}}</p>
-          <h2><a href="/lights-out/">Lights Out PC ↗</a></h2>
-        </div>
-        <p>Android public companion v11.1.1. Windows and Android v11.1.3 candidates remain on hold and are not public releases.</p>
+        <p>The public Windows release is available from Proof Foundry downloads. The public Android companion's APK link is currently unavailable on GitHub; the next companion update is qualified and remains on hold.</p>
       </article>
 
       <article>
@@ -85,7 +78,18 @@
           <p class="kicker">Public release · v{{products.proofshot.publicVersion}} · 17 September 2026</p>
           <h2><a href="/proofshot/">ProofShot ↗</a></h2>
         </div>
-        <p>ProofShot v2.0.0 is live — the hardened rebrand of the qualified HyperSnatch engine, with an unsigned installer backed by SHA-256 checksums and Reality Gate custody receipts.</p>
+        <p>The hardened rebrand of the qualified HyperSnatch engine is live, with an unsigned installer backed by SHA-256 checksums and Reality Gate custody receipts.</p>
+      </article>
+    </div>
+
+    <p class="kicker">In progress</p>
+    <div class="roadmap-list">
+      <article>
+        <div>
+          <p class="kicker">Public Windows {{products.lights-out.versionLabel}} · Candidate {{products.lights-out.candidateVersionLabel}}</p>
+          <h2><a href="/lights-out/">Lights Out PC ↗</a></h2>
+        </div>
+        <p>The public Windows download is currently unavailable to anonymous visitors; the public Android companion remains at {{products.lights-out.companionPublicVersionLabel}}. The {{products.lights-out.candidateVersionLabel}} Windows and Android candidates are in physical Reality Gate qualification, and publication remains on hold pending owner authorization.</p>
       </article>
     </div>
 
@@ -119,6 +123,8 @@
         </ul>
       </div>
     </details>
+
+    <p class="note">Every public download carries a published SHA-256 checksum. Release and verification records live on the <a class="text-link" href="/proof/">release records</a> page — a build becomes a public release only when it lands there.</p>
   </div>
 </main>
 <!-- @include footer -->

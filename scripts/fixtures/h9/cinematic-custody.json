@@ -1164,7 +1164,14 @@
       "bytes": 7159,
       "comparison": "utf8-lf",
       "lfSha256": "faf8f7558fe7a7faea8291375e56fe4eef9b5342db4d8dc6e56760fe0da4dc80",
-      "origin": "original-entry-inventory"
+      "origin": "original-entry-inventory",
+      "migration": {
+        "sha256": "25e7ac0fbe5559152f34469a9fd36fc83a77dac8ad057af3ca274401162b2a9b",
+        "bytes": 7802,
+        "comparison": "utf8-lf",
+        "lfSha256": "25e7ac0fbe5559152f34469a9fd36fc83a77dac8ad057af3ca274401162b2a9b",
+        "reason": "Public roadmap truth tranche 2026-09-20: owner-approved roadmap.html repair; stale hardcoded release truth removed, Available now / In progress grouping and closing proof note added."
+      }
     },
     {
       "path": "scripts/Verify-PublicSite.ps1",
@@ -1320,40 +1327,46 @@
       "lfSha256": "eccd353c55072aaaaa9a055e82876c58796d7e64bcf62c268c84120a20e36c3a",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "0791227b5a69ac9bc883aa13b7f7f8ab21e669b813a3efeda475da1d32e676cc",
-        "bytes": 15254,
+        "sha256": "b14ac8ac7e3aeda3176e04ecbb8729a75f1f53c13f07aeb549d37fb40fef7af5",
+        "bytes": 15872,
         "comparison": "utf8-lf",
-        "lfSha256": "0791227b5a69ac9bc883aa13b7f7f8ab21e669b813a3efeda475da1d32e676cc",
-        "reason": "ForgeCast copy tranche 2026-09-19: SkyFoundry ban scoped to standalone branding (package path com.prooffoundry.skyfoundry is factual); verifier + recon anchor updated accordingly.",
+        "lfSha256": "b14ac8ac7e3aeda3176e04ecbb8729a75f1f53c13f07aeb549d37fb40fef7af5",
+        "reason": "Public roadmap truth tranche 2026-09-20: roadmap.html frozen-pin repointed at the owner-approved roadmap source bytes (approved-bytes hash pin, same exact-match discipline).",
         "previousMigration": {
-          "sha256": "94fa84d3f5a52bbc0249d41f1f99883cc0758b336161f076e51f9a2157909193",
-          "bytes": 15195,
+          "sha256": "0791227b5a69ac9bc883aa13b7f7f8ab21e669b813a3efeda475da1d32e676cc",
+          "bytes": 15254,
           "comparison": "utf8-lf",
-          "lfSha256": "94fa84d3f5a52bbc0249d41f1f99883cc0758b336161f076e51f9a2157909193",
-          "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919.",
+          "lfSha256": "0791227b5a69ac9bc883aa13b7f7f8ab21e669b813a3efeda475da1d32e676cc",
+          "reason": "ForgeCast copy tranche 2026-09-19: SkyFoundry ban scoped to standalone branding (package path com.prooffoundry.skyfoundry is factual); verifier + recon anchor updated accordingly.",
           "previousMigration": {
-            "sha256": "c4742d6972790c346841ec2ce1b40ecbbda2e99b6826fa6123c3bd97cb3324c8",
-            "bytes": 9310,
+            "sha256": "94fa84d3f5a52bbc0249d41f1f99883cc0758b336161f076e51f9a2157909193",
+            "bytes": 15195,
             "comparison": "utf8-lf",
-            "lfSha256": "c4742d6972790c346841ec2ce1b40ecbbda2e99b6826fa6123c3bd97cb3324c8",
-            "reason": "Explicit customer-truth repair; see customer-truth-migration.json and customer-truth.patch.",
+            "lfSha256": "94fa84d3f5a52bbc0249d41f1f99883cc0758b336161f076e51f9a2157909193",
+            "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919.",
             "previousMigration": {
-              "sha256": "49e83275cc07f219dbf5da6cd9f5f316f0cc1c8006bf3c54458ff0c0957e99b4",
-              "bytes": 9064,
+              "sha256": "c4742d6972790c346841ec2ce1b40ecbbda2e99b6826fa6123c3bd97cb3324c8",
+              "bytes": 9310,
               "comparison": "utf8-lf",
-              "lfSha256": "49e83275cc07f219dbf5da6cd9f5f316f0cc1c8006bf3c54458ff0c0957e99b4",
-              "reason": "Explicit production-validation repair; see production-validation-migration.json and production-validation.patch.",
+              "lfSha256": "c4742d6972790c346841ec2ce1b40ecbbda2e99b6826fa6123c3bd97cb3324c8",
+              "reason": "Explicit customer-truth repair; see customer-truth-migration.json and customer-truth.patch.",
               "previousMigration": {
-                "sha256": "b6f5b93676907c1838559806063cc30040fc5211fd91a36d68781445a7f7efe0",
-                "bytes": 8822,
+                "sha256": "49e83275cc07f219dbf5da6cd9f5f316f0cc1c8006bf3c54458ff0c0957e99b4",
+                "bytes": 9064,
                 "comparison": "utf8-lf",
-                "lfSha256": "b6f5b93676907c1838559806063cc30040fc5211fd91a36d68781445a7f7efe0",
-                "reason": "Explicit qualification-portability migration; see portability-migration.json and portability.patch."
+                "lfSha256": "49e83275cc07f219dbf5da6cd9f5f316f0cc1c8006bf3c54458ff0c0957e99b4",
+                "reason": "Explicit production-validation repair; see production-validation-migration.json and production-validation.patch.",
+                "previousMigration": {
+                  "sha256": "b6f5b93676907c1838559806063cc30040fc5211fd91a36d68781445a7f7efe0",
+                  "bytes": 8822,
+                  "comparison": "utf8-lf",
+                  "lfSha256": "b6f5b93676907c1838559806063cc30040fc5211fd91a36d68781445a7f7efe0",
+                  "reason": "Explicit qualification-portability migration; see portability-migration.json and portability.patch."
+                }
               }
             }
           }
-        }
-      }
+        }      }
     },
     {
       "path": "scripts/test-receipts-invariants.ps1",
