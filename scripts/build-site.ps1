@@ -1835,7 +1835,7 @@ $allModuleState     = @($productStateSource.GetAll())
 # foreign — is held to the same public-state rules before emission.
 Assert-PublicStateUrls $allModuleState
 
-function Render-ProductShell($module) {
+function Render-ProductShell($module, [switch]$Template) {
   # Generic product renderer: assembles the full page shell from module
   # metadata. Narrative markup lives in products/<id>/content.html (injected at
   # the content marker and still flows through the normal token pipeline).
@@ -1900,6 +1900,12 @@ function Render-ProductShell($module) {
 <!-- @product-content -->
 </body></html>
 "@
+  if ($Template) {
+    # H14 shadow-asset mode: return the shell with @product-content and
+    # {{product.*}} slots unresolved — the runtime renderer substitutes them
+    # against live API state at request time.
+    return $shell
+  }
   # Inject the module's narrative content + generated shells at their markers.
   $content = Read-File (Join-Path $script:productsDir "$($module.id)\content.html")
   $content = $content -replace '<!--\s*@product-breadcrumb\s*-->', $crumb
@@ -2151,6 +2157,72 @@ Copy-Item (Join-Path $root 'site-manifest.json') $publicDir -Force
 Copy-Item (Join-Path $root 'brand')  $publicDir -Recurse -Force
 Copy-Item (Join-Path $root 'assets') $publicDir -Recurse -Force
 
+# ── H14 shadow runtime assets ─────────────────────────────────────────────────
+# The /__h14/ namespace ships slot-templates the Pages Function resolves against
+# live public-state API output at request time. These are the same module
+# definitions and partials the static pipeline consumes — the runtime does not
+# get a second product model. Everything under __h14 is generated; never edit.
+$h14Dir = Join-Path $publicDir '__h14'
+foreach ($sub in @('shells','content','modules','partials','pages')) {
+  New-Item -ItemType Directory (Join-Path $h14Dir $sub) -Force | Out-Null
+}
+foreach ($module in $productRegistry) {
+  $mid = $module.id
+  [System.IO.File]::WriteAllText((Join-Path $h14Dir "modules\$mid.json"), (Read-File (Join-Path $script:productsDir "$mid\module.json")), (New-Object System.Text.UTF8Encoding $false))
+  [System.IO.File]::WriteAllText((Join-Path $h14Dir "content\$mid.html"), (Read-File (Join-Path $script:productsDir "$mid\content.html")), (New-Object System.Text.UTF8Encoding $false))
+  if ($module.visibility -eq 'visible') {
+    # Shell with module meta resolved but runtime slots + product tokens intact:
+    # the Function resolves {{product.*}} / {{products.*}} / @include /
+    # @product-breadcrumb / @product-related against live API state.
+    $shellTemplate = Render-ProductShell $module -Template
+    # Bake asset-version URLs the same way Process-Template does.
+    foreach ($assetName in @('styles.css','studio.css','experience.css','signature.css','product-page.css','site.js','experience.js','h9-homepage.css','h9-software.css','h9-homepage.js','h9-software.js')) {
+      $assetPath = Join-Path $root $assetName
+      if (Test-Path $assetPath) {
+        $av = (Get-FileHash $assetPath -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
+        $shellTemplate = $shellTemplate.Replace('"/' + $assetName + '"', '"/' + $assetName + '?v=' + $av + '"')
+      }
+    }
+    [System.IO.File]::WriteAllText((Join-Path $h14Dir "shells\$mid.html"), $shellTemplate, (New-Object System.Text.UTF8Encoding $false))
+  }
+}
+foreach ($pn in @('header.html','footer.html','product-card.html')) {
+  [System.IO.File]::WriteAllText((Join-Path $h14Dir "partials\$pn"), (Read-File (Join-Path $partialsDir $pn)), (New-Object System.Text.UTF8Encoding $false))
+}
+# Page shells keep their @-markers; the runtime fills them.
+foreach ($pg in @('software.html','truth.html')) {
+  $pgHtml = Read-File (Join-Path $root $pg)
+  foreach ($assetName in @('styles.css','studio.css','experience.css','signature.css','product-page.css','site.js','experience.js','h9-homepage.css','h9-software.css','h9-homepage.js','h9-software.js')) {
+    $assetPath = Join-Path $root $assetName
+    if (Test-Path $assetPath) {
+      $av = (Get-FileHash $assetPath -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
+      $pgHtml = $pgHtml.Replace('"/' + $assetName + '"', '"/' + $assetName + '?v=' + $av + '"')
+    }
+  }
+  [System.IO.File]::WriteAllText((Join-Path $h14Dir "pages\$pg"), $pgHtml, (New-Object System.Text.UTF8Encoding $false))
+}
+# Sanitized site config the runtime needs to derive identical labels/taxonomy.
+# Product state itself is NOT emitted here — that is the API's job.
+$siteConfig = [ordered]@{
+  brand               = $manifest.brand
+  tagline             = $manifest.tagline
+  positioning         = $manifest.positioning
+  canonicalUrl        = $manifest.canonicalUrl
+  statusTaxonomy      = $manifest.statusTaxonomy
+  availabilityTaxonomy= $manifest.availabilityTaxonomy
+  productGroups       = $manifest.productGroups
+  proofRegistryPath   = $manifest.proofRegistryPath
+  navCta              = $manifest.navCta
+  siteVerification    = $manifest.siteVerification
+}
+[System.IO.File]::WriteAllText((Join-Path $h14Dir 'site-config.json'), ($siteConfig | ConvertTo-Json -Depth 20), (New-Object System.Text.UTF8Encoding $false))
+$staticState = [ordered]@{ products = @($allProductState) }
+[System.IO.File]::WriteAllText((Join-Path $h14Dir 'static-state.json'), ($staticState | ConvertTo-Json -Depth 30), (New-Object System.Text.UTF8Encoding $false))
+# Registry index — the runtime's structural authority (visibility/order/route).
+$registryIndex = @($productRegistry | ForEach-Object { [ordered]@{ id = $_.id; route = $_.route; order = $_.order; visibility = $_.visibility } })
+[System.IO.File]::WriteAllText((Join-Path $h14Dir 'registry.json'), ($registryIndex | ConvertTo-Json -Depth 10), (New-Object System.Text.UTF8Encoding $false))
+Write-Host "==> Emitted H14 shadow assets: /__h14/ ($(($productRegistry | Where-Object {$_.visibility -eq 'visible'}).Count) shells + modules + config)" -ForegroundColor Green
+
 # assets/ ships published imagery only. Capture tooling has previously dropped
 # diagnostic dumps here that carry local machine paths, so strip that class of
 # file from the public output and say so out loud rather than shipping it.
@@ -2194,6 +2266,10 @@ $headersContent = @"
 $($headerRoutes -join "`n")
 /truth/*
   Cache-Control: no-cache, must-revalidate
+
+/__h14/*
+  Cache-Control: no-cache, must-revalidate
+  X-Robots-Tag: noindex, nofollow
 
 /assets/*
   Cache-Control: public, max-age=0, must-revalidate
