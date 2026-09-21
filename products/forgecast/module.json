@@ -1,0 +1,32 @@
+{
+  "id": "forgecast",
+  "route": "/forgecast/",
+  "order": 60,
+  "visibility": "visible",
+  "sections": [
+    "hero",
+    "outcomes",
+    "how",
+    "story",
+    "get",
+    "onboard",
+    "evidence",
+    "privacy",
+    "final-cta",
+    "related"
+  ],
+  "meta": {
+    "title": "ForgeCast — What to Wear, What to Bring &amp; When to Go Outside | The Proof Foundry",
+    "description": "ForgeCast turns weather forecasts into practical decisions: when to go outside, what to wear now, what to bring later, and why. Available for Android.",
+    "viewport": "width=device-width, initial-scale=1",
+    "robots": "index, follow",
+    "themeColor": "#0B0F14",
+    "ogTitle": "ForgeCast — What to Wear, What to Bring &amp; When to Go Outside",
+    "ogDescription": "ForgeCast turns weather forecasts into practical decisions: when to go outside, what to wear now, what to bring later, and why. Available for Android.",
+    "ogType": "product",
+    "ogImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png",
+    "twitterCard": "summary_large_image",
+    "twitterImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png"
+  },
+  "contentSource": "content.html"
+}

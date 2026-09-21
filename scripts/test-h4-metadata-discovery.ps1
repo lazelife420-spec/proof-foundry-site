@@ -231,7 +231,9 @@ Assert-Condition ($rg -match 'id="evidence-download"') "H3 guard: Reality Gate c
 Assert-Condition ($rg -match 'Install, update, uninstall &amp; leftover data') "H3 guard: Reality Gate onboarding block intact"
 $buildSrc = Get-Content (Join-Path $root 'scripts\build-site.ps1') -Raw -Encoding UTF8
 $declaredRoutes = @([regex]::Matches([regex]::Match($buildSrc, '\$dirRoutes = @\(([^\r\n]+)\)').Groups[1].Value, "'([^']+)'") | ForEach-Object { $_.Groups[1].Value })
-Assert-Condition ((($declaredRoutes | Sort-Object) -join ',') -eq (($dirRoutes | Sort-Object) -join ',')) "build: declared routes exactly match the H8 routes plus H9 software"
+# H13: product routes are registry-derived (products/<id>/module.json), not literals.
+$registryRoutes = @(Get-ChildItem (Join-Path $root 'products') -Directory | ForEach-Object { $_.Name })
+Assert-Condition ((($declaredRoutes + $registryRoutes | Sort-Object) -join ',') -eq (($dirRoutes | Sort-Object) -join ',')) "build: declared routes + module registry exactly match the H8 routes plus H9 software"
 Assert-Condition ($rg -match 'GENERATED FILE - DO NOT EDIT') "build: generated output carries the do-not-edit provenance marker"
 Assert-Condition (Test-Path (Join-Path $publicDir 'proof\index.json')) "build: proof registry still generated"
 

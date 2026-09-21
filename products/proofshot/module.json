@@ -1,0 +1,47 @@
+{
+  "id": "proofshot",
+  "route": "/proofshot/",
+  "order": 70,
+  "visibility": "visible",
+  "sections": [
+    "hero",
+    "outcomes",
+    "how",
+    "story",
+    "get",
+    "identity",
+    "evidence",
+    "privacy",
+    "final-cta",
+    "related"
+  ],
+  "meta": {
+    "title": "ProofShot — Keep the context with the capture. | The Proof Foundry",
+    "description": "A local-first Windows proof workstation for page resources, evidence bundles and offline verification. ProofShot {{product.versionLabel}} public release.",
+    "viewport": "width=device-width, initial-scale=1",
+    "robots": "index, follow",
+    "themeColor": "#0B0F14",
+    "ogTitle": "ProofShot — Keep the context with the capture.",
+    "ogDescription": "A local-first Windows proof workstation for page resources, evidence bundles and offline verification. ProofShot {{product.versionLabel}} public release.",
+    "ogType": "product",
+    "ogImage": "https://theprooffoundry.com/assets/proofshot/og-image.png",
+    "twitterCard": "summary_large_image",
+    "twitterTitle": "ProofShot — Capture context. Export proof. Verify offline.",
+    "twitterDescription": "Point ProofShot at anything online, keep a receipt-backed proof bundle with SHA-256 manifests and a Proof Passport, and verify it offline anywhere.",
+    "twitterImage": "https://theprooffoundry.com/assets/proofshot/og-image.png"
+  },
+  "contentSource": "content.html",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ProofShot",
+    "operatingSystem": "Windows 10, Windows 11",
+    "applicationCategory": "UtilitiesApplication",
+    "description": "Local-first Windows proof workstation: capture web context, export SHA-256 proof bundles with Proof Passports, and verify offline without network access.",
+    "author": {
+      "@type": "Organization",
+      "name": "The Proof Foundry",
+      "url": "https://theprooffoundry.com"
+    }
+  }
+}

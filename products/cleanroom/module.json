@@ -1,0 +1,32 @@
+{
+  "id": "cleanroom",
+  "route": "/cleanroom/",
+  "order": 40,
+  "visibility": "visible",
+  "sections": [
+    "hero",
+    "outcomes",
+    "how",
+    "story",
+    "get",
+    "onboard",
+    "evidence",
+    "privacy",
+    "final-cta",
+    "related"
+  ],
+  "meta": {
+    "title": "Cleanroom — Less clutter. A way back. | The Proof Foundry",
+    "description": "Review Windows cleanup candidates, archive selected files and restore them to their original paths. Cleanroom public {{product.versionLabel}}; next build {{product.candidateVersionLabel}}.",
+    "viewport": "width=device-width, initial-scale=1",
+    "robots": "index, follow",
+    "themeColor": "#0B0F14",
+    "ogTitle": "Cleanroom — Less clutter. A way back.",
+    "ogDescription": "Review Windows cleanup candidates, archive selected files and restore them to their original paths. Cleanroom public {{product.versionLabel}}; next build {{product.candidateVersionLabel}}.",
+    "ogType": "product",
+    "ogImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png",
+    "twitterCard": "summary_large_image",
+    "twitterImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png"
+  },
+  "contentSource": "content.html"
+}

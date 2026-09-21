@@ -1,0 +1,33 @@
+{
+  "id": "reality-gate",
+  "route": "/reality-gate/",
+  "order": 10,
+  "visibility": "visible",
+  "sections": [
+    "hero",
+    "film",
+    "outcomes",
+    "how",
+    "story",
+    "get",
+    "onboard",
+    "evidence",
+    "privacy",
+    "final-cta",
+    "related"
+  ],
+  "meta": {
+    "title": "Reality Gate — Your projects. Your execution. Your way back. | The Proof Foundry",
+    "description": "Bring your Git projects into a local control room for builds, run records, and recovery. Reality Gate Developer Pilot for Windows.",
+    "viewport": "width=device-width, initial-scale=1.0",
+    "robots": "index, follow",
+    "ogTitle": "Reality Gate — Your projects. Your execution. Your way back.",
+    "ogDescription": "Bring your Git projects into a local control room for builds, run records, and recovery. Reality Gate Developer Pilot for Windows.",
+    "ogType": "product",
+    "ogImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png",
+    "twitterCard": "summary_large_image",
+    "twitterImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png"
+  },
+  "contentSource": "content.html",
+  "inlineCss": " /* H3 readability correction (retained): the origin narrative beats carry light    copy that was authored against a dark paired surface. Keep that pairing so    the copy stays legible. No copy, layout, or hierarchy change. */ .product-reality-gate #origin {   background: #101418;   border: 1px solid rgba(255,255,255,0.08); } .product-reality-gate #origin .section-heading h2, .product-reality-gate #origin .section-heading p {   color: #f2f0eb; } "
+}

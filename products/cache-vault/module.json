@@ -1,0 +1,34 @@
+{
+  "id": "cache-vault",
+  "route": "/cache-vault/",
+  "order": 20,
+  "visibility": "visible",
+  "sections": [
+    "hero",
+    "film",
+    "outcomes",
+    "how",
+    "story",
+    "get",
+    "onboard",
+    "faq",
+    "evidence",
+    "privacy",
+    "final-cta",
+    "related"
+  ],
+  "meta": {
+    "title": "Cache Vault — Capture it. Find it. Put it to work. | The Proof Foundry",
+    "description": "A local clipboard workspace for Windows with searchable history, collections, Quick Paste, clip ledgers, and receipt exports. Public {{product.versionLabel}}.",
+    "viewport": "width=device-width, initial-scale=1",
+    "robots": "index, follow",
+    "themeColor": "#0B0F14",
+    "ogTitle": "Cache Vault — Capture it. Find it. Put it to work.",
+    "ogDescription": "A local clipboard workspace for Windows with searchable history, collections, Quick Paste, clip ledgers, and receipt exports. Public {{product.versionLabel}}.",
+    "ogType": "product",
+    "ogImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png",
+    "twitterCard": "summary_large_image",
+    "twitterImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png"
+  },
+  "contentSource": "content.html"
+}

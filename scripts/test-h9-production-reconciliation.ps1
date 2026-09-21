@@ -88,17 +88,21 @@ Assert-Reconciled 'roadmap.html: owner-approved roadmap truth repair + H10 publi
 # filenames, canonical URLs, receipt ids, package path) with manifest tokens. Each
 # is pinned to its exact authorized source bytes; any drift past this state fails.
 $h10Pins = [ordered]@{
-  'reality-gate.html' = '5be55df6d237cd451cceec0930f4b6d8891da3ff1ec333a2417405a4cdfc9e43'
-  'lights-out.html'   = 'e38c8e7463ae1f546dcbaab3e6026de5ff4b487019a2d68a0513291068ab8132'
-  'cleanroom.html'    = 'bc851044e14c7b5c7a684c6d0e36f2a71d51e3f839d371a2184c3a508ce89f0f'
-  'ghostlayer.html'   = '25e8ec7f307db8cbfb89b1ff4c9e87a1c8f6a2b0399137740c2ce6707e6925e0'
-  'cache-vault.html'  = '3a2dd0d461a93a29668ac0380b283fefc588ce9c6a0475e2043ebbae66b1219d'
-  'forgecast.html'    = '038a6fec24e81edd85eea70d3e50d7d70faa71a860d32dec983bb2764aab43d3'
-  'proofshot.html'    = '18cd26064f048e8d56a990f9220093053f7eb40b2452d4455a7ac7de5e6ed7fa'
+  'products/reality-gate/content.html' = '80fb22e7213ea6590868c2de4b62f5c5f1fd7ae61b8a1ec471647d827d647654'
+  'products/lights-out/content.html'   = 'e5a73dd3c200778e5e71d885d1b255f3c3b791e9632ce51f62f5e3d47c22c05b'
+  'products/cleanroom/content.html'    = 'cba55d30193085f2c90ca044d2332006e5c21f1eb096f021f0129e513474023b'
+  'products/ghostlayer/content.html'   = '169397e7068bc5b504b8a169dde94c10b04242b5fb8a214dc29fdc08517346b2'
+  'products/cache-vault/content.html'  = '675b3470f21646b986af03cc7668c5b5e269df14f26718ba589e5095bb89fd8e'
+  'products/forgecast/content.html'    = '7cc7f0bdc1249149867549e2dcef8fe4863ab4c56dbf9f56c1c76f330a0430ad'
+  'products/proofshot/content.html'    = '9f2f1ce5f5c5e39a64cea56231115e26b8d14213a886b026a8238b28ea101d3d'
   'support.html'      = '28d93bb322b0371fb3bf2fa845155a6235ab1e29b8252017ad9c55c0bf117bd8'
 }
+# H13 modular renderer (2026-09-20): the seven product pages migrated from
+# per-product {id}.html templates to products/<id>/{module.json,content.html}.
+# The authorized source bytes are now the extracted content slots — any drift
+# past this state fails.
 foreach ($p in $h10Pins.Keys) {
-  Assert-Reconciled "${p}: H10 truth-consolidation source bytes preserved" ((Sha256 ([Text.Encoding]::UTF8.GetBytes((Read-Source $p)))) -ceq $h10Pins[$p])
+  Assert-Reconciled "${p}: authorized product-page source bytes preserved" ((Sha256 ([Text.Encoding]::UTF8.GetBytes((Read-Source $p)))) -ceq $h10Pins[$p])
 }
 # H11 public-truth surface (2026-09-20): proof-standard.html carries one
 # authorized edit — a Public Truth discovery card in the related-routes grid.

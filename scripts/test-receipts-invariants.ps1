@@ -314,7 +314,7 @@ $t11 = Invoke-FixtureBuild 'template-literal' {
   $o
 } -ValidateOnly
 Assert 'digest duplicated into a template fails the build' ($t11.Exit -ne 0) "exit=$($t11.Exit)"
-Assert 'error names the offending template'                ($t11.Output -match '\[template\] reality-gate\.html')
+Assert 'error names the offending template'                ($t11.Output -match '\[template\] products/reality-gate/content\.html')
 Assert 'error prescribes the artifact-indexed token'       ($t11.Output -match '\{\{product\.artifacts\.\d+\.sha256\}\}')
 Assert 'canonical data itself produces no template errors' ($d1.Output -notmatch '\[template\]')
 Write-Host ""

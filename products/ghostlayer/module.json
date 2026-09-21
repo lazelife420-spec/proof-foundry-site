@@ -1,0 +1,31 @@
+{
+  "id": "ghostlayer",
+  "route": "/ghostlayer/",
+  "order": 50,
+  "visibility": "visible",
+  "sections": [
+    "hero",
+    "outcomes",
+    "how",
+    "get",
+    "onboard",
+    "evidence",
+    "privacy",
+    "final-cta",
+    "related"
+  ],
+  "meta": {
+    "title": "GhostLayer — Choose what becomes permanent. | The Proof Foundry",
+    "description": "Stage files in a volatile RAM layer, open them for editing, and deliberately commit selected changes to disk. GhostLayer {{product.versionLabel}} for Windows.",
+    "viewport": "width=device-width, initial-scale=1.0",
+    "robots": "index, follow",
+    "themeColor": "#0a0d14",
+    "ogTitle": "GhostLayer — Choose what becomes permanent.",
+    "ogDescription": "Stage files in a volatile RAM layer, open them for editing, and deliberately commit selected changes to disk. GhostLayer {{product.versionLabel}} for Windows.",
+    "ogType": "product",
+    "ogImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png",
+    "twitterCard": "summary_large_image",
+    "twitterImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png"
+  },
+  "contentSource": "content.html"
+}

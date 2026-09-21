@@ -1,0 +1,48 @@
+{
+  "id": "lights-out",
+  "route": "/lights-out/",
+  "order": 30,
+  "visibility": "visible",
+  "sections": [
+    "hero",
+    "outcomes",
+    "how",
+    "story",
+    "get",
+    "onboard",
+    "faq",
+    "evidence",
+    "privacy",
+    "final-cta",
+    "related"
+  ],
+  "meta": {
+    "title": "Lights Out — Give your night a gentle ending. | The Proof Foundry",
+    "description": "Plan a Windows shutdown or sleep timer, then pause, snooze or cancel from your Android companion. Public Windows {{product.versionLabel}}; {{product.candidateVersionLabel}} candidates are on hold.",
+    "viewport": "width=device-width, initial-scale=1",
+    "robots": "index, follow",
+    "themeColor": "#0B0F14",
+    "ogTitle": "Lights Out — Give your night a gentle ending.",
+    "ogDescription": "Plan a Windows shutdown or sleep timer, then pause, snooze or cancel from your Android companion. Public Windows {{product.versionLabel}}; {{product.candidateVersionLabel}} candidates are on hold.",
+    "ogType": "website",
+    "ogImage": "https://theprooffoundry.com/assets/lights-out/lights-out-og-image.png",
+    "twitterCard": "summary_large_image",
+    "twitterTitle": "Lights Out — Control your night from the PC, or from bed",
+    "twitterDescription": "Local-first night control for Windows: Tonight sessions, a bedside phone companion, First Light wake alarm, compatible smart lights, schedule automation, and proof of every run.",
+    "twitterImage": "https://theprooffoundry.com/assets/lights-out/lights-out-og-image.png"
+  },
+  "contentSource": "content.html",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Lights Out",
+    "operatingSystem": "Windows 10, Windows 11",
+    "applicationCategory": "UtilitiesApplication",
+    "description": "Local-first night control and bedtime automation for Windows: Tonight sessions, a bedside Android companion, a First Light wake alarm, compatible smart lights, schedule automation, and proof of every run.",
+    "author": {
+      "@type": "Organization",
+      "name": "The Proof Foundry",
+      "url": "https://theprooffoundry.com"
+    }
+  }
+}

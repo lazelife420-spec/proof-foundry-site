@@ -34,18 +34,29 @@ param(
   # site-manifest.json or the real public/ tree.
   [string]$ManifestPath,
   [string]$OutDir,
+  # Alternate products/ module directory (fixtures exercise registry controls
+  # — extra/hidden/colliding modules — without touching the canonical tree).
+  [string]$ProductsDir,
   # Deterministic source-identity overrides for the public truth outputs. When
   # unset, identity is derived from Git (HEAD commit/tree/commit timestamp +
   # worktree-dirty flag). Tests pass explicit values so fixture builds are
   # byte-reproducible regardless of the surrounding repository state.
   [string]$TruthCommit,
   [string]$TruthTree,
-  [string]$TruthCommittedAt
+  [string]$TruthCommittedAt,
+  # Alternate public-state transport: a JSON document shaped like the future
+  # public API response ({ products: [...] }). When set, product state flows
+  # through New-FixtureApiProductStateSource instead of the manifest — the
+  # adapter seam tests exercise, and the shape a real API source will take.
+  [string]$StateSourcePath
 )
 
 $ErrorActionPreference = 'Stop'
 Set-Location $PSScriptRoot
 $root = (Resolve-Path "$PSScriptRoot/..").Path
+# H13: module registry directory — overridable so fixtures can exercise
+# registry controls without mutating the canonical products/ tree.
+$script:productsDir = if ($ProductsDir) { (Resolve-Path $ProductsDir).Path } else { Join-Path $root 'products' }
 Set-Location $root
 
 $manifestPath = if ($ManifestPath) { (Resolve-Path $ManifestPath).Path } else { Join-Path $root 'site-manifest.json' }
@@ -144,10 +155,11 @@ foreach ($p in $manifest.products) {
     }
   }
 
-  # Internal route (starts with /) must have a source template {id}.html
+  # Internal route (starts with /) must have a product module products/{id}/module.json
+  # (H13: generic renderer + module replaced per-product {id}.html templates)
   if ($p.route -like '/*') {
-    $src = Join-Path $root ("$($p.id).html")
-    if (-not (Test-Path $src)) { $errors += "$tag internal route $($p.route) but no template $($p.id).html" }
+    $src = Join-Path $script:productsDir "$($p.id)\module.json"
+    if (-not (Test-Path $src)) { $errors += "$tag internal route $($p.route) but no module products/$($p.id)/module.json" }
   }
 
   # Released states must have a download URL
@@ -484,13 +496,16 @@ foreach ($p in $manifest.products) {
     }
   }
 }
-foreach ($tpl in @(Get-ChildItem -Path $root -Filter '*.html' -File)) {
-  $tplText = [System.IO.File]::ReadAllText($tpl.FullName)
+# H13: templates now live as root *.html plus products/<id>/content.html slots.
+$templateFiles = @(Get-ChildItem -Path $root -Filter '*.html' -File | ForEach-Object { @{ File = $_; Label = $_.Name } })
+$templateFiles += @(Get-ChildItem -Path $script:productsDir -Filter 'content.html' -Recurse -File | ForEach-Object { @{ File = $_; Label = "products/$($_.Directory.Name)/content.html" } })
+foreach ($tpl in $templateFiles) {
+  $tplText = [System.IO.File]::ReadAllText($tpl.File.FullName)
   foreach ($m in [regex]::Matches($tplText, '(?<![0-9a-fA-F])[0-9a-fA-F]{64}(?![0-9a-fA-F])')) {
     $key = $m.Value.ToLowerInvariant()
     if ($canonicalDigests.ContainsKey($key)) {
       $useToken = if ($canonicalDigests.ContainsKey("token:$key")) { $canonicalDigests["token:$key"] } else { '{{product.artifactSha256}}' }
-      $errors += "[template] $($tpl.Name) hardcodes the canonical SHA-256 of $($canonicalDigests[$key]); replace the literal with $useToken so the digest cannot drift from the manifest"
+      $errors += "[template] $($tpl.Label) hardcodes the canonical SHA-256 of $($canonicalDigests[$key]); replace the literal with $useToken so the digest cannot drift from the manifest"
     }
   }
 }
@@ -517,11 +532,11 @@ foreach ($p in $manifest.products) {
   foreach ($u in @($p.proofLinks)) { if ($u) { $canonicalLiterals[$u] = "$litTag proofLinks[$pi]" }; $pi++ }
   if ($p.evidence -is [array]) { $ei = 0; foreach ($e in $p.evidence) { if ($e.url) { $canonicalLiterals[$e.url] = "$litTag evidence[$ei].url" }; $ei++ } }
 }
-foreach ($tpl in @(Get-ChildItem -Path $root -Filter '*.html' -File)) {
-  $tplText = [System.IO.File]::ReadAllText($tpl.FullName)
+foreach ($tpl in $templateFiles) {
+  $tplText = [System.IO.File]::ReadAllText($tpl.File.FullName)
   foreach ($lit in $canonicalLiterals.Keys) {
     if ($tplText.Contains($lit)) {
-      $errors += "[template] $($tpl.Name) hardcodes canonical literal '$lit' ($($canonicalLiterals[$lit])); render it through the matching product token instead so it cannot drift from the manifest"
+      $errors += "[template] $($tpl.Label) hardcodes canonical literal '$lit' ($($canonicalLiterals[$lit])); render it through the matching product token instead so it cannot drift from the manifest"
     }
   }
 }
@@ -631,7 +646,42 @@ function StatusLine($p) {
   return ($parts -join " $dot ")
 }
 
-function Html-Attr($s) { return ($s -replace '&','&amp;' -replace '<','&lt;' -replace '>','&gt;') }
+# Attribute-safe escaping (& < > " ') — also correct for text nodes: entities
+# decode to the literal characters in every HTML context.
+function Html-Attr($s) { return ($s -replace '&','&amp;' -replace '<','&lt;' -replace '>','&gt;' -replace '"','&quot;' -replace "'",'&#39;') }
+
+# Public-state URL policy: the only URL shapes allowed to cross into public
+# surfaces are site-relative paths and https:// absolute URLs on public hosts.
+# Everything else (javascript:, data:, file:, vbscript:, about:, blob:,
+# filesystem:, loopback/RFC1918 hosts) is rejected as invalid public state
+# BEFORE it can reach an href/src, truth JSON, or metadata surface.
+function Test-PublicUrlSafe($url, $what) {
+  if ([string]::IsNullOrWhiteSpace($url)) { return }
+  if ($url -match '^/') { return }
+  if ($url -match '^https://') {
+    $h = ([uri]$url).Host
+    if ($h -match '^(localhost|127\.|0\.0\.0\.0|\[?::1\]?$|10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[01])\.)' -or $h -match '^(::1|0:0:0:0:0:0:0:1)$') {
+      throw "$what`: unsafe host in public URL state: $url"
+    }
+    return
+  }
+  throw "$what`: unsafe scheme in public URL state: $url"
+}
+
+# Applies the URL policy to every URL-bearing field of adapter-produced
+# product state — the boundary is the adapter output, so any future
+# non-manifest source is held to the same contract.
+function Assert-PublicStateUrls($products) {
+  foreach ($p in @($products)) {
+    $tag = "product '$($p.id)'"
+    foreach ($u in @($p.downloadUrl, $p.sha256Url)) { Test-PublicUrlSafe $u $tag }
+    foreach ($a in @($p.artifacts)) { if ($a) { foreach ($u in @($a.url, $a.downloadUrl, $a.sha256Url)) { Test-PublicUrlSafe $u "$tag artifact" } } }
+    foreach ($e in @($p.evidence)) { if ($e) { Test-PublicUrlSafe $e.url "$tag evidence" } }
+    foreach ($l in @($p.proofLinks)) { Test-PublicUrlSafe $l "$tag proofLinks" }
+    if ($p.verification) { Test-PublicUrlSafe $p.verification.receiptUrl "$tag verification" }
+    if ($p.presentation) { Test-PublicUrlSafe $p.presentation.cardImage "$tag cardImage" }
+  }
+}
 
 # ── Visitor-facing presentation ──────────────────────────────────────────────
 # Two distinct concepts live here and must never be conflated:
@@ -875,20 +925,20 @@ function ProductTokens($p) {
 
   # proofStrip — typed status + version + platform + tests + verification dimension summary
   $pills = @()
-  $pills += "<span class=`"proof-pill`"><strong>Status</strong> $($tokens['statusLabel'])</span>"
-  $ver = if ($tokens['versionLabel']) { $tokens['versionLabel'] } else { '&mdash;' }
+  $pills += "<span class=`"proof-pill`"><strong>Status</strong> $(Html-Attr $tokens['statusLabel'])</span>"
+  $ver = if ($tokens['versionLabel']) { Html-Attr $tokens['versionLabel'] } else { '&mdash;' }
   $pills += "<span class=`"proof-pill`"><strong>Version</strong> $ver</span>"
   if ($canVer -and $canVer -ne $pubVer) {
     $candidateLabel = if ($p.release -and $p.release.releaseStatus -eq 'PUBLIC_RELEASE') { 'Next' } else { 'Candidate' }
-    $pills += "<span class=`"proof-pill`"><strong>$candidateLabel</strong> v$canVer</span>"
+    $pills += "<span class=`"proof-pill`"><strong>$candidateLabel</strong> v$(Html-Attr $canVer)</span>"
   }
-  $pills += "<span class=`"proof-pill`"><strong>Platform</strong> $($tokens['platform'])</span>"
+  $pills += "<span class=`"proof-pill`"><strong>Platform</strong> $(Html-Attr $tokens['platform'])</span>"
   if ($tokens['testStatus']) {
-    $pills += "<span class=`"proof-pill`"><strong>Tests</strong> $($tokens['testStatus'])</span>"
+    $pills += "<span class=`"proof-pill`"><strong>Tests</strong> $(Html-Attr $tokens['testStatus'])</span>"
   }
-  $pills += "<span class=`"proof-pill`"><strong>Proof</strong> $($tokens['proofStatus'])</span>"
+  $pills += "<span class=`"proof-pill`"><strong>Proof</strong> $(Html-Attr $tokens['proofStatus'])</span>"
   if ($tokens['lastVerified']) {
-    $pills += "<span class=`"proof-pill`"><strong>Verified</strong> $($tokens['lastVerified'])</span>"
+    $pills += "<span class=`"proof-pill`"><strong>Verified</strong> $(Html-Attr $tokens['lastVerified'])</span>"
   }
   $tokens['proofStrip'] = "<div class=`"proof-strip`">" + ($pills -join "`n          ") + "</div>"
 
@@ -899,18 +949,18 @@ function ProductTokens($p) {
                   elseif (-not [string]::IsNullOrWhiteSpace($p.disabledDownloadLabel)) { $p.disabledDownloadLabel }
                   elseif ($p.state -eq 'proof') { 'No public build yet' }
                   else { 'Coming soon' }
-    $tokens['downloadBlock'] = "<span class=`"button button-muted`" aria-disabled=`"true`">$mutedLabel</span>"
+    $tokens['downloadBlock'] = "<span class=`"button button-muted`" aria-disabled=`"true`">$(Html-Attr $mutedLabel)</span>"
   } else {
-    $url = $dlUrl
+    $url = Html-Attr $dlUrl
     $label = if ($p.downloadLabel) { $p.downloadLabel } else { 'Download' }
     $extAttr = ''
     $dlAttr = ''
     if (IsExternalUrl $url) { $extAttr = ' target="_blank" rel="noopener"' }
     if (IsFileDownload $url) { $dlAttr = ' download' }
-    $tokens['downloadBlock'] = "<a class=`"button button-primary`" href=`"$url`"$extAttr$dlAttr>$label</a>"
+    $tokens['downloadBlock'] = "<a class=`"button button-primary`" href=`"$url`"$extAttr$dlAttr>$(Html-Attr $label)</a>"
     $sha256Link = if ($tokens['artifactSha256Url']) { $tokens['artifactSha256Url'] } else { $p.sha256Url }
     if (-not [string]::IsNullOrWhiteSpace($sha256Link)) {
-      $tokens['downloadBlock'] += " <a class=`"button button-secondary`" href=`"$sha256Link`" target=`"_blank`" rel=`"noopener`">SHA-256</a>"
+      $tokens['downloadBlock'] += " <a class=`"button button-secondary`" href=`"$(Html-Attr $sha256Link)`" target=`"_blank`" rel=`"noopener`">SHA-256</a>"
     }
   }
 
@@ -919,13 +969,14 @@ function ProductTokens($p) {
   if (-not [string]::IsNullOrWhiteSpace($primarySha)) {
     $platform = PlatformLabel $p
     $verificationNote = if ($platform -like '*Android*') {
-      "<p class=`"note`">Desktop verification: <code class=`"inline`">Get-FileHash `".\$($tokens['artifactFilename'])`" -Algorithm SHA256</code> (Phone-native verification guidance is being prepared on the <a href=`"/support/#android`" class=`"text-link`">support hub</a>)</p>"
+      "<p class=`"note`">Desktop verification: <code class=`"inline`">Get-FileHash `".\$(Html-Attr $tokens['artifactFilename'])`" -Algorithm SHA256</code> (Phone-native verification guidance is being prepared on the <a href=`"/support/#android`" class=`"text-link`">support hub</a>)</p>"
     } else {
-      "<p class=`"note`">Windows verification: <code class=`"inline`">Get-FileHash `".\$($tokens['artifactFilename'])`" -Algorithm SHA256</code></p>"
+      "<p class=`"note`">Windows verification: <code class=`"inline`">Get-FileHash `".\$(Html-Attr $tokens['artifactFilename'])`" -Algorithm SHA256</code></p>"
     }
+    $shaEsc = Html-Attr $primarySha
     $tokens['hashBlock'] = @"
-<div class="code-block sha256-block" data-sha256="$primarySha">
-  <code class="sha256-value">$primarySha</code>
+<div class="code-block sha256-block" data-sha256="$shaEsc">
+  <code class="sha256-value">$shaEsc</code>
   <button type="button" class="sha256-copy" aria-label="Copy SHA-256" title="Copy SHA-256">Copy</button>
 </div>
 $verificationNote
@@ -936,14 +987,14 @@ $verificationNote
 
   # releaseNoteBlock
   if (-not [string]::IsNullOrWhiteSpace($p.releaseNote)) {
-    $tokens['releaseNoteBlock'] = "<p class=`"note`">$($p.releaseNote)</p>"
+    $tokens['releaseNoteBlock'] = "<p class=`"note`">$(Html-Attr $p.releaseNote)</p>"
   } else {
     $tokens['releaseNoteBlock'] = ''
   }
 
   # limits as HTML (for optional product-page token)
   if ($p.limits -and $p.limits.Count -gt 0) {
-    $limItems = $p.limits | ForEach-Object { "<li>$_</li>" }
+    $limItems = $p.limits | ForEach-Object { "<li>$(Html-Attr $_)</li>" }
     $tokens['limitsBlock'] = "<ul class=`"limits-list`">" + ($limItems -join '') + "</ul>"
   } else {
     $tokens['limitsBlock'] = ''
@@ -952,10 +1003,17 @@ $verificationNote
   return $tokens
 }
 
+# Tokens whose values are generated markup — they are built by this script and
+# already escape their dynamic leaves. Every other token value is untrusted
+# dynamic state and is HTML-escaped at interpolation (attribute-safe set).
+$script:MarkupProductTokens = @('proofStrip','downloadBlock','hashBlock','releaseNoteBlock','limitsBlock','markSvg')
+
 # Apply {{product.X}} substitution to a string given a tokens hashtable
 function Replace-ProductTokens($text, $tokens, [switch]$Strict) {
   foreach ($key in $tokens.Keys) {
-    $text = $text -replace [regex]::Escape("{{product.$key}}"), $tokens[$key]
+    $v = [string]$tokens[$key]
+    if ($script:MarkupProductTokens -notcontains $key) { $v = Html-Attr $v }
+    $text = $text -replace [regex]::Escape("{{product.$key}}"), $v
   }
   # On a page bound to a product, an unresolved token is a defect, not a blank.
   # Silently stripping it would delete published evidence — a mistyped
@@ -980,24 +1038,23 @@ function Build-NavLinks($activeId) {
   if ($activeId -eq 'software') { $activeId = 'products' }
   # Product pages map to the "products" nav item
   $productIds = @()
-  foreach ($p in $manifest.products) { $productIds += $p.id }
+  foreach ($p in $allProductState) { $productIds += $p.id }
   if ($productIds -contains $activeId) { $activeId = 'products' }
 
   $links = @()
   foreach ($item in $manifest.nav) {
     $cur = ''
     if ($item.id -eq $activeId) { $cur = ' aria-current="page"' }
-    $links += "<a href=`"$($item.href)`"$cur>$($item.label)</a>"
+    $links += "<a href=`"$(Html-Attr $item.href)`"$cur>$(Html-Attr $item.label)</a>"
   }
   return ($links -join "`n        ")
 }
 
 function Build-FooterProducts {
   $items = @()
-  foreach ($p in $manifest.products) {
-    if (-not $p.visible) { continue }
+  foreach ($p in $allProductState) {
     $footerName = if ($p.homeName) { $p.homeName } else { $p.name }
-    $items += "<li><a href=`"$($p.route)`">$footerName</a></li>"
+    $items += "<li><a href=`"$(Html-Attr $p.route)`">$(Html-Attr $footerName)</a></li>"
   }
   return ($items -join "`n          ")
 }
@@ -1012,7 +1069,9 @@ function Render-ProductCard($p, $cardTemplate) {
     'visitorStatusLabel','visitorStatusSlug','groupId','cardVersionLabel','cardDetailLine','cardCtaHref',
     'cardProofHref','valueLine','cardImage','cardImageAlt','cardImageWidth','cardImageHeight','cardCta','platform'
   )) {
-    $card = $card -replace [regex]::Escape("{{$key}}"), $t[$key]
+    $v = [string]$t[$key]
+    if ($script:MarkupProductTokens -notcontains $key) { $v = Html-Attr $v }
+    $card = $card -replace [regex]::Escape("{{$key}}"), $v
   }
   # Optional card regions collapse rather than rendering an empty element, so a
   # product without a detail line does not leave a blank row in the card.
@@ -1037,8 +1096,7 @@ function Render-ProductCard($p, $cardTemplate) {
 function Build-ProductCards($groupId, [bool]$includeFeatured = $false) {
   $cardTemplate = Read-File (Join-Path $partialsDir 'product-card.html')
   $cards = @()
-  foreach ($p in $manifest.products) {
-    if (-not $p.visible) { continue }
+  foreach ($p in $allProductState) {
     # The featured product gets its own full-width composition above the groups
     # rather than a card, so it is not also emitted into the grid.
     if ($p.featured -and -not $includeFeatured) { continue }
@@ -1053,16 +1111,16 @@ function Build-ProductCards($groupId, [bool]$includeFeatured = $false) {
 function Build-ProductGroupSections {
   $sections = @()
   foreach ($g in @($manifest.productGroups)) {
-    $members = @($manifest.products | Where-Object { $_.visible -and -not $_.featured -and (ProductGroupId $_) -eq $g.id })
+    $members = @($allProductState | Where-Object { -not $_.featured -and (ProductGroupId $_) -eq $g.id })
     if ($members.Count -eq 0) { continue }
     $cards = Build-ProductCards $g.id
     $count = $members.Count
     $countWord = if ($count -eq 1) { '1 product' } else { "$count products" }
     $sections += @"
-<section class="product-group product-group-$($g.id)" aria-labelledby="group-$($g.id)-title">
+<section class="product-group product-group-$(Html-Attr $g.id)" aria-labelledby="group-$(Html-Attr $g.id)-title">
         <div class="group-head">
-          <h3 id="group-$($g.id)-title" class="group-title">$($g.label)</h3>
-          <p class="group-note">$($g.note)</p>
+          <h3 id="group-$(Html-Attr $g.id)-title" class="group-title">$(Html-Attr $g.label)</h3>
+          <p class="group-note">$(Html-Attr $g.note)</p>
           <p class="group-count">$countWord</p>
         </div>
         <div class="products-grid">
@@ -1082,7 +1140,7 @@ function Build-ProductGroupSections {
 # currently blocked, so it counts as released but not as downloadable. Counting
 # both from the same predicate is what let the old line erase that release.
 function Build-CatalogSummary {
-  $visible     = @($manifest.products | Where-Object { $_.visible })
+  $visible     = $allProductState
   $downloadable = @($visible | Where-Object { -not $_.presentation.downloadUnavailable -and -not [string]::IsNullOrWhiteSpace($_.downloadUrl) })
   $released     = @($visible | Where-Object { $_.release -and -not [string]::IsNullOrWhiteSpace("$($_.release.publicVersion)") })
   $total        = $visible.Count
@@ -1103,8 +1161,8 @@ function Build-TrustStrip {
   foreach ($ts in @($manifest.trustStrip)) {
     $items += @"
 <li class="trust-item">
-            <span class="trust-label">$($ts.label)</span>
-            <span class="trust-note">$($ts.note)</span>
+            <span class="trust-label">$(Html-Attr $ts.label)</span>
+            <span class="trust-note">$(Html-Attr $ts.note)</span>
           </li>
 "@
   }
@@ -1114,8 +1172,7 @@ function Build-TrustStrip {
 function Build-ProofRegistry {
   # Emit a canonical, machine-readable proof registry as a PowerShell object.
   $entries = @()
-  foreach ($p in $manifest.products) {
-    if (-not $p.visible) { continue }
+  foreach ($p in $allProductState) {
     $pubVer = if ($p.release -and $p.release.publicVersion) { $p.release.publicVersion } else { $p.version }
     $canVer = if ($p.release -and $p.release.candidateVersion) { $p.release.candidateVersion } else { $null }
     $primaryArtifact = $null
@@ -1258,7 +1315,7 @@ function Get-SourceIdentity {
 
 # Fields allowed to leave the manifest into public truth. Anything not listed
 # here is internal/presentation and must never reach /truth/*.
-$script:PublicTruthSafePattern = 'C:\\|file://|localhost|127\.0\.0\.1|0\.0\.0\.0|::1|api[_-]?key|secret|bearer\s+[A-Za-z0-9]|password'
+$script:PublicTruthSafePattern = 'C:\\|file://|localhost|127\.0\.0\.1|0\.0\.0\.0|::1|api[_-]?key|secret|bearer\s+[A-Za-z0-9]|password|(?i)javascript:|data:|vbscript:'
 function Test-PublicTruthSafe([string]$json, [string]$what) {
   if ($json -match $script:PublicTruthSafePattern) {
     throw "Public truth output '$what' contains a private/unsafe pattern (local path, loopback, or credential-like token). Refusing to emit it."
@@ -1344,8 +1401,7 @@ function Build-PublicTruthProduct($p, $source) {
 function Build-PublicTruth($source) {
   $indexEntries = @()
   $productDocs  = @()
-  foreach ($p in $manifest.products) {
-    if (-not $p.visible) { continue }
+  foreach ($p in $allProductState) {
     $pubVer = if ($p.release -and $p.release.publicVersion) { $p.release.publicVersion } else { $null }
     $indexEntries += [ordered]@{
       id       = $p.id
@@ -1374,17 +1430,16 @@ function Build-PublicTruth($source) {
 # JSON so the page cannot disagree with the machine-readable surface.
 function Build-TruthIndexCards {
   $cards = ''
-  foreach ($p in $manifest.products) {
-    if (-not $p.visible) { continue }
+  foreach ($p in $allProductState) {
     $statusLabel = if ($manifest.statusTaxonomy -and $manifest.statusTaxonomy.PSObject.Properties[$p.productStatus]) { $manifest.statusTaxonomy.($p.productStatus) } else { $p.productStatus }
     $ver = if ($p.release -and $p.release.publicVersion) { "v$($p.release.publicVersion)" } else { 'Unreleased' }
     $artCount = @($p.artifacts).Count
     $artWord = if ($artCount -eq 1) { 'artifact' } else { 'artifacts' }
     $cards += @"
         <article class="detail-card">
-          <h3>$($p.name)</h3>
-          <p>$statusLabel · $ver · $artCount public $artWord</p>
-          <p><a class="text-link" href="/truth/products/$($p.id).json">View JSON ↗</a> · <a class="text-link" href="/$($p.id)/">Product page ↗</a></p>
+          <h3>$(Html-Attr $p.name)</h3>
+          <p>$(Html-Attr $statusLabel) · $(Html-Attr $ver) · $artCount public $artWord</p>
+          <p><a class="text-link" href="/truth/products/$(Html-Attr $p.id).json">View JSON ↗</a> · <a class="text-link" href="/$(Html-Attr $p.id)/">Product page ↗</a></p>
         </article>
 "@
   }
@@ -1399,8 +1454,7 @@ function Build-LatestVerification {
   $latestDate = $null
   $latestProduct = $null
   $latestEvent = $null
-  foreach ($p in $manifest.products) {
-    if (-not $p.visible) { continue }
+  foreach ($p in $allProductState) {
     $candidates = @()
     if ($p.verification -and $p.verification.verifiedAt) { $candidates += @{ Date = $p.verification.verifiedAt; Product = $p; Event = 'artifact verified' } }
     if ($p.release -and $p.release.publishedAt) { $candidates += @{ Date = $p.release.publishedAt; Product = $p; Event = 'public release' } }
@@ -1486,8 +1540,7 @@ function Get-VerificationStatus($dimension, $p) {
 
 function Build-ReceiptCards {
   $cards = @()
-  foreach ($p in $manifest.products) {
-    if (-not $p.visible) { continue }
+  foreach ($p in $allProductState) {
     $t = ProductTokens $p
 
     # status text and CSS class from canonical productStatus
@@ -1496,9 +1549,9 @@ function Build-ReceiptCards {
 
     # route link
     if ($p.route -like 'http*') {
-      $routeLink = "<a href=`"$($p.route)`" target=`"_blank`" rel=`"noopener`">External link</a>"
+      $routeLink = "<a href=`"$(Html-Attr $p.route)`" target=`"_blank`" rel=`"noopener`">External link</a>"
     } elseif ($p.route -like '/*') {
-      $routeLink = "<a href=`"$($p.route)`">$($p.route)</a>"
+      $routeLink = "<a href=`"$(Html-Attr $p.route)`">$(Html-Attr $p.route)</a>"
     } else {
       $routeLink = '<span style="color:var(--muted);">N/A</span>'
     }
@@ -1507,10 +1560,10 @@ function Build-ReceiptCards {
     $publicVer = if ($p.release -and $p.release.publicVersion) { $p.release.publicVersion } else { $p.version }
     $candidateVer = if ($p.release -and $p.release.candidateVersion) { $p.release.candidateVersion } else { '' }
     if ($publicVer) {
-      $verHtml = "<dd>v$publicVer</dd>"
+      $verHtml = "<dd>v$(Html-Attr $publicVer)</dd>"
       if ($candidateVer -and $candidateVer -ne $publicVer) {
         $candidateLabel = if ($p.release -and $p.release.releaseStatus -eq 'PUBLIC_RELEASE') { 'Next' } else { 'Candidate' }
-        $verHtml += "<dd class='candidate-version'>$candidateLabel v$candidateVer</dd>"
+        $verHtml += "<dd class='candidate-version'>$candidateLabel v$(Html-Attr $candidateVer)</dd>"
       }
     } else {
       $verHtml = '<dd style="color:var(--muted);">Unreleased</dd>'
@@ -1522,7 +1575,7 @@ function Build-ReceiptCards {
     if (-not $primaryArtifact -and $p.sha256) { $primaryArtifact = @{ filename = if ($t['artifactFilename']) { $t['artifactFilename'] } else { '' }; sha256 = $p.sha256; downloadUrl = $p.downloadUrl; sha256Url = $p.sha256Url } }
 
     if ($primaryArtifact -and $primaryArtifact.sha256) {
-      $fn = if ($primaryArtifact.filename) { $primaryArtifact.filename } else { 'Artifact' }
+      $fn = if ($primaryArtifact.filename) { Html-Attr $primaryArtifact.filename } else { 'Artifact' }
       # Name the build this checksum covers. The card's "Public version" row sits a
       # few lines above, so an unattributed hash reads as the public release's
       # checksum. For a product on HOLD (Lights Out: public v11.1.2, artifacts
@@ -1532,15 +1585,16 @@ function Build-ReceiptCards {
       $scopeNote = ''
       if ($publicVer -and $artifactVersions.Count -gt 0 -and ($artifactVersions -notcontains $publicVer)) {
         $scopeLabel = if ($candidateVer -and ($artifactVersions -contains $candidateVer)) { "candidate v$candidateVer" } else { "v$($artifactVersions[0])" }
-        $scopeNote = " <span class=`"sha256-scope`">$scopeLabel &mdash; not the public v$publicVer</span>"
+        $scopeNote = " <span class=`"sha256-scope`">$(Html-Attr $scopeLabel) &mdash; not the public v$(Html-Attr $publicVer)</span>"
       }
+      $shaEsc = Html-Attr $primaryArtifact.sha256
       $shaBlock = @"
         <p class="sha256-file">Checksum covers <span class="sha256-filename">$fn</span>$scopeNote</p>
-        <div class="sha256-block" data-sha256="$($primaryArtifact.sha256)">
-          <code class="sha256-value">$($primaryArtifact.sha256)</code>
+        <div class="sha256-block" data-sha256="$shaEsc">
+          <code class="sha256-value">$shaEsc</code>
           <button type="button" class="sha256-copy" aria-label="Copy SHA-256 for $fn" title="Copy SHA-256">Copy</button>
         </div>
-        <p class="sha256-prefix-note">SHA-256 prefix: <span class="code" title="$($primaryArtifact.sha256)">$($primaryArtifact.sha256.Substring(0,16))&hellip;</span></p>
+        <p class="sha256-prefix-note">SHA-256 prefix: <span class="code" title="$shaEsc">$(Html-Attr $primaryArtifact.sha256.Substring(0,16))&hellip;</span></p>
 "@
     } else {
       $shaBlock = '<p style="color:var(--muted);">No public artifact hash.</p>'
@@ -1551,7 +1605,7 @@ function Build-ReceiptCards {
     $matrixRows = @()
     foreach ($dim in $matrixDims) {
       $r = Get-VerificationStatus $dim $p
-      $matrixRows += "<div><dt>$($r[0])</dt><dd class=`"status-$($r[2])`">$($r[1])</dd></div>"
+      $matrixRows += "<div><dt>$(Html-Attr $r[0])</dt><dd class=`"status-$($r[2])`">$(Html-Attr $r[1])</dd></div>"
     }
     $matrix = "<dl class='receipt-fields verification-matrix'>" + ($matrixRows -join '') + "</dl>"
 
@@ -1561,7 +1615,7 @@ function Build-ReceiptCards {
     if ($p.evidence) {
       foreach ($e in $p.evidence) {
         if ($e.url -and -not $seenEvidence.ContainsKey($e.url)) {
-          $evidenceLinks += "<a href=`"$($e.url)`" target=`"_blank`" rel=`"noopener`">$($e.label)</a>"
+          $evidenceLinks += "<a href=`"$(Html-Attr $e.url)`" target=`"_blank`" rel=`"noopener`">$(Html-Attr $e.label)</a>"
           $seenEvidence[$e.url] = $true
         }
       }
@@ -1570,7 +1624,7 @@ function Build-ReceiptCards {
       foreach ($link in $p.proofLinks) {
         if ($link -and -not $seenEvidence.ContainsKey($link)) {
           $base = $link -split '/' | Select-Object -Last 1
-          $evidenceLinks += "<a href=`"$link`" target=`"_blank`" rel=`"noopener`">$base</a>"
+          $evidenceLinks += "<a href=`"$(Html-Attr $link)`" target=`"_blank`" rel=`"noopener`">$(Html-Attr $base)</a>"
           $seenEvidence[$link] = $true
         }
       }
@@ -1583,16 +1637,16 @@ function Build-ReceiptCards {
     if ($p.verification -and $p.verification.verifiedAt) {
       if ($p.verification.verificationType -contains 'REALITY_GATE') { $timestamps += 'Reality Gate verified' }
       else { $timestamps += 'Artifact verified' }
-      $timestamps[-1] += " $em $($p.verification.verifiedAt)"
+      $timestamps[-1] += " $em $(Html-Attr $p.verification.verifiedAt)"
     }
-    if ($p.release -and $p.release.publishedAt) { $timestamps += "Published $em $($p.release.publishedAt)" }
-    if ($p.lastVerified -and (-not $p.verification -or -not $p.verification.verifiedAt)) { $timestamps += "Last verified $em $($p.lastVerified)" }
+    if ($p.release -and $p.release.publishedAt) { $timestamps += "Published $em $(Html-Attr $p.release.publishedAt)" }
+    if ($p.lastVerified -and (-not $p.verification -or -not $p.verification.verifiedAt)) { $timestamps += "Last verified $em $(Html-Attr $p.lastVerified)" }
     $timestampHtml = if ($timestamps.Count -gt 0) { "<dd>$($timestamps -join '<br>')</dd>" } else { '<dd style="color:var(--muted);">N/A</dd>' }
 
     # limits
     $limitsHtml = ''
     if ($p.limits -and $p.limits.Count -gt 0) {
-      $limItems = $p.limits | ForEach-Object { "<li>$_</li>" }
+      $limItems = $p.limits | ForEach-Object { "<li>$(Html-Attr $_)</li>" }
       $limitsHtml = "<ul class='limits-list'>" + ($limItems -join '') + "</ul>"
     }
 
@@ -1600,26 +1654,26 @@ function Build-ReceiptCards {
     $dlUrl = if ($primaryArtifact -and $primaryArtifact.downloadUrl) { $primaryArtifact.downloadUrl } else { $p.downloadUrl }
     if ($p.presentation.downloadUnavailable -or [string]::IsNullOrWhiteSpace($dlUrl)) {
       $label = if ($p.presentation.downloadUnavailable) { 'Downloads currently unavailable' } elseif ($p.state -eq 'proof') { 'No public download yet' } else { 'Download coming soon' }
-      $action = "<span class=`"button button-muted`" style=`"display:block; text-align:center;`" aria-disabled=`"true`">$label</span>"
+      $action = "<span class=`"button button-muted`" style=`"display:block; text-align:center;`" aria-disabled=`"true`">$(Html-Attr $label)</span>"
     } else {
       $ext = if (IsExternalUrl $dlUrl) { ' target="_blank" rel="noopener"' } else { '' }
       $dl = if (IsFileDownload $dlUrl) { ' download' } else { '' }
-      $action = "<a class=`"button button-primary`" style=`"display:block; text-align:center;`" href=`"$dlUrl`"$ext$dl>$($t['downloadLabel'])</a>"
+      $action = "<a class=`"button button-primary`" style=`"display:block; text-align:center;`" href=`"$(Html-Attr $dlUrl)`"$ext$dl>$(Html-Attr $t['downloadLabel'])</a>"
     }
 
-    $build = if ($p.build) { $p.build } else { 'Release details coming soon.' }
+    $build = if ($p.build) { Html-Attr $p.build } else { 'Release details coming soon.' }
     if ($p.presentation.downloadUnavailable) {
-      $build = '<strong>' + $p.presentation.downloadNotice + '</strong> Historical release record: ' + $build
+      $build = '<strong>' + (Html-Attr $p.presentation.downloadNotice) + '</strong> Historical release record: ' + $build
     }
 
     $cards += @"
-        <article class="receipt-card" id="receipt-$($p.id)" data-status="$($p.productStatus)" data-platform="$($t['platform'])">
+        <article class="receipt-card" id="receipt-$(Html-Attr $p.id)" data-status="$(Html-Attr $p.productStatus)" data-platform="$(Html-Attr $t['platform'])">
           <div class="receipt-card-head">
             <div>
-              <h3>$($t['name'])</h3>
-              <span class="platform-badge">$($t['platform'])</span>
+              <h3>$(Html-Attr $t['name'])</h3>
+              <span class="platform-badge">$(Html-Attr $t['platform'])</span>
             </div>
-            <span class="status-indicator $statusClass">$ps</span>
+            <span class="status-indicator $(Html-Attr $statusClass)">$(Html-Attr $ps)</span>
           </div>
           <p class="build-desc">$build</p>
 
@@ -1628,7 +1682,7 @@ function Build-ReceiptCards {
             <dl class="receipt-fields">
               <div><dt>Route</dt><dd>$routeLink</dd></div>
               <div><dt>Public version</dt>$verHtml</div>
-              <div><dt>Release state</dt><dd>$($t['releaseStatus'])</dd></div>
+              <div><dt>Release state</dt><dd>$(Html-Attr $t['releaseStatus'])</dd></div>
             </dl>
           </div>
 
@@ -1672,8 +1726,191 @@ if (-not (Test-Path $publicDir)) { New-Item -ItemType Directory $publicDir | Out
 # ─────────────────────────────────────────────────────────────────────────────
 # Process every template
 # ─────────────────────────────────────────────────────────────────────────────
+# H13-WEB — modular product registry + public-state adapter + generic renderer.
+# Product enumeration comes from products/<id>/module.json (stable structural
+# identity). Public product FACTS come through a ProductStateSource adapter —
+# today backed by site-manifest.json; later swappable for a sanitized public
+# API (ApiProductStateSource) without touching the renderer. Renderer, catalog,
+# truth surface, and H12 discovery all enumerate the registry — never a
+# hardcoded product-id list.
+
+$KnownProductSections = @('hero','film','outcomes','how','story','get','onboard','faq','identity','evidence','privacy','related','final-cta')
+$ReservedRoutes = @('/','/software/','/truth/','/proof/','/proof-standard/','/support/','/roadmap/','/api/','/assets/','/brand/','/reports/','/about/','/founders/','/404','/sitemap.xml','/robots.txt','/_redirects','/_headers')
+
+function Get-ProductRegistry {
+  # Discovers products/*/module.json; returns ordered, validated module list.
+  $modulesDir = $script:productsDir
+  $modules = @()
+  $regErrors = @()
+  if (Test-Path $modulesDir) {
+    foreach ($dir in Get-ChildItem $modulesDir -Directory | Sort-Object Name) {
+      $modPath = Join-Path $dir.FullName 'module.json'
+      if (-not (Test-Path $modPath)) { $regErrors += "products/$($dir.Name)/: missing module.json"; continue }
+      try { $m = Get-Content $modPath -Raw -Encoding UTF8 | ConvertFrom-Json }
+      catch { $regErrors += "products/$($dir.Name)/module.json: invalid JSON — $($_.Exception.Message)"; continue }
+      $modules += $m
+    }
+  }
+  $seenIds = @{}; $seenRoutes = @{}
+  foreach ($m in $modules) {
+    $tag = "module '$($m.id)'"
+    if ([string]::IsNullOrWhiteSpace($m.id)) { $regErrors += "module missing id"; continue }
+    if ($m.id -notmatch '^[a-z0-9]+(-[a-z0-9]+)*$') { $regErrors += "${tag}: unsafe slug '$($m.id)'" }
+    if ($seenIds.ContainsKey($m.id)) { $regErrors += "${tag}: duplicate product id" }
+    $seenIds[$m.id] = $true
+    if ($m.route -ne "/$($m.id)/") { $regErrors += "${tag}: route '$($m.route)' must be /<id>/" }
+    $routeKey = $m.route.ToLowerInvariant()
+    if ($ReservedRoutes -contains $routeKey) { $regErrors += "${tag}: route collides with reserved route $($m.route)" }
+    if ($seenRoutes.ContainsKey($routeKey)) { $regErrors += "${tag}: duplicate/case-colliding route $($m.route)" }
+    $seenRoutes[$routeKey] = $true
+    if ($m.visibility -notin @('visible','hidden')) { $regErrors += "${tag}: visibility must be visible|hidden (got '$($m.visibility)')" }
+    if (-not ($m.order -is [int] -or $m.order -is [long] -or $m.order -is [double])) { $regErrors += "${tag}: numeric order required" }
+    foreach ($s in @($m.sections)) { if ($s -notin $KnownProductSections) { $regErrors += "${tag}: unknown section '$s'" } }
+    if ($m.contentSource -ne 'content.html') { $regErrors += "${tag}: contentSource must be content.html (no traversal/alt paths)" }
+    if (-not (Test-Path (Join-Path $modulesDir "$($m.id)\content.html"))) { $regErrors += "${tag}: missing content.html" }
+    if (-not $m.meta -or [string]::IsNullOrWhiteSpace($m.meta.title) -or [string]::IsNullOrWhiteSpace($m.meta.description)) { $regErrors += "${tag}: meta.title + meta.description required" }
+    if (-not @($manifest.products | Where-Object { $_.id -eq $m.id }).Count) { $regErrors += "${tag}: no manifest product with id '$($m.id)'" }
+  }
+  foreach ($p in $manifest.products) {
+    if ($p.visible -and -not $seenIds.ContainsKey($p.id)) { $regErrors += "manifest product '$($p.id)' has no module — registry is the enumeration source" }
+  }
+  if ($regErrors.Count) { throw "PRODUCT REGISTRY INVALID:`n" + ($regErrors | ForEach-Object { "  - $_" } | Out-String) }
+  return @($modules | Sort-Object { [int]$_.order })
+}
+
+function New-ManifestProductStateSource($manifestData, $registry) {
+  # The adapter boundary. Everything downstream consumes GetAll()/Get($id)
+  # product-state objects — never $manifest.products directly. A future
+  # ApiProductStateSource returns the same public-state contract over HTTP.
+  $src = [PSCustomObject]@{ Kind = 'manifest'; Manifest = $manifestData; Registry = $registry }
+  $src | Add-Member -MemberType ScriptMethod -Name GetAll -Value {
+    # Every module-paired product — including hidden (hidden state may still be
+    # referenced by name tokens on non-product pages).
+    $byId = @{}; foreach ($p in $this.Manifest.products) { $byId[$p.id] = $p }
+    return @($this.Registry | ForEach-Object { $byId[$_.id] })
+  }
+  $src | Add-Member -MemberType ScriptMethod -Name GetVisible -Value {
+    # Visible modules only — the enumeration source for public surfaces.
+    $byId = @{}; foreach ($p in $this.Manifest.products) { $byId[$p.id] = $p }
+    return @($this.Registry | Where-Object { $_.visibility -eq 'visible' } | ForEach-Object { $byId[$_.id] })
+  }
+  $src | Add-Member -MemberType ScriptMethod -Name Get -Value { param($id)
+    return @($this.Manifest.products | Where-Object { $_.id -eq $id }) | Select-Object -First 1
+  }
+  return $src
+}
+
+# A state source whose data arrives from a foreign transport (JSON document
+# shaped like the future public API response). Same GetAll/GetVisible/Get
+# contract; the manifest is not consulted for product state on this path —
+# it exists so the seam is exercised end-to-end, not merely asserted.
+function New-FixtureApiProductStateSource($data, $registry) {
+  $src = [PSCustomObject]@{ Kind = 'fixture-api'; Data = $data; Registry = $registry }
+  $src | Add-Member -MemberType ScriptMethod -Name GetAll -Value {
+    $byId = @{}; foreach ($p in $this.Data) { $byId[$p.id] = $p }
+    return @($this.Registry | ForEach-Object { $byId[$_.id] })
+  }
+  $src | Add-Member -MemberType ScriptMethod -Name GetVisible -Value {
+    $byId = @{}; foreach ($p in $this.Data) { $byId[$p.id] = $p }
+    return @($this.Registry | Where-Object { $_.visibility -eq 'visible' } | ForEach-Object { $byId[$_.id] })
+  }
+  $src | Add-Member -MemberType ScriptMethod -Name Get -Value { param($id)
+    return @($this.Data | Where-Object { $_.id -eq $id }) | Select-Object -First 1
+  }
+  return $src
+}
+
+$productRegistry    = Get-ProductRegistry
+if ($StateSourcePath) {
+  # Fixture/alternate transport: a JSON document shaped like the public-state
+  # response ({ products: [...] }) — the adapter seam, not the manifest.
+  $stateDoc = Get-Content $StateSourcePath -Raw | ConvertFrom-Json
+  $productStateSource = New-FixtureApiProductStateSource (@($stateDoc.products)) $productRegistry
+} else {
+  $productStateSource = New-ManifestProductStateSource $manifest $productRegistry
+}
+$allProductState    = @($productStateSource.GetVisible())
+$allModuleState     = @($productStateSource.GetAll())
+# The URL/contract policy runs on adapter output so every source — manifest or
+# foreign — is held to the same public-state rules before emission.
+Assert-PublicStateUrls $allModuleState
+
+function Render-ProductShell($module) {
+  # Generic product renderer: assembles the full page shell from module
+  # metadata. Narrative markup lives in products/<id>/content.html (injected at
+  # the content marker and still flows through the normal token pipeline).
+  # Reusable shells (breadcrumb, related-products nav) are generated here —
+  # never hand-maintained per product.
+  $p = $productStateSource.Get($module.id)
+  $name = Html-Attr $p.name
+  $crumb = "<nav class=`"product-breadcrumb`" aria-label=`"Breadcrumb`"><a href=`"/#products`">All software</a><span aria-hidden=`"true`">/</span><span>$name</span></nav>"
+  $related = "<nav class=`"studio-related`" aria-label=`"More software`"><span>More from the foundry</span>" +
+    (($productRegistry | Where-Object { $_.visibility -eq 'visible' -and $_.id -ne $module.id } | ForEach-Object {
+      $rp = $productStateSource.Get($_.id); "<a href=`"$($_.route)`">$(Html-Attr $rp.name)</a>" }) -join '') + "</nav>"
+  # Module meta fields are authored markup (already HTML-encoded in module.json,
+  # same trust level as template literals) — emitted verbatim; escaping is the
+  # module author's responsibility, validated by the registry.
+  $metaTitle = $module.meta.title
+  $metaDesc  = $module.meta.description
+  $ogTitle   = if ($module.meta.ogTitle) { $module.meta.ogTitle } else { $module.meta.title }
+  $viewport  = if ($module.meta.viewport) { $module.meta.viewport } else { 'width=device-width, initial-scale=1' }
+  $robots    = if ($module.meta.robots) { $module.meta.robots } else { 'index, follow' }
+  $themeTag  = if ($module.meta.themeColor) { "`n<meta content=`"$($module.meta.themeColor)`" name=`"theme-color`"/>" } else { '' }
+  $ogType    = if ($module.meta.ogType) { $module.meta.ogType } else { 'product' }
+  $ogImage   = if ($module.meta.ogImage) { $module.meta.ogImage } else { 'https://theprooffoundry.com/brand/proof-foundry-social-card.png' }
+  $ogDesc    = if ($module.meta.ogDescription) { $module.meta.ogDescription } else { $metaDesc }
+  $twCard    = if ($module.meta.twitterCard) { $module.meta.twitterCard } else { 'summary_large_image' }
+  $twImage   = if ($module.meta.twitterImage) { $module.meta.twitterImage } else { $ogImage }
+  $twExtra   = ''
+  if ($module.meta.twitterTitle) { $twExtra += "`n<meta content=`"$($module.meta.twitterTitle)`" name=`"twitter:title`"/>" }
+  if ($module.meta.twitterDescription) { $twExtra += "`n<meta content=`"$($module.meta.twitterDescription)`" name=`"twitter:description`"/>" }
+  $jsonLdTag = ''
+  if ($module.jsonLd) {
+    $jsonLdTag = "`n<!-- Structured data carries identity only. No offers/availability claims. -->`n<script type=`"application/ld+json`">`n" + ($module.jsonLd | ConvertTo-Json -Depth 20) + "`n</script>"
+  }
+  $inlineCssTag = if ($module.inlineCss) { "`n<style>" + $module.inlineCss + "</style>" } else { '' }
+  $shell = @"
+<!doctype html>
+<!-- @page $($module.id) -->
+<!-- @product $($module.id) -->
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="$viewport" name="viewport"/>
+<title>$metaTitle</title>
+<meta content="$metaDesc" name="description"/>
+<meta content="$robots" name="robots"/>$themeTag
+<link href="https://theprooffoundry.com$($module.route)" rel="canonical"/>
+<meta content="$ogTitle" property="og:title"/>
+<meta content="$ogDesc" property="og:description"/>
+<meta content="$ogType" property="og:type"/>
+<meta content="https://theprooffoundry.com$($module.route)" property="og:url"/>
+<meta content="The Proof Foundry" property="og:site_name"/>
+<meta content="$ogImage" property="og:image"/>
+<meta content="$twCard" name="twitter:card"/>$twExtra
+<meta content="$twImage" name="twitter:image"/>
+<link href="/styles.css" rel="stylesheet"/>
+<link rel="stylesheet" href="/studio.css">
+<link rel="stylesheet" href="/experience.css">
+<link rel="stylesheet" href="/product-page.css">
+<link href="/brand/proof-foundry-mark.svg" rel="icon" type="image/svg+xml"/>$jsonLdTag$inlineCssTag
+</head>
+<body class="studio product-page product-$($module.id) pp-system">
+<!-- @include header -->
+<!-- @product-content -->
+</body></html>
+"@
+  # Inject the module's narrative content + generated shells at their markers.
+  $content = Read-File (Join-Path $script:productsDir "$($module.id)\content.html")
+  $content = $content -replace '<!--\s*@product-breadcrumb\s*-->', $crumb
+  $content = $content -replace '<!--\s*@product-related\s*-->',    $related
+  $shell = $shell -replace '<!--\s*@product-content\s*-->', $content
+  return $shell
+}
+
 # Map: source file  ->  output path under public/
-$dirRoutes = @('reality-gate','forgecast','lights-out','cache-vault','cleanroom','ghostlayer','proofshot','founders','proof','roadmap','support','about','proof-standard','software','truth')
+# Product routes come from the registry; non-product routes stay literal.
+$dirRoutes = @('founders','proof','roadmap','support','about','proof-standard','software','truth')
 $rootFiles = @('index.html','404.html')
 
 # Pre-compute latest site verification so templates can inject it
@@ -1682,8 +1919,12 @@ $latestVerification = Build-LatestVerification
 $headerPartial = Read-File (Join-Path $partialsDir 'header.html')
 $footerPartial = Read-File (Join-Path $partialsDir 'footer.html')
 
-function Process-Template($srcPath, $srcName) {
-  $html = Read-File $srcPath
+function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
+  # H13: when -OverrideHtml is supplied, render that generated markup instead of
+  # reading $srcPath — lets Render-ProductShell feed module-built pages through
+  # the identical pipeline (tokens, includes, asset versioning, H12 alternate
+  # injection, icon, generated-file warning).
+  $html = if ($PSBoundParameters.ContainsKey('OverrideHtml') -and $null -ne $OverrideHtml) { $OverrideHtml } else { Read-File $srcPath }
 
   # Give shared presentation assets content-derived URLs. A cached stylesheet
   # or script must not leave visitors on a previous design after publication.
@@ -1711,9 +1952,9 @@ function Process-Template($srcPath, $srcName) {
   # qualifies is /truth/ ↔ /truth/index.json (direct representation) and
   # /software/ ↔ /truth/index.json (same public catalog, reformulated).
   $truthAlternate = $null
-  $pageProduct = @($manifest.products | Where-Object { $_.visible -and $_.route -eq "/$pageId/" }) | Select-Object -First 1
-  if ($pageProduct) {
-    $truthAlternate = "/truth/products/$($pageProduct.id).json"
+  $pageModule = @($productRegistry | Where-Object { $_.visibility -eq 'visible' -and $_.route -eq "/$pageId/" }) | Select-Object -First 1
+  if ($pageModule) {
+    $truthAlternate = "/truth/products/$($pageModule.id).json"
   } elseif ($pageId -in @('truth', 'software') -and $html -match 'rel="canonical"') {
     # Canonical-gated: noindex pages (404 reuses @page home for nav state) never
     # advertise machine alternates.
@@ -1726,7 +1967,7 @@ function Process-Template($srcPath, $srcName) {
 
   # Resolve nav + cta
   $navLinks = Build-NavLinks $pageId
-  $navCta = "<a class=`"button button-primary nav-cta`" href=`"$($manifest.navCta.href)`">$($manifest.navCta.label)</a>"
+  $navCta = "<a class=`"button button-primary nav-cta`" href=`"$(Html-Attr $manifest.navCta.href)`">$(Html-Attr $manifest.navCta.label)</a>"
   $header = $headerPartial
   $header = $header -replace [regex]::Escape('{{nav-links}}'), $navLinks
   $header = $header -replace [regex]::Escape('{{nav-cta}}'),   $navCta
@@ -1756,15 +1997,15 @@ function Process-Template($srcPath, $srcName) {
   $html = $html -replace '<!--\s*@truth-products\s*-->', (Build-TruthIndexCards)
 
   # Brand-level tokens
-  $html = $html -replace [regex]::Escape('{{brand}}'),       $manifest.brand
-  $html = $html -replace [regex]::Escape('{{tagline}}'),     $manifest.tagline
-  $html = $html -replace [regex]::Escape('{{positioning}}'), $manifest.positioning
+  $html = $html -replace [regex]::Escape('{{brand}}'),       (Html-Attr $manifest.brand)
+  $html = $html -replace [regex]::Escape('{{tagline}}'),     (Html-Attr $manifest.tagline)
+  $html = $html -replace [regex]::Escape('{{positioning}}'), (Html-Attr $manifest.positioning)
 
   # Latest site verification block
   $em = [char]0x2014
   if ($latestVerification.date) {
     $latestBlock = @"
-<p>Latest verification event: <strong>$($latestVerification.product)</strong> $em $($latestVerification.event) on <time datetime="$($latestVerification.date)">$($latestVerification.date)</time>. Every public surface on this page is generated from the canonical <code class="inline">site-manifest.json</code> release/evidence model.</p>
+<p>Latest verification event: <strong>$(Html-Attr $latestVerification.product)</strong> $em $(Html-Attr $latestVerification.event) on <time datetime="$(Html-Attr $latestVerification.date)">$(Html-Attr $latestVerification.date)</time>. Every public surface on this page is generated from the canonical <code class="inline">site-manifest.json</code> release/evidence model.</p>
 "@
   } else {
     $latestBlock = @"
@@ -1784,17 +2025,19 @@ function Process-Template($srcPath, $srcName) {
     # span cannot be used here: .button is a flex container, so the span would
     # become a separate flex item and reorder the label.
     $rdDisplay = $rd -replace '-', ([char]0x2011)
-    $receiptLink = "<a class=`"button button-secondary`" href=`"$($manifest.siteVerification.receiptPath)`" target=`"_blank`" rel=`"noopener`">View verification receipt ($rdDisplay)</a>"
+    $receiptLink = "<a class=`"button button-secondary`" href=`"$(Html-Attr $manifest.siteVerification.receiptPath)`" target=`"_blank`" rel=`"noopener`">View verification receipt ($(Html-Attr $rdDisplay))</a>"
   } else {
     $receiptLink = ''
   }
   $html = $html -replace [regex]::Escape('{{siteVerification.receiptLink}}'), $receiptLink
 
   # Named product tokens for pages discussing several products.
-  foreach ($namedProduct in $manifest.products) {
+  foreach ($namedProduct in $allModuleState) {
     $namedTokens = ProductTokens $namedProduct
     foreach ($key in $namedTokens.Keys) {
-      $html = $html.Replace('{{products.' + $namedProduct.id + '.' + $key + '}}', [string]$namedTokens[$key])
+      $nv = [string]$namedTokens[$key]
+      if ($script:MarkupProductTokens -notcontains $key) { $nv = Html-Attr $nv }
+      $html = $html.Replace('{{products.' + $namedProduct.id + '.' + $key + '}}', $nv)
     }
   }
   if ($html -match '\{\{products\.[^}]+\}\}') { throw "Unresolved named product token in $srcName" }
@@ -1802,7 +2045,7 @@ function Process-Template($srcPath, $srcName) {
   # Product tokens (if bound)
   if ($productSlug) {
     $bound = $null
-    foreach ($p in $manifest.products) { if ($p.id -eq $productSlug) { $bound = $p; break } }
+    $bound = $productStateSource.Get($productSlug)
     if (-not $bound) { throw "Template $srcName binds @product $productSlug but no such product in manifest" }
     $tokens = ProductTokens $bound
     $html = Replace-ProductTokens $html $tokens -Strict
@@ -1842,6 +2085,16 @@ foreach ($slug in $dirRoutes) {
   if (-not (Test-Path $src)) { continue }
   $out = Process-Template $src "$slug.html"
   $dir = Join-Path $publicDir $slug
+  New-Item -ItemType Directory $dir -Force | Out-Null
+  [System.IO.File]::WriteAllText((Join-Path $dir 'index.html'), $out, [System.Text.Encoding]::UTF8)
+}
+
+# H13 product routes — generated by the generic renderer from module registry +
+# state adapter. Route == module.route (legacy URLs preserved by construction).
+foreach ($module in ($productRegistry | Where-Object { $_.visibility -eq 'visible' })) {
+  $shell = Render-ProductShell $module
+  $out = Process-Template $null "products/$($module.id)/module.json+content.html" -OverrideHtml $shell
+  $dir = Join-Path $publicDir $module.id
   New-Item -ItemType Directory $dir -Force | Out-Null
   [System.IO.File]::WriteAllText((Join-Path $dir 'index.html'), $out, [System.Text.Encoding]::UTF8)
 }
@@ -1928,6 +2181,8 @@ if (Test-Path (Join-Path $root 'reports/deploy-receipts')) {
 # fingerprinted subset a long `immutable` rule and leave every mutable stable
 # name on the revalidation policy below.
 # ─────────────────────────────────────────────────────────────────────────────
+# Route rules derive from the registry + literal dir routes — no product list.
+$headerRoutes = @(foreach ($r in ($dirRoutes + @($productRegistry | Where-Object { $_.visibility -eq 'visible' } | ForEach-Object { $_.id }))) { "/$r/`n  Cache-Control: no-cache, must-revalidate" })
 $headersContent = @"
 /*
   X-Content-Type-Options: nosniff
@@ -1936,36 +2191,7 @@ $headersContent = @"
 /*.html
   Cache-Control: no-cache, must-revalidate
 
-/reality-gate/
-  Cache-Control: no-cache, must-revalidate
-/forgecast/
-  Cache-Control: no-cache, must-revalidate
-/lights-out/
-  Cache-Control: no-cache, must-revalidate
-/cache-vault/
-  Cache-Control: no-cache, must-revalidate
-/cleanroom/
-  Cache-Control: no-cache, must-revalidate
-/ghostlayer/
-  Cache-Control: no-cache, must-revalidate
-/proofshot/
-  Cache-Control: no-cache, must-revalidate
-/founders/
-  Cache-Control: no-cache, must-revalidate
-/proof/
-  Cache-Control: no-cache, must-revalidate
-/roadmap/
-  Cache-Control: no-cache, must-revalidate
-/support/
-  Cache-Control: no-cache, must-revalidate
-/about/
-  Cache-Control: no-cache, must-revalidate
-/proof-standard/
-  Cache-Control: no-cache, must-revalidate
-/software/
-  Cache-Control: no-cache, must-revalidate
-/truth/
-  Cache-Control: no-cache, must-revalidate
+$($headerRoutes -join "`n")
 /truth/*
   Cache-Control: no-cache, must-revalidate
 
@@ -1983,6 +2209,6 @@ $headersContent = @"
 # Copy _redirects from root
 Copy-Item (Join-Path $root '_redirects') $publicDir -Force
 
-$productCount = ($manifest.products | Where-Object { $_.visible }).Count
+$productCount = $allProductState.Count
 Write-Host "==> Build complete: public/ regenerated. $productCount visible products, $($dirRoutes.Count) directory routes." -ForegroundColor Green
 exit 0

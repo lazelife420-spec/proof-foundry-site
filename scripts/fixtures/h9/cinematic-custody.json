@@ -1031,33 +1031,41 @@
       "origin": "original-entry-inventory"
     },
     {
-      "path": "cache-vault.html",
+      "path": "products/cache-vault/content.html",
       "sha256": "6e34f112887312c6757842be2c21f110071165b1fe5699190fab1e9cae9e3f47",
       "bytes": 23883,
       "comparison": "utf8-lf",
       "lfSha256": "6e34f112887312c6757842be2c21f110071165b1fe5699190fab1e9cae9e3f47",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "bb375369bd0728c6ffafda92a9de4acd82008665075a61752b1134d27b62f356",
-        "bytes": 24279,
+        "sha256": "9d2c4eb007b4a582552754ff03be8a341a37cb13e31eda10f64f0db54b5b56c0",
+        "bytes": 22098,
         "comparison": "utf8-lf",
-        "lfSha256": "bb375369bd0728c6ffafda92a9de4acd82008665075a61752b1134d27b62f356",
-        "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/."
+        "lfSha256": "186b7d896be78b2fa11b4383681b01c2bd38ab61ce1e05cb1a20d3d49b6ed0c6",
+        "reason": "H13: product-page source is now products/<id>/content.html (narrative slot); renderer generates shell/head/breadcrumb/related"
+      },
+      "previousMigration": {
+        "path": "cache-vault.html",
+        "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
       }
     },
     {
-      "path": "cleanroom.html",
+      "path": "products/cleanroom/content.html",
       "sha256": "dd226c02ba94fbf4d73cee255f42330f541413102108b567758ace7c6ce01bfc",
       "bytes": 17347,
       "comparison": "utf8-lf",
       "lfSha256": "dd226c02ba94fbf4d73cee255f42330f541413102108b567758ace7c6ce01bfc",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "36d366d6ff5d77874dfa842906206100025e6751259c905c2cc9f0daec35292d",
-        "bytes": 17435,
+        "sha256": "5bd453445bb749569d60a20bd1013c776eeb38ba2d76df3357b259bb528c4db2",
+        "bytes": 15305,
         "comparison": "utf8-lf",
-        "lfSha256": "36d366d6ff5d77874dfa842906206100025e6751259c905c2cc9f0daec35292d",
-        "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/."
+        "lfSha256": "2e3c44bc22356fff8a4661f6f98052ff203b441e9acbc71d2e78bef4b4d8437a",
+        "reason": "H13: product-page source is now products/<id>/content.html (narrative slot); renderer generates shell/head/breadcrumb/related"
+      },
+      "previousMigration": {
+        "path": "cleanroom.html",
+        "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
       }
     },
     {
@@ -1077,25 +1085,22 @@
       "origin": "original-entry-inventory"
     },
     {
-      "path": "forgecast.html",
+      "path": "products/forgecast/content.html",
       "sha256": "1b42817b0d02980a418ebdd653be826dbc35fedfb99454fceb007ee4be78870c",
       "bytes": 18846,
       "comparison": "utf8-lf",
       "lfSha256": "1b42817b0d02980a418ebdd653be826dbc35fedfb99454fceb007ee4be78870c",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "7bb55a3ff1ce1f34fbc244d04b12b5a7b454b84f31fada5e2c72c95d6dca6e88",
-        "bytes": 19351,
+        "sha256": "ad6e584db092d4f583655a1ba28e04857e3562a090e6a632ee2ee793efd74a99",
+        "bytes": 17243,
         "comparison": "utf8-lf",
-        "lfSha256": "7bb55a3ff1ce1f34fbc244d04b12b5a7b454b84f31fada5e2c72c95d6dca6e88",
-        "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/.",
-        "previousMigration": {
-          "sha256": "dc80b2911931b20a80f149f47d716f2a3de3348cf8cfc47855bcd62aadb3b222",
-          "bytes": 19366,
-          "comparison": "utf8-lf",
-          "lfSha256": "dc80b2911931b20a80f149f47d716f2a3de3348cf8cfc47855bcd62aadb3b222",
-          "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919."
-        }
+        "lfSha256": "17044106597d943e7e5663937722b56b761eede4cf8e593cec00ec885b15fd4b",
+        "reason": "H13: product-page source is now products/<id>/content.html (narrative slot); renderer generates shell/head/breadcrumb/related"
+      },
+      "previousMigration": {
+        "path": "forgecast.html",
+        "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
       }
     },
     {
@@ -1107,33 +1112,41 @@
       "origin": "original-entry-inventory"
     },
     {
-      "path": "ghostlayer.html",
+      "path": "products/ghostlayer/content.html",
       "sha256": "c85be2d875b2032bb860e31bca1d0ba3323dc9d456be0f8cf68796dbafff17ff",
       "bytes": 19617,
       "comparison": "utf8-lf",
       "lfSha256": "c85be2d875b2032bb860e31bca1d0ba3323dc9d456be0f8cf68796dbafff17ff",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "4650d27044aac0fb3f1283db5c2a9d4d3a197fdcd863a7f56bb195606dc66092",
-        "bytes": 19382,
+        "sha256": "54c0572e62822fe3f912e787b2b6a13cc836ab8b4ea05f20eaf372879e1e6684",
+        "bytes": 17217,
         "comparison": "utf8-lf",
-        "lfSha256": "4650d27044aac0fb3f1283db5c2a9d4d3a197fdcd863a7f56bb195606dc66092",
-        "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/."
+        "lfSha256": "4e76ec191f319313d3fbd3660f3898f5ff24b9105cd08489a758261ae7dc3db8",
+        "reason": "H13: product-page source is now products/<id>/content.html (narrative slot); renderer generates shell/head/breadcrumb/related"
+      },
+      "previousMigration": {
+        "path": "ghostlayer.html",
+        "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
       }
     },
     {
-      "path": "lights-out.html",
+      "path": "products/lights-out/content.html",
       "sha256": "bc08d12dce3e35c8f36719029438463b22a779ce8ce89a71102b46c9a27b90aa",
       "bytes": 40839,
       "comparison": "utf8-lf",
       "lfSha256": "bc08d12dce3e35c8f36719029438463b22a779ce8ce89a71102b46c9a27b90aa",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "77c81a959a003f73deb2a45467eb8a21bec99a2b87a306f6fa6094e7c031a3a3",
-        "bytes": 41344,
+        "sha256": "7ba91a3df3d47951250584cad67a49b0a3a0c6017679b95430fbabee19ff678b",
+        "bytes": 38019,
         "comparison": "utf8-lf",
-        "lfSha256": "77c81a959a003f73deb2a45467eb8a21bec99a2b87a306f6fa6094e7c031a3a3",
-        "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/."
+        "lfSha256": "0409f7f562e5a6c96f0335e4c53080de96378ebe56e4892fd71074b37d76c59e",
+        "reason": "H13: product-page source is now products/<id>/content.html (narrative slot); renderer generates shell/head/breadcrumb/related"
+      },
+      "previousMigration": {
+        "path": "lights-out.html",
+        "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
       }
     },
     {
@@ -1192,33 +1205,41 @@
       "origin": "original-entry-inventory"
     },
     {
-      "path": "proofshot.html",
+      "path": "products/proofshot/content.html",
       "sha256": "5a5a0b90ddec2a8bffcfdb005b0cee2a20c544bf20357613a02b5415dc5dd08e",
       "bytes": 33618,
       "comparison": "utf8-lf",
       "lfSha256": "5a5a0b90ddec2a8bffcfdb005b0cee2a20c544bf20357613a02b5415dc5dd08e",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "8c70198d08b1f75160e1d8071cf1c6b5aeaa62d32709061cc50d90cbcc78777a",
-        "bytes": 33989,
+        "sha256": "307691b260f520bd4dce5135f3705dc721d385b2a4e7b47c21d5440b1664cfb6",
+        "bytes": 30680,
         "comparison": "utf8-lf",
-        "lfSha256": "8c70198d08b1f75160e1d8071cf1c6b5aeaa62d32709061cc50d90cbcc78777a",
-        "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/."
+        "lfSha256": "38b86a629b3295923967a9464771958d3b6305560066f7e89beecbd0d4fb2bf6",
+        "reason": "H13: product-page source is now products/<id>/content.html (narrative slot); renderer generates shell/head/breadcrumb/related"
+      },
+      "previousMigration": {
+        "path": "proofshot.html",
+        "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
       }
     },
     {
-      "path": "reality-gate.html",
+      "path": "products/reality-gate/content.html",
       "sha256": "beb0fc088cf570f4c293d25d95555cf340428b8abf1e610d148368205cee2771",
       "bytes": 31940,
       "comparison": "utf8-lf",
       "lfSha256": "beb0fc088cf570f4c293d25d95555cf340428b8abf1e610d148368205cee2771",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "374ee636036c9dfaf023d1df537db460dbe4eda7f69e13ffc7ffcb2c8c0fd513",
-        "bytes": 32060,
+        "sha256": "31c54fe0e69555a0dde382a1eb8fa985062037f09901e3b03f0e6de042c782e5",
+        "bytes": 29488,
         "comparison": "utf8-lf",
-        "lfSha256": "374ee636036c9dfaf023d1df537db460dbe4eda7f69e13ffc7ffcb2c8c0fd513",
-        "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/."
+        "lfSha256": "9b7d28404416ba611349d3ef2ec574c423a6f11e05e2eb3119de59153cc62987",
+        "reason": "H13: product-page source is now products/<id>/content.html (narrative slot); renderer generates shell/head/breadcrumb/related"
+      },
+      "previousMigration": {
+        "path": "reality-gate.html",
+        "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
       }
     },
     {
@@ -1319,25 +1340,17 @@
       "lfSha256": "9a1c62f516b426b0eed377834ffc19c9fdaf0f25f0ecf19b7c56a7aff3014a03",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "d7873cbd0f969441f1caad6574740211e4d81947f1c215a6ef9ca9460d3a0690",
-        "bytes": 15030,
+        "sha256": "5215a057ad8a09e30c506dfbb3306e79c0b3a3b59e4a7ec289a28760bdb71eff",
+        "bytes": 15256,
         "comparison": "utf8-lf",
+        "lfSha256": "5215a057ad8a09e30c506dfbb3306e79c0b3a3b59e4a7ec289a28760bdb71eff",
+        "reason": "H13 modular product renderer 2026-09-20: authorized source/test updates for module migration"
+      },
+      "previousMigration": {
+        "sha256": "d7873cbd0f969441f1caad6574740211e4d81947f1c215a6ef9ca9460d3a0690",
         "lfSha256": "d7873cbd0f969441f1caad6574740211e4d81947f1c215a6ef9ca9460d3a0690",
-        "reason": "H11-R1 contract remediation 2026-09-20: worktreeDirty removed from public v1; truthful per-route sitemap lastmods (manifest dependency is not a content event); deploy.ps1 blocks tracked-dirty deploys; schema versioning policy added.",
-        "previousMigration": {
-          "sha256": "1913e837cbdc7b5b467818acb207be3b58cda6521e87306c2fd679f1a63dcde8",
-          "bytes": 15361,
-          "comparison": "utf8-lf",
-          "lfSha256": "1913e837cbdc7b5b467818acb207be3b58cda6521e87306c2fd679f1a63dcde8",
-          "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/.",
-          "previousMigration": {
-            "sha256": "b17e3c7b88e88e6b0a6c489f1e26e869d9513b41c423e74a6b63e77c55648fab",
-            "bytes": 14666,
-            "comparison": "utf8-lf",
-            "lfSha256": "b17e3c7b88e88e6b0a6c489f1e26e869d9513b41c423e74a6b63e77c55648fab",
-            "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919."
-          }
-        }
+        "bytes": 15030,
+        "reason": "prior authorized state before H13 modular-renderer edits"
       }
     },
     {
@@ -1418,60 +1431,17 @@
       "lfSha256": "eccd353c55072aaaaa9a055e82876c58796d7e64bcf62c268c84120a20e36c3a",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "93a14bc95199ea8e830ab65395c89930c80422e3ca5e0e935d1736da56e601f8",
-        "bytes": 12222,
+        "sha256": "7eba21195665613d23fc11c42c1e4de132f71ca0518630a9922857b3e0a618be",
+        "bytes": 12600,
         "comparison": "utf8-lf",
+        "lfSha256": "7eba21195665613d23fc11c42c1e4de132f71ca0518630a9922857b3e0a618be",
+        "reason": "H13 modular product renderer 2026-09-20: authorized source/test updates for module migration"
+      },
+      "previousMigration": {
+        "sha256": "93a14bc95199ea8e830ab65395c89930c80422e3ca5e0e935d1736da56e601f8",
         "lfSha256": "93a14bc95199ea8e830ab65395c89930c80422e3ca5e0e935d1736da56e601f8",
-        "reason": "H11-R1 contract remediation 2026-09-20: worktreeDirty removed from public v1; truthful per-route sitemap lastmods (manifest dependency is not a content event); deploy.ps1 blocks tracked-dirty deploys; schema versioning policy added.",
-        "previousMigration": {
-          "sha256": "99c4f4d6cff98189f4fdd201e62ad197e1e361b45feb5c07018e686c6359792f",
-          "bytes": 11653,
-          "comparison": "utf8-lf",
-          "lfSha256": "99c4f4d6cff98189f4fdd201e62ad197e1e361b45feb5c07018e686c6359792f",
-          "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/.",
-          "previousMigration": {
-            "sha256": "b14ac8ac7e3aeda3176e04ecbb8729a75f1f53c13f07aeb549d37fb40fef7af5",
-            "bytes": 15872,
-            "comparison": "utf8-lf",
-            "lfSha256": "b14ac8ac7e3aeda3176e04ecbb8729a75f1f53c13f07aeb549d37fb40fef7af5",
-            "reason": "Public roadmap truth tranche 2026-09-20: roadmap.html frozen-pin repointed at the owner-approved roadmap source bytes (approved-bytes hash pin, same exact-match discipline).",
-            "previousMigration": {
-              "sha256": "0791227b5a69ac9bc883aa13b7f7f8ab21e669b813a3efeda475da1d32e676cc",
-              "bytes": 15254,
-              "comparison": "utf8-lf",
-              "lfSha256": "0791227b5a69ac9bc883aa13b7f7f8ab21e669b813a3efeda475da1d32e676cc",
-              "reason": "ForgeCast copy tranche 2026-09-19: SkyFoundry ban scoped to standalone branding (package path com.prooffoundry.skyfoundry is factual); verifier + recon anchor updated accordingly.",
-              "previousMigration": {
-                "sha256": "94fa84d3f5a52bbc0249d41f1f99883cc0758b336161f076e51f9a2157909193",
-                "bytes": 15195,
-                "comparison": "utf8-lf",
-                "lfSha256": "94fa84d3f5a52bbc0249d41f1f99883cc0758b336161f076e51f9a2157909193",
-                "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919.",
-                "previousMigration": {
-                  "sha256": "c4742d6972790c346841ec2ce1b40ecbbda2e99b6826fa6123c3bd97cb3324c8",
-                  "bytes": 9310,
-                  "comparison": "utf8-lf",
-                  "lfSha256": "c4742d6972790c346841ec2ce1b40ecbbda2e99b6826fa6123c3bd97cb3324c8",
-                  "reason": "Explicit customer-truth repair; see customer-truth-migration.json and customer-truth.patch.",
-                  "previousMigration": {
-                    "sha256": "49e83275cc07f219dbf5da6cd9f5f316f0cc1c8006bf3c54458ff0c0957e99b4",
-                    "bytes": 9064,
-                    "comparison": "utf8-lf",
-                    "lfSha256": "49e83275cc07f219dbf5da6cd9f5f316f0cc1c8006bf3c54458ff0c0957e99b4",
-                    "reason": "Explicit production-validation repair; see production-validation-migration.json and production-validation.patch.",
-                    "previousMigration": {
-                      "sha256": "b6f5b93676907c1838559806063cc30040fc5211fd91a36d68781445a7f7efe0",
-                      "bytes": 8822,
-                      "comparison": "utf8-lf",
-                      "lfSha256": "b6f5b93676907c1838559806063cc30040fc5211fd91a36d68781445a7f7efe0",
-                      "reason": "Explicit qualification-portability migration; see portability-migration.json and portability.patch."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
+        "bytes": 12222,
+        "reason": "prior authorized state before H13 modular-renderer edits"
       }
     },
     {
@@ -1480,7 +1450,20 @@
       "bytes": 20925,
       "comparison": "utf8-lf",
       "lfSha256": "b4a376a6bf210a41329db1d0af571eae5f6ac108a589b729202a509405eb4052",
-      "origin": "original-entry-inventory"
+      "origin": "original-entry-inventory",
+      "previousMigration": {
+        "sha256": "b4a376a6bf210a41329db1d0af571eae5f6ac108a589b729202a509405eb4052",
+        "lfSha256": "b4a376a6bf210a41329db1d0af571eae5f6ac108a589b729202a509405eb4052",
+        "bytes": 20925,
+        "reason": "prior authorized state before H13 modular-renderer edits"
+      },
+      "migration": {
+        "sha256": "565e23aad007fc800bb2544be4626d428bb4f7ab178b76581c0a0d87aa58ab44",
+        "bytes": 20942,
+        "comparison": "utf8-lf",
+        "lfSha256": "565e23aad007fc800bb2544be4626d428bb4f7ab178b76581c0a0d87aa58ab44",
+        "reason": "H13 modular product renderer 2026-09-20: authorized source/test updates for module migration"
+      }
     },
     {
       "path": "scripts/test-release-truth.ps1",
@@ -1634,6 +1617,75 @@
       "comparison": "utf8-lf",
       "lfSha256": "e2b969de745caaaa29c3d8e0d65274daf67aa8f6ea622852991a443a6c5d4ea0",
       "origin": "h12-truth-discovery-2026-09-20"
+    },
+    {
+      "path": "products/reality-gate/module.json",
+      "sha256": "723ac3ef603d78b8ca74591f048cff2dd45b0feedbb439e60d93ac7611d4ac7e",
+      "bytes": 1166,
+      "comparison": "utf8-lf",
+      "lfSha256": "9a9dbe987d14b0c5a4332b6fe94b06047d8526f64ae38e03bc703ac38c63c864",
+      "origin": "h13-modular-renderer-2026-09-20",
+      "previousMigration": {
+        "sha256": "723ac3ef603d78b8ca74591f048cff2dd45b0feedbb439e60d93ac7611d4ac7e",
+        "lfSha256": "9a9dbe987d14b0c5a4332b6fe94b06047d8526f64ae38e03bc703ac38c63c864",
+        "bytes": 1166,
+        "reason": "prior authorized state before H13 modular-renderer edits"
+      },
+      "migration": {
+        "sha256": "c5756517b4699d4c6f39df977132d331dbe158372e195dfc88ad20222e83bbf4",
+        "bytes": 1636,
+        "comparison": "utf8-lf",
+        "lfSha256": "5848d7cdd71401b867bdb359ec953b43de958a42b739c8dd6760b961a9d9224c",
+        "reason": "H13 modular product renderer 2026-09-20: authorized source/test updates for module migration"
+      }
+    },
+    {
+      "path": "products/cache-vault/module.json",
+      "sha256": "3dd7b54d1a2ce1892763723a366d54febe73e178dd80626efd5501e5b5c33d92",
+      "bytes": 1240,
+      "comparison": "utf8-lf",
+      "lfSha256": "6d4888279dec5eef477a472ea61a885be8094f26b570f6dd0e97fb3f2e5a8207",
+      "origin": "h13-modular-renderer-2026-09-20"
+    },
+    {
+      "path": "products/lights-out/module.json",
+      "sha256": "37497b4162f11784386a8e0cb86109eee8d421f41e4f797f8d4efbf4d5c082f7",
+      "bytes": 2184,
+      "comparison": "utf8-lf",
+      "lfSha256": "b8e6b4327548e0bae8cc044786b28772e15b15504e83b04cca0baf8757961693",
+      "origin": "h13-modular-renderer-2026-09-20"
+    },
+    {
+      "path": "products/cleanroom/module.json",
+      "sha256": "4504ed201fb8dc697b636fa01a87f6206c078a1d346ef9d4495097bba38804f6",
+      "bytes": 1245,
+      "comparison": "utf8-lf",
+      "lfSha256": "6800bcd13b878421b52341cfb66c9229b3f944ece381930f1730ff55036d845e",
+      "origin": "h13-modular-renderer-2026-09-20"
+    },
+    {
+      "path": "products/ghostlayer/module.json",
+      "sha256": "49e6aa5627158f91b13aeaf421e48fa596e837920b465a4d9899fcc93ecd39bb",
+      "bytes": 1187,
+      "comparison": "utf8-lf",
+      "lfSha256": "68e9331369e8f2ab7336b53a20edb367c63bf352953ad0f41d3e20a350173a78",
+      "origin": "h13-modular-renderer-2026-09-20"
+    },
+    {
+      "path": "products/forgecast/module.json",
+      "sha256": "76494df0fe9c4603e590690af50608a5c3668ff83510f8f16048a89973eeba43",
+      "bytes": 1223,
+      "comparison": "utf8-lf",
+      "lfSha256": "fe6bbefb7e9e9e9c9b0e107ff44c871aadafbcf7ad2a1d0568f25a33dc7bee32",
+      "origin": "h13-modular-renderer-2026-09-20"
+    },
+    {
+      "path": "products/proofshot/module.json",
+      "sha256": "d3240bae937c339b94f3cb89b5047fa1ac14b6d857bcf7724eac839a511502fd",
+      "bytes": 1983,
+      "comparison": "utf8-lf",
+      "lfSha256": "d716e40036f86663b03785993f080534dfb1f3180f0741ff5a9c72125501d772",
+      "origin": "h13-modular-renderer-2026-09-20"
     }
   ],
   "exclusions": [
