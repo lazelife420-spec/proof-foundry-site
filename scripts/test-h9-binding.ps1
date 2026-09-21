@@ -34,6 +34,17 @@ Assert-Binding 'authority: inspected production commit is an ancestor of candida
 foreach ($set in @(@($manifest.products), @($canonical.products))) {
   $fcP = @($set | Where-Object { $_.id -eq 'forgecast' }) | Select-Object -First 1
   if ($fcP) { $fcP.summary = $null; $fcP.cardSummary = $null; if ($fcP.presentation) { $fcP.presentation.valueLine = $null } }
+  # VR1 visual refoundation (2026-09-21): ProofShot's catalog card image moved
+  # from the pre-rebrand HyperSnatch workbench capture to the current-brand
+  # proof-card capture. Neutralize exactly those presentation fields on both
+  # sides; release, artifact and availability truth still compares exactly.
+  $psP = @($set | Where-Object { $_.id -eq 'proofshot' }) | Select-Object -First 1
+  if ($psP -and $psP.presentation) {
+    $psP.presentation.cardImage = $null
+    $psP.presentation.cardImageAlt = $null
+    $psP.presentation.cardImageWidth = $null
+    $psP.presentation.cardImageHeight = $null
+  }
   # H10 truth consolidation (2026-09-20): narrow manifest fields added as
   # canonical owners for facts pages previously hardcoded —
   # release.sourceCommit / release.companionCandidateVersion (cache-vault) and
@@ -77,7 +88,9 @@ function Class-Position([string]$className) {
   $match = [regex]::Match($homeHtml,$pattern)
   if ($match.Success) { return $match.Index }; return -1
 }
-$composition = @('h9-hero','h9-proof','h9-major-mosaic','h9-scene-cache-vault','h9-scene-forgecast','h9-scene-reality','h9-scene-ghostlayer','h9-secondary-strip','h9-final')
+# VR1 order: hero → product discovery scenes → portfolio strip → proof invitation → close.
+# Proof moved after the product journey; raw digests/commits no longer appear on-page.
+$composition = @('h9-hero','h9-major-mosaic','h9-scene-cache-vault','h9-scene-forgecast','h9-scene-reality','h9-scene-ghostlayer','h9-secondary-strip','h9-proof','h9-final')
 $previousPosition = -1
 foreach ($scene in $composition) {
   $position = Class-Position $scene
@@ -93,10 +106,10 @@ Assert-Binding 'architecture: catalog controls stay on software route' ($homeHtm
 foreach ($id in $expectedIds) {
   Assert-Binding "discovery: homepage contains $id identity and route" ($homeHtml.Contains('data-product="' + $id + '"') -and $homeHtml.Contains('href="/' + $id + '/"'))
 }
-foreach ($asset in @('cv-quick-paste.png','v030-today.png','08-ci-run-complete.50deeeef7e10fbe8.png','gl-staged-files.png','cleanroom-review.png','tonight-active-hero.png','workbench-home.png')) {
+foreach ($asset in @('cv-quick-paste.png','v030-today.png','08-ci-run-complete.50deeeef7e10fbe8.png','gl-staged-files.png','cleanroom-activity-ledger.png','tonight-active-hero.png','web-hero.png')) {
   Assert-Binding "authentic media: homepage preserves source $asset" ($homeHtml.Contains($asset))
 }
-Assert-Binding 'truth: ProofShot public 2.0.0 and historical imagery disclosure' ($homeHtml -match 'Public v2\.0\.0' -and $homeHtml -match 'HyperSnatch|earlier engine|earlier-engine')
+Assert-Binding 'truth: ProofShot public 2.0.0 with verified production brand artwork' ($homeHtml -match 'Public v2\.0\.0' -and $homeHtml -match 'proofshot/web-hero\.png' -and $homeHtml -notmatch 'workbench-home\.png' -and $homeHtml -notmatch 'workbench-proof-cards')
 Assert-Binding 'truth: Cache Vault public 0.2.4 retained' ($homeHtml -match '(?i)Public v0\.2\.4')
 $realityScene = [regex]::Match($homeHtml,'(?s)<section\b[^>]*data-product="reality-gate".*?</section>').Value
 $weatherScene = [regex]::Match($homeHtml,'(?s)<section\b[^>]*data-product="forgecast".*?</section>').Value
@@ -106,15 +119,15 @@ Assert-Binding 'truth: ForgeCast scene discloses network use, no added analytics
 Assert-Binding 'truth: GhostLayer scene discloses explicit commit and temporary disk boundary' ($ghostScene -match '(?i)commit boundary' -and $ghostScene -match '(?i)temporary disk|temporary files|disk copies')
 Assert-Binding 'truth: prohibited absolute GhostLayer and ProofShot claims absent' ($homeHtml -notmatch '(?i)zero-trace|screen capture|court-certified|malware-free|security-certified')
 $cv = @($canonical.products | Where-Object id -eq 'cache-vault')[0]
-$ledgerRows = @([regex]::Matches($homeHtml,'(?s)<div class="h9-ledger-row">.*?</dl>.*?</div>') | ForEach-Object Value)
+$ledgerRows = @([regex]::Matches($homeHtml,'(?s)<div class="h9-ledger-row">.*?<p class="h9-artifact-name">.*?</p></div>') | ForEach-Object Value)
 foreach ($productId in @('cache-vault','proofshot')) {
   $product = @($canonical.products | Where-Object id -eq $productId)[0]
   $row = @($ledgerRows | Where-Object { $_ -match ('href="/' + [regex]::Escape($productId) + '/"') })
   Assert-Binding "receipt: $productId row names product, public version/status, artifact, Windows and unsigned status" ($row.Count -eq 1 -and $row[0].Contains($product.name) -and $row[0].Contains('v' + $product.release.publicVersion) -and $row[0].Contains($product.artifacts[0].filename) -and $row[0] -match '>Public<' -and $row[0] -match 'Windows' -and $row[0] -match 'unsigned')
-  Assert-Binding "receipt: $productId row binds its own canonical SHA-256" ($row.Count -eq 1 -and $row[0] -match ('<dt>SHA-256</dt>\s*<dd[^>]*>' + [regex]::Escape($product.artifacts[0].sha256) + '</dd>'))
+  Assert-Binding "receipt: $productId row keeps its canonical SHA-256 off the primary narrative" ($row.Count -eq 1 -and $row[0] -notmatch [regex]::Escape($product.artifacts[0].sha256))
 }
-Assert-Binding 'receipt: canonical 64-hex digest rendered under SHA-256' ($homeHtml -match ('<dt>SHA-256</dt>\s*<dd[^>]*>' + [regex]::Escape($cv.artifacts[0].sha256) + '</dd>'))
-Assert-Binding 'receipt: source commit separately labelled and correct' ($homeHtml -match '<dt>Source commit</dt>\s*<dd[^>]*>abbd84462a8165068405cbfcddf4bfaf6b8f6f29</dd>')
+Assert-Binding 'receipt: canonical 64-hex digest stays off the homepage narrative' ($homeHtml -notmatch [regex]::Escape($cv.artifacts[0].sha256))
+Assert-Binding 'receipt: source commit stays off the homepage narrative' ($homeHtml -notmatch 'abbd84462a8165068405cbfcddf4bfaf6b8f6f29')
 Assert-Binding 'receipt: 40-char commit never labelled SHA-256' ($homeHtml -notmatch '<dt>SHA-256</dt>\s*<dd[^>]*>[a-f0-9]{40}</dd>')
 $plainHome = [regex]::Replace([regex]::Replace($homeHtml, '<[^>]+>', ' '), '\s+', ' ')
 Assert-Binding 'proof: Receipts over hype editorial meaning survives line breaks' ($plainHome -match 'Receipts over hype\.')

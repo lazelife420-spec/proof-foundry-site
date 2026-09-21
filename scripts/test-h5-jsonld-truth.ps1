@@ -130,6 +130,13 @@ $baseProducts = @($canonical.products)
 foreach ($set in @($workProducts, $baseProducts)) {
   $fc = @($set | Where-Object { $_.id -eq 'forgecast' }) | Select-Object -First 1
   if ($fc) { $fc.summary = $null; $fc.cardSummary = $null; if ($fc.presentation) { $fc.presentation.valueLine = $null } }
+  # VR1 visual refoundation (2026-09-21): proofshot.presentation.cardImage*
+  # fields moved the catalog card to the current-brand proof-card capture.
+  $ps = @($set | Where-Object { $_.id -eq 'proofshot' }) | Select-Object -First 1
+  if ($ps -and $ps.presentation) {
+    $ps.presentation.cardImage = $null; $ps.presentation.cardImageAlt = $null
+    $ps.presentation.cardImageWidth = $null; $ps.presentation.cardImageHeight = $null
+  }
   # H10 truth consolidation (2026-09-20): narrow manifest fields added as
   # canonical owners for facts pages previously hardcoded —
   # release.sourceCommit / release.companionCandidateVersion (cache-vault) and

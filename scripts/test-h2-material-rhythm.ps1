@@ -53,7 +53,7 @@ foreach ($rid in $releasedIds) {
   Assert-H2 "$rid media frame carries real imagery" ($hasImg -and -not $imgEmpty)
 }
 $proofshotBlock = [regex]::Match($catalogHtml, '(?s)product-card card-proofshot.*?</article>').Value
-Assert-H2 'ProofShot catalog frame pairs legacy workbench imagery with public release truth' ($proofshotBlock -match 'workbench-home' -and $proofshotBlock -match 'data-availability="public-release"' -and $proofshotBlock -match 'Public v2\.0\.0')
+Assert-H2 'ProofShot catalog frame pairs production brand artwork with public release truth' ($proofshotBlock -match 'web-hero' -and $proofshotBlock -match 'data-availability="public-release"' -and $proofshotBlock -match 'v2\.0\.0' -and $proofshotBlock -notmatch 'workbench')
 
 # --- Naming consistency (homepage-facing only) ---
 Assert-H2 'homepage card/footer labels use Lights Out (not Lights Out PC)' ($homeHtml -notmatch 'Lights Out PC' -and $homeHtml -match 'Lights Out')

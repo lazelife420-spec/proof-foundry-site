@@ -67,11 +67,13 @@ Assert-H9 'old homepage filter/compare database UI is not on /' ($homeHtml -notm
 
 # 5. Manifest-driven Proof & Integrity
 Assert-H9 'manifest-driven release/version/hash substitution remains intact' ($homeHtml -notmatch '\{\{products\.')
-Assert-H9 'Proof artifact contains real 64-char SHA-256' ($homeHtml -match '<dd>[a-f0-9]{64}</dd>')
-Assert-H9 'Git commit is not mislabeled SHA-256' ($homeHtml -match '<dt>Source commit</dt><dd>[a-f0-9]{40}</dd>')
-Assert-H9 'receipt filename matches current canonical Cache Vault artifact' ($homeHtml -match ('<dt>Artifact</dt><dd>' + [regex]::Escape($cv.artifacts[0].filename) + '</dd>'))
-Assert-H9 'receipt SHA-256 matches current canonical Cache Vault artifact' ($homeHtml -match ('<dt>SHA-256</dt><dd>' + [regex]::Escape($cv.artifacts[0].sha256) + '</dd>'))
-Assert-H9 'receipt source commit matches v0.2.4 canonical receipt' ($homeHtml -match '<dt>Source commit</dt><dd>abbd84462a8165068405cbfcddf4bfaf6b8f6f29</dd>')
+# VR1: the homepage receipt ledger keeps artifact/version/status but raw digests
+# and source commits live on the release records and product pages, not here.
+Assert-H9 'Proof narrative keeps raw 64-char digests off the homepage' ($homeHtml -notmatch '<dd>[a-f0-9]{64}</dd>')
+Assert-H9 'No source commit is rendered or mislabeled on the homepage' ($homeHtml -notmatch '<dt>Source commit</dt>')
+Assert-H9 'receipt filename matches current canonical Cache Vault artifact' ($homeHtml -match [regex]::Escape($cv.artifacts[0].filename))
+Assert-H9 'receipt SHA-256 stays off the homepage narrative' ($homeHtml -notmatch [regex]::Escape($cv.artifacts[0].sha256))
+Assert-H9 'receipt v0.2.4 source commit stays off the homepage narrative' ($homeHtml -notmatch 'abbd84462a8165068405cbfcddf4bfaf6b8f6f29')
 
 # 6. Specific Wording & Liability Bounds
 Assert-H9 'GhostLayer "zero-trace" claim absent' ($homeHtml -notmatch 'zero-trace')

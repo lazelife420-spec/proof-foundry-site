@@ -196,7 +196,8 @@ a {
 }
 
 .button:focus-visible,
-.top-nav a:focus-visible {
+.top-nav a:focus-visible,
+.nav-toggle:focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 3px;
 }
@@ -1643,6 +1644,16 @@ h1 span {
   .footer-grid {
     grid-template-columns: 1fr;
     gap: 1.15rem;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Shared shell: the brand picture swaps to the square PF mark at this width;
+     it must stay a compact mark, not a horizontal-lockup width stretched square. */
+  .brand-logo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
   }
 }
 

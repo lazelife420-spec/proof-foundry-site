@@ -34,6 +34,13 @@ Assert-Cinematic 'authority: inspected production commit is an ancestor of candi
 foreach ($set in @(@($manifest.products), @($canonical.products))) {
   $fcP = @($set | Where-Object { $_.id -eq 'forgecast' }) | Select-Object -First 1
   if ($fcP) { $fcP.summary = $null; $fcP.cardSummary = $null; if ($fcP.presentation) { $fcP.presentation.valueLine = $null } }
+  # VR1 visual refoundation (2026-09-21): proofshot.presentation.cardImage*
+  # moved the catalog card to the current-brand proof-card capture.
+  $psP = @($set | Where-Object { $_.id -eq 'proofshot' }) | Select-Object -First 1
+  if ($psP -and $psP.presentation) {
+    $psP.presentation.cardImage = $null; $psP.presentation.cardImageAlt = $null
+    $psP.presentation.cardImageWidth = $null; $psP.presentation.cardImageHeight = $null
+  }
   # H10 truth consolidation (2026-09-20): narrow manifest fields added as
   # canonical owners for facts pages previously hardcoded —
   # release.sourceCommit / release.companionCandidateVersion (cache-vault) and
@@ -77,24 +84,27 @@ Assert-Cinematic 'architecture: catalog controls stay on software route' ($homeH
 foreach ($id in $expectedIds) {
   Assert-Cinematic "discovery: homepage contains $id identity and route" ($homeHtml.Contains('data-product="' + $id + '"') -and $homeHtml.Contains('href="/' + $id + '/"'))
 }
-foreach ($asset in @('cv-quick-paste.png','v030-today.png','08-ci-run-complete.50deeeef7e10fbe8.png','gl-staged-files.png','cleanroom-review.png','tonight-active-hero.png','workbench-home.png')) {
+# VR1-R1: homepage minis use current-brand captures — cleanroom-activity-ledger
+# and workbench-proof-cards replace the stale v1.0.6 / pre-rebrand imagery.
+foreach ($asset in @('cv-quick-paste.png','v030-today.png','08-ci-run-complete.50deeeef7e10fbe8.png','gl-staged-files.png','cleanroom-activity-ledger.png','tonight-active-hero.png','web-hero.png')) {
   Assert-Cinematic "authentic media: homepage preserves source $asset" ($homeHtml.Contains($asset))
 }
-Assert-Cinematic 'truth: ProofShot public 2.0.0 and historical imagery disclosure' ($homeHtml -match 'Public v2\.0\.0' -and $homeHtml -match 'HyperSnatch|earlier engine|earlier-engine')
+Assert-Cinematic 'truth: ProofShot public 2.0.0 with verified production brand artwork' ($homeHtml -match 'Public v2\.0\.0' -and $homeHtml -match 'proofshot/web-hero\.png' -and $homeHtml -notmatch 'workbench-home\.png' -and $homeHtml -notmatch 'workbench-proof-cards')
 Assert-Cinematic 'truth: Cache Vault public 0.2.4 retained' ($homeHtml -match '(?i)Public v0\.2\.4')
 Assert-Cinematic 'truth: Reality Gate explicitly remains Developer Pilot' ($homeHtml -match 'Developer Pilot v1\.1\.0')
 Assert-Cinematic 'truth: ForgeCast network boundary disclosed' ($homeHtml -match '(?i)network|HTTPS')
 Assert-Cinematic 'truth: GhostLayer disk boundary disclosed' ($homeHtml -match '(?i)temporary disk|temporary files|disk copies')
 Assert-Cinematic 'truth: prohibited absolute GhostLayer and ProofShot claims absent' ($homeHtml -notmatch '(?i)zero-trace|screen capture|court-certified|malware-free|security-certified')
 $cv = @($canonical.products | Where-Object id -eq 'cache-vault')[0]
-Assert-Cinematic 'receipt: canonical artifact filename rendered under Artifact' ($homeHtml -match ('<dt>Artifact</dt>\s*<dd[^>]*>' + [regex]::Escape($cv.artifacts[0].filename) + '</dd>'))
-Assert-Cinematic 'receipt: canonical 64-hex digest rendered under SHA-256' ($homeHtml -match ('<dt>SHA-256</dt>\s*<dd[^>]*>' + [regex]::Escape($cv.artifacts[0].sha256) + '</dd>'))
-Assert-Cinematic 'receipt: source commit separately labelled and correct' ($homeHtml -match '<dt>Source commit</dt>\s*<dd[^>]*>abbd84462a8165068405cbfcddf4bfaf6b8f6f29</dd>')
-Assert-Cinematic 'receipt: 40-char commit never labelled SHA-256' ($homeHtml -notmatch '<dt>SHA-256</dt>\s*<dd[^>]*>[a-f0-9]{40}</dd>')
-Assert-Cinematic 'receipt: platform, version and status are explicit fields' ($homeHtml -match '<dt>Platform</dt>' -and $homeHtml -match '<dt>Version</dt>' -and $homeHtml -match '<dt>Status</dt>')
+# VR1: the homepage receipt keeps artifact/version/status and links to release
+# records; raw digests and source commit stay off the primary narrative.
+Assert-Cinematic 'receipt: canonical artifact filename rendered on the ledger row' ($homeHtml -match [regex]::Escape($cv.artifacts[0].filename))
+Assert-Cinematic 'receipt: raw digest and source commit stay off the homepage narrative' ($homeHtml -notmatch [regex]::Escape($cv.artifacts[0].sha256) -and $homeHtml -notmatch 'abbd84462a8165068405cbfcddf4bfaf6b8f6f29')
+Assert-Cinematic 'receipt: ledger links to the release record' ($homeHtml -match 'href="/proof/"')
+Assert-Cinematic 'receipt: version and status are explicit ledger content' ($homeHtml -match 'Public v' -and $homeHtml -match 'h9-receipt-stamp')
 $plainHome = [regex]::Replace([regex]::Replace($homeHtml, '<[^>]+>', ' '), '\s+', ' ')
 Assert-Cinematic 'proof: Receipts over hype editorial meaning survives line breaks' ($plainHome -match 'Receipts over hype\.')
-Assert-Cinematic 'ending: narrative close retains catalog and proof route' ([regex]::Match($homeHtml,'(?s)<section class="h9-final".*?</section>').Value -match 'href="/software/"' -and [regex]::Match($homeHtml,'(?s)<section class="h9-final".*?</section>').Value -match 'href="/proof-standard/"')
+Assert-Cinematic 'ending: narrative close retains catalog and proof route' ([regex]::Match($homeHtml,'(?s)<section class="h9-final".*?</section>').Value -match 'href="/software/"' -and [regex]::Match($homeHtml,'(?s)<section class="h9-final".*?</section>').Value -match 'href="/proof/"')
 $catalogIds = @([regex]::Matches($software, '<article\b[^>]*data-product="([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
 Assert-Cinematic 'catalog: exactly seven distinct canonical products' ((($catalogIds | Sort-Object) -join ',') -ceq (($expectedIds | Sort-Object) -join ','))
 Assert-Cinematic 'catalog: route-only search/filter UI ships hidden for progressive enhancement' ($software -match 'class="h9-product-finder"[^>]*hidden' -and $software -match 'id="product-search"')

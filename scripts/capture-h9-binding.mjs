@@ -225,9 +225,9 @@ async function bindingComposition(cdp,viewport) {
   check(`binding-${viewport.width}: all eight required scenes render`,complete,scenes);
   if(!complete)return;
   const [hero,proof,cache,forge,reality,ghost,secondary,ending]=scenes;
-  check(`binding-${viewport.width}: proof immediately follows hero`,Math.abs(proof.y-hero.bottom)<=48,{heroBottom:hero.bottom,proofTop:proof.y});
-  check(`binding-${viewport.width}: major scenes follow proof and precede three-product strip`,Math.min(cache.y,forge.y,reality.y,ghost.y)>=proof.bottom-2&&secondary.y>=Math.max(cache.bottom,forge.bottom,reality.bottom,ghost.bottom)-2,{proofBottom:proof.bottom,secondaryTop:secondary.y});
-  check(`binding-${viewport.width}: ending follows secondary strip`,ending.y>=secondary.bottom-2,{secondaryBottom:secondary.bottom,endingTop:ending.y});
+  // VR1 order: hero → product scenes → secondary strip → proof → ending.
+  check(`binding-${viewport.width}: major scenes follow hero and precede three-product strip`,Math.min(cache.y,forge.y,reality.y,ghost.y)>=hero.bottom-2&&secondary.y>=Math.max(cache.bottom,forge.bottom,reality.bottom,ghost.bottom)-2,{heroBottom:hero.bottom,secondaryTop:secondary.y});
+  check(`binding-${viewport.width}: proof follows the portfolio strip and precedes the ending`,proof.y>=secondary.bottom-2&&ending.y>=proof.bottom-2,{secondaryBottom:secondary.bottom,proofTop:proof.y,endingTop:ending.y});
   const captionGeometry=await cdp.evaluate(`[...document.querySelectorAll('.h9-secondary-strip .h9-media-note')].map(e=>{const scene=e.closest('.h9-mini').getBoundingClientRect(),media=e.closest('.h9-mini-media').getBoundingClientRect(),range=document.createRange();range.selectNodeContents(e);return {text:e.innerText,sceneBottom:scene.bottom,mediaBottom:media.bottom,lines:[...range.getClientRects()].map(r=>({top:r.top,bottom:r.bottom}))};})`);
   check(`binding-${viewport.width}: all three provenance captions remain within their scene and media frame`,captionGeometry.length===3&&captionGeometry.every(c=>c.lines.length&&c.lines.every(r=>r.bottom<=Math.min(c.sceneBottom,c.mediaBottom)+1)),captionGeometry);
   const ghostBoundary=await cdp.evaluate(`document.querySelector('.h9-scene-ghostlayer .h9-scene-note').innerText.replace(/\\s+/g,' ').trim()`);
@@ -248,7 +248,7 @@ async function runPage(route,viewport) {
   const name=route==='/'?'homepage':'software',label=`${name}-${viewport.width}`,cdp=await prepare(viewport);
   try {
     await navigate(cdp,route);await performance(cdp,label);await settle(cdp);await inspect(cdp,label);
-    if(viewport.width===1440)await contrast(cdp,label,name==='homepage'?['.h9-hero-copy > p','.h9-hero .button-primary','.h9-hero .h9-button-ghost','.h9-receipt dt','.h9-receipt dd','.h9-receipt-title > span','.h9-receipt-foot > span','.h9-receipt-stamp','.h9-mini-status']:['.card-value','.card-name','.card-availability','.h9-card-meta','.h9-product-finder label','[data-intent][aria-pressed="true"]','.compare-choice']);
+    if(viewport.width===1440)await contrast(cdp,label,name==='homepage'?['.h9-hero-copy > p','.h9-hero .button-primary','.h9-hero .h9-button-ghost','.h9-ledger-row h3','.h9-artifact-name','.h9-receipt-title > span','.h9-receipt-foot > span','.h9-receipt-stamp','.h9-mini-status']:['.card-value','.card-name','.card-availability','.h9-card-meta','.h9-product-finder label','[data-intent][aria-pressed="true"]','.compare-choice']);
     if(name==='homepage'){
       await bindingComposition(cdp,viewport);
       if([1440,390].includes(viewport.width))await screenshot(cdp,`homepage-${viewport.width}-first.png`,viewport,{full:false});

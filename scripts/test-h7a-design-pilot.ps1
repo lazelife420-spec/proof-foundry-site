@@ -74,8 +74,11 @@ Assert-Condition ($signature -match '(?s)\.signature-home \.product-card.*?borde
 Assert-Condition ($signature -match 'H7A-R.*OWNER REFINEMENT: SIMPLER CARDS \+ CURATED MOBILE CATALOG') 'source: H7A-R refinement layer is present'
 Assert-Condition ($outputSignature -match 'H7A-R.*OWNER REFINEMENT: SIMPLER CARDS \+ CURATED MOBILE CATALOG') 'output: H7A-R refinement layer survives build'
 Assert-Condition ($cardTemplate -match '<details class="card-more"><summary>Details</summary>') 'source: card template puts secondary facts behind native disclosure'
+# VR1: platform, release state and version moved into a visible meta row; the
+# Details disclosure now only renders when a product carries a caveat line.
+Assert-Condition ($cardTemplate -match 'class="h9-card-meta"' -and $cardTemplate -match 'card-platform' -and $cardTemplate -match 'card-availability') 'source: card template exposes platform and release state in a visible meta row'
 Assert-Condition ($cardTemplate -notmatch 'card-topline') 'source: card template drops the old topline row'
-Assert-Condition (([regex]::Matches($outputCatalog, '<details class="card-more">')).Count -eq 7) 'output: all seven software cards render the details disclosure'
+Assert-Condition (([regex]::Matches($outputCatalog, '<details class="card-more">')).Count -eq ([regex]::Matches($outputCatalog, 'card-detail')).Count) 'output: card details disclosure renders only where a caveat line exists'
 Assert-Condition ($outputCatalog -notmatch 'card-topline') 'output: no software card renders the old topline row'
 # H9 moves the entire functional catalog to /software/. The old mobile
 # curation toggle is replaced by filters; without JS all seven remain visible.

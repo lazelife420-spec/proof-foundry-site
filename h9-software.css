@@ -1,10 +1,7 @@
 /* H9 catalog: matte, legible utility. Product and release data stay canonical. */
 .software-catalog-page{background:#090d10;color:#f0eee7;color-scheme:dark}
 .software-catalog-page .site-header{background:#090d10f5;border-bottom-color:#ffffff15;backdrop-filter:blur(16px)}
-.software-catalog-page .brand-lockup picture{display:none}
 .software-catalog-page .brand-lockup{display:flex;align-items:center;gap:12px}
-.software-catalog-page .brand-lockup:before{content:"";width:38px;height:38px;background:url('/brand/PF_MARK_G_MASTER.svg') center/contain no-repeat}
-.software-catalog-page .brand-lockup:after{content:"PROOF\a FOUNDRY";white-space:pre;font:400 .9rem/1.15 Georgia,serif;letter-spacing:.15em;color:#f3efe7}
 .h9-software-wrap{width:min(1280px,calc(100% - 64px));margin:auto}
 .h9-software-hero{padding:44px 0 38px;border-bottom:1px solid #ffffff15;background:radial-gradient(ellipse at 85% 0,#95694712,transparent 60%)}
 .h9-software-kicker{font:400 .69rem/1.5 var(--font-mono,monospace);text-transform:uppercase;letter-spacing:.16em;color:#c6a887;margin:0 0 16px}
@@ -141,3 +138,10 @@
   .software-catalog-page .card-body{padding-left:12px;padding-right:12px}
   .software-catalog-page .card-name{font-size:1.15rem}
 }
+
+/* VR1 visual refoundation: platform, release state and version sit in the
+   visible h9-card-meta row; the Details disclosure now only carries the
+   candidate/hold caveat line and collapses away entirely when absent. */
+.software-catalog-page .h9-card-meta .card-availability{margin-bottom:0;display:inline-flex;align-items:center}
+.software-catalog-page .h9-card-meta .card-availability i{margin-right:6px}
+.software-catalog-page .h9-card-meta{margin:0 0 12px}

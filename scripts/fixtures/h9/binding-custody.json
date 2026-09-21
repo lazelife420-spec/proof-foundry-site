@@ -1038,11 +1038,11 @@
       "lfSha256": "6e34f112887312c6757842be2c21f110071165b1fe5699190fab1e9cae9e3f47",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "9d2c4eb007b4a582552754ff03be8a341a37cb13e31eda10f64f0db54b5b56c0",
-        "bytes": 22098,
+        "sha256": "dcd3001ad54aa5c02b2d9b61535c41ca8b3d304c16c7d9e82c8a163e483a4da2",
+        "bytes": 22636,
         "comparison": "utf8-lf",
-        "lfSha256": "186b7d896be78b2fa11b4383681b01c2bd38ab61ce1e05cb1a20d3d49b6ed0c6",
-        "reason": "H13: product-page source is now products/<id>/content.html (narrative slot); renderer generates shell/head/breadcrumb/related"
+        "lfSha256": "dcd3001ad54aa5c02b2d9b61535c41ca8b3d304c16c7d9e82c8a163e483a4da2",
+        "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
       },
       "previousMigration": {
         "path": "cache-vault.html",
@@ -1057,11 +1057,11 @@
       "lfSha256": "dd226c02ba94fbf4d73cee255f42330f541413102108b567758ace7c6ce01bfc",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "5bd453445bb749569d60a20bd1013c776eeb38ba2d76df3357b259bb528c4db2",
-        "bytes": 15305,
+        "sha256": "8a497a62457827feae9c7519724a61bf2de7b665ee324c1507b59569c901508f",
+        "bytes": 15773,
         "comparison": "utf8-lf",
-        "lfSha256": "2e3c44bc22356fff8a4661f6f98052ff203b441e9acbc71d2e78bef4b4d8437a",
-        "reason": "H13: product-page source is now products/<id>/content.html (narrative slot); renderer generates shell/head/breadcrumb/related"
+        "lfSha256": "8a497a62457827feae9c7519724a61bf2de7b665ee324c1507b59569c901508f",
+        "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
       },
       "previousMigration": {
         "path": "cleanroom.html",
@@ -1092,11 +1092,11 @@
       "lfSha256": "1b42817b0d02980a418ebdd653be826dbc35fedfb99454fceb007ee4be78870c",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "ad6e584db092d4f583655a1ba28e04857e3562a090e6a632ee2ee793efd74a99",
-        "bytes": 17243,
+        "sha256": "6a75ad1c0b5c322d522b0613c374310da1bd693e94c02361ea85e0ce3ed3c3bd",
+        "bytes": 17711,
         "comparison": "utf8-lf",
-        "lfSha256": "17044106597d943e7e5663937722b56b761eede4cf8e593cec00ec885b15fd4b",
-        "reason": "H13: product-page source is now products/<id>/content.html (narrative slot); renderer generates shell/head/breadcrumb/related"
+        "lfSha256": "6a75ad1c0b5c322d522b0613c374310da1bd693e94c02361ea85e0ce3ed3c3bd",
+        "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
       },
       "previousMigration": {
         "path": "forgecast.html",
@@ -1119,11 +1119,11 @@
       "lfSha256": "c85be2d875b2032bb860e31bca1d0ba3323dc9d456be0f8cf68796dbafff17ff",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "54c0572e62822fe3f912e787b2b6a13cc836ab8b4ea05f20eaf372879e1e6684",
-        "bytes": 17217,
+        "sha256": "5a1ef3f0a88469d181c750ca48284d36c92af81539f0d21d62cf332a9df0b131",
+        "bytes": 17685,
         "comparison": "utf8-lf",
-        "lfSha256": "4e76ec191f319313d3fbd3660f3898f5ff24b9105cd08489a758261ae7dc3db8",
-        "reason": "H13: product-page source is now products/<id>/content.html (narrative slot); renderer generates shell/head/breadcrumb/related"
+        "lfSha256": "5a1ef3f0a88469d181c750ca48284d36c92af81539f0d21d62cf332a9df0b131",
+        "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
       },
       "previousMigration": {
         "path": "ghostlayer.html",
@@ -1136,7 +1136,14 @@
       "bytes": 13702,
       "comparison": "utf8-lf",
       "lfSha256": "84aa17e3d816c8755d67f0db5ef47636dc369d8dfa69a5e36a779c8c8a159312",
-      "origin": "original-entry-inventory"
+      "origin": "original-entry-inventory",
+      "migration": {
+        "sha256": "dbbd278991447af9d83b8d36d4d30a5e5ec4f476b06b011827484917268df706",
+        "bytes": 13802,
+        "comparison": "utf8-lf",
+        "lfSha256": "dbbd278991447af9d83b8d36d4d30a5e5ec4f476b06b011827484917268df706",
+        "reason": "VR1-R1 owner visual-review correction 2026-09-21: unified header identity (homepage 42px squish removed, software pseudo-lockup removed, shared 40px mobile mark), ProofShot hero moved to current-brand proof-cards capture, .pp-record scroll clearance for the sticky header."
+      }
     },
     {
       "path": "h9-software.js",
@@ -1154,11 +1161,11 @@
       "lfSha256": "bc08d12dce3e35c8f36719029438463b22a779ce8ce89a71102b46c9a27b90aa",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "7ba91a3df3d47951250584cad67a49b0a3a0c6017679b95430fbabee19ff678b",
-        "bytes": 38019,
+        "sha256": "679ee6397c564b0a2f4942548619856d64292b5b3db3c0283064f56a34d07e71",
+        "bytes": 38487,
         "comparison": "utf8-lf",
-        "lfSha256": "0409f7f562e5a6c96f0335e4c53080de96378ebe56e4892fd71074b37d76c59e",
-        "reason": "H13: product-page source is now products/<id>/content.html (narrative slot); renderer generates shell/head/breadcrumb/related"
+        "lfSha256": "679ee6397c564b0a2f4942548619856d64292b5b3db3c0283064f56a34d07e71",
+        "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
       },
       "previousMigration": {
         "path": "lights-out.html",
@@ -1187,7 +1194,14 @@
       "bytes": 1209,
       "comparison": "utf8-lf",
       "lfSha256": "ce4d6f62f68de6f50fb1199a1c2468f788790d2eba95499724abb42bbd9ffb4b",
-      "origin": "original-entry-inventory"
+      "origin": "original-entry-inventory",
+      "migration": {
+        "sha256": "f9ba0c456d1888628f9a888bd29243171967a2601f3c328e4a84d00e1fe15439",
+        "bytes": 1234,
+        "comparison": "utf8-lf",
+        "lfSha256": "f9ba0c456d1888628f9a888bd29243171967a2601f3c328e4a84d00e1fe15439",
+        "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
+      }
     },
     {
       "path": "product-page.css",
@@ -1195,7 +1209,14 @@
       "bytes": 22236,
       "comparison": "utf8-lf",
       "lfSha256": "9498b8df1f0007adca096559582b3fbd27cb5aaeb2de9f0ec64cd1c7b18accf3",
-      "origin": "original-entry-inventory"
+      "origin": "original-entry-inventory",
+      "migration": {
+        "sha256": "b4047aeb4583a4fa32d360c52473e8fe33a6f2f376f7fd407e6cb379786c8a10",
+        "bytes": 24693,
+        "comparison": "utf8-lf",
+        "lfSha256": "b4047aeb4583a4fa32d360c52473e8fe33a6f2f376f7fd407e6cb379786c8a10",
+        "reason": "VR1-R3 owner visual-review correction 2026-09-21: exact desktop header parity (CTA metrics/nav cluster), product-dock steps aside while .pp-record is open."
+      }
     },
     {
       "path": "proof-standard.html",
@@ -1205,11 +1226,11 @@
       "lfSha256": "b28cf8d5e34f84b622d2a27507a0856e3b8371c6adb1f61346e605f642cb0c82",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "cd6313b16734cec9568b2214aed2da6fe5bc3acd03d8d47821863c28ee35fedd",
-        "bytes": 8219,
+        "sha256": "11de9fcf9efbde10e2e51afb148008a49ac45c4004d953b75ce81806a3399664",
+        "bytes": 8974,
         "comparison": "utf8-lf",
-        "lfSha256": "cd6313b16734cec9568b2214aed2da6fe5bc3acd03d8d47821863c28ee35fedd",
-        "reason": "H11-R1 contract remediation 2026-09-20: worktreeDirty removed from public v1; truthful per-route sitemap lastmods (manifest dependency is not a content event); deploy.ps1 blocks tracked-dirty deploys; schema versioning policy added."
+        "lfSha256": "11de9fcf9efbde10e2e51afb148008a49ac45c4004d953b75ce81806a3399664",
+        "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
       }
     },
     {
@@ -1228,11 +1249,11 @@
       "lfSha256": "5a5a0b90ddec2a8bffcfdb005b0cee2a20c544bf20357613a02b5415dc5dd08e",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "307691b260f520bd4dce5135f3705dc721d385b2a4e7b47c21d5440b1664cfb6",
-        "bytes": 30680,
+        "sha256": "97e13b3003830505e9172c102eafbb0f7aa235a9e5a7e55e525dca513d2c9f8b",
+        "bytes": 30936,
         "comparison": "utf8-lf",
-        "lfSha256": "38b86a629b3295923967a9464771958d3b6305560066f7e89beecbd0d4fb2bf6",
-        "reason": "H13: product-page source is now products/<id>/content.html (narrative slot); renderer generates shell/head/breadcrumb/related"
+        "lfSha256": "97e13b3003830505e9172c102eafbb0f7aa235a9e5a7e55e525dca513d2c9f8b",
+        "reason": "VR1-R2 owner visual-review correction 2026-09-21: desktop header true parity (homepage nav/CTA now shares the studio treatment), ProofShot hero moved to verified web-hero brand artwork after proof-cards capture proved HyperSnatch-chromed, record-open capture fixed to a real scrolled viewport with geometric clearance assertion."
       },
       "previousMigration": {
         "path": "proofshot.html",
@@ -1247,11 +1268,11 @@
       "lfSha256": "beb0fc088cf570f4c293d25d95555cf340428b8abf1e610d148368205cee2771",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "31c54fe0e69555a0dde382a1eb8fa985062037f09901e3b03f0e6de042c782e5",
-        "bytes": 29488,
+        "sha256": "5ba2f73806654375b499b6726d0cc8a4a6c560bde143181df703db4722d0999e",
+        "bytes": 29956,
         "comparison": "utf8-lf",
-        "lfSha256": "9b7d28404416ba611349d3ef2ec574c423a6f11e05e2eb3119de59153cc62987",
-        "reason": "H13: product-page source is now products/<id>/content.html (narrative slot); renderer generates shell/head/breadcrumb/related"
+        "lfSha256": "5ba2f73806654375b499b6726d0cc8a4a6c560bde143181df703db4722d0999e",
+        "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
       },
       "previousMigration": {
         "path": "reality-gate.html",
@@ -1266,18 +1287,11 @@
       "lfSha256": "faf8f7558fe7a7faea8291375e56fe4eef9b5342db4d8dc6e56760fe0da4dc80",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "387f9d523af113234e973d8e88b7c8b833d2b4568324fea737ef4dc816e6204d",
-        "bytes": 7824,
+        "sha256": "3e5ea60518b24c632570887737c20f2714c453f12dadf6f0782c536332fa6fe9",
+        "bytes": 7869,
         "comparison": "utf8-lf",
-        "lfSha256": "387f9d523af113234e973d8e88b7c8b833d2b4568324fea737ef4dc816e6204d",
-        "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/.",
-        "previousMigration": {
-          "sha256": "25e7ac0fbe5559152f34469a9fd36fc83a77dac8ad057af3ca274401162b2a9b",
-          "bytes": 7802,
-          "comparison": "utf8-lf",
-          "lfSha256": "25e7ac0fbe5559152f34469a9fd36fc83a77dac8ad057af3ca274401162b2a9b",
-          "reason": "Public roadmap truth tranche 2026-09-20: owner-approved roadmap.html repair; stale hardcoded release truth removed, Available now / In progress grouping and closing proof note added."
-        }
+        "lfSha256": "3e5ea60518b24c632570887737c20f2714c453f12dadf6f0782c536332fa6fe9",
+        "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
       }
     },
     {
@@ -1331,7 +1345,14 @@
       "bytes": 5297,
       "comparison": "utf8-lf",
       "lfSha256": "8d2ae818edb11c34ad52890f9648df9c131ebb377c11c599ed30ea6bf83e9586",
-      "origin": "original-entry-inventory"
+      "origin": "original-entry-inventory",
+      "migration": {
+        "sha256": "47caff4352e7d5b3b0eed54e07aeb002f4b67d828c745fcbc6c324fd7f4a3c2e",
+        "bytes": 5327,
+        "comparison": "utf8-lf",
+        "lfSha256": "47caff4352e7d5b3b0eed54e07aeb002f4b67d828c745fcbc6c324fd7f4a3c2e",
+        "reason": "VR1-R2 owner visual-review correction 2026-09-21: desktop header true parity (homepage nav/CTA now shares the studio treatment), ProofShot hero moved to verified web-hero brand artwork after proof-cards capture proved HyperSnatch-chromed, record-open capture fixed to a real scrolled viewport with geometric clearance assertion."
+      }
     },
     {
       "path": "scripts/test-h3-trust-to-action.ps1",
@@ -1356,11 +1377,11 @@
       "lfSha256": "9a1c62f516b426b0eed377834ffc19c9fdaf0f25f0ecf19b7c56a7aff3014a03",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "5215a057ad8a09e30c506dfbb3306e79c0b3a3b59e4a7ec289a28760bdb71eff",
-        "bytes": 15256,
+        "sha256": "f9cb4888f726522b1e3528207ef5e44d85b908f08062b6f3aff8a680564ae65c",
+        "bytes": 15422,
         "comparison": "utf8-lf",
-        "lfSha256": "5215a057ad8a09e30c506dfbb3306e79c0b3a3b59e4a7ec289a28760bdb71eff",
-        "reason": "H13 modular product renderer 2026-09-20: authorized source/test updates for module migration"
+        "lfSha256": "f9cb4888f726522b1e3528207ef5e44d85b908f08062b6f3aff8a680564ae65c",
+        "reason": "VR1 visual refoundation 2026-09-21: test expectations updated to the authorized new contract — proofshot.presentation cardImage* fields registered as authorized drift (current-brand workbench capture replaces pre-rebrand HyperSnatch imagery)."
       },
       "previousMigration": {
         "sha256": "d7873cbd0f969441f1caad6574740211e4d81947f1c215a6ef9ca9460d3a0690",
@@ -1377,18 +1398,11 @@
       "lfSha256": "14d373ddcea8d50f4db20f3d42f3713e62baa5eae2c5e46bcc8fb09ac718648a",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "ef58738775b2ece87177e8c45f24beb371a1fcdb66d1f348239232464f62ceb3",
-        "bytes": 8838,
+        "sha256": "00f6dde9e00a551511296bfabe76138ce61fb902c385eba56f3c83db9adc7635",
+        "bytes": 9274,
         "comparison": "utf8-lf",
-        "lfSha256": "ef58738775b2ece87177e8c45f24beb371a1fcdb66d1f348239232464f62ceb3",
-        "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/.",
-        "previousMigration": {
-          "sha256": "15e6ce180b4d58e3f5ad0bb4a1cc2a280e3adb8464cdb329049baea2b553cdb2",
-          "bytes": 8280,
-          "comparison": "utf8-lf",
-          "lfSha256": "15e6ce180b4d58e3f5ad0bb4a1cc2a280e3adb8464cdb329049baea2b553cdb2",
-          "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919."
-        }
+        "lfSha256": "00f6dde9e00a551511296bfabe76138ce61fb902c385eba56f3c83db9adc7635",
+        "reason": "VR1 visual refoundation 2026-09-21: test expectations updated to the authorized new contract — proofshot.presentation cardImage* fields registered as authorized drift (current-brand workbench capture replaces pre-rebrand HyperSnatch imagery)."
       }
     },
     {
@@ -1405,7 +1419,14 @@
       "bytes": 7469,
       "comparison": "utf8-lf",
       "lfSha256": "46ee643e9b130f64bdfaba381f8027ae6b65a73fa322e2e508a7103109baf6c0",
-      "origin": "original-entry-inventory"
+      "origin": "original-entry-inventory",
+      "migration": {
+        "sha256": "9b7b4f75bd95b3451511670cc5c6010f3df6da1d366a7ec54539fea1623d52f2",
+        "bytes": 7918,
+        "comparison": "utf8-lf",
+        "lfSha256": "9b7b4f75bd95b3451511670cc5c6010f3df6da1d366a7ec54539fea1623d52f2",
+        "reason": "VR1 visual refoundation 2026-09-21: test expectations updated to the authorized new contract — product-first homepage order (digests/commits off the primary narrative), unified global nav, current-brand ProofShot/Cleanroom media, conditional card caveat disclosure, Layer-B record wrap."
+      }
     },
     {
       "path": "scripts/test-h7b-product-pages.ps1",
@@ -1421,7 +1442,14 @@
       "bytes": 6731,
       "comparison": "utf8-lf",
       "lfSha256": "3a3fdf1cf1962205ce6f59b5ca9592e26c630c34e4c27dedcfd173631fb6de3c",
-      "origin": "original-entry-inventory"
+      "origin": "original-entry-inventory",
+      "migration": {
+        "sha256": "20cbaa11f41925bd276a41b796342784e770c7c71d7b08e85be68e67403b2fbd",
+        "bytes": 7169,
+        "comparison": "utf8-lf",
+        "lfSha256": "20cbaa11f41925bd276a41b796342784e770c7c71d7b08e85be68e67403b2fbd",
+        "reason": "VR1-R2 owner visual-review correction 2026-09-21: desktop header true parity (homepage nav/CTA now shares the studio treatment), ProofShot hero moved to verified web-hero brand artwork after proof-cards capture proved HyperSnatch-chromed, record-open capture fixed to a real scrolled viewport with geometric clearance assertion."
+      }
     },
     {
       "path": "scripts/test-h8b-continuity-and-discovery.ps1",
@@ -1439,32 +1467,11 @@
       "lfSha256": "046d24b69768c33e875c6f52fbbccc911979a9ca45dbda5a7d7ae684f50317ec",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "257a2b73c7d907224a3977cc6621d0d8265f10fcd18c0d580fc2f6e0bffcfc19",
-        "bytes": 10477,
+        "sha256": "26d48e5afb50ad1b5ab6d1e1cb09e8345b33d71474cd4e1c1de7f2abc5ffa0bc",
+        "bytes": 11034,
         "comparison": "utf8-lf",
-        "lfSha256": "257a2b73c7d907224a3977cc6621d0d8265f10fcd18c0d580fc2f6e0bffcfc19",
-        "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/.",
-        "previousMigration": {
-          "sha256": "0c75df433f1dcfa6d63e5230cd94329910893d5440e76bd2d3be7e0d082c5fa1",
-          "bytes": 9860,
-          "comparison": "utf8-lf",
-          "lfSha256": "0c75df433f1dcfa6d63e5230cd94329910893d5440e76bd2d3be7e0d082c5fa1",
-          "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919.",
-          "previousMigration": {
-            "sha256": "d819472cdff836c1e8d19c9f4e073b6c504f6b761ee451f4982b88554abf6d30",
-            "bytes": 9187,
-            "comparison": "utf8-lf",
-            "lfSha256": "d819472cdff836c1e8d19c9f4e073b6c504f6b761ee451f4982b88554abf6d30",
-            "reason": "Explicit post-landing ancestry migration; see landing-authority-migration.json and landing-authority.patch.",
-            "previousMigration": {
-              "sha256": "63b76e79c04f3852ed717235caa97f6ca50707f91cbae63238108f2918a7154d",
-              "bytes": 9023,
-              "comparison": "utf8-lf",
-              "lfSha256": "63b76e79c04f3852ed717235caa97f6ca50707f91cbae63238108f2918a7154d",
-              "reason": "Explicit qualification-portability migration; see portability-migration.json and portability.patch."
-            }
-          }
-        }
+        "lfSha256": "26d48e5afb50ad1b5ab6d1e1cb09e8345b33d71474cd4e1c1de7f2abc5ffa0bc",
+        "reason": "VR1-R2 owner visual-review correction 2026-09-21: desktop header true parity (homepage nav/CTA now shares the studio treatment), ProofShot hero moved to verified web-hero brand artwork after proof-cards capture proved HyperSnatch-chromed, record-open capture fixed to a real scrolled viewport with geometric clearance assertion."
       }
     },
     {
@@ -1473,7 +1480,14 @@
       "bytes": 6541,
       "comparison": "utf8-lf",
       "lfSha256": "436f52dc6b1b6ff8768da4c02030f40c2f567cd48ee651551d5ecdd437dda35a",
-      "origin": "original-entry-inventory"
+      "origin": "original-entry-inventory",
+      "migration": {
+        "sha256": "a27e62fe78408af17e66cc817e299c0098073ac42a3a209ca3202d08197b3ae6",
+        "bytes": 6614,
+        "comparison": "utf8-lf",
+        "lfSha256": "a27e62fe78408af17e66cc817e299c0098073ac42a3a209ca3202d08197b3ae6",
+        "reason": "VR1 visual refoundation 2026-09-21: test expectations updated to the authorized new contract — product-first homepage order (digests/commits off the primary narrative), unified global nav, current-brand ProofShot/Cleanroom media, conditional card caveat disclosure, Layer-B record wrap."
+      }
     },
     {
       "path": "scripts/test-h9-production-reconciliation.ps1",
@@ -1483,11 +1497,11 @@
       "lfSha256": "eccd353c55072aaaaa9a055e82876c58796d7e64bcf62c268c84120a20e36c3a",
       "origin": "original-entry-inventory",
       "migration": {
-        "sha256": "7eba21195665613d23fc11c42c1e4de132f71ca0518630a9922857b3e0a618be",
-        "bytes": 12600,
+        "sha256": "6826b1ee76c61cdbe63eb69c4b0796aa0a4f3c0e845c8e213bf4984c382ef9c5",
+        "bytes": 15098,
         "comparison": "utf8-lf",
-        "lfSha256": "7eba21195665613d23fc11c42c1e4de132f71ca0518630a9922857b3e0a618be",
-        "reason": "H13 modular product renderer 2026-09-20: authorized source/test updates for module migration"
+        "lfSha256": "6826b1ee76c61cdbe63eb69c4b0796aa0a4f3c0e845c8e213bf4984c382ef9c5",
+        "reason": "VR1-R3 pin refresh."
       },
       "previousMigration": {
         "sha256": "93a14bc95199ea8e830ab65395c89930c80422e3ca5e0e935d1736da56e601f8",
@@ -1599,7 +1613,14 @@
       "bytes": 53768,
       "comparison": "utf8-lf",
       "lfSha256": "f1a0eb72d81531c66ec3e08ebf5e2d711654714b5313c116f9d814b939acbfd7",
-      "origin": "original-entry-inventory"
+      "origin": "original-entry-inventory",
+      "migration": {
+        "sha256": "6eb5aabd34c505e4fe09c9d797218717157ce23ce3316342197409595be61ee2",
+        "bytes": 54809,
+        "comparison": "utf8-lf",
+        "lfSha256": "7767d3a4f7e92808b23b423e2ebf140f58e3343d9b4ee6656cdbf6bb126c15aa",
+        "reason": "VR1-R1 owner visual-review correction 2026-09-21: unified header identity (homepage 42px squish removed, software pseudo-lockup removed, shared 40px mobile mark), ProofShot hero moved to current-brand proof-cards capture, .pp-record scroll clearance for the sticky header."
+      }
     },
     {
       "path": "styles.css",
@@ -1607,7 +1628,14 @@
       "bytes": 47887,
       "comparison": "utf8-lf",
       "lfSha256": "fd7768ac7e48784727174be85d7274e2a6a656a416148966d7fc8731c088e8d8",
-      "origin": "original-entry-inventory"
+      "origin": "original-entry-inventory",
+      "migration": {
+        "sha256": "8dc6ec3ca48a2a2a8f0f36994fee966817a7329975592a83f08327dd73bee802",
+        "bytes": 48190,
+        "comparison": "utf8-lf",
+        "lfSha256": "8dc6ec3ca48a2a2a8f0f36994fee966817a7329975592a83f08327dd73bee802",
+        "reason": "VR1-R1 owner visual-review correction 2026-09-21: unified header identity (homepage 42px squish removed, software pseudo-lockup removed, shared 40px mobile mark), ProofShot hero moved to current-brand proof-cards capture, .pp-record scroll clearance for the sticky header."
+      }
     },
     {
       "path": "support.html",
@@ -1669,7 +1697,14 @@
       "comparison": "utf8-lf",
       "lfSha256": "760a31bac464278b955f655df87cd3f04c057d3017c1a0e1c75b9a7471fd1fb7",
       "origin": "accepted-owner-package",
-      "packageMember": "candidate-files/scripts/capture-h9-binding.mjs"
+      "packageMember": "candidate-files/scripts/capture-h9-binding.mjs",
+      "migration": {
+        "sha256": "13f5337de94929be00e380fa9253495f42cd7c0b9f849528c896c5906e82d519",
+        "bytes": 49743,
+        "comparison": "utf8-lf",
+        "lfSha256": "13f5337de94929be00e380fa9253495f42cd7c0b9f849528c896c5906e82d519",
+        "reason": "VR1 visual refoundation 2026-09-21: capture rig order assertions moved to the authorized product-first composition (proof follows portfolio strip); dead .h9-receipt dt/dd contrast selectors replaced with live ledger-row selectors after homepage digest removal."
+      }
     },
     {
       "path": "truth.html",

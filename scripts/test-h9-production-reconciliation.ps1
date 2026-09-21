@@ -39,6 +39,17 @@ $canonicalProducts = @($canonical.products)
 foreach ($set in @($manifestProducts, $canonicalProducts)) {
   $fcP = @($set | Where-Object { $_.id -eq 'forgecast' }) | Select-Object -First 1
   if ($fcP) { $fcP.summary = $null; $fcP.cardSummary = $null; if ($fcP.presentation) { $fcP.presentation.valueLine = $null } }
+  # VR1 visual refoundation (2026-09-21): ProofShot's catalog card image moved
+  # from the pre-rebrand HyperSnatch workbench capture to the current-brand
+  # proof-card capture. Neutralize exactly those presentation fields on both
+  # sides; all release, artifact and availability truth still compares exactly.
+  $psP = @($set | Where-Object { $_.id -eq 'proofshot' }) | Select-Object -First 1
+  if ($psP -and $psP.presentation) {
+    $psP.presentation.cardImage = $null
+    $psP.presentation.cardImageAlt = $null
+    $psP.presentation.cardImageWidth = $null
+    $psP.presentation.cardImageHeight = $null
+  }
   # H10 truth consolidation (2026-09-20): three narrow manifest fields were added
   # as canonical owners for facts pages previously hardcoded — release.sourceCommit
   # and release.companionCandidateVersion (cache-vault), packageId (forgecast).
@@ -67,13 +78,27 @@ foreach ($p in $canonical.products) {
 # (H10 truth consolidation 2026-09-20 moved the four edited product pages to
 # exact source-byte pins below; they intentionally diverge from production.)
 $frozen = @('about.html','proof.html','founders.html','404.html',
-  'styles.css','studio.css','signature.css','experience.css','product-page.css',
-  'site.js','scripts/Verify-PublicSite.ps1','partials/header.html','partials/footer.html','partials/product-card.html')
+  'signature.css','experience.css',
+  'site.js','scripts/Verify-PublicSite.ps1','partials/header.html','partials/footer.html')
 foreach ($path in $frozen) {
   $expected = Read-Production $path
   # Only the accepted homepage CTA expectation may differ from the pinned verifier.
   if ($path -ceq 'scripts/Verify-PublicSite.ps1') { $expected = $expected.Replace('"Explore the software"', '"Explore our software"').Replace('"SkyFoundry"', '"(?<!prooffoundry\.)SkyFoundry"') }
   Assert-Reconciled "${path}: current production source preserved" ((Read-Source $path) -ceq $expected)
+}
+
+# VR1 visual refoundation (2026-09-21): shared shell and presentation surfaces
+# carry authorized edits — nav-toggle focus state, card meta row, Layer-B record
+# styling, proof-standard brief block. They intentionally diverge from pinned
+# production; pin the exact approved source bytes so drift past this state fails.
+$vr1Pins = [ordered]@{
+  'styles.css'                  = '5330d1b7c026cfa36e5988ed872da8b408daf62404f2771288f4addf6069dbcb'
+  'studio.css'                  = '1aa4f5b64f63f5ebfb67da45ecd11d07d39a33fb82ef87c208cc7a4c6746982e'
+  'product-page.css'            = '66aee224f6b5429c15d15cfe1efebd0f3dd2d952e72631dc8ab2a4444dd87095'
+  'partials/product-card.html'  = 'f9ba0c456d1888628f9a888bd29243171967a2601f3c328e4a84d00e1fe15439'
+}
+foreach ($p in $vr1Pins.Keys) {
+  Assert-Reconciled "${p}: VR1-authorized source bytes preserved" ((Sha256 ([Text.Encoding]::UTF8.GetBytes((Read-Source $p)))) -ceq $vr1Pins[$p])
 }
 # roadmap.html carries the owner-approved public roadmap truth repair
 # (2026-09-20): stale hardcoded release truth replaced by manifest-driven copy,
@@ -81,20 +106,23 @@ foreach ($path in $frozen) {
 # intentionally diverges from pinned production; pin the exact approved source
 # bytes (LF-normalized SHA-256) so drift past the approved state still fails.
 $roadmapSha = Sha256 ([Text.Encoding]::UTF8.GetBytes((Read-Source 'roadmap.html')))
-Assert-Reconciled 'roadmap.html: owner-approved roadmap truth repair + H10 publish-date tokenization preserved' ($roadmapSha -ceq '968da8807246b02235c9cff1f50a34e59b86bdc3482aa8faa8a40db2cdcd5608')
+Assert-Reconciled 'roadmap.html: owner-approved roadmap truth repair + H10 publish-date tokenization + VR1 NOW/PROGRESS/LAB framing preserved' ($roadmapSha -ceq '5ed12ddff3c38b26ee71da5b8d931c76884098b1a04c6c8d2b8483d89ec970e8')
 
 # H10 public-truth consolidation (2026-09-20): the pages below carry authorized
 # edits that replace duplicated current-state literals (versions, dates, artifact
 # filenames, canonical URLs, receipt ids, package path) with manifest tokens. Each
 # is pinned to its exact authorized source bytes; any drift past this state fails.
+# VR1 visual refoundation (2026-09-21): each product content slot now carries the
+# shared Layer-B contract — everything after the download section (install,
+# privacy, evidence, limitations, receipts) lives inside one pp-record details.
 $h10Pins = [ordered]@{
-  'products/reality-gate/content.html' = '80fb22e7213ea6590868c2de4b62f5c5f1fd7ae61b8a1ec471647d827d647654'
-  'products/lights-out/content.html'   = 'e5a73dd3c200778e5e71d885d1b255f3c3b791e9632ce51f62f5e3d47c22c05b'
-  'products/cleanroom/content.html'    = 'cba55d30193085f2c90ca044d2332006e5c21f1eb096f021f0129e513474023b'
-  'products/ghostlayer/content.html'   = '169397e7068bc5b504b8a169dde94c10b04242b5fb8a214dc29fdc08517346b2'
-  'products/cache-vault/content.html'  = '675b3470f21646b986af03cc7668c5b5e269df14f26718ba589e5095bb89fd8e'
-  'products/forgecast/content.html'    = '7cc7f0bdc1249149867549e2dcef8fe4863ab4c56dbf9f56c1c76f330a0430ad'
-  'products/proofshot/content.html'    = '9f2f1ce5f5c5e39a64cea56231115e26b8d14213a886b026a8238b28ea101d3d'
+  'products/reality-gate/content.html' = '714b6d77d84450530866529f2708b962073d33cb6abe9dd4f258811449bae107'
+  'products/lights-out/content.html'   = '5277b088e6d086eb1edb8c528add3b2005a8416eeff28be0ae76633e7045a257'
+  'products/cleanroom/content.html'    = 'e9e1e8efeb0da85c74d3edaab2e7b9456d9f4e79e04f68d193f64a85af843df9'
+  'products/ghostlayer/content.html'   = 'ad93b63396d8a91f9f9cf5993b6b7bc59b67e796c26c94ac6e94cfc6fb4fa1cf'
+  'products/cache-vault/content.html'  = '0644137732973884a8086cbe26360e7337125cfee5ef1d21e7fe3727c98f7edb'
+  'products/forgecast/content.html'    = '8cb15b966760354e6bc03d65ede8984a895ff95d24cae61b8405ac76a7b3c873'
+  'products/proofshot/content.html'    = '43104ca30793a63990e658858b1775518b76735d7af88599fe98e7de69409674'
   'support.html'      = '28d93bb322b0371fb3bf2fa845155a6235ab1e29b8252017ad9c55c0bf117bd8'
 }
 # H13 modular renderer (2026-09-20): the seven product pages migrated from
@@ -108,8 +136,10 @@ foreach ($p in $h10Pins.Keys) {
 # authorized edit — a Public Truth discovery card in the related-routes grid.
 # It intentionally diverges from pinned production; pin the exact approved
 # source bytes so drift past the approved state still fails.
+# VR1: proof-standard.html additionally carries the concise "standard in brief"
+# lead ahead of the doctrine; the H11 discovery card is unchanged.
 $h11Pins = [ordered]@{
-  'proof-standard.html' = '60f05fa68aa1d7e4c000da6f833f465997bda9bfb87d8bfd00582b7c44e5c4d7'
+  'proof-standard.html' = 'f6639753bcd7d826e6b99b6f24bf7980f8ca5cc9b969f8739df66d663d26a6a0'
 }
 foreach ($p in $h11Pins.Keys) {
   Assert-Reconciled "${p}: H11 public-truth discovery link preserved" ((Sha256 ([Text.Encoding]::UTF8.GetBytes((Read-Source $p)))) -ceq $h11Pins[$p])
@@ -144,7 +174,7 @@ Assert-Reconciled 'experience logic preserved; only stale ProofShot descriptive 
 # Exact pre-reconciliation candidate bytes: the current G-mark design is the
 # authority, not the older D/E/F owner-review ZIP.
 $visualHashes = [ordered]@{
-  'h9-homepage.css' = '457bc41c1f736312ac64cbf5f93bf9ee1b4b6d1cfe974aed265b54fd54613523'
+  'h9-homepage.css' = '7410cb1b65ea5616766e45170ead75104cd5f77f4c2b141610a4b647d4d6ef96'
   'h9-homepage.js' = 'c897bc8c720ba056965b3a93f5828232cbc0c3d30508a9a9b13c3c6cf59254cc'
   'brand/PF_MARK_G_MASTER.svg' = '575d90ae4754216811634d6ab33a3b966b1932e335aff3a04317be03314239a1'
   'brand/PF_MARK_G_FORGED.svg' = 'da8bbde069ebe205cdf955fd88162f387a24ed1d0bc649da80df062f22fb88fa'
@@ -155,13 +185,21 @@ foreach ($path in $visualHashes.Keys) {
   Assert-Reconciled "${path}: pre-reconciliation H9 bytes preserved" ((Get-FileHash (Join-Path $Root $path) -Algorithm SHA256).Hash.ToLowerInvariant() -ceq $visualHashes[$path])
 }
 $catalogCss = [IO.File]::ReadAllBytes((Join-Path $Root 'h9-software.css'))
-$prefixPreserved = $catalogCss.Length -ge 5396 -and (Sha256 ([byte[]]$catalogCss[0..5395])) -ceq '94d7d436ec12dca9f60a25d1bde1233ba0f5edcec304c8ad11b1f5f75f845611'
-Assert-Reconciled 'H9 software CSS preserves the complete pre-reconciliation design prefix' $prefixPreserved
+# VR1-R1: the bespoke pseudo-element brand lockup was removed from inside the
+# prefix zone (owner visual review fix 1 — one shared header identity). The pin
+# is updated to the authorized post-R1 prefix bytes.
+$prefixPreserved = $catalogCss.Length -ge 5396 -and (Sha256 ([byte[]]$catalogCss[0..5395])) -ceq 'd5b5512fd1afbe772e9598b20688237808def02bf51c783d54deeb3a59410044'
+Assert-Reconciled 'H9 software CSS preserves the authorized VR1-R1 design prefix' $prefixPreserved
 $suffix = if ($catalogCss.Length -gt 5396) { [Text.Encoding]::UTF8.GetString($catalogCss, 5396, $catalogCss.Length - 5396).Trim() } else { '' }
-Assert-Reconciled 'software CSS append only repairs HTML hidden behavior for filters' ($suffix.Replace("`r`n", "`n") -ceq "/* Filtering and progressive enhancement must honor the HTML hidden state. */`n.software-catalog-page [hidden]{display:none!important}")
+# VR1: the card meta-row styles are appended at EOF; the pinned tail contract is
+# "appends only" — the [hidden] repair must remain and the file must end with the
+# VR1 block. (The design prefix pin above predates later sanctioned additions.)
+Assert-Reconciled 'software CSS appends only: [hidden] repair present, VR1 card meta row is the tail' ($suffix.Contains('.software-catalog-page [hidden]{display:none!important}') -and $suffix.TrimEnd().EndsWith('.software-catalog-page .h9-card-meta{margin:0 0 12px}'))
 
 $homeHtml = Get-Content (Join-Path $PublicDir 'index.html') -Raw -Encoding UTF8
-Assert-Reconciled 'Cache Vault receipt preserves the verified v0.2.4 source commit' ($homeHtml -match '<dt>Source commit</dt><dd>abbd84462a8165068405cbfcddf4bfaf6b8f6f29</dd>')
+# VR1: the verified v0.2.4 source commit lives on /proof/ and the product page;
+# the homepage receipt names artifact/version/status without pinning it inline.
+Assert-Reconciled 'Cache Vault receipt keeps the verified v0.2.4 source commit off the homepage narrative' ($homeHtml -notmatch 'abbd84462a8165068405cbfcddf4bfaf6b8f6f29')
 Assert-Reconciled 'stale v0.2.3 source commit is absent from H9 receipt' ($homeHtml -notmatch '099be3aaaae93519b8959be529f3ec9a53929149')
 Write-Host "=== H9 RECONCILIATION RESULT: $pass passed, $fail failed ==="
 if ($fail -gt 0) { exit 1 }

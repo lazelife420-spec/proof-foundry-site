@@ -979,3 +979,100 @@ body.pp-system .studio-related {
   color: #2d4f3c;
 }
 
+
+/* ---------- 11 · PROOF & TECHNICAL RECORD (Layer B) ----------
+   One shared disclosure per product page. Everything after the download
+   section (install/uninstall, privacy, evidence, limitations, receipts)
+   lives behind this gate so the experience layer stays readable. The
+   same markup ships to the H14 runtime renderer, so the contract lives
+   in the content modules rather than a per-page fork. */
+
+.pp-record {
+  border-top: 1px solid var(--pp-line);
+  border-bottom: 1px solid var(--pp-line);
+  margin: 10px 0 0;
+  /* VR1-R1: keep the record and its anchored sections clear of the sticky
+     site header when it is revealed or deep-linked. */
+  scroll-margin-top: 112px;
+}
+
+.pp-record > summary.pp-record-summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  cursor: pointer;
+  padding: 26px 0;
+}
+
+.pp-record > summary.pp-record-summary::-webkit-details-marker { display: none; }
+
+.pp-record .pp-record-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pp-record .pp-record-label strong {
+  color: var(--pp-warm);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: .01em;
+}
+
+.pp-record .pp-record-hint {
+  color: var(--pp-dim);
+  font-size: .85rem;
+  font-weight: 400;
+}
+
+.pp-record > summary.pp-record-summary .expand-label {
+  color: var(--pp-gold-light);
+  font-size: .88rem;
+  font-weight: 550;
+  letter-spacing: .04em;
+  flex: none;
+  border: 1px solid var(--pp-line);
+  border-radius: 999px;
+  padding: 8px 18px;
+  transition: border-color .15s ease, color .15s ease;
+}
+
+.pp-record > summary.pp-record-summary:hover .expand-label {
+  border-color: var(--pp-gold);
+  color: var(--pp-warm);
+}
+
+.pp-record > summary.pp-record-summary:focus-visible {
+  outline: 2px solid var(--pp-gold-light);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.pp-record[open] > summary.pp-record-summary {
+  border-bottom: 1px solid var(--pp-line);
+}
+
+.pp-record .pp-record-inner {
+  padding: 26px 0 12px;
+}
+
+.pp-record .pp-record-inner [id] {
+  scroll-margin-top: 112px;
+}
+
+/* VR1-R3: while the technical record is open, its tables/facts scroll the
+   full viewport height — the floating product dock must not overlay them. */
+body:has(.pp-record[open]) .product-dock {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .pp-record > summary.pp-record-summary {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 20px 0;
+  }
+}

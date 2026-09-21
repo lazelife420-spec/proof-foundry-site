@@ -87,19 +87,14 @@
       "href": "/software/"
     },
     {
-      "id": "roadmap",
-      "label": "What’s next",
-      "href": "/roadmap/"
+      "id": "proof-standard",
+      "label": "Proof",
+      "href": "/proof-standard/"
     },
     {
-      "id": "receipts",
-      "label": "Release records",
-      "href": "/proof/"
-    },
-    {
-      "id": "support",
-      "label": "Support",
-      "href": "/support/"
+      "id": "about",
+      "label": "About",
+      "href": "/about/"
     }
   ],
   "navCta": {
@@ -756,11 +751,11 @@
       "visible": true,
       "presentation": {
         "valueLine": "Capture a page's real resources into a sealed proof bundle you can verify offline, years later.",
-        "cardImage": "/assets/studio/workbench-home-card-960.png",
-        "cardImageAlt": "The ProofShot workbench home screen, showing the capture intake surface of the current engine build.",
+        "cardImage": "/assets/proofshot/web-hero.png",
+        "cardImageAlt": "ProofShot production brand artwork — the aperture mark over a dark carbon-and-vermilion field.",
         "cardCta": "Explore ProofShot",
-        "cardImageWidth": 960,
-        "cardImageHeight": 540
+        "cardImageWidth": 1920,
+        "cardImageHeight": 900
       },
       "release": {
         "publicVersion": "2.0.0",

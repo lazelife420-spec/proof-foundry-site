@@ -99,6 +99,14 @@ body.studio.product-page{padding:0}
 .support-section-mb4{margin-bottom:4rem}
 
 /* Proof Standard & Doctrine Cards */
+.standard-brief{margin-top:2.5rem}
+.standard-brief-card{background:rgba(16,25,35,0.62);border:1px solid var(--gold);border-radius:10px;padding:26px 30px}
+.standard-brief-heading{font-size:1.15rem;letter-spacing:.02em;color:var(--gold);margin:0 0 14px}
+.standard-brief-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.standard-brief-list li{color:var(--muted);font-size:1rem;line-height:1.55;padding-left:22px;position:relative}
+.standard-brief-list li::before{content:"";position:absolute;left:0;top:.62em;width:9px;height:9px;border-radius:2px;background:var(--gold)}
+.standard-brief-list li strong{color:var(--text)}
+.standard-brief-note{margin:16px 0 0;color:var(--muted);font-size:.88rem;font-style:italic}
 .standard-doctrine-box{margin-top:2rem}
 .standard-doctrine-card{background:rgba(16,25,35,0.62);border:1px solid var(--line);border-radius:8px;padding:2rem}
 .doctrine-heading{color:var(--text);font-size:1.5rem;margin-bottom:1rem}
@@ -169,3 +177,8 @@ body.studio.product-page{padding:0}
 .support-privacy-callout{background:rgba(214,168,79,0.08);border-left:4px solid var(--gold);padding:1rem;border-radius:4px;margin-top:1rem}
 .support-privacy-callout p{margin:0;font-size:.9rem;color:#f2f0eb}
 
+
+/* VR1-R1 shell parity: the shared header picture swaps to the square PF mark
+   at <=640px; keep it a compact mark on studio pages (overrides the 224px
+   horizontal-lockup width that made the mark render ~200px square). */
+@media(max-width:640px){.studio .brand-logo{width:40px;height:40px;object-fit:contain}}

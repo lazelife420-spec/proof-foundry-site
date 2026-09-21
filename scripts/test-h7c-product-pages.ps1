@@ -89,6 +89,10 @@ foreach ($p in $h7cProducts) {
   # Current production keeps the identity/migration tier while shipping v2.0.0.
   if ($slug -eq 'proofshot') {
     Assert-Condition ($html -match 'HyperSnatch' -and $html -match 'Screenshots predate the rebrand') "$name - legacy engine imagery is explicitly disclosed"
+    # VR1-R2 visual truth: the hero may not carry a known HyperSnatch-era
+    # engine capture; it must use a verified ProofShot-branded asset.
+    $hero = [regex]::Match($html, '(?s)hero-product-shot.*?</figure>').Value
+    Assert-Condition ($hero -notmatch 'workbench-home|workbench-proof-cards|hypersnatch|v1\.6\.18' -and $hero -match 'web-hero\.png') "$name - hero carries verified ProofShot-branded visual, no HyperSnatch-era asset"
     Assert-Condition ($html -match 'Download ProofShot v2\.0\.0') "$name - real public download CTA present"
     Assert-Condition ($html -match 'ProofShot-Setup-2\.0\.0\.exe' -and $html -notmatch 'Follow development|no public ProofShot release') "$name - current public installer supersedes development-only CTA"
   }
