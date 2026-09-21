@@ -1703,6 +1703,27 @@ function Process-Template($srcPath, $srcName) {
   if ($html -match '<!--\s*@product\s+(\S+)\s*-->') { $productSlug = $Matches[1] }
   $html = $html -replace '<!--\s*@product\s+\S+\s*-->\s*\r?\n?', ''
 
+  # H12 reciprocal discovery: a page advertises rel="alternate" only when the
+  # target is a true alternate representation of THIS document's meaning —
+  # never as generic "related JSON". Binding keys on @page identity == manifest
+  # route (never @product — that pragma is token-binding only; index.html binds
+  # reality-gate for tokens but IS NOT its page). The only aggregate pair that
+  # qualifies is /truth/ ↔ /truth/index.json (direct representation) and
+  # /software/ ↔ /truth/index.json (same public catalog, reformulated).
+  $truthAlternate = $null
+  $pageProduct = @($manifest.products | Where-Object { $_.visible -and $_.route -eq "/$pageId/" }) | Select-Object -First 1
+  if ($pageProduct) {
+    $truthAlternate = "/truth/products/$($pageProduct.id).json"
+  } elseif ($pageId -in @('truth', 'software') -and $html -match 'rel="canonical"') {
+    # Canonical-gated: noindex pages (404 reuses @page home for nav state) never
+    # advertise machine alternates.
+    $truthAlternate = '/truth/index.json'
+  }
+  if ($truthAlternate) {
+    $altTag = "  <link href=`"$truthAlternate`" rel=`"alternate`" title=`"Public Truth`" type=`"application/json`"/>"
+    $html = $html -replace '</head>', "$altTag`n</head>"
+  }
+
   # Resolve nav + cta
   $navLinks = Build-NavLinks $pageId
   $navCta = "<a class=`"button button-primary nav-cta`" href=`"$($manifest.navCta.href)`">$($manifest.navCta.label)</a>"

@@ -1626,6 +1626,14 @@
       "comparison": "utf8-lf",
       "lfSha256": "94ab0b20709133e122cb2888f31e2d37227f3b5f8fa572c0cd115b890fd7814f",
       "origin": "h11-public-truth-surface-2026-09-20"
+    },
+    {
+      "path": "scripts/test-h12-truth-discovery.ps1",
+      "sha256": "e2b969de745caaaa29c3d8e0d65274daf67aa8f6ea622852991a443a6c5d4ea0",
+      "bytes": 11467,
+      "comparison": "utf8-lf",
+      "lfSha256": "e2b969de745caaaa29c3d8e0d65274daf67aa8f6ea622852991a443a6c5d4ea0",
+      "origin": "h12-truth-discovery-2026-09-20"
     }
   ],
   "exclusions": [
