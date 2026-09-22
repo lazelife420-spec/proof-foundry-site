@@ -72,7 +72,18 @@ Assert-Condition ($null -eq $psRegistry.release.candidateVersion) 'Registry Proo
 Assert-Condition ($psRegistry.release.publishedAt -eq '2026-09-17') 'Registry ProofShot publication date is preserved'
 
 $loRegistry = $registryJson.products | Where-Object { $_.id -eq 'lights-out' }
-Assert-Condition ($loRegistry.release.releaseStatus -eq 'HOLD') "Registry Lights Out release status is HOLD"
+Assert-Condition ($loRegistry.release.releaseStatus -eq 'PUBLIC_RELEASE') "Registry Lights Out release status is PUBLIC_RELEASE"
+Assert-Condition ($loRegistry.release.publicVersion -eq '11.1.3') "Registry Lights Out public version is 11.1.3"
+Assert-Condition ($null -eq $loRegistry.release.candidateVersion) "Registry Lights Out carries no candidate version (v11.1.3 is final)"
+Assert-Condition ($loRegistry.release.publishedAt -eq '2026-09-15') "Registry Lights Out publishedAt matches the final release date"
+$loTruthJson = Get-Content (Join-Path $publicDir "truth\products\lights-out.json") -Raw | ConvertFrom-Json
+Assert-Condition ($loTruthJson.release.companionPublicVersion -eq '11.1.1') "Truth record Lights Out public companion remains 11.1.1"
+Assert-Condition ($loTruthJson.download.available -eq $true) "Truth record Lights Out download is available"
+Assert-Condition ($loHtml -match [regex]::Escape('https://downloads.theprooffoundry.com/lights-out/v11.1.3/Lights-Out-Portable-v11.1.3-win-x64.zip')) "Lights Out download resolves to the published v11.1.3 R2 mirror ZIP"
+Assert-Condition ($loHtml -match 'b4a5f4a4332b53106618433bc1817f4fcc5decede9f97ebb3817b69cef6b7e62') "Lights Out publishes the final v11.1.3 portable ZIP SHA-256"
+Assert-Condition ($loHtml -match 'dc4ffa82a254820e4946a1056a8b894aea3c39b171c39e79d4a34747a010545a') "Lights Out publishes the final v11.1.3 installer SHA-256"
+Assert-Condition ($loHtml -notmatch 'c7872350101906471e83d8c0649e1e65c5f9baa4591e0c02ccfd8780215726d6') "Lights Out does not present the superseded RC4 artifact hash"
+Assert-Condition ($loHtml -match 'Receipt</dt><dd>342c11bc-d2d6-4918-8920-a495211ff69b') "Lights Out receipt binding is the final-artifact qualification receipt"
 
 $resultColor = if ($failed -eq 0) { 'Green' } else { 'Red' }
 Write-Host "`n=== RESULT: $passed passed, $failed failed ===" -ForegroundColor $resultColor

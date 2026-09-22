@@ -73,13 +73,13 @@ Assert-Condition ($rg -match 'onboarding-list[\s\S]*%APPDATA%\\RealityGate\\') "
 Assert-Condition ($cl -match 'onboarding-list[\s\S]*%APPDATA%\\Cleanroom\\Archive\\') "P1: Cleanroom leftovers cite %APPDATA%\Cleanroom\Archive\"
 Assert-Condition ($gl -match 'onboarding-list[\s\S]*%TEMP%\\GhostLayer\\') "P1: GhostLayer leftovers cite %TEMP%\GhostLayer\"
 Assert-Condition ($fc -match 'onboarding-list[\s\S]*com\.prooffoundry\.skyfoundry') "P1: ForgeCast leftovers cite app-private storage"
-# Onboarding stays availability-honest per product: Lights Out is held (no
-# download promised); Cache Vault now ships a final public release, so its
-# onboarding must match the live v0.2.4 download instead of the RC-era
-# "unavailable" wording. The Android companion hold copy is preserved exactly.
-Assert-Condition ($lo -match 'Install, update, uninstall') "P1: Lights Out onboarding block present (held-state honest)"
+# Onboarding stays availability-honest per product: Lights Out v11.1.3 is now a
+# public release, so its onboarding names the real download; Cache Vault ships a
+# final public release and its onboarding must match the live v0.2.4 download
+# instead of the RC-era "unavailable" wording.
+Assert-Condition ($lo -match 'Install, update, uninstall') "P1: Lights Out onboarding block present (public-release honest)"
 Assert-Condition ($cv -match 'Install, update, uninstall') "P1: Cache Vault onboarding block present (final-release honest)"
-Assert-Condition ($lo -match 'not publicly downloadable') "P1: Lights Out onboarding does not promise a download"
+Assert-Condition ($lo -match 'Download Lights Out v11\.1\.3' -and $lo -notmatch 'not publicly downloadable|currently unavailable') "P1: Lights Out onboarding names the public v11.1.3 download"
 Assert-Condition ($cv -match 'Download v0\.2\.4 \(Windows\)') "P1: Cache Vault onboarding matches the live final v0.2.4 download CTA"
 Assert-Condition ($cv -match 'The public Windows v0\.2\.4 release is available from Proof Foundry downloads') "P1: Cache Vault install guidance names the live v0.2.4 release"
 Assert-Condition ($cv -match 'Android: public companion v0\.2\.0; v0\.2\.1 remains on hold') "P1: Cache Vault keeps the Android hold truth intact"

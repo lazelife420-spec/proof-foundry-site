@@ -88,14 +88,14 @@ Assert-Condition ($loHtml -notmatch '/reports/deploy-receipts/2026-06-30-proof-f
 
 $registryJson = Get-Content (Join-Path $publicDir "proof\index.json") -Raw -Encoding UTF8 | ConvertFrom-Json
 $loRegistry = $registryJson.products | Where-Object { $_.id -eq 'lights-out' }
-Assert-Condition ($loRegistry.release.releaseStatus -eq 'HOLD') "P1 Regression: Lights Out release status remains HOLD"
+Assert-Condition ($loRegistry.release.releaseStatus -eq 'PUBLIC_RELEASE') "P1 Regression: Lights Out release status is PUBLIC_RELEASE"
 
 # 10. Hardened Support Release-Truth Parity Assertions
 Assert-Condition ($supportHtml -match 'Reality Gate[\s\S]*?v1\.1\.0') "Support release truth: Reality Gate v1.1.0"
 Assert-Condition ($supportHtml -match 'Cache Vault[\s\S]*?Public Windows v0\.2\.4') "Support release truth: Cache Vault final public v0.2.4"
 Assert-Condition ($supportHtml -notmatch 'v0\.2\.3-rc') "Support release truth: no RC candidate strings for Cache Vault"
 $loSupportCard = [regex]::Match($supportHtml, '(?s)<article class="detail-card">\s*<h3><a href="/lights-out/">.*?</article>').Value
-Assert-Condition ((-not [string]::IsNullOrWhiteSpace($loSupportCard)) -and ($loSupportCard -match 'Public Windows v11\.1\.2\.[\s\S]*?Android companion public v11\.1\.1[\s\S]*?v11\.1\.3 candidates on hold[\s\S]*?public downloads currently unavailable') -and ($loSupportCard -notmatch '(?:v11\.1\.2|v11\.1\.1)\s+available')) "Support release truth: Lights Out public versions, held candidate and download unavailability agree without false artifact availability"
+Assert-Condition ((-not [string]::IsNullOrWhiteSpace($loSupportCard)) -and ($loSupportCard -match 'Public Windows v11\.1\.3 available[\s\S]*?Android companion v11\.1\.1') -and ($loSupportCard -notmatch 'on hold|currently unavailable|candidates? on')) "Support release truth: Lights Out public release, companion parity and download availability agree"
 Assert-Condition ($supportHtml -match 'Cleanroom[\s\S]*?v1\.0\.7[\s\S]*?v1\.0\.10') "Support release truth: Cleanroom v1.0.7 / candidate v1.0.10"
 Assert-Condition ($supportHtml -notmatch 'Cleanroom[\s\S]*?v1\.2\.0') "Support release truth: Cleanroom rejects incorrect v1.2.0"
 Assert-Condition ($supportHtml -notmatch 'Cleanroom[\s\S]*?v1\.3\.0') "Support release truth: Cleanroom rejects incorrect v1.3.0"
