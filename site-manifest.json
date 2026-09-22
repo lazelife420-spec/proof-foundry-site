@@ -231,7 +231,8 @@
         "companionCandidateVersion": "0.2.1",
         "releaseStatus": "PUBLIC_RELEASE",
         "publishedAt": "2026-09-17",
-        "sourceCommit": "abbd84462a8165068405cbfcddf4bfaf6b8f6f29"
+        "sourceCommit": "abbd84462a8165068405cbfcddf4bfaf6b8f6f29",
+        "companionPublicVersion": "0.2.0"
       },
       "artifacts": [
         {

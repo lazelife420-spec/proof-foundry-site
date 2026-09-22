@@ -50,6 +50,7 @@ foreach ($set in @(@($manifest.products), @($canonical.products))) {
     if ($pp.release) {
       $pp.release.PSObject.Properties.Remove('companionCandidateVersion')
       $pp.release.PSObject.Properties.Remove('sourceCommit')
+      $pp.release.PSObject.Properties.Remove('companionPublicVersion')
     }
     $pp.PSObject.Properties.Remove('packageId')
   }

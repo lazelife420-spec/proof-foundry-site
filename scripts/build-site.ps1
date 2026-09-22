@@ -1435,15 +1435,217 @@ function Build-TruthIndexCards {
     $ver = if ($p.release -and $p.release.publicVersion) { "v$($p.release.publicVersion)" } else { 'Unreleased' }
     $artCount = @($p.artifacts).Count
     $artWord = if ($artCount -eq 1) { 'artifact' } else { 'artifacts' }
+    # "Public" artifacts only exist when the release is actually public. HOLD /
+    # proof / candidate states record artifacts without publishing them.
+    $isPublic = $p.release -and ($p.release.releaseStatus -in @('PUBLIC_RELEASE','FROZEN'))
+    $artScope = if ($isPublic) { 'public' } else { 'recorded' }
     $cards += @"
         <article class="detail-card">
           <h3>$(Html-Attr $p.name)</h3>
-          <p>$(Html-Attr $statusLabel) · $(Html-Attr $ver) · $artCount public $artWord</p>
+          <p>$(Html-Attr $statusLabel) · $(Html-Attr $ver) · $artCount $artScope $artWord</p>
           <p><a class="text-link" href="/truth/products/$(Html-Attr $p.id).json">View JSON ↗</a> · <a class="text-link" href="/$(Html-Attr $p.id)/">Product page ↗</a></p>
         </article>
 "@
   }
   return $cards
+}
+
+# ─────────────────────────────────────────────────────────────────────────────
+# PF-TF1 — The Truth Files: human-readable layer over /truth/*.json.
+# Every fact is derived field-by-field from the same manifest model that emits
+# the machine records, so the two surfaces can never disagree.
+# ─────────────────────────────────────────────────────────────────────────────
+function Build-TruthFileCards {
+  $cards = ''
+  foreach ($p in $allProductState) {
+    $stateLabel = if ($manifest.stateLabels -and $manifest.stateLabels.PSObject.Properties[$p.state]) { $manifest.stateLabels.($p.state) } else { $p.state }
+    $statusLabel = if ($manifest.statusTaxonomy -and $manifest.statusTaxonomy.PSObject.Properties[$p.productStatus]) { $manifest.statusTaxonomy.($p.productStatus) } else { $p.productStatus }
+    $ver = if ($p.release -and $p.release.publicVersion) { "v$($p.release.publicVersion)" } else { 'Unreleased' }
+    $plats = if ($p.platforms) { ($p.platforms -join ' · ') } else { $p.platform }
+    $cards += @"
+        <a class="tf-card" href="/truth-files/$(Html-Attr $p.id)/">
+          <div class="tf-card-head">$($p.markSvg)<div><h2>$(Html-Attr $p.name)</h2><span class="tf-card-state">$(Html-Attr $stateLabel)</span></div></div>
+          <p>$(Html-Attr $p.cardSummary)</p>
+          <div class="tf-card-facts"><span><b>$(Html-Attr $ver)</b> · $(Html-Attr $statusLabel)</span><span>$(Html-Attr $plats)</span></div>
+          <span class="tf-open">Open the record →</span>
+        </a>
+"@
+  }
+  return $cards
+}
+
+function Build-TruthFileShell($module, $source) {
+  # Full-document renderer for /truth-files/<id>/ — the human face of
+  # /truth/products/<id>.json. Same facts, same build pass.
+  $p = $productStateSource.Get($module.id)
+  $name = Html-Attr $p.name
+  $stateLabel = if ($manifest.stateLabels -and $manifest.stateLabels.PSObject.Properties[$p.state]) { $manifest.stateLabels.($p.state) } else { $p.state }
+  $statusLabel = if ($manifest.statusTaxonomy -and $manifest.statusTaxonomy.PSObject.Properties[$p.productStatus]) { $manifest.statusTaxonomy.($p.productStatus) } else { $p.productStatus }
+  $statusClass = ($p.productStatus).ToLowerInvariant()
+
+  # ── CURRENT TRUTH ──────────────────────────────────────────────────────────
+  $ver = if ($p.release -and $p.release.publicVersion) { "v$($p.release.publicVersion)" } else { 'Unreleased' }
+  $relStatus = if ($p.release -and $p.release.releaseStatus) { $p.release.releaseStatus } else { 'UNRELEASED' }
+  $relLabel = if ($manifest.statusTaxonomy -and $manifest.statusTaxonomy.PSObject.Properties[$relStatus]) { $manifest.statusTaxonomy.($relStatus) } else { $relStatus }
+  $plats = if ($p.platforms) { ($p.platforms -join ', ') } else { $p.platform }
+  $artCount = @($p.artifacts).Count
+  # Artifacts are only "public" when the release is public. HOLD/proof/candidate
+  # records keep artifacts on file without publishing them — recorded, not public.
+  $isPublicRelease = $p.release -and ($p.release.releaseStatus -in @('PUBLIC_RELEASE','FROZEN'))
+  $artScope = if ($isPublicRelease) { 'public' } else { 'recorded' }
+  $artLine = if ($artCount -gt 0) { "$artCount $artScope artifact$(if($artCount -ne 1){'s'})" } else { 'No public artifact' }
+  $downloadLine = if ($p.downloadUrl) { 'Artifact available for download' } else { 'Not publicly downloadable' }
+  $candBits = @()
+  if ($p.release -and $p.release.candidateVersion) { $candBits += "Candidate v$(Html-Attr $p.release.candidateVersion) in evaluation" }
+  if ($p.release -and $p.release.companionCandidateVersion) { $candBits += "Companion candidate v$(Html-Attr $p.release.companionCandidateVersion)" }
+  $candLine = if ($candBits.Count -gt 0) { '<span class="tf-sub">' + ($candBits -join ' · ') + '</span>' } else { '' }
+  $compLine = if ($p.release -and $p.release.companionPublicVersion) { "<span class=`"tf-sub`">Companion v$(Html-Attr $p.release.companionPublicVersion)</span>" } else { '' }
+  $pkgLine = if ($p.packageId) { "<span class=`"tf-sub`">$(Html-Attr $p.packageId)</span>" } else { '' }
+  $pkgFact = if ($pkgLine) { '<div class="tf-fact"><dt>Package</dt><dd>' + $pkgLine + '</dd></div>' } else { '' }
+
+  # ── VERIFIED AGAINST ───────────────────────────────────────────────────────
+  $vRows = @()
+  $verif = $p.verification
+  if ($verif -and $verif.status) {
+    $vClass = if ($verif.status -eq 'VERIFIED') { 'verified' } else { 'pending' }
+    $when = if ($verif.verifiedAt) { "Verified $(Html-Attr $verif.verifiedAt)" } elseif ($verif.checkedAt) { "Checked $(Html-Attr $verif.checkedAt)" } else { '' }
+    $whenNote = if ($when) { '<span class="tf-v-note">' + $when + '</span>' } else { '' }
+    $vRows += "<li><span class=`"tf-v-label`">Qualification state</span><span class=`"tf-v-val`"><span class=`"tf-chip $vClass`">$(Html-Attr $verif.status)</span></span>$whenNote</li>"
+  }
+  if ($p.release -and $p.release.publishedAt) {
+    $vRows += "<li><span class=`"tf-v-label`">Publication state</span><span class=`"tf-v-val`">$(Html-Attr $relLabel)</span><span class=`"tf-v-note`">Published $(Html-Attr $p.release.publishedAt)</span></li>"
+  } else {
+    $vRows += "<li><span class=`"tf-v-label`">Publication state</span><span class=`"tf-v-val`">$(Html-Attr $relLabel)</span></li>"
+  }
+  if ($p.release -and $p.release.sourceCommit) {
+    $vRows += "<li><span class=`"tf-v-label`">Source identity</span><span class=`"tf-v-val`"><code class=`"inline`">$(Html-Attr ($p.release.sourceCommit.Substring(0,12)))</code></span><span class=`"tf-v-note`">Release source commit</span></li>"
+  }
+  foreach ($a in @($p.artifacts)) {
+    $sign = if ($a.signingStatus -eq 'PRODUCTION_SIGNED') { 'Production-signed' } elseif ($a.signingStatus -eq 'DEBUG_SIGNED') { 'Debug-signed' } else { 'Unsigned' }
+    $artNote = 'SHA-256 ' + (Html-Attr $a.sha256.Substring(0,16)) + '… · ' + (Html-Attr $sign)
+    if ($a.distType) { $artNote += ' · ' + (Html-Attr $a.distType) }
+    if (-not $a.downloadUrl) { $artNote += ' · not public' }
+    $vRows += "<li><span class=`"tf-v-label`">$artScope artifact</span><span class=`"tf-v-val`">$(Html-Attr $a.filename)</span><span class=`"tf-v-note`">$artNote</span></li>"
+  }
+  if ($p.tests -and @($p.tests).Count -gt 0) {
+    $testBits = (@($p.tests) | ForEach-Object { "$(Html-Attr $_.label) $(Html-Attr $_.result)" }) -join ' · '
+    $vRows += "<li><span class=`"tf-v-label`">Test gates</span><span class=`"tf-v-val`">$testBits</span></li>"
+  }
+
+  # ── KNOWN LIMITS ───────────────────────────────────────────────────────────
+  $limitsBlock = ''
+  if ($p.limits -and @($p.limits).Count -gt 0) {
+    $items = (@($p.limits) | ForEach-Object { "<li>$(Html-Attr $_)</li>" }) -join "`n"
+    $limitsBlock = "<ul class=`"tf-limit-list`">`n$items`n</ul>"
+  } else {
+    $limitsBlock = '<ul class="tf-limit-list"><li>No product-specific limits are recorded in the canonical manifest.</li></ul>'
+  }
+
+  # ── RECORD ─────────────────────────────────────────────────────────────────
+  $rRows = @()
+  if ($p.release -and $p.release.publishedAt) { $rRows += "<li><span class=`"tf-rec-label`">Released</span><span>$(Html-Attr $p.release.publishedAt)</span></li>" }
+  if ($p.lastVerified) { $rRows += "<li><span class=`"tf-rec-label`">Last verified</span><span>$(Html-Attr $p.lastVerified)</span></li>" }
+  if ($verif -and $verif.receiptUrl) { $rRows += "<li><span class=`"tf-rec-label`">Verification</span><a href=`"$(Html-Attr $verif.receiptUrl)`">Receipt ↗</a></li>" }
+  foreach ($e in @($p.evidence)) {
+    $eUrl = if ($e -is [string]) { $e } else { $e.url }
+    $eLabel = if ($e -is [string]) { ($e -split '/')[-1] } else { $e.label }
+    $rRows += "<li><span class=`"tf-rec-label`">Evidence</span><a href=`"$(Html-Attr $eUrl)`">$(Html-Attr $eLabel) ↗</a></li>"
+  }
+  foreach ($pl in @($p.proofLinks)) {
+    $rRows += "<li><span class=`"tf-rec-label`">Proof</span><a href=`"$(Html-Attr $pl)`">$(Html-Attr (($pl -split '/')[-1])) ↗</a></li>"
+  }
+  $rRows += "<li><span class=`"tf-rec-label`">Ledger</span><a href=`"/proof/`">Release records ↗</a></li>"
+
+  # Freshness line — truth binds to the committed source tree, not wall clock.
+  $srcLine = if ($source -and $source.commit) { "Generated from source commit <code class=`"inline`">$(Html-Attr $source.commit.Substring(0,12))</code> ($(Html-Attr ($source.committedAt -replace 'T.*',''))) — the same commit this site's public truth is bound to." } else { '' }
+  $freshLine = if ($srcLine) { '<p class="tf-fresh" style="margin-top:18px;color:var(--muted);font-size:.82rem">' + $srcLine + '</p>' } else { '' }
+
+  $metaDesc = Html-Attr ("Truth File: current public record for " + $p.name + " — release " + $ver + ", verification state, known limits, and published proof from the canonical manifest.")
+  $summary = Html-Attr $p.summary
+  $shell = @"
+<!doctype html>
+<!-- @page truth-files-$($p.id) -->
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Truth File — $name | The Proof Foundry</title>
+<meta content="$metaDesc" name="description"/>
+<meta content="index, follow" name="robots"/>
+<meta content="#0B0F14" name="theme-color"/>
+<link href="https://theprooffoundry.com/truth-files/$($p.id)/" rel="canonical"/>
+<link href="/truth/products/$($p.id).json" rel="alternate" title="Machine record" type="application/json"/>
+<link href="/brand/proof-foundry-mark.svg" rel="icon" type="image/svg+xml"/>
+<meta content="Truth File — $name" property="og:title"/>
+<meta content="$metaDesc" property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="https://theprooffoundry.com/truth-files/$($p.id)/" property="og:url"/>
+<meta content="The Proof Foundry" property="og:site_name"/>
+<meta content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" name="twitter:image"/>
+<link href="/styles.css" rel="stylesheet"/>
+<link href="/studio.css" rel="stylesheet"/>
+<link href="/truth-files.css" rel="stylesheet"/>
+</head>
+<body class="studio secondary-page product-page tf-page product-$($p.id)">
+<!-- @include header -->
+<main id="main-content">
+  <div class="store-shell">
+    <nav class="tf-breadcrumb" aria-label="Breadcrumb"><a href="/truth-files/">The Truth Files</a><span aria-hidden="true">/</span><span>$name</span></nav>
+
+    <section class="tf-hero" aria-labelledby="tf-product-title">
+      <p class="tf-hero-kicker">Product record</p>
+      <div class="tf-product-head">$($p.markSvg)<div><h1 id="tf-product-title">$name</h1><span class="tf-state">$(Html-Attr $(if ($stateLabel -eq $statusLabel) { $stateLabel } else { "$stateLabel · $statusLabel" }))</span></div></div>
+      <p class="tf-product-summary">$summary</p>
+    </section>
+
+    <section class="tf-section" aria-labelledby="tf-current">
+      <h2 id="tf-current">Current truth</h2>
+      <dl class="tf-facts">
+        <div class="tf-fact"><dt>Version</dt><dd>$(Html-Attr $ver)$compLine$candLine</dd></div>
+        <div class="tf-fact"><dt>Platform</dt><dd>$(Html-Attr $plats)</dd></div>
+        <div class="tf-fact"><dt>Release state</dt><dd>$(Html-Attr $relLabel)</dd></div>
+        <div class="tf-fact"><dt>Artifact</dt><dd>$downloadLine<span class="tf-sub">$(Html-Attr $artLine)</span></dd></div>
+        $pkgFact
+      </dl>
+    </section>
+
+    <section class="tf-section" aria-labelledby="tf-verified">
+      <h2 id="tf-verified">Verified against</h2>
+      <ul class="tf-verify-list">
+$($vRows -join "`n")
+      </ul>
+    </section>
+
+    <section class="tf-section" aria-labelledby="tf-limits">
+      <h2 id="tf-limits">Known limits</h2>
+$limitsBlock
+    </section>
+
+    <section class="tf-section" aria-labelledby="tf-record">
+      <h2 id="tf-record">Record</h2>
+      <ul class="tf-record-list">
+$($rRows -join "`n")
+        <li><span class="tf-rec-label">Product page</span><a href="$(Html-Attr $p.route)">$name ↗</a></li>
+      </ul>
+      $freshLine
+    </section>
+
+    <section class="tf-section" aria-labelledby="tf-machine">
+      <h2 id="tf-machine">Machine record</h2>
+      <div class="tf-machine">
+        <p>This page is the human face of the canonical machine record. Same facts, same build, deterministic bytes.</p>
+        <a class="button button-secondary" href="/truth/products/$(Html-Attr $p.id).json">View JSON →</a>
+      </div>
+    </section>
+  </div>
+</main>
+<!-- @include footer -->
+<script src="/site.js" defer></script>
+</body></html>
+"@
+  return $shell
 }
 
 function Build-LatestVerification {
@@ -1735,7 +1937,7 @@ if (-not (Test-Path $publicDir)) { New-Item -ItemType Directory $publicDir | Out
 # hardcoded product-id list.
 
 $KnownProductSections = @('hero','film','outcomes','how','story','get','onboard','faq','identity','evidence','privacy','related','final-cta')
-$ReservedRoutes = @('/','/software/','/truth/','/proof/','/proof-standard/','/support/','/roadmap/','/api/','/assets/','/brand/','/reports/','/about/','/founders/','/404','/sitemap.xml','/robots.txt','/_redirects','/_headers')
+$ReservedRoutes = @('/','/software/','/truth/','/truth-files/','/proof/','/proof-standard/','/support/','/roadmap/','/api/','/assets/','/brand/','/reports/','/about/','/founders/','/404','/sitemap.xml','/robots.txt','/_redirects','/_headers')
 
 function Get-ProductRegistry {
   # Discovers products/*/module.json; returns ordered, validated module list.
@@ -1916,7 +2118,7 @@ function Render-ProductShell($module, [switch]$Template) {
 
 # Map: source file  ->  output path under public/
 # Product routes come from the registry; non-product routes stay literal.
-$dirRoutes = @('founders','proof','roadmap','support','about','proof-standard','software','truth')
+$dirRoutes = @('founders','proof','roadmap','support','about','proof-standard','software','truth','truth-files')
 $rootFiles = @('index.html','404.html')
 
 # Pre-compute latest site verification so templates can inject it
@@ -1934,7 +2136,7 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
 
   # Give shared presentation assets content-derived URLs. A cached stylesheet
   # or script must not leave visitors on a previous design after publication.
-  foreach ($assetName in @('styles.css', 'studio.css', 'experience.css', 'signature.css', 'product-page.css', 'site.js', 'experience.js', 'h9-homepage.css', 'h9-software.css', 'h9-homepage.js', 'h9-software.js')) {
+  foreach ($assetName in @('styles.css', 'studio.css', 'experience.css', 'signature.css', 'product-page.css', 'truth-files.css', 'site.js', 'experience.js', 'h9-homepage.css', 'h9-software.css', 'h9-homepage.js', 'h9-software.js')) {
     $assetPath = Join-Path $root $assetName
     $assetVersion = (Get-FileHash $assetPath -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
     $html = $html.Replace('"/' + $assetName + '"', '"/' + $assetName + '?v=' + $assetVersion + '"')
@@ -2001,6 +2203,9 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
 
   # Public truth index cards (/truth/ page) — same manifest model as the JSON
   $html = $html -replace '<!--\s*@truth-products\s*-->', (Build-TruthIndexCards)
+
+  # Truth Files index cards (/truth-files/ page)
+  $html = $html -replace '<!--\s*@truth-files\s*-->', (Build-TruthFileCards)
 
   # Brand-level tokens
   $html = $html -replace [regex]::Escape('{{brand}}'),       (Html-Attr $manifest.brand)
@@ -2137,6 +2342,17 @@ foreach ($doc in $truth.products) {
 Copy-Item (Join-Path $root 'schemas\public-truth-v1.schema.json') (Join-Path $truthDir 'schema-v1.json') -Force
 Write-Host "==> Generated public truth: /truth/index.json + $($truth.products.Count) product records + schema-v1.json" -ForegroundColor Green
 
+# PF-TF1: per-product Truth Files — human pages bound to the same truth source.
+$truthFilesDir = Join-Path $publicDir 'truth-files'
+foreach ($module in ($productRegistry | Where-Object { $_.visibility -eq 'visible' })) {
+  $shell = Build-TruthFileShell $module $truthSource
+  $out = Process-Template $null "truth-files/$($module.id)/shell" -OverrideHtml $shell
+  $dir = Join-Path $truthFilesDir $module.id
+  New-Item -ItemType Directory $dir -Force | Out-Null
+  [System.IO.File]::WriteAllText((Join-Path $dir 'index.html'), $out, [System.Text.Encoding]::UTF8)
+}
+Write-Host "==> Generated Truth Files: /truth-files/ + $(($productRegistry | Where-Object {$_.visibility -eq 'visible'}).Count) product records" -ForegroundColor Green
+
 # Copy static assets
 # ─────────────────────────────────────────────────────────────────────────────
 Copy-Item (Join-Path $root 'styles.css')     $publicDir -Force
@@ -2149,6 +2365,7 @@ if (Test-Path (Join-Path $root 'h9-homepage.css')) { Copy-Item (Join-Path $root 
 if (Test-Path (Join-Path $root 'h9-software.css')) { Copy-Item (Join-Path $root 'h9-software.css') $publicDir -Force }
 if (Test-Path (Join-Path $root 'h9-homepage.js'))  { Copy-Item (Join-Path $root 'h9-homepage.js')  $publicDir -Force }
 if (Test-Path (Join-Path $root 'h9-software.js'))  { Copy-Item (Join-Path $root 'h9-software.js')  $publicDir -Force }
+if (Test-Path (Join-Path $root 'truth-files.css')) { Copy-Item (Join-Path $root 'truth-files.css') $publicDir -Force }
 if (Test-Path (Join-Path $root 'site.js'))   { Copy-Item (Join-Path $root 'site.js') $publicDir -Force }
 Copy-Item (Join-Path $root 'CNAME')          $publicDir -Force
 Copy-Item (Join-Path $root 'robots.txt')     $publicDir -Force
@@ -2265,6 +2482,9 @@ $headersContent = @"
 
 $($headerRoutes -join "`n")
 /truth/*
+  Cache-Control: no-cache, must-revalidate
+
+/truth-files/*
   Cache-Control: no-cache, must-revalidate
 
 /__h14/*

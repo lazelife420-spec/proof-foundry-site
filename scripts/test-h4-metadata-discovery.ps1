@@ -66,10 +66,11 @@ function Get-LastContentDate([string[]]$paths) {
 
 Write-Host "=== H4 METADATA / DISCOVERY ASSERTIONS ==="
 
-# Intended public route set: 16 indexable routes (404 is deliberately noindex
+# Intended public route set: 24 indexable routes (404 is deliberately noindex
 # and therefore absent from sitemap/canonical expectations). H11 (2026-09-20)
-# added /truth/ — the human Public Truth page.
-$indexableRoutes = @('', 'reality-gate', 'forgecast', 'lights-out', 'cache-vault', 'cleanroom', 'ghostlayer', 'proofshot', 'founders', 'proof', 'roadmap', 'support', 'about', 'proof-standard', 'software', 'truth')
+# added /truth/; PF-TF1 (2026-09-21) added /truth-files/ plus its 7 per-product
+# records as first-class indexable routes.
+$indexableRoutes = @('', 'reality-gate', 'forgecast', 'lights-out', 'cache-vault', 'cleanroom', 'ghostlayer', 'proofshot', 'founders', 'proof', 'roadmap', 'support', 'about', 'proof-standard', 'software', 'truth', 'truth-files', 'truth-files/cache-vault', 'truth-files/cleanroom', 'truth-files/forgecast', 'truth-files/ghostlayer', 'truth-files/lights-out', 'truth-files/proofshot', 'truth-files/reality-gate')
 $originHost = 'https://theprooffoundry.com'
 
 # ── Per-route head metadata: canonical, robots, description, OG, Twitter ────
@@ -137,7 +138,7 @@ Assert-Condition $sitemapOk "sitemap: generated file parses as XML"
 
 $locs = @([regex]::Matches($sitemapText, '<loc>([^<]+)</loc>') | ForEach-Object { $_.Groups[1].Value })
 $mods = @([regex]::Matches($sitemapText, '<lastmod>([^<]+)</lastmod>') | ForEach-Object { $_.Groups[1].Value })
-Assert-Condition ($locs.Count -eq 16) "sitemap: exactly 16 indexable routes listed"
+Assert-Condition ($locs.Count -eq 24) "sitemap: exactly 24 indexable routes listed"
 Assert-Condition (@($locs | Sort-Object -Unique).Count -eq $locs.Count) "sitemap: no duplicate routes"
 Assert-Condition (($locs -contains "$originHost/support/")) "F4: sitemap includes /support/"
 
@@ -171,7 +172,7 @@ Assert-Condition ($robotsTxt -match 'Sitemap:\s*https://theprooffoundry\.com/sit
 
 # ── Legacy redirect coverage for every directory route (F6) ─────────────────
 $redirects = Get-Content (Join-Path $publicDir '_redirects') -Raw -Encoding UTF8
-$dirRoutes = @('reality-gate', 'forgecast', 'lights-out', 'cache-vault', 'cleanroom', 'ghostlayer', 'proofshot', 'founders', 'proof', 'roadmap', 'support', 'about', 'proof-standard', 'software', 'truth')
+$dirRoutes = @('reality-gate', 'forgecast', 'lights-out', 'cache-vault', 'cleanroom', 'ghostlayer', 'proofshot', 'founders', 'proof', 'roadmap', 'support', 'about', 'proof-standard', 'software', 'truth', 'truth-files')
 foreach ($r in $dirRoutes) {
   $bare = [regex]::Escape("/$r") + '\s+/' + [regex]::Escape("$r/") + '\s+301'
   $html = [regex]::Escape("/$r.html") + '\s+/' + [regex]::Escape("$r/") + '\s+301'
@@ -192,7 +193,7 @@ foreach ($r in $dirRoutes) {
 
 # ── No unexpected routes or dependency additions ────────────────────────────
 $publicDirs = @(Get-ChildItem $publicDir -Directory | Where-Object { Test-Path (Join-Path $_.FullName 'index.html') } | ForEach-Object { $_.Name } | Sort-Object)
-Assert-Condition (($publicDirs -join ',') -eq (($dirRoutes | Sort-Object) -join ',')) "routes: generated directory-route set is exactly the intended 15"
+Assert-Condition (($publicDirs -join ',') -eq (($dirRoutes | Sort-Object) -join ',')) "routes: generated directory-route set is exactly the intended 16"
 Assert-Condition ((git -C $root status --porcelain -- package.json package-lock.json) -eq $null) "deps: package manifests untouched by H4"
 # Product truth is frozen against the inspected CURRENT production commit.
 # This checks all products with no target exclusions, while allowing H9 nav.
@@ -213,6 +214,7 @@ foreach ($pp in @($workManifest.products) + @($headManifest.products)) {
   if ($pp.release) {
     $pp.release.PSObject.Properties.Remove('companionCandidateVersion')
     $pp.release.PSObject.Properties.Remove('sourceCommit')
+    $pp.release.PSObject.Properties.Remove('companionPublicVersion')
   }
 }
 $truthDrift = @()

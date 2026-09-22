@@ -59,6 +59,7 @@ foreach ($set in @($manifestProducts, $canonicalProducts)) {
     if ($pp.release) {
       $pp.release.PSObject.Properties.Remove('companionCandidateVersion')
       $pp.release.PSObject.Properties.Remove('sourceCommit')
+      $pp.release.PSObject.Properties.Remove('companionPublicVersion')
     }
     $pp.PSObject.Properties.Remove('packageId')
   }
@@ -79,7 +80,7 @@ foreach ($p in $canonical.products) {
 # exact source-byte pins below; they intentionally diverge from production.)
 $frozen = @('about.html','proof.html','founders.html','404.html',
   'signature.css','experience.css',
-  'site.js','scripts/Verify-PublicSite.ps1','partials/header.html','partials/footer.html')
+  'site.js','scripts/Verify-PublicSite.ps1','partials/header.html')
 foreach ($path in $frozen) {
   $expected = Read-Production $path
   # Only the accepted homepage CTA expectation may differ from the pinned verifier.
@@ -99,6 +100,14 @@ $vr1Pins = [ordered]@{
 }
 foreach ($p in $vr1Pins.Keys) {
   Assert-Reconciled "${p}: VR1-authorized source bytes preserved" ((Sha256 ([Text.Encoding]::UTF8.GetBytes((Read-Source $p)))) -ceq $vr1Pins[$p])
+}
+# PF-TF1 (2026-09-21): footer gains the Truth Files discovery link — authorized
+# drift, pinned to exact source bytes.
+$tf1Pins = [ordered]@{
+  'partials/footer.html' = 'be908af8cc92ad2afe7ad6ee90e860c96b77e5e6784d7c2725264c7fdbe6a47b'
+}
+foreach ($p in $tf1Pins.Keys) {
+  Assert-Reconciled "${p}: TF1-authorized source bytes preserved" ((Sha256 ([Text.Encoding]::UTF8.GetBytes((Read-Source $p)))) -ceq $tf1Pins[$p])
 }
 # roadmap.html carries the owner-approved public roadmap truth repair
 # (2026-09-20): stale hardcoded release truth replaced by manifest-driven copy,
