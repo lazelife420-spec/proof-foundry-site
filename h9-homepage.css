@@ -58,7 +58,7 @@
 .h9-mini-proof .h9-mini-copy{width:56%;padding-right:12px}
 @media(max-width:1200px){.h9-mini-proof .h9-mini-copy>p{font-size:18px}}
 @media(max-width:760px){
-.h9-hero-forge{background-size:auto 900px;background-position:62% bottom}
+.h9-hero-forge{background-size:auto 900px;background-position:36% bottom}
 .h9-hero:before{background:linear-gradient(180deg,#041013b8 0%,#061012aa 32%,#06101433 50%,transparent 76%),linear-gradient(90deg,#010a0c77,transparent 90%)}
 .h9-scene-forgecast:before{background-position:65% center;background-size:auto 100%}
 .h9-scene-forgecast h2{font-size:29px;max-width:170px}
@@ -70,3 +70,86 @@
 /* Final pixel polish: preserve visible capture provenance at every breakpoint. */
 @media(min-width:761px) and (max-width:1200px){.h9-mini-media{height:calc(100% - 22px)}.h9-mini-proof .h9-mini-status{font-size:8px}}
 @media(max-width:760px){.h9-phone-stage{max-width:216px}.h9-mini-proof .h9-mini-status{font-size:9px;line-height:1.4}.h9-mini-proof .h9-mini-copy>a{min-height:30px;margin-top:3px}}
+
+/* Registry-generated product scenes use module copy/media while inheriting the foundry canvas. */
+.h9-auto-featured .h9-hero-copy{width:49%}
+.h9-auto-featured-media{position:absolute;right:4%;top:82px;width:43%;height:460px;display:flex;flex-direction:column;justify-content:center;gap:12px;padding:12px;background:linear-gradient(145deg,#102027e8,#060c10f5);border:1px solid #9cae9b66;border-radius:8px;box-shadow:0 28px 65px #000a,0 0 30px #fff1;transform:perspective(1100px) rotateY(-5deg)}
+.h9-auto-featured-media>a{display:flex;align-items:center;justify-content:center;min-height:0;flex:1;overflow:hidden}
+.h9-auto-featured-media img{width:100%;height:100%;object-fit:contain}
+.h9-auto-featured-media figcaption{display:flex;justify-content:space-between;gap:12px;font:10px/1.4 Arial,sans-serif;color:#c5d1cb}
+.h9-auto-scene{--scene-accent:#d7c6a5;background:#091114}
+.h9-auto-scene:nth-child(even){background:#0c1719}
+.h9-auto-scene .h9-scene-copy{width:47%}
+.h9-auto-scene-media{position:absolute;left:48%;right:4%;top:30px;bottom:24px;display:flex;flex-direction:column;justify-content:center;gap:8px;padding:8px;border:1px solid #aebbb044;border-radius:6px;background:#071014b8;box-shadow:0 18px 45px #0008}
+.h9-auto-scene-media>a{display:flex;align-items:center;justify-content:center;min-height:0;flex:1;overflow:hidden}
+.h9-auto-scene-media img{width:100%;height:100%;object-fit:contain}
+.h9-auto-scene-media figcaption{font-size:10px;line-height:1.4;color:#c3cfcb}
+.h9-auto-variant-device .h9-auto-scene-media img{max-width:48%;margin:auto}
+.h9-auto-variant-console .h9-auto-scene-media img,.h9-auto-variant-wide-screen .h9-auto-scene-media img{object-fit:contain}
+.h9-auto-mini .h9-mini-media img{width:100%;height:100%;object-fit:contain;padding:8px}
+.h9-auto-mini .h9-mini-copy>p:not(.h9-scene-note){font-size:clamp(17px,2vw,23px);line-height:1.18}
+.h9-auto-mini .h9-mini-copy>.h9-scene-note{max-width:25ch;margin:5px 0 1px;color:#b8c4c1;font:9px/1.4 Arial,sans-serif}
+@media(max-width:760px){
+ .h9-auto-featured{height:760px}
+ .h9-auto-featured .h9-hero-inner{padding-top:48px}
+ .h9-auto-featured .h9-hero-copy{width:100%}
+ .h9-auto-featured h1{font-size:clamp(40px,10vw,58px);white-space:normal}
+ .h9-auto-featured-media{left:18px;right:18px;top:auto;bottom:20px;width:auto;height:310px;transform:none;padding:8px}
+ .h9-auto-featured-media figcaption{font-size:9px}
+ .h9-major-mosaic{grid-template-columns:1fr}
+ .h9-auto-scene{height:500px}
+ .h9-auto-scene .h9-scene-copy{width:100%;padding:26px 22px 0}
+ .h9-auto-scene h2{font-size:29px;margin:12px 0}
+ .h9-auto-scene-media{left:18px;right:18px;top:225px;bottom:12px;padding:6px}
+ .h9-auto-scene-media img{max-height:235px}
+ .h9-auto-variant-device .h9-auto-scene-media img{max-width:38%;max-height:240px}
+ .h9-auto-scene-media figcaption{font-size:9px}
+ .h9-binding-home .products-grid.h9-collection-grid{grid-template-columns:1fr}
+ .h9-auto-mini{min-height:218px}
+ .h9-auto-mini .h9-mini-media{height:202px}
+}
+
+/* Generated home modules need the same editorial rhythm as the hand-built scenes. */
+.h9-auto-featured h1{display:block;color:#f0ede5;-webkit-text-fill-color:#f0ede5;visibility:visible;opacity:1;font-size:clamp(50px,5.4vw,80px);line-height:.99;letter-spacing:-2.2px}
+.h9-auto-featured h1 span{max-width:17ch;white-space:normal;text-wrap:balance}
+.h9-auto-featured .h9-hero-copy>p{max-width:460px}
+.h9-auto-scene{background:radial-gradient(ellipse at 78% 48%,color-mix(in srgb,var(--scene-accent) 11%,transparent),transparent 52%),linear-gradient(110deg,#071013,#0b1417 58%,#070d10)}
+.h9-auto-scene:nth-child(even){background:radial-gradient(ellipse at 78% 48%,color-mix(in srgb,var(--scene-accent) 13%,transparent),transparent 54%),linear-gradient(110deg,#091215,#0e181b 58%,#080f12)}
+.h9-auto-scene .h9-scene-copy{width:43%}
+.h9-auto-scene .h9-kicker{color:var(--scene-accent);letter-spacing:2px}
+.h9-auto-scene h2{text-wrap:balance;max-width:12ch}
+.h9-auto-scene-media{left:45%;border-color:color-mix(in srgb,var(--scene-accent) 32%,transparent);background:linear-gradient(145deg,#111c20e8,#060c10f5)}
+.h9-auto-scene-media>a{padding:8px}
+.h9-auto-scene-media figcaption{padding:8px 10px;border-top:1px solid #aebbb022;color:#d2dcda}
+.h9-auto-mini{background:radial-gradient(ellipse at 76% 45%,color-mix(in srgb,var(--scene-accent) 13%,transparent),transparent 58%),#081115}
+.h9-auto-mini .h9-mini h3,.h9-auto-mini h3{color:var(--scene-accent)}
+.h9-auto-mini .h9-mini-media{border-color:color-mix(in srgb,var(--scene-accent) 40%,#697b7a);box-shadow:-12px 16px 28px #0009,0 0 28px color-mix(in srgb,var(--scene-accent) 12%,transparent)}
+.h9-auto-mini .h9-mini-copy>a{color:#f1d7ad}
+/* Keep the forge image above the hero canvas and the readable copy above both. */
+.h9-hero-forge{z-index:0}
+.h9-hero:before{z-index:1}
+.h9-hero-inner{z-index:2}
+.h9-hero-product{z-index:3}
+@media(max-width:1200px){
+ .h9-auto-featured h1{font-size:clamp(48px,6vw,66px)}
+ .h9-auto-scene .h9-scene-copy{width:42%}
+ .h9-auto-scene-media{left:44%;right:3%}
+}
+@media(max-width:760px){
+ .h9-auto-featured h1{font-size:clamp(42px,9.5vw,58px);line-height:1.02;letter-spacing:-1.6px}
+ .h9-auto-featured h1 span{max-width:17ch}
+ .h9-auto-featured .h9-principles{position:relative;top:auto;left:auto;right:auto;margin:17px 0 0;padding:12px 0 0;border-top:1px solid #b4bcb54d;gap:8px;justify-content:space-between}
+ .h9-auto-featured .h9-principles li{gap:5px}
+ .h9-auto-featured .h9-principles li>span{font-size:21px}
+ .h9-auto-featured .h9-principles strong{font-size:8px}
+ .h9-auto-featured .h9-principles small{font-size:7px}
+ .h9-auto-featured-media{top:auto;bottom:18px;height:300px}
+ .h9-auto-scene .h9-scene-copy{width:100%}
+ .h9-auto-scene-media{left:18px;right:18px;top:260px}
+}
+@media(max-width:375px){
+ .h9-auto-featured h1{font-size:42px}
+ .h9-auto-featured .h9-actions{gap:8px;flex-wrap:nowrap}
+ .h9-auto-featured .h9-actions .button{flex:1;min-width:0;padding:10px 8px;font-size:7px;letter-spacing:0;gap:5px}
+ .h9-auto-featured-media figcaption{align-items:flex-start;flex-direction:column;gap:2px}
+}

@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 2,
+  "id": "fixture-product",
+  "route": "/fixture-product/",
+  "order": 90,
+  "visibility": "visible",
+  "lifecycle": "public-eligible",
+  "placement": {
+    "catalog": true
+  },
+  "brand": {
+    "name": "Fixture Product",
+    "shortName": "Fixture",
+    "accessibleName": "Fixture Product",
+    "mark": "/assets/products/fixture-product/brand/logo.svg"
+  },
+  "theme": {
+    "accent": "#12AB89",
+    "accentSecondary": "#8AD4C2",
+    "background": "#101820",
+    "surface": "#18232B",
+    "glow": "rgba(18,171,137,.2)",
+    "atmosphere": "archive"
+  },
+  "hero": {
+    "variant": "centered",
+    "kicker": "Fixture module",
+    "headline": "A module built from data.",
+    "lede": "Shared renderer proof for an eighth product.",
+    "media": {
+      "src": "/assets/products/fixture-product/media/hero.png",
+      "alt": "Fixture product sample screen",
+      "caption": "Fixture capture"
+    },
+    "primaryAction": { "label": "Get started", "href": "#features" }
+  },
+  "card": {
+    "tagline": "A card from module metadata.",
+    "summary": "Structured module media and copy.",
+    "media": "/assets/products/fixture-product/media/hero.png",
+    "mediaAlt": "Fixture product sample screen"
+  },
+  "taxonomy": { "category": "Fixture", "jobs": ["build", "modularity proof"] },
+  "homepage": {
+    "tier": "secondary",
+    "variant": "compact",
+    "order": 90,
+    "headline": "A module built from data.",
+    "lede": "Shared renderer proof for an eighth product.",
+    "media": "/assets/products/fixture-product/media/hero.png",
+    "mediaAlt": "Fixture product sample screen",
+    "mediaCaption": "Fixture capture"
+  },
+  "sections": [
+    {
+      "type": "outcomes",
+      "id": "features",
+      "kicker": "Shared component",
+      "title": "Reusable outcomes",
+      "items": [
+        { "title": "One", "body": "First declarative item." },
+        { "title": "Two", "body": "Second declarative item." }
+      ]
+    },
+    {
+      "type": "copy",
+      "id": "details",
+      "title": "Product details",
+      "paragraphs": ["A compact section without product-authored page HTML."]
+    }
+  ],
+  "meta": {
+    "title": "Fixture Product — Module v2",
+    "description": "Non-public fixture for the structured Product Module v2 renderer."
+  }
+}

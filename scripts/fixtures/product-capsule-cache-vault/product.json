@@ -1,0 +1,103 @@
+{
+  "schema": "proof-foundry.product-capsule/v1",
+  "id": "cache-vault-capsule-fixture",
+  "lifecycle": "preview",
+  "brand": {
+    "name": "Cache Vault Capsule Fixture",
+    "shortName": "Cache Vault",
+    "mark": "brand/mark.svg"
+  },
+  "theme": {
+    "accent": "#A9C48F",
+    "accentSecondary": "#79C7B8",
+    "atmosphere": "archive"
+  },
+  "hero": {
+    "variant": "split",
+    "kicker": "Local clipboard workspace",
+    "headline": "Capture it. Find it. Put it to work.",
+    "lede": "Keep text and images in a privacy-first local archive, organize what matters into custom collections, bring clips back instantly through Quick Paste, and inspect their activity ledgers.",
+    "media": "hero/hero.png",
+    "mediaAlt": "Cache Vault Quick Paste interface",
+    "mediaCaption": "Quick Paste · Cache Vault interface"
+  },
+  "card": {
+    "tagline": "Capture it. Find it. Put it to work.",
+    "summary": "Keep text and images in a privacy-first local archive, organize what matters into custom collections, bring clips back instantly through Quick Paste, and inspect their activity ledgers.",
+    "media": "hero/hero.png",
+    "mediaAlt": "Cache Vault Quick Paste interface"
+  },
+  "taxonomy": {
+    "category": "Developer Tools",
+    "jobs": [
+      "capture",
+      "retrieval"
+    ],
+    "platforms": [
+      "Windows"
+    ]
+  },
+  "placement": {
+    "catalog": true,
+    "homepageTier": "secondary",
+    "homepageOrder": 90,
+    "homepageVariant": "workstation"
+  },
+  "sections": [
+    {
+      "type": "outcomes",
+      "id": "features",
+      "kicker": "Full Product Workflow",
+      "title": "Local clipboard workspace for Windows & mobile.",
+      "lede": "Capture, organize, retrieve, act, inspect history, and export—all on your own machine.",
+      "items": [
+        {
+          "title": "Multi-Format Capture",
+          "body": "Keep copied text snippets, code, URLs, and image buffers in a searchable local database rather than overwriting past history."
+        },
+        {
+          "title": "Collections & Cleanup",
+          "body": "Organize essential clips into named collections, pin Favorites, and review Vault Cleanup Suggestions for duplicate groups."
+        },
+        {
+          "title": "Quick Paste Retrieval",
+          "body": "Access your clip history instantly from any application using global hotkeys without losing focus in your current window."
+        },
+        {
+          "title": "Per-Clip Activity Ledger",
+          "body": "Inspect timestamps and recorded actions for every clip: creation, copying, pinning, collection moves, and export package membership."
+        },
+        {
+          "title": "Command Center Actions",
+          "body": "Execute Phase 1 Hotkey Actions: open the vault or Quick Paste, pause or resume capture, save the current clipboard to a Safe, run a saved Vault Macro, or lock the vault instantly.",
+          "note": "Limited to implemented Phase 1 Hotkey Actions. Text Expansions reflect future phases."
+        },
+        {
+          "title": "Receipt-Backed Exports",
+          "body": "Export selected content as a portable folder/ZIP with a readable index (index.html), machine-readable manifest (manifest.json), and stamped receipt (stamped_receipt.txt)."
+        },
+        {
+          "title": "Android Companion",
+          "body": "Pair with your Android phone over local Wi-Fi via QR code to transfer text clips and URLs directly between devices without cloud servers.",
+          "note": "Desktop {{product.versionLabel}} pairs with Android companion v{{product.companionVersion}} public baseline; v{{product.companionCandidateVersion}} (code 8) is qualified on hold."
+        },
+        {
+          "title": "Separate Local Profiles",
+          "body": "Keep profile databases isolated from each other. Core desktop features stay local, and the optional companion communicates over your local network."
+        }
+      ]
+    },
+    {
+      "type": "gallery",
+      "id": "screens",
+      "title": "Interface capture",
+      "items": [
+        {
+          "src": "screenshots/01.png",
+          "alt": "Cache Vault Quick Paste interface",
+          "caption": "Quick Paste interface"
+        }
+      ]
+    }
+  ]
+}

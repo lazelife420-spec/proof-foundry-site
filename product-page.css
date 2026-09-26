@@ -16,7 +16,7 @@ body.pp-system {
   --pp-gold: #d6a84f;
   --pp-gold-light: #efc978;
   --pp-line: #313a3d;
-  --pp-accent: var(--pp-gold);
+  --pp-accent: var(--product-accent, var(--pp-gold));
   /* Re-seat the shared studio tokens so header/footer/buttons harmonize. */
   --bg: var(--pp-ink);
   --text: var(--pp-warm);
@@ -28,50 +28,54 @@ body.pp-system {
   color: var(--pp-warm);
 }
 
-body.pp-system.product-reality-gate { --pp-accent: #d9906b; }
-body.pp-system.product-cache-vault { --pp-accent: #a9c48f; }
-
-body.pp-system.product-lights-out {
-  --pp-accent: #9b93d6;
+/* Product Module v2 exposes only validated accent/background/surface tokens. */
+body.pp-system[data-product-atmosphere] {
+  --pp-ink: var(--product-bg, #0d1115);
+  --pp-panel: var(--product-surface, #151b20);
+  --pp-accent: var(--product-accent, var(--pp-gold));
+  --pp-accent-2: var(--product-accent-2, var(--pp-gold-light));
+  --pp-warm: var(--product-text, #f2eee4);
+  --pp-muted: var(--product-muted, #aab2b3);
   background:
-    radial-gradient(circle at 78% 7%, rgba(155, 147, 214, .16), transparent 30rem),
-    radial-gradient(circle at 20% 45%, rgba(232, 168, 72, .06), transparent 24rem),
-    linear-gradient(180deg, #0b0e18 0%, var(--pp-ink) 58%, #080a12 100%);
+    radial-gradient(circle at 78% 7%, var(--product-glow, rgba(78, 93, 76, .18)), transparent 30rem),
+    linear-gradient(180deg, var(--product-bg, #101417) 0%, var(--pp-ink) 58%, var(--product-bg, #11181a) 100%);
 }
 
-body.pp-system.product-cleanroom {
-  --pp-accent: #34d399;
-  background:
-    radial-gradient(circle at 78% 7%, rgba(52, 211, 153, .14), transparent 28rem),
-    linear-gradient(180deg, #081212 0%, var(--pp-ink) 58%, #071012 100%);
-}
+body.pp-system.product-reality-gate { --pp-accent: var(--product-accent, #d9906b); }
+body.pp-system.product-cache-vault { --pp-accent: var(--product-accent, #a9c48f); }
 
-body.pp-system.product-ghostlayer {
-  --pp-accent: #00cc33;
-  background:
-    radial-gradient(circle at 78% 7%, rgba(0, 204, 51, .15), transparent 28rem),
-    linear-gradient(180deg, #08120a 0%, var(--pp-ink) 58%, #070e08 100%);
-}
+body.pp-system.product-lights-out { --pp-accent: var(--product-accent, #9b93d6); }
 
-body.pp-system.product-forgecast {
-  --pp-accent: #38bdf8;
-  background:
-    radial-gradient(circle at 78% 7%, rgba(56, 189, 248, .15), transparent 30rem),
-    radial-gradient(circle at 22% 45%, rgba(245, 158, 11, .06), transparent 25rem),
-    linear-gradient(180deg, #09131c 0%, var(--pp-ink) 58%, #081017 100%);
-}
+body.pp-system.product-cleanroom { --pp-accent: var(--product-accent, #34d399); }
 
-body.pp-system.product-proofshot {
-  --pp-accent: #f97316;
-  background:
-    radial-gradient(circle at 78% 7%, rgba(249, 115, 22, .14), transparent 28rem),
-    linear-gradient(180deg, #150d0a 0%, var(--pp-ink) 58%, #110a08 100%);
-}
+body.pp-system.product-ghostlayer { --pp-accent: var(--product-accent, #00cc33); }
+
+body.pp-system.product-forgecast { --pp-accent: var(--product-accent, #38bdf8); }
+
+body.pp-system.product-proofshot { --pp-accent: var(--product-accent, #f97316); }
 
 body.pp-system .site-header {
   background: rgba(13, 17, 21, .94);
   border-bottom-color: rgba(214, 168, 79, .2);
 }
+
+.pp-module-hero .product-identity { gap: 12px; }
+.pp-module-hero .product-module-mark { width: 42px; height: 42px; object-fit: contain; }
+.pp-module-hero .pp-hero-centered { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.pp-module-hero .pp-hero-centered .product-copy { max-width: 58rem; }
+.pp-module-hero .pp-hero-centered .product-lede { margin-inline: auto; }
+.pp-module-hero .pp-hero-centered .hero-media { width: min(100%, 64rem); }
+.pp-module-hero .pp-hero-cinematic .hero-media,
+.pp-module-hero .pp-hero-immersive .hero-media { width: 100%; }
+.pp-module-hero .pp-hero-device .hero-media { max-width: 56rem; }
+.pp-module-hero .pp-generated-section { padding-block: clamp(48px, 6vw, 80px); }
+.pp-module-hero .pp-generated-grid .pp-outcome-grid { margin-top: 28px; }
+.pp-generated-gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 18px; }
+.pp-generated-gallery img { display: block; width: 100%; height: auto; border-radius: 14px; }
+.pp-generated-copy { max-width: 48rem; color: var(--pp-muted); line-height: 1.75; }
+.pp-system .step-number { color: var(--pp-accent-2, var(--pp-accent)); }
+body.studio.pp-system .pp-kicker { color: var(--pp-accent); }
+body.studio.pp-system .pp-hero h1 em { color: var(--pp-accent-2, var(--pp-gold-light)); }
 
 /* ---------- shared type + rhythm ---------- */
 
@@ -280,6 +284,11 @@ body.pp-system.product-cache-vault .hero-media::before {
 .pp-outcome-grid article {
   background: var(--pp-panel);
   padding: clamp(22px, 2.6vw, 34px);
+}
+
+/* Fill the final row for odd-length module grids instead of exposing the grid gutter. */
+.pp-outcome-grid > article:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
 }
 
 .pp-outcome-grid .step-number {

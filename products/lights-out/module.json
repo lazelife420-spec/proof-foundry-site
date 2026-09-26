@@ -5,12 +5,67 @@
   "visibility": "visible",
   "sections": [
     "hero",
-    "outcomes",
+    {
+      "type": "outcomes",
+      "id": "features",
+      "kicker": "Made for the way you work",
+      "title": "One less thing between you and bed.",
+      "lede": "Set up the end of the night while you are still at your desk.",
+      "items": [
+        {
+          "title": "Choose your ending",
+          "body": "Pick a duration or a clock time, then choose shutdown, sleep, restart, hibernate or log out."
+        },
+        {
+          "title": "Keep the controls close",
+          "body": "Use the desktop or paired Android companion to pause, snooze or cancel the session."
+        },
+        {
+          "title": "Change your mind",
+          "body": "A grace period and emergency cancel keep you in control. Try Dry Run to rehearse without a power action."
+        },
+        {
+          "title": "Make it a ritual",
+          "body": "Start with a Night Mode or save a profile for the routine you use most — and let First Light schedule the morning, with proof of every run."
+        }
+      ]
+    },
     "how",
     "story",
     "get",
     "onboard",
-    "faq",
+    {
+      "type": "faq",
+      "id": "faq",
+      "kicker": "Support",
+      "title": "Frequently Asked Questions",
+      "items": [
+        {
+          "title": "Why is Windows warning me when I run this?",
+          "body": "Because this build is not code-signed, Windows may show an unrecognized-app or \"Windows protected your PC\" warning, depending on Windows security and reputation checks. Verify the published SHA-256 before deciding whether to run it."
+        },
+        {
+          "title": "Is this signed?",
+          "body": "No. The installer EXE and the portable ZIP are both unsigned Windows builds — not Authenticode code-signed. Code signing is a separate, tracked piece of future work, not something this release claims."
+        },
+        {
+          "title": "What does \"Reality Gate Verified\" mean?",
+          "body": "It means this exact build passed a full, real, 20-step automated validation pipeline — including packaged-app checks and live physical-phone companion automation — and produced a cryptographically signed, independently verified proof receipt. It does not mean the file is digitally signed, and it has no effect on Windows SmartScreen."
+        },
+        {
+          "title": "Is this hosted on GitHub?",
+          "body": "A GitHub release record exists for accountability, but anonymous downloads are blocked there. Canonical public downloads are served from the Proof Foundry download mirror by design."
+        },
+        {
+          "title": "How do I verify the download?",
+          "body": "Run the Get-FileHash command in the Release status & evidence section below and compare the result to the published SHA-256. If they don't match exactly, don't run the file."
+        },
+        {
+          "title": "Is the Android app also {{product.versionLabel}}?",
+          "body": "The public Android companion remains at {{product.companionPublicVersionLabel}}. A companion v{{product.companionVersion}} build exists alongside Windows {{product.versionLabel}} but has not been released publicly. The current public versions are Windows {{product.versionLabel}} and Android companion {{product.companionPublicVersionLabel}}."
+        }
+      ]
+    },
     "evidence",
     "privacy",
     "final-cta",
@@ -44,5 +99,73 @@
       "name": "The Proof Foundry",
       "url": "https://theprooffoundry.com"
     }
+  },
+  "schemaVersion": 2,
+  "theme": {
+    "accent": "#9B93D6",
+    "glow": "rgba(155,147,214,.17)",
+    "atmosphere": "night",
+    "background": "#0B0E18",
+    "surface": "#151725",
+    "accentSecondary": "#E8A848"
+  },
+  "brand": {
+    "name": "Lights Out",
+    "shortName": "Lights",
+    "accessibleName": "lights-out",
+    "mark": "/assets/lights-out/lights-out-icon-512.png",
+    "logo": "/assets/lights-out/lights-out-logo-transparent.png"
+  },
+  "taxonomy": {
+    "category": "Bedtime Utilities",
+    "jobs": [
+      "everyday",
+      "automation",
+      "shutdown",
+      "night routine"
+    ],
+    "platforms": [
+      "Windows",
+      "Android"
+    ]
+  },
+  "hero": {
+    "variant": "centered",
+    "kicker": "Your nightly shutdown ritual",
+    "headline": "Call it a night.",
+    "lede": "Set the countdown. Let the PC wind down. Pause, snooze or cancel from bed with the Android companion.",
+    "media": {
+      "src": "/assets/lights-out/tonight-active-hero.png",
+      "alt": "Lights Out desktop with an active countdown and session controls.",
+      "caption": "Tonight · Windows interface"
+    },
+    "primaryAction": {
+      "label": "View release options",
+      "href": "#download"
+    },
+    "secondaryAction": {
+      "label": "Try the idea",
+      "href": "#try-it"
+    }
+  },
+  "card": {
+    "tagline": "A deliberate end to the day.",
+    "media": "/assets/studio/tonight-active-hero-card-960.png",
+    "summary": "Set the countdown. Let the PC wind down. Pause, snooze or cancel from bed with the Android companion.",
+    "mediaAlt": "Lights Out interface showing a sample dry-run night session"
+  },
+  "lifecycle": "public-eligible",
+  "placement": {
+    "catalog": true
+  },
+  "homepage": {
+    "tier": "secondary",
+    "variant": "compact",
+    "order": 50,
+    "headline": "A deliberate end to the day.",
+    "lede": "Set the countdown. Let the PC wind down. Stay in control from bed.",
+    "media": "/assets/lights-out/tonight-active-hero.png",
+    "mediaAlt": "Lights Out interface showing a sample dry-run night session",
+    "mediaCaption": "Sample dry run"
   }
 }

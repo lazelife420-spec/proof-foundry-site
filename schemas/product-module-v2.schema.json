@@ -1,0 +1,399 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://theprooffoundry.com/schemas/product-module-v2.schema.json",
+  "title": "Proof Foundry Product Module v2",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "id",
+    "route",
+    "order",
+    "visibility",
+    "lifecycle",
+    "brand",
+    "theme",
+    "hero",
+    "sections",
+    "meta"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 2
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "route": {
+      "type": "string",
+      "pattern": "^/[a-z0-9-]+/$"
+    },
+    "order": {
+      "type": "integer"
+    },
+    "visibility": {
+      "enum": [
+        "visible",
+        "hidden"
+      ]
+    },
+    "lifecycle": {
+      "enum": [
+        "draft",
+        "preview",
+        "public-eligible"
+      ]
+    },
+    "placement": {
+      "type": "object",
+      "properties": {
+        "catalog": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "homepage": {
+      "type": "object",
+      "required": [
+        "tier",
+        "variant",
+        "order"
+      ],
+      "properties": {
+        "tier": {
+          "enum": [
+            "featured",
+            "major",
+            "secondary",
+            "hidden"
+          ]
+        },
+        "variant": {
+          "enum": [
+            "forge-scene",
+            "workstation",
+            "device",
+            "console",
+            "wide-screen",
+            "compact"
+          ]
+        },
+        "order": {
+          "type": "integer"
+        },
+        "headline": {
+          "type": "string"
+        },
+        "lede": {
+          "type": "string"
+        },
+        "media": {
+          "$ref": "#/$defs/asset"
+        },
+        "mediaAlt": {
+          "type": "string"
+        },
+        "mediaCaption": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "brand": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "shortName": {
+          "type": "string"
+        },
+        "accessibleName": {
+          "type": "string"
+        },
+        "mark": {
+          "$ref": "#/$defs/asset"
+        },
+        "logo": {
+          "$ref": "#/$defs/asset"
+        },
+        "monochrome": {
+          "$ref": "#/$defs/asset"
+        }
+      },
+      "additionalProperties": false
+    },
+    "theme": {
+      "type": "object",
+      "properties": {
+        "accent": {
+          "$ref": "#/$defs/color"
+        },
+        "accentSecondary": {
+          "$ref": "#/$defs/color"
+        },
+        "background": {
+          "$ref": "#/$defs/color"
+        },
+        "surface": {
+          "$ref": "#/$defs/color"
+        },
+        "glow": {
+          "$ref": "#/$defs/color"
+        },
+        "text": {
+          "$ref": "#/$defs/color"
+        },
+        "muted": {
+          "$ref": "#/$defs/color"
+        },
+        "atmosphere": {
+          "enum": [
+            "archive",
+            "night",
+            "control-room",
+            "weather",
+            "carbon",
+            "memory",
+            "clean",
+            "foundry",
+            "none"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "hero": {
+      "type": "object",
+      "required": [
+        "kicker",
+        "headline",
+        "lede"
+      ],
+      "properties": {
+        "variant": {
+          "enum": [
+            "split",
+            "centered",
+            "cinematic",
+            "console",
+            "device",
+            "immersive"
+          ]
+        },
+        "kicker": {
+          "type": "string"
+        },
+        "headline": {
+          "type": "string"
+        },
+        "emphasis": {
+          "type": "string"
+        },
+        "lede": {
+          "type": "string"
+        },
+        "media": {
+          "type": "object",
+          "properties": {
+            "src": {
+              "$ref": "#/$defs/asset"
+            },
+            "alt": {
+              "type": "string"
+            },
+            "caption": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "primaryAction": {
+          "$ref": "#/$defs/action"
+        },
+        "secondaryAction": {
+          "$ref": "#/$defs/action"
+        }
+      },
+      "additionalProperties": false
+    },
+    "card": {
+      "type": "object",
+      "properties": {
+        "tagline": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "media": {
+          "$ref": "#/$defs/asset"
+        },
+        "mediaAlt": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "taxonomy": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "type": "string"
+        },
+        "jobs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "platforms": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "audience": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "sections": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "outcomes",
+                  "features",
+                  "how",
+                  "onboard",
+                  "guided-tour",
+                  "devices",
+                  "integrations",
+                  "faq",
+                  "story",
+                  "get",
+                  "identity",
+                  "evidence",
+                  "privacy",
+                  "related",
+                  "final-cta",
+                  "gallery",
+                  "copy",
+                  "download",
+                  "technical-record"
+                ]
+              },
+              "id": {
+                "type": "string"
+              },
+              "kicker": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "lede": {
+                "type": "string"
+              },
+              "paragraphs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "body": {
+                      "type": "string"
+                    },
+                    "note": {
+                      "type": "string"
+                    },
+                    "src": {
+                      "$ref": "#/$defs/asset"
+                    },
+                    "alt": {
+                      "type": "string"
+                    },
+                    "caption": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "contentSource": {
+      "const": "content.html"
+    },
+    "meta": {
+      "type": "object",
+      "required": [
+        "title",
+        "description"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "asset": {
+      "type": "string",
+      "pattern": "^/assets/[A-Za-z0-9._/-]+$"
+    },
+    "color": {
+      "type": "string",
+      "pattern": "^(#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?|rgba?\\(.*\\))$"
+    },
+    "action": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "href": {
+          "type": "string",
+          "pattern": "^(#[A-Za-z0-9_-]+|/[A-Za-z0-9._/-]+)$"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": true
+}

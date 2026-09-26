@@ -40,9 +40,14 @@
 .software-catalog-page .card-body{display:flex;min-width:0;padding:20px;flex-direction:column;gap:0}
 .software-catalog-page .card-head{gap:9px;margin:0 0 11px;align-items:center}
 .software-catalog-page .card-head svg{width:24px;height:24px;flex:none}
+.software-catalog-page .card-head .card-product-mark{width:24px;height:24px;flex:none;object-fit:contain}
 .software-catalog-page .card-name{font-size:1.4rem;letter-spacing:-.03em;line-height:1.2;color:#f2f1eb}
 .software-catalog-page .card-name a,.software-catalog-page .card-cleanroom .card-name a{color:#f2f1eb}
 .software-catalog-page .card-value,.software-catalog-page .card-cleanroom .card-value{font-size:.86rem;line-height:1.55;min-height:0;color:#bdc8cd;margin:0 0 14px;flex:1}
+.software-catalog-page .card-summary{font-size:.78rem;line-height:1.5;color:#9eabb1;margin:0 0 11px}
+.software-catalog-page .card-taxonomy{display:flex;flex-wrap:wrap;gap:5px 8px;margin:0 0 10px;color:#d0b994;font:400 .65rem/1.4 var(--font-mono,monospace)}
+.software-catalog-page .card-taxonomy span:first-child{color:#d8dfdc}
+.software-catalog-page .card-taxonomy span+span{color:#99aaa9}
 .h9-card-meta{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:12px;row-gap:4px;margin:0 0 10px}
 .software-catalog-page .card-platform,.software-catalog-page .card-version{font:400 .74rem/1.5 var(--font-mono,monospace);color:#cbd8dc}
 .software-catalog-page .card-platform{color:#a4b7c0}

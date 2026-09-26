@@ -5,7 +5,35 @@
   "visibility": "visible",
   "sections": [
     "hero",
-    "outcomes",
+    {
+      "type": "outcomes",
+      "id": "features",
+      "kicker": "Made for the way you work",
+      "title": "The forecast, made useful.",
+      "lede": "Start with what the weather means for your day. See the best window to get outside, what to wear now, what to bring for later, and the conditions behind the recommendation.",
+      "items": [
+        {
+          "title": "Find your window",
+          "body": "See when conditions are most useful for your plans — and what changes through the day."
+        },
+        {
+          "title": "Know what to wear",
+          "body": "Get clothing guidance based on current conditions, rain risk, timing, and what is coming later."
+        },
+        {
+          "title": "Wear now. Bring later.",
+          "body": "ForgeCast separates what makes sense right now from what you may want if conditions change."
+        },
+        {
+          "title": "Ask before you go",
+          "body": "Ask about a walk, an outfit, rain, timing, or the rest of your day. ForgeCast answers from the forecast and shows the reasons behind the recommendation."
+        },
+        {
+          "title": "Glance from your home screen",
+          "body": "Forecast-aware widgets surface useful decisions without pretending stale weather is current."
+        }
+      ]
+    },
     "how",
     "story",
     "get",
@@ -28,5 +56,72 @@
     "twitterCard": "summary_large_image",
     "twitterImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png"
   },
-  "contentSource": "content.html"
+  "contentSource": "content.html",
+  "schemaVersion": 2,
+  "theme": {
+    "accent": "#38BDF8",
+    "glow": "rgba(56,189,248,.15)",
+    "atmosphere": "weather",
+    "background": "#09131C",
+    "surface": "#14212B",
+    "accentSecondary": "#F59E0B"
+  },
+  "brand": {
+    "name": "ForgeCast",
+    "shortName": "ForgeCast",
+    "accessibleName": "forgecast",
+    "mark": "/assets/products/forgecast/brand/logo.svg"
+  },
+  "taxonomy": {
+    "category": "Weather",
+    "jobs": [
+      "everyday",
+      "forecast",
+      "clothing",
+      "planning"
+    ],
+    "platforms": [
+      "Android"
+    ]
+  },
+  "hero": {
+    "variant": "device",
+    "kicker": "Weather for what you do",
+    "headline": "Know what to wear now. What to bring later.",
+    "lede": "ForgeCast turns changing weather into practical decisions — when to head out, what makes sense to wear now, what you may want later, and why.",
+    "media": {
+      "src": "/assets/forgecast/v030-today.png",
+      "alt": "ForgeCast Today interface",
+      "caption": "Today · practical weather decisions"
+    },
+    "primaryAction": {
+      "label": "Explore product",
+      "href": "#download"
+    },
+    "secondaryAction": {
+      "label": "Explore the details",
+      "href": "#features"
+    }
+  },
+  "card": {
+    "tagline": "Know what to wear now. What to bring later.",
+    "media": "/assets/forgecast/v030-today.png",
+    "summary": "ForgeCast turns changing weather into practical decisions — when to head out, what makes sense to wear now, what you may want later, and why.",
+    "mediaAlt": "ForgeCast Today showing practical weather decisions"
+  },
+  "lifecycle": "public-eligible",
+  "placement": {
+    "catalog": true
+  },
+  "homepage": {
+    "tier": "secondary",
+    "variant": "device",
+    "order": 90,
+    "headline": "Weather for what you do.",
+    "lede": "What to wear now. What to bring later.",
+    "media": "/assets/forgecast/v030-today.png",
+    "mediaAlt": "ForgeCast Today showing practical weather decisions",
+    "mediaCaption": "Recorded weather · Android app",
+    "note": "Recorded weather. Forecasts use network data. No analytics tracking."
+  }
 }

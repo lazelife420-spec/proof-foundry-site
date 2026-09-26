@@ -49,7 +49,7 @@ Assert-Condition ($loHtml -notmatch '/reports/deploy-receipts/2026-06-30-proof-f
 
 # 4. Lights Out SmartScreen FAQ assertion (F12)
 Assert-Condition ($loHtml -notmatch 'Windows shows this warning for any unsigned executable') "Lights Out FAQ does not contain overgeneralized unsigned warning copy"
-Assert-Condition ($loHtml -match 'Windows may show an unrecognized-app or "Windows protected your PC" warning, depending on Windows security and reputation checks') "Lights Out FAQ contains accurate reputation-based SmartScreen copy"
+Assert-Condition ($loHtml -match 'Windows may show an unrecognized-app or &quot;Windows protected your PC&quot; warning, depending on Windows security and reputation checks') "Lights Out FAQ contains accurate reputation-based SmartScreen copy (HTML-escaped)"
 
 # 5. Machine Registry parity assertion (R01)
 $registryJson = Get-Content (Join-Path $publicDir "proof\index.json") -Raw | ConvertFrom-Json

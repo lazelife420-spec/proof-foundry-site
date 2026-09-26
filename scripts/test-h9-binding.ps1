@@ -71,7 +71,20 @@ foreach ($product in $canonical.products) {
 foreach ($file in $custody.entries) {
   Assert-Binding "custody: entry bytes preserved for $($file.path)" (Test-H9Custody $Root $file)
 }
-$expectedIds = @('cache-vault','reality-gate','forgecast','lights-out','cleanroom','ghostlayer','proofshot')
+$expectedIds = @($canonical.products | ForEach-Object { [string]$_.id })
+$sourceModules = @(Get-ChildItem -LiteralPath (Join-Path $Root 'products') -Directory | ForEach-Object {
+  (Read-Source (Join-Path (Join-Path 'products' $_.Name) 'module.json')) | ConvertFrom-Json
+})
+$publicIds = @($canonical.products | Where-Object { $_.visible } | ForEach-Object { [string]$_.id } | Sort-Object)
+$registryIds = @($registry.products | ForEach-Object { [string]$_.id } | Sort-Object)
+Assert-Binding 'source/registry binding: public module identities match authoritative manifest identities' ((($sourceModules | Where-Object { $_.visibility -eq 'visible' -and $_.lifecycle -eq 'public-eligible' } | ForEach-Object id | Sort-Object) -join ',') -ceq ($publicIds -join ',') -and ($registryIds -join ',') -ceq ($publicIds -join ','))
+$missingPublicRoutes = @($canonical.products | Where-Object {
+  if (-not $_.visible) { return $false }
+  $productRoute = Join-Path $PublicDir (Join-Path ([string]$_.id) 'index.html')
+  $truthRecord = Join-Path $PublicDir (Join-Path 'truth/products' ([string]$_.id + '.json'))
+  -not (Test-Path $productRoute) -or -not (Test-Path $truthRecord)
+})
+Assert-Binding 'visibility/truth binding: every public manifest product retains a generated route and truth record' ($missingPublicRoutes.Count -eq 0)
 foreach ($page in @(@{name='homepage';html=$homeHtml},@{name='software';html=$software})) {
   $ids = @([regex]::Matches($page.html, '\bid="([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
   $missing = @([regex]::Matches($page.html, 'aria-labelledby="([^"]+)"') | ForEach-Object { $_.Groups[1].Value -split '\s+' } | Where-Object { $_ -notin $ids })
@@ -89,22 +102,45 @@ function Class-Position([string]$className) {
   $match = [regex]::Match($homeHtml,$pattern)
   if ($match.Success) { return $match.Index }; return -1
 }
-# VR1 order: hero → product discovery scenes → portfolio strip → proof invitation → close.
-# Proof moved after the product journey; raw digests/commits no longer appear on-page.
-$composition = @('h9-hero','h9-major-mosaic','h9-scene-cache-vault','h9-scene-forgecast','h9-scene-reality','h9-scene-ghostlayer','h9-secondary-strip','h9-proof','h9-final')
-$previousPosition = -1
-foreach ($scene in $composition) {
-  $position = Class-Position $scene
-  Assert-Binding "binding composition: $scene exists after the preceding required scene" ($position -gt $previousPosition -and $position -ge 0)
-  $previousPosition = $position
-}
-Assert-Binding 'binding composition: hero product evidence remains authentic Cache Vault' ([regex]::Match($homeHtml,'(?s)<section\b[^>]*class="h9-hero".*?</section>').Value -match 'cv-quick-paste\.png')
-Assert-Binding 'binding composition: four major product identities have distinct scenes' (@('h9-scene-cache-vault','h9-scene-forgecast','h9-scene-reality','h9-scene-ghostlayer' | Where-Object { (Class-Position $_) -lt 0 }).Count -eq 0)
-$secondary = [regex]::Match($homeHtml,'(?s)<section\b[^>]*class="[^"]*\bh9-secondary-strip\b[^"]*".*?</section>').Value
-$secondaryIds = @([regex]::Matches($secondary,'<article\b[^>]*data-product="([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
-Assert-Binding 'binding composition: compact secondary strip contains Lights Out, Cleanroom and ProofShot only' ((($secondaryIds | Sort-Object) -join ',') -ceq 'cleanroom,lights-out,proofshot')
+# The homepage composition contract is module metadata → registry → generic role renderer → generated markup.
+$placedModules = @($sourceModules | Where-Object { $_.visibility -eq 'visible' -and $_.lifecycle -eq 'public-eligible' -and $_.homepage -and $_.homepage.tier -ne 'hidden' })
+$expectedHomepageIds = @(
+  @($placedModules | Where-Object { $_.homepage.tier -eq 'featured' } | Sort-Object { [int]$_.homepage.order }, { [int]$_.order } | ForEach-Object id)
+  @($placedModules | Where-Object { $_.homepage.tier -eq 'major' } | Sort-Object { [int]$_.homepage.order }, { [int]$_.order } | ForEach-Object id)
+  @($placedModules | Where-Object { $_.homepage.tier -eq 'secondary' } | Sort-Object { [int]$_.homepage.order }, { [int]$_.order } | ForEach-Object id)
+)
+$homeNodes = @([regex]::Matches($homeHtml,'<(?:section|article)\b[^>]*\bclass="([^"]*\bh9-auto-(?:featured|scene|mini)\b[^"]*)"[^>]*\bdata-product="([^"]+)"[^>]*>'))
+$renderedHomepageIds = @($homeNodes | ForEach-Object { $_.Groups[2].Value })
+Assert-Binding 'module → renderer: exactly one module owns the featured role' (@($placedModules | Where-Object { $_.homepage.tier -eq 'featured' }).Count -eq 1 -and @($homeNodes | Where-Object { $_.Groups[1].Value -match '\bh9-auto-featured\b' }).Count -eq 1)
+Assert-Binding 'module → registry → generated homepage: public visible roles and data order match' (($renderedHomepageIds -join ',') -ceq ($expectedHomepageIds -join ','))
+Assert-Binding 'renderer contract: hidden modules are omitted and each emitted module uses its declared generic role' (@($homeNodes | Where-Object {
+  $node = $_; $module = @($placedModules | Where-Object id -eq $node.Groups[2].Value) | Select-Object -First 1
+  -not $module -or ($module.homepage.tier -eq 'featured' -and $node.Groups[1].Value -notmatch '\bh9-auto-featured\b') -or ($module.homepage.tier -eq 'major' -and $node.Groups[1].Value -notmatch '\bh9-auto-scene\b') -or ($module.homepage.tier -eq 'secondary' -and $node.Groups[1].Value -notmatch '\bh9-auto-mini\b')
+}).Count -eq 0)
+$roleBindingErrors = @($homeNodes | Where-Object {
+  $node = $_; $module = @($placedModules | Where-Object id -eq $node.Groups[2].Value | Select-Object -First 1)[0]
+  if (-not $module) { return $true }
+  $accent = [regex]::Match($node.Value,'--scene-accent:([^;" ]+)').Groups[1].Value
+  $route = [regex]::Match($node.Value,'href="([^"]+)"').Groups[1].Value
+  ($accent -cne [string]$module.theme.accent) -or ($route -cne [string]$module.route)
+})
+Assert-Binding 'module → rendered presentation: accents and product routes bind to each module declaration' ($roleBindingErrors.Count -eq 0)
+$homepageRenderer = Read-Source 'scripts/build-site.ps1'
+$rendererStart = $homepageRenderer.IndexOf('function Get-HomepageProductModules')
+$rendererEnd = $homepageRenderer.IndexOf('function Get-PublicCatalogCount')
+$rendererSource = if ($rendererStart -ge 0 -and $rendererEnd -gt $rendererStart) { $homepageRenderer.Substring($rendererStart,$rendererEnd-$rendererStart) } else { '' }
+Assert-Binding 'renderer contract: role renderer has no product-ID-specific branches' ($rendererSource.Length -gt 0 -and $rendererSource -notmatch '(?i)cache-vault|reality-gate|forgecast|ghostlayer|lights-out|cleanroom|proofshot')
+Assert-Binding 'generated template: homepage has no fixed product list or product-specific card markup' ((Read-Source 'index.html') -match '@homepage-featured' -and (Read-Source 'index.html') -notmatch 'data-product="(?:cache-vault|reality-gate|forgecast|lights-out|cleanroom|ghostlayer|proofshot)"')
+$featuredId = @($placedModules | Where-Object { $_.homepage.tier -eq 'featured' } | Select-Object -ExpandProperty id)[0]
+$featuredScene = [regex]::Match($homeHtml,'(?s)<section\b[^>]*\bh9-auto-featured\b[^>]*>.*?</section>').Value
+$featuredModule = @($placedModules | Where-Object id -eq $featuredId | Select-Object -First 1)[0]
+$featuredArtwork = if ($featuredModule.homepage.media) { [string]$featuredModule.homepage.media } else { [string]$featuredModule.hero.media.src }
+Assert-Binding 'binding composition: featured product uses authentic module artwork' ($featuredArtwork -and $featuredScene.Contains($featuredArtwork))
+$forgecastModule = @($sourceModules | Where-Object id -eq 'forgecast' | Select-Object -First 1)[0]
+$forgecastNode = @($homeNodes | Where-Object { $_.Groups[2].Value -eq 'forgecast' }) | Select-Object -First 1
+Assert-Binding 'module truth: ForgeCast remains compact and last by declared module role/order' ($forgecastModule.homepage.tier -eq 'secondary' -and $renderedHomepageIds[-1] -eq 'forgecast' -and $forgecastNode.Groups[1].Value -match '\bh9-auto-mini\b')
 Assert-Binding 'architecture: catalog controls stay on software route' ($homeHtml -notmatch 'product-finder|data-compare=|id="product-search"')
-foreach ($id in $expectedIds) {
+foreach ($id in $publicIds) {
   Assert-Binding "discovery: homepage contains $id identity and route" ($homeHtml.Contains('data-product="' + $id + '"') -and $homeHtml.Contains('href="/' + $id + '/"'))
 }
 foreach ($asset in @('cv-quick-paste.png','v030-today.png','08-ci-run-complete.50deeeef7e10fbe8.png','gl-staged-files.png','cleanroom-activity-ledger.png','tonight-active-hero.png','web-hero.png')) {
@@ -112,9 +148,9 @@ foreach ($asset in @('cv-quick-paste.png','v030-today.png','08-ci-run-complete.5
 }
 Assert-Binding 'truth: ProofShot public 2.0.0 with verified production brand artwork' ($homeHtml -match 'Public v2\.0\.0' -and $homeHtml -match 'proofshot/web-hero\.png' -and $homeHtml -notmatch 'workbench-home\.png' -and $homeHtml -notmatch 'workbench-proof-cards')
 Assert-Binding 'truth: Cache Vault public 0.2.4 retained' ($homeHtml -match '(?i)Public v0\.2\.4')
-$realityScene = [regex]::Match($homeHtml,'(?s)<section\b[^>]*data-product="reality-gate".*?</section>').Value
-$weatherScene = [regex]::Match($homeHtml,'(?s)<section\b[^>]*data-product="forgecast".*?</section>').Value
-$ghostScene = [regex]::Match($homeHtml,'(?s)<section\b[^>]*data-product="ghostlayer".*?</section>').Value
+$realityScene = [regex]::Match($homeHtml,'(?s)<(?:section|article)\b[^>]*data-product="reality-gate".*?</(?:section|article)>').Value
+$weatherScene = [regex]::Match($homeHtml,'(?s)<(?:section|article)\b[^>]*data-product="forgecast".*?</(?:section|article)>').Value
+$ghostScene = [regex]::Match($homeHtml,'(?s)<(?:section|article)\b[^>]*data-product="ghostlayer".*?</(?:section|article)>').Value
 Assert-Binding 'truth: Reality Gate scene explicitly remains Developer Pilot with bounded security language' ($realityScene -match 'Developer Pilot v1\.1\.0' -and $realityScene -match 'Not an (OS|operating-system) security sandbox')
 Assert-Binding 'truth: ForgeCast scene discloses network use, no added analytics and recorded weather' ($weatherScene -match '(?i)network|HTTPS' -and $weatherScene -match '(?i)(No|does not add) analytics tracking' -and $weatherScene -match '(?i)recorded weather|recorded state')
 Assert-Binding 'truth: GhostLayer scene discloses explicit commit and temporary disk boundary' ($ghostScene -match '(?i)commit boundary' -and $ghostScene -match '(?i)temporary disk|temporary files|disk copies')

@@ -78,6 +78,10 @@ function New-FixtureModule($modDir, $id, [hashtable]$extra = @{}, [string]$conte
     route         = "/$id/"
     order         = 100
     visibility    = 'visible'
+    lifecycle     = 'public-eligible'
+    theme         = [ordered]@{ accent = '#38BDF8' }
+    card          = [ordered]@{ tagline = 'Fixture card headline'; media = '/assets/forgecast/v030-today.png'; mediaAlt = 'Fixture preview image' }
+    homepage      = [ordered]@{ tier = 'secondary'; variant = 'device'; order = 100; headline = 'Fixture homepage headline'; lede = 'Fixture homepage detail.'; media = '/assets/forgecast/v030-today.png'; mediaAlt = 'Fixture preview image'; mediaCaption = 'Fixture caption' }
     sections      = @('hero','related')
     meta          = [ordered]@{ title = "Fixture — $id"; description = "Fixture module $id" }
     contentSource = 'content.html'
@@ -101,6 +105,12 @@ Assert ((@($reg | Where-Object { $_.visibility -eq 'visible' })).Count -eq 7) 'a
 Assert (-not (Test-Path (Join-Path $root 'reality-gate.html'))) 'legacy reality-gate.html template is gone (migrated)'
 Assert (-not (Test-Path (Join-Path $root 'proofshot.html'))) 'legacy proofshot.html template is gone (migrated)'
 foreach ($m in $reg) { Assert ((Test-Path (Join-Path $srcProducts "$($m.id)\content.html")) -and $m.contentSource -eq 'content.html') "module $($m.id): content slot present" }
+foreach ($m in $reg) { Assert ($m.lifecycle -eq 'public-eligible' -and @($m.sections | Where-Object { $_ -isnot [string] -and $_.type -eq 'outcomes' }).Count -eq 1) "module $($m.id): explicit publication lifecycle and structured outcomes" }
+foreach ($m in $reg) {
+  $source = Get-Content (Join-Path $srcProducts "$($m.id)\content.html") -Raw
+  Assert ($source -match '<!-- @product-hero -->' -and $source -match '<!-- @structured-sections -->' -and $source -notmatch '<section class="product-hero\b' -and $source -notmatch 'class="pp-outcomes') "$($m.id): repeated hero/outcomes markup migrated to the module renderer"
+}
+Assert (-not (Test-Path (Join-Path $publicDir 'fixture-product\index.html'))) 'non-public v2 fixture stays outside production output'
 Write-Host ""
 
 # ── TEST 2: canonical build output is registry-rendered ──────────────────────
@@ -113,6 +123,11 @@ foreach ($id in @('reality-gate','cache-vault','lights-out','cleanroom','ghostla
   Assert ($html -match '<nav class="studio-related"') "$id`: renderer-generated related nav present"
   Assert (($html -notmatch '@product-content') -and ($html -notmatch '@product-breadcrumb') -and ($html -notmatch '@product-related')) "$id`: no unresolved render markers"
   Assert ($html -notmatch '\{\{[^}]+\}\}') "$id`: no unresolved tokens"
+}
+foreach ($id in @('cache-vault','lights-out')) {
+  $module = Get-Content (Join-Path $srcProducts "$id\module.json") -Raw | ConvertFrom-Json
+  $html = Get-Content (Join-Path $publicDir "$id\index.html") -Raw -Encoding UTF8
+  Assert (@($module.sections | Where-Object { $_ -isnot [string] -and $_.type -eq 'faq' }).Count -eq 1 -and $html -match 'class="pp-faq-item"' -and $html -match 'pp-support-flush') "$($id): structured FAQ renderer preserves the Q/A component"
 }
 Write-Host ""
 
@@ -132,13 +147,28 @@ $t3 = Invoke-ModuleFixture 'fake-version' {
 Assert ($t3.Exit -eq 0) 'build accepts module carrying fake facts (they are inert)'
 $t3Html = Get-Content (Join-Path $t3.OutDir 'reality-gate\index.html') -Raw -Encoding UTF8
 Assert ($t3Html -match [regex]::Escape($rgState.version) -and $t3Html -notmatch '99\.99\.99' -and $t3Html -notmatch 'evil\.example') 'rendered page still shows canonical facts — module claims ignored'
+$cvPublicVersion = [string]((Get-Content (Join-Path $root 'site-manifest.json') -Raw | ConvertFrom-Json).products | Where-Object id -eq 'cache-vault' | Select-Object -ExpandProperty release | Select-Object -ExpandProperty publicVersion)
+$t3HomeFixture = Invoke-ModuleFixture 'fake-home-facts' {
+  param($modDir)
+  $m = Get-Content (Join-Path $modDir 'cache-vault\module.json') -Raw | ConvertFrom-Json
+  $m | Add-Member -NotePropertyName version -NotePropertyValue '99.99.99' -Force
+  $m | Add-Member -NotePropertyName downloadUrl -NotePropertyValue 'https://evil.example/x.exe' -Force
+  [IO.File]::WriteAllText((Join-Path $modDir 'cache-vault\module.json'), ($m | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
+} -RealOut
+$t3Home = Get-Content (Join-Path $t3HomeFixture.OutDir 'index.html') -Raw -Encoding UTF8
+Assert ($t3HomeFixture.Exit -eq 0 -and $t3Home -match "Public v$([regex]::Escape($cvPublicVersion))" -and $t3Home -notmatch '99\.99\.99|evil\.example') 'homepage version/status and links remain governed by canonical public state'
 Write-Host ""
 
 # ── TEST 4: eighth-product modularity control ─────────────────────────────────
 Write-Host "--- TEST 4: eighth-product modularity (fixture-product) ---"
+$rendererBefore = (Get-FileHash $buildPs1 -Algorithm SHA256).Hash
+$indexBefore = (Get-FileHash (Join-Path $root 'index.html') -Algorithm SHA256).Hash
 $t4 = Invoke-ModuleFixture 'eighth-product' {
   param($modDir)
-  New-FixtureModule $modDir 'fixture-product' @{ order = 5 } | Out-Null
+  New-FixtureModule $modDir 'fixture-product' @{
+    order = 5
+    homepage = [ordered]@{ tier = 'major'; variant = 'device'; order = 25; headline = 'A new module, rendered generically.'; lede = 'Eighth product scene copy.'; media = '/assets/forgecast/v030-today.png'; mediaAlt = 'Eighth product fixture media'; mediaCaption = 'Fixture media'; note = 'Fixture note.' }
+  } | Out-Null
 } -RealOut -mutateManifest {
   param($o)
   # Clone a complete real product entry, re-identified — keeps every required
@@ -146,7 +176,7 @@ $t4 = Invoke-ModuleFixture 'eighth-product' {
   $clone = @($o.products | Where-Object { $_.id -eq 'cleanroom' })[0]
   $fp = $clone | ConvertTo-Json -Depth 30 | ConvertFrom-Json
   $fp.id = 'fixture-product'; $fp.name = 'Fixture Product'; $fp.route = '/fixture-product/'
-  $fp.featured = $false
+  $fp | Add-Member -NotePropertyName featured -NotePropertyValue $false -Force
   $o.products += $fp
   $o
 }
@@ -157,11 +187,57 @@ Assert ($t4soft -match 'data-product="fixture-product"') 'fixture-product appear
 Assert (Test-Path (Join-Path $t4.OutDir 'truth\products\fixture-product.json')) 'fixture-product truth record generated automatically'
 $t4idx = Get-Content (Join-Path $t4.OutDir 'truth\index.json') -Raw -Encoding UTF8
 Assert ($t4idx -match 'fixture-product') 'fixture-product listed in truth index automatically'
+$t4home = Get-Content (Join-Path $t4.OutDir 'index.html') -Raw -Encoding UTF8
+Assert ($t4home -match '<section class="h9-scene h9-auto-scene h9-auto-variant-device"[^>]*data-product="fixture-product"' -and $t4home -match 'A new module, rendered generically\.' -and $t4home -match 'href="/fixture-product/"') 'eighth product homepage scene uses existing generic variant and module metadata'
+Assert ($t4home -match '--scene-accent:#38BDF8' -and $t4home -match 'data-product="fixture-product"') 'eighth product homepage accent and identity come from module data'
+Assert ((Get-FileHash $buildPs1 -Algorithm SHA256).Hash -eq $rendererBefore -and (Get-FileHash (Join-Path $root 'index.html') -Algorithm SHA256).Hash -eq $indexBefore) 'eighth product requires no renderer or homepage index edits'
 $t4pg = Get-Content (Join-Path $t4.OutDir 'fixture-product\index.html') -Raw -Encoding UTF8
 Assert ($t4pg -match 'href="/truth/products/fixture-product\.json"[^>]*rel="alternate"|rel="alternate"[^>]*href="/truth/products/fixture-product\.json"') 'fixture-product H12 alternate generated automatically'
 Assert ($t4pg -match 'studio-related' -and $t4pg -match 'href="/reality-gate/"') 'fixture-product related nav includes siblings automatically'
 $t4rg = Get-Content (Join-Path $t4.OutDir 'reality-gate\index.html') -Raw -Encoding UTF8
 Assert ($t4rg -match 'href="/fixture-product/"') 'existing product related nav now includes fixture-product (registry-driven)'
+Write-Host ""
+
+# ── TEST 4B: homepage role and order are data-driven ──────────────────────────
+Write-Host "--- TEST 4B: homepage role/order mutation ---"
+$t4b = Invoke-ModuleFixture 'homepage-role-order' {
+  param($modDir)
+  $m = Get-Content (Join-Path $modDir 'forgecast\module.json') -Raw | ConvertFrom-Json
+  $m.homepage.tier = 'major'; $m.homepage.order = 25
+  [IO.File]::WriteAllText((Join-Path $modDir 'forgecast\module.json'), ($m | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
+} -RealOut
+Assert ($t4b.Exit -eq 0) 'changing module tier/order builds without renderer edits'
+$t4bHome = Get-Content (Join-Path $t4b.OutDir 'index.html') -Raw -Encoding UTF8
+$forgeSceneIndex = $t4bHome.IndexOf('data-product="forgecast"')
+$realitySceneIndex = $t4bHome.IndexOf('data-product="reality-gate"')
+Assert ($forgeSceneIndex -ge 0 -and $forgeSceneIndex -lt $realitySceneIndex -and $t4bHome -match '<section class="h9-scene h9-auto-scene[^>]*data-product="forgecast"' -and $t4bHome -notmatch '<article[^>]*data-product="forgecast"') 'role and order mutation moves ForgeCast from compact card to ordered scene'
+
+$t4hiddenHome = Invoke-ModuleFixture 'homepage-hidden' {
+  param($modDir)
+  $m = Get-Content (Join-Path $modDir 'ghostlayer\module.json') -Raw | ConvertFrom-Json
+  $m.homepage.tier = 'hidden'
+  [IO.File]::WriteAllText((Join-Path $modDir 'ghostlayer\module.json'), ($m | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
+} -RealOut
+Assert ($t4hiddenHome.Exit -eq 0 -and (Test-Path (Join-Path $t4hiddenHome.OutDir 'ghostlayer\index.html'))) 'homepage-hidden module retains its public route'
+$t4hiddenHtml = Get-Content (Join-Path $t4hiddenHome.OutDir 'index.html') -Raw -Encoding UTF8
+$t4hiddenCatalog = Get-Content (Join-Path $t4hiddenHome.OutDir 'software\index.html') -Raw -Encoding UTF8
+Assert ($t4hiddenHtml -notmatch 'data-product="ghostlayer"' -and $t4hiddenCatalog -match 'data-product="ghostlayer"' -and (Test-Path (Join-Path $t4hiddenHome.OutDir 'truth\products\ghostlayer.json'))) 'homepage hidden role omits only homepage placement'
+
+$t4badRole = Invoke-ModuleFixture 'homepage-bad-role' {
+  param($modDir)
+  $m = Get-Content (Join-Path $modDir 'cleanroom\module.json') -Raw | ConvertFrom-Json
+  $m.homepage.tier = 'bespoke'
+  [IO.File]::WriteAllText((Join-Path $modDir 'cleanroom\module.json'), ($m | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
+}
+Assert ($t4badRole.Exit -ne 0 -and $t4badRole.Output -match 'homepage.tier must be') 'unknown homepage role is rejected instead of silently rendering compact'
+
+$t4duplicateFeatured = Invoke-ModuleFixture 'homepage-duplicate-featured' {
+  param($modDir)
+  $m = Get-Content (Join-Path $modDir 'forgecast\module.json') -Raw | ConvertFrom-Json
+  $m.homepage.tier = 'featured'
+  [IO.File]::WriteAllText((Join-Path $modDir 'forgecast\module.json'), ($m | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
+}
+Assert ($t4duplicateFeatured.Exit -ne 0 -and $t4duplicateFeatured.Output -match 'one featured module') 'multiple featured roles fail instead of dropping a module silently'
 Write-Host ""
 
 # ── TEST 5: hidden product control ───────────────────────────────────────────
@@ -170,6 +246,7 @@ $t5 = Invoke-ModuleFixture 'hidden' {
   param($modDir)
   $m = Get-Content (Join-Path $modDir 'ghostlayer\module.json') -Raw | ConvertFrom-Json
   $m.visibility = 'hidden'
+  $m.lifecycle = 'preview'
   [IO.File]::WriteAllText((Join-Path $modDir 'ghostlayer\module.json'), ($m | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
 } -RealOut
 Assert ($t5.Exit -eq 0) 'hidden-module build succeeds'
@@ -179,8 +256,8 @@ Assert ($t5soft -notmatch 'data-product="ghostlayer"') 'hidden product absent fr
 $t5truth = Get-Content (Join-Path $t5.OutDir 'truth\index.json') -Raw -Encoding UTF8
 Assert ($t5truth -notmatch 'ghostlayer') 'hidden product absent from truth index'
 Assert (-not (Test-Path (Join-Path $t5.OutDir 'truth\products\ghostlayer.json'))) 'hidden product produces no truth record'
-# Homepage h9-scene blocks are bespoke narrative surfaces (not the product
-# registry surface) — the hidden contract scopes to catalog/routes/truth/discovery.
+# Preview lifecycle removes a module from the registry-driven public homepage,
+# catalog, routes, truth, and discovery surfaces.
 # Hidden module's own route must not leak into alternates on other pages
 $t5cv = Get-Content (Join-Path $t5.OutDir 'cache-vault\index.html') -Raw -Encoding UTF8
 Assert ($t5cv -notmatch 'ghostlayer') 'hidden product absent from related nav on sibling pages'
@@ -246,7 +323,7 @@ $t8 = Invoke-ModuleFixture 'evil-meta' {
 } -RealOut
 if ($t8.Exit -eq 0) {
   $t8Html = Get-Content (Join-Path $t8.OutDir 'cleanroom\index.html') -Raw -Encoding UTF8
-  Assert ($t8Html -notmatch '<script>alert\(1\)</script>' -or $true) 'hostile meta.title reaches output unescaped — flagged for contract review'
+  Assert ($t8Html -notmatch '<script>alert\(1\)</script>' -and $t8Html -match '&lt;script&gt;alert\(1\)&lt;/script&gt;') 'hostile meta.title is escaped at the HTML attribute boundary'
 } else { Assert $true 'hostile meta.title rejected at validation' }
 # No private control-plane details in the machine surfaces. (Product narrative
 # may legitimately describe public product behavior — e.g. Reality Gate's
@@ -268,7 +345,9 @@ Write-Host "--- TEST 9: state-source adapter contract ---"
 # Real swap: product state arrives via -StateSourcePath (FixtureApiProductStateSource)
 # — the adapter seam production actually constructs — not the manifest.
 $t9 = Invoke-ModuleFixture 'state-swap' {} -mutateState { param($m)
-  (@($m.products | Where-Object { $_.id -eq 'cleanroom' }))[0].name = 'SWAPPED-STATE-MARKER'
+  $cleanroom = (@($m.products | Where-Object { $_.id -eq 'cleanroom' }))[0]
+  $cleanroom.name = 'SWAPPED-STATE-MARKER'
+  $cleanroom | Add-Member -NotePropertyName homeName -NotePropertyValue 'SWAPPED-HOME-NAME' -Force
   $m
 }
 Assert ($t9.Exit -eq 0) "fixture-api state source builds (exit=$($t9.Exit))"
@@ -278,6 +357,24 @@ $t9soft = Get-Content (Join-Path $t9.OutDir 'software\index.html') -Raw -Encodin
 Assert ($t9soft -match 'data-product="cleanroom"') 'catalog rendered under foreign source'
 $t9truth = Get-Content (Join-Path $t9.OutDir 'truth\products\cleanroom.json') -Raw -Encoding UTF8
 Assert ($t9truth -match 'SWAPPED-STATE-MARKER') 'truth JSON consumed foreign source state'
+$t9home = Get-Content (Join-Path $t9.OutDir 'index.html') -Raw -Encoding UTF8
+Assert ($t9home -match 'SWAPPED-HOME-NAME') 'homepage presentation name consumed foreign source state'
+Write-Host ""
+
+# Homepage markup must stay generic: IDs are data, never renderer branches.
+$renderer = Get-Content $buildPs1 -Raw -Encoding UTF8
+$homeRendererStart = $renderer.IndexOf('function Get-HomepageProductModules')
+$homeRendererEnd = $renderer.IndexOf('function Get-PublicCatalogCount')
+$homeRendererSource = if ($homeRendererStart -ge 0 -and $homeRendererEnd -gt $homeRendererStart) { $renderer.Substring($homeRendererStart, $homeRendererEnd - $homeRendererStart) } else { '' }
+Assert ($homeRendererSource.Length -gt 0 -and $homeRendererSource -notmatch '(?i)cache-vault|reality-gate|forgecast|ghostlayer|lights-out|cleanroom|proofshot') 'homepage renderer contains no product-ID-specific branches'
+
+$t9LegacyPlacement = Invoke-ModuleFixture 'legacy-home-placement-flag' {
+  param($modDir)
+  $m = Get-Content (Join-Path $modDir 'cleanroom\module.json') -Raw | ConvertFrom-Json
+  $m.placement | Add-Member -NotePropertyName homepage -NotePropertyValue $false -Force
+  [IO.File]::WriteAllText((Join-Path $modDir 'cleanroom\module.json'), ($m | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
+}
+Assert ($t9LegacyPlacement.Exit -ne 0 -and $t9LegacyPlacement.Output -match 'placement.homepage') 'duplicate legacy homepage placement flag is rejected'
 Write-Host ""
 
 # ── TEST 10: H11 truth + H12 discovery remain registry-driven ────────────────
@@ -323,7 +420,8 @@ Write-Host ""
 Write-Host "--- TEST 12 (R1): unsafe URL policy ---"
 $badUrls = @('javascript:alert(1)','JAVASCRIPT:alert(1)','data:text/html,<script>alert(1)</script>','file:///C:/Windows/System32/','vbscript:msgbox(1)','http://127.0.0.1:8765/','http://localhost:8765/','http://192.168.1.10/','http://10.0.0.1/','http://172.16.0.1/')
 foreach ($bad in $badUrls) {
-  $b = Invoke-ModuleFixture ("bad-url-" + ($bad -replace '[^a-zA-Z0-9]','_').Substring(0,20)) {} -mutateManifest { param($m) ($m.products | Where-Object { $_.id -eq 'cleanroom' })[0].downloadUrl = $bad; $m }
+  $urlSlug = ($bad -replace '[^a-zA-Z0-9]','_'); if ($urlSlug.Length -gt 20) { $urlSlug = $urlSlug.Substring(0,20) }
+  $b = Invoke-ModuleFixture ("bad-url-" + $urlSlug) {} -mutateManifest { param($m) ($m.products | Where-Object { $_.id -eq 'cleanroom' })[0].downloadUrl = $bad; $m }
   Assert ($b.Exit -ne 0) "unsafe public URL rejected: $bad"
 }
 $ok = Invoke-ModuleFixture 'good-urls' {} -mutateManifest { param($m)
@@ -384,6 +482,36 @@ Assert ($r15.Exit -eq 0) "hostile eighth-product build completes"
 $r15h = Get-Content (Join-Path $r15.OutDir 'fixture-product\index.html') -Raw -Encoding UTF8
 Assert ($r15h -notmatch '<img src=x onerror') 'eighth product: no raw executable markup'
 Assert ($r15h -match '&lt;img src=x|&quot;&gt;') 'eighth product: escaped entities emitted'
+Write-Host ""
+
+# ── TEST 16: Product Module v2 structured path ────────────────────────────────
+Write-Host "--- TEST 16: Product Module v2 structured rendering + packaged media ---"
+$v2 = Invoke-ModuleFixture 'module-v2' {
+  param($modDir)
+  Copy-Item (Join-Path $root 'scripts/fixtures/product-module-v2') (Join-Path $modDir 'fixture-product') -Recurse -Force
+} -RealOut -mutateManifest { param($m)
+  $clone = (@($m.products | Where-Object { $_.id -eq 'cleanroom' }))[0] | ConvertTo-Json -Depth 30 | ConvertFrom-Json
+  $clone.id='fixture-product'; $clone.name='Fixture Product'; $clone.route='/fixture-product/'; $clone | Add-Member -NotePropertyName featured -NotePropertyValue $false -Force
+  $m.products += $clone; $m
+}
+Assert ($v2.Exit -eq 0) "structured v2 module builds (exit=$($v2.Exit))"
+$v2Page = Get-Content (Join-Path $v2.OutDir 'fixture-product\index.html') -Raw -Encoding UTF8
+Assert ($v2Page -match 'data-hero-variant="centered"' -and $v2Page -match 'A module built from data\.') 'v2 generic hero and selected variant render'
+Assert ($v2Page -match '--product-accent:#12AB89' -and $v2Page -match 'data-product-atmosphere="archive"') 'validated theme tokens applied to controlled CSS variables'
+Assert ($v2Page -match 'Reusable outcomes' -and $v2Page -match 'First declarative item\.') 'structured section registry renders common outcomes component'
+Assert (Test-Path (Join-Path $v2.OutDir 'assets\products\fixture-product\brand\logo.svg')) 'module logo packaged into standard asset route'
+Assert (Test-Path (Join-Path $v2.OutDir 'assets\products\fixture-product\media\hero.png')) 'module media packaged into standard asset route'
+$v2Catalog = Get-Content (Join-Path $v2.OutDir 'software\index.html') -Raw -Encoding UTF8
+Assert ($v2Catalog -match 'A card from module metadata\.' -and $v2Catalog -match '/assets/products/fixture-product/media/hero.png') 'catalog card presentation discovered from v2 module'
+$badTheme = Invoke-ModuleFixture 'module-v2-bad-theme' { param($modDir)
+  Copy-Item (Join-Path $root 'scripts/fixtures/product-module-v2') (Join-Path $modDir 'fixture-product') -Recurse -Force
+  $dir = Join-Path $modDir 'fixture-product'
+  $m=Get-Content (Join-Path $dir 'module.json') -Raw | ConvertFrom-Json; $m.theme.accent='red;position:fixed'
+  [IO.File]::WriteAllText((Join-Path $dir 'module.json'),($m|ConvertTo-Json -Depth 20),[Text.UTF8Encoding]::new($false))
+} -mutateManifest { param($m)
+  $clone=(@($m.products|Where-Object{$_.id -eq 'cleanroom'})[0]|ConvertTo-Json -Depth 30|ConvertFrom-Json);$clone.id='fixture-product';$clone.name='Fixture Product';$clone.route='/fixture-product/';$clone|Add-Member -NotePropertyName featured -NotePropertyValue $false -Force;$m.products+=$clone;$m
+}
+Assert ($badTheme.Exit -ne 0 -and $badTheme.Output -match 'invalid theme.accent') 'unchecked theme value rejected'
 Write-Host ""
 
 Write-Host "=== RESULT: $passed passed, $failed failed ==="

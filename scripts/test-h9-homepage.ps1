@@ -12,6 +12,9 @@ $homeHtml = Get-Content $homePath -Raw -Encoding UTF8
 $softwareHtml = Get-Content $softwarePath -Raw -Encoding UTF8
 $manifest = Get-Content (Join-Path $root 'site-manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 $cv = $manifest.products | Where-Object id -eq 'cache-vault'
+$moduleFiles = @(Get-ChildItem (Join-Path $root 'products') -Directory | ForEach-Object {
+  Get-Content (Join-Path $_.FullName 'module.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+})
 
 $pass = 0
 $fail = 0
@@ -31,9 +34,17 @@ Write-Host "=== H9 HOMEPAGE & CATALOG GUARD ===" -ForegroundColor Cyan
 # 1. Core Composition
 Assert-H9 'H9 editorial hero exists' ($homeHtml -match 'h9-hero-product')
 Assert-H9 'authentic Cache Vault hero media exists' ($homeHtml -match 'cv-quick-paste\.png')
-Assert-H9 'ForgeCast major scene exists' ($homeHtml -match 'v030-today\.png')
-Assert-H9 'Reality Gate major scene exists' ($homeHtml -match '08-ci-run-complete\.50deeeef7e10fbe8\.png')
-Assert-H9 'all four secondary products exist' (($homeHtml -match 'data-product="ghostlayer"') -and ($homeHtml -match 'data-product="cleanroom"') -and ($homeHtml -match 'data-product="lights-out"') -and ($homeHtml -match 'data-product="proofshot"'))
+$publicHomepageModules = @($moduleFiles | Where-Object { $_.visibility -eq 'visible' -and $_.lifecycle -eq 'public-eligible' })
+$expectedHomepageIds = @(
+  @($publicHomepageModules | Where-Object { $_.homepage.tier -eq 'featured' } | Sort-Object { [int]$_.homepage.order } | ForEach-Object id)
+  @($publicHomepageModules | Where-Object { $_.homepage.tier -eq 'major' } | Sort-Object { [int]$_.homepage.order } | ForEach-Object id)
+  @($publicHomepageModules | Where-Object { $_.homepage.tier -eq 'secondary' } | Sort-Object { [int]$_.homepage.order } | ForEach-Object id)
+)
+$renderedHomepageIds = @([regex]::Matches($homeHtml, '<(?:section|article)\b(?=[^>]*\bh9-auto-(?:featured|scene|mini)\b)[^>]*\bdata-product="([^"]+)"[^>]*>') | ForEach-Object { $_.Groups[1].Value })
+Assert-H9 'homepage product placements match module tiers and ordering' (($renderedHomepageIds -join ',') -eq ($expectedHomepageIds -join ','))
+Assert-H9 'homepage index uses generic registry placement markers without fixed product markup' (([IO.File]::ReadAllText((Join-Path $root 'index.html')) -match '@homepage-featured') -and $renderedHomepageIds.Count -eq $expectedHomepageIds.Count -and [IO.File]::ReadAllText((Join-Path $root 'index.html')) -notmatch 'data-product="(?:cache-vault|reality-gate|forgecast|lights-out|cleanroom|ghostlayer|proofshot)"')
+$forgecastCompact = [regex]::Match($homeHtml, '(?s)<article\b[^>]*data-product="forgecast"[^>]*>.*?</article>').Value
+Assert-H9 'ForgeCast is the final compact homepage card' ($renderedHomepageIds[-1] -eq 'forgecast' -and $forgecastCompact -match 'h9-mini h9-auto-mini' -and $forgecastCompact -notmatch 'h9-auto-scene')
 
 # 2. Status Truth
 function Test-ProofShotPublic([string]$html) {
@@ -78,7 +89,7 @@ Assert-H9 'receipt v0.2.4 source commit stays off the homepage narrative' ($home
 # 6. Specific Wording & Liability Bounds
 Assert-H9 'GhostLayer "zero-trace" claim absent' ($homeHtml -notmatch 'zero-trace')
 Assert-H9 'ProofShot "screen capture" wording absent' ($homeHtml -notmatch 'screen capture')
-Assert-H9 'ForgeCast privacy/network wording remains bounded' ($homeHtml -match 'network data where required; the app does not add analytics tracking')
+Assert-H9 'ForgeCast privacy/network wording remains bounded' ($homeHtml -match '(?i)recorded weather' -and $homeHtml -match '(?i)network data' -and $homeHtml -match '(?i)no analytics tracking')
 
 # 7. Negative controls exercise the same predicate against mutated in-memory
 # content; no source or public file is changed by these controls.

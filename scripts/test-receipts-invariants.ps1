@@ -35,7 +35,7 @@ function Assert($name, [bool]$ok, $detail = '') {
 }
 
 # Build against a fixture. Returns @{ Exit; Output; ProofHtml; Registry; OutDir }
-function Invoke-FixtureBuild([string]$name, [scriptblock]$mutate, [switch]$ValidateOnly) {
+function Invoke-FixtureBuild([string]$name, [scriptblock]$mutate, [switch]$ValidateOnly, [scriptblock]$mutateModules) {
   $fixDir = Join-Path $work $name
   New-Item -ItemType Directory -Force -Path $fixDir | Out-Null
   $fixManifest = Join-Path $fixDir 'site-manifest.json'
@@ -47,10 +47,17 @@ function Invoke-FixtureBuild([string]$name, [scriptblock]$mutate, [switch]$Valid
   [IO.File]::WriteAllText($fixManifest, $json, (New-Object System.Text.UTF8Encoding $false))
 
   $valOpt = if ($ValidateOnly) { ' -ValidateOnly' } else { '' }
+  $productsOpt = ''
+  if ($mutateModules) {
+    $fixtureProducts = Join-Path $fixDir 'products'
+    Copy-Item (Join-Path $root 'products') $fixtureProducts -Recurse
+    & $mutateModules $fixtureProducts
+    $productsOpt = " -ProductsDir `"$fixtureProducts`""
+  }
   $psExe = if (Get-Command pwsh -ErrorAction SilentlyContinue) { (Get-Command pwsh).Source } else { (Get-Process -Id $PID).Path }
   $pinfo = New-Object System.Diagnostics.ProcessStartInfo
   $pinfo.FileName = $psExe
-  $pinfo.Arguments = "-NoProfile -File `"$buildPs1`" -ManifestPath `"$fixManifest`" -OutDir `"$outDir`"$valOpt"
+  $pinfo.Arguments = "-NoProfile -File `"$buildPs1`" -ManifestPath `"$fixManifest`" -OutDir `"$outDir`"$valOpt$productsOpt"
   $pinfo.RedirectStandardOutput = $true
   $pinfo.RedirectStandardError = $true
   $pinfo.UseShellExecute = $false
@@ -146,6 +153,16 @@ $t4 = Invoke-FixtureBuild 'nodate' {
     if ($p.PSObject.Properties.Name -contains 'lastVerified') { $p.lastVerified = $null }
   }
   $o
+} -mutateModules {
+  param($productsDir)
+  # Unverified records cannot remain production-eligible under the current
+  # publication gate. Keep the presentation in the preview lifecycle so this
+  # fixture can exercise the site's no-date fallback without public emission.
+  Get-ChildItem -LiteralPath $productsDir -Filter 'module.json' -File -Recurse | ForEach-Object {
+    $module = Get-Content -LiteralPath $_.FullName -Raw | ConvertFrom-Json
+    $module.lifecycle = 'preview'; $module.visibility = 'hidden'
+    [IO.File]::WriteAllText($_.FullName, ($module | ConvertTo-Json -Depth 30), [Text.UTF8Encoding]::new($false))
+  }
 }
 Assert 'build succeeds with no dates' ($t4.Exit -eq 0) $t4.Output
 if ($t4.Exit -eq 0) {

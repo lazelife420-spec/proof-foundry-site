@@ -1,0 +1,319 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://theprooffoundry.com/schemas/product-capsule-v1.schema.json",
+  "title": "Proof Foundry Product Capsule v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "brand",
+    "theme",
+    "hero",
+    "card",
+    "taxonomy",
+    "placement",
+    "sections"
+  ],
+  "properties": {
+    "schema": {
+      "const": "proof-foundry.product-capsule/v1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "lifecycle": {
+      "enum": [
+        "draft",
+        "preview",
+        "public-eligible"
+      ]
+    },
+    "brand": {
+      "type": "object",
+      "required": [
+        "name",
+        "shortName",
+        "mark"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "shortName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mark": {
+          "$ref": "#/$defs/capsulePath"
+        },
+        "logo": {
+          "$ref": "#/$defs/capsulePath"
+        }
+      },
+      "additionalProperties": false
+    },
+    "theme": {
+      "type": "object",
+      "required": [
+        "accent",
+        "accentSecondary",
+        "atmosphere"
+      ],
+      "properties": {
+        "accent": {
+          "$ref": "#/$defs/color"
+        },
+        "accentSecondary": {
+          "$ref": "#/$defs/color"
+        },
+        "atmosphere": {
+          "enum": [
+            "archive",
+            "night",
+            "control-room",
+            "weather",
+            "carbon",
+            "memory",
+            "clean",
+            "foundry",
+            "none"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "hero": {
+      "type": "object",
+      "required": [
+        "variant",
+        "kicker",
+        "headline",
+        "lede",
+        "media",
+        "mediaAlt",
+        "mediaCaption"
+      ],
+      "properties": {
+        "variant": {
+          "enum": [
+            "split",
+            "centered",
+            "cinematic",
+            "console",
+            "device",
+            "immersive"
+          ]
+        },
+        "kicker": {
+          "type": "string",
+          "minLength": 1
+        },
+        "headline": {
+          "type": "string",
+          "minLength": 1
+        },
+        "emphasis": {
+          "type": "string"
+        },
+        "lede": {
+          "type": "string",
+          "minLength": 1
+        },
+        "media": {
+          "$ref": "#/$defs/capsulePath"
+        },
+        "mediaAlt": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mediaCaption": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "card": {
+      "type": "object",
+      "required": [
+        "tagline",
+        "summary",
+        "media",
+        "mediaAlt"
+      ],
+      "properties": {
+        "tagline": {
+          "type": "string",
+          "minLength": 1
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "media": {
+          "$ref": "#/$defs/capsulePath"
+        },
+        "mediaAlt": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "taxonomy": {
+      "type": "object",
+      "required": [
+        "category",
+        "jobs",
+        "platforms"
+      ],
+      "properties": {
+        "category": {
+          "type": "string",
+          "minLength": 1
+        },
+        "jobs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "platforms": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "placement": {
+      "type": "object",
+      "required": [
+        "catalog"
+      ],
+      "properties": {
+        "catalog": {
+          "type": "boolean"
+        },
+        "homepageTier": {
+          "enum": [
+            "featured",
+            "major",
+            "secondary",
+            "hidden",
+            "none"
+          ]
+        },
+        "homepageOrder": {
+          "type": "integer"
+        },
+        "homepageVariant": {
+          "enum": [
+            "forge-scene",
+            "workstation",
+            "device",
+            "console",
+            "wide-screen",
+            "compact"
+          ]
+        },
+        "homepageNote": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "sections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "outcomes",
+              "features",
+              "copy",
+              "gallery",
+              "faq",
+              "guided-tour",
+              "devices",
+              "integrations"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "kicker": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "lede": {
+            "type": "string"
+          },
+          "paragraphs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "items": {
+            "type": "array",
+            "maxItems": 12,
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "body": {
+                  "type": "string"
+                },
+                "note": {
+                  "type": "string"
+                },
+                "src": {
+                  "$ref": "#/$defs/capsulePath"
+                },
+                "alt": {
+                  "type": "string"
+                },
+                "caption": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "social": {
+      "type": "object",
+      "properties": {
+        "ogImage": {
+          "$ref": "#/$defs/capsulePath"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "capsulePath": {
+      "type": "string",
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9._/-]+$"
+    },
+    "color": {
+      "type": "string",
+      "pattern": "^(#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?|rgba?\\(\\s*(\\d{1,3}\\s*,\\s*){2}\\d{1,3}(\\s*,\\s*(0|1|0?\\.\\d+))?\\s*\\))$"
+    }
+  }
+}

@@ -6,7 +6,33 @@
   "sections": [
     "hero",
     "film",
-    "outcomes",
+    {
+      "type": "outcomes",
+      "id": "features",
+      "kicker": "Available in Developer Pilot {{product.versionLabel}}",
+      "title": "Local control room for your software projects.",
+      "lede": "Bring an ordinary Git repository. Keep the tools and remotes you already use.",
+      "items": [
+        {
+          "title": "Project Registry",
+          "body": "Bind canonical repository roots, working trees, and target identities to explicit validation maps before running checks."
+        },
+        {
+          "title": "Isolated Runroom",
+          "body": "Build and test in bounded local checkouts with step-by-step log capture and execution cancellation.",
+          "note": "Runroom protects your main working tree; it is not an OS security sandbox."
+        },
+        {
+          "title": "Proof Ledger",
+          "body": "Save cryptographic, ECDSA P-256 signed run records binding source commit SHAs, test outcomes, and build digests.",
+          "note": "Local signatures verify payload integrity against local keys, not third-party issuer trust."
+        },
+        {
+          "title": "Recovery Vault",
+          "body": "Prepare recovery bundles with explicitly recorded contents and rehearse restoration into a separate location."
+        }
+      ]
+    },
     "how",
     "story",
     "get",
@@ -29,5 +55,73 @@
     "twitterImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png"
   },
   "contentSource": "content.html",
-  "inlineCss": " /* H3 readability correction (retained): the origin narrative beats carry light    copy that was authored against a dark paired surface. Keep that pairing so    the copy stays legible. No copy, layout, or hierarchy change. */ .product-reality-gate #origin {   background: #101418;   border: 1px solid rgba(255,255,255,0.08); } .product-reality-gate #origin .section-heading h2, .product-reality-gate #origin .section-heading p {   color: #f2f0eb; } "
+  "inlineCss": " /* H3 readability correction (retained): the origin narrative beats carry light    copy that was authored against a dark paired surface. Keep that pairing so    the copy stays legible. No copy, layout, or hierarchy change. */ .product-reality-gate #origin {   background: #101418;   border: 1px solid rgba(255,255,255,0.08); } .product-reality-gate #origin .section-heading h2, .product-reality-gate #origin .section-heading p {   color: #f2f0eb; } ",
+  "schemaVersion": 2,
+  "theme": {
+    "accent": "#D9906B",
+    "glow": "rgba(217,144,107,.17)",
+    "atmosphere": "control-room",
+    "background": "#101417",
+    "surface": "#151B20",
+    "accentSecondary": "#C47B57"
+  },
+  "brand": {
+    "name": "Reality Gate",
+    "shortName": "Reality Gate",
+    "accessibleName": "reality-gate",
+    "mark": "/assets/products/reality-gate/brand/logo.svg"
+  },
+  "taxonomy": {
+    "category": "Software Verification",
+    "jobs": [
+      "build",
+      "verification",
+      "execution",
+      "engineering"
+    ],
+    "platforms": [
+      "Windows"
+    ]
+  },
+  "hero": {
+    "variant": "console",
+    "kicker": "Local developer continuity & execution",
+    "headline": "Your projects.",
+    "emphasis": "Your execution. Your way back.",
+    "lede": "Bring your Git projects into a local control room for builds, run records, and recovery. See the source behind a run, inspect its outcome, and keep a recovery path alongside the work.",
+    "media": {
+      "src": "/assets/reality-gate/08-ci-run-complete.50deeeef7e10fbe8.png",
+      "alt": "Reality Gate Runroom showing a completed run, execution log and verified receipt.",
+      "caption": "The Runroom · a real completed run"
+    },
+    "primaryAction": {
+      "label": "Get the Developer Pilot",
+      "href": "#download"
+    },
+    "secondaryAction": {
+      "label": "Tour the control room",
+      "href": "#try-it"
+    }
+  },
+  "card": {
+    "tagline": "Your projects. Your execution. Your way back.",
+    "media": "/assets/studio/08-ci-run-complete-card-960.png",
+    "summary": "Bring your Git projects into a local control room for builds, run records, and recovery. See the source behind a run, inspect its outcome, and keep a recovery path alongside the work.",
+    "mediaAlt": "Reality Gate Runroom displaying a completed CI run in a sample repository"
+  },
+  "lifecycle": "public-eligible",
+  "placement": {
+    "catalog": true
+  },
+  "homepage": {
+    "tier": "major",
+    "variant": "console",
+    "order": 30,
+    "headline": "Run. Inspect. Keep the record.",
+    "lede": "Local engineering continuity with inspectable run records.",
+    "media": "/assets/reality-gate/08-ci-run-complete.50deeeef7e10fbe8.png",
+    "mediaAlt": "Reality Gate Runroom displaying a completed CI run in a sample repository",
+    "mediaCaption": "Real Runroom · sample repository",
+    "note": "Local engineering continuity. Not an OS security sandbox."
+  }
 }
