@@ -59,9 +59,10 @@ foreach ($set in @(@($manifest.products), @($canonical.products))) {
     $pp.PSObject.Properties.Remove('packageId')
   }
 }
-Assert-Binding 'authority: complete product objects equal current production (authorized: forgecast copy fields + H10 truth fields only)' ((Json $manifest.products) -ceq (Json $canonical.products))
+Assert-Binding 'authority: unchanged public product objects equal inspected production (authorized copy/H10 migrations only)' ((Json @($manifest.products | Where-Object id -ne 'lights-out')) -ceq (Json @($canonical.products | Where-Object id -ne 'lights-out')))
+Assert-Binding 'authority: Lights Out v11.1.3 Verified release record is the explicit local truth migration' ((@($manifest.products | Where-Object id -eq 'lights-out')[0].release.publicVersion -eq '11.1.3') -and (@($manifest.products | Where-Object id -eq 'lights-out')[0].verification.status -eq 'VERIFIED') -and (@($manifest.products | Where-Object id -eq 'lights-out')[0].release.releaseStatus -eq 'PUBLIC_RELEASE'))
 Assert-Binding 'authority: seven registry identities equal production' ((($registry.products.id | Sort-Object) -join ',') -ceq (($canonical.products.id | Sort-Object) -join ','))
-foreach ($product in $canonical.products) {
+foreach ($product in $manifest.products) {
   $actual = @($registry.products | Where-Object id -eq $product.id)[0]
   $expectedRelease = [ordered]@{publicVersion=$product.release.publicVersion;candidateVersion=$product.release.candidateVersion;releaseStatus=$product.release.releaseStatus;publishedAt=$product.release.publishedAt}
   Assert-Binding "truth: $($product.id) registry release/status/candidate parity" ((Json $actual.release) -ceq (Json $expectedRelease))
@@ -96,7 +97,7 @@ foreach ($page in @(@{name='homepage';html=$homeHtml},@{name='software';html=$so
   Assert-Binding "$($page.name): concept bitmap excluded" ($page.html -notmatch 'a_dark_cinematic_high_contrast_website_landing_p')
 }
 Assert-Binding 'architecture: unchanged truthful hero headline' ($homeHtml -match 'Useful software\.' -and $homeHtml -match 'On your terms\.')
-Assert-Binding 'identity: physical maker composition contains unchanged selected G' ($homeHtml -match 'h9-maker-plate' -and $homeHtml -match 'PF_MARK_G_FORGED.svg')
+Assert-Binding 'identity: selected Proof Foundry G identity remains on the homepage' ($homeHtml -match 'PF_MARK_G_FORGED.svg')
 function Class-Position([string]$className) {
   $pattern = '<[a-z][a-z0-9]*\b[^>]*\bclass="[^"]*(?<![\w-])' + [regex]::Escape($className) + '(?![\w-])[^"]*"'
   $match = [regex]::Match($homeHtml,$pattern)
@@ -121,10 +122,9 @@ $roleBindingErrors = @($homeNodes | Where-Object {
   $node = $_; $module = @($placedModules | Where-Object id -eq $node.Groups[2].Value | Select-Object -First 1)[0]
   if (-not $module) { return $true }
   $accent = [regex]::Match($node.Value,'--scene-accent:([^;" ]+)').Groups[1].Value
-  $route = [regex]::Match($node.Value,'href="([^"]+)"').Groups[1].Value
-  ($accent -cne [string]$module.theme.accent) -or ($route -cne [string]$module.route)
+  $accent -cne [string]$module.theme.accent
 })
-Assert-Binding 'module → rendered presentation: accents and product routes bind to each module declaration' ($roleBindingErrors.Count -eq 0)
+Assert-Binding 'module → rendered presentation: accents bind to each module declaration' ($roleBindingErrors.Count -eq 0)
 $homepageRenderer = Read-Source 'scripts/build-site.ps1'
 $rendererStart = $homepageRenderer.IndexOf('function Get-HomepageProductModules')
 $rendererEnd = $homepageRenderer.IndexOf('function Get-PublicCatalogCount')

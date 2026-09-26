@@ -1038,42 +1038,56 @@
    "origin": "original-entry-inventory"
   },
   {
-   "path": "products/cache-vault/content.html",
-   "sha256": "6e34f112887312c6757842be2c21f110071165b1fe5699190fab1e9cae9e3f47",
-   "bytes": 23883,
-   "comparison": "utf8-lf",
-   "lfSha256": "6e34f112887312c6757842be2c21f110071165b1fe5699190fab1e9cae9e3f47",
-   "origin": "original-entry-inventory",
-   "migration": {
-    "sha256": "dcd3001ad54aa5c02b2d9b61535c41ca8b3d304c16c7d9e82c8a163e483a4da2",
-    "bytes": 22636,
+    "path": "products/cache-vault/content.html",
+    "sha256": "6e34f112887312c6757842be2c21f110071165b1fe5699190fab1e9cae9e3f47",
+    "bytes": 23883,
     "comparison": "utf8-lf",
-    "lfSha256": "dcd3001ad54aa5c02b2d9b61535c41ca8b3d304c16c7d9e82c8a163e483a4da2",
-    "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
-   },
-   "previousMigration": {
-    "path": "cache-vault.html",
-    "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
-   }
+    "lfSha256": "6e34f112887312c6757842be2c21f110071165b1fe5699190fab1e9cae9e3f47",
+    "origin": "original-entry-inventory",
+    "migration": {
+      "sha256": "8be7c6b54fe528682b6483a41936846c138cbda776c4a30d7f38172c6ff7c083",
+      "bytes": 15892,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "dcd3001ad54aa5c02b2d9b61535c41ca8b3d304c16c7d9e82c8a163e483a4da2",
+        "bytes": 22636,
+        "comparison": "utf8-lf",
+        "lfSha256": "dcd3001ad54aa5c02b2d9b61535c41ca8b3d304c16c7d9e82c8a163e483a4da2",
+        "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
+      },
+      "lfSha256": "8be7c6b54fe528682b6483a41936846c138cbda776c4a30d7f38172c6ff7c083"
+    },
+    "previousMigration": {
+      "path": "cache-vault.html",
+      "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
+    }
   },
   {
-   "path": "products/cleanroom/content.html",
-   "sha256": "dd226c02ba94fbf4d73cee255f42330f541413102108b567758ace7c6ce01bfc",
-   "bytes": 17347,
-   "comparison": "utf8-lf",
-   "lfSha256": "dd226c02ba94fbf4d73cee255f42330f541413102108b567758ace7c6ce01bfc",
-   "origin": "original-entry-inventory",
-   "migration": {
-    "sha256": "8a497a62457827feae9c7519724a61bf2de7b665ee324c1507b59569c901508f",
-    "bytes": 15773,
+    "path": "products/cleanroom/content.html",
+    "sha256": "dd226c02ba94fbf4d73cee255f42330f541413102108b567758ace7c6ce01bfc",
+    "bytes": 17347,
     "comparison": "utf8-lf",
-    "lfSha256": "8a497a62457827feae9c7519724a61bf2de7b665ee324c1507b59569c901508f",
-    "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
-   },
-   "previousMigration": {
-    "path": "cleanroom.html",
-    "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
-   }
+    "lfSha256": "dd226c02ba94fbf4d73cee255f42330f541413102108b567758ace7c6ce01bfc",
+    "origin": "original-entry-inventory",
+    "migration": {
+      "sha256": "f92b9731ad41fd2738f433f46534ded6f7de2c8fe5a77a1cddf76add3b7d609d",
+      "bytes": 12430,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "8a497a62457827feae9c7519724a61bf2de7b665ee324c1507b59569c901508f",
+        "bytes": 15773,
+        "comparison": "utf8-lf",
+        "lfSha256": "8a497a62457827feae9c7519724a61bf2de7b665ee324c1507b59569c901508f",
+        "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
+      },
+      "lfSha256": "f92b9731ad41fd2738f433f46534ded6f7de2c8fe5a77a1cddf76add3b7d609d"
+    },
+    "previousMigration": {
+      "path": "cleanroom.html",
+      "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
+    }
   },
   {
    "path": "experience.css",
@@ -1092,23 +1106,30 @@
    "origin": "original-entry-inventory"
   },
   {
-   "path": "products/forgecast/content.html",
-   "sha256": "1b42817b0d02980a418ebdd653be826dbc35fedfb99454fceb007ee4be78870c",
-   "bytes": 18846,
-   "comparison": "utf8-lf",
-   "lfSha256": "1b42817b0d02980a418ebdd653be826dbc35fedfb99454fceb007ee4be78870c",
-   "origin": "original-entry-inventory",
-   "migration": {
-    "sha256": "6a75ad1c0b5c322d522b0613c374310da1bd693e94c02361ea85e0ce3ed3c3bd",
-    "bytes": 17711,
+    "path": "products/forgecast/content.html",
+    "sha256": "1b42817b0d02980a418ebdd653be826dbc35fedfb99454fceb007ee4be78870c",
+    "bytes": 18846,
     "comparison": "utf8-lf",
-    "lfSha256": "6a75ad1c0b5c322d522b0613c374310da1bd693e94c02361ea85e0ce3ed3c3bd",
-    "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
-   },
-   "previousMigration": {
-    "path": "forgecast.html",
-    "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
-   }
+    "lfSha256": "1b42817b0d02980a418ebdd653be826dbc35fedfb99454fceb007ee4be78870c",
+    "origin": "original-entry-inventory",
+    "migration": {
+      "sha256": "c63ea5b11b053f27f6996c881bebabadd705982f9e36fa8f0e7dcb0dce5175b8",
+      "bytes": 13190,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "6a75ad1c0b5c322d522b0613c374310da1bd693e94c02361ea85e0ce3ed3c3bd",
+        "bytes": 17711,
+        "comparison": "utf8-lf",
+        "lfSha256": "6a75ad1c0b5c322d522b0613c374310da1bd693e94c02361ea85e0ce3ed3c3bd",
+        "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
+      },
+      "lfSha256": "c63ea5b11b053f27f6996c881bebabadd705982f9e36fa8f0e7dcb0dce5175b8"
+    },
+    "previousMigration": {
+      "path": "forgecast.html",
+      "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
+    }
   },
   {
    "path": "founders.html",
@@ -1119,65 +1140,100 @@
    "origin": "original-entry-inventory"
   },
   {
-   "path": "products/ghostlayer/content.html",
-   "sha256": "c85be2d875b2032bb860e31bca1d0ba3323dc9d456be0f8cf68796dbafff17ff",
-   "bytes": 19617,
-   "comparison": "utf8-lf",
-   "lfSha256": "c85be2d875b2032bb860e31bca1d0ba3323dc9d456be0f8cf68796dbafff17ff",
-   "origin": "original-entry-inventory",
-   "migration": {
-    "sha256": "5a1ef3f0a88469d181c750ca48284d36c92af81539f0d21d62cf332a9df0b131",
-    "bytes": 17685,
+    "path": "products/ghostlayer/content.html",
+    "sha256": "c85be2d875b2032bb860e31bca1d0ba3323dc9d456be0f8cf68796dbafff17ff",
+    "bytes": 19617,
     "comparison": "utf8-lf",
-    "lfSha256": "5a1ef3f0a88469d181c750ca48284d36c92af81539f0d21d62cf332a9df0b131",
-    "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
-   },
-   "previousMigration": {
-    "path": "ghostlayer.html",
-    "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
-   }
+    "lfSha256": "c85be2d875b2032bb860e31bca1d0ba3323dc9d456be0f8cf68796dbafff17ff",
+    "origin": "original-entry-inventory",
+    "migration": {
+      "sha256": "d9b6b005c78a49dc23738ea1cc0c8a479542683795a7c3cdddfaa522730b466f",
+      "bytes": 14351,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "5a1ef3f0a88469d181c750ca48284d36c92af81539f0d21d62cf332a9df0b131",
+        "bytes": 17685,
+        "comparison": "utf8-lf",
+        "lfSha256": "5a1ef3f0a88469d181c750ca48284d36c92af81539f0d21d62cf332a9df0b131",
+        "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
+      },
+      "lfSha256": "d9b6b005c78a49dc23738ea1cc0c8a479542683795a7c3cdddfaa522730b466f"
+    },
+    "previousMigration": {
+      "path": "ghostlayer.html",
+      "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
+    }
   },
   {
-   "path": "h9-software.css",
-   "sha256": "ad563cc9e147d19754a15d955ac0279f2a3226649f94e532ee4b31fa406043b3",
-   "bytes": 13702,
-   "comparison": "utf8-lf",
-   "lfSha256": "84aa17e3d816c8755d67f0db5ef47636dc369d8dfa69a5e36a779c8c8a159312",
-   "origin": "original-entry-inventory",
-   "migration": {
-    "sha256": "dbbd278991447af9d83b8d36d4d30a5e5ec4f476b06b011827484917268df706",
-    "bytes": 13802,
+    "path": "h9-software.css",
+    "sha256": "ad563cc9e147d19754a15d955ac0279f2a3226649f94e532ee4b31fa406043b3",
+    "bytes": 13702,
     "comparison": "utf8-lf",
-    "lfSha256": "dbbd278991447af9d83b8d36d4d30a5e5ec4f476b06b011827484917268df706",
-    "reason": "VR1-R1 owner visual-review correction 2026-09-21: unified header identity (homepage 42px squish removed, software pseudo-lockup removed, shared 40px mobile mark), ProofShot hero moved to current-brand proof-cards capture, .pp-record scroll clearance for the sticky header."
-   }
+    "lfSha256": "84aa17e3d816c8755d67f0db5ef47636dc369d8dfa69a5e36a779c8c8a159312",
+    "origin": "original-entry-inventory",
+    "migration": {
+      "sha256": "546400fa87397b6da0a2434e6de7daab3908fe2e29de559c4b681a922ea833d3",
+      "bytes": 14298,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "dbbd278991447af9d83b8d36d4d30a5e5ec4f476b06b011827484917268df706",
+        "bytes": 13802,
+        "comparison": "utf8-lf",
+        "lfSha256": "dbbd278991447af9d83b8d36d4d30a5e5ec4f476b06b011827484917268df706",
+        "reason": "VR1-R1 owner visual-review correction 2026-09-21: unified header identity (homepage 42px squish removed, software pseudo-lockup removed, shared 40px mobile mark), ProofShot hero moved to current-brand proof-cards capture, .pp-record scroll clearance for the sticky header."
+      },
+      "lfSha256": "546400fa87397b6da0a2434e6de7daab3908fe2e29de559c4b681a922ea833d3"
+    }
   },
   {
-   "path": "h9-software.js",
-   "sha256": "7125cffe2ae7921842a7914379ae586149f5aa5741ca7927fe654a6fc7ccf70a",
-   "bytes": 4043,
-   "comparison": "utf8-lf",
-   "lfSha256": "7125cffe2ae7921842a7914379ae586149f5aa5741ca7927fe654a6fc7ccf70a",
-   "origin": "original-entry-inventory"
+    "path": "h9-software.js",
+    "sha256": "7125cffe2ae7921842a7914379ae586149f5aa5741ca7927fe654a6fc7ccf70a",
+    "bytes": 4043,
+    "comparison": "utf8-lf",
+    "lfSha256": "7125cffe2ae7921842a7914379ae586149f5aa5741ca7927fe654a6fc7ccf70a",
+    "origin": "original-entry-inventory",
+    "migration": {
+      "sha256": "05093c9de7d3145ff51cca76018abffa166bf0a9c5c3a1bde8917653cf5c9caa",
+      "bytes": 3970,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "7125cffe2ae7921842a7914379ae586149f5aa5741ca7927fe654a6fc7ccf70a",
+        "bytes": 4043,
+        "comparison": "utf8-lf",
+        "lfSha256": "7125cffe2ae7921842a7914379ae586149f5aa5741ca7927fe654a6fc7ccf70a",
+        "reason": "Original production entry inventory retained as the baseline."
+      },
+      "lfSha256": "05093c9de7d3145ff51cca76018abffa166bf0a9c5c3a1bde8917653cf5c9caa"
+    }
   },
   {
-   "path": "products/lights-out/content.html",
-   "sha256": "bc08d12dce3e35c8f36719029438463b22a779ce8ce89a71102b46c9a27b90aa",
-   "bytes": 40839,
-   "comparison": "utf8-lf",
-   "lfSha256": "bc08d12dce3e35c8f36719029438463b22a779ce8ce89a71102b46c9a27b90aa",
-   "origin": "original-entry-inventory",
-   "migration": {
-    "sha256": "679ee6397c564b0a2f4942548619856d64292b5b3db3c0283064f56a34d07e71",
-    "bytes": 38487,
+    "path": "products/lights-out/content.html",
+    "sha256": "bc08d12dce3e35c8f36719029438463b22a779ce8ce89a71102b46c9a27b90aa",
+    "bytes": 40839,
     "comparison": "utf8-lf",
-    "lfSha256": "679ee6397c564b0a2f4942548619856d64292b5b3db3c0283064f56a34d07e71",
-    "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
-   },
-   "previousMigration": {
-    "path": "lights-out.html",
-    "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
-   }
+    "lfSha256": "bc08d12dce3e35c8f36719029438463b22a779ce8ce89a71102b46c9a27b90aa",
+    "origin": "original-entry-inventory",
+    "migration": {
+      "sha256": "6e75c66f3ae155d37dab77b16c302171cd8b3645a5ce7796f20e7273925f7030",
+      "bytes": 31909,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "679ee6397c564b0a2f4942548619856d64292b5b3db3c0283064f56a34d07e71",
+        "bytes": 38487,
+        "comparison": "utf8-lf",
+        "lfSha256": "679ee6397c564b0a2f4942548619856d64292b5b3db3c0283064f56a34d07e71",
+        "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
+      },
+      "lfSha256": "6e75c66f3ae155d37dab77b16c302171cd8b3645a5ce7796f20e7273925f7030"
+    },
+    "previousMigration": {
+      "path": "lights-out.html",
+      "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
+    }
   },
   {
    "path": "partials/footer.html",
@@ -1203,34 +1259,48 @@
    "origin": "original-entry-inventory"
   },
   {
-   "path": "partials/product-card.html",
-   "sha256": "ce4d6f62f68de6f50fb1199a1c2468f788790d2eba95499724abb42bbd9ffb4b",
-   "bytes": 1209,
-   "comparison": "utf8-lf",
-   "lfSha256": "ce4d6f62f68de6f50fb1199a1c2468f788790d2eba95499724abb42bbd9ffb4b",
-   "origin": "original-entry-inventory",
-   "migration": {
-    "sha256": "f9ba0c456d1888628f9a888bd29243171967a2601f3c328e4a84d00e1fe15439",
-    "bytes": 1234,
+    "path": "partials/product-card.html",
+    "sha256": "ce4d6f62f68de6f50fb1199a1c2468f788790d2eba95499724abb42bbd9ffb4b",
+    "bytes": 1209,
     "comparison": "utf8-lf",
-    "lfSha256": "f9ba0c456d1888628f9a888bd29243171967a2601f3c328e4a84d00e1fe15439",
-    "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
-   }
+    "lfSha256": "ce4d6f62f68de6f50fb1199a1c2468f788790d2eba95499724abb42bbd9ffb4b",
+    "origin": "original-entry-inventory",
+    "migration": {
+      "sha256": "b9c6b6f71921ffbf1b2c384293b6bd577ea4bb341e476bc1412081eab91db398",
+      "bytes": 1464,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "f9ba0c456d1888628f9a888bd29243171967a2601f3c328e4a84d00e1fe15439",
+        "bytes": 1234,
+        "comparison": "utf8-lf",
+        "lfSha256": "f9ba0c456d1888628f9a888bd29243171967a2601f3c328e4a84d00e1fe15439",
+        "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
+      },
+      "lfSha256": "b9c6b6f71921ffbf1b2c384293b6bd577ea4bb341e476bc1412081eab91db398"
+    }
   },
   {
-   "path": "product-page.css",
-   "sha256": "9498b8df1f0007adca096559582b3fbd27cb5aaeb2de9f0ec64cd1c7b18accf3",
-   "bytes": 22236,
-   "comparison": "utf8-lf",
-   "lfSha256": "9498b8df1f0007adca096559582b3fbd27cb5aaeb2de9f0ec64cd1c7b18accf3",
-   "origin": "original-entry-inventory",
-   "migration": {
-    "sha256": "b4047aeb4583a4fa32d360c52473e8fe33a6f2f376f7fd407e6cb379786c8a10",
-    "bytes": 24693,
+    "path": "product-page.css",
+    "sha256": "9498b8df1f0007adca096559582b3fbd27cb5aaeb2de9f0ec64cd1c7b18accf3",
+    "bytes": 22236,
     "comparison": "utf8-lf",
-    "lfSha256": "b4047aeb4583a4fa32d360c52473e8fe33a6f2f376f7fd407e6cb379786c8a10",
-    "reason": "VR1-R3 owner visual-review correction 2026-09-21: exact desktop header parity (CTA metrics/nav cluster), product-dock steps aside while .pp-record is open."
-   }
+    "lfSha256": "9498b8df1f0007adca096559582b3fbd27cb5aaeb2de9f0ec64cd1c7b18accf3",
+    "origin": "original-entry-inventory",
+    "migration": {
+      "sha256": "e5e01608dd3a2cd4843ef883a413729c3978581044345ea42bfa765e839f2730",
+      "bytes": 25998,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "b4047aeb4583a4fa32d360c52473e8fe33a6f2f376f7fd407e6cb379786c8a10",
+        "bytes": 24693,
+        "comparison": "utf8-lf",
+        "lfSha256": "b4047aeb4583a4fa32d360c52473e8fe33a6f2f376f7fd407e6cb379786c8a10",
+        "reason": "VR1-R3 owner visual-review correction 2026-09-21: exact desktop header parity (CTA metrics/nav cluster), product-dock steps aside while .pp-record is open."
+      },
+      "lfSha256": "e5e01608dd3a2cd4843ef883a413729c3978581044345ea42bfa765e839f2730"
+    }
   },
   {
    "path": "proof-standard.html",
@@ -1256,57 +1326,78 @@
    "origin": "original-entry-inventory"
   },
   {
-   "path": "products/proofshot/content.html",
-   "sha256": "5a5a0b90ddec2a8bffcfdb005b0cee2a20c544bf20357613a02b5415dc5dd08e",
-   "bytes": 33618,
-   "comparison": "utf8-lf",
-   "lfSha256": "5a5a0b90ddec2a8bffcfdb005b0cee2a20c544bf20357613a02b5415dc5dd08e",
-   "origin": "original-entry-inventory",
-   "migration": {
-    "sha256": "97e13b3003830505e9172c102eafbb0f7aa235a9e5a7e55e525dca513d2c9f8b",
-    "bytes": 30936,
+    "path": "products/proofshot/content.html",
+    "sha256": "5a5a0b90ddec2a8bffcfdb005b0cee2a20c544bf20357613a02b5415dc5dd08e",
+    "bytes": 33618,
     "comparison": "utf8-lf",
-    "lfSha256": "97e13b3003830505e9172c102eafbb0f7aa235a9e5a7e55e525dca513d2c9f8b",
-    "reason": "VR1-R2 owner visual-review correction 2026-09-21: desktop header true parity (homepage nav/CTA now shares the studio treatment), ProofShot hero moved to verified web-hero brand artwork after proof-cards capture proved HyperSnatch-chromed, record-open capture fixed to a real scrolled viewport with geometric clearance assertion."
-   },
-   "previousMigration": {
-    "path": "proofshot.html",
-    "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
-   }
+    "lfSha256": "5a5a0b90ddec2a8bffcfdb005b0cee2a20c544bf20357613a02b5415dc5dd08e",
+    "origin": "original-entry-inventory",
+    "migration": {
+      "sha256": "2d4b5a122a7a7a17c4cb48609a8d5cfd5247873ac7da139319063c135f98d156",
+      "bytes": 27513,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "97e13b3003830505e9172c102eafbb0f7aa235a9e5a7e55e525dca513d2c9f8b",
+        "bytes": 30936,
+        "comparison": "utf8-lf",
+        "lfSha256": "97e13b3003830505e9172c102eafbb0f7aa235a9e5a7e55e525dca513d2c9f8b",
+        "reason": "VR1-R2 owner visual-review correction 2026-09-21: desktop header true parity (homepage nav/CTA now shares the studio treatment), ProofShot hero moved to verified web-hero brand artwork after proof-cards capture proved HyperSnatch-chromed, record-open capture fixed to a real scrolled viewport with geometric clearance assertion."
+      },
+      "lfSha256": "2d4b5a122a7a7a17c4cb48609a8d5cfd5247873ac7da139319063c135f98d156"
+    },
+    "previousMigration": {
+      "path": "proofshot.html",
+      "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
+    }
   },
   {
-   "path": "products/reality-gate/content.html",
-   "sha256": "beb0fc088cf570f4c293d25d95555cf340428b8abf1e610d148368205cee2771",
-   "bytes": 31940,
-   "comparison": "utf8-lf",
-   "lfSha256": "beb0fc088cf570f4c293d25d95555cf340428b8abf1e610d148368205cee2771",
-   "origin": "original-entry-inventory",
-   "migration": {
-    "sha256": "5ba2f73806654375b499b6726d0cc8a4a6c560bde143181df703db4722d0999e",
-    "bytes": 29956,
+    "path": "products/reality-gate/content.html",
+    "sha256": "beb0fc088cf570f4c293d25d95555cf340428b8abf1e610d148368205cee2771",
+    "bytes": 31940,
     "comparison": "utf8-lf",
-    "lfSha256": "5ba2f73806654375b499b6726d0cc8a4a6c560bde143181df703db4722d0999e",
-    "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
-   },
-   "previousMigration": {
-    "path": "reality-gate.html",
-    "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
-   }
+    "lfSha256": "beb0fc088cf570f4c293d25d95555cf340428b8abf1e610d148368205cee2771",
+    "origin": "original-entry-inventory",
+    "migration": {
+      "sha256": "00eb62b5dc70a8576f24dcd76500aaaec94b794f05fcf01e0b7787ba6d305a48",
+      "bytes": 25781,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "5ba2f73806654375b499b6726d0cc8a4a6c560bde143181df703db4722d0999e",
+        "bytes": 29956,
+        "comparison": "utf8-lf",
+        "lfSha256": "5ba2f73806654375b499b6726d0cc8a4a6c560bde143181df703db4722d0999e",
+        "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
+      },
+      "lfSha256": "00eb62b5dc70a8576f24dcd76500aaaec94b794f05fcf01e0b7787ba6d305a48"
+    },
+    "previousMigration": {
+      "path": "reality-gate.html",
+      "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
+    }
   },
   {
-   "path": "roadmap.html",
-   "sha256": "faf8f7558fe7a7faea8291375e56fe4eef9b5342db4d8dc6e56760fe0da4dc80",
-   "bytes": 7159,
-   "comparison": "utf8-lf",
-   "lfSha256": "faf8f7558fe7a7faea8291375e56fe4eef9b5342db4d8dc6e56760fe0da4dc80",
-   "origin": "original-entry-inventory",
-   "migration": {
-    "sha256": "3e5ea60518b24c632570887737c20f2714c453f12dadf6f0782c536332fa6fe9",
-    "bytes": 7869,
+    "path": "roadmap.html",
+    "sha256": "faf8f7558fe7a7faea8291375e56fe4eef9b5342db4d8dc6e56760fe0da4dc80",
+    "bytes": 7159,
     "comparison": "utf8-lf",
-    "lfSha256": "3e5ea60518b24c632570887737c20f2714c453f12dadf6f0782c536332fa6fe9",
-    "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
-   }
+    "lfSha256": "faf8f7558fe7a7faea8291375e56fe4eef9b5342db4d8dc6e56760fe0da4dc80",
+    "origin": "original-entry-inventory",
+    "migration": {
+      "sha256": "374ce703785c45f713fd3d51fb791fc61d096196658daf82874f98726f592730",
+      "bytes": 7693,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "3e5ea60518b24c632570887737c20f2714c453f12dadf6f0782c536332fa6fe9",
+        "bytes": 7869,
+        "comparison": "utf8-lf",
+        "lfSha256": "3e5ea60518b24c632570887737c20f2714c453f12dadf6f0782c536332fa6fe9",
+        "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
+      },
+      "lfSha256": "374ce703785c45f713fd3d51fb791fc61d096196658daf82874f98726f592730"
+    }
   },
   {
    "path": "scripts/Verify-PublicSite.ps1",
@@ -1331,19 +1422,26 @@
    }
   },
   {
-   "path": "scripts/test-customer-trust-p2-1.ps1",
-   "sha256": "926d8054b6a0f115663d7484257b312a16666085f71bad8378da02acdae2d220",
-   "bytes": 7554,
-   "comparison": "utf8-lf",
-   "lfSha256": "926d8054b6a0f115663d7484257b312a16666085f71bad8378da02acdae2d220",
-   "origin": "original-entry-inventory",
-   "migration": {
-    "sha256": "8349eb1ac7d4571c71bd63ef6ac51682303833b8baec6d41bdbb7dfa4f143f61",
-    "bytes": 7972,
+    "path": "scripts/test-customer-trust-p2-1.ps1",
+    "sha256": "926d8054b6a0f115663d7484257b312a16666085f71bad8378da02acdae2d220",
+    "bytes": 7554,
     "comparison": "utf8-lf",
-    "lfSha256": "8349eb1ac7d4571c71bd63ef6ac51682303833b8baec6d41bdbb7dfa4f143f61",
-    "reason": "Explicit customer-truth repair; see customer-truth-migration.json and customer-truth.patch."
-   }
+    "lfSha256": "926d8054b6a0f115663d7484257b312a16666085f71bad8378da02acdae2d220",
+    "origin": "original-entry-inventory",
+    "migration": {
+      "sha256": "55db4a8e691bd65d56d2ec1c16912fd257fc7f768faa4d23bb0977ea4bedc747",
+      "bytes": 7878,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "8349eb1ac7d4571c71bd63ef6ac51682303833b8baec6d41bdbb7dfa4f143f61",
+        "bytes": 7972,
+        "comparison": "utf8-lf",
+        "lfSha256": "8349eb1ac7d4571c71bd63ef6ac51682303833b8baec6d41bdbb7dfa4f143f61",
+        "reason": "Explicit customer-truth repair; see customer-truth-migration.json and customer-truth.patch."
+      },
+      "lfSha256": "55db4a8e691bd65d56d2ec1c16912fd257fc7f768faa4d23bb0977ea4bedc747"
+    }
   },
   {
    "path": "scripts/test-customer-trust-p2-2.ps1",
@@ -1369,19 +1467,26 @@
    }
   },
   {
-   "path": "scripts/test-h3-trust-to-action.ps1",
-   "sha256": "e7bd8f7f422adaab0c022b2c4eb608da8b0d31c88fc28d2b4eb9c75490f80720",
-   "bytes": 10569,
-   "comparison": "utf8-lf",
-   "lfSha256": "e7bd8f7f422adaab0c022b2c4eb608da8b0d31c88fc28d2b4eb9c75490f80720",
-   "origin": "original-entry-inventory",
-   "migration": {
-    "sha256": "78242dbcc87e899b9c62b8d21142e416c0309899ba6c9f578ade0bc50aa2c97d",
-    "bytes": 10570,
+    "path": "scripts/test-h3-trust-to-action.ps1",
+    "sha256": "e7bd8f7f422adaab0c022b2c4eb608da8b0d31c88fc28d2b4eb9c75490f80720",
+    "bytes": 10569,
     "comparison": "utf8-lf",
-    "lfSha256": "78242dbcc87e899b9c62b8d21142e416c0309899ba6c9f578ade0bc50aa2c97d",
-    "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919."
-   }
+    "lfSha256": "e7bd8f7f422adaab0c022b2c4eb608da8b0d31c88fc28d2b4eb9c75490f80720",
+    "origin": "original-entry-inventory",
+    "migration": {
+      "sha256": "cf39915aa5bf4ea34342b86006ffe664c4b35d71962fd559625a5ef77c18bb2a",
+      "bytes": 10639,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "78242dbcc87e899b9c62b8d21142e416c0309899ba6c9f578ade0bc50aa2c97d",
+        "bytes": 10570,
+        "comparison": "utf8-lf",
+        "lfSha256": "78242dbcc87e899b9c62b8d21142e416c0309899ba6c9f578ade0bc50aa2c97d",
+        "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919."
+      },
+      "lfSha256": "cf39915aa5bf4ea34342b86006ffe664c4b35d71962fd559625a5ef77c18bb2a"
+    }
   },
   {
    "path": "scripts/test-h4-metadata-discovery.ps1",
@@ -1419,26 +1524,33 @@
    }
   },
   {
-   "path": "scripts/test-h5-jsonld-truth.ps1",
-   "sha256": "14d373ddcea8d50f4db20f3d42f3713e62baa5eae2c5e46bcc8fb09ac718648a",
-   "bytes": 7521,
-   "comparison": "utf8-lf",
-   "lfSha256": "14d373ddcea8d50f4db20f3d42f3713e62baa5eae2c5e46bcc8fb09ac718648a",
-   "origin": "original-entry-inventory",
-   "migration": {
-    "sha256": "53d5929d59e8602bdb122bc8b497429bec3fc50895852dde485b763f42a81a79",
-    "bytes": 9345,
+    "path": "scripts/test-h5-jsonld-truth.ps1",
+    "sha256": "14d373ddcea8d50f4db20f3d42f3713e62baa5eae2c5e46bcc8fb09ac718648a",
+    "bytes": 7521,
     "comparison": "utf8-lf",
-    "lfSha256": "53d5929d59e8602bdb122bc8b497429bec3fc50895852dde485b763f42a81a79",
-    "reason": "PF-TF1 HOLD-1 2026-09-21: companionPublicVersion added to the pinned-field normalization set (canonical truth field absent from production baseline), alongside existing sourceCommit/companionCandidateVersion handling.",
-    "previousMigration": {
-     "sha256": "00f6dde9e00a551511296bfabe76138ce61fb902c385eba56f3c83db9adc7635",
-     "bytes": 9274,
-     "comparison": "utf8-lf",
-     "lfSha256": "00f6dde9e00a551511296bfabe76138ce61fb902c385eba56f3c83db9adc7635",
-     "reason": "VR1 visual refoundation 2026-09-21: test expectations updated to the authorized new contract — proofshot.presentation cardImage* fields registered as authorized drift (current-brand workbench capture replaces pre-rebrand HyperSnatch imagery)."
+    "lfSha256": "14d373ddcea8d50f4db20f3d42f3713e62baa5eae2c5e46bcc8fb09ac718648a",
+    "origin": "original-entry-inventory",
+    "migration": {
+      "sha256": "f1f2d149f5b04c5e2bcacecb75385aeba06809e3638cebae85a2b98367feb3a4",
+      "bytes": 9439,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "53d5929d59e8602bdb122bc8b497429bec3fc50895852dde485b763f42a81a79",
+        "bytes": 9345,
+        "comparison": "utf8-lf",
+        "lfSha256": "53d5929d59e8602bdb122bc8b497429bec3fc50895852dde485b763f42a81a79",
+        "reason": "PF-TF1 HOLD-1 2026-09-21: companionPublicVersion added to the pinned-field normalization set (canonical truth field absent from production baseline), alongside existing sourceCommit/companionCandidateVersion handling.",
+        "previousMigration": {
+          "sha256": "00f6dde9e00a551511296bfabe76138ce61fb902c385eba56f3c83db9adc7635",
+          "bytes": 9274,
+          "comparison": "utf8-lf",
+          "lfSha256": "00f6dde9e00a551511296bfabe76138ce61fb902c385eba56f3c83db9adc7635",
+          "reason": "VR1 visual refoundation 2026-09-21: test expectations updated to the authorized new contract — proofshot.presentation cardImage* fields registered as authorized drift (current-brand workbench capture replaces pre-rebrand HyperSnatch imagery)."
+        }
+      },
+      "lfSha256": "f1f2d149f5b04c5e2bcacecb75385aeba06809e3638cebae85a2b98367feb3a4"
     }
-   }
   },
   {
    "path": "scripts/test-h6-p4-polish.ps1",
@@ -1517,19 +1629,26 @@
    }
   },
   {
-   "path": "scripts/test-h9-homepage.ps1",
-   "sha256": "436f52dc6b1b6ff8768da4c02030f40c2f567cd48ee651551d5ecdd437dda35a",
-   "bytes": 6541,
-   "comparison": "utf8-lf",
-   "lfSha256": "436f52dc6b1b6ff8768da4c02030f40c2f567cd48ee651551d5ecdd437dda35a",
-   "origin": "original-entry-inventory",
-   "migration": {
-    "sha256": "a27e62fe78408af17e66cc817e299c0098073ac42a3a209ca3202d08197b3ae6",
-    "bytes": 6614,
+    "path": "scripts/test-h9-homepage.ps1",
+    "sha256": "436f52dc6b1b6ff8768da4c02030f40c2f567cd48ee651551d5ecdd437dda35a",
+    "bytes": 6541,
     "comparison": "utf8-lf",
-    "lfSha256": "a27e62fe78408af17e66cc817e299c0098073ac42a3a209ca3202d08197b3ae6",
-    "reason": "VR1 visual refoundation 2026-09-21: test expectations updated to the authorized new contract — product-first homepage order (digests/commits off the primary narrative), unified global nav, current-brand ProofShot/Cleanroom media, conditional card caveat disclosure, Layer-B record wrap."
-   }
+    "lfSha256": "436f52dc6b1b6ff8768da4c02030f40c2f567cd48ee651551d5ecdd437dda35a",
+    "origin": "original-entry-inventory",
+    "migration": {
+      "sha256": "ba963f0840900272f8d5f638fb048b57e60740b52fb8655656fa593e913b8b62",
+      "bytes": 8058,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "a27e62fe78408af17e66cc817e299c0098073ac42a3a209ca3202d08197b3ae6",
+        "bytes": 6614,
+        "comparison": "utf8-lf",
+        "lfSha256": "a27e62fe78408af17e66cc817e299c0098073ac42a3a209ca3202d08197b3ae6",
+        "reason": "VR1 visual refoundation 2026-09-21: test expectations updated to the authorized new contract — product-first homepage order (digests/commits off the primary narrative), unified global nav, current-brand ProofShot/Cleanroom media, conditional card caveat disclosure, Layer-B record wrap."
+      },
+      "lfSha256": "ba963f0840900272f8d5f638fb048b57e60740b52fb8655656fa593e913b8b62"
+    }
   },
   {
    "path": "scripts/test-h9-production-reconciliation.ps1",
@@ -1567,33 +1686,54 @@
    }
   },
   {
-   "path": "scripts/test-receipts-invariants.ps1",
-   "sha256": "b4a376a6bf210a41329db1d0af571eae5f6ac108a589b729202a509405eb4052",
-   "bytes": 20925,
-   "comparison": "utf8-lf",
-   "lfSha256": "b4a376a6bf210a41329db1d0af571eae5f6ac108a589b729202a509405eb4052",
-   "origin": "original-entry-inventory",
-   "previousMigration": {
+    "path": "scripts/test-receipts-invariants.ps1",
     "sha256": "b4a376a6bf210a41329db1d0af571eae5f6ac108a589b729202a509405eb4052",
-    "lfSha256": "b4a376a6bf210a41329db1d0af571eae5f6ac108a589b729202a509405eb4052",
     "bytes": 20925,
-    "reason": "prior authorized state before H13 modular-renderer edits"
-   },
-   "migration": {
-    "sha256": "565e23aad007fc800bb2544be4626d428bb4f7ab178b76581c0a0d87aa58ab44",
-    "bytes": 20942,
     "comparison": "utf8-lf",
-    "lfSha256": "565e23aad007fc800bb2544be4626d428bb4f7ab178b76581c0a0d87aa58ab44",
-    "reason": "H13 modular product renderer 2026-09-20: authorized source/test updates for module migration"
-   }
+    "lfSha256": "b4a376a6bf210a41329db1d0af571eae5f6ac108a589b729202a509405eb4052",
+    "origin": "original-entry-inventory",
+    "previousMigration": {
+      "sha256": "b4a376a6bf210a41329db1d0af571eae5f6ac108a589b729202a509405eb4052",
+      "lfSha256": "b4a376a6bf210a41329db1d0af571eae5f6ac108a589b729202a509405eb4052",
+      "bytes": 20925,
+      "reason": "prior authorized state before H13 modular-renderer edits"
+    },
+    "migration": {
+      "sha256": "0568308a3cdf8a56b8d28e33ec95c25883c90744bbe8a3a635ba04a571806543",
+      "bytes": 21872,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "565e23aad007fc800bb2544be4626d428bb4f7ab178b76581c0a0d87aa58ab44",
+        "bytes": 20942,
+        "comparison": "utf8-lf",
+        "lfSha256": "565e23aad007fc800bb2544be4626d428bb4f7ab178b76581c0a0d87aa58ab44",
+        "reason": "H13 modular product renderer 2026-09-20: authorized source/test updates for module migration"
+      },
+      "lfSha256": "0568308a3cdf8a56b8d28e33ec95c25883c90744bbe8a3a635ba04a571806543"
+    }
   },
   {
-   "path": "scripts/test-release-truth.ps1",
-   "sha256": "725f261e67afa2174a9c91f01486e0291062edcc7f7f7f752d25bf4cbb761664",
-   "bytes": 5893,
-   "comparison": "utf8-lf",
-   "lfSha256": "725f261e67afa2174a9c91f01486e0291062edcc7f7f7f752d25bf4cbb761664",
-   "origin": "original-entry-inventory"
+    "path": "scripts/test-release-truth.ps1",
+    "sha256": "725f261e67afa2174a9c91f01486e0291062edcc7f7f7f752d25bf4cbb761664",
+    "bytes": 5893,
+    "comparison": "utf8-lf",
+    "lfSha256": "725f261e67afa2174a9c91f01486e0291062edcc7f7f7f752d25bf4cbb761664",
+    "origin": "original-entry-inventory",
+    "migration": {
+      "sha256": "a4985073fae8b2007775c5438ae9796fbff918333270c2a72bea3eec8e61780a",
+      "bytes": 7542,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "725f261e67afa2174a9c91f01486e0291062edcc7f7f7f752d25bf4cbb761664",
+        "bytes": 5893,
+        "comparison": "utf8-lf",
+        "lfSha256": "725f261e67afa2174a9c91f01486e0291062edcc7f7f7f752d25bf4cbb761664",
+        "reason": "Original production entry inventory retained as the baseline."
+      },
+      "lfSha256": "a4985073fae8b2007775c5438ae9796fbff918333270c2a72bea3eec8e61780a"
+    }
   },
   {
    "path": "scripts/test-signature-home.ps1",
@@ -1663,12 +1803,26 @@
    }
   },
   {
-   "path": "software.html",
-   "sha256": "afd0c834f751536cd65d63480d6da9375809d474b99127f115e24a60b6cd823f",
-   "bytes": 4581,
-   "comparison": "utf8-lf",
-   "lfSha256": "afd0c834f751536cd65d63480d6da9375809d474b99127f115e24a60b6cd823f",
-   "origin": "original-entry-inventory"
+    "path": "software.html",
+    "sha256": "afd0c834f751536cd65d63480d6da9375809d474b99127f115e24a60b6cd823f",
+    "bytes": 4581,
+    "comparison": "utf8-lf",
+    "lfSha256": "afd0c834f751536cd65d63480d6da9375809d474b99127f115e24a60b6cd823f",
+    "origin": "original-entry-inventory",
+    "migration": {
+      "sha256": "8b0818158575d2d047704e657945798793d56ac116b33082892805589ff1d5a4",
+      "bytes": 4653,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "afd0c834f751536cd65d63480d6da9375809d474b99127f115e24a60b6cd823f",
+        "bytes": 4581,
+        "comparison": "utf8-lf",
+        "lfSha256": "afd0c834f751536cd65d63480d6da9375809d474b99127f115e24a60b6cd823f",
+        "reason": "Original production entry inventory retained as the baseline."
+      },
+      "lfSha256": "8b0818158575d2d047704e657945798793d56ac116b33082892805589ff1d5a4"
+    }
   },
   {
    "path": "studio.css",
@@ -1701,33 +1855,40 @@
    }
   },
   {
-   "path": "support.html",
-   "sha256": "3f3f92cf6ce91f6ec92675abf9708c4d315d15a79f4e03db00fdb68413164474",
-   "bytes": 14017,
-   "comparison": "utf8-lf",
-   "lfSha256": "3f3f92cf6ce91f6ec92675abf9708c4d315d15a79f4e03db00fdb68413164474",
-   "origin": "original-entry-inventory",
-   "migration": {
-    "sha256": "16359dfd025340487b11f4d45f1788901c4d4222e782dd520fa4379d8647549a",
-    "bytes": 14251,
+    "path": "support.html",
+    "sha256": "3f3f92cf6ce91f6ec92675abf9708c4d315d15a79f4e03db00fdb68413164474",
+    "bytes": 14017,
     "comparison": "utf8-lf",
-    "lfSha256": "16359dfd025340487b11f4d45f1788901c4d4222e782dd520fa4379d8647549a",
-    "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/.",
-    "previousMigration": {
-     "sha256": "f0ad9c222b317f799dad8e04f08375b55f2616d3af1110e5b47907eab3306f73",
-     "bytes": 14063,
-     "comparison": "utf8-lf",
-     "lfSha256": "f0ad9c222b317f799dad8e04f08375b55f2616d3af1110e5b47907eab3306f73",
-     "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919.",
-     "previousMigration": {
-      "sha256": "a51a3fcc3f70b22fdb696ded72ef737c883c1a1dd93251b7341aab630c54402a",
-      "bytes": 14007,
+    "lfSha256": "3f3f92cf6ce91f6ec92675abf9708c4d315d15a79f4e03db00fdb68413164474",
+    "origin": "original-entry-inventory",
+    "migration": {
+      "sha256": "f7ed54f13ba8d0e3f037f4aa5809d4a141434c1dad6c65cd8083036b19f54678",
+      "bytes": 14325,
       "comparison": "utf8-lf",
-      "lfSha256": "a51a3fcc3f70b22fdb696ded72ef737c883c1a1dd93251b7341aab630c54402a",
-      "reason": "Explicit customer-truth repair; see customer-truth-migration.json and customer-truth.patch."
-     }
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "16359dfd025340487b11f4d45f1788901c4d4222e782dd520fa4379d8647549a",
+        "bytes": 14251,
+        "comparison": "utf8-lf",
+        "lfSha256": "16359dfd025340487b11f4d45f1788901c4d4222e782dd520fa4379d8647549a",
+        "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/.",
+        "previousMigration": {
+          "sha256": "f0ad9c222b317f799dad8e04f08375b55f2616d3af1110e5b47907eab3306f73",
+          "bytes": 14063,
+          "comparison": "utf8-lf",
+          "lfSha256": "f0ad9c222b317f799dad8e04f08375b55f2616d3af1110e5b47907eab3306f73",
+          "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919.",
+          "previousMigration": {
+            "sha256": "a51a3fcc3f70b22fdb696ded72ef737c883c1a1dd93251b7341aab630c54402a",
+            "bytes": 14007,
+            "comparison": "utf8-lf",
+            "lfSha256": "a51a3fcc3f70b22fdb696ded72ef737c883c1a1dd93251b7341aab630c54402a",
+            "reason": "Explicit customer-truth repair; see customer-truth-migration.json and customer-truth.patch."
+          }
+        }
+      },
+      "lfSha256": "f7ed54f13ba8d0e3f037f4aa5809d4a141434c1dad6c65cd8083036b19f54678"
     }
-   }
   },
   {
    "path": "assets/binding-foundry/foundry-ledger.webp",
@@ -1817,73 +1978,164 @@
    "origin": "h12-truth-discovery-2026-09-20"
   },
   {
-   "path": "products/reality-gate/module.json",
-   "sha256": "723ac3ef603d78b8ca74591f048cff2dd45b0feedbb439e60d93ac7611d4ac7e",
-   "bytes": 1166,
-   "comparison": "utf8-lf",
-   "lfSha256": "9a9dbe987d14b0c5a4332b6fe94b06047d8526f64ae38e03bc703ac38c63c864",
-   "origin": "h13-modular-renderer-2026-09-20",
-   "previousMigration": {
+    "path": "products/reality-gate/module.json",
     "sha256": "723ac3ef603d78b8ca74591f048cff2dd45b0feedbb439e60d93ac7611d4ac7e",
-    "lfSha256": "9a9dbe987d14b0c5a4332b6fe94b06047d8526f64ae38e03bc703ac38c63c864",
     "bytes": 1166,
-    "reason": "prior authorized state before H13 modular-renderer edits"
-   },
-   "migration": {
-    "sha256": "c5756517b4699d4c6f39df977132d331dbe158372e195dfc88ad20222e83bbf4",
-    "bytes": 1636,
     "comparison": "utf8-lf",
-    "lfSha256": "5848d7cdd71401b867bdb359ec953b43de958a42b739c8dd6760b961a9d9224c",
-    "reason": "H13 modular product renderer 2026-09-20: authorized source/test updates for module migration"
-   }
+    "lfSha256": "9a9dbe987d14b0c5a4332b6fe94b06047d8526f64ae38e03bc703ac38c63c864",
+    "origin": "h13-modular-renderer-2026-09-20",
+    "previousMigration": {
+      "sha256": "723ac3ef603d78b8ca74591f048cff2dd45b0feedbb439e60d93ac7611d4ac7e",
+      "lfSha256": "9a9dbe987d14b0c5a4332b6fe94b06047d8526f64ae38e03bc703ac38c63c864",
+      "bytes": 1166,
+      "reason": "prior authorized state before H13 modular-renderer edits"
+    },
+    "migration": {
+      "sha256": "180dbb27d427ae03b3ef030da175723dc8f6295c4c01469f003341f3efe773da",
+      "bytes": 5323,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "c5756517b4699d4c6f39df977132d331dbe158372e195dfc88ad20222e83bbf4",
+        "bytes": 1636,
+        "comparison": "utf8-lf",
+        "lfSha256": "5848d7cdd71401b867bdb359ec953b43de958a42b739c8dd6760b961a9d9224c",
+        "reason": "H13 modular product renderer 2026-09-20: authorized source/test updates for module migration"
+      },
+      "lfSha256": "180dbb27d427ae03b3ef030da175723dc8f6295c4c01469f003341f3efe773da"
+    }
   },
   {
-   "path": "products/cache-vault/module.json",
-   "sha256": "3dd7b54d1a2ce1892763723a366d54febe73e178dd80626efd5501e5b5c33d92",
-   "bytes": 1240,
-   "comparison": "utf8-lf",
-   "lfSha256": "6d4888279dec5eef477a472ea61a885be8094f26b570f6dd0e97fb3f2e5a8207",
-   "origin": "h13-modular-renderer-2026-09-20"
+    "path": "products/cache-vault/module.json",
+    "sha256": "3dd7b54d1a2ce1892763723a366d54febe73e178dd80626efd5501e5b5c33d92",
+    "bytes": 1240,
+    "comparison": "utf8-lf",
+    "lfSha256": "6d4888279dec5eef477a472ea61a885be8094f26b570f6dd0e97fb3f2e5a8207",
+    "origin": "h13-modular-renderer-2026-09-20",
+    "migration": {
+      "sha256": "ce18a439c2c785954cd5053bd0efcbfa524511f2d0e16ddb1690784b877e7444",
+      "bytes": 7060,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "3dd7b54d1a2ce1892763723a366d54febe73e178dd80626efd5501e5b5c33d92",
+        "bytes": 1240,
+        "comparison": "utf8-lf",
+        "lfSha256": "6d4888279dec5eef477a472ea61a885be8094f26b570f6dd0e97fb3f2e5a8207",
+        "reason": "Original production entry inventory retained as the baseline."
+      },
+      "lfSha256": "ce18a439c2c785954cd5053bd0efcbfa524511f2d0e16ddb1690784b877e7444"
+    }
   },
   {
-   "path": "products/lights-out/module.json",
-   "sha256": "37497b4162f11784386a8e0cb86109eee8d421f41e4f797f8d4efbf4d5c082f7",
-   "bytes": 2184,
-   "comparison": "utf8-lf",
-   "lfSha256": "b8e6b4327548e0bae8cc044786b28772e15b15504e83b04cca0baf8757961693",
-   "origin": "h13-modular-renderer-2026-09-20"
+    "path": "products/lights-out/module.json",
+    "sha256": "37497b4162f11784386a8e0cb86109eee8d421f41e4f797f8d4efbf4d5c082f7",
+    "bytes": 2184,
+    "comparison": "utf8-lf",
+    "lfSha256": "b8e6b4327548e0bae8cc044786b28772e15b15504e83b04cca0baf8757961693",
+    "origin": "h13-modular-renderer-2026-09-20",
+    "migration": {
+      "sha256": "fc604db39cb19588212214e3c241dfc659453bb19413ba8fe882c9bd95b40452",
+      "bytes": 7446,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "37497b4162f11784386a8e0cb86109eee8d421f41e4f797f8d4efbf4d5c082f7",
+        "bytes": 2184,
+        "comparison": "utf8-lf",
+        "lfSha256": "b8e6b4327548e0bae8cc044786b28772e15b15504e83b04cca0baf8757961693",
+        "reason": "Original production entry inventory retained as the baseline."
+      },
+      "lfSha256": "fc604db39cb19588212214e3c241dfc659453bb19413ba8fe882c9bd95b40452"
+    }
   },
   {
-   "path": "products/cleanroom/module.json",
-   "sha256": "4504ed201fb8dc697b636fa01a87f6206c078a1d346ef9d4495097bba38804f6",
-   "bytes": 1245,
-   "comparison": "utf8-lf",
-   "lfSha256": "6800bcd13b878421b52341cfb66c9229b3f944ece381930f1730ff55036d845e",
-   "origin": "h13-modular-renderer-2026-09-20"
+    "path": "products/cleanroom/module.json",
+    "sha256": "4504ed201fb8dc697b636fa01a87f6206c078a1d346ef9d4495097bba38804f6",
+    "bytes": 1245,
+    "comparison": "utf8-lf",
+    "lfSha256": "6800bcd13b878421b52341cfb66c9229b3f944ece381930f1730ff55036d845e",
+    "origin": "h13-modular-renderer-2026-09-20",
+    "migration": {
+      "sha256": "848ef60e39c79be2e7cd8707c04907ebb0f67bba51889ad59ab5389adf05bcde",
+      "bytes": 3958,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "4504ed201fb8dc697b636fa01a87f6206c078a1d346ef9d4495097bba38804f6",
+        "bytes": 1245,
+        "comparison": "utf8-lf",
+        "lfSha256": "6800bcd13b878421b52341cfb66c9229b3f944ece381930f1730ff55036d845e",
+        "reason": "Original production entry inventory retained as the baseline."
+      },
+      "lfSha256": "848ef60e39c79be2e7cd8707c04907ebb0f67bba51889ad59ab5389adf05bcde"
+    }
   },
   {
-   "path": "products/ghostlayer/module.json",
-   "sha256": "49e6aa5627158f91b13aeaf421e48fa596e837920b465a4d9899fcc93ecd39bb",
-   "bytes": 1187,
-   "comparison": "utf8-lf",
-   "lfSha256": "68e9331369e8f2ab7336b53a20edb367c63bf352953ad0f41d3e20a350173a78",
-   "origin": "h13-modular-renderer-2026-09-20"
+    "path": "products/ghostlayer/module.json",
+    "sha256": "49e6aa5627158f91b13aeaf421e48fa596e837920b465a4d9899fcc93ecd39bb",
+    "bytes": 1187,
+    "comparison": "utf8-lf",
+    "lfSha256": "68e9331369e8f2ab7336b53a20edb367c63bf352953ad0f41d3e20a350173a78",
+    "origin": "h13-modular-renderer-2026-09-20",
+    "migration": {
+      "sha256": "d90d3671da3827bcddf0faaa0cd186217c3574a928251fb879961d6a17560e9f",
+      "bytes": 4025,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "49e6aa5627158f91b13aeaf421e48fa596e837920b465a4d9899fcc93ecd39bb",
+        "bytes": 1187,
+        "comparison": "utf8-lf",
+        "lfSha256": "68e9331369e8f2ab7336b53a20edb367c63bf352953ad0f41d3e20a350173a78",
+        "reason": "Original production entry inventory retained as the baseline."
+      },
+      "lfSha256": "d90d3671da3827bcddf0faaa0cd186217c3574a928251fb879961d6a17560e9f"
+    }
   },
   {
-   "path": "products/forgecast/module.json",
-   "sha256": "76494df0fe9c4603e590690af50608a5c3668ff83510f8f16048a89973eeba43",
-   "bytes": 1223,
-   "comparison": "utf8-lf",
-   "lfSha256": "fe6bbefb7e9e9e9c9b0e107ff44c871aadafbcf7ad2a1d0568f25a33dc7bee32",
-   "origin": "h13-modular-renderer-2026-09-20"
+    "path": "products/forgecast/module.json",
+    "sha256": "76494df0fe9c4603e590690af50608a5c3668ff83510f8f16048a89973eeba43",
+    "bytes": 1223,
+    "comparison": "utf8-lf",
+    "lfSha256": "fe6bbefb7e9e9e9c9b0e107ff44c871aadafbcf7ad2a1d0568f25a33dc7bee32",
+    "origin": "h13-modular-renderer-2026-09-20",
+    "migration": {
+      "sha256": "1715a502b3f27b8a2dd7d42aca0deb62c9701353735aef054d50d61c1024743f",
+      "bytes": 4587,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "76494df0fe9c4603e590690af50608a5c3668ff83510f8f16048a89973eeba43",
+        "bytes": 1223,
+        "comparison": "utf8-lf",
+        "lfSha256": "fe6bbefb7e9e9e9c9b0e107ff44c871aadafbcf7ad2a1d0568f25a33dc7bee32",
+        "reason": "Original production entry inventory retained as the baseline."
+      },
+      "lfSha256": "1715a502b3f27b8a2dd7d42aca0deb62c9701353735aef054d50d61c1024743f"
+    }
   },
   {
-   "path": "products/proofshot/module.json",
-   "sha256": "d3240bae937c339b94f3cb89b5047fa1ac14b6d857bcf7724eac839a511502fd",
-   "bytes": 1983,
-   "comparison": "utf8-lf",
-   "lfSha256": "d716e40036f86663b03785993f080534dfb1f3180f0741ff5a9c72125501d772",
-   "origin": "h13-modular-renderer-2026-09-20"
+    "path": "products/proofshot/module.json",
+    "sha256": "d3240bae937c339b94f3cb89b5047fa1ac14b6d857bcf7724eac839a511502fd",
+    "bytes": 1983,
+    "comparison": "utf8-lf",
+    "lfSha256": "d716e40036f86663b03785993f080534dfb1f3180f0741ff5a9c72125501d772",
+    "origin": "h13-modular-renderer-2026-09-20",
+    "migration": {
+      "sha256": "0a3925a883d87eb58af5e190d8b0b7b6b3b917141f6e255e6f88790d47edc0e0",
+      "bytes": 4873,
+      "comparison": "utf8-lf",
+      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "previousMigration": {
+        "sha256": "d3240bae937c339b94f3cb89b5047fa1ac14b6d857bcf7724eac839a511502fd",
+        "bytes": 1983,
+        "comparison": "utf8-lf",
+        "lfSha256": "d716e40036f86663b03785993f080534dfb1f3180f0741ff5a9c72125501d772",
+        "reason": "Original production entry inventory retained as the baseline."
+      },
+      "lfSha256": "0a3925a883d87eb58af5e190d8b0b7b6b3b917141f6e255e6f88790d47edc0e0"
+    }
   },
   {
    "path": "truth-files.css",
