@@ -153,3 +153,10 @@
  .h9-auto-featured .h9-actions .button{flex:1;min-width:0;padding:10px 8px;font-size:7px;letter-spacing:0;gap:5px}
  .h9-auto-featured-media figcaption{align-items:flex-start;flex-direction:column;gap:2px}
 }
+
+/* Secondary role: four columns on desktop, 2×2 at mid-width, one column on mobile. */
+@media(min-width:1201px){.h9-binding-home .products-grid.h9-collection-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(min-width:761px) and (max-width:1200px){.h9-binding-home .products-grid.h9-collection-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Make every major-role capture easier to read inside the existing media frame. */
+@media(min-width:761px){.h9-auto-scene-media>a>img{transform:scale(1.3)}}
