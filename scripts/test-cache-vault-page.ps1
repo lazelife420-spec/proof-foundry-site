@@ -8,6 +8,7 @@ function Check([bool]$ok, [string]$label) {
 }
 $module = Get-Content (Join-Path $root 'products/cache-vault/module.json') -Raw | ConvertFrom-Json
 $content = Get-Content (Join-Path $root 'products/cache-vault/content.html') -Raw
+$productPageCss = Get-Content (Join-Path $root 'product-page.css') -Raw
 $pagePath = Join-Path $root 'public/cache-vault/index.html'
 $page = Get-Content $pagePath -Raw
 $truth = Get-Content (Join-Path $root 'public/truth/products/cache-vault.json') -Raw | ConvertFrom-Json
@@ -19,6 +20,7 @@ Check ($module.hero.headline -eq 'Find the clip. Get back to work.' -and $page -
 Check ($schema.properties.hero.properties.media.properties.mobileSrc.'$ref' -eq '#/$defs/asset' -and $module.hero.media.mobileSrc -eq '/assets/cache-vault/cv-quick-paste-mobile.png' -and $page -match '<picture><source media="\(max-width: 700px\)" srcset="/assets/cache-vault/cv-quick-paste-mobile\.png"/><img src="/assets/cache-vault/cv-quick-paste\.png"') 'responsive hero crop is schema-validated and rendered with a desktop fallback'
 Check (Test-Path (Join-Path $root 'assets/cache-vault/cv-quick-paste-mobile.png')) 'mobile crop asset exists in source'
 Check ($content -match 'Website preview · sample clips' -and $content -match 'not connected to the Cache Vault app' -and $page -match 'role="status"') 'interactive vault is explicitly a sample and retains announced status'
+Check ($content -match 'pp-story-mobile-stack' -and $page -match 'pp-story-mobile-stack' -and $productPageCss -match 'body\.pp-system \.pp-story \{ grid-template-columns: 1fr; gap: 28px; \}' -and $productPageCss -match 'body\.pp-system \.pp-story-mobile-stack \.story-copy \{ display: contents; \}' -and $productPageCss -match 'body\.pp-system \.pp-story-mobile-stack \.pp-story-evidence-card \{ order: 1; \}') 'mobile cleanup story stacks readable copy and full-column capture before its evidence callout'
 Check ($content -match 'id="film"' -and $content.IndexOf('id="try-it"') -lt $content.IndexOf('id="film"') -and $content -match 'preload="none"' -and $page -match 'controls preload="none"') 'authentic silent film follows the product interaction and does not preload media'
 Check ($page -match 'id="download"' -and $page -match 'Download v0\.2\.4 \(Windows\)' -and $page -match $androidUrl -and $page -match 'v0\.2\.1 remains on hold') 'public Windows and Android release links remain accurate; held Android candidate is not promoted'
 $releaseSource = [regex]::Escape([string]$truth.release.sourceCommit)
