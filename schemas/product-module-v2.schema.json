@@ -71,6 +71,8 @@
         "presentation": {
           "enum": [
             "feature",
+            "interface",
+            "editorial",
             "standard",
             "compact"
           ]

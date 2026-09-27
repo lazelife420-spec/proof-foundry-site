@@ -82,8 +82,8 @@ Assert-Condition (([regex]::Matches($outputCatalog, '<details class="card-more">
 Assert-Condition ($outputCatalog -notmatch 'card-topline') 'output: no software card renders the old topline row'
 # H9 moves the entire functional catalog to /software/. The old mobile
 # curation toggle is replaced by filters; without JS all seven remain visible.
-Assert-Condition ($sourceCatalog -match 'class="product-finder" data-enhance hidden') 'source: software filters are progressive enhancement'
-Assert-Condition ($outputCatalog -match 'class="product-finder" data-enhance hidden' -and $outputCatalog -match 'data-intent="all"') 'output: software filter controls survive build'
+Assert-Condition ($sourceCatalog -match 'class="h9-product-finder" data-h9-enhance hidden') 'source: software filters are progressive enhancement'
+Assert-Condition ($outputCatalog -match 'class="h9-product-finder" data-h9-enhance hidden' -and $outputCatalog -match 'class="finder-intents"') 'output: software filter controls survive build'
 Assert-Condition ($signature -match '\.signature-home \.catalog-toggle') 'source: catalog toggle styles exist'
 Assert-Condition ($signature -match '(?s)@media \(max-width: 700px\)\s*\{\s*\.signature-home \.catalog-toggle') 'source: catalog toggle only appears at small widths'
 Assert-Condition ($experienceJs -match 'data-catalog-toggle' -and $experienceJs -match 'matchMedia\(''\(max-width: 700px\)''\)') 'source: mobile curation is runtime-driven and viewport-gated'
@@ -93,12 +93,12 @@ Assert-Condition ($outputExperienceJs -match 'data-catalog-toggle') 'output: cur
 Assert-Condition ($cardTemplate -notmatch '<article hidden') 'source: card template never ships pre-hidden products'
 Assert-Condition (($outputCatalog -notmatch '<article[^>]*\shidden[\s>][^>]*class="product-card') -and ($outputCatalog -notmatch '<article[^>]*class="product-card[^>]*"[^>]*\shidden[\s>]')) 'output: no generated software card is hidden by default'
 Assert-Condition ($sourceCatalog -notmatch 'data-catalog-toggle' -and ([regex]::Matches($outputCatalog, '<article class="product-card')).Count -eq 7) 'source/output: software ships the complete seven-tool catalog without a curation toggle'
-Assert-Condition ($sourceCatalog -match 'Choose the one for the job\.') 'source: catalog has an editorial product-first heading'
-Assert-Condition ($sourceHome -match 'Receipts over hype\.') 'source: proof is concise and subordinate'
-Assert-Condition ($sourceHome -match '(?s)class="h9-final".*?href="/software/"') 'source: homepage ends with one clear product invitation'
+Assert-Condition ($sourceCatalog -match '<h1>Find your tool\.</h1>') 'source: catalog has a clear product-first heading'
+Assert-Condition ($sourceHome -match 'Receipts over hype' -and $sourceHome -match 'id="proof-title"') 'source: proof is concise, subordinate and labelled'
+Assert-Condition ($sourceHome -match 'class="studio-portfolio"[\s\S]*?href="/software/"') 'source: homepage portfolio invites visitors to the functional catalog'
 Assert-Condition ($sourceHome -notmatch 'hero-signals|home-reassurance') 'source: hero removes competing secondary signals'
 Assert-Condition ($sourceHome -notmatch 'theater-controls|product-finder|data-compare=') 'source: functional catalog controls do not compete with H9 editorial scenes'
-Assert-Condition ($outputHome -match 'Different jobs\. Same standards\.' -and $outputHome -match '(?s)class="h9-final".*?href="/software/"') 'output: editorial discovery and final catalog CTA survive build'
+Assert-Condition ($outputHome -match 'Small tools\. Fewer loose ends\.' -and $outputHome -match 'Browse the full catalog' -and $outputHome -match 'href="/software/"') 'output: Studio Root discovery and catalog CTA survive build'
 Assert-Condition ($experience -match '\.layer-number\{font:9px Consolas,monospace;color:#969eb5;letter-spacing:\.14em\}') 'source: GhostLayer contrast color is corrected'
 Assert-Condition ($outputExperience -match '\.layer-number\{font:9px Consolas,monospace;color:#969eb5;letter-spacing:\.14em\}') 'output: GhostLayer contrast color survives build'
 Assert-Condition ($layerRatio -ge 4.5) ("WCAG AA: GhostLayer layer number contrast is {0:N2}:1 (>= 4.50:1)" -f $layerRatio)

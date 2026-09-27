@@ -28,20 +28,29 @@
 <!-- @include header -->
 <main id="main-content">
   <section class="studio-hero" aria-labelledby="studio-title">
-    <div class="studio-hero-grain" aria-hidden="true"></div>
     <div class="studio-hero-grid">
       <div class="studio-hero-copy">
         <p class="studio-kicker">Independent software studio</p>
-        <h1 id="studio-title">BUILD SOFTWARE.<br/><em>KEEP THE RECEIPT.</em></h1>
-        <p class="studio-hero-lede">Practical, independent software with release evidence you can inspect.</p>
+        <h1 id="studio-title"><span>BUILD SOFTWARE.</span><span><em>KEEP THE RECEIPT.</em></span></h1>
+        <p class="studio-hero-lede">Practical tools for everyday work. Clear limits. Releases you can inspect.</p>
         <div class="studio-hero-actions">
           <a class="studio-action studio-action-primary" href="/software/">Explore the software <span aria-hidden="true">↗</span></a>
-          <a class="studio-action studio-action-quiet" href="/proof-standard/">How we prove releases <span aria-hidden="true">→</span></a>
+          <a class="studio-action studio-action-quiet" href="/proof-standard/">How releases are proven <span aria-hidden="true">→</span></a>
         </div>
-        <div class="studio-hero-mark"><img src="/brand/PF_MARK_G_MASTER.svg" alt="" width="44" height="44"/><span>Made independently.<br/>Accountable in public.</span></div>
       </div>
-      <!-- Build emits one eligible canonical release record, or omits this component. -->
-      <!-- @studio-evidence -->
+      <!-- The featured module supplies the real interface and its accessible description. -->
+      <!-- @studio-hero-product -->
+    </div>
+  </section>
+
+  <section class="studio-portfolio" id="software-made-here" aria-labelledby="portfolio-title">
+    <div class="studio-portfolio-heading">
+      <div><p class="studio-kicker">Made here</p><h2 id="portfolio-title">Small tools. Fewer loose ends.</h2><p>Start with a real problem. Find the tool built for it.</p></div>
+      <a class="studio-text-link" href="/software/">Browse the full catalog <span aria-hidden="true">↗</span></a>
+    </div>
+    <!-- Registry-generated portfolio. Module identity and order are not authored here. -->
+    <div class="studio-portfolio-grid" aria-label="Software from The Proof Foundry">
+      <!-- @studio-portfolio -->
     </div>
   </section>
 
@@ -49,7 +58,7 @@
     <div class="studio-section-heading">
       <p class="studio-kicker">How the Foundry works</p>
       <h2 id="method-title">BUILD <span>→</span> QUALIFY <span>→</span> RECORD <span>→</span> PUBLISH</h2>
-      <p>Each public release has a clear path from working software to inspectable evidence.</p>
+      <p>Every public release moves from working software through checks and into a record you can inspect.</p>
     </div>
     <ol class="studio-method-steps">
       <li><span class="studio-step-no">01</span><h3>Build</h3><p>Start with a real problem and a tool made to solve it.</p></li>
@@ -59,17 +68,6 @@
     </ol>
   </section>
 
-  <section class="studio-portfolio" id="software-made-here" aria-labelledby="portfolio-title">
-    <div class="studio-portfolio-heading">
-      <div><p class="studio-kicker">Made here</p><h2 id="portfolio-title">Software made here.</h2><p>Different tools, each with its own purpose, character, and release state.</p></div>
-      <a class="studio-text-link" href="/software/">Browse the full catalog <span aria-hidden="true">↗</span></a>
-    </div>
-    <!-- Registry-generated portfolio. Module identity and order are not authored here. -->
-    <div class="studio-portfolio-grid" aria-label="Software from The Proof Foundry">
-      <!-- @studio-portfolio -->
-    </div>
-  </section>
-
   <section class="studio-proof" aria-labelledby="proof-title">
     <div class="studio-proof-intro"><p class="studio-kicker">Receipts over hype</p><h2 id="proof-title">Claims should have a trail.</h2><p>Public release records show what shipped, what was checked, and where the limits are.</p></div>
     <div class="studio-proof-links">
@@ -77,6 +75,8 @@
       <a href="/truth-files/"><span class="studio-proof-index">02 / CURRENT FACTS</span><strong>Truth Files</strong><span>Version and availability, product by product <b aria-hidden="true">↗</b></span></a>
       <a href="/proof/"><span class="studio-proof-index">03 / RELEASE EVIDENCE</span><strong>Release records</strong><span>Artifacts, checksums, tests, and limits <b aria-hidden="true">↗</b></span></a>
     </div>
+    <!-- Build emits a compact summary only when a current public artifact is eligible. -->
+    <!-- @studio-evidence -->
   </section>
 
   <section class="studio-close" aria-labelledby="closing-title">

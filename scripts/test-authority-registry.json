@@ -1,0 +1,118 @@
+{
+  "registryVersion": 1,
+  "candidate": {
+    "branch": "codex/studio-root-2-visual-refoundation",
+    "head": "91edeff711fb3e5e3413ac058758035a0b5fbcbb",
+    "workingTreeManifest": "receipts/studio-root-2/final-qualification/working-tree-sha256.txt",
+    "workingTreeManifestSha256": "97eec8b74f9fb0a0aca5423b550c78af1bb765d15708f82b5f3f28f5536e11ca",
+    "assertionEvidence": "receipts/studio-root-2/final-qualification/contradiction-matrix.md#assertion-matrix",
+    "assertionEvidenceRule": "Each historical failing assertion and its baseline/candidate classification is recorded in the contradiction matrix. The registry below assigns each superseded invariant family to its current owner gates."
+  },
+  "authorities": [
+    { "id": "H9_HOME", "script": "test-h9-homepage.ps1", "owns": ["Studio Root composition, feature hierarchy, role order, responsive homepage semantics"] },
+    { "id": "H9_BINDING", "script": "test-h9-binding.ps1", "owns": ["source/generated binding, module-to-role rendering, compact proof ledger, catalog contract"] },
+    { "id": "H13", "script": "test-h13-modular-products.ps1", "owns": ["module schema/metadata, registry enumeration, generic renderer, routes, product role and visibility behavior"] },
+    { "id": "H7C", "script": "test-h7c-product-pages.ps1", "owns": ["shared product-page rendering and product-page semantics"] },
+    { "id": "H11", "script": "test-h11-public-truth.ps1", "owns": ["canonical public release and availability truth"] },
+    { "id": "H12", "script": "test-h12-truth-discovery.ps1", "owns": ["truth discovery, public route/sitemap and machine-readable parity"] },
+    { "id": "RELEASE_TRUTH", "script": "test-release-truth.ps1", "owns": ["release and artifact facts across rendered release surfaces"] },
+    { "id": "TRUTH_FILES", "script": "test-truth-files.ps1", "owns": ["generated Truth File parity and product truth records"] },
+    { "id": "RECEIPTS", "script": "test-receipts-invariants.ps1", "owns": ["receipt identity, evidence eligibility, artifact detail and digest treatment"] },
+    { "id": "P2_1", "script": "test-customer-trust-p2-1.ps1", "owns": ["support content, safety/checksum wording and support signposts"] }
+  ],
+  "legacyScripts": [
+    {
+      "script": "test-customer-trust-p2-1.ps1",
+      "status": "CURRENT_RELEASE_GATE",
+      "action": "Retain assertions; footer support-link assertion is markup-agnostic and checks the rendered footer nav.",
+      "families": [{ "name": "Support route and customer trust", "owners": ["P2_1", "H12"] }]
+    },
+    {
+      "script": "test-h2-material-rhythm.ps1",
+      "status": "SUPERSEDED_CONTRACT",
+      "action": "Delegate old signature-era material and scene assumptions to current homepage, module, route, and catalog authorities.",
+      "families": [
+        { "name": "Studio Root identity, proof hierarchy, principle labels, hero and ending", "owners": ["H9_HOME", "H9_BINDING"] },
+        { "name": "Catalog media, product identity, public state and dynamic product rendering", "owners": ["H9_BINDING", "H13", "H11"] },
+        { "name": "Founders route discovery", "owners": ["H12"] }
+      ]
+    },
+    {
+      "script": "test-h3-trust-to-action.ps1",
+      "status": "CURRENT_REGRESSION_COVERAGE",
+      "action": "Retain still-valid product/support assertions; replace withdrawn-product and former-scene expectations with the current truth and role contracts.",
+      "families": [
+        { "name": "Product page, onboarding and evidence semantics", "owners": ["H7C", "H13"] },
+        { "name": "Reality Gate withdrawn state and current release claims", "owners": ["H11", "RELEASE_TRUTH", "TRUTH_FILES"] },
+        { "name": "Studio Root role sequence, proof hierarchy and catalog handoff", "owners": ["H9_HOME", "H9_BINDING"] },
+        { "name": "Support and checksum language", "owners": ["P2_1", "RECEIPTS"] }
+      ]
+    },
+    {
+      "script": "test-h4-metadata-discovery.ps1",
+      "status": "CURRENT_REGRESSION_COVERAGE",
+      "action": "Keep SEO/canonical/sitemap assertions; compare candidate product truth to candidate authorities rather than stale production bytes.",
+      "families": [
+        { "name": "Canonical routes, metadata, sitemap and discovery", "owners": ["H12", "H13"] },
+        { "name": "Canonical release-state parity", "owners": ["H11", "RELEASE_TRUTH", "TRUTH_FILES"] },
+        { "name": "Shared product-page rendering", "owners": ["H7C", "H13"] }
+      ]
+    },
+    {
+      "script": "test-h5-jsonld-truth.ps1",
+      "status": "CURRENT_REGRESSION_COVERAGE",
+      "action": "Keep structured-data validity/reputation assertions; bind release checks to current candidate truth and current product-page contracts.",
+      "families": [
+        { "name": "JSON-LD validity and honest availability", "owners": ["H11", "RELEASE_TRUTH", "TRUTH_FILES"] },
+        { "name": "ProofShot release detail and product rendering", "owners": ["H7C", "H13"] }
+      ]
+    },
+    {
+      "script": "test-h7a-design-pilot.ps1",
+      "status": "CURRENT_REGRESSION_COVERAGE",
+      "action": "Keep contrast and no-JS catalog assertions; replace pre-Studio Root copy/filter selectors with current software-route and role contracts.",
+      "families": [
+        { "name": "Progressive enhancement, catalog enumeration and compare behavior", "owners": ["H9_BINDING", "H13"] },
+        { "name": "Studio Root copy hierarchy and catalog handoff", "owners": ["H9_HOME"] }
+      ]
+    },
+    {
+      "script": "test-h7b-product-pages.ps1",
+      "status": "SUPERSEDED_CONTRACT",
+      "action": "Delegate former hand-authored status-row, inline-style and withdrawn onboarding assumptions to the shared module renderer and truth authorities.",
+      "families": [
+        { "name": "Generic product-page hierarchy, evidence and disclosures", "owners": ["H7C", "H13"] },
+        { "name": "Reality Gate withdrawn availability and no-download behavior", "owners": ["H11", "RELEASE_TRUTH", "TRUTH_FILES"] }
+      ]
+    },
+    {
+      "script": "test-h9-cinematic.ps1",
+      "status": "SUPERSEDED_CONTRACT",
+      "action": "Historical cinematic scene and baseline custody contract is retired; delegate current module, homepage, truth, receipt and discovery invariants to their owners.",
+      "families": [
+        { "name": "Homepage roles/order, one featured product, proof and ending", "owners": ["H9_HOME", "H9_BINDING", "H13"] },
+        { "name": "Product truth, withdrawn availability and generated truth parity", "owners": ["H11", "H12", "RELEASE_TRUTH", "TRUTH_FILES"] },
+        { "name": "Compact homepage proof: no raw digest/source-commit clutter; release record remains linked", "owners": ["H9_HOME", "H9_BINDING", "RECEIPTS"] },
+        { "name": "Canonical artifact filename and full release detail remain available on proof/release surfaces", "owners": ["H9_BINDING", "RECEIPTS", "RELEASE_TRUTH"] }
+      ]
+    },
+    {
+      "script": "test-h9-production-reconciliation.ps1",
+      "status": "HISTORICAL_ONLY",
+      "action": "Retire exact equality with a stale production snapshot; current candidate identity/truth and generated binding remain covered by current gates.",
+      "families": [
+        { "name": "Module/source/generated binding and route preservation", "owners": ["H9_BINDING", "H13"] },
+        { "name": "Current truth rather than old production parity", "owners": ["H11", "H12", "RELEASE_TRUTH", "TRUTH_FILES"] }
+      ]
+    },
+    {
+      "script": "test-signature-home.ps1",
+      "status": "HISTORICAL_ONLY",
+      "action": "Retire Signature-era stylesheet, hero, product-scene and shared-navigation assumptions; current Studio Root and route discovery contracts own these invariants.",
+      "families": [
+        { "name": "Current homepage composition and product roles", "owners": ["H9_HOME", "H9_BINDING", "H13"] },
+        { "name": "Founders and public route discovery", "owners": ["H12"] }
+      ]
+    }
+  ]
+}

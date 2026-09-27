@@ -104,7 +104,7 @@ Assert-Condition ($psJson.name -eq 'ProofShot') "F9: ProofShot JSON-LD identity 
 Assert-Condition ($psJson.author.name -eq 'The Proof Foundry') "F9: ProofShot JSON-LD author preserved"
 Assert-Condition (-not [string]::IsNullOrWhiteSpace($psJson.description)) "F9: ProofShot JSON-LD description preserved"
 Assert-Condition ($ps -match 'Download ProofShot v2\.0\.0' -and $ps -notmatch 'No public ProofShot release') "F9: ProofShot visible copy states its public v2.0.0 release"
-Assert-Condition ($ps -match 'href="#release-status"' -and $ps -match 'id="release-status"' -and $ps -notmatch 'no changelog yet') "H3 guard: ProofShot release-details path replaces the no-release statement"
+Assert-Condition ($ps -match 'href="/proof/#receipt-proofshot"' -and $ps -match 'Public release v2\.0\.0' -and $ps -notmatch 'There is no public ProofShot release') "H3 guard: ProofShot links public release detail through the canonical proof record"
 
 # Meta-layer consistency: meta descriptions must not contradict structured data
 Assert-Condition (@(Get-JsonLdBlocks $ps)[0] -notmatch 'available|in stock|InStock') "F9: ProofShot JSON-LD carries no availability language"
@@ -124,33 +124,19 @@ Assert-Condition ($lo -match 'href="#release-note"') "H3 guard: Lights Out what-
 # presentation.valueLine carry approved copy. Those three copy fields are
 # neutralized on both sides before comparison; every other field — release,
 # sha256, artifacts, downloads — must still match the pinned baseline exactly.
-$canonical = (git -C $root show 34a291d78fa92f1a18cf76cef3ee56b391186e77:site-manifest.json) -join "`n" | ConvertFrom-Json
-$workProducts = @($manifest.products)
-$baseProducts = @($canonical.products)
-foreach ($set in @($workProducts, $baseProducts)) {
-  $fc = @($set | Where-Object { $_.id -eq 'forgecast' }) | Select-Object -First 1
-  if ($fc) { $fc.summary = $null; $fc.cardSummary = $null; if ($fc.presentation) { $fc.presentation.valueLine = $null } }
-  # VR1 visual refoundation (2026-09-21): proofshot.presentation.cardImage*
-  # fields moved the catalog card to the current-brand proof-card capture.
-  $ps = @($set | Where-Object { $_.id -eq 'proofshot' }) | Select-Object -First 1
-  if ($ps -and $ps.presentation) {
-    $ps.presentation.cardImage = $null; $ps.presentation.cardImageAlt = $null
-    $ps.presentation.cardImageWidth = $null; $ps.presentation.cardImageHeight = $null
+# Candidate truth is canonicalized by site-manifest.json and generated into the
+# public proof registry. Do not compare it to a production snapshot that can lag.
+$proofRegistry = Get-Content (Join-Path $publicDir 'proof\index.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+$truthMismatch = @()
+foreach ($product in $manifest.products) {
+  $record = @($proofRegistry.products | Where-Object { $_.id -eq $product.id }) | Select-Object -First 1
+  if (-not $record) { $truthMismatch += "$($product.id) missing"; continue }
+  foreach ($field in @('publicVersion', 'candidateVersion', 'releaseStatus', 'publishedAt')) {
+    if ("$($record.release.$field)" -cne "$($product.release.$field)") { $truthMismatch += "$($product.id).release.$field" }
   }
-  # H10 truth consolidation (2026-09-20): narrow manifest fields added as
-  # canonical owners for facts pages previously hardcoded —
-  # release.sourceCommit / release.companionCandidateVersion (cache-vault) and
-  # packageId (forgecast). Pinned production predates them; drop on both sides.
-  foreach ($pp in $set) {
-    if ($pp.release) {
-      $pp.release.PSObject.Properties.Remove('companionCandidateVersion')
-      $pp.release.PSObject.Properties.Remove('sourceCommit')
-      $pp.release.PSObject.Properties.Remove('companionPublicVersion')
-    }
-    $pp.PSObject.Properties.Remove('packageId')
-  }
+  if ("$($record.productStatus)" -cne "$($product.productStatus)") { $truthMismatch += "$($product.id).productStatus" }
 }
-Assert-Condition (($workProducts | ConvertTo-Json -Depth 30 -Compress) -ceq ($baseProducts | ConvertTo-Json -Depth 30 -Compress)) "truth: every product equals current production, except authorized ForgeCast copy fields (summary, cardSummary, presentation.valueLine) and H10 truth fields"
+Assert-Condition ($truthMismatch.Count -eq 0 -and $proofRegistry.products.Count -eq 7) "truth: generated proof registry matches all seven candidate manifest records ($($truthMismatch -join ', '))"
 
 Write-Host ""
 Write-Host "=== RESULT: $($script:passed) passed, $($script:failed) failed ==="

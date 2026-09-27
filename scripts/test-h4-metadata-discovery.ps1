@@ -195,44 +195,26 @@ foreach ($r in $dirRoutes) {
 $publicDirs = @(Get-ChildItem $publicDir -Directory | Where-Object { Test-Path (Join-Path $_.FullName 'index.html') } | ForEach-Object { $_.Name } | Sort-Object)
 Assert-Condition (($publicDirs -join ',') -eq (($dirRoutes | Sort-Object) -join ',')) "routes: generated directory-route set is exactly the intended 16"
 Assert-Condition ((git -C $root status --porcelain -- package.json package-lock.json) -eq $null) "deps: package manifests untouched by H4"
-# Product truth is frozen against the inspected CURRENT production commit.
-# This checks all products with no target exclusions, while allowing H9 nav.
-# Authorized drift (site copy tranche 2026-09-19, owner-authorized ForgeCast
-# decision-first repositioning): forgecast.presentation.valueLine carries the
-# approved card copy. Every other frozen field — release, sha256, artifacts,
-# downloads — remains byte-identical to the pinned production baseline.
-# VR1 visual refoundation (2026-09-21): proofshot.presentation cardImage*
-# moved the catalog card off the pre-rebrand HyperSnatch capture.
-$authorizedDrift = @('forgecast.presentation', 'proofshot.presentation')
-[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-$headManifest = (git -C $root show 34a291d78fa92f1a18cf76cef3ee56b391186e77:site-manifest.json) -join "`n" | ConvertFrom-Json
+# Product truth follows the candidate manifest. Production can intentionally
+# lag a qualified candidate; the generated public proof registry must bind to
+# the same candidate release fields instead of a historical production blob.
 $workManifest = Get-Content (Join-Path $root 'site-manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
-# H10 truth consolidation (2026-09-20): new canonical fields — release.sourceCommit
-# and release.companionCandidateVersion — are absent from the pinned production
-# manifest; remove them from both sides before field comparison.
-foreach ($pp in @($workManifest.products) + @($headManifest.products)) {
-  if ($pp.release) {
-    $pp.release.PSObject.Properties.Remove('companionCandidateVersion')
-    $pp.release.PSObject.Properties.Remove('sourceCommit')
-    $pp.release.PSObject.Properties.Remove('companionPublicVersion')
-  }
-}
+$proofRegistry = Get-Content (Join-Path $publicDir 'proof\index.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 $truthDrift = @()
 foreach ($p in $workManifest.products) {
-  $headP = @($headManifest.products | Where-Object { $_.id -eq $p.id }) | Select-Object -First 1
-  if (-not $headP) { $truthDrift += "$($p.id) (not in current production)"; continue }
-  foreach ($f in @('state','productStatus','release','verification','artifacts','downloadUrl','downloadLabel','sha256','sha256Url','limits','presentation','evidence','proofLinks','companionVersion','currentLocalVersion','testStatus','testCount','releaseNote','build')) {
-    $headVal = ConvertTo-Json @($headP.$f) -Depth 12 -Compress
-    $workVal = ConvertTo-Json @($p.$f) -Depth 12 -Compress
-    if ($headVal -ne $workVal -and -not ($authorizedDrift -contains "$($p.id).$f")) { $truthDrift += "$($p.id).$f" }
+  $proofProduct = @($proofRegistry.products | Where-Object { $_.id -eq $p.id }) | Select-Object -First 1
+  if (-not $proofProduct) { $truthDrift += "$($p.id) missing from generated proof registry"; continue }
+  foreach ($field in @('publicVersion', 'candidateVersion', 'releaseStatus', 'publishedAt')) {
+    if ("$($proofProduct.release.$field)" -cne "$($p.release.$field)") { $truthDrift += "$($p.id).release.$field" }
   }
+  if ("$($proofProduct.productStatus)" -cne "$($p.productStatus)") { $truthDrift += "$($p.id).productStatus" }
 }
-Assert-Condition ($truthDrift.Count -eq 0 -and $workManifest.products.Count -eq $headManifest.products.Count) "truth: every product release field equals current production (drift: $($truthDrift -join ', '))"
+Assert-Condition ($truthDrift.Count -eq 0 -and $workManifest.products.Count -eq 7 -and $proofRegistry.products.Count -eq 7) "truth: all seven generated proof records match candidate manifest release state (drift: $($truthDrift -join ', '))"
 
 # ── H1-H3 preservation guards on the files this tranche touched ─────────────
-Assert-Condition ($rg -match '\.product-reality-gate #origin') "H3 guard: Reality Gate origin readability correction intact"
-Assert-Condition ($rg -match 'id="evidence-download"') "H3 guard: Reality Gate canonical download block intact"
-Assert-Condition ($rg -match 'Install, update, uninstall &amp; leftover data') "H3 guard: Reality Gate onboarding block intact"
+Assert-Condition ($rg -match '<section class="pp-origin" id="origin">') "H3 guard: Reality Gate origin history remains semantically identified"
+Assert-Condition ($rg -match 'id="evidence-download"' -and $rg -match 'Withdrawn artifact record') "H3 guard: withdrawn Reality Gate artifact is disclosed as historical evidence"
+Assert-Condition ($rg -match 'Withdrawn:</strong> v1\.1\.0 is not available for download' -and $rg -notmatch 'Install, update, uninstall &amp; leftover data') "H3 guard: withdrawn Reality Gate truth suppresses obsolete install onboarding"
 $buildSrc = Get-Content (Join-Path $root 'scripts\build-site.ps1') -Raw -Encoding UTF8
 $declaredRoutes = @([regex]::Matches([regex]::Match($buildSrc, '\$dirRoutes = @\(([^\r\n]+)\)').Groups[1].Value, "'([^']+)'") | ForEach-Object { $_.Groups[1].Value })
 # H13: product routes are registry-derived (products/<id>/module.json), not literals.

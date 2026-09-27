@@ -116,7 +116,7 @@
   "homepage": {
     "role": "studioPortfolio",
     "order": 20,
-    "presentation": "standard",
+    "presentation": "interface",
     "visibility": "visible"
   }
 }

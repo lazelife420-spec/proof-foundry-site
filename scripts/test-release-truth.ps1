@@ -64,6 +64,13 @@ Assert-Condition ($rgTruth.download.available -eq $false -and $null -eq $rgTruth
 Assert-Condition ($rgTruth.artifacts[0].filename -eq 'Reality-Gate-1.1.0-Developer-Pilot.zip' -and $rgTruth.artifacts[0].sha256 -eq '58cc27d22bdee8157ee4598e116e17ff42d0efc95630c97bee4b2bc6be6ce756') 'historical Reality Gate artifact filename and checksum remain on record'
 $rgPage = Get-Content (Join-Path $publicDir 'reality-gate\index.html') -Raw -Encoding UTF8
 Assert-Condition ($rgPage -match 'Withdrawn.*v1\.1\.0.*not available for download' -and $rgPage -notmatch 'href="https://downloads\.theprooffoundry\.com/reality-gate/v1\.1\.0/') 'Reality Gate route states withdrawal and renders no dead download link'
+$supportPage = Get-Content (Join-Path $publicDir 'support\index.html') -Raw -Encoding UTF8
+$rgSupport = [regex]::Match($supportPage, '(?s)<article class="detail-card">\s*<h3><a href="/reality-gate/">.*?</article>').Value
+$cvSupport = [regex]::Match($supportPage, '(?s)<article class="detail-card">\s*<h3><a href="/cache-vault/">.*?</article>').Value
+$cvSupportTruth = $registryJson.products | Where-Object { $_.id -eq 'cache-vault' }
+Assert-Condition ($rgRegistry.release.publicVersion -eq $null -and $rgSupport -match 'Withdrawn · no public download' -and $rgSupport -match 'former v1\.1\.0 release is withdrawn and no public download is available') 'Support derives withdrawn status and no-public-version availability from canonical Reality Gate truth'
+Assert-Condition ($cvSupportTruth.release.publicVersion -eq '0.2.4' -and $cvSupport -match 'Public Windows v0\.2\.4 available') 'Support retains the current public version for an available product'
+Assert-Condition ($supportPage -notmatch '\{\{products\.' -and $rgSupport -notmatch 'Windows Developer Pilot\s+available\.') 'Support renders canonical availability without unresolved tokens or a malformed pilot-available claim'
 $rgProof = Get-Content (Join-Path $publicDir 'proof\index.html') -Raw -Encoding UTF8
 Assert-Condition ($rgProof -match 'Historical release record: Historical Windows installer ZIP record for v1\.1\.0' -and $rgProof -match 'Downloads currently unavailable') 'release receipt keeps historical evidence and suppresses the download CTA'
 $softwarePage = Get-Content (Join-Path $publicDir 'software\index.html') -Raw -Encoding UTF8

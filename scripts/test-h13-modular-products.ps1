@@ -209,12 +209,12 @@ $controlId = [string]$controlModule.id
 $t4b = Invoke-ModuleFixture 'homepage-presentation-order' {
   param($modDir)
   $path = Join-Path $modDir "$script:controlId\module.json"; $m = Get-Content $path -Raw | ConvertFrom-Json
-  $m.homepage.presentation = 'compact'; $m.homepage.order = -25
+  $m.homepage.presentation = 'editorial'; $m.homepage.order = -25
   [IO.File]::WriteAllText($path, ($m | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
 } -RealOut
 Assert ($t4b.Exit -eq 0) 'valid semantic presentation and order changes build without renderer edits'
 $t4bHome = Get-Content (Join-Path $t4b.OutDir 'index.html') -Raw -Encoding UTF8
-Assert ($t4bHome -match ('data-module="' + [regex]::Escape($controlId) + '"[^>]*data-presentation="compact"') -and [regex]::Match($t4bHome, '<article\b[^>]*data-module="([^"]+)"').Groups[1].Value -eq $controlId) 'generic semantic presentation and changed order are reflected in generated homepage markup'
+Assert ($t4bHome -match ('data-module="' + [regex]::Escape($controlId) + '"[^>]*data-presentation="editorial"') -and [regex]::Match($t4bHome, '<(?:figure|article)\b[^>]*data-module="([^"]+)"').Groups[1].Value -eq $controlId) 'generic editorial presentation and changed order are reflected in generated homepage markup'
 
 $t4hiddenHome = Invoke-ModuleFixture 'homepage-hidden' {
   param($modDir)

@@ -1249,18 +1249,36 @@ function Build-StudioEvidence {
   if (-not $candidate) { return '' }
   $module = $candidate.Entry.Module; $product = $candidate.Entry.Product; $artifact = $candidate.Artifact
   $name = if ($product.homeName) { [string]$product.homeName } else { [string]$product.name }
-  $mark = if ($module.brand.mark) { '<img class="studio-evidence-mark" src="' + (Html-Attr $module.brand.mark) + '" alt="" width="36" height="36"/>' } else { '' }
   $proofId = 'receipt-' + [string]$module.id
+  $releaseLabel = 'v' + [string]$product.release.publicVersion
+  $verifiedAt = [string]$product.verification.verifiedAt
   return @"
 <aside class="studio-evidence" aria-label="Public release evidence">
-  <div class="studio-evidence-head"><span>Public release evidence</span><span class="studio-evidence-stamp">$(Html-Text $product.verification.status)</span></div>
-  <div class="studio-evidence-body">
-    <div class="studio-evidence-product">$mark<div><p>$(Html-Text $product.release.releaseStatus) · v$(Html-Text $product.release.publicVersion)</p><h2>$(Html-Text $name)</h2></div></div>
-    <dl class="studio-evidence-facts"><dt>Artifact</dt><dd>$(Html-Text $artifact.filename)</dd><dt>SHA-256</dt><dd><code>$(Html-Text $product.sha256)</code></dd><dt>Verified</dt><dd>$(Html-Text $product.verification.verifiedAt)</dd></dl>
-    <div class="studio-evidence-actions"><a href="$(Html-Attr $product.sha256Url)">Inspect checksum <span aria-hidden="true">↗</span></a><a href="/proof/#$(Html-Attr $proofId)">Open release record <span aria-hidden="true">→</span></a></div>
-    <p class="studio-evidence-caption">Evidence is selected from a verified, currently published release record.</p>
-  </div>
+  <div class="studio-evidence-copy"><span class="studio-evidence-label">A public release, checked</span><strong>$(Html-Text $name) · $(Html-Text $releaseLabel)</strong><span>Verified $(Html-Text $verifiedAt)</span></div>
+  <a href="/proof/#$(Html-Attr $proofId)">Open the release record <span aria-hidden="true">↗</span></a>
 </aside>
+"@
+}
+
+function Build-StudioHeroProduct {
+  $entry = @(Get-StudioPortfolioEntries | Where-Object { $_.Module.homepage.presentation -eq 'feature' }) | Select-Object -First 1
+  if (-not $entry) { return '' }
+  $module = $entry.Module; $product = $entry.Product
+  $name = if ($product.homeName) { [string]$product.homeName } else { [string]$product.name }
+  $media = if ($module.hero.media.src) { [string]$module.hero.media.src } else { [string]$module.card.media }
+  $alt = if ($module.hero.media.alt) { [string]$module.hero.media.alt } else { [string]$module.card.mediaAlt }
+  $caption = if ($module.hero.media.caption) { [string]$module.hero.media.caption } else { [string]$module.hero.headline }
+  $tokens = ProductTokens $product
+  $status = Get-HomepageStatus $product $tokens
+  $accent = if ($module.theme.accent) { [string]$module.theme.accent } else { '#d6bd91' }
+  return @"
+<figure class="studio-hero-product" data-module="$(Html-Attr $module.id)" data-presentation="$(Html-Attr $module.homepage.presentation)" style="--product-accent:$(Html-Attr $accent)">
+  <div class="studio-hero-window">
+    <div class="studio-hero-windowbar" aria-hidden="true"><span class="studio-window-lights"><i></i><i></i><i></i></span><span>$(Html-Text $module.taxonomy.category)</span><span class="studio-window-platform">$(Html-Text $tokens.platform)</span></div>
+    <a class="studio-hero-visual" href="$(Html-Attr $module.route)" aria-label="Explore $(Html-Attr $name)"><img src="$(Html-Attr $media)" alt="$(Html-Attr $alt)" fetchpriority="high" decoding="async"/></a>
+  </div>
+  <figcaption class="studio-hero-product-caption"><span class="studio-hero-product-kicker">Featured tool</span><strong>$(Html-Text $name)</strong><span class="studio-hero-product-note">$(Html-Text $caption)</span><a href="$(Html-Attr $module.route)">$(Html-Text $status) <span aria-hidden="true">↗</span></a></figcaption>
+</figure>
 "@
 }
 
@@ -1268,6 +1286,7 @@ function Build-StudioPortfolio {
   $cards = @()
   foreach ($entry in Get-StudioPortfolioEntries) {
     $module = $entry.Module; $product = $entry.Product
+    if ($module.homepage.presentation -eq 'feature') { continue }
     $name = if ($product.homeName) { [string]$product.homeName } else { [string]$product.name }
     $image = [string]$module.card.media; $alt = [string]$module.card.mediaAlt
     $tagline = if ($module.card.tagline) { [string]$module.card.tagline } else { [string]$module.hero.lede }
@@ -2135,7 +2154,7 @@ function Get-ProductRegistry {
       if ($m.lifecycle -eq 'public-eligible' -and -not $m.homepage) { $regErrors += "${tag}: public-eligible modules require homepage presentation metadata" }
       if ($m.homepage) {
         if ($m.homepage.role -ne 'studioPortfolio') { $regErrors += "${tag}: homepage.role must be studioPortfolio" }
-        if ($m.homepage.presentation -notin @('feature','standard','compact')) { $regErrors += "${tag}: homepage.presentation must be feature|standard|compact" }
+        if ($m.homepage.presentation -notin @('feature','interface','editorial','standard','compact')) { $regErrors += "${tag}: homepage.presentation must be feature|interface|editorial|standard|compact" }
         if ($m.homepage.visibility -notin @('visible','hidden')) { $regErrors += "${tag}: homepage.visibility must be visible|hidden" }
         if (-not ($m.homepage.order -is [int] -or $m.homepage.order -is [long] -or $m.homepage.order -is [double])) { $regErrors += "${tag}: homepage.order must be numeric" }
         if ($null -ne $m.homepage.evidencePriority -and -not ($m.homepage.evidencePriority -is [int] -or $m.homepage.evidencePriority -is [long])) { $regErrors += "${tag}: homepage.evidencePriority must be a positive integer when specified" }
@@ -2502,6 +2521,7 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   $publicCatalogCount = [string](Get-PublicCatalogCount)
   $html = $html.Replace('{{publicProductCount}}', $publicCatalogCount)
   $html = $html.Replace('<!-- @studio-evidence -->', (Build-StudioEvidence))
+  $html = $html.Replace('<!-- @studio-hero-product -->', (Build-StudioHeroProduct))
   $html = $html.Replace('<!-- @studio-portfolio -->', (Build-StudioPortfolio))
   # The standalone catalog includes the featured product as a normal card.
   $catalogCards = (Build-ProductCards $null $true) -replace '<h4 class="card-name">', '<h3 class="card-name">' -replace '</h4>', '</h3>'

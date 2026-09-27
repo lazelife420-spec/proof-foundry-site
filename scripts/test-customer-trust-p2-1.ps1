@@ -29,7 +29,8 @@ $supportHtml = Get-Content $supportPath -Raw -Encoding UTF8
 # 2. Header & Footer Navigation
 $homeHtml = Get-Content (Join-Path $publicDir "index.html") -Raw -Encoding UTF8
 Assert-Condition ($homeHtml -match '<a href="/support/"') "Header nav contains link to /support/"
-Assert-Condition ($homeHtml -match '<li><a href="/support/">Support</a></li>') "Footer nav contains link to /support/"
+$footerHtml = [regex]::Match($homeHtml, '(?s)<footer\b.*?</footer>').Value
+Assert-Condition ($footerHtml -match '<nav\b[^>]*aria-label="Footer"[^>]*>[\s\S]*?<a href="/support/">Support</a>') "Footer nav contains link to /support/"
 
 # 3. Product Support Signposts (All 7 Products)
 $products = @('reality-gate', 'cache-vault', 'lights-out', 'cleanroom', 'ghostlayer', 'forgecast', 'proofshot')

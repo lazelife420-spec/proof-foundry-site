@@ -108,7 +108,7 @@
   "homepage": {
     "role": "studioPortfolio",
     "order": 40,
-    "presentation": "standard",
+    "presentation": "compact",
     "visibility": "visible",
     "evidencePriority": 4
   }

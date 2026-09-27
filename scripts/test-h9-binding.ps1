@@ -15,7 +15,7 @@ $truthIndex = (Read-Built 'truth/index.json') | ConvertFrom-Json
 $sourceModules = @(Get-ChildItem -LiteralPath (Join-Path $Root 'products') -Directory | ForEach-Object { (Read-Source (Join-Path (Join-Path 'products' $_.Name) 'module.json')) | ConvertFrom-Json })
 $publicModules = @($sourceModules | Where-Object { $_.visibility -eq 'visible' -and $_.lifecycle -eq 'public-eligible' })
 $rootModules = @($publicModules | Where-Object { $_.homepage -and $_.homepage.role -eq 'studioPortfolio' -and $_.homepage.visibility -eq 'visible' } | Sort-Object { [int]$_.homepage.order }, { [int]$_.order })
-$renderedRoot = @([regex]::Matches($homeHtml, '<article\b[^>]*class="studio-product-card"[^>]*data-module="([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
+$renderedRoot = @([regex]::Matches($homeHtml, '<(?:figure|article)\b[^>]*data-module="([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
 Write-Host '=== H9 STUDIO ROOT BINDING GUARD ==='
 $base = 'dfcf2d38fd333f86d10c7d3607856349fcbaa518'
 & git -C $Root merge-base --is-ancestor $base HEAD; $ancestry = $LASTEXITCODE
@@ -25,7 +25,8 @@ $manifestIds = @($manifest.products | Where-Object visible | ForEach-Object id |
 $registryIds = @($registry.products | ForEach-Object id | Sort-Object)
 Assert-Binding 'registry identities bind to public module and manifest identities' ((($moduleIds -join ',') -ceq ($manifestIds -join ',')) -and (($registryIds -join ',') -ceq ($manifestIds -join ',')))
 Assert-Binding 'module metadata → registry → generic role renderer → generated root order agrees' ((($renderedRoot -join ',') -ceq (($rootModules | ForEach-Object id) -join ',')) -and $renderedRoot.Count -eq $rootModules.Count)
-Assert-Binding 'exactly one registry module carries the featured portfolio presentation' (@($rootModules | Where-Object { $_.homepage.presentation -eq 'feature' }).Count -eq 1 -and ([regex]::Matches($homeHtml, 'data-presentation="feature"')).Count -eq 1)
+Assert-Binding 'exactly one registry module owns the featured hero interface' (@($rootModules | Where-Object { $_.homepage.presentation -eq 'feature' }).Count -eq 1 -and ([regex]::Matches($homeHtml, 'class="studio-hero-product"[^>]*data-presentation="feature"')).Count -eq 1)
+Assert-Binding 'secondary product compositions are metadata-selected and distinct' (@($rootModules | Where-Object { $_.homepage.presentation -eq 'interface' }).Count -eq 1 -and @($rootModules | Where-Object { $_.homepage.presentation -eq 'editorial' }).Count -eq 1 -and ([regex]::Matches($homeHtml, 'data-presentation="interface"')).Count -eq 1 -and ([regex]::Matches($homeHtml, 'data-presentation="editorial"')).Count -eq 1)
 $renderer = Read-Source 'scripts/build-site.ps1'
 $homeRendererStart = $renderer.IndexOf('function Get-StudioPortfolioEntries')
 $homeRendererEnd = $renderer.IndexOf('function Get-PublicCatalogCount')
@@ -33,8 +34,8 @@ $homeRenderer = if ($homeRendererStart -ge 0 -and $homeRendererEnd -gt $homeRend
 Assert-Binding 'role renderer contains no product identity branches' ($homeRenderer.Length -gt 0 -and $homeRenderer -notmatch '(?i)cache-vault|reality-gate|forgecast|ghostlayer|lights-out|cleanroom|proofshot')
 Assert-Binding 'root source contains no fixed product list, product identity or product-specific card markup' ((Read-Source 'index.html') -notmatch '(?i)cache vault|reality gate|forgecast|ghostlayer|lights out|cleanroom|proofshot|data-module=')
 Assert-Binding 'root structural CSS uses only generic presentation semantics' ((Read-Source 'h9-homepage.css') -notmatch '(?i)cache-vault|reality-gate|forgecast|ghostlayer|lights-out|cleanroom|proofshot|data-module="')
-$bindingFailures = @($rootModules | Where-Object { $m=$_; $homeHtml -notmatch ('data-module="' + [regex]::Escape([string]$m.id) + '"[^>]*data-presentation="' + [regex]::Escape([string]$m.homepage.presentation) + '"') -or $homeHtml -notmatch [regex]::Escape([string]$m.route) -or $homeHtml -notmatch [regex]::Escape([string]$m.card.media) -or $homeHtml -notmatch [regex]::Escape([string]$m.theme.accent) })
-Assert-Binding 'rendered portfolio binds semantic presentation, route, media and accent to module metadata' ($bindingFailures.Count -eq 0)
+$bindingFailures = @($rootModules | Where-Object { $m=$_; $media=if($m.homepage.presentation -eq 'feature'){$m.hero.media.src}else{$m.card.media}; $homeHtml -notmatch ('data-module="' + [regex]::Escape([string]$m.id) + '"[^>]*data-presentation="' + [regex]::Escape([string]$m.homepage.presentation) + '"') -or $homeHtml -notmatch [regex]::Escape([string]$m.route) -or $homeHtml -notmatch [regex]::Escape([string]$media) -or $homeHtml -notmatch [regex]::Escape([string]$m.theme.accent) })
+Assert-Binding 'generated hero and portfolio bind role, route, media and accent to module metadata' ($bindingFailures.Count -eq 0)
 $nonRootVisible = @($publicModules | Where-Object { $_.homepage.visibility -eq 'hidden' })
 Assert-Binding 'root-hidden modules are omitted from root only while routes/catalog/truth remain present' (@($nonRootVisible | Where-Object { $id=$_.id; $homeHtml -match ('data-module="' + [regex]::Escape([string]$id) + '"') -or -not (Test-Path (Join-Path $PublicDir "$id/index.html")) -or $software -notmatch ('data-product="' + [regex]::Escape([string]$id) + '"') -or -not (Test-Path (Join-Path $PublicDir "truth/products/$id.json")) }).Count -eq 0)
 $missingPublicRoutes = @($manifest.products | Where-Object { $_.visible -and (-not (Test-Path (Join-Path $PublicDir "$($_.id)/index.html")) -or -not (Test-Path (Join-Path $PublicDir "truth/products/$($_.id).json"))) })
@@ -57,8 +58,8 @@ foreach ($m in $eligibleEvidence) {
   if ($p.release.releaseStatus -eq 'PUBLIC_RELEASE' -and $p.release.publicVersion -and $p.verification.status -eq 'VERIFIED' -and -not $p.presentation.downloadUnavailable -and $p.downloadUrl -and $p.sha256 -match '^[a-fA-F0-9]{64}$' -and $p.sha256Url -and $artifact -and $m.card.media) { $selectedEvidence = $p; break }
 }
 $evidenceHtml = [regex]::Match($homeHtml, '(?s)<aside class="studio-evidence".*?</aside>').Value
-Assert-Binding 'evidence spotlight selector uses first canonically eligible editorial candidate' (($selectedEvidence -and $evidenceHtml -and $evidenceHtml.Contains([string]$selectedEvidence.name) -and $evidenceHtml.Contains([string]$selectedEvidence.sha256)) -or (-not $selectedEvidence -and -not $evidenceHtml))
-Assert-Binding 'evidence links to checksum and release record of selected canonical artifact' (($selectedEvidence -and $evidenceHtml.Contains([string]$selectedEvidence.sha256Url) -and $evidenceHtml.Contains('/proof/#receipt-' + [string]$selectedEvidence.id)) -or (-not $selectedEvidence -and -not $evidenceHtml))
+Assert-Binding 'compact evidence selector uses the first canonically eligible public artifact' (($selectedEvidence -and $evidenceHtml -and $evidenceHtml.Contains([string]$selectedEvidence.name) -and $evidenceHtml.Contains([string]$selectedEvidence.release.publicVersion) -and $evidenceHtml.Contains([string]$selectedEvidence.verification.verifiedAt)) -or (-not $selectedEvidence -and -not $evidenceHtml))
+Assert-Binding 'compact evidence links to the canonical release record without duplicating artifact digests' (($selectedEvidence -and $evidenceHtml.Contains('/proof/#receipt-' + [string]$selectedEvidence.id) -and $homeHtml -notmatch [regex]::Escape([string]$selectedEvidence.sha256) -and $homeHtml -notmatch [regex]::Escape([string]$selectedEvidence.artifacts[0].filename)) -or (-not $selectedEvidence -and -not $evidenceHtml))
 foreach ($page in @(@{name='homepage';html=$homeHtml},@{name='software';html=$software})) {
   $ids = @([regex]::Matches($page.html, '\bid="([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
   Assert-Binding "$($page.name): document IDs are unique" (@($ids | Sort-Object -Unique).Count -eq $ids.Count)

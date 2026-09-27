@@ -44,8 +44,8 @@ $homeHtml = Read-Page ''
 $catalogHtml = Read-Page 'software'
 
 # ── P0: Reality Gate origin readability ─────────────────────────────────────
-Assert-Condition ($rg -match '\.product-reality-gate #origin') "P0: Reality Gate carries the origin readability correction"
-Assert-Condition ($rg -match 'background:\s*#101418') "P0: origin section is given a dark paired surface"
+Assert-Condition ($rg -match '<section class="pp-origin" id="origin">') "P0: Reality Gate origin section remains semantically identified"
+Assert-Condition ((Get-Content (Join-Path $root 'product-page.css') -Raw -Encoding UTF8) -match '\.pp-origin\s*\{') "P0: shared product-page stylesheet owns the origin section surface"
 Assert-Condition ($rg -notmatch 'id="origin" style="background:\s*rgba\(255,255,255,0\.02\)') "P0: old translucent origin background pairing removed"
 Assert-Condition ($rg -match '01.*Dependency Became Real') "P0: origin copy preserved (beat 01)"
 Assert-Condition ($rg -match 'Case Study Evidence: Lights Out Repository Reconstruction') "P0: origin case-study copy preserved"
@@ -58,10 +58,10 @@ Assert-Condition ($lo -match 'href="#release-note"') "P1: Lights Out what-change
 Assert-Condition ($cl -match 'href="#release-note"') "P1: Cleanroom what-changed link present"
 Assert-Condition ($gl -match 'RELEASE_NOTES_v0\.4\.0\.md[^"]*"[^>]*>\s*What changed in v0\.4\.0') "P1: GhostLayer what-changed link to RELEASE_NOTES present"
 Assert-Condition ($fc -match 'github\.com/lazelife420-spec/ForgeCast/releases/tag/v0\.3\.5[^"]*"[^>]*>\s*What changed in v0\.3\.5') "P1: ForgeCast what-changed link to GitHub release present"
-Assert-Condition ($ps -match 'href="#release-status"' -and $ps -match 'id="release-status"' -and $ps -match 'first public ProofShot release') "P1: ProofShot exposes release details for the shipped v2.0.0 release"
+Assert-Condition ($ps -match 'href="/proof/#receipt-proofshot"' -and $ps -match 'Public release v2\.0\.0') "P1: ProofShot exposes release details through its canonical proof record"
 
 # ── P1: onboarding blocks (released products get full 5-field block) ────────
-$released = @{ 'reality-gate' = $rg; 'cleanroom' = $cl; 'ghostlayer' = $gl; 'forgecast' = $fc }
+$released = @{ 'cleanroom' = $cl; 'ghostlayer' = $gl; 'forgecast' = $fc }
 foreach ($k in $released.Keys) {
   $h = $released[$k]
   Assert-Condition ($h -match 'Install, update, uninstall &amp; leftover data') "P1: $k onboarding block present"
@@ -69,7 +69,7 @@ foreach ($k in $released.Keys) {
   Assert-Condition ($h -match '<dt>Leftover data</dt>') "P1: $k leftover-data answer present"
 }
 # Onboarding facts must be source-truth anchored (data paths from privacy sections)
-Assert-Condition ($rg -match 'onboarding-list[\s\S]*%APPDATA%\\RealityGate\\') "P1: Reality Gate leftovers cite %APPDATA%\RealityGate\"
+Assert-Condition ($rg -match 'Withdrawn:</strong> v1\.1\.0 is not available for download' -and $rg -notmatch 'onboarding-list') "P1: Reality Gate withdrawal does not invent current installation or leftover-data guidance"
 Assert-Condition ($cl -match 'onboarding-list[\s\S]*%APPDATA%\\Cleanroom\\Archive\\') "P1: Cleanroom leftovers cite %APPDATA%\Cleanroom\Archive\"
 Assert-Condition ($gl -match 'onboarding-list[\s\S]*%TEMP%\\GhostLayer\\') "P1: GhostLayer leftovers cite %TEMP%\GhostLayer\"
 Assert-Condition ($fc -match 'onboarding-list[\s\S]*com\.prooffoundry\.skyfoundry') "P1: ForgeCast leftovers cite app-private storage"
@@ -93,7 +93,7 @@ Assert-Condition ($sup -match 'Privacy Warning') "P1: support privacy warning pr
 $rgShaCount = ([regex]::Matches($rg, '58cc27d2')).Count
 Assert-Condition ($rgShaCount -le 2) "P2: Reality Gate hash rendered at most twice (was three) — found $rgShaCount"
 $rgDlCount = ([regex]::Matches($rg, 'Download v1\.1\.0 Developer Pilot')).Count
-Assert-Condition ($rgDlCount -eq 1) "P2: Reality Gate download button appears exactly once — found $rgDlCount"
+Assert-Condition ($rgDlCount -eq 0 -and $rg -match 'Downloads currently unavailable') "P2: withdrawn Reality Gate has no download button — found $rgDlCount"
 Assert-Condition ($rg -match 'href="#evidence-download"') "P2: Reality Gate defers to the canonical download block"
 
 # ── P2: final-public availability honesty ──────────────────────────────────
@@ -109,7 +109,7 @@ Assert-Condition ($lo -match '<a href="/support/#report">contact the project</a>
 
 # ── P2: discovery affordances ────────────────────────────────────────────────
 Assert-Condition ($catalogHtml -match 'class="finder-intents"' -and $catalogHtml -match 'data-compare=') "P2: functional filtering and comparison live on /software/"
-Assert-Condition ($catalogHtml -match 'compare up to three products side by side') "P2: software catalog explains the comparison limit"
+Assert-Condition ($catalogHtml -match 'Choose up to three tools to compare\.') "P2: software catalog explains the comparison limit"
 # Mobile CTA parity: studio.css no longer hides the nav CTA
 $studioCss = Get-Content (Join-Path $root 'studio.css') -Raw -Encoding UTF8
 Assert-Condition ($studioCss -notmatch '\.studio \.nav-cta\{display:none\}') "P2: mobile nav CTA no longer hidden at <=900px"
@@ -122,13 +122,13 @@ Assert-Condition ($stylesCss -match '\.onboarding-list dt') "shared onboarding-l
 # ── H1/H2 preservation guards (this tranche touches shared files) ───────────
 # H9 intentionally supersedes the old numbered homepage zones; protect the
 # editorial sequence and catalog handoff rather than requiring obsolete markup.
-Assert-Condition ($homeHtml.IndexOf('class="h9-hero"') -lt $homeHtml.IndexOf('h9-scene-forgecast') -and $homeHtml.IndexOf('h9-scene-forgecast') -lt $homeHtml.IndexOf('h9-scene-reality')) "H9: product-led hero, ForgeCast, Reality Gate sequence preserved"
-Assert-Condition ($homeHtml -match '(?s)class="h9-final".*?href="/software/"') "H9: final product invitation reaches the functional catalog"
-Assert-Condition ($homeHtml -match 'Useful software\.' -and $homeHtml -match 'On your terms\.') "H9: editorial hero headline preserved"
+Assert-Condition ($homeHtml.IndexOf('class="studio-hero"') -lt $homeHtml.IndexOf('class="studio-portfolio"') -and ([regex]::Matches($homeHtml, 'data-presentation="feature"')).Count -eq 1) "H9: studio hero leads into exactly one registry-selected featured product"
+Assert-Condition ($homeHtml -match 'class="studio-portfolio"[\s\S]*?href="/software/"') "H9: portfolio invitation reaches the functional catalog"
+Assert-Condition ($homeHtml -match '<h1 id="studio-title">[\s\S]*?BUILD SOFTWARE\.[\s\S]*?KEEP THE RECEIPT\.') "H9: current studio-root hero headline is preserved"
 Assert-Condition ($homeHtml -notmatch 'Lights Out PC <span aria-hidden="true">') "H2 preserved: homepage short naming intact"
-Assert-Condition ($rg -match 'Your projects\.<br><em>Your execution\. Your way back\.</em>') "H1/H2 preserved: Reality Gate hero headline untouched"
-Assert-Condition ($gl -match 'Public v0\.4\.0') "truth preserved: GhostLayer version claim intact"
-Assert-Condition ($ps -match 'Download ProofShot v2\.0\.0' -and $ps -notmatch 'There is no public ProofShot release or installer') "truth preserved: ProofShot public release supersedes the no-release claim"
+Assert-Condition ($rg -match 'Your projects\.' -and $rg -match 'Your execution\.' -and $rg -match 'Your way back\.') "H1/H2 preserved: Reality Gate module hero copy remains intact"
+Assert-Condition ($gl -match '<strong>Status</strong> Public release' -and $gl -match '<strong>Version</strong> v0\.4\.0') "truth preserved: GhostLayer public release version remains intact"
+Assert-Condition ($ps -match 'Download ProofShot v2\.0\.0' -and $ps -match 'href="/proof/#receipt-proofshot"') "truth preserved: ProofShot public release links to its release record"
 
 Write-Host ""
 Write-Host "=== H3 RESULT: $($script:passed) passed, $($script:failed) failed ==="

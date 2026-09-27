@@ -7,17 +7,18 @@ $sourceHome = Get-Content (Join-Path $root 'index.html') -Raw -Encoding UTF8
 $manifest = Get-Content (Join-Path $root 'site-manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 $modules = @(Get-ChildItem (Join-Path $root 'products') -Directory | ForEach-Object { Get-Content (Join-Path $_.FullName 'module.json') -Raw -Encoding UTF8 | ConvertFrom-Json })
 $eligible = @($modules | Where-Object { $_.visibility -eq 'visible' -and $_.lifecycle -eq 'public-eligible' -and $_.homepage.role -eq 'studioPortfolio' -and $_.homepage.visibility -eq 'visible' } | Sort-Object { [int]$_.homepage.order }, { [int]$_.order })
-$rendered = @([regex]::Matches($homeHtml, '<article\b[^>]*class="studio-product-card"[^>]*data-module="([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
+$rendered = @([regex]::Matches($homeHtml, '<(?:figure|article)\b[^>]*data-module="([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
 $pass = 0; $fail = 0
 function Assert-H9([string]$name, [bool]$condition) { if ($condition) { $script:pass++; Write-Host "PASS: $name" } else { $script:fail++; Write-Host "FAIL: $name" -ForegroundColor Red } }
 Write-Host '=== H9 STUDIO ROOT + CATALOG GUARD ===' -ForegroundColor Cyan
 Assert-H9 'studio proposition and editorial hero render' ($homeHtml -match 'BUILD SOFTWARE\.' -and $homeHtml -match 'KEEP THE RECEIPT\.' -and $homeHtml -match 'studio-hero')
 Assert-H9 'hero has local software and proof-standard actions' ($homeHtml -match 'href="/software/"' -and $homeHtml -match 'href="/proof-standard/"')
 Assert-H9 'workflow explains Build, Qualify, Record, Publish' ($homeHtml -match 'Build' -and $homeHtml -match 'Qualify' -and $homeHtml -match 'Record' -and $homeHtml -match 'Publish')
-Assert-H9 'portfolio order and membership match visible module presentation metadata' (($rendered -join ',') -ceq (($eligible | ForEach-Object id) -join ',') -and $rendered.Count -eq $eligible.Count)
+Assert-H9 'featured hero and portfolio order match visible module presentation metadata' (($rendered -join ',') -ceq (($eligible | ForEach-Object id) -join ',') -and $rendered.Count -eq $eligible.Count)
 $featuredModules = @($eligible | Where-Object { $_.homepage.presentation -eq 'feature' })
-Assert-H9 'exactly one module owns the featured portfolio presentation' ($featuredModules.Count -eq 1 -and ([regex]::Matches($homeHtml, 'data-presentation="feature"')).Count -eq 1)
-Assert-H9 'portfolio cards bind route, image, accent, presentation and status to module/state' (@($eligible | Where-Object { $m=$_; $homeHtml -notmatch ('data-module="' + [regex]::Escape([string]$m.id) + '"[^>]*data-presentation="' + [regex]::Escape([string]$m.homepage.presentation) + '"') -or $homeHtml -notmatch [regex]::Escape([string]$m.route) -or $homeHtml -notmatch [regex]::Escape([string]$m.card.media) -or $homeHtml -notmatch [regex]::Escape([string]$m.theme.accent) }).Count -eq 0)
+Assert-H9 'exactly one module owns the featured hero presentation' ($featuredModules.Count -eq 1 -and ([regex]::Matches($homeHtml, 'class="studio-hero-product"[^>]*data-presentation="feature"')).Count -eq 1)
+Assert-H9 'two distinct secondary compositions are module-selected' (@($eligible | Where-Object { $_.homepage.presentation -eq 'interface' }).Count -eq 1 -and @($eligible | Where-Object { $_.homepage.presentation -eq 'editorial' }).Count -eq 1)
+Assert-H9 'hero and portfolio bind route, image, accent, presentation and status to module/state' (@($eligible | Where-Object { $m=$_; $media=if($m.homepage.presentation -eq 'feature'){$m.hero.media.src}else{$m.card.media}; $homeHtml -notmatch ('data-module="' + [regex]::Escape([string]$m.id) + '"[^>]*data-presentation="' + [regex]::Escape([string]$m.homepage.presentation) + '"') -or $homeHtml -notmatch [regex]::Escape([string]$m.route) -or $homeHtml -notmatch [regex]::Escape([string]$media) -or $homeHtml -notmatch [regex]::Escape([string]$m.theme.accent) }).Count -eq 0)
 Assert-H9 'secondary proof links remain reachable' ($homeHtml -match 'href="/proof-standard/"' -and $homeHtml -match 'href="/truth-files/"' -and $homeHtml -match 'href="/proof/"')
 Assert-H9 'closing studio statement exists' ($homeHtml -match 'Same standard\.' -and $homeHtml -match 'Different tools\.')
 Assert-H9 'studio root template contains no fixed product identity or list' ($sourceHome -notmatch '(?i)cache vault|reality gate|ghostlayer|forgecast|proofshot|lights out|cleanroom|data-module=')
@@ -47,7 +48,7 @@ foreach ($m in $candidateModules) {
 }
 Assert-H9 'evidence component is omitted when no canonical eligible artifact exists, otherwise exactly one is rendered' (($selected -and [regex]::Matches($homeHtml, 'class="studio-evidence"').Count -eq 1) -or (-not $selected -and [regex]::Matches($homeHtml, 'class="studio-evidence"').Count -eq 0))
 if ($selected) {
-  Assert-H9 'evidence spotlight matches first eligible editorial candidate and canonical artifact facts' ($evidence.Contains([string]$selected.product.name) -and $evidence.Contains([string]$selected.product.release.publicVersion) -and $evidence.Contains([string]$selected.artifact.filename) -and $evidence.Contains([string]$selected.product.sha256) -and $evidence.Contains([string]$selected.product.sha256Url))
+Assert-H9 'compact evidence matches first eligible public release and keeps raw artifact details on the record page' ($evidence.Contains([string]$selected.product.name) -and $evidence.Contains([string]$selected.product.release.publicVersion) -and $evidence.Contains([string]$selected.product.verification.verifiedAt) -and $evidence.Contains('/proof/#receipt-' + [string]$selected.product.id) -and $homeHtml -notmatch [regex]::Escape([string]$selected.product.sha256) -and $homeHtml -notmatch [regex]::Escape([string]$selected.artifact.filename))
 }
 $rg = @($manifest.products | Where-Object id -eq 'reality-gate' | Select-Object -First 1)[0]
 Assert-H9 'withdrawn Reality Gate is excluded from evidence selection and has no root download CTA' ($rg.release.releaseStatus -eq 'WITHDRAWN' -and $evidence -notmatch 'Reality Gate' -and $homeHtml -notmatch 'Download[^<]*Reality Gate')
