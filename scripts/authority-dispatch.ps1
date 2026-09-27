@@ -13,9 +13,12 @@ if (-not $entry -or $entry.status -notin @('SUPERSEDED_CONTRACT', 'HISTORICAL_ON
 }
 
 # Bind every delegated run to the already-qualified source/render bytes.
-$manifestPath = Join-Path $root $registry.candidate.workingTreeManifest
+$freeze = if ($registry.qualificationFreeze) { $registry.qualificationFreeze } else { $registry.candidate }
+$manifestRelativePath = if ($freeze.manifest) { [string]$freeze.manifest } else { [string]$freeze.workingTreeManifest }
+$manifestExpectedHash = if ($freeze.manifestSha256) { [string]$freeze.manifestSha256 } else { [string]$freeze.workingTreeManifestSha256 }
+$manifestPath = Join-Path $root $manifestRelativePath
 $manifestHash = (Get-FileHash -LiteralPath $manifestPath -Algorithm SHA256).Hash.ToLowerInvariant()
-if ($manifestHash -ne $registry.candidate.workingTreeManifestSha256) {
+if ($manifestHash -ne $manifestExpectedHash) {
   Write-Error 'Frozen qualified manifest file changed; refusing delegated coverage.'
   exit 1
 }
@@ -34,7 +37,8 @@ if ($ownerIds.Count -eq 0) { Write-Error "No controlling gate owners declared fo
 $passed = 0
 $failed = 0
 $testInventory = @(Get-ChildItem -LiteralPath $PSScriptRoot -Filter 'test-*.ps1' -File | ForEach-Object { $_.Name })
-if ($testInventory.Count -ne 24) { Write-Error "Expected 24 test scripts in the qualification inventory; found $($testInventory.Count)."; exit 1 }
+$expectedTestCount = if ($freeze.scriptInventoryCount) { [int]$freeze.scriptInventoryCount } else { 24 }
+if ($testInventory.Count -ne $expectedTestCount) { Write-Error "Expected $expectedTestCount test scripts in the qualification inventory; found $($testInventory.Count)."; exit 1 }
 Write-Host "=== TEST AUTHORITY: $TestName [$($entry.status)] ==="
 Write-Host "Reason: $($entry.action)"
 
@@ -52,7 +56,7 @@ foreach ($family in $entry.families) {
     $passed++
   }
 }
-Write-Host 'Current owner gates execute as their own members of the required 24-script run.'
+Write-Host "Current owner gates execute as their own members of the required $expectedTestCount-script run."
 Write-Host "=== AUTHORITY REGISTRY RESULT: $passed passed, $failed failed ==="
 if ($failed -gt 0) { exit 1 }
 exit 0

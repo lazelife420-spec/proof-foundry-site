@@ -9,10 +9,23 @@
     "assertionEvidence": "receipts/studio-root-2/cta-fix/qualified-source-sha256.txt",
     "assertionEvidenceRule": "Each historical failing assertion and its baseline/candidate classification is recorded in the contradiction matrix. The registry below assigns each superseded invariant family to its current owner gates."
   },
+  "qualificationFreeze": {
+    "name": "CACHE_VAULT_PRODUCT_PAGE_REFOUNDATION",
+    "branch": "codex/cache-vault-product-page-refoundation",
+    "baseHead": "16735b867c8d9de78485ca3842a282439e626799",
+    "baseTree": "2c7ff8514c0f5eda6d2f1db918e7fcbe7a608d9d",
+    "manifest": "scripts/qualified-source-cache-vault.sha256.txt",
+    "manifestSha256": "e9f5dade0e5f35074f088af5e35d05060e00a5f21942992359ad2332fd22267e",
+    "scriptInventoryCount": 25,
+    "registryExclusion": "This registry contains the manifest hash and is itself bound by the candidate commit; excluding it avoids a circular digest.",
+    "historicalReceiptPreserved": "receipts/studio-root-2/cta-fix/qualified-source-sha256.txt",
+    "scope": "Current page/source bytes for Cache Vault plus the generic schema, renderer and eighth-product regression fixture required for responsive mobile hero media."
+  },
   "authorities": [
     { "id": "H9_HOME", "script": "test-h9-homepage.ps1", "owns": ["Studio Root composition, feature hierarchy, role order, responsive homepage semantics"] },
     { "id": "H9_BINDING", "script": "test-h9-binding.ps1", "owns": ["source/generated binding, module-to-role rendering, compact proof ledger, catalog contract"] },
     { "id": "H13", "script": "test-h13-modular-products.ps1", "owns": ["module schema/metadata, registry enumeration, generic renderer, routes, product role and visibility behavior"] },
+    { "id": "CACHE_VAULT_PAGE", "script": "test-cache-vault-page.ps1", "owns": ["Cache Vault product-page hierarchy, responsive capture media, sample-vault labeling, and page-level alignment with canonical release/capability truth"] },
     { "id": "H7C", "script": "test-h7c-product-pages.ps1", "owns": ["shared product-page rendering and product-page semantics"] },
     { "id": "H11", "script": "test-h11-public-truth.ps1", "owns": ["canonical public release and availability truth"] },
     { "id": "H12", "script": "test-h12-truth-discovery.ps1", "owns": ["truth discovery, public route/sitemap and machine-readable parity"] },

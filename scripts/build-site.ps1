@@ -2161,7 +2161,7 @@ function Get-ProductRegistry {
         if ($null -ne $m.homepage.evidencePriority -and [int]$m.homepage.evidencePriority -lt 1) { $regErrors += "${tag}: homepage.evidencePriority must be a positive integer when specified" }
       }
       if ($m.placement -and $m.placement.PSObject.Properties['homepage']) { $regErrors += "${tag}: homepage placement is controlled by homepage presentation metadata; remove placement.homepage" }
-      foreach ($asset in @($m.brand.mark, $m.brand.logo, $m.brand.monochrome, $m.hero.media.src, $m.card.media)) {
+      foreach ($asset in @($m.brand.mark, $m.brand.logo, $m.brand.monochrome, $m.hero.media.src, $m.hero.media.mobileSrc, $m.card.media)) {
         if (-not $asset) { continue }
         if ($asset -notmatch '^/assets/[a-zA-Z0-9._/-]+$' -or $asset.Contains('..')) { $regErrors += "${tag}: asset paths must be local /assets/... paths"; continue }
         $assetDiskPath = $null
@@ -2319,7 +2319,13 @@ function Render-ModuleHero($module, $product) {
   $emphasis = if ($hero.emphasis) { "<em>$(Html-Text $hero.emphasis)</em>" } else { '' }
   $headline = Html-Text $hero.headline
   $media = ''
-  if ($hero.media.src) { $media = "<figure class=`"app-shot hero-product-shot`"><img src=`"$(Html-Attr $hero.media.src)`" alt=`"$(Html-Attr $hero.media.alt)`" loading=`"eager`" fetchpriority=`"high`" decoding=`"async`"/><figcaption>$(Html-Text $hero.media.caption)</figcaption></figure>" }
+  if ($hero.media.src) {
+    $heroImage = "<img src=`"$(Html-Attr $hero.media.src)`" alt=`"$(Html-Attr $hero.media.alt)`" loading=`"eager`" fetchpriority=`"high`" decoding=`"async`"/>"
+    if ($hero.media.mobileSrc) {
+      $heroImage = "<picture><source media=`"(max-width: 700px)`" srcset=`"$(Html-Attr $hero.media.mobileSrc)`"/>$heroImage</picture>"
+    }
+    $media = "<figure class=`"app-shot hero-product-shot`">$heroImage<figcaption>$(Html-Text $hero.media.caption)</figcaption></figure>"
+  }
   $primary = if ($hero.primaryAction.label -and $hero.primaryAction.href) { "<a class=`"button button-primary`" href=`"$(Html-Attr $hero.primaryAction.href)`">$(Html-Text $hero.primaryAction.label)</a>" } else { '' }
   $secondary = if ($hero.secondaryAction.label -and $hero.secondaryAction.href) { "<a class=`"text-link`" href=`"$(Html-Attr $hero.secondaryAction.href)`">$(Html-Text $hero.secondaryAction.label)</a>" } else { '' }
   $lede = Html-Text $hero.lede

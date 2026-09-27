@@ -1,0 +1,35 @@
+[CmdletBinding()] param()
+$ErrorActionPreference = 'Stop'
+$root = (Resolve-Path "$PSScriptRoot/..").Path
+$passed = 0; $failed = 0
+function Check([bool]$ok, [string]$label) {
+  if ($ok) { $script:passed++; Write-Host "PASS: $label" }
+  else { $script:failed++; Write-Host "FAIL: $label" -ForegroundColor Red }
+}
+$module = Get-Content (Join-Path $root 'products/cache-vault/module.json') -Raw | ConvertFrom-Json
+$content = Get-Content (Join-Path $root 'products/cache-vault/content.html') -Raw
+$pagePath = Join-Path $root 'public/cache-vault/index.html'
+$page = Get-Content $pagePath -Raw
+$truth = Get-Content (Join-Path $root 'public/truth/products/cache-vault.json') -Raw | ConvertFrom-Json
+$schema = Get-Content (Join-Path $root 'schemas/product-module-v2.schema.json') -Raw | ConvertFrom-Json
+$authorityRegistry = Get-Content (Join-Path $root 'scripts/test-authority-registry.json') -Raw | ConvertFrom-Json
+$androidUrl = [regex]::Escape([string]$truth.artifacts[1].downloadUrl)
+
+Check ($module.hero.headline -eq 'Find the clip. Get back to work.' -and $page -match '<h1[^>]*>Find the clip\. Get back to work\.\s*</h1>' -and ([regex]::Matches($page,'<h1\b')).Count -eq 1) 'one clear product promise is rendered as the sole page H1'
+Check ($schema.properties.hero.properties.media.properties.mobileSrc.'$ref' -eq '#/$defs/asset' -and $module.hero.media.mobileSrc -eq '/assets/cache-vault/cv-quick-paste-mobile.png' -and $page -match '<picture><source media="\(max-width: 700px\)" srcset="/assets/cache-vault/cv-quick-paste-mobile\.png"/><img src="/assets/cache-vault/cv-quick-paste\.png"') 'responsive hero crop is schema-validated and rendered with a desktop fallback'
+Check (Test-Path (Join-Path $root 'assets/cache-vault/cv-quick-paste-mobile.png')) 'mobile crop asset exists in source'
+Check ($content -match 'Website preview · sample clips' -and $content -match 'not connected to the Cache Vault app' -and $page -match 'role="status"') 'interactive vault is explicitly a sample and retains announced status'
+Check ($content -match 'id="film"' -and $content.IndexOf('id="try-it"') -lt $content.IndexOf('id="film"') -and $content -match 'preload="none"' -and $page -match 'controls preload="none"') 'authentic silent film follows the product interaction and does not preload media'
+Check ($page -match 'id="download"' -and $page -match 'Download v0\.2\.4 \(Windows\)' -and $page -match $androidUrl -and $page -match 'v0\.2\.1 remains on hold') 'public Windows and Android release links remain accurate; held Android candidate is not promoted'
+$releaseSource = [regex]::Escape([string]$truth.release.sourceCommit)
+Check ($truth.release.publicVersion -eq '0.2.4' -and $truth.release.companionPublicVersion -eq '0.2.0' -and $truth.release.companionCandidateVersion -eq '0.2.1' -and $truth.download.sha256 -eq '717ed13efd3d8d4e5a16d4e412ed5be0fd20b0219918f913d7d2b44f021cae7e' -and $page -match $releaseSource) 'generated page and truth retain canonical public versions, digest, and source release identity'
+Check ($page -match 'Safes and Collections' -and $page -match 'Nothing is cleared automatically' -and $page -notmatch '(?i)military.grade|unhackable|encrypted by default|zero.trace') 'organizational Safes and user-reviewed cleanup are described without unsupported security claims'
+Check ($page -match 'selected text clips and URLs are sent to the paired phone over your local Wi-Fi network' -and $page -match 'does not send background telemetry' -and $page -match 'SHA-256 confirms file identity') 'local storage, optional network transfer, telemetry, and checksum limits remain explicit'
+$routes = @('public/cache-vault/index.html','public/proof/index.html','public/truth-files/index.html','public/truth/products/cache-vault.json','public/software/index.html')
+$routesExist = @($routes | Where-Object { Test-Path (Join-Path $root $_) }).Count -eq $routes.Count
+Check $routesExist 'product, proof, Truth Files, machine-truth, and catalog routes are generated'
+$pageAuthority = @($authorityRegistry.authorities | Where-Object { $_.id -eq 'CACHE_VAULT_PAGE' -and $_.script -eq 'test-cache-vault-page.ps1' }).Count -eq 1
+Check ($pageAuthority -and $authorityRegistry.qualificationFreeze.name -eq 'CACHE_VAULT_PRODUCT_PAGE_REFOUNDATION' -and $authorityRegistry.qualificationFreeze.scriptInventoryCount -eq 25) 'page gate and current candidate freeze are registered; historical Studio Root receipt remains separate'
+
+Write-Host "CACHE VAULT PAGE: $passed passed, $failed failed"
+if ($failed -gt 0) { exit 1 }

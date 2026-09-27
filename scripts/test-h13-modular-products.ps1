@@ -166,12 +166,14 @@ $indexBefore = (Get-FileHash (Join-Path $root 'index.html') -Algorithm SHA256).H
 $t4 = Invoke-ModuleFixture 'eighth-product' {
   param($modDir)
   $fixtureDir = New-FixtureModule $modDir 'fixture-product' @{
+    schemaVersion = 2
     order = 5
     brand = [ordered]@{ name = 'Fixture Product'; mark = '/assets/products/fixture-product/brand/logo.svg' }
+    hero = [ordered]@{ variant = 'split'; kicker = 'Fixture'; headline = 'A responsive fixture'; lede = 'Generic responsive hero media.'; media = [ordered]@{ src = '/assets/cache-vault/cv-quick-paste.png'; mobileSrc = '/assets/cache-vault/cv-quick-paste-mobile.png'; alt = 'Fixture capture'; caption = 'Fixture caption' } }
     theme = [ordered]@{ accent = '#38BDF8'; accentSecondary = '#2486B9' }
     homepage = [ordered]@{ role = 'studioPortfolio'; presentation = 'compact'; visibility = 'visible'; order = 5; evidencePriority = 1 }
     card = [ordered]@{ tagline = 'A new module, rendered generically.'; summary = 'Fixture card summary.'; media = '/assets/forgecast/v030-today.png'; mediaAlt = 'Eighth product fixture media' }
-  }
+  } '<main id="main-content"><div class="product-shell"><!-- @product-breadcrumb --><!-- @product-hero --><!-- @product-related --></div></main>'
   Copy-Item (Join-Path $srcProducts 'cleanroom/logo.svg') (Join-Path $fixtureDir 'logo.svg') -Force
 } -RealOut -mutateManifest {
   param($o)
@@ -196,6 +198,7 @@ Assert ($t4home -match '<article class="studio-product-card"[^>]*data-module="fi
 Assert ($t4home -match '--product-accent:#38BDF8' -and $t4home -match 'data-module="fixture-product"') 'unknown module accent and identity come from module data'
 Assert ((Get-FileHash $buildPs1 -Algorithm SHA256).Hash -eq $rendererBefore -and (Get-FileHash (Join-Path $root 'index.html') -Algorithm SHA256).Hash -eq $indexBefore) 'unknown module requires no renderer or homepage template edits'
 $t4pg = Get-Content (Join-Path $t4.OutDir 'fixture-product\index.html') -Raw -Encoding UTF8
+Assert ($t4pg -match '<picture><source media="\(max-width: 700px\)" srcset="/assets/cache-vault/cv-quick-paste-mobile\.png"/><img src="/assets/cache-vault/cv-quick-paste\.png"' -and $t4pg -match 'alt="Fixture capture"') 'generic hero renderer selects optional mobile asset and preserves desktop fallback/alt'
 Assert ($t4pg -match 'href="/truth/products/fixture-product\.json"[^>]*rel="alternate"|rel="alternate"[^>]*href="/truth/products/fixture-product\.json"') 'fixture-product H12 alternate generated automatically'
 Assert ($t4pg -match 'studio-related' -and $t4pg -match 'href="/reality-gate/"') 'fixture-product related nav includes siblings automatically'
 $t4rg = Get-Content (Join-Path $t4.OutDir 'reality-gate\index.html') -Raw -Encoding UTF8

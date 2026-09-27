@@ -9,43 +9,29 @@
     {
       "type": "outcomes",
       "id": "features",
-      "kicker": "Full Product Workflow",
-      "title": "Local clipboard workspace for Windows & mobile.",
-      "lede": "Capture, organize, retrieve, act, inspect history, and export—all on your own machine.",
+      "kicker": "A history you can use",
+      "title": "Save the useful bits. Find them when it counts.",
+      "lede": "Keep copied text and images searchable, grouped, and ready to use again.",
       "items": [
         {
-          "title": "Multi-Format Capture",
-          "body": "Keep copied text snippets, code, URLs, and image buffers in a searchable local database rather than overwriting past history."
+          "title": "Keep more than the last copy",
+          "body": "Capture text, code, URLs, and image buffers in a searchable history while Cache Vault is active."
         },
         {
-          "title": "Collections & Cleanup",
-          "body": "Organize essential clips into named collections, pin Favorites, and review Vault Cleanup Suggestions for duplicate groups."
+          "title": "Bring a clip back fast",
+          "body": "Search saved clips in Quick Paste and copy one back without losing your place in the current app."
         },
         {
-          "title": "Quick Paste Retrieval",
-          "body": "Access your clip history instantly from any application using global hotkeys without losing focus in your current window."
+          "title": "Keep related clips together",
+          "body": "Pin Favorites and organize clips into named Safes and Collections."
         },
         {
-          "title": "Per-Clip Activity Ledger",
-          "body": "Inspect timestamps and recorded actions for every clip: creation, copying, pinning, collection moves, and export package membership."
+          "title": "Review before cleanup",
+          "body": "See grouped duplicate suggestions and choose what to keep or remove."
         },
         {
-          "title": "Command Center Actions",
-          "body": "Execute Phase 1 Hotkey Actions: open the vault or Quick Paste, pause or resume capture, save the current clipboard to a Safe, run a saved Vault Macro, or lock the vault instantly.",
-          "note": "Limited to implemented Phase 1 Hotkey Actions. Text Expansions reflect future phases."
-        },
-        {
-          "title": "Receipt-Backed Exports",
-          "body": "Export selected content as a portable folder/ZIP with a readable index (index.html), machine-readable manifest (manifest.json), and stamped receipt (stamped_receipt.txt)."
-        },
-        {
-          "title": "Android Companion",
-          "body": "Pair with your Android phone over local Wi-Fi via QR code to transfer text clips and URLs directly between devices without cloud servers.",
-          "note": "Desktop {{product.versionLabel}} pairs with Android companion v{{product.companionVersion}} public baseline; v{{product.companionCandidateVersion}} (code 8) is qualified on hold."
-        },
-        {
-          "title": "Separate Local Profiles",
-          "body": "Keep profile databases isolated from each other. Core desktop features stay local, and the optional companion communicates over your local network."
+          "title": "Take a record with you",
+          "body": "Export selected clips with a readable index, a machine-readable manifest, and a stamped receipt."
         }
       ]
     },
@@ -83,13 +69,13 @@
     "related"
   ],
   "meta": {
-    "title": "Cache Vault — Capture it. Find it. Put it to work. | The Proof Foundry",
-    "description": "A local clipboard workspace for Windows with searchable history, collections, Quick Paste, clip ledgers, and receipt exports. Public {{product.versionLabel}}.",
+    "title": "Cache Vault — Find the clip. Get back to work. | The Proof Foundry",
+    "description": "A local clipboard workspace for Windows. Keep copied text and images searchable, then bring saved clips back with Quick Paste. Public {{product.versionLabel}}.",
     "viewport": "width=device-width, initial-scale=1",
     "robots": "index, follow",
     "themeColor": "#0B0F14",
-    "ogTitle": "Cache Vault — Capture it. Find it. Put it to work.",
-    "ogDescription": "A local clipboard workspace for Windows with searchable history, collections, Quick Paste, clip ledgers, and receipt exports. Public {{product.versionLabel}}.",
+    "ogTitle": "Cache Vault — Find the clip. Get back to work.",
+    "ogDescription": "A local clipboard workspace for Windows. Keep copied text and images searchable, then bring saved clips back with Quick Paste. Public {{product.versionLabel}}.",
     "ogType": "product",
     "ogImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png",
     "twitterCard": "summary_large_image",
@@ -126,26 +112,27 @@
   "hero": {
     "variant": "split",
     "kicker": "Local clipboard workspace",
-    "headline": "Capture it. Find it. Put it to work.",
-    "lede": "Keep text and images in a privacy-first local archive, organize what matters into custom collections, bring clips back instantly through Quick Paste, and inspect their activity ledgers.",
+    "headline": "Find the clip. Get back to work.",
+    "lede": "Cache Vault keeps copied text and images in searchable history. Open Quick Paste from any app to bring a saved clip back without losing your place.",
     "media": {
       "src": "/assets/cache-vault/cv-quick-paste.png",
-      "alt": "Cache Vault Quick Paste interface",
-      "caption": "Quick Paste · Cache Vault interface"
+      "mobileSrc": "/assets/cache-vault/cv-quick-paste-mobile.png",
+      "alt": "Quick Paste search showing a saved command clip ready to reuse.",
+      "caption": "Quick Paste · find a saved clip and return it to the clipboard."
     },
     "primaryAction": {
-      "label": "Explore product",
+      "label": "Get Cache Vault for Windows",
       "href": "#download"
     },
     "secondaryAction": {
-      "label": "Explore the details",
-      "href": "#features"
+      "label": "See how Quick Paste works",
+      "href": "#quick-paste"
     }
   },
   "card": {
-    "tagline": "Capture it. Find it. Put it to work.",
+    "tagline": "Find the clip. Get back to work.",
     "media": "/assets/cache-vault/cv-quick-paste.png",
-    "summary": "Keep text and images in a privacy-first local archive, organize what matters into custom collections, bring clips back instantly through Quick Paste, and inspect their activity ledgers.",
+    "summary": "A local clipboard workspace for Windows, with searchable history and Quick Paste retrieval.",
     "mediaAlt": "Cache Vault Quick Paste interface with searchable sample clipboard items"
   },
   "lifecycle": "public-eligible",

@@ -190,6 +190,9 @@
             "src": {
               "$ref": "#/$defs/asset"
             },
+            "mobileSrc": {
+              "$ref": "#/$defs/asset"
+            },
             "alt": {
               "type": "string"
             },
