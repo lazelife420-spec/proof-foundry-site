@@ -384,7 +384,8 @@ if(hero && 'IntersectionObserver' in window) {
   const identity=$('.product-identity > span').textContent;
   const dock=document.createElement('nav');dock.className='product-dock';dock.setAttribute('aria-label',`${identity} page navigation`);dock.hidden=true;
   const name=document.createElement('span');name.className='dock-product';name.textContent=identity;dock.append(name);
-  const availability=document.body.classList.contains('product-proofshot')?'Status':document.body.classList.contains('product-cache-vault')?'Availability':document.body.classList.contains('product-lights-out')?'Releases':document.body.classList.contains('product-reality-gate')?'Get the pilot':'Get the app';
+  const acquisitionAvailable=document.body.dataset.acquisitionAvailable==='true';
+  const availability=acquisitionAvailable?(document.body.classList.contains('product-proofshot')?'Status':document.body.classList.contains('product-cache-vault')?'Availability':document.body.classList.contains('product-lights-out')?'Releases':'Get the app'):'Release status';
   const entries=[['overview','Overview'],['try-it','Try it'],['download',availability],['proof','Proof']];
   entries.forEach(([id,label])=>{const link=document.createElement('a');link.href=`#${id}`;link.textContent=label;link.dataset.section=id;dock.append(link);});document.body.append(dock);
   let heroVisible=true,footerVisible=false;

@@ -2378,6 +2378,8 @@ function Render-ProductShell($module, [switch]$Template, [switch]$Preview) {
   $productMarker = if ($Preview) { '' } else { '<!-- @product ' + $module.id + ' -->' }
   $canonicalTag = if ($Preview) { '' } else { '<link href="https://theprooffoundry.com' + $module.route + '" rel="canonical"/>' }
   $bodyClass = if ($Preview) { 'studio product-page product-' + $module.id + ' pp-system product-preview' } else { 'studio product-page product-' + $module.id + ' pp-system' }
+  $acquisitionAvailable = [bool]($p.release -and $p.release.releaseStatus -eq 'PUBLIC_RELEASE' -and -not [string]::IsNullOrWhiteSpace([string]$p.release.publicVersion) -and $p.verification.status -eq 'VERIFIED' -and -not $p.presentation.downloadUnavailable -and -not [string]::IsNullOrWhiteSpace([string]$p.downloadUrl))
+  $acquisitionAttr = if ($acquisitionAvailable) { 'true' } else { 'false' }
   $shell = @"
 <!doctype html>
 $pageMarker
@@ -2404,7 +2406,7 @@ $canonicalTag
 <link rel="stylesheet" href="/product-page.css">
 <link href="/brand/proof-foundry-mark.svg" rel="icon" type="image/svg+xml"/>$jsonLdTag$inlineCssTag
 </head>
-<body class="$bodyClass"$themeAttrs data-product-atmosphere="$(Html-Attr $module.theme.atmosphere)">
+<body class="$bodyClass"$themeAttrs data-product-atmosphere="$(Html-Attr $module.theme.atmosphere)" data-acquisition-available="$acquisitionAttr">
 <!-- @include header -->
 <!-- @product-content -->
 </body></html>

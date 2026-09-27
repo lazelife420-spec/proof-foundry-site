@@ -2,10 +2,11 @@
   "registryVersion": 1,
   "candidate": {
     "branch": "codex/studio-root-2-visual-refoundation",
-    "head": "91edeff711fb3e5e3413ac058758035a0b5fbcbb",
-    "workingTreeManifest": "receipts/studio-root-2/final-qualification/working-tree-sha256.txt",
-    "workingTreeManifestSha256": "97eec8b74f9fb0a0aca5423b550c78af1bb765d15708f82b5f3f28f5536e11ca",
-    "assertionEvidence": "receipts/studio-root-2/final-qualification/contradiction-matrix.md#assertion-matrix",
+    "head": "43c650107334171e90dfb0bba7a761c87d488ce3",
+    "tree": "5d5a5f8b03392d138abc061271d29e2fdc179852",
+    "workingTreeManifest": "receipts/studio-root-2/cta-fix/qualified-source-sha256.txt",
+    "workingTreeManifestSha256": "ed6f08c757bb2109bf3a786b9000ca4a7c7cac0b41ce63c7522bbaa7c63bc72d",
+    "assertionEvidence": "receipts/studio-root-2/cta-fix/qualified-source-sha256.txt",
     "assertionEvidenceRule": "Each historical failing assertion and its baseline/candidate classification is recorded in the contradiction matrix. The registry below assigns each superseded invariant family to its current owner gates."
   },
   "authorities": [

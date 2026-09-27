@@ -6,6 +6,7 @@ Write-Host "=== P1 RELEASE TRUTH INVARIANTS TEST SUITE ===" -ForegroundColor Cya
 
 $publicDir = Join-Path $PSScriptRoot "..\public"
 $manifestPath = Join-Path $PSScriptRoot "..\site-manifest.json"
+$manifest = Get-Content $manifestPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
 $passed = 0
 $failed = 0
@@ -64,6 +65,30 @@ Assert-Condition ($rgTruth.download.available -eq $false -and $null -eq $rgTruth
 Assert-Condition ($rgTruth.artifacts[0].filename -eq 'Reality-Gate-1.1.0-Developer-Pilot.zip' -and $rgTruth.artifacts[0].sha256 -eq '58cc27d22bdee8157ee4598e116e17ff42d0efc95630c97bee4b2bc6be6ce756') 'historical Reality Gate artifact filename and checksum remain on record'
 $rgPage = Get-Content (Join-Path $publicDir 'reality-gate\index.html') -Raw -Encoding UTF8
 Assert-Condition ($rgPage -match 'Withdrawn.*v1\.1\.0.*not available for download' -and $rgPage -notmatch 'href="https://downloads\.theprooffoundry\.com/reality-gate/v1\.1\.0/') 'Reality Gate route states withdrawal and renders no dead download link'
+$experienceJs = Get-Content (Join-Path $publicDir 'experience.js') -Raw -Encoding UTF8
+Assert-Condition ($experienceJs -match "acquisitionAvailable=document\.body\.dataset\.acquisitionAvailable==='true'" -and $experienceJs -match "\?\s*\(document\.body\.classList" -and $experienceJs -match ":'Release status'" -and $experienceJs -notmatch 'Get the pilot') 'sticky product navigation derives its action from generic acquisition eligibility and uses a status label when unavailable'
+Assert-Condition ($rgPage -match '<body[^>]*data-acquisition-available="false"' -and $rgPage -notmatch 'Get the pilot') 'withdrawn Reality Gate page exposes no acquisition eligibility or stale pilot CTA'
+$eligibleProducts = 0
+$ineligibleProducts = 0
+$noPublicVersionProducts = 0
+$noVersionProductsIneligible = $true
+foreach ($productTruth in $registryJson.products) {
+    $productPagePath = Join-Path $publicDir (($productTruth.route.Trim('/') -replace '/', '\') + '\index.html')
+    $productPage = Get-Content $productPagePath -Raw -Encoding UTF8
+    $canonicalProduct = $manifest.products | Where-Object { $_.id -eq $productTruth.id } | Select-Object -First 1
+    $downloadUnavailable = $false
+    if ($canonicalProduct.presentation -and $canonicalProduct.presentation.PSObject.Properties['downloadUnavailable']) { $downloadUnavailable = [bool]$canonicalProduct.presentation.downloadUnavailable }
+    $expectedEligible = ($canonicalProduct.release.releaseStatus -eq 'PUBLIC_RELEASE' -and -not [string]::IsNullOrWhiteSpace([string]$canonicalProduct.release.publicVersion) -and $canonicalProduct.verification.status -eq 'VERIFIED' -and -not $downloadUnavailable -and -not [string]::IsNullOrWhiteSpace([string]$canonicalProduct.downloadUrl))
+    $renderedEligible = $productPage -match '<body[^>]*data-acquisition-available="true"'
+    if ($expectedEligible) { $eligibleProducts++ } else { $ineligibleProducts++ }
+    if ([string]::IsNullOrWhiteSpace([string]$productTruth.release.publicVersion)) {
+        $noPublicVersionProducts++
+        if ($renderedEligible) { $noVersionProductsIneligible = $false }
+    }
+    Assert-Condition ($renderedEligible -eq [bool]$expectedEligible) "$($productTruth.id): product page acquisition eligibility matches canonical public release, verification, and download state"
+}
+Assert-Condition ($eligibleProducts -gt 0 -and $ineligibleProducts -gt 0) 'acquisition eligibility covers both public-download and unavailable product states'
+Assert-Condition ($noPublicVersionProducts -gt 0 -and $noVersionProductsIneligible) 'products with no public version cannot expose acquisition eligibility'
 $supportPage = Get-Content (Join-Path $publicDir 'support\index.html') -Raw -Encoding UTF8
 $rgSupport = [regex]::Match($supportPage, '(?s)<article class="detail-card">\s*<h3><a href="/reality-gate/">.*?</article>').Value
 $cvSupport = [regex]::Match($supportPage, '(?s)<article class="detail-card">\s*<h3><a href="/cache-vault/">.*?</article>').Value
