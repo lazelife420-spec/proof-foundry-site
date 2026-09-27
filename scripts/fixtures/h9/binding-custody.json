@@ -1351,33 +1351,40 @@
       "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
     }
   },
-  {
+    {
     "path": "products/reality-gate/content.html",
     "sha256": "beb0fc088cf570f4c293d25d95555cf340428b8abf1e610d148368205cee2771",
     "bytes": 31940,
     "comparison": "utf8-lf",
     "lfSha256": "beb0fc088cf570f4c293d25d95555cf340428b8abf1e610d148368205cee2771",
     "origin": "original-entry-inventory",
-    "migration": {
-      "sha256": "00eb62b5dc70a8576f24dcd76500aaaec94b794f05fcf01e0b7787ba6d305a48",
-      "bytes": 25781,
-      "comparison": "utf8-lf",
-      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
-      "previousMigration": {
-        "sha256": "5ba2f73806654375b499b6726d0cc8a4a6c560bde143181df703db4722d0999e",
-        "bytes": 29956,
-        "comparison": "utf8-lf",
-        "lfSha256": "5ba2f73806654375b499b6726d0cc8a4a6c560bde143181df703db4722d0999e",
-        "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
-      },
-      "lfSha256": "00eb62b5dc70a8576f24dcd76500aaaec94b794f05fcf01e0b7787ba6d305a48"
-    },
     "previousMigration": {
       "path": "reality-gate.html",
       "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
+    },
+    "migration": {
+      "sha256": "f868564cf9176269c09a857e7ae655d390a788eb21534563f29692c3413e4f55",
+      "bytes": 24239,
+      "comparison": "utf8-lf",
+      "reason": "RG-TRUTH-1 authorized Reality Gate withdrawn-release truth reconciliation.",
+      "lfSha256": "f868564cf9176269c09a857e7ae655d390a788eb21534563f29692c3413e4f55",
+      "previousMigration": {
+        "sha256": "00eb62b5dc70a8576f24dcd76500aaaec94b794f05fcf01e0b7787ba6d305a48",
+        "bytes": 25781,
+        "comparison": "utf8-lf",
+        "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+        "previousMigration": {
+          "sha256": "5ba2f73806654375b499b6726d0cc8a4a6c560bde143181df703db4722d0999e",
+          "bytes": 29956,
+          "comparison": "utf8-lf",
+          "lfSha256": "5ba2f73806654375b499b6726d0cc8a4a6c560bde143181df703db4722d0999e",
+          "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
+        },
+        "lfSha256": "00eb62b5dc70a8576f24dcd76500aaaec94b794f05fcf01e0b7787ba6d305a48"
+      }
     }
   },
-  {
+    {
     "path": "roadmap.html",
     "sha256": "faf8f7558fe7a7faea8291375e56fe4eef9b5342db4d8dc6e56760fe0da4dc80",
     "bytes": 7159,
@@ -1385,18 +1392,25 @@
     "lfSha256": "faf8f7558fe7a7faea8291375e56fe4eef9b5342db4d8dc6e56760fe0da4dc80",
     "origin": "original-entry-inventory",
     "migration": {
-      "sha256": "374ce703785c45f713fd3d51fb791fc61d096196658daf82874f98726f592730",
-      "bytes": 7693,
+      "sha256": "367c9d0f61524d7605b95b56c7412ab94d8fae371f924cfd8f2dae2ff6e036d2",
+      "bytes": 7706,
       "comparison": "utf8-lf",
-      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "lfSha256": "367c9d0f61524d7605b95b56c7412ab94d8fae371f924cfd8f2dae2ff6e036d2",
+      "reason": "RG-TRUTH-1 authorized Reality Gate withdrawn-release truth reconciliation.",
       "previousMigration": {
-        "sha256": "3e5ea60518b24c632570887737c20f2714c453f12dadf6f0782c536332fa6fe9",
-        "bytes": 7869,
+        "sha256": "374ce703785c45f713fd3d51fb791fc61d096196658daf82874f98726f592730",
+        "bytes": 7693,
         "comparison": "utf8-lf",
-        "lfSha256": "3e5ea60518b24c632570887737c20f2714c453f12dadf6f0782c536332fa6fe9",
-        "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
-      },
-      "lfSha256": "374ce703785c45f713fd3d51fb791fc61d096196658daf82874f98726f592730"
+        "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+        "previousMigration": {
+          "sha256": "3e5ea60518b24c632570887737c20f2714c453f12dadf6f0782c536332fa6fe9",
+          "bytes": 7869,
+          "comparison": "utf8-lf",
+          "lfSha256": "3e5ea60518b24c632570887737c20f2714c453f12dadf6f0782c536332fa6fe9",
+          "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
+        },
+        "lfSha256": "374ce703785c45f713fd3d51fb791fc61d096196658daf82874f98726f592730"
+      }
     }
   },
   {
@@ -1575,13 +1589,20 @@
     "reason": "VR1 visual refoundation 2026-09-21: test expectations updated to the authorized new contract — product-first homepage order (digests/commits off the primary narrative), unified global nav, current-brand ProofShot/Cleanroom media, conditional card caveat disclosure, Layer-B record wrap."
    }
   },
-  {
-   "path": "scripts/test-h7b-product-pages.ps1",
-   "sha256": "eb23c3503cfa2d9f76650dea740fd641ff1b8dd84535a70cb87559f7bd29073d",
-   "bytes": 9469,
-   "comparison": "utf8-lf",
-   "lfSha256": "eb23c3503cfa2d9f76650dea740fd641ff1b8dd84535a70cb87559f7bd29073d",
-   "origin": "original-entry-inventory"
+    {
+    "path": "scripts/test-h7b-product-pages.ps1",
+    "sha256": "eb23c3503cfa2d9f76650dea740fd641ff1b8dd84535a70cb87559f7bd29073d",
+    "bytes": 9469,
+    "comparison": "utf8-lf",
+    "lfSha256": "eb23c3503cfa2d9f76650dea740fd641ff1b8dd84535a70cb87559f7bd29073d",
+    "origin": "original-entry-inventory",
+    "migration": {
+      "sha256": "a2643e622463ab0e031d5ffb5452335f59e64349829b2efc473316d8745170d1",
+      "bytes": 9718,
+      "comparison": "utf8-lf",
+      "lfSha256": "a2643e622463ab0e031d5ffb5452335f59e64349829b2efc473316d8745170d1",
+      "reason": "RG-TRUTH-1 authorized Reality Gate withdrawn-release truth reconciliation."
+    }
   },
   {
    "path": "scripts/test-h7c-product-pages.ps1",
@@ -1628,7 +1649,7 @@
     }
    }
   },
-  {
+    {
     "path": "scripts/test-h9-homepage.ps1",
     "sha256": "436f52dc6b1b6ff8768da4c02030f40c2f567cd48ee651551d5ecdd437dda35a",
     "bytes": 6541,
@@ -1636,18 +1657,25 @@
     "lfSha256": "436f52dc6b1b6ff8768da4c02030f40c2f567cd48ee651551d5ecdd437dda35a",
     "origin": "original-entry-inventory",
     "migration": {
-      "sha256": "ba963f0840900272f8d5f638fb048b57e60740b52fb8655656fa593e913b8b62",
-      "bytes": 8058,
+      "sha256": "6354b5965a2782ba6bf66244cf9019e46bdb1cebbb1fd9dd546f6b43fef44702",
+      "bytes": 8201,
       "comparison": "utf8-lf",
-      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "reason": "RG-TRUTH-1 authorized Reality Gate withdrawn-release truth reconciliation.",
+      "lfSha256": "6354b5965a2782ba6bf66244cf9019e46bdb1cebbb1fd9dd546f6b43fef44702",
       "previousMigration": {
-        "sha256": "a27e62fe78408af17e66cc817e299c0098073ac42a3a209ca3202d08197b3ae6",
-        "bytes": 6614,
+        "sha256": "ba963f0840900272f8d5f638fb048b57e60740b52fb8655656fa593e913b8b62",
+        "bytes": 8058,
         "comparison": "utf8-lf",
-        "lfSha256": "a27e62fe78408af17e66cc817e299c0098073ac42a3a209ca3202d08197b3ae6",
-        "reason": "VR1 visual refoundation 2026-09-21: test expectations updated to the authorized new contract — product-first homepage order (digests/commits off the primary narrative), unified global nav, current-brand ProofShot/Cleanroom media, conditional card caveat disclosure, Layer-B record wrap."
-      },
-      "lfSha256": "ba963f0840900272f8d5f638fb048b57e60740b52fb8655656fa593e913b8b62"
+        "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+        "previousMigration": {
+          "sha256": "a27e62fe78408af17e66cc817e299c0098073ac42a3a209ca3202d08197b3ae6",
+          "bytes": 6614,
+          "comparison": "utf8-lf",
+          "lfSha256": "a27e62fe78408af17e66cc817e299c0098073ac42a3a209ca3202d08197b3ae6",
+          "reason": "VR1 visual refoundation 2026-09-21: test expectations updated to the authorized new contract — product-first homepage order (digests/commits off the primary narrative), unified global nav, current-brand ProofShot/Cleanroom media, conditional card caveat disclosure, Layer-B record wrap."
+        },
+        "lfSha256": "ba963f0840900272f8d5f638fb048b57e60740b52fb8655656fa593e913b8b62"
+      }
     }
   },
   {
@@ -1685,7 +1713,7 @@
     "reason": "prior authorized state before H13 modular-renderer edits"
    }
   },
-  {
+    {
     "path": "scripts/test-receipts-invariants.ps1",
     "sha256": "b4a376a6bf210a41329db1d0af571eae5f6ac108a589b729202a509405eb4052",
     "bytes": 20925,
@@ -1699,21 +1727,28 @@
       "reason": "prior authorized state before H13 modular-renderer edits"
     },
     "migration": {
-      "sha256": "0568308a3cdf8a56b8d28e33ec95c25883c90744bbe8a3a635ba04a571806543",
-      "bytes": 21872,
+      "sha256": "0e326a288a20b89598ba14aeb477624f507872366ab516338babf7b172d1f503",
+      "bytes": 21608,
       "comparison": "utf8-lf",
-      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "reason": "RG-TRUTH-1 authorized Reality Gate withdrawn-release truth reconciliation.",
+      "lfSha256": "0e326a288a20b89598ba14aeb477624f507872366ab516338babf7b172d1f503",
       "previousMigration": {
-        "sha256": "565e23aad007fc800bb2544be4626d428bb4f7ab178b76581c0a0d87aa58ab44",
-        "bytes": 20942,
+        "sha256": "0568308a3cdf8a56b8d28e33ec95c25883c90744bbe8a3a635ba04a571806543",
+        "bytes": 21872,
         "comparison": "utf8-lf",
-        "lfSha256": "565e23aad007fc800bb2544be4626d428bb4f7ab178b76581c0a0d87aa58ab44",
-        "reason": "H13 modular product renderer 2026-09-20: authorized source/test updates for module migration"
-      },
-      "lfSha256": "0568308a3cdf8a56b8d28e33ec95c25883c90744bbe8a3a635ba04a571806543"
+        "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+        "previousMigration": {
+          "sha256": "565e23aad007fc800bb2544be4626d428bb4f7ab178b76581c0a0d87aa58ab44",
+          "bytes": 20942,
+          "comparison": "utf8-lf",
+          "lfSha256": "565e23aad007fc800bb2544be4626d428bb4f7ab178b76581c0a0d87aa58ab44",
+          "reason": "H13 modular product renderer 2026-09-20: authorized source/test updates for module migration"
+        },
+        "lfSha256": "0568308a3cdf8a56b8d28e33ec95c25883c90744bbe8a3a635ba04a571806543"
+      }
     }
   },
-  {
+      {
     "path": "scripts/test-release-truth.ps1",
     "sha256": "725f261e67afa2174a9c91f01486e0291062edcc7f7f7f752d25bf4cbb761664",
     "bytes": 5893,
@@ -1721,18 +1756,32 @@
     "lfSha256": "725f261e67afa2174a9c91f01486e0291062edcc7f7f7f752d25bf4cbb761664",
     "origin": "original-entry-inventory",
     "migration": {
-      "sha256": "a4985073fae8b2007775c5438ae9796fbff918333270c2a72bea3eec8e61780a",
-      "bytes": 7542,
+      "sha256": "38b5943ad601aee4de8e1643bd5e32fdfcc9961bbdf7e498540e21c1028b719b",
+      "bytes": 9850,
       "comparison": "utf8-lf",
-      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "lfSha256": "38b5943ad601aee4de8e1643bd5e32fdfcc9961bbdf7e498540e21c1028b719b",
+      "reason": "RG-TRUTH-1 authorized Reality Gate withdrawn-release truth reconciliation.",
       "previousMigration": {
-        "sha256": "725f261e67afa2174a9c91f01486e0291062edcc7f7f7f752d25bf4cbb761664",
-        "bytes": 5893,
+        "sha256": "a3ca828da04f84f37e032fd08d07f7d1c0e98e4a7b97300e8d569c458f8de5d6",
+        "bytes": 9071,
         "comparison": "utf8-lf",
-        "lfSha256": "725f261e67afa2174a9c91f01486e0291062edcc7f7f7f752d25bf4cbb761664",
-        "reason": "Original production entry inventory retained as the baseline."
-      },
-      "lfSha256": "a4985073fae8b2007775c5438ae9796fbff918333270c2a72bea3eec8e61780a"
+        "reason": "RG-TRUTH-1 authorized Reality Gate withdrawn-release truth reconciliation.",
+        "lfSha256": "a3ca828da04f84f37e032fd08d07f7d1c0e98e4a7b97300e8d569c458f8de5d6",
+        "previousMigration": {
+          "sha256": "a4985073fae8b2007775c5438ae9796fbff918333270c2a72bea3eec8e61780a",
+          "bytes": 7542,
+          "comparison": "utf8-lf",
+          "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+          "previousMigration": {
+            "sha256": "725f261e67afa2174a9c91f01486e0291062edcc7f7f7f752d25bf4cbb761664",
+            "bytes": 5893,
+            "comparison": "utf8-lf",
+            "lfSha256": "725f261e67afa2174a9c91f01486e0291062edcc7f7f7f752d25bf4cbb761664",
+            "reason": "Original production entry inventory retained as the baseline."
+          },
+          "lfSha256": "a4985073fae8b2007775c5438ae9796fbff918333270c2a72bea3eec8e61780a"
+        }
+      }
     }
   },
   {
@@ -1802,7 +1851,7 @@
     }
    }
   },
-  {
+    {
     "path": "software.html",
     "sha256": "afd0c834f751536cd65d63480d6da9375809d474b99127f115e24a60b6cd823f",
     "bytes": 4581,
@@ -1810,18 +1859,25 @@
     "lfSha256": "afd0c834f751536cd65d63480d6da9375809d474b99127f115e24a60b6cd823f",
     "origin": "original-entry-inventory",
     "migration": {
-      "sha256": "8b0818158575d2d047704e657945798793d56ac116b33082892805589ff1d5a4",
-      "bytes": 4653,
+      "sha256": "590601c16d19a926d125fa42b62fb194ea2192434b01df0d6705d5e33542c25f",
+      "bytes": 4632,
       "comparison": "utf8-lf",
-      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "lfSha256": "590601c16d19a926d125fa42b62fb194ea2192434b01df0d6705d5e33542c25f",
+      "reason": "RG-TRUTH-1 authorized Reality Gate withdrawn-release truth reconciliation.",
       "previousMigration": {
-        "sha256": "afd0c834f751536cd65d63480d6da9375809d474b99127f115e24a60b6cd823f",
-        "bytes": 4581,
+        "sha256": "8b0818158575d2d047704e657945798793d56ac116b33082892805589ff1d5a4",
+        "bytes": 4653,
         "comparison": "utf8-lf",
-        "lfSha256": "afd0c834f751536cd65d63480d6da9375809d474b99127f115e24a60b6cd823f",
-        "reason": "Original production entry inventory retained as the baseline."
-      },
-      "lfSha256": "8b0818158575d2d047704e657945798793d56ac116b33082892805589ff1d5a4"
+        "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+        "previousMigration": {
+          "sha256": "afd0c834f751536cd65d63480d6da9375809d474b99127f115e24a60b6cd823f",
+          "bytes": 4581,
+          "comparison": "utf8-lf",
+          "lfSha256": "afd0c834f751536cd65d63480d6da9375809d474b99127f115e24a60b6cd823f",
+          "reason": "Original production entry inventory retained as the baseline."
+        },
+        "lfSha256": "8b0818158575d2d047704e657945798793d56ac116b33082892805589ff1d5a4"
+      }
     }
   },
   {
@@ -1945,21 +2001,35 @@
     "reason": "PF-TF1 Truth Files 2026-09-21: human-readable layer over /truth/*.json — /truth-files/ index + 7 per-product records generated from the same manifest facts; footer discovery link, sitemap entries, /truth/ related-records card added."
    }
   },
-  {
-   "path": "schemas/public-truth-v1.schema.json",
-   "sha256": "711f9929517d516bbafe474cd1fd1d047b41c54ec2e946f37c51150e83cf74c6",
-   "bytes": 7351,
-   "comparison": "utf8-lf",
-   "lfSha256": "711f9929517d516bbafe474cd1fd1d047b41c54ec2e946f37c51150e83cf74c6",
-   "origin": "h11-public-truth-surface-2026-09-20"
+    {
+    "path": "schemas/public-truth-v1.schema.json",
+    "sha256": "711f9929517d516bbafe474cd1fd1d047b41c54ec2e946f37c51150e83cf74c6",
+    "bytes": 7351,
+    "comparison": "utf8-lf",
+    "lfSha256": "711f9929517d516bbafe474cd1fd1d047b41c54ec2e946f37c51150e83cf74c6",
+    "origin": "h11-public-truth-surface-2026-09-20",
+    "migration": {
+      "sha256": "72e1edfd5225bbcb0a7cf560165803a01ad3e3d1ce0942ade3c8bd0b7d925672",
+      "bytes": 7483,
+      "comparison": "utf8-lf",
+      "reason": "RG-TRUTH-1 authorized Reality Gate withdrawn-release truth reconciliation.",
+      "lfSha256": "72e1edfd5225bbcb0a7cf560165803a01ad3e3d1ce0942ade3c8bd0b7d925672"
+    }
   },
-  {
-   "path": "scripts/test-h11-public-truth.ps1",
-   "sha256": "a958f605159b5b1d0783c23c70aeaf32d2ea5695efc640f10ee14be1eba811c3",
-   "bytes": 21755,
-   "comparison": "utf8-lf",
-   "lfSha256": "a958f605159b5b1d0783c23c70aeaf32d2ea5695efc640f10ee14be1eba811c3",
-   "origin": "h11-public-truth-surface-2026-09-20"
+    {
+    "path": "scripts/test-h11-public-truth.ps1",
+    "sha256": "a958f605159b5b1d0783c23c70aeaf32d2ea5695efc640f10ee14be1eba811c3",
+    "bytes": 21755,
+    "comparison": "utf8-lf",
+    "lfSha256": "a958f605159b5b1d0783c23c70aeaf32d2ea5695efc640f10ee14be1eba811c3",
+    "origin": "h11-public-truth-surface-2026-09-20",
+    "migration": {
+      "sha256": "7110d90684dd1df96f5e203b86c425dc29d08e0c6433db21f843d0ee0e678a54",
+      "bytes": 21851,
+      "comparison": "utf8-lf",
+      "reason": "RG-TRUTH-1 authorized Reality Gate withdrawn-release truth reconciliation.",
+      "lfSha256": "7110d90684dd1df96f5e203b86c425dc29d08e0c6433db21f843d0ee0e678a54"
+    }
   },
   {
    "path": "schemas/PUBLIC_TRUTH_VERSIONING.md",
@@ -1977,7 +2047,7 @@
    "lfSha256": "e2b969de745caaaa29c3d8e0d65274daf67aa8f6ea622852991a443a6c5d4ea0",
    "origin": "h12-truth-discovery-2026-09-20"
   },
-  {
+    {
     "path": "products/reality-gate/module.json",
     "sha256": "723ac3ef603d78b8ca74591f048cff2dd45b0feedbb439e60d93ac7611d4ac7e",
     "bytes": 1166,
@@ -1991,18 +2061,25 @@
       "reason": "prior authorized state before H13 modular-renderer edits"
     },
     "migration": {
-      "sha256": "180dbb27d427ae03b3ef030da175723dc8f6295c4c01469f003341f3efe773da",
-      "bytes": 5323,
+      "sha256": "53d63734409578bbb580105455abec8c8db56764af8ffc772e5f0a207d450a35",
+      "bytes": 5377,
       "comparison": "utf8-lf",
-      "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+      "reason": "RG-TRUTH-1 authorized Reality Gate withdrawn-release truth reconciliation.",
+      "lfSha256": "53d63734409578bbb580105455abec8c8db56764af8ffc772e5f0a207d450a35",
       "previousMigration": {
-        "sha256": "c5756517b4699d4c6f39df977132d331dbe158372e195dfc88ad20222e83bbf4",
-        "bytes": 1636,
+        "sha256": "180dbb27d427ae03b3ef030da175723dc8f6295c4c01469f003341f3efe773da",
+        "bytes": 5323,
         "comparison": "utf8-lf",
-        "lfSha256": "5848d7cdd71401b867bdb359ec953b43de958a42b739c8dd6760b961a9d9224c",
-        "reason": "H13 modular product renderer 2026-09-20: authorized source/test updates for module migration"
-      },
-      "lfSha256": "180dbb27d427ae03b3ef030da175723dc8f6295c4c01469f003341f3efe773da"
+        "reason": "H9 custody reconciliation: exact bytes pinned to the clean modular-homepage candidate; earlier production snapshot and migration chain retained.",
+        "previousMigration": {
+          "sha256": "c5756517b4699d4c6f39df977132d331dbe158372e195dfc88ad20222e83bbf4",
+          "bytes": 1636,
+          "comparison": "utf8-lf",
+          "lfSha256": "5848d7cdd71401b867bdb359ec953b43de958a42b739c8dd6760b961a9d9224c",
+          "reason": "H13 modular product renderer 2026-09-20: authorized source/test updates for module migration"
+        },
+        "lfSha256": "180dbb27d427ae03b3ef030da175723dc8f6295c4c01469f003341f3efe773da"
+      }
     }
   },
   {
@@ -2160,20 +2237,34 @@
     "reason": "PF-TF1 HOLD-1 2026-09-21: bounded owner-review corrections — artifact scope semantics (public vs recorded), cache-vault companionPublicVersion=0.2.0 parity, qualified source-identity promise; targeted regression assertions added."
    }
   },
-  {
-   "path": "scripts/test-truth-files.ps1",
-   "sha256": "bf5c2a57bb71e2cf3eec2950cee84c6a57f0b978769a505404331a500e701150",
-   "bytes": 6087,
-   "comparison": "utf8-lf",
-   "lfSha256": "bf5c2a57bb71e2cf3eec2950cee84c6a57f0b978769a505404331a500e701150",
-   "origin": "pf-tf1-truth-files-2026-09-21",
-   "migration": {
-    "sha256": "01fabf8eb548f01f40fd576d5245f66772891743a9c515f6a17464afde940a9e",
-    "bytes": 9153,
+      {
+    "path": "scripts/test-truth-files.ps1",
+    "sha256": "bf5c2a57bb71e2cf3eec2950cee84c6a57f0b978769a505404331a500e701150",
+    "bytes": 6087,
     "comparison": "utf8-lf",
-    "lfSha256": "01fabf8eb548f01f40fd576d5245f66772891743a9c515f6a17464afde940a9e",
-    "reason": "PF-TF1 HOLD-1 2026-09-21: bounded owner-review corrections — artifact scope semantics (public vs recorded), cache-vault companionPublicVersion=0.2.0 parity, qualified source-identity promise; targeted regression assertions added."
-   }
+    "lfSha256": "bf5c2a57bb71e2cf3eec2950cee84c6a57f0b978769a505404331a500e701150",
+    "origin": "pf-tf1-truth-files-2026-09-21",
+    "migration": {
+      "sha256": "91f1f4ad940c29781947ce944c1064d07efd0d9c2615127960cf8fd5ba577d05",
+      "bytes": 10050,
+      "comparison": "utf8-lf",
+      "lfSha256": "91f1f4ad940c29781947ce944c1064d07efd0d9c2615127960cf8fd5ba577d05",
+      "reason": "RG-TRUTH-1 authorized Reality Gate withdrawn-release truth reconciliation.",
+      "previousMigration": {
+        "sha256": "99abf05972cf1f468cd708cd6ca0354a3bca93125e421bacd5ca9a76107cc3b7",
+        "bytes": 9874,
+        "comparison": "utf8-lf",
+        "reason": "RG-TRUTH-1 authorized Reality Gate withdrawn-release truth reconciliation.",
+        "lfSha256": "99abf05972cf1f468cd708cd6ca0354a3bca93125e421bacd5ca9a76107cc3b7",
+        "previousMigration": {
+          "sha256": "01fabf8eb548f01f40fd576d5245f66772891743a9c515f6a17464afde940a9e",
+          "bytes": 9153,
+          "comparison": "utf8-lf",
+          "lfSha256": "01fabf8eb548f01f40fd576d5245f66772891743a9c515f6a17464afde940a9e",
+          "reason": "PF-TF1 HOLD-1 2026-09-21: bounded owner-review corrections — artifact scope semantics (public vs recorded), cache-vault companionPublicVersion=0.2.0 parity, qualified source-identity promise; targeted regression assertions added."
+        }
+      }
+    }
   }
  ],
  "exclusions": [

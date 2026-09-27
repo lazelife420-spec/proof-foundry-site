@@ -84,24 +84,20 @@ Write-Host ""
 # Change a canonical version to a sentinel; the generated pages and registry must
 # follow. If any surface kept a hardcoded literal, the sentinel would be absent.
 Write-Host "--- TEST 1: generated output derives from canonical data ---"
-# The fixture models a COHERENT release bump: version, artifact names, URLs and
-# labels all move together. A partial bump is itself a validation failure (see the
-# version-literal drift invariant), so it cannot be used to test derivation.
+# The fixture models a coherent withdrawn-history correction: current release
+# availability stays withdrawn while the historic version label is changed.
 $t1 = Invoke-FixtureBuild 'derive' {
   param($o)
   $rg = $o.products | Where-Object { $_.id -eq 'reality-gate' }
-  $rg.release.publicVersion = '9.9.9'
-  $rg.downloadLabel = 'Download v9.9.9 Developer Pilot'
+  $rg.release.withdrawnVersion = '9.9.9'
+  $rg.downloadLabel = $null
   $bump = { param($s) if ($s) { $s -replace '1\.1\.0', '9.9.9' } else { $s } }
   foreach ($a in $rg.artifacts) {
     $a.filename    = & $bump $a.filename
-    $a.downloadUrl = & $bump $a.downloadUrl
-    $a.sha256Url   = & $bump $a.sha256Url
   }
-  $rg.downloadUrl = & $bump $rg.downloadUrl
-  $rg.sha256Url   = & $bump $rg.sha256Url
-  foreach ($e in $rg.evidence) { $e.url = & $bump $e.url; $e.label = & $bump $e.label }
-  if ($rg.proofLinks) { $rg.proofLinks = @($rg.proofLinks | ForEach-Object { & $bump $_ }) }
+  $rg.build = & $bump $rg.build
+  $rg.releaseNote = & $bump $rg.releaseNote
+  $rg.release.withdrawalReason = & $bump $rg.release.withdrawalReason
   $o
 }
 Assert 'build succeeds with sentinel version' ($t1.Exit -eq 0) $t1.Output
@@ -109,7 +105,7 @@ if ($t1.Exit -eq 0) {
   Assert 'proof page shows sentinel v9.9.9'        ($t1.ProofHtml -match 'v9\.9\.9')
   Assert 'proof page no longer shows old v1.1.0'   ($t1.ProofHtml -notmatch 'v1\.1\.0')
   $rgEntry = $t1.Registry.products | Where-Object { $_.id -eq 'reality-gate' }
-  Assert 'registry shows sentinel v9.9.9'          ($rgEntry.release.publicVersion -eq '9.9.9') "got '$($rgEntry.release.publicVersion)'"
+  Assert 'registry shows sentinel withdrawn version' ($rgEntry.release.withdrawnVersion -eq '9.9.9' -and $null -eq $rgEntry.release.publicVersion) "got '$($rgEntry.release.withdrawnVersion)'"
   $homeHtml = [IO.File]::ReadAllText((Join-Path $t1.OutDir 'index.html'))
   Assert 'homepage shows sentinel v9.9.9'          ($homeHtml -match 'v9\.9\.9')
   $prodHtml = [IO.File]::ReadAllText((Join-Path $t1.OutDir 'reality-gate\index.html'))

@@ -9,7 +9,7 @@
     {
       "type": "outcomes",
       "id": "features",
-      "kicker": "Available in Developer Pilot {{product.versionLabel}}",
+      "kicker": "Reality Gate product capabilities",
       "title": "Local control room for your software projects.",
       "lede": "Bring an ordinary Git repository. Keep the tools and remotes you already use.",
       "items": [
@@ -44,11 +44,11 @@
   ],
   "meta": {
     "title": "Reality Gate — Your projects. Your execution. Your way back. | The Proof Foundry",
-    "description": "Bring your Git projects into a local control room for builds, run records, and recovery. Reality Gate Developer Pilot for Windows.",
+    "description": "Reality Gate is local-first software for Git project continuity, build records, and recovery. Its former release was withdrawn; no current public download is available.",
     "viewport": "width=device-width, initial-scale=1.0",
     "robots": "index, follow",
     "ogTitle": "Reality Gate — Your projects. Your execution. Your way back.",
-    "ogDescription": "Bring your Git projects into a local control room for builds, run records, and recovery. Reality Gate Developer Pilot for Windows.",
+    "ogDescription": "Reality Gate is local-first software for Git project continuity, build records, and recovery. Its former release was withdrawn; no current public download is available.",
     "ogType": "product",
     "ogImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png",
     "twitterCard": "summary_large_image",
@@ -95,7 +95,7 @@
       "caption": "The Runroom · a real completed run"
     },
     "primaryAction": {
-      "label": "Get the Developer Pilot",
+      "label": "Review release status",
       "href": "#download"
     },
     "secondaryAction": {

@@ -78,7 +78,9 @@
             "companionCandidateVersion": { "$ref": "#/$defs/semverOrNull" },
             "companionPublicVersion": { "$ref": "#/$defs/semverOrNull" },
             "publishedAt": { "type": ["string", "null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
-            "sourceCommit": { "type": ["string", "null"], "pattern": "^[0-9a-f]{40}$" }
+            "sourceCommit": { "type": ["string", "null"], "pattern": "^[0-9a-f]{40}$" },
+            "withdrawnVersion": { "$ref": "#/$defs/semverOrNull" },
+            "withdrawalReason": { "type": ["string", "null"] }
           }
         },
         "download": {

@@ -172,16 +172,16 @@ $blocked = ((Get-Content "$tmp\build2.log" -Raw) -match 'Manifest validation fai
 Assert-Truth ($LASTEXITCODE -ne 0 -or $blocked) 'negative: file:// downloadUrl in a canonical field is refused by validation or the truth safety scan'
 
 # ── Drift negative control (Phase M) ──────────────────────────────────────────
-# Coherent drift: bump publicVersion and every embedded copy (artifact filename,
-# URLs, labels) so the fixture stays internally consistent, plus a checksum swap.
+# Coherent drift: bump the withdrawn historical version and its embedded copies
+# while keeping current publicVersion null and downloads unavailable.
 $fm3 = Get-Content "$tmp\manifest.json" -Raw -Encoding UTF8 | ConvertFrom-Json
-$fm3.products[0].release.publicVersion = '9.9.9'
+$fm3.products[0].release.withdrawnVersion = '9.9.9'
 $fm3.products[0].artifacts[0].sha256 = '0' * 64
 $fm3.products[0].sha256 = '0' * 64
 [IO.File]::WriteAllText("$tmp\manifest3.json", (($fm3 | ConvertTo-Json -Depth 30) -replace '1\.1\.0', '9.9.9'))
 & pwsh -NoProfile -File $buildScript -ManifestPath "$tmp\manifest3.json" -OutDir "$tmp\public3" -TruthCommit $tCommit -TruthTree $tTree -TruthCommittedAt $tAt *> "$tmp\build3.log"
 $drifted = Get-Content "$tmp\public3\truth\products\reality-gate.json" -Raw | ConvertFrom-Json
-Assert-Truth ($drifted.version -ceq '9.9.9' -and $drifted.release.publicVersion -ceq '9.9.9') 'drift: version change flows into truth output automatically'
+Assert-Truth ($drifted.version -eq $null -and $drifted.release.publicVersion -eq $null -and $drifted.release.withdrawnVersion -ceq '9.9.9' -and $drifted.release.releaseStatus -ceq 'WITHDRAWN') 'drift: withdrawn version flows into truth without becoming current'
 Assert-Truth ($drifted.artifacts[0].sha256 -ceq ('0' * 64)) 'drift: artifact checksum change flows into truth output automatically'
 
 # ── Determinism control (Phase N) — same inputs, two builds, identical bytes ──

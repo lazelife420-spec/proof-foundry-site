@@ -56,7 +56,19 @@ $registryJson = Get-Content (Join-Path $publicDir "proof\index.json") -Raw | Con
 Assert-Condition ($registryJson.products.Count -eq 7) "Registry covers all 7 products"
 
 $rgRegistry = $registryJson.products | Where-Object { $_.id -eq 'reality-gate' }
-Assert-Condition ($rgRegistry.release.publicVersion -eq '1.1.0') "Registry Reality Gate version is 1.1.0"
+Assert-Condition ($rgRegistry.release.releaseStatus -eq 'WITHDRAWN' -and $null -eq $rgRegistry.release.publicVersion) 'Reality Gate has no current public release version'
+Assert-Condition ($rgRegistry.release.withdrawnVersion -eq '1.1.0' -and $rgRegistry.productStatus -eq 'WITHDRAWN') 'Reality Gate v1.1.0 is recorded as withdrawn'
+$rgTruth = Get-Content (Join-Path $publicDir 'truth\products\reality-gate.json') -Raw | ConvertFrom-Json
+Assert-Condition ($rgTruth.download.available -eq $false -and $null -eq $rgTruth.download.url -and @($rgTruth.artifacts | Where-Object { $_.downloadUrl -or $_.sha256Url }).Count -eq 0) 'withdrawn Reality Gate has no machine-readable download URLs'
+Assert-Condition ($rgTruth.artifacts[0].filename -eq 'Reality-Gate-1.1.0-Developer-Pilot.zip' -and $rgTruth.artifacts[0].sha256 -eq '58cc27d22bdee8157ee4598e116e17ff42d0efc95630c97bee4b2bc6be6ce756') 'historical Reality Gate artifact filename and checksum remain on record'
+$rgPage = Get-Content (Join-Path $publicDir 'reality-gate\index.html') -Raw -Encoding UTF8
+Assert-Condition ($rgPage -match 'Withdrawn.*v1\.1\.0.*not available for download' -and $rgPage -notmatch 'href="https://downloads\.theprooffoundry\.com/reality-gate/v1\.1\.0/') 'Reality Gate route states withdrawal and renders no dead download link'
+$rgProof = Get-Content (Join-Path $publicDir 'proof\index.html') -Raw -Encoding UTF8
+Assert-Condition ($rgProof -match 'Historical release record: Historical Windows installer ZIP record for v1\.1\.0' -and $rgProof -match 'Downloads currently unavailable') 'release receipt keeps historical evidence and suppresses the download CTA'
+$softwarePage = Get-Content (Join-Path $publicDir 'software\index.html') -Raw -Encoding UTF8
+Assert-Condition ($softwarePage -match 'Withdrawn · unavailable' -and $softwarePage -match 'v1\.1\.0 withdrawn · no current public download' -and $softwarePage -notmatch 'Reality Gate is a Developer Pilot') 'software catalog exposes withdrawn state and no stale pilot claim'
+$roadmapPage = Get-Content (Join-Path $publicDir 'roadmap\index.html') -Raw -Encoding UTF8
+Assert-Condition ($roadmapPage -match 'WITHDRAWN' -and $roadmapPage -match 'former v1\.1\.0 release is withdrawn and no public download is available' -and $roadmapPage -notmatch 'public Windows pilot remains available|current pilot download') 'roadmap derives Reality Gate availability from canonical withdrawn state'
 
 $cvRegistry = $registryJson.products | Where-Object { $_.id -eq 'cache-vault' }
 Assert-Condition ($cvRegistry.verification.status -eq 'VERIFIED') "Registry Cache Vault verification status is VERIFIED"

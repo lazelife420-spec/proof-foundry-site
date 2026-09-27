@@ -76,10 +76,10 @@ $manifest = Get-Content $manifestPath -Raw -Encoding UTF8 | ConvertFrom-Json
 # ─────────────────────────────────────────────────────────────────────────────
 # Validation
 # ─────────────────────────────────────────────────────────────────────────────
-$allowedStates = @('pilot','available','frozen','testing','proof','coming')
+$allowedStates = @('pilot','available','frozen','testing','proof','coming','withdrawn')
 $statesRequiringDownload = @('pilot','available','frozen')
-$allowedProductStatuses = @('PUBLIC_RELEASE','RELEASE_CANDIDATE','ACTIVE_PROOF','HOLD','FROZEN','RESEARCH','ROADMAP_DIRECTION','UNRELEASED')
-$allowedReleaseStatuses = @('PUBLIC_RELEASE','RELEASE_CANDIDATE','ACTIVE_PROOF','HOLD','FROZEN','RESEARCH','ROADMAP_DIRECTION','UNRELEASED')
+$allowedProductStatuses = @('PUBLIC_RELEASE','RELEASE_CANDIDATE','ACTIVE_PROOF','HOLD','FROZEN','RESEARCH','ROADMAP_DIRECTION','UNRELEASED','WITHDRAWN')
+$allowedReleaseStatuses = @('PUBLIC_RELEASE','RELEASE_CANDIDATE','ACTIVE_PROOF','HOLD','FROZEN','RESEARCH','ROADMAP_DIRECTION','UNRELEASED','WITHDRAWN')
 $allowedVerificationStatuses = @('VERIFIED','PENDING','NOT_PUBLISHED','NOT_VERIFIED')
 $allowedVerificationTypes = @('ARTIFACT_HASH_PUBLISHED','ARTIFACT_HASH_VERIFIED','ARTIFACT_CUSTODY','RUNTIME_VALIDATION','REALITY_GATE','PUBLIC_DOWNLOAD','CODE_SIGNING','RELEASE_AUTHORIZATION','PUBLICATION_STATUS')
 $allowedSigningStatuses = @('UNSIGNED','DEBUG_SIGNED','PRODUCTION_SIGNED','NOT_APPLICABLE')
@@ -218,6 +218,15 @@ foreach ($p in $manifest.products) {
         if ($p.state -ne 'pilot') { $errors += "$tag releaseStatus PUBLIC_RELEASE but no artifacts listed" }
       }
     }
+    if ($p.release.releaseStatus -eq 'WITHDRAWN') {
+      if (-not [string]::IsNullOrWhiteSpace([string]$p.release.publicVersion)) { $errors += "$tag WITHDRAWN release must not expose release.publicVersion as current" }
+      if ($p.release.withdrawnVersion -notmatch '^\d+\.\d+\.\d+$') { $errors += "$tag WITHDRAWN release requires release.withdrawnVersion" }
+      if (-not [string]::IsNullOrWhiteSpace([string]$p.downloadUrl)) { $errors += "$tag WITHDRAWN release must not expose downloadUrl" }
+      if (-not $p.presentation.downloadUnavailable) { $errors += "$tag WITHDRAWN release requires presentation.downloadUnavailable" }
+      foreach ($a in @($p.artifacts)) {
+        if ($a.downloadUrl -or $a.sha256Url) { $errors += "$tag WITHDRAWN release artifact URLs must be cleared; retain historical checksum and filename only" }
+      }
+    }
 
     # Candidate must not silently replace public version
     if ($p.release.candidateVersion -and $p.release.publicVersion -and $p.release.candidateVersion -eq $p.release.publicVersion) {
@@ -272,7 +281,7 @@ foreach ($p in $manifest.products) {
   if ($p.artifacts) {
     $declaredVersions = @(
       $p.release.publicVersion, $p.release.candidateVersion,
-      $p.release.companionPublicVersion,
+      $p.release.companionPublicVersion, $p.release.withdrawnVersion,
       $p.companionVersion, $p.currentLocalVersion, $p.version
     ) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
     # A pre-release candidateVersion like "0.2.3-rc1" also declares its base
@@ -382,7 +391,7 @@ foreach ($p in $visibleProducts) {
     continue
   }
   $pubVersion = if ($p.release -and $p.release.publicVersion) { "$($p.release.publicVersion)" } else { '' }
-  $avail = if (-not [string]::IsNullOrWhiteSpace($pubVersion)) { 'AVAILABLE' } else { 'NO_PUBLIC_RELEASE' }
+  $avail = if ($p.release.releaseStatus -eq 'WITHDRAWN') { 'WITHDRAWN' } elseif (-not [string]::IsNullOrWhiteSpace($pubVersion)) { 'AVAILABLE' } else { 'NO_PUBLIC_RELEASE' }
   if (-not $manifest.availabilityTaxonomy -or -not $manifest.availabilityTaxonomy.labels.$avail) {
     $errors += "[$($p.id)] derived availability '$avail' has no availabilityTaxonomy label; the card badge would render blank"
   }
@@ -559,6 +568,7 @@ if ($ValidateOnly) { exit 0 }
 function Read-File($path) { return [System.IO.File]::ReadAllText($path, [System.Text.Encoding]::UTF8) }
 
 function VersionLabel($p) {
+  if ($p.release -and $p.release.releaseStatus -eq 'WITHDRAWN') { return '' }
   # Prefer canonical release.publicVersion, then legacy publicVersion, then version.
   $v = if ($p.release -and $p.release.publicVersion) { $p.release.publicVersion }
        elseif (-not [string]::IsNullOrWhiteSpace($p.publicVersion)) { $p.publicVersion }
@@ -699,6 +709,7 @@ function Assert-PublicStateUrls($products) {
 #   a mutually exclusive homepage bucket.
 
 function VisitorAvailability($p) {
+  if ($p.release -and $p.release.releaseStatus -eq 'WITHDRAWN') { return 'WITHDRAWN' }
   $pub = if ($p.release) { $p.release.publicVersion } else { $null }
   if (-not [string]::IsNullOrWhiteSpace("$pub")) { return 'AVAILABLE' }
   return 'NO_PUBLIC_RELEASE'
@@ -742,6 +753,10 @@ function CardDetailLine($p) {
   $dot  = [char]0x00B7
 
   switch ($rs) {
+    'WITHDRAWN' {
+      $version = if ($p.release.withdrawnVersion) { "v$($p.release.withdrawnVersion)" } else { 'The former release' }
+      return "$version withdrawn $dot no current public download"
+    }
     'RELEASE_CANDIDATE' {
       if ($pub) {
         if ($p.presentation.downloadUnavailable) { return "Candidate $cand $dot downloads currently unavailable" }
@@ -816,7 +831,10 @@ function ProductTokens($p) {
   $tokens['statusLabel']         = StateLabel $p.state
   $tokens['productStatus']       = if ($p.productStatus) { $p.productStatus } else { '' }
   $tokens['productStatusLabel']  = if ($p.productStatus -and $manifest.statusTaxonomy.$($p.productStatus)) { $manifest.statusTaxonomy.$($p.productStatus) } else { $tokens['statusLabel'] }
+  $tokens['availabilityStatement'] = if ($p.release -and $p.release.releaseStatus -eq 'WITHDRAWN') { "The former v$(Html-Attr $p.release.withdrawnVersion) release is withdrawn and no public download is available." } elseif ($p.release -and $p.release.publicVersion) { "The public v$(Html-Attr $p.release.publicVersion) release is available." } else { 'No current public release is available.' }
   $tokens['versionLabel']        = VersionLabel $p
+  $tokens['withdrawnVersionLabel'] = if ($p.release -and $p.release.withdrawnVersion) { "v$($p.release.withdrawnVersion)" } else { '' }
+  $tokens['withdrawalNotice']    = if ($p.release -and $p.release.releaseStatus -eq 'WITHDRAWN') { "<p class=`"availability-notice`"><strong>Withdrawn:</strong> v$(Html-Attr $p.release.withdrawnVersion) is not available for download. $(Html-Attr $p.presentation.downloadNotice)</p>" } else { '' }
   $tokens['candidateVersionLabel'] = CandidateVersionLabel $p
   $tokens['currentVersionLabel'] = CurrentVersionLabel $p
   $tokens['companionLabel']      = CompanionLabel $p
@@ -1009,7 +1027,7 @@ $verificationNote
 # Tokens whose values are generated markup — they are built by this script and
 # already escape their dynamic leaves. Every other token value is untrusted
 # dynamic state and is HTML-escaped at interpolation (attribute-safe set).
-$script:MarkupProductTokens = @('proofStrip','downloadBlock','hashBlock','releaseNoteBlock','limitsBlock','markSvg')
+$script:MarkupProductTokens = @('proofStrip','downloadBlock','hashBlock','releaseNoteBlock','limitsBlock','markSvg','withdrawalNotice')
 
 # Apply {{product.X}} substitution to a string given a tokens hashtable
 function Replace-ProductTokens($text, $tokens, [switch]$Strict) {
@@ -1207,6 +1225,10 @@ function Get-HomepageProductModules {
 }
 
 function Get-HomepageStatus($product, $tokens) {
+  if ($product.release -and $product.release.releaseStatus -eq 'WITHDRAWN') {
+    $former = if ($product.release.withdrawnVersion) { "v$($product.release.withdrawnVersion)" } else { 'Former release' }
+    return "Withdrawn $former · downloads currently unavailable"
+  }
   $status = if ($product.state -eq 'pilot') { [string]$tokens.statusLabel } else { 'Public' }
   if ($tokens.publicVersion) { $status += ' v' + [string]$tokens.publicVersion }
   if ($tokens.companionPublicVersionLabel) { $status += ' · Android companion ' + [string]$tokens.companionPublicVersionLabel }
@@ -1376,8 +1398,10 @@ function Build-ProofRegistry {
       release       = [ordered]@{
         publicVersion    = $pubVer
         candidateVersion = $canVer
-        releaseStatus    = if ($p.release -and $p.release.releaseStatus) { $p.release.releaseStatus } else { 'UNRELEASED' }
-        publishedAt      = if ($p.release -and $p.release.publishedAt) { $p.release.publishedAt } else { $null }
+      releaseStatus    = if ($p.release -and $p.release.releaseStatus) { $p.release.releaseStatus } else { 'UNRELEASED' }
+      publishedAt      = if ($p.release -and $p.release.publishedAt) { $p.release.publishedAt } else { $null }
+      withdrawnVersion = if ($p.release -and $p.release.withdrawnVersion) { $p.release.withdrawnVersion } else { $null }
+      withdrawalReason = if ($p.release -and $p.release.withdrawalReason) { $p.release.withdrawalReason } else { $null }
       }
       platform      = if ($p.platforms -and $p.platforms.Count -gt 0) { @($p.platforms) } else { @($p.platform) }
       route         = $p.route
@@ -1458,8 +1482,10 @@ function Build-PublicTruthProduct($p, $source) {
       candidateVersion           = $canVer
       companionCandidateVersion  = if ($p.release.companionCandidateVersion) { $p.release.companionCandidateVersion } else { $null }
       companionPublicVersion     = if ($p.release.companionPublicVersion) { $p.release.companionPublicVersion } else { $null }
-      publishedAt                = if ($p.release.publishedAt) { $p.release.publishedAt } else { $null }
-      sourceCommit               = if ($p.release.sourceCommit) { $p.release.sourceCommit } else { $null }
+        publishedAt                = if ($p.release.publishedAt) { $p.release.publishedAt } else { $null }
+        sourceCommit               = if ($p.release.sourceCommit) { $p.release.sourceCommit } else { $null }
+        withdrawnVersion           = if ($p.release.withdrawnVersion) { $p.release.withdrawnVersion } else { $null }
+        withdrawalReason           = if ($p.release.withdrawalReason) { $p.release.withdrawalReason } else { $null }
     }
   } else { $null }
 
@@ -1558,7 +1584,7 @@ function Build-TruthIndexCards {
   $cards = ''
   foreach ($p in $allProductState) {
     $statusLabel = if ($manifest.statusTaxonomy -and $manifest.statusTaxonomy.PSObject.Properties[$p.productStatus]) { $manifest.statusTaxonomy.($p.productStatus) } else { $p.productStatus }
-    $ver = if ($p.release -and $p.release.publicVersion) { "v$($p.release.publicVersion)" } else { 'Unreleased' }
+    $ver = if ($p.release -and $p.release.publicVersion) { "v$($p.release.publicVersion)" } elseif ($p.release -and $p.release.withdrawnVersion) { "Withdrawn v$($p.release.withdrawnVersion)" } else { 'Unreleased' }
     $artCount = @($p.artifacts).Count
     $artWord = if ($artCount -eq 1) { 'artifact' } else { 'artifacts' }
     # "Public" artifacts only exist when the release is actually public. HOLD /
@@ -1586,7 +1612,7 @@ function Build-TruthFileCards {
   foreach ($p in $allProductState) {
     $stateLabel = if ($manifest.stateLabels -and $manifest.stateLabels.PSObject.Properties[$p.state]) { $manifest.stateLabels.($p.state) } else { $p.state }
     $statusLabel = if ($manifest.statusTaxonomy -and $manifest.statusTaxonomy.PSObject.Properties[$p.productStatus]) { $manifest.statusTaxonomy.($p.productStatus) } else { $p.productStatus }
-    $ver = if ($p.release -and $p.release.publicVersion) { "v$($p.release.publicVersion)" } else { 'Unreleased' }
+    $ver = if ($p.release -and $p.release.publicVersion) { "v$($p.release.publicVersion)" } elseif ($p.release -and $p.release.withdrawnVersion) { "Withdrawn v$($p.release.withdrawnVersion)" } else { 'Unreleased' }
     $plats = if ($p.platforms) { ($p.platforms -join ' · ') } else { $p.platform }
     $cards += @"
         <a class="tf-card" href="/truth-files/$(Html-Attr $p.id)/">
@@ -1610,7 +1636,7 @@ function Build-TruthFileShell($module, $source) {
   $statusClass = ($p.productStatus).ToLowerInvariant()
 
   # ── CURRENT TRUTH ──────────────────────────────────────────────────────────
-  $ver = if ($p.release -and $p.release.publicVersion) { "v$($p.release.publicVersion)" } else { 'Unreleased' }
+  $ver = if ($p.release -and $p.release.publicVersion) { "v$($p.release.publicVersion)" } elseif ($p.release -and $p.release.withdrawnVersion) { "Withdrawn v$($p.release.withdrawnVersion)" } else { 'Unreleased' }
   $relStatus = if ($p.release -and $p.release.releaseStatus) { $p.release.releaseStatus } else { 'UNRELEASED' }
   $relLabel = if ($manifest.statusTaxonomy -and $manifest.statusTaxonomy.PSObject.Properties[$relStatus]) { $manifest.statusTaxonomy.($relStatus) } else { $relStatus }
   $plats = if ($p.platforms) { ($p.platforms -join ', ') } else { $p.platform }
@@ -2160,8 +2186,8 @@ function Get-ProductRegistry {
     $canonical = @($manifest.products | Where-Object { $_.id -eq $m.id }) | Select-Object -First 1
     if ($m.lifecycle -eq 'public-eligible') {
       if (-not $canonical) { $regErrors += "${tag}: publication gate denied; no canonical manifest product exists for '$($m.id)'" }
-      elseif ($canonical.route -ne $m.route -or -not $canonical.visible -or $canonical.release.releaseStatus -ne 'PUBLIC_RELEASE' -or $canonical.verification.status -ne 'VERIFIED' -or [string]::IsNullOrWhiteSpace([string]$canonical.release.publicVersion)) {
-        $regErrors += "${tag}: publication gate denied; route, visibility, verified status, PUBLIC_RELEASE, and publicVersion must agree with site-manifest.json"
+      elseif ($canonical.route -ne $m.route -or -not $canonical.visible -or $canonical.release.releaseStatus -notin @('PUBLIC_RELEASE','WITHDRAWN') -or $canonical.verification.status -ne 'VERIFIED' -or ($canonical.release.releaseStatus -eq 'PUBLIC_RELEASE' -and [string]::IsNullOrWhiteSpace([string]$canonical.release.publicVersion)) -or ($canonical.release.releaseStatus -eq 'WITHDRAWN' -and [string]::IsNullOrWhiteSpace([string]$canonical.release.withdrawnVersion))) {
+        $regErrors += "${tag}: publication gate denied; route, visibility, verified provenance, and public or withdrawn release truth must agree with site-manifest.json"
       }
     }
   }

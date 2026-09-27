@@ -26,6 +26,7 @@ Assert-TF 'index links doctrine and ledger' ($indexHtml -match 'href="/proof-sta
 
 $productIds = @($manifest.products | Where-Object { $_.visible } | ForEach-Object { $_.id })
 Assert-TF 'index renders one card per visible product' (([regex]::Matches($indexHtml, 'class="tf-card"').Count) -eq $productIds.Count)
+Assert-TF 'catalog card preserves withdrawn version instead of saying unreleased' ($indexHtml -match '(?s)Reality Gate.*?Withdrawn v1\.1\.0.*?Withdrawn · no public download')
 
 foreach ($p in ($manifest.products | Where-Object { $_.visible })) {
   $pagePath = Join-Path $public "truth-files/$($p.id)/index.html"
@@ -37,7 +38,7 @@ foreach ($p in ($manifest.products | Where-Object { $_.visible })) {
   Assert-TF "$($p.id): breadcrumb returns to index" ($h -match 'href="/truth-files/"')
   Assert-TF "$($p.id): product identity renders" ($h -match [regex]::Escape(">$($p.name)<") -and $h -match 'card-mark')
 
-  $ver = if ($p.release -and $p.release.publicVersion) { "v$($p.release.publicVersion)" } else { 'Unreleased' }
+  $ver = if ($p.release -and $p.release.publicVersion) { "v$($p.release.publicVersion)" } elseif ($p.release -and $p.release.withdrawnVersion) { "Withdrawn v$($p.release.withdrawnVersion)" } else { 'Unreleased' }
   Assert-TF "$($p.id): current version matches manifest" ($h -match [regex]::Escape(">$ver<"))
 
   $plats = if ($p.platforms) { ($p.platforms -join ', ') } else { $p.platform }
@@ -46,6 +47,12 @@ foreach ($p in ($manifest.products | Where-Object { $_.visible })) {
   $relStatus = if ($p.release -and $p.release.releaseStatus) { $p.release.releaseStatus } else { 'UNRELEASED' }
   $relLabel = if ($statusTax.PSObject.Properties[$relStatus]) { $statusTax.($relStatus) } else { $relStatus }
   Assert-TF "$($p.id): release state matches manifest" ($h -match [regex]::Escape($relLabel))
+
+  if ($p.release -and $p.release.releaseStatus -eq 'WITHDRAWN') {
+    $j = Get-Content (Join-Path $public "truth/products/$($p.id).json") -Raw -Encoding UTF8 | ConvertFrom-Json
+    Assert-TF "$($p.id): human and machine truth agree on withdrawn version/state" ($j.release.withdrawnVersion -eq $p.release.withdrawnVersion -and $j.release.releaseStatus -eq $relStatus -and $j.version -eq $null -and $h -match [regex]::Escape("Withdrawn v$($p.release.withdrawnVersion)"))
+    Assert-TF "$($p.id): withdrawn truth has no available download" ($j.download.available -eq $false -and $h -match 'Not publicly downloadable')
+  }
 
   Assert-TF "$($p.id): artifact availability stated honestly" (($h -match 'Artifact available for download' -eq [bool]$p.downloadUrl))
 

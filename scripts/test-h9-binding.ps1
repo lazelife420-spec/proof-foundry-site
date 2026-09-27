@@ -30,7 +30,8 @@ Assert-Binding 'authority: inspected production commit is an ancestor of candida
 # forgecast summary / cardSummary / presentation.valueLine fields carry the
 # approved new positioning. Neutralize exactly those copy fields on both
 # sides; all release, artifact, signing and availability truth must still be
-# byte-identical to the pinned production object.
+# byte-identical to the pinned production object except for separately asserted
+# Lights Out and Reality Gate truth migrations.
 foreach ($set in @(@($manifest.products), @($canonical.products))) {
   $fcP = @($set | Where-Object { $_.id -eq 'forgecast' }) | Select-Object -First 1
   if ($fcP) { $fcP.summary = $null; $fcP.cardSummary = $null; if ($fcP.presentation) { $fcP.presentation.valueLine = $null } }
@@ -59,12 +60,14 @@ foreach ($set in @(@($manifest.products), @($canonical.products))) {
     $pp.PSObject.Properties.Remove('packageId')
   }
 }
-Assert-Binding 'authority: unchanged public product objects equal inspected production (authorized copy/H10 migrations only)' ((Json @($manifest.products | Where-Object id -ne 'lights-out')) -ceq (Json @($canonical.products | Where-Object id -ne 'lights-out')))
+Assert-Binding 'authority: unchanged public product objects equal inspected production (authorized copy/H10 migrations only)' ((Json @($manifest.products | Where-Object id -notin @('lights-out','reality-gate'))) -ceq (Json @($canonical.products | Where-Object id -notin @('lights-out','reality-gate'))))
 Assert-Binding 'authority: Lights Out v11.1.3 Verified release record is the explicit local truth migration' ((@($manifest.products | Where-Object id -eq 'lights-out')[0].release.publicVersion -eq '11.1.3') -and (@($manifest.products | Where-Object id -eq 'lights-out')[0].verification.status -eq 'VERIFIED') -and (@($manifest.products | Where-Object id -eq 'lights-out')[0].release.releaseStatus -eq 'PUBLIC_RELEASE'))
+ $rg = @($manifest.products | Where-Object id -eq 'reality-gate')[0]
+Assert-Binding 'authority: Reality Gate v1.1.0 withdrawn, no current version/download, no successor claim, historical artifact retained' ($rg.release.releaseStatus -eq 'WITHDRAWN' -and $rg.productStatus -eq 'WITHDRAWN' -and $rg.release.publicVersion -eq $null -and $rg.release.withdrawnVersion -eq '1.1.0' -and $rg.release.candidateVersion -eq $null -and $rg.downloadUrl -eq $null -and $rg.artifacts[0].downloadUrl -eq $null -and $rg.artifacts[0].sha256Url -eq $null -and $rg.artifacts[0].sha256 -eq '58cc27d22bdee8157ee4598e116e17ff42d0efc95630c97bee4b2bc6be6ce756')
 Assert-Binding 'authority: seven registry identities equal production' ((($registry.products.id | Sort-Object) -join ',') -ceq (($canonical.products.id | Sort-Object) -join ','))
 foreach ($product in $manifest.products) {
   $actual = @($registry.products | Where-Object id -eq $product.id)[0]
-  $expectedRelease = [ordered]@{publicVersion=$product.release.publicVersion;candidateVersion=$product.release.candidateVersion;releaseStatus=$product.release.releaseStatus;publishedAt=$product.release.publishedAt}
+  $expectedRelease = [ordered]@{publicVersion=$product.release.publicVersion;candidateVersion=$product.release.candidateVersion;releaseStatus=$product.release.releaseStatus;publishedAt=$product.release.publishedAt;withdrawnVersion=$product.release.withdrawnVersion;withdrawalReason=$product.release.withdrawalReason}
   Assert-Binding "truth: $($product.id) registry release/status/candidate parity" ((Json $actual.release) -ceq (Json $expectedRelease))
   Assert-Binding "truth: $($product.id) registry artifact URLs/digests/signing/size parity" ((Json $actual.artifacts) -ceq (Json $product.artifacts))
 }
@@ -151,7 +154,7 @@ Assert-Binding 'truth: Cache Vault public 0.2.4 retained' ($homeHtml -match '(?i
 $realityScene = [regex]::Match($homeHtml,'(?s)<(?:section|article)\b[^>]*data-product="reality-gate".*?</(?:section|article)>').Value
 $weatherScene = [regex]::Match($homeHtml,'(?s)<(?:section|article)\b[^>]*data-product="forgecast".*?</(?:section|article)>').Value
 $ghostScene = [regex]::Match($homeHtml,'(?s)<(?:section|article)\b[^>]*data-product="ghostlayer".*?</(?:section|article)>').Value
-Assert-Binding 'truth: Reality Gate scene explicitly remains Developer Pilot with bounded security language' ($realityScene -match 'Developer Pilot v1\.1\.0' -and $realityScene -match 'Not an (OS|operating-system) security sandbox')
+Assert-Binding 'truth: Reality Gate remains featured with withdrawn availability and bounded security language' ($realityScene -match 'Withdrawn' -and $realityScene -match 'Not an (OS|operating-system) security sandbox' -and $realityScene -notmatch 'Download Developer Pilot')
 Assert-Binding 'truth: ForgeCast scene discloses network use, no added analytics and recorded weather' ($weatherScene -match '(?i)network|HTTPS' -and $weatherScene -match '(?i)(No|does not add) analytics tracking' -and $weatherScene -match '(?i)recorded weather|recorded state')
 Assert-Binding 'truth: GhostLayer scene discloses explicit commit and temporary disk boundary' ($ghostScene -match '(?i)commit boundary' -and $ghostScene -match '(?i)temporary disk|temporary files|disk copies')
 Assert-Binding 'truth: prohibited absolute GhostLayer and ProofShot claims absent' ($homeHtml -notmatch '(?i)zero-trace|screen capture|court-certified|malware-free|security-certified')

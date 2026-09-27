@@ -14,7 +14,8 @@
     "frozen": "Public release · Frozen",
     "testing": "In testing",
     "proof": "In proof",
-    "coming": "Coming soon"
+    "coming": "Coming soon",
+    "withdrawn": "Withdrawn · no public download"
   },
   "statusTaxonomy": {
     "PUBLIC_RELEASE": "Public release",
@@ -24,13 +25,15 @@
     "FROZEN": "Public release · Frozen",
     "RESEARCH": "In research",
     "ROADMAP_DIRECTION": "Roadmap direction",
-    "UNRELEASED": "Unreleased"
+    "UNRELEASED": "Unreleased",
+    "WITHDRAWN": "Withdrawn · no public download"
   },
   "availabilityTaxonomy": {
-    "derivation": "Availability is about the product, not its newest build lane: a product is AVAILABLE when release.publicVersion names a real public release, even while a newer candidate is also in flight. NO_PUBLIC_RELEASE means no public release of the product exists yet. Whether an artifact is downloadable right now is a separate fact, carried by downloadUrl and stated on the card, never inferred from this taxonomy.",
+    "derivation": "Availability is about the product, not its newest build lane: a product is AVAILABLE when release.publicVersion names a current public release, even while a newer candidate is also in flight. WITHDRAWN means the former public release was withdrawn and no current public download exists. NO_PUBLIC_RELEASE means no public release of the product exists yet.",
     "labels": {
       "AVAILABLE": "Public release",
-      "NO_PUBLIC_RELEASE": "No public release yet"
+      "NO_PUBLIC_RELEASE": "No public release yet",
+      "WITHDRAWN": "Withdrawn · unavailable"
     }
   },
   "productGroups": [
@@ -48,6 +51,14 @@
       "note": "A look inside the workbench. ProofShot v2.0.0 is publicly available for Windows.",
       "availability": [
         "NO_PUBLIC_RELEASE"
+      ]
+    },
+    {
+      "id": "withdrawn",
+      "label": "Withdrawn",
+      "note": "Known products with a withdrawn release and no current public download.",
+      "availability": [
+        "WITHDRAWN"
       ]
     }
   ],
@@ -107,8 +118,8 @@
       "name": "Reality Gate",
       "displayName": "Reality Gate",
       "route": "/reality-gate/",
-      "state": "pilot",
-      "productStatus": "PUBLIC_RELEASE",
+      "state": "withdrawn",
+      "productStatus": "WITHDRAWN",
       "platforms": [
         "Windows"
       ],
@@ -125,21 +136,25 @@
         "cardImageAlt": "Reality Gate run complete, showing a SUCCESS badge beside a VERIFIED RECEIPT badge.",
         "cardCta": "Explore Reality Gate",
         "cardImageWidth": 960,
-        "cardImageHeight": 540
+        "cardImageHeight": 540,
+        "downloadUnavailable": true,
+        "downloadNotice": "No successor release has been publicly proven."
       },
       "release": {
-        "publicVersion": "1.1.0",
+        "publicVersion": null,
         "candidateVersion": null,
-        "releaseStatus": "PUBLIC_RELEASE",
-        "publishedAt": "2026-08-15"
+        "releaseStatus": "WITHDRAWN",
+        "publishedAt": "2026-08-15",
+        "withdrawnVersion": "1.1.0",
+        "withdrawalReason": "Security packaging defect; v1.1.0 must not be distributed."
       },
       "artifacts": [
         {
           "filename": "Reality-Gate-1.1.0-Developer-Pilot.zip",
           "sizeBytes": null,
           "sha256": "58cc27d22bdee8157ee4598e116e17ff42d0efc95630c97bee4b2bc6be6ce756",
-          "downloadUrl": "https://downloads.theprooffoundry.com/reality-gate/v1.1.0/Reality-Gate-1.1.0-Developer-Pilot.zip",
-          "sha256Url": "https://downloads.theprooffoundry.com/reality-gate/v1.1.0/Reality-Gate-1.1.0-Developer-Pilot.zip.sha256.txt",
+          "downloadUrl": null,
+          "sha256Url": null,
           "signingStatus": "UNSIGNED",
           "platform": "Windows",
           "distType": "Windows Installer ZIP"
@@ -171,31 +186,24 @@
           "result": "20/20"
         }
       ],
-      "evidence": [
-        {
-          "label": "SHA256SUMS",
-          "url": "https://downloads.theprooffoundry.com/reality-gate/v1.1.0/Reality-Gate-1.1.0-Developer-Pilot.zip.sha256.txt"
-        }
-      ],
+      "evidence": [],
       "limits": [
         "The SHA-256 is the checksum of the ZIP; the installer EXE inside carries its own checksum in BUILD-INFO.",
         "Windows SmartScreen may prompt on first launch — verify the ZIP SHA-256 first.",
         "Checksum is not a code signature."
       ],
-      "downloadUrl": "https://downloads.theprooffoundry.com/reality-gate/v1.1.0/Reality-Gate-1.1.0-Developer-Pilot.zip",
-      "downloadLabel": "Download Developer Pilot v1.1.0",
+      "downloadUrl": null,
+      "downloadLabel": null,
       "distType": "Windows Installer ZIP",
-      "build": "Windows installer EXE delivered inside a ZIP archive. The published SHA-256 is the checksum of the ZIP you download; the installer EXE inside carries its own checksum in the build's BUILD-INFO.",
+      "build": "Historical Windows installer ZIP record for v1.1.0. The package was withdrawn after a security packaging defect and is not available for download.",
       "sha256": "58cc27d22bdee8157ee4598e116e17ff42d0efc95630c97bee4b2bc6be6ce756",
-      "sha256Url": "https://downloads.theprooffoundry.com/reality-gate/v1.1.0/Reality-Gate-1.1.0-Developer-Pilot.zip.sha256.txt",
+      "sha256Url": null,
       "testStatus": "269/269",
       "testCount": "269/269",
-      "releaseNote": "Developer Pilot v1.1.0 (Windows). Suite composition: Static 269/269 · Live registry 24/24 · Installed runtime 20/20 (269/269 canonical). Pre-pilot audit: PILOT READY, no blockers, no overstated claims; two non-blocking notes (BUG-001 port discrepancy, BUG-002 IPv4 loopback binding) affect standalone server execution only, not the packaged app. Windows SmartScreen may prompt on first launch — verify the ZIP SHA-256 first.",
+      "releaseNote": "Historical v1.1.0 qualification record: Static 269/269 · Live registry 24/24 · Installed runtime 20/20. The v1.1.0 package was later withdrawn after a security packaging defect. This record does not establish current availability or successor release status.",
       "proofStatus": "verified",
       "lastVerified": "2026-08-15",
-      "proofLinks": [
-        "https://downloads.theprooffoundry.com/reality-gate/v1.1.0/Reality-Gate-1.1.0-Developer-Pilot.zip.sha256.txt"
-      ]
+      "proofLinks": []
     },
     {
       "id": "cache-vault",

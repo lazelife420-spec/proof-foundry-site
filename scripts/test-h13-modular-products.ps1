@@ -514,6 +514,39 @@ $badTheme = Invoke-ModuleFixture 'module-v2-bad-theme' { param($modDir)
 Assert ($badTheme.Exit -ne 0 -and $badTheme.Output -match 'invalid theme.accent') 'unchecked theme value rejected'
 Write-Host ""
 
+# ── TEST 17: generic withdrawn/unavailable release state ─────────────────────
+Write-Host "--- TEST 17: withdrawn release state is generic and preserves product/history ---"
+$withdrawn = Invoke-ModuleFixture 'generic-withdrawn' { param($modDir)
+  $content = '<main id="main-content"><div class="product-shell"><!-- @product-breadcrumb --><section id="download"><h2>Release availability</h2>{{product.withdrawalNotice}}<div>{{product.downloadBlock}}</div></section><!-- @product-related --></div></main>'
+  New-FixtureModule $modDir 'fixture-product' @{} $content | Out-Null
+} -RealOut -mutateManifest { param($m)
+  $product = (@($m.products | Where-Object { $_.id -eq 'cleanroom' }))[0] | ConvertTo-Json -Depth 30 | ConvertFrom-Json
+  $product.id = 'fixture-product'; $product.name = 'Fixture Product'; $product.displayName = 'Fixture Product'; $product.route = '/fixture-product/'
+  $product | Add-Member -NotePropertyName featured -NotePropertyValue $false -Force
+  $formerVersion = [string]$product.release.publicVersion
+  $product.state = 'withdrawn'
+  $product.productStatus = 'WITHDRAWN'
+  $product.release.releaseStatus = 'WITHDRAWN'
+  $product.release | Add-Member -NotePropertyName withdrawnVersion -NotePropertyValue $formerVersion -Force
+  $product.release | Add-Member -NotePropertyName withdrawalReason -NotePropertyValue 'Fixture withdrawal for generic-state coverage.' -Force
+  $product.release.publicVersion = $null
+  $product.release.candidateVersion = $null
+  $product.downloadUrl = $null; $product.downloadLabel = $null; $product.sha256Url = $null
+  $product.presentation | Add-Member -NotePropertyName downloadUnavailable -NotePropertyValue $true -Force
+  $product.presentation | Add-Member -NotePropertyName downloadNotice -NotePropertyValue 'No successor release has been publicly proven.' -Force
+  foreach ($artifact in @($product.artifacts)) { $artifact.downloadUrl = $null; $artifact.sha256Url = $null }
+  $product.evidence = @(); $product.proofLinks = @()
+  $m.products += $product
+  $m
+}
+Assert ($withdrawn.Exit -eq 0) 'another catalog product builds with the shared withdrawn state'
+$withdrawnPage = Get-Content (Join-Path $withdrawn.OutDir 'fixture-product\index.html') -Raw -Encoding UTF8
+$withdrawnTruth = Get-Content (Join-Path $withdrawn.OutDir 'truth\products\fixture-product.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+Assert ((Test-Path (Join-Path $withdrawn.OutDir 'fixture-product\index.html')) -and $withdrawnPage -match '<p class="availability-notice"><strong>Withdrawn:</strong> v1\.0\.7 is not available for download' -and $withdrawnPage -match 'Downloads currently unavailable' -and $withdrawnPage -notmatch '&lt;p class=&quot;availability-notice' -and $withdrawnPage -notmatch '<a[^>]+>\s*Download') 'withdrawn state retains its route, renders its notice as HTML, and suppresses the product download CTA'
+Assert ($withdrawnTruth.release.releaseStatus -eq 'WITHDRAWN' -and $withdrawnTruth.release.withdrawnVersion -eq '1.0.7' -and $withdrawnTruth.version -eq $null -and $withdrawnTruth.download.available -eq $false -and $withdrawnTruth.artifacts[0].sha256) 'withdrawn machine truth preserves history without current availability'
+Assert ((Get-Content (Join-Path $withdrawn.OutDir 'software\index.html') -Raw -Encoding UTF8) -match 'fixture-product' -and (Get-Content (Join-Path $withdrawn.OutDir 'truth-files\fixture-product\index.html') -Raw -Encoding UTF8) -match 'Withdrawn v1\.0\.7') 'withdrawn product remains discoverable with matching human truth'
+Write-Host ""
+
 Write-Host "=== RESULT: $passed passed, $failed failed ==="
 if ($failed -gt 0) { exit 1 }
 exit 0

@@ -117,7 +117,7 @@ Assert-Condition ($cv -match 'https://downloads\.theprooffoundry\.com/cache-vaul
 $cvShaMatches = ([regex]::Matches($cv, '717ed13efd3d8d4e5a16d4e412ed5be0fd20b0219918f913d7d2b44f021cae7e')).Count
 Assert-Condition ($cvShaMatches -eq 2) "CV - v0.2.4 SHA-256 rendered by exactly one canonical verify block"
 Assert-Condition ($cv -match 'v0\.2\.4 is the current public Windows release') "CV - final public release state intact"
-Assert-Condition ($rg -match 'Download v1\.1\.0 Developer Pilot') "RG - canonical pilot download action intact"
+Assert-Condition ($rg -match 'Withdrawn:</strong> v1\.1\.0 is not available for download' -and $rg -match 'Downloads currently unavailable' -and $rg -notmatch 'Download v1\.1\.0 Developer Pilot' -and $rg -notmatch 'href="https://downloads\.theprooffoundry\.com/reality-gate/v1\.1\.0/') "RG - withdrawn release state suppresses the former pilot download action"
 
 # --- Reality Gate recovery evidence labeling guards ---
 Assert-Condition ($rg -match 'Subject:\s*<strong>Demo Widget Service</strong>' -and $rg -match 'Status:\s*<strong>Interface demonstration</strong>') "RG - recovery screenshot is identified as Demo Widget Service interface demonstration"
