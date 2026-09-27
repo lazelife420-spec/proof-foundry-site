@@ -15,6 +15,8 @@ Assert-H9 'studio proposition and editorial hero render' ($homeHtml -match 'BUIL
 Assert-H9 'hero has local software and proof-standard actions' ($homeHtml -match 'href="/software/"' -and $homeHtml -match 'href="/proof-standard/"')
 Assert-H9 'workflow explains Build, Qualify, Record, Publish' ($homeHtml -match 'Build' -and $homeHtml -match 'Qualify' -and $homeHtml -match 'Record' -and $homeHtml -match 'Publish')
 Assert-H9 'portfolio order and membership match visible module presentation metadata' (($rendered -join ',') -ceq (($eligible | ForEach-Object id) -join ',') -and $rendered.Count -eq $eligible.Count)
+$featuredModules = @($eligible | Where-Object { $_.homepage.presentation -eq 'feature' })
+Assert-H9 'exactly one module owns the featured portfolio presentation' ($featuredModules.Count -eq 1 -and ([regex]::Matches($homeHtml, 'data-presentation="feature"')).Count -eq 1)
 Assert-H9 'portfolio cards bind route, image, accent, presentation and status to module/state' (@($eligible | Where-Object { $m=$_; $homeHtml -notmatch ('data-module="' + [regex]::Escape([string]$m.id) + '"[^>]*data-presentation="' + [regex]::Escape([string]$m.homepage.presentation) + '"') -or $homeHtml -notmatch [regex]::Escape([string]$m.route) -or $homeHtml -notmatch [regex]::Escape([string]$m.card.media) -or $homeHtml -notmatch [regex]::Escape([string]$m.theme.accent) }).Count -eq 0)
 Assert-H9 'secondary proof links remain reachable' ($homeHtml -match 'href="/proof-standard/"' -and $homeHtml -match 'href="/truth-files/"' -and $homeHtml -match 'href="/proof/"')
 Assert-H9 'closing studio statement exists' ($homeHtml -match 'Same standard\.' -and $homeHtml -match 'Different tools\.')

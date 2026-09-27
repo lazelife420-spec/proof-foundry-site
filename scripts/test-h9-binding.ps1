@@ -25,6 +25,7 @@ $manifestIds = @($manifest.products | Where-Object visible | ForEach-Object id |
 $registryIds = @($registry.products | ForEach-Object id | Sort-Object)
 Assert-Binding 'registry identities bind to public module and manifest identities' ((($moduleIds -join ',') -ceq ($manifestIds -join ',')) -and (($registryIds -join ',') -ceq ($manifestIds -join ',')))
 Assert-Binding 'module metadata → registry → generic role renderer → generated root order agrees' ((($renderedRoot -join ',') -ceq (($rootModules | ForEach-Object id) -join ',')) -and $renderedRoot.Count -eq $rootModules.Count)
+Assert-Binding 'exactly one registry module carries the featured portfolio presentation' (@($rootModules | Where-Object { $_.homepage.presentation -eq 'feature' }).Count -eq 1 -and ([regex]::Matches($homeHtml, 'data-presentation="feature"')).Count -eq 1)
 $renderer = Read-Source 'scripts/build-site.ps1'
 $homeRendererStart = $renderer.IndexOf('function Get-StudioPortfolioEntries')
 $homeRendererEnd = $renderer.IndexOf('function Get-PublicCatalogCount')
