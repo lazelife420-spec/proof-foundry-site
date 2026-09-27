@@ -239,7 +239,7 @@ $evidenceControl = Invoke-ModuleFixture 'withdrawn-evidence-priority' {
   param($modDir)
   foreach ($file in Get-ChildItem $modDir -Directory | ForEach-Object { Join-Path $_.FullName 'module.json' }) {
     $m = Get-Content $file -Raw | ConvertFrom-Json
-    if ($m.homepage) { $m.homepage.evidencePriority = 90; if ($m.id -eq 'reality-gate') { $m.homepage.evidencePriority = 1 } }
+    if ($m.homepage) { $m.homepage | Add-Member -NotePropertyName evidencePriority -NotePropertyValue 90 -Force; if ($m.id -eq 'reality-gate') { $m.homepage | Add-Member -NotePropertyName evidencePriority -NotePropertyValue 1 -Force } }
     [IO.File]::WriteAllText($file, ($m | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
   }
 } -RealOut
