@@ -114,14 +114,10 @@
     "catalog": true
   },
   "homepage": {
-    "tier": "secondary",
-    "variant": "device",
+    "role": "studioPortfolio",
     "order": 90,
-    "headline": "Weather for what you do.",
-    "lede": "What to wear now. What to bring later.",
-    "media": "/assets/forgecast/v030-today.png",
-    "mediaAlt": "ForgeCast Today showing practical weather decisions",
-    "mediaCaption": "Recorded weather · Android app",
-    "note": "Recorded weather. Forecasts use network data. No analytics tracking."
+    "presentation": "compact",
+    "visibility": "visible",
+    "evidencePriority": 5
   }
 }

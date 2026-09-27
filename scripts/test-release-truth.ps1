@@ -53,7 +53,8 @@ Assert-Condition ($loHtml -match 'Windows may show an unrecognized-app or &quot;
 
 # 5. Machine Registry parity assertion (R01)
 $registryJson = Get-Content (Join-Path $publicDir "proof\index.json") -Raw | ConvertFrom-Json
-Assert-Condition ($registryJson.products.Count -eq 7) "Registry covers all 7 products"
+$canonicalProductCount = @((Get-Content $manifestPath -Raw -Encoding UTF8 | ConvertFrom-Json).products | Where-Object visible).Count
+Assert-Condition ($registryJson.products.Count -eq $canonicalProductCount) 'Registry covers every canonical visible product dynamically'
 
 $rgRegistry = $registryJson.products | Where-Object { $_.id -eq 'reality-gate' }
 Assert-Condition ($rgRegistry.release.releaseStatus -eq 'WITHDRAWN' -and $null -eq $rgRegistry.release.publicVersion) 'Reality Gate has no current public release version'

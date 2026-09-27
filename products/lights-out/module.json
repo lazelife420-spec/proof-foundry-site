@@ -159,13 +159,10 @@
     "catalog": true
   },
   "homepage": {
-    "tier": "secondary",
-    "variant": "compact",
+    "role": "studioPortfolio",
     "order": 50,
-    "headline": "A deliberate end to the day.",
-    "lede": "Set the countdown. Let the PC wind down. Stay in control from bed.",
-    "media": "/assets/lights-out/tonight-active-hero.png",
-    "mediaAlt": "Lights Out interface showing a sample dry-run night session",
-    "mediaCaption": "Sample dry run"
+    "presentation": "compact",
+    "visibility": "visible",
+    "evidencePriority": 3
   }
 }

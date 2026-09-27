@@ -105,14 +105,9 @@
     "catalog": true
   },
   "homepage": {
-    "tier": "major",
-    "variant": "workstation",
-    "order": 40,
-    "headline": "Stage the work. Make the call.",
-    "lede": "RAM-first staging. An explicit commit boundary.",
-    "media": "/assets/ghostlayer/gl-staged-files.png",
-    "mediaAlt": "GhostLayer RAM staging with sample files and explicit commit controls",
-    "mediaCaption": "Authentic RAM staging interface",
-    "note": "External editing may create temporary disk copies."
+    "role": "studioPortfolio",
+    "order": 30,
+    "presentation": "feature",
+    "visibility": "visible"
   }
 }

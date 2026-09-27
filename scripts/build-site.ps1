@@ -1140,9 +1140,6 @@ function Build-ProductCards($groupId, [bool]$includeFeatured = $false) {
   foreach ($p in $allProductState) {
     $module = @($productRegistry | Where-Object { $_.id -eq $p.id }) | Select-Object -First 1
     if ($module.placement -and $module.placement.catalog -eq $false) { continue }
-    # The featured product gets its own full-width composition above the groups
-    # rather than a card, so it is not also emitted into the grid.
-    if (($module.homepage.tier -eq 'featured' -or $p.featured) -and -not $includeFeatured) { continue }
     if ($groupId -and (ProductGroupId $p) -ne $groupId) { continue }
     $cards += (Render-ProductCard $p $cardTemplate)
   }
@@ -1209,17 +1206,14 @@ function Build-CatalogSummary {
   return ($parts -join " $dot ")
 }
 
-function Get-HomepageProductModules {
+function Get-StudioPortfolioEntries {
   $eligible = @()
   foreach ($module in $productRegistry) {
-    # Placement is owned by homepage.tier. Hidden means the module still has a
-    # public route/catalog/truth record, but is intentionally omitted here.
-    if (-not $module.homepage -or $module.homepage.tier -eq 'hidden') { continue }
+    if ($module.lifecycle -ne 'public-eligible' -or $module.visibility -ne 'visible') { continue }
+    if (-not $module.homepage -or $module.homepage.role -ne 'studioPortfolio' -or $module.homepage.visibility -ne 'visible') { continue }
     $p = $productStateSource.Get($module.id)
-    if (-not $p) { continue }
-    $tier = [string]$module.homepage.tier
-    $order = [int]$module.homepage.order
-    $eligible += [PSCustomObject]@{ Module=$module; Product=$p; Tier=$tier; Order=$order }
+    if (-not $p -or -not $p.visible) { continue }
+    $eligible += [PSCustomObject]@{ Module=$module; Product=$p; Order=[int]$module.homepage.order }
   }
   return @($eligible | Sort-Object Order, { [int]$_.Module.order })
 }
@@ -1235,71 +1229,60 @@ function Get-HomepageStatus($product, $tokens) {
   return $status
 }
 
-function Build-HomepageFeatured {
-  $entry = @(Get-HomepageProductModules | Where-Object { $_.Tier -eq 'featured' })
-  if (-not $entry.Count) { return '' }
-  if ($entry.Count -gt 1) { throw "Homepage supports one featured module; found $($entry.Count)" }
-  $module = $entry[0].Module; $p = $entry[0].Product; $homeData = $module.homepage; $tokens = ProductTokens $p
-  $name = if ($p.homeName) { $p.homeName } else { $p.name }
-  $image = if ($homeData.media) { $homeData.media } else { $module.hero.media.src }
-  $alt = if ($homeData.mediaAlt) { $homeData.mediaAlt } else { $module.hero.media.alt }
-  $caption = if ($homeData.mediaCaption) { $homeData.mediaCaption } else { $module.hero.media.caption }
-  $headline = if ($homeData.headline) { $homeData.headline } else { $module.hero.headline }
-  $lede = if ($homeData.lede) { $homeData.lede } else { $module.hero.lede }
-  $homeStatus = Get-HomepageStatus $p $tokens
+function Get-StudioEvidenceCandidate {
+  $candidates = @()
+  foreach ($entry in Get-StudioPortfolioEntries) {
+    $module = $entry.Module; $product = $entry.Product
+    if (-not ($module.homepage.evidencePriority -is [int] -or $module.homepage.evidencePriority -is [long])) { continue }
+    if ($product.release.releaseStatus -ne 'PUBLIC_RELEASE' -or [string]::IsNullOrWhiteSpace([string]$product.release.publicVersion)) { continue }
+    if ($product.verification.status -ne 'VERIFIED' -or $product.presentation.downloadUnavailable -or [string]::IsNullOrWhiteSpace([string]$product.downloadUrl)) { continue }
+    if ([string]$product.sha256 -notmatch '^[a-fA-F0-9]{64}$' -or [string]::IsNullOrWhiteSpace([string]$product.sha256Url)) { continue }
+    $artifact = @($product.artifacts | Where-Object { $_.downloadUrl -eq $product.downloadUrl -and $_.sha256 -eq $product.sha256 }) | Select-Object -First 1
+    if (-not $artifact -or [string]::IsNullOrWhiteSpace([string]$artifact.filename) -or -not $module.card.media) { continue }
+    $candidates += [PSCustomObject]@{ Entry=$entry; Artifact=$artifact; Priority=[int]$module.homepage.evidencePriority; VerifiedAt=[string]$product.verification.verifiedAt }
+  }
+  return @($candidates | Sort-Object -Property @{Expression='Priority';Descending=$false},@{Expression='VerifiedAt';Descending=$true})
+}
+
+function Build-StudioEvidence {
+  $candidate = @(Get-StudioEvidenceCandidate) | Select-Object -First 1
+  if (-not $candidate) { return '' }
+  $module = $candidate.Entry.Module; $product = $candidate.Entry.Product; $artifact = $candidate.Artifact
+  $name = if ($product.homeName) { [string]$product.homeName } else { [string]$product.name }
+  $mark = if ($module.brand.mark) { '<img class="studio-evidence-mark" src="' + (Html-Attr $module.brand.mark) + '" alt="" width="36" height="36"/>' } else { '' }
+  $proofId = 'receipt-' + [string]$module.id
   return @"
-<section class="h9-hero h9-auto-featured h9-auto-variant-$($homeData.variant)" style="--scene-accent:$(Html-Attr $module.theme.accent)" data-product="$(Html-Attr $module.id)" aria-labelledby="home-featured-title">
-<div class="h9-hero-forge" aria-hidden="true"></div><div class="h9-hero-inner"><div class="h9-hero-copy">
-<div class="h9-studio-chip">Independent software studio · $(Html-Text $name)</div>
-<h1 id="home-featured-title"><span>$(Html-Text $headline)</span></h1>
-<p>$(Html-Text $lede)</p>
-<div class="h9-actions"><a class="button button-primary" href="$(Html-Attr $module.route)">Explore $(Html-Text $name) <span aria-hidden="true">→</span></a><a class="button h9-button-ghost" href="/software/">Explore our software <span aria-hidden="true">→</span></a></div>
-<ul class="h9-principles" aria-label="Studio principles"><li><span aria-hidden="true">◇</span><strong>Independent<br/><small>By design</small></strong></li><li><span aria-hidden="true">▱</span><strong>Inspectable<br/><small>Real records</small></strong></li><li><span aria-hidden="true">◷</span><strong>Local-first<br/><small>Where it fits</small></strong></li></ul>
-</div><div class="h9-hero-product"><figure class="h9-auto-featured-media"><a href="$(Html-Attr $module.route)" aria-label="Explore $(Html-Attr $name)"><img src="$(Html-Attr $image)" alt="$(Html-Attr $alt)" loading="eager" fetchpriority="high" decoding="async"/></a><figcaption><span>$(Html-Text $caption)</span><span>$(Html-Text $tokens.platform) · $(Html-Text $homeStatus)</span></figcaption></figure></div></div>
-</section>
+<aside class="studio-evidence" aria-label="Public release evidence">
+  <div class="studio-evidence-head"><span>Public release evidence</span><span class="studio-evidence-stamp">$(Html-Text $product.verification.status)</span></div>
+  <div class="studio-evidence-body">
+    <div class="studio-evidence-product">$mark<div><p>$(Html-Text $product.release.releaseStatus) · v$(Html-Text $product.release.publicVersion)</p><h2>$(Html-Text $name)</h2></div></div>
+    <dl class="studio-evidence-facts"><dt>Artifact</dt><dd>$(Html-Text $artifact.filename)</dd><dt>SHA-256</dt><dd><code>$(Html-Text $product.sha256)</code></dd><dt>Verified</dt><dd>$(Html-Text $product.verification.verifiedAt)</dd></dl>
+    <div class="studio-evidence-actions"><a href="$(Html-Attr $product.sha256Url)">Inspect checksum <span aria-hidden="true">↗</span></a><a href="/proof/#$(Html-Attr $proofId)">Open release record <span aria-hidden="true">→</span></a></div>
+    <p class="studio-evidence-caption">Evidence is selected from a verified, currently published release record.</p>
+  </div>
+</aside>
 "@
 }
 
-function Build-HomepageMajorScenes {
-  $scenes = @()
-  foreach ($entry in @(Get-HomepageProductModules | Where-Object { $_.Tier -eq 'major' })) {
-    $module=$entry.Module; $p=$entry.Product; $homeData=$module.homepage; $tokens=ProductTokens $p
-    $name = if ($p.homeName) { $p.homeName } else { $p.name }
-    $image = if ($homeData.media) { $homeData.media } else { $module.hero.media.src }
-    $alt = if ($homeData.mediaAlt) { $homeData.mediaAlt } else { $module.hero.media.alt }
-    $caption = if ($homeData.mediaCaption) { $homeData.mediaCaption } else { $module.hero.media.caption }
-    $headline = if ($homeData.headline) { $homeData.headline } else { $module.hero.headline }
-    $lede = if ($homeData.lede) { $homeData.lede } else { $module.hero.lede }
-    $variant = if ($homeData.variant) { $homeData.variant } else { 'workstation' }
-    $homeStatus = Get-HomepageStatus $p $tokens
-    $noteHtml = if ($homeData.note) { '<p class="h9-scene-note">' + (Html-Text $homeData.note) + '</p>' } else { '' }
-    $scenes += @"
-<section class="h9-scene h9-auto-scene h9-auto-variant-$variant" style="--scene-accent:$(Html-Attr $module.theme.accent)" data-product="$(Html-Attr $module.id)" aria-labelledby="home-scene-$(Html-Attr $module.id)"><div class="h9-scene-inner">
-<div class="h9-scene-copy h9-reveal"><p class="h9-kicker">$(Html-Text $name)</p><h2 id="home-scene-$($module.id)">$(Html-Text $headline)</h2><p>$(Html-Text $lede)</p><span class="h9-product-status">$(Html-Text $tokens.platform) · $(Html-Text $homeStatus)</span><a class="h9-text-link" href="$(Html-Attr $module.route)">Explore $(Html-Text $name) <span aria-hidden="true">→</span></a>$noteHtml</div>
-<figure class="h9-auto-scene-media h9-reveal"><a href="$(Html-Attr $module.route)" aria-label="Explore $(Html-Attr $name)"><img src="$(Html-Attr $image)" alt="$(Html-Attr $alt)" loading="lazy" decoding="async"/></a><figcaption>$(Html-Text $caption)</figcaption></figure>
-</div></section>
-"@
-  }
-  return ($scenes -join "`n")
-}
-
-function Build-HomepageSecondary {
+function Build-StudioPortfolio {
   $cards = @()
-  foreach ($entry in @(Get-HomepageProductModules | Where-Object { $_.Tier -eq 'secondary' })) {
-    $module=$entry.Module; $p=$entry.Product; $homeData=$module.homepage; $tokens=ProductTokens $p
-    $name = if ($p.homeName) { $p.homeName } else { $p.name }
-    $image = if ($homeData.media) { $homeData.media } else { $module.card.media }
-    $alt = if ($homeData.mediaAlt) { $homeData.mediaAlt } else { $module.card.mediaAlt }
-    $headline = if ($homeData.headline) { $homeData.headline } else { $module.card.tagline }
-    $homeStatus = Get-HomepageStatus $p $tokens
-    $noteHtml = if ($homeData.note) { '<p class="h9-scene-note">' + (Html-Text $homeData.note) + '</p>' } else { '' }
+  foreach ($entry in Get-StudioPortfolioEntries) {
+    $module = $entry.Module; $product = $entry.Product
+    $name = if ($product.homeName) { [string]$product.homeName } else { [string]$product.name }
+    $image = [string]$module.card.media; $alt = [string]$module.card.mediaAlt
+    $tagline = if ($module.card.tagline) { [string]$module.card.tagline } else { [string]$module.hero.lede }
+    $tokens = ProductTokens $product
+    $status = Get-HomepageStatus $product $tokens
+    $accent = if ($module.theme.accent) { [string]$module.theme.accent } else { '#d6bd91' }
+    $accent2 = if ($module.theme.accentSecondary) { [string]$module.theme.accentSecondary } else { $accent }
     $cards += @"
-<article class="h9-mini h9-auto-mini h9-auto-variant-$($homeData.variant)" style="--scene-accent:$(Html-Attr $module.theme.accent)" data-product="$(Html-Attr $module.id)"><div class="h9-mini-copy"><h3>$(Html-Text $name)</h3><p>$(Html-Text $headline)</p><span class="h9-mini-status">$(Html-Text $tokens.platform) · $(Html-Text $homeStatus)</span>$noteHtml<a href="$(Html-Attr $module.route)">Explore <span aria-hidden="true">→</span></a></div><div class="h9-mini-media"><img src="$(Html-Attr $image)" alt="$(Html-Attr $alt)" loading="lazy" decoding="async"/><span class="h9-media-note">$(Html-Text $homeData.mediaCaption)</span></div></article>
+<article class="studio-product-card" data-module="$(Html-Attr $module.id)" data-presentation="$(Html-Attr $module.homepage.presentation)" style="--product-accent:$(Html-Attr $accent);--product-accent-2:$(Html-Attr $accent2)">
+  <a class="studio-product-media" href="$(Html-Attr $module.route)" aria-label="Explore $(Html-Attr $name)"><img src="$(Html-Attr $image)" alt="$(Html-Attr $alt)" loading="lazy" decoding="async"/></a>
+  <div class="studio-product-copy"><div class="studio-product-eyebrow"><span>$(Html-Text $module.taxonomy.category)</span><span>$(Html-Text $tokens.platform)</span></div><h3>$(Html-Text $name)</h3><p>$(Html-Text $tagline)</p><p class="studio-product-state">$(Html-Text $status)</p><a class="studio-product-open" href="$(Html-Attr $module.route)">Explore product <span aria-hidden="true">→</span></a></div>
+</article>
 "@
   }
-  if (-not $cards.Count) { return '' }
-  $open = '<section class="h9-collection h9-secondary-strip" aria-labelledby="collection-title"><h2 class="h9-visually-hidden" id="collection-title">More from the Foundry</h2><div class="products-grid h9-collection-grid">'
-  return $open + "`n" + ($cards -join "`n") + "`n</div></section>"
+  return ($cards -join "`n")
 }
 
 function Get-PublicCatalogCount { return @(Get-CatalogProductState).Count }
@@ -2091,7 +2074,6 @@ if (-not (Test-Path $publicDir)) { New-Item -ItemType Directory $publicDir | Out
 $KnownProductSections = @('hero','film','outcomes','how','story','get','onboard','faq','identity','evidence','privacy','related','final-cta','gallery','features','copy','guided-tour','devices','integrations','download','technical-record')
 $KnownStructuredRenderers = @('outcomes','features','how','onboard','guided-tour','devices','integrations','faq','story','get','identity','evidence','privacy','related','final-cta','gallery','copy','download','technical-record')
 $KnownHeroVariants = @('split','centered','cinematic','console','device','immersive')
-$KnownHomepageVariants = @('forge-scene','workstation','device','console','wide-screen','compact')
 $KnownLifecycles = @('draft','preview','public-eligible')
 $KnownAtmospheres = @('archive','night','control-room','weather','carbon','memory','clean','foundry','none')
 $ReservedRoutes = @('/','/software/','/truth/','/truth-files/','/proof/','/proof-standard/','/support/','/roadmap/','/api/','/assets/','/brand/','/reports/','/about/','/founders/','/404','/sitemap.xml','/robots.txt','/_redirects','/_headers')
@@ -2150,14 +2132,17 @@ function Get-ProductRegistry {
         if ($value -and $value -notmatch '^(#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?|rgba?\(\s*(\d{1,3}\s*,\s*){2}\d{1,3}(\s*,\s*(0|1|0?\.\d+))?\s*\))$') { $regErrors += "${tag}: invalid theme.$colorKey; use hex or rgb(a)" }
       }
       if ($m.theme.atmosphere -and $m.theme.atmosphere -notin $KnownAtmospheres) { $regErrors += "${tag}: unsupported atmosphere '$($m.theme.atmosphere)'" }
-      if ($m.lifecycle -eq 'public-eligible' -and -not $m.homepage) { $regErrors += "${tag}: public-eligible modules require homepage presentation metadata (tier hidden is allowed)" }
+      if ($m.lifecycle -eq 'public-eligible' -and -not $m.homepage) { $regErrors += "${tag}: public-eligible modules require homepage presentation metadata" }
       if ($m.homepage) {
-        if ($m.homepage.tier -notin @('featured','major','secondary','hidden')) { $regErrors += "${tag}: homepage.tier must be featured|major|secondary|hidden" }
-        if ($m.homepage.variant -notin $KnownHomepageVariants) { $regErrors += "${tag}: unsupported homepage.variant '$($m.homepage.variant)'" }
+        if ($m.homepage.role -ne 'studioPortfolio') { $regErrors += "${tag}: homepage.role must be studioPortfolio" }
+        if ($m.homepage.presentation -notin @('feature','standard','compact')) { $regErrors += "${tag}: homepage.presentation must be feature|standard|compact" }
+        if ($m.homepage.visibility -notin @('visible','hidden')) { $regErrors += "${tag}: homepage.visibility must be visible|hidden" }
         if (-not ($m.homepage.order -is [int] -or $m.homepage.order -is [long] -or $m.homepage.order -is [double])) { $regErrors += "${tag}: homepage.order must be numeric" }
+        if ($null -ne $m.homepage.evidencePriority -and -not ($m.homepage.evidencePriority -is [int] -or $m.homepage.evidencePriority -is [long])) { $regErrors += "${tag}: homepage.evidencePriority must be a positive integer when specified" }
+        if ($null -ne $m.homepage.evidencePriority -and [int]$m.homepage.evidencePriority -lt 1) { $regErrors += "${tag}: homepage.evidencePriority must be a positive integer when specified" }
       }
-      if ($m.placement -and $m.placement.PSObject.Properties['homepage']) { $regErrors += "${tag}: homepage placement is controlled by homepage.tier; remove placement.homepage" }
-      foreach ($asset in @($m.brand.mark, $m.brand.logo, $m.brand.monochrome, $m.hero.media.src, $m.card.media, $m.homepage.media)) {
+      if ($m.placement -and $m.placement.PSObject.Properties['homepage']) { $regErrors += "${tag}: homepage placement is controlled by homepage presentation metadata; remove placement.homepage" }
+      foreach ($asset in @($m.brand.mark, $m.brand.logo, $m.brand.monochrome, $m.hero.media.src, $m.card.media)) {
         if (-not $asset) { continue }
         if ($asset -notmatch '^/assets/[a-zA-Z0-9._/-]+$' -or $asset.Contains('..')) { $regErrors += "${tag}: asset paths must be local /assets/... paths"; continue }
         $assetDiskPath = $null
@@ -2516,9 +2501,8 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   $html = $html -replace [regex]::Escape('{{catalogSummary}}'), (Build-CatalogSummary)
   $publicCatalogCount = [string](Get-PublicCatalogCount)
   $html = $html.Replace('{{publicProductCount}}', $publicCatalogCount)
-  $html = $html.Replace('<!-- @homepage-featured -->', (Build-HomepageFeatured))
-  $html = $html.Replace('<!-- @homepage-major-scenes -->', (Build-HomepageMajorScenes))
-  $html = $html.Replace('<!-- @homepage-secondary -->', (Build-HomepageSecondary))
+  $html = $html.Replace('<!-- @studio-evidence -->', (Build-StudioEvidence))
+  $html = $html.Replace('<!-- @studio-portfolio -->', (Build-StudioPortfolio))
   # The standalone catalog includes the featured product as a normal card.
   $catalogCards = (Build-ProductCards $null $true) -replace '<h4 class="card-name">', '<h3 class="card-name">' -replace '</h4>', '</h3>'
   $html = $html -replace '<!--\s*@all-products\s*-->', $catalogCards
@@ -2643,7 +2627,7 @@ if ($previewModule) {
   New-Item -ItemType Directory $previewDir -Force | Out-Null
   [System.IO.File]::WriteAllText((Join-Path $previewDir 'index.html'), $previewHtml, [System.Text.Encoding]::UTF8)
   $previewName = Html-Text $previewModule.brand.name
-  $previewHeadline = if ($previewModule.homepage.headline) { Html-Text $previewModule.homepage.headline } else { Html-Text $previewModule.hero.headline }
+  $previewHeadline = if ($previewModule.card.tagline) { Html-Text $previewModule.card.tagline } else { Html-Text $previewModule.hero.headline }
   $previewRoute = "/__preview/$($previewModule.id)/"
   $previewCatalogShell = @"
 <!doctype html>
@@ -2661,11 +2645,10 @@ if ($previewModule) {
   $previewCatalogDir = Join-Path $publicDir '__preview\software'
   New-Item -ItemType Directory $previewCatalogDir -Force | Out-Null
   [System.IO.File]::WriteAllText((Join-Path $previewCatalogDir 'index.html'), $previewCatalogHtml, [System.Text.Encoding]::UTF8)
-  $previewTier = if ($previewModule.homepage -and $previewModule.homepage.tier) { [string]$previewModule.homepage.tier } else { 'not-placed' }
-  $previewVariant = if ($previewModule.homepage.variant) { [string]$previewModule.homepage.variant } else { 'workstation' }
-  $previewMedia = if ($previewModule.homepage.media) { $previewModule.homepage.media } else { $previewModule.hero.media.src }
-  $previewMediaAlt = if ($previewModule.homepage.mediaAlt) { $previewModule.homepage.mediaAlt } else { $previewModule.hero.media.alt }
-  $previewNote = if ($previewModule.homepage.note) { '<p class="h9-scene-note">' + (Html-Text $previewModule.homepage.note) + '</p>' } else { '' }
+  $previewRole = if ($previewModule.homepage -and $previewModule.homepage.role) { [string]$previewModule.homepage.role } else { 'excluded' }
+  $previewPresentation = if ($previewModule.homepage.presentation) { [string]$previewModule.homepage.presentation } else { 'standard' }
+  $previewMedia = if ($previewModule.card.media) { [string]$previewModule.card.media } else { [string]$previewModule.hero.media.src }
+  $previewMediaAlt = if ($previewModule.card.mediaAlt) { [string]$previewModule.card.mediaAlt } else { [string]$previewModule.hero.media.alt }
   $previewHomeShell = @"
 <!doctype html>
 <!-- @page preview-home -->
@@ -2674,10 +2657,9 @@ if ($previewModule) {
 <link rel="stylesheet" href="/styles.css"/><link rel="stylesheet" href="/studio.css"/><link rel="stylesheet" href="/h9-homepage.css"/>
 </head><body class="studio storefront h9-binding-home product-preview">
 <!-- @include header -->
-<main id="main-content"><p class="h9-kicker" style="padding:20px 4%">LOCAL-ONLY HOMEPAGE PLACEMENT · $(Html-Text $previewTier) / $(Html-Text $previewVariant)</p>
-<section class="h9-scene h9-auto-scene h9-auto-variant-$(Html-Attr $previewVariant)" data-product="$(Html-Attr $previewModule.id)" data-homepage-tier="$(Html-Attr $previewTier)" aria-labelledby="preview-home-title">
-<div class="h9-scene-inner"><div class="h9-scene-copy"><p class="h9-kicker">$(Html-Text $previewName)</p><h1 id="preview-home-title">$(Html-Text $previewHeadline)</h1><p>$(Html-Text $previewModule.homepage.lede)</p>$previewNote<a class="h9-text-link" href="$(Html-Attr $previewRoute)">Open product preview →</a></div>
-<figure class="h9-auto-scene-media"><a href="$(Html-Attr $previewRoute)"><img src="$(Html-Attr $previewMedia)" alt="$(Html-Attr $previewMediaAlt)" loading="eager" decoding="async"/></a><figcaption>Preview scene · not in production homepage</figcaption></figure></div></section>
+<main id="main-content"><p class="h9-kicker" style="padding:20px 4%">LOCAL-ONLY HOMEPAGE PRESENTATION · $(Html-Text $previewRole) / $(Html-Text $previewPresentation)</p>
+<section class="studio-product-card" data-module="$(Html-Attr $previewModule.id)" data-presentation="$(Html-Attr $previewPresentation)" aria-labelledby="preview-home-title">
+<a class="studio-product-media" href="$(Html-Attr $previewRoute)"><img src="$(Html-Attr $previewMedia)" alt="$(Html-Attr $previewMediaAlt)" loading="eager" decoding="async"/></a><div class="studio-product-copy"><p class="studio-kicker">$(Html-Text $previewName)</p><h1 id="preview-home-title">$(Html-Text $previewHeadline)</h1><p>$(Html-Text $previewModule.card.summary)</p><a class="studio-product-open" href="$(Html-Attr $previewRoute)">Open product preview →</a></div></section>
 <p class="product-preview-notice"><a href="/__preview/software/">Preview catalog</a> · <a href="/__preview/$($previewModule.id)/">Product page</a></p></main>
 </body></html>
 "@

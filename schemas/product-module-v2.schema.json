@@ -56,49 +56,34 @@
     "homepage": {
       "type": "object",
       "required": [
-        "tier",
-        "variant",
-        "order"
+        "role",
+        "order",
+        "presentation",
+        "visibility"
       ],
       "properties": {
-        "tier": {
-          "enum": [
-            "featured",
-            "major",
-            "secondary",
-            "hidden"
-          ]
-        },
-        "variant": {
-          "enum": [
-            "forge-scene",
-            "workstation",
-            "device",
-            "console",
-            "wide-screen",
-            "compact"
-          ]
+        "role": {
+          "const": "studioPortfolio"
         },
         "order": {
           "type": "integer"
         },
-        "headline": {
-          "type": "string"
+        "presentation": {
+          "enum": [
+            "feature",
+            "standard",
+            "compact"
+          ]
         },
-        "lede": {
-          "type": "string"
+        "visibility": {
+          "enum": [
+            "visible",
+            "hidden"
+          ]
         },
-        "media": {
-          "$ref": "#/$defs/asset"
-        },
-        "mediaAlt": {
-          "type": "string"
-        },
-        "mediaCaption": {
-          "type": "string"
-        },
-        "note": {
-          "type": "string"
+        "evidencePriority": {
+          "type": "integer",
+          "minimum": 1
         }
       },
       "additionalProperties": false

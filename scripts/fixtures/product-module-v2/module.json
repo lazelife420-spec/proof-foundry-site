@@ -42,14 +42,10 @@
   },
   "taxonomy": { "category": "Fixture", "jobs": ["build", "modularity proof"] },
   "homepage": {
-    "tier": "secondary",
-    "variant": "compact",
+    "role": "studioPortfolio",
     "order": 90,
-    "headline": "A module built from data.",
-    "lede": "Shared renderer proof for an eighth product.",
-    "media": "/assets/products/fixture-product/media/hero.png",
-    "mediaAlt": "Fixture product sample screen",
-    "mediaCaption": "Fixture capture"
+    "presentation": "compact",
+    "visibility": "visible"
   },
   "sections": [
     {

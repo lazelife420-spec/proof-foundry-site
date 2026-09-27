@@ -63,7 +63,7 @@ $modulePath=Join-Path $products 'cache-vault-capsule-fixture/module.json'
 Assert ($valid.Exit -eq 0 -and (Test-Path $modulePath)) 'real-product capsule imports into a v2 module'
 $module=Get-Content -LiteralPath $modulePath -Raw | ConvertFrom-Json
 Assert ($module.lifecycle -eq 'preview' -and $module.visibility -eq 'hidden' -and -not $module.PSObject.Properties['version']) 'import remains preview-only and invents no release facts'
-Assert ($module.homepage.tier -eq 'secondary' -and -not $module.placement.PSObject.Properties['homepage']) 'capsule homepage tier maps to module metadata without a duplicate placement flag'
+Assert ($module.homepage.role -eq 'studioPortfolio' -and $module.homepage.presentation -eq 'compact' -and $module.homepage.visibility -eq 'visible' -and -not $module.placement.PSObject.Properties['homepage']) 'capsule placement normalizes into the single module homepage contract'
 Assert ((Test-Path (Join-Path $products 'cache-vault-capsule-fixture/logo.svg')) -and (Test-Path (Join-Path $products 'cache-vault-capsule-fixture/media/hero.png')) -and (Test-Path (Join-Path $products 'cache-vault-capsule-fixture/media/screenshots/01.png'))) 'brand, hero, and screenshot assets normalize to module-local paths'
 Assert ($valid.Output -match 'Before public eligibility') 'importer prints the remaining publication gate'
 Assert ((Get-FileHash (Join-Path $root 'site-manifest.json') -Algorithm SHA256).Hash -eq $manifestHashBefore) 'import leaves canonical manifest unchanged'
@@ -75,7 +75,7 @@ $legacyNone=Copy-TestCapsule 'legacy-homepage-none'
 $legacyNoneDoc=Read-Capsule $legacyNone; $legacyNoneDoc.id='legacy-hidden-capsule'; $legacyNoneDoc.placement.homepageTier='none'; Write-Capsule $legacyNone $legacyNoneDoc
 $legacyNoneResult=Invoke-Pwsh $importer @('-Path',$legacyNone,'-ProductsRoot',$products)
 $legacyNoneModule=Get-Content -LiteralPath (Join-Path $products 'legacy-hidden-capsule/module.json') -Raw | ConvertFrom-Json
-Assert ($legacyNoneResult.Exit -eq 0 -and $legacyNoneModule.homepage.tier -eq 'hidden') 'legacy capsule value none normalizes to hidden role'
+Assert ($legacyNoneResult.Exit -eq 0 -and $legacyNoneModule.homepage.role -eq 'studioPortfolio' -and $legacyNoneModule.homepage.visibility -eq 'hidden') 'legacy capsule value none normalizes to hidden root visibility'
 
 # Invalid capsules: paths, active SVG, theme, hero, component, extra truth fields.
 foreach ($testCase in @(
@@ -131,7 +131,7 @@ Assert ((Test-Path -LiteralPath $route) -and $previewHtml -match 'noindex, nofol
 Assert ($previewHtml -match 'Capture it\. Find it\. Put it to work\.' -and $previewHtml -match 'Multi-Format Capture' -and $previewHtml -match 'Interface capture') 'capsule hero, structured outcomes, and gallery render'
 Assert ((Test-Path (Join-Path $out 'assets/products/cache-vault-capsule-fixture/brand/logo.svg')) -and (Test-Path (Join-Path $out 'assets/products/cache-vault-capsule-fixture/media/screenshots/01.png'))) 'imported product assets publish into the preview output'
 Assert ($catalogHtml -match 'cache-vault-capsule-fixture' -and $catalogHtml -match 'Open product preview') 'preview catalog discovers the imported module'
-Assert ($homeHtml -match 'data-homepage-tier="secondary"' -and $homeHtml -match 'cache-vault-capsule-fixture') 'homepage placement preview follows capsule placement metadata'
+Assert ($homeHtml -match 'data-module="cache-vault-capsule-fixture"[^>]*data-presentation="compact"' -and $homeHtml -match 'Capture it\. Find it\. Put it to work\.') 'homepage presentation preview follows normalized module metadata'
 Assert (-not (Test-Path (Join-Path $out 'cache-vault-capsule-fixture/index.html')) -and $publicHome -notmatch 'cache-vault-capsule-fixture' -and $publicCatalog -notmatch 'cache-vault-capsule-fixture' -and $truth -notmatch 'cache-vault-capsule-fixture') 'preview product is absent from all production public surfaces'
 
 # Even if a module is manually promoted without canonical truth, a public build fails closed.

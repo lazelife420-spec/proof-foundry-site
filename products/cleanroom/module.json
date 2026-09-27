@@ -106,13 +106,10 @@
     "catalog": true
   },
   "homepage": {
-    "tier": "secondary",
-    "variant": "workstation",
-    "order": 60,
-    "headline": "Inspect. Archive. Restore.",
-    "lede": "A clear process. A reversible decision. Cleanup starts with a review, and leaves a record.",
-    "media": "/assets/cleanroom/cleanroom-activity-ledger.png",
-    "mediaAlt": "Cleanroom activity ledger recording cleanup actions and archive locations",
-    "mediaCaption": "Real interface"
+    "role": "studioPortfolio",
+    "order": 40,
+    "presentation": "standard",
+    "visibility": "visible",
+    "evidencePriority": 4
   }
 }

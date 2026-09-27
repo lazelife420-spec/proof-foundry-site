@@ -114,14 +114,9 @@
     "catalog": true
   },
   "homepage": {
-    "tier": "major",
-    "variant": "console",
-    "order": 30,
-    "headline": "Run. Inspect. Keep the record.",
-    "lede": "Local engineering continuity with inspectable run records.",
-    "media": "/assets/reality-gate/08-ci-run-complete.50deeeef7e10fbe8.png",
-    "mediaAlt": "Reality Gate Runroom displaying a completed CI run in a sample repository",
-    "mediaCaption": "Real Runroom · sample repository",
-    "note": "Local engineering continuity. Not an OS security sandbox."
+    "role": "studioPortfolio",
+    "order": 20,
+    "presentation": "standard",
+    "visibility": "visible"
   }
 }

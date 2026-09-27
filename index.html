@@ -1,17 +1,16 @@
 <!doctype html>
 <!-- @page home -->
-<!-- @product reality-gate -->
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>The Proof Foundry — Useful software, on your terms</title>
-<meta content="Independent software studio for Windows and Android. Real tools, clear boundaries, and release records you can inspect." name="description"/>
+<title>The Proof Foundry — Build software. Keep the receipt.</title>
+<meta content="An independent software studio. Explore practical software and inspect the evidence behind each public release." name="description"/>
 <meta content="index, follow" name="robots"/>
 <meta content="#07090b" name="theme-color"/>
 <link href="https://theprooffoundry.com/" rel="canonical"/>
-<meta content="The Proof Foundry — Useful software, on your terms" property="og:title"/>
-<meta content="Independent software. Real tools, clear boundaries, and release records you can inspect." property="og:description"/>
+<meta content="The Proof Foundry — Build software. Keep the receipt." property="og:title"/>
+<meta content="Independent software with release evidence you can inspect." property="og:description"/>
 <meta content="website" property="og:type"/>
 <meta content="https://theprooffoundry.com/" property="og:url"/>
 <meta content="The Proof Foundry" property="og:site_name"/>
@@ -22,32 +21,70 @@
 <link href="/brand/proof-foundry-mark.png" rel="apple-touch-icon"/>
 <link href="/styles.css" rel="stylesheet"/>
 <link href="/studio.css" rel="stylesheet"/>
-<link href="/experience.css" rel="stylesheet"/>
-<link href="/signature.css" rel="stylesheet"/>
 <link href="/h9-homepage.css" rel="stylesheet"/>
 <link rel="preload" as="image" href="/assets/binding-foundry/foundry-ledger.webp"/>
 </head>
-<body class="studio storefront signature-home h9-editorial-home h9-binding-home">
+<body class="studio studio-root-page">
 <!-- @include header -->
 <main id="main-content">
-<!-- @homepage-featured -->
+  <section class="studio-hero" aria-labelledby="studio-title">
+    <div class="studio-hero-grain" aria-hidden="true"></div>
+    <div class="studio-hero-grid">
+      <div class="studio-hero-copy">
+        <p class="studio-kicker">Independent software studio</p>
+        <h1 id="studio-title">BUILD SOFTWARE.<br/><em>KEEP THE RECEIPT.</em></h1>
+        <p class="studio-hero-lede">Practical, independent software with release evidence you can inspect.</p>
+        <div class="studio-hero-actions">
+          <a class="studio-action studio-action-primary" href="/software/">Explore the software <span aria-hidden="true">↗</span></a>
+          <a class="studio-action studio-action-quiet" href="/proof-standard/">How we prove releases <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="studio-hero-mark"><img src="/brand/PF_MARK_G_MASTER.svg" alt="" width="44" height="44"/><span>Made independently.<br/>Accountable in public.</span></div>
+      </div>
+      <!-- Build emits one eligible canonical release record, or omits this component. -->
+      <!-- @studio-evidence -->
+    </div>
+  </section>
 
-<!-- @homepage-major-scenes -->
+  <section class="studio-method" aria-labelledby="method-title">
+    <div class="studio-section-heading">
+      <p class="studio-kicker">How the Foundry works</p>
+      <h2 id="method-title">BUILD <span>→</span> QUALIFY <span>→</span> RECORD <span>→</span> PUBLISH</h2>
+      <p>Each public release has a clear path from working software to inspectable evidence.</p>
+    </div>
+    <ol class="studio-method-steps">
+      <li><span class="studio-step-no">01</span><h3>Build</h3><p>Start with a real problem and a tool made to solve it.</p></li>
+      <li><span class="studio-step-no">02</span><h3>Qualify</h3><p>Check the packaged release against documented tests and limits.</p></li>
+      <li><span class="studio-step-no">03</span><h3>Record</h3><p>Keep versions, artifact details, checksums, and proof together.</p></li>
+      <li><span class="studio-step-no">04</span><h3>Publish</h3><p>Make availability and the supporting release record clear.</p></li>
+    </ol>
+  </section>
 
-<!-- @homepage-secondary -->
+  <section class="studio-portfolio" id="software-made-here" aria-labelledby="portfolio-title">
+    <div class="studio-portfolio-heading">
+      <div><p class="studio-kicker">Made here</p><h2 id="portfolio-title">Software made here.</h2><p>Different tools, each with its own purpose, character, and release state.</p></div>
+      <a class="studio-text-link" href="/software/">Browse the full catalog <span aria-hidden="true">↗</span></a>
+    </div>
+    <!-- Registry-generated portfolio. Module identity and order are not authored here. -->
+    <div class="studio-portfolio-grid" aria-label="Software from The Proof Foundry">
+      <!-- @studio-portfolio -->
+    </div>
+  </section>
 
-<section class="h9-proof" aria-labelledby="proof-title"><div class="h9-proof-inner">
-<div class="h9-proof-copy h9-reveal"><p class="h9-kicker">Our standard</p><h2 id="proof-title">Receipts <em>over hype.</em></h2><p>No fake claims. No missing receipts. Ship with proof.</p><p class="h9-proof-limit">Checksums identify bytes. They are not code signatures or security guarantees.</p><a class="button h9-button-ghost" href="/proof/">View release records <span aria-hidden="true">→</span></a></div>
-<div class="h9-receipt-stack h9-reveal"><div class="h9-receipt">
-<div class="h9-receipt-head"><img src="/brand/PF_MARK_G_MASTER.svg" alt="" width="26" height="26"/><span>PUBLIC RELEASE LEDGER</span><a href="/proof/" aria-label="Inspect all release records">↗</a></div>
-<div class="h9-ledger-row"><div class="h9-receipt-title"><h3><a href="/proofshot/">ProofShot <small>v{{products.proofshot.publicVersion}}</small></a></h3><span class="h9-receipt-stamp">Public</span></div><p class="h9-artifact-name">Artifact: {{products.proofshot.artifacts.0.filename}} · Windows · unsigned · checksum published</p></div>
-<div class="h9-ledger-row"><div class="h9-receipt-title"><h3><a href="/cache-vault/">Cache Vault <small>v{{products.cache-vault.publicVersion}}</small></a></h3><span class="h9-receipt-stamp">Public</span></div><p class="h9-artifact-name">Artifact: {{products.cache-vault.artifacts.0.filename}} · Windows · unsigned · checksum published</p></div>
-<div class="h9-receipt-foot"><span>Exact artifacts. Inspectable records.</span><a href="{{products.cache-vault.sha256Url}}">Published checksum <span aria-hidden="true">↗</span></a></div>
-</div></div><p class="h9-proof-aside">REAL SOFTWARE.<br/>REAL RECORDS.<br/><br/>PROOF OVER<br/>RENTED TRUST.</p>
-</div></section>
+  <section class="studio-proof" aria-labelledby="proof-title">
+    <div class="studio-proof-intro"><p class="studio-kicker">Receipts over hype</p><h2 id="proof-title">Claims should have a trail.</h2><p>Public release records show what shipped, what was checked, and where the limits are.</p></div>
+    <div class="studio-proof-links">
+      <a href="/proof-standard/"><span class="studio-proof-index">01 / DOCTRINE</span><strong>The Proof Standard</strong><span>How release claims are handled <b aria-hidden="true">↗</b></span></a>
+      <a href="/truth-files/"><span class="studio-proof-index">02 / CURRENT FACTS</span><strong>Truth Files</strong><span>Version and availability, product by product <b aria-hidden="true">↗</b></span></a>
+      <a href="/proof/"><span class="studio-proof-index">03 / RELEASE EVIDENCE</span><strong>Release records</strong><span>Artifacts, checksums, tests, and limits <b aria-hidden="true">↗</b></span></a>
+    </div>
+  </section>
 
-<section class="h9-final" aria-labelledby="h9-final-title"><div class="h9-final-inner"><p class="h9-kicker">A more independent tomorrow.</p><h2 id="h9-final-title">Same standard.<br/><em>Different tools.</em></h2><a class="h9-text-link" href="/software/">Explore all software <span aria-hidden="true">→</span></a><a class="h9-text-link" href="/proof/">Read the release records <span aria-hidden="true">→</span></a></div><div class="h9-ending-object"><span>IF IT MATTERS,<br/>KEEP THE RECEIPT.</span><img src="/brand/PF_MARK_G_FORGED.svg" alt="" width="100" height="100"/></div></section>
+  <section class="studio-close" aria-labelledby="closing-title">
+    <div class="studio-close-copy"><p class="studio-kicker">Independent by design</p><h2 id="closing-title">Same standard.<br/><em>Different tools.</em></h2><p>The Proof Foundry is an independent studio making software for everyday work and the people who care how it works.</p><a class="studio-action studio-action-primary" href="/about/">About the Foundry <span aria-hidden="true">↗</span></a></div>
+    <div class="studio-close-mark" aria-hidden="true"><span>IF IT MATTERS,<br/>KEEP THE RECEIPT.</span><img src="/brand/PF_MARK_G_FORGED.svg" alt="" width="112" height="112"/></div>
+  </section>
 </main>
-<footer class="site-footer h9-studio-footer"><a class="h9-footer-brand" href="/" aria-label="Proof Foundry home"><img src="/brand/PF_MARK_G_MASTER.svg" alt="" width="36" height="36"/><span>PROOF FOUNDRY</span></a><p>Independent Software Studio <span>·</span> Proof over rented trust.</p><nav aria-label="Footer"><a href="/software/">Software</a><a href="/proof-standard/">Proof Standard</a><a href="/proof/">Release records</a><a href="/about/">About</a><a href="/founders/">Founders Circle</a><a href="/roadmap/">Roadmap</a><a href="/support/">Support</a></nav><span class="h9-copyright">© 2026 Proof Foundry</span></footer>
-<script src="/site.js" type="module"></script><script src="/h9-homepage.js" type="module"></script>
-</body></html>
+<footer class="studio-root-footer"><a class="h9-footer-brand" href="/" aria-label="Proof Foundry home"><img src="/brand/PF_MARK_G_MASTER.svg" alt="" width="34" height="34"/><span>PROOF FOUNDRY</span></a><p>Independent software studio · Proof over rented trust.</p><nav aria-label="Footer"><a href="/software/">Software</a><a href="/proof-standard/">Proof Standard</a><a href="/truth-files/">Truth Files</a><a href="/proof/">Release records</a><a href="/about/">About</a><a href="/roadmap/">Roadmap</a><a href="/support/">Support</a></nav><span class="h9-copyright">© 2026 Proof Foundry</span></footer>
+<script src="/site.js" type="module"></script>
+</body>
+</html>

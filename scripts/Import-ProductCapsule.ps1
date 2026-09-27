@@ -241,13 +241,11 @@ $module = [ordered]@{
 }
 if ($capsule.brand.logo) { $module.brand.logo="/assets/products/$id/brand/wordmark.svg" }
 $tier = if (-not $capsule.placement.homepageTier -or $capsule.placement.homepageTier -eq 'none') { 'hidden' } else { [string]$capsule.placement.homepageTier }
-$variant = if ($capsule.placement.homepageVariant) { [string]$capsule.placement.homepageVariant } else { 'workstation' }
+$presentation = switch ($tier) { 'featured' { 'feature' } 'major' { 'standard' } 'secondary' { 'compact' } default { 'standard' } }
 $homeOrder = if ($capsule.placement.homepageOrder) { [int]$capsule.placement.homepageOrder } else { $order }
 $module.homepage=[ordered]@{
-  tier=$tier; variant=$variant; order=$homeOrder
-  headline=[string]$capsule.hero.headline; lede=[string]$capsule.hero.lede
-  media=(Map-CapsuleAsset ([string]$capsule.hero.media) $id); mediaAlt=[string]$capsule.hero.mediaAlt
-  mediaCaption=[string]$capsule.hero.mediaCaption; note=[string]$capsule.placement.homepageNote
+  role='studioPortfolio'; order=$homeOrder; presentation=$presentation
+  visibility=if ($tier -eq 'hidden') { 'hidden' } else { 'visible' }
 }
 
 $stage = Join-Path $productsRoot ('.' + $id + '.import-stage-' + [Guid]::NewGuid().ToString('N'))

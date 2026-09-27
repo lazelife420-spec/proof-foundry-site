@@ -153,13 +153,10 @@
     "catalog": true
   },
   "homepage": {
-    "tier": "featured",
-    "variant": "workstation",
+    "role": "studioPortfolio",
     "order": 10,
-    "headline": "Useful software. On your terms.",
-    "lede": "Independent tools for files, projects, and everyday decisions. Local control where it fits. Release records you can inspect.",
-    "media": "/assets/cache-vault/cv-quick-paste.png",
-    "mediaAlt": "Cache Vault Quick Paste interface with searchable sample clipboard items",
-    "mediaCaption": "Real application capture · sample clips"
+    "presentation": "feature",
+    "visibility": "visible",
+    "evidencePriority": 1
   }
 }

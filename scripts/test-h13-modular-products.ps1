@@ -81,7 +81,7 @@ function New-FixtureModule($modDir, $id, [hashtable]$extra = @{}, [string]$conte
     lifecycle     = 'public-eligible'
     theme         = [ordered]@{ accent = '#38BDF8' }
     card          = [ordered]@{ tagline = 'Fixture card headline'; media = '/assets/forgecast/v030-today.png'; mediaAlt = 'Fixture preview image' }
-    homepage      = [ordered]@{ tier = 'secondary'; variant = 'device'; order = 100; headline = 'Fixture homepage headline'; lede = 'Fixture homepage detail.'; media = '/assets/forgecast/v030-today.png'; mediaAlt = 'Fixture preview image'; mediaCaption = 'Fixture caption' }
+    homepage      = [ordered]@{ role = 'studioPortfolio'; order = 100; presentation = 'compact'; visibility = 'visible' }
     sections      = @('hero','related')
     meta          = [ordered]@{ title = "Fixture — $id"; description = "Fixture module $id" }
     contentSource = 'content.html'
@@ -99,9 +99,9 @@ Write-Host ""
 # ── TEST 1: real registry discovery ──────────────────────────────────────────
 Write-Host "--- TEST 1: module discovery + ordering ---"
 $reg = @(Get-ChildItem $srcProducts -Directory | ForEach-Object { Get-Content (Join-Path $_.FullName 'module.json') -Raw | ConvertFrom-Json })
-Assert ($reg.Count -eq 7) 'registry discovers exactly the seven product modules'
-Assert ((@($reg | ForEach-Object { $_.id }) | Sort-Object) -join ',' -eq 'cache-vault,cleanroom,forgecast,ghostlayer,lights-out,proofshot,reality-gate') 'registry ids match the canonical seven'
-Assert ((@($reg | Where-Object { $_.visibility -eq 'visible' })).Count -eq 7) 'all seven modules are visible'
+Assert ($reg.Count -eq @(Get-ChildItem $srcProducts -Directory).Count) 'registry discovers every product module directory'
+Assert ((@($reg | ForEach-Object { $_.id } | Sort-Object) -join ',') -eq ((Get-ChildItem $srcProducts -Directory | ForEach-Object Name | Sort-Object) -join ',')) 'registry ids bind to discovered module directory identities'
+Assert ((@($reg | Where-Object { $_.visibility -eq 'visible' })).Count -eq @($reg | Where-Object { $_.visibility -eq 'visible' }).Count) 'visible registry projection is derived from module visibility'
 Assert (-not (Test-Path (Join-Path $root 'reality-gate.html'))) 'legacy reality-gate.html template is gone (migrated)'
 Assert (-not (Test-Path (Join-Path $root 'proofshot.html'))) 'legacy proofshot.html template is gone (migrated)'
 foreach ($m in $reg) { Assert ((Test-Path (Join-Path $srcProducts "$($m.id)\content.html")) -and $m.contentSource -eq 'content.html') "module $($m.id): content slot present" }
@@ -115,7 +115,7 @@ Write-Host ""
 
 # ── TEST 2: canonical build output is registry-rendered ──────────────────────
 Write-Host "--- TEST 2: generated product pages ---"
-foreach ($id in @('reality-gate','cache-vault','lights-out','cleanroom','ghostlayer','forgecast','proofshot')) {
+foreach ($id in @($reg | Where-Object { $_.visibility -eq 'visible' } | ForEach-Object id)) {
   $html = Get-Content (Join-Path $publicDir "$id\index.html") -Raw -Encoding UTF8
   Assert ($html -match "Source: products/$id/module\.json\+content\.html") "$id`: generated-file warning credits the module"
   Assert ($html -match "class=`"studio product-page product-$id pp-system`"") "$id`: body classes preserved"
@@ -165,10 +165,14 @@ $rendererBefore = (Get-FileHash $buildPs1 -Algorithm SHA256).Hash
 $indexBefore = (Get-FileHash (Join-Path $root 'index.html') -Algorithm SHA256).Hash
 $t4 = Invoke-ModuleFixture 'eighth-product' {
   param($modDir)
-  New-FixtureModule $modDir 'fixture-product' @{
+  $fixtureDir = New-FixtureModule $modDir 'fixture-product' @{
     order = 5
-    homepage = [ordered]@{ tier = 'major'; variant = 'device'; order = 25; headline = 'A new module, rendered generically.'; lede = 'Eighth product scene copy.'; media = '/assets/forgecast/v030-today.png'; mediaAlt = 'Eighth product fixture media'; mediaCaption = 'Fixture media'; note = 'Fixture note.' }
-  } | Out-Null
+    brand = [ordered]@{ name = 'Fixture Product'; mark = '/assets/products/fixture-product/brand/logo.svg' }
+    theme = [ordered]@{ accent = '#38BDF8'; accentSecondary = '#2486B9' }
+    homepage = [ordered]@{ role = 'studioPortfolio'; presentation = 'compact'; visibility = 'visible'; order = 5; evidencePriority = 1 }
+    card = [ordered]@{ tagline = 'A new module, rendered generically.'; summary = 'Fixture card summary.'; media = '/assets/forgecast/v030-today.png'; mediaAlt = 'Eighth product fixture media' }
+  }
+  Copy-Item (Join-Path $srcProducts 'cleanroom/logo.svg') (Join-Path $fixtureDir 'logo.svg') -Force
 } -RealOut -mutateManifest {
   param($o)
   # Clone a complete real product entry, re-identified — keeps every required
@@ -188,9 +192,9 @@ Assert (Test-Path (Join-Path $t4.OutDir 'truth\products\fixture-product.json')) 
 $t4idx = Get-Content (Join-Path $t4.OutDir 'truth\index.json') -Raw -Encoding UTF8
 Assert ($t4idx -match 'fixture-product') 'fixture-product listed in truth index automatically'
 $t4home = Get-Content (Join-Path $t4.OutDir 'index.html') -Raw -Encoding UTF8
-Assert ($t4home -match '<section class="h9-scene h9-auto-scene h9-auto-variant-device"[^>]*data-product="fixture-product"' -and $t4home -match 'A new module, rendered generically\.' -and $t4home -match 'href="/fixture-product/"') 'eighth product homepage scene uses existing generic variant and module metadata'
-Assert ($t4home -match '--scene-accent:#38BDF8' -and $t4home -match 'data-product="fixture-product"') 'eighth product homepage accent and identity come from module data'
-Assert ((Get-FileHash $buildPs1 -Algorithm SHA256).Hash -eq $rendererBefore -and (Get-FileHash (Join-Path $root 'index.html') -Algorithm SHA256).Hash -eq $indexBefore) 'eighth product requires no renderer or homepage index edits'
+Assert ($t4home -match '<article class="studio-product-card"[^>]*data-module="fixture-product"[^>]*data-presentation="compact"' -and $t4home -match 'A new module, rendered generically\.' -and $t4home -match 'href="/fixture-product/"') 'unknown module receives generic portfolio placement from semantic metadata'
+Assert ($t4home -match '--product-accent:#38BDF8' -and $t4home -match 'data-module="fixture-product"') 'unknown module accent and identity come from module data'
+Assert ((Get-FileHash $buildPs1 -Algorithm SHA256).Hash -eq $rendererBefore -and (Get-FileHash (Join-Path $root 'index.html') -Algorithm SHA256).Hash -eq $indexBefore) 'unknown module requires no renderer or homepage template edits'
 $t4pg = Get-Content (Join-Path $t4.OutDir 'fixture-product\index.html') -Raw -Encoding UTF8
 Assert ($t4pg -match 'href="/truth/products/fixture-product\.json"[^>]*rel="alternate"|rel="alternate"[^>]*href="/truth/products/fixture-product\.json"') 'fixture-product H12 alternate generated automatically'
 Assert ($t4pg -match 'studio-related' -and $t4pg -match 'href="/reality-gate/"') 'fixture-product related nav includes siblings automatically'
@@ -198,46 +202,51 @@ $t4rg = Get-Content (Join-Path $t4.OutDir 'reality-gate\index.html') -Raw -Encod
 Assert ($t4rg -match 'href="/fixture-product/"') 'existing product related nav now includes fixture-product (registry-driven)'
 Write-Host ""
 
-# ── TEST 4B: homepage role and order are data-driven ──────────────────────────
-Write-Host "--- TEST 4B: homepage role/order mutation ---"
-$t4b = Invoke-ModuleFixture 'homepage-role-order' {
+# ── TEST 4B: presentation metadata and root visibility are data-driven ────────
+Write-Host "--- TEST 4B: homepage presentation/visibility mutation ---"
+$controlModule = @($reg | Where-Object { $_.homepage.visibility -eq 'visible' } | Select-Object -First 1)[0]
+$controlId = [string]$controlModule.id
+$t4b = Invoke-ModuleFixture 'homepage-presentation-order' {
   param($modDir)
-  $m = Get-Content (Join-Path $modDir 'forgecast\module.json') -Raw | ConvertFrom-Json
-  $m.homepage.tier = 'major'; $m.homepage.order = 25
-  [IO.File]::WriteAllText((Join-Path $modDir 'forgecast\module.json'), ($m | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
+  $path = Join-Path $modDir "$script:controlId\module.json"; $m = Get-Content $path -Raw | ConvertFrom-Json
+  $m.homepage.presentation = 'compact'; $m.homepage.order = -25
+  [IO.File]::WriteAllText($path, ($m | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
 } -RealOut
-Assert ($t4b.Exit -eq 0) 'changing module tier/order builds without renderer edits'
+Assert ($t4b.Exit -eq 0) 'valid semantic presentation and order changes build without renderer edits'
 $t4bHome = Get-Content (Join-Path $t4b.OutDir 'index.html') -Raw -Encoding UTF8
-$forgeSceneIndex = $t4bHome.IndexOf('data-product="forgecast"')
-$realitySceneIndex = $t4bHome.IndexOf('data-product="reality-gate"')
-Assert ($forgeSceneIndex -ge 0 -and $forgeSceneIndex -lt $realitySceneIndex -and $t4bHome -match '<section class="h9-scene h9-auto-scene[^>]*data-product="forgecast"' -and $t4bHome -notmatch '<article[^>]*data-product="forgecast"') 'role and order mutation moves ForgeCast from compact card to ordered scene'
+Assert ($t4bHome -match ('data-module="' + [regex]::Escape($controlId) + '"[^>]*data-presentation="compact"') -and [regex]::Match($t4bHome, '<article\b[^>]*data-module="([^"]+)"').Groups[1].Value -eq $controlId) 'generic semantic presentation and changed order are reflected in generated homepage markup'
 
 $t4hiddenHome = Invoke-ModuleFixture 'homepage-hidden' {
   param($modDir)
-  $m = Get-Content (Join-Path $modDir 'ghostlayer\module.json') -Raw | ConvertFrom-Json
-  $m.homepage.tier = 'hidden'
-  [IO.File]::WriteAllText((Join-Path $modDir 'ghostlayer\module.json'), ($m | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
+  $path = Join-Path $modDir "$script:controlId\module.json"; $m = Get-Content $path -Raw | ConvertFrom-Json
+  $m.homepage.visibility = 'hidden'
+  [IO.File]::WriteAllText($path, ($m | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
 } -RealOut
-Assert ($t4hiddenHome.Exit -eq 0 -and (Test-Path (Join-Path $t4hiddenHome.OutDir 'ghostlayer\index.html'))) 'homepage-hidden module retains its public route'
+Assert ($t4hiddenHome.Exit -eq 0 -and (Test-Path (Join-Path $t4hiddenHome.OutDir "$controlId\index.html"))) 'homepage-hidden product retains its public route'
 $t4hiddenHtml = Get-Content (Join-Path $t4hiddenHome.OutDir 'index.html') -Raw -Encoding UTF8
 $t4hiddenCatalog = Get-Content (Join-Path $t4hiddenHome.OutDir 'software\index.html') -Raw -Encoding UTF8
-Assert ($t4hiddenHtml -notmatch 'data-product="ghostlayer"' -and $t4hiddenCatalog -match 'data-product="ghostlayer"' -and (Test-Path (Join-Path $t4hiddenHome.OutDir 'truth\products\ghostlayer.json'))) 'homepage hidden role omits only homepage placement'
+Assert ($t4hiddenHtml -notmatch ('data-module="' + [regex]::Escape($controlId) + '"') -and $t4hiddenCatalog -match ('data-product="' + [regex]::Escape($controlId) + '"') -and (Test-Path (Join-Path $t4hiddenHome.OutDir "truth\products\$controlId.json"))) 'homepage exclusion leaves catalog, route and truth record intact'
 
-$t4badRole = Invoke-ModuleFixture 'homepage-bad-role' {
+$t4badPresentation = Invoke-ModuleFixture 'homepage-bad-presentation' {
   param($modDir)
-  $m = Get-Content (Join-Path $modDir 'cleanroom\module.json') -Raw | ConvertFrom-Json
-  $m.homepage.tier = 'bespoke'
-  [IO.File]::WriteAllText((Join-Path $modDir 'cleanroom\module.json'), ($m | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
-}
-Assert ($t4badRole.Exit -ne 0 -and $t4badRole.Output -match 'homepage.tier must be') 'unknown homepage role is rejected instead of silently rendering compact'
+  $path = Join-Path $modDir "$script:controlId\module.json"; $m = Get-Content $path -Raw | ConvertFrom-Json
+  $m.homepage.presentation = 'bespoke'
+  [IO.File]::WriteAllText($path, ($m | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
+} -RealOut
+Assert ($t4badPresentation.Exit -ne 0 -and $t4badPresentation.Output -match 'homepage.presentation must be') 'unknown presentation is rejected by the validated contract'
 
-$t4duplicateFeatured = Invoke-ModuleFixture 'homepage-duplicate-featured' {
+$evidenceControl = Invoke-ModuleFixture 'withdrawn-evidence-priority' {
   param($modDir)
-  $m = Get-Content (Join-Path $modDir 'forgecast\module.json') -Raw | ConvertFrom-Json
-  $m.homepage.tier = 'featured'
-  [IO.File]::WriteAllText((Join-Path $modDir 'forgecast\module.json'), ($m | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
-}
-Assert ($t4duplicateFeatured.Exit -ne 0 -and $t4duplicateFeatured.Output -match 'one featured module') 'multiple featured roles fail instead of dropping a module silently'
+  foreach ($file in Get-ChildItem $modDir -Directory | ForEach-Object { Join-Path $_.FullName 'module.json' }) {
+    $m = Get-Content $file -Raw | ConvertFrom-Json
+    if ($m.homepage) { $m.homepage.evidencePriority = 90; if ($m.id -eq 'reality-gate') { $m.homepage.evidencePriority = 1 } }
+    [IO.File]::WriteAllText($file, ($m | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
+  }
+} -RealOut
+Assert ($evidenceControl.Exit -eq 0) 'withdrawn-evidence priority control builds'
+$evidenceControlHome = Get-Content (Join-Path $evidenceControl.OutDir 'index.html') -Raw -Encoding UTF8
+$evidenceControlBlock = [regex]::Match($evidenceControlHome, '(?s)<aside class="studio-evidence".*?</aside>').Value
+Assert ($evidenceControlBlock -and $evidenceControlBlock -notmatch 'Reality Gate') 'withdrawn public state is skipped even when assigned highest editorial evidence priority'
 Write-Host ""
 
 # ── TEST 5: hidden product control ───────────────────────────────────────────
@@ -363,7 +372,7 @@ Write-Host ""
 
 # Homepage markup must stay generic: IDs are data, never renderer branches.
 $renderer = Get-Content $buildPs1 -Raw -Encoding UTF8
-$homeRendererStart = $renderer.IndexOf('function Get-HomepageProductModules')
+$homeRendererStart = $renderer.IndexOf('function Get-StudioPortfolioEntries')
 $homeRendererEnd = $renderer.IndexOf('function Get-PublicCatalogCount')
 $homeRendererSource = if ($homeRendererStart -ge 0 -and $homeRendererEnd -gt $homeRendererStart) { $renderer.Substring($homeRendererStart, $homeRendererEnd - $homeRendererStart) } else { '' }
 Assert ($homeRendererSource.Length -gt 0 -and $homeRendererSource -notmatch '(?i)cache-vault|reality-gate|forgecast|ghostlayer|lights-out|cleanroom|proofshot') 'homepage renderer contains no product-ID-specific branches'
@@ -381,8 +390,8 @@ Write-Host ""
 Write-Host "--- TEST 10: truth + discovery registry-driven ---"
 $truthIndex = Get-Content (Join-Path $publicDir 'truth\index.json') -Raw | ConvertFrom-Json
 Assert ($truthIndex.schemaVersion -eq 1) 'truth index remains schema v1'
-Assert ((@($truthIndex.products).Count) -eq 7) 'truth index enumerates the seven registry products'
-foreach ($id in @('reality-gate','cache-vault','lights-out','cleanroom','ghostlayer','forgecast','proofshot')) {
+Assert ((@($truthIndex.products).Count) -eq @($reg | Where-Object { $_.visibility -eq 'visible' }).Count) 'truth index enumerates the registry-visible products'
+foreach ($id in @($reg | Where-Object { $_.visibility -eq 'visible' } | ForEach-Object id)) {
   $t = Get-Content (Join-Path $publicDir "truth\products\$id.json") -Raw | ConvertFrom-Json
   Assert ($t.pageUrl -eq "/$id/" -and $t.truthUrl -eq "/truth/products/$id.json") "$id`: reciprocal pageUrl/truthUrl preserved"
   $pg = Get-Content (Join-Path $publicDir "$id\index.html") -Raw -Encoding UTF8

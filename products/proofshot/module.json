@@ -122,14 +122,10 @@
     "catalog": true
   },
   "homepage": {
-    "tier": "secondary",
-    "variant": "wide-screen",
-    "order": 70,
-    "headline": "Capture context. Carry the proof.",
-    "lede": "Turn page structure and resources into a portable record.",
-    "media": "/assets/proofshot/web-hero.png",
-    "mediaAlt": "ProofShot production brand artwork over a dark carbon and vermilion field",
-    "mediaCaption": "Production brand artwork",
-    "note": "Structural page-resource capture. Not pixel screenshots."
+    "role": "studioPortfolio",
+    "order": 60,
+    "presentation": "compact",
+    "visibility": "visible",
+    "evidencePriority": 2
   }
 }
