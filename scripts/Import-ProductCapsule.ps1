@@ -262,6 +262,7 @@ $presentation = switch ($tier) { 'featured' { 'feature' } 'major' { 'standard' }
 $homeOrder = if ($capsule.placement.homepageOrder) { [int]$capsule.placement.homepageOrder } else { $order }
 $module.homepage=[ordered]@{
   role='studioPortfolio'; order=$homeOrder; presentation=$presentation
+  tier=if ($tier -in @('featured','major','secondary')) { $tier } else { 'secondary' }
   visibility=if ($tier -eq 'hidden') { 'hidden' } else { 'visible' }
 }
 

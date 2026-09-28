@@ -22,7 +22,7 @@ The executable constraints are documented in [`schemas/product-module-v2.schema.
 - `hero`: a registered variant, kicker, headline, lede, local media, and local/fragment actions.
 - `card`: catalog tagline and media.
 - `taxonomy`: category and job tags, with room for platform and audience tags.
-- `lifecycle` and `homepage`: publication readiness plus a tier (`featured`, `major`, `secondary`, or `hidden`), variant, order, and copy. `major` renders a scene; `secondary` renders a compact card. `hidden` keeps the public product route/catalog/truth while omitting it from the homepage. Homepage placement is controlled only by this tier.
+- `lifecycle` and `homepage`: publication readiness plus a tier (`featured`, `major`, or `secondary`), presentation, optional major-scene composition, order, and copy. `major` renders a dense scene with `media-left` or `media-right`; `secondary` renders an image-led compact card. Homepage tiers are consumed generically from module metadata, without product-ID branches. A hidden product uses `homepage.visibility: hidden` and keeps its public route/catalog/truth while omitting it from the homepage.
 - `commerce`: a generic `FREE`, `PAID`, `COMING_SOON`, `UNAVAILABLE`, or `WITHDRAWN` state and visitor-facing label. Canonical release truth must agree with the state; paid offers require an explicit checkout URL. The catalog renders the label. Public Truth v1 keeps its existing schema and release/download fields; no price is inferred from a download link.
 - `sections`: known component names or structured section objects.
 - `contentSource: content.html` as a migration bridge; it is optional for fully structured/capsule-authored modules.

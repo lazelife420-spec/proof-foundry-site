@@ -125,6 +125,7 @@
   "homepage": {
     "role": "studioPortfolio",
     "order": 60,
+      "tier": "secondary",
     "presentation": "compact",
     "visibility": "visible",
     "evidencePriority": 2

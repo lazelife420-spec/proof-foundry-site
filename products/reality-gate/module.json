@@ -117,6 +117,8 @@
   "homepage": {
     "role": "studioPortfolio",
     "order": 20,
+      "tier": "major",
+      "composition": "media-right",
     "presentation": "interface",
     "visibility": "visible"
   }

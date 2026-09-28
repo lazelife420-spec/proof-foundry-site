@@ -1259,23 +1259,29 @@ function Get-StudioEvidenceCandidate {
 }
 
 function Build-StudioEvidence {
-  $candidate = @(Get-StudioEvidenceCandidate) | Select-Object -First 1
-  if (-not $candidate) { return '' }
-  $module = $candidate.Entry.Module; $product = $candidate.Entry.Product; $artifact = $candidate.Artifact
-  $name = if ($product.homeName) { [string]$product.homeName } else { [string]$product.name }
-  $proofId = 'receipt-' + [string]$module.id
-  $releaseLabel = 'v' + [string]$product.release.publicVersion
-  $verifiedAt = [string]$product.verification.verifiedAt
+  $candidates = @(Get-StudioEvidenceCandidate | Select-Object -First 4)
+  if ($candidates.Count -eq 0) { return '' }
+  $rows = @()
+  foreach ($candidate in $candidates) {
+    $module = $candidate.Entry.Module; $product = $candidate.Entry.Product
+    $name = if ($product.homeName) { [string]$product.homeName } else { [string]$product.name }
+    $proofId = 'receipt-' + [string]$module.id
+    $verifiedAt = [string]$product.verification.verifiedAt
+    $verifiedLabel = IsoDateLabel $verifiedAt
+    $rows += @"
+<li><a class="studio-ledger-row" href="/proof/#$(Html-Attr $proofId)"><span class="studio-ledger-product"><strong>$(Html-Text $name)</strong><small>SHA-256 on record</small></span><span class="studio-ledger-version">PUBLIC <b>v$(Html-Text $product.release.publicVersion)</b></span><span class="studio-ledger-status"><i aria-hidden="true"></i> VERIFIED</span><time datetime="$(Html-Attr $verifiedAt)">$(Html-Text $verifiedLabel)</time><span class="studio-ledger-open" aria-hidden="true">↗</span></a></li>
+"@
+  }
   return @"
 <aside class="studio-evidence" aria-label="Public release evidence">
-  <div class="studio-evidence-copy"><span class="studio-evidence-label">A public release, checked</span><strong>$(Html-Text $name) · $(Html-Text $releaseLabel)</strong><span>Verified $(Html-Text $verifiedAt)</span></div>
-  <a href="/proof/#$(Html-Attr $proofId)">Open the release record <span aria-hidden="true">↗</span></a>
+  <div class="studio-ledger-heading"><div><span class="studio-evidence-label">Public release ledger</span><h3>Real releases. Current records.</h3><p>Each row links to the published evidence behind that version.</p></div><a href="/proof/">Browse all records <span aria-hidden="true">↗</span></a></div>
+  <ul class="studio-ledger-rows">$($rows -join "`n")</ul>
 </aside>
 "@
 }
 
 function Build-StudioHeroProduct {
-  $entry = @(Get-StudioPortfolioEntries | Where-Object { $_.Module.homepage.presentation -eq 'feature' }) | Select-Object -First 1
+  $entry = @(Get-StudioPortfolioEntries | Where-Object { $_.Module.homepage.tier -eq 'featured' }) | Select-Object -First 1
   if (-not $entry) { return '' }
   $module = $entry.Module; $product = $entry.Product
   $name = if ($product.homeName) { [string]$product.homeName } else { [string]$product.name }
@@ -1286,11 +1292,8 @@ function Build-StudioHeroProduct {
   $status = Get-HomepageStatus $product $tokens
   $accent = if ($module.theme.accent) { [string]$module.theme.accent } else { '#d6bd91' }
   return @"
-<figure class="studio-hero-product" data-module="$(Html-Attr $module.id)" data-presentation="$(Html-Attr $module.homepage.presentation)" style="--product-accent:$(Html-Attr $accent)">
-  <div class="studio-hero-window">
-    <div class="studio-hero-windowbar" aria-hidden="true"><span class="studio-window-lights"><i></i><i></i><i></i></span><span>$(Html-Text $module.taxonomy.category)</span><span class="studio-window-platform">$(Html-Text $tokens.platform)</span></div>
-    <a class="studio-hero-visual" href="$(Html-Attr $module.route)" aria-label="Explore $(Html-Attr $name)"><img src="$(Html-Attr $media)" alt="$(Html-Attr $alt)" fetchpriority="high" decoding="async"/></a>
-  </div>
+<figure class="studio-hero-product" data-module="$(Html-Attr $module.id)" data-home-role="$(Html-Attr $module.homepage.tier)" data-presentation="$(Html-Attr $module.homepage.presentation)" style="--product-accent:$(Html-Attr $accent)">
+  <a class="studio-hero-visual" href="$(Html-Attr $module.route)" aria-label="Explore $(Html-Attr $name)"><img src="$(Html-Attr $media)" alt="$(Html-Attr $alt)" fetchpriority="high" decoding="async"/></a>
   <figcaption class="studio-hero-product-caption"><span class="studio-hero-product-kicker">Featured tool</span><strong>$(Html-Text $name)</strong><span class="studio-hero-product-note">$(Html-Text $caption)</span><a href="$(Html-Attr $module.route)">$(Html-Text $status) <span aria-hidden="true">↗</span></a></figcaption>
 </figure>
 "@
@@ -1300,7 +1303,7 @@ function Build-StudioPortfolio {
   $cards = @()
   foreach ($entry in Get-StudioPortfolioEntries) {
     $module = $entry.Module; $product = $entry.Product
-    if ($module.homepage.presentation -eq 'feature') { continue }
+    if ($module.homepage.tier -eq 'featured') { continue }
     $name = if ($product.homeName) { [string]$product.homeName } else { [string]$product.name }
     $image = [string]$module.card.media; $alt = [string]$module.card.mediaAlt
     $tagline = if ($module.card.tagline) { [string]$module.card.tagline } else { [string]$module.hero.lede }
@@ -1309,7 +1312,7 @@ function Build-StudioPortfolio {
     $accent = if ($module.theme.accent) { [string]$module.theme.accent } else { '#d6bd91' }
     $accent2 = if ($module.theme.accentSecondary) { [string]$module.theme.accentSecondary } else { $accent }
     $cards += @"
-<article class="studio-product-card" data-module="$(Html-Attr $module.id)" data-presentation="$(Html-Attr $module.homepage.presentation)" style="--product-accent:$(Html-Attr $accent);--product-accent-2:$(Html-Attr $accent2)">
+<article class="studio-product-card" data-module="$(Html-Attr $module.id)" data-home-role="$(Html-Attr $module.homepage.tier)" data-composition="$(Html-Attr $module.homepage.composition)" data-presentation="$(Html-Attr $module.homepage.presentation)" style="--product-accent:$(Html-Attr $accent);--product-accent-2:$(Html-Attr $accent2)">
   <a class="studio-product-media" href="$(Html-Attr $module.route)" aria-label="Explore $(Html-Attr $name)"><img src="$(Html-Attr $image)" alt="$(Html-Attr $alt)" loading="lazy" decoding="async"/></a>
   <div class="studio-product-copy"><div class="studio-product-eyebrow"><span>$(Html-Text $module.taxonomy.category)</span><span>$(Html-Text $tokens.platform)</span></div><h3>$(Html-Text $name)</h3><p>$(Html-Text $tagline)</p><p class="studio-product-state">$(Html-Text $status)</p><a class="studio-product-open" href="$(Html-Attr $module.route)">Explore product <span aria-hidden="true">→</span></a></div>
 </article>
@@ -2193,6 +2196,9 @@ function Get-ProductRegistry {
       if ($m.lifecycle -eq 'public-eligible' -and -not $m.homepage) { $regErrors += "${tag}: public-eligible modules require homepage presentation metadata" }
       if ($m.homepage) {
         if ($m.homepage.role -ne 'studioPortfolio') { $regErrors += "${tag}: homepage.role must be studioPortfolio" }
+        if ($m.homepage.tier -notin @('featured','major','secondary')) { $regErrors += "${tag}: homepage.tier must be featured|major|secondary" }
+        if ($m.homepage.tier -eq 'major' -and $m.homepage.composition -notin @('media-left','media-right')) { $regErrors += "${tag}: major homepage tiers require composition media-left|media-right" }
+        if ($null -ne $m.homepage.composition -and $m.homepage.composition -notin @('media-left','media-right')) { $regErrors += "${tag}: homepage.composition must be media-left|media-right when specified" }
         if ($m.homepage.presentation -notin @('feature','interface','editorial','standard','compact')) { $regErrors += "${tag}: homepage.presentation must be feature|interface|editorial|standard|compact" }
         if ($m.homepage.visibility -notin @('visible','hidden')) { $regErrors += "${tag}: homepage.visibility must be visible|hidden" }
         if (-not ($m.homepage.order -is [int] -or $m.homepage.order -is [long] -or $m.homepage.order -is [double])) { $regErrors += "${tag}: homepage.order must be numeric" }

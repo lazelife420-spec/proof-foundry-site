@@ -82,7 +82,7 @@ function New-FixtureModule($modDir, $id, [hashtable]$extra = @{}, [string]$conte
     commerce      = [ordered]@{ status = 'FREE'; label = 'Free download' }
     theme         = [ordered]@{ accent = '#38BDF8' }
     card          = [ordered]@{ tagline = 'Fixture card headline'; media = '/assets/forgecast/v030-today.png'; mediaAlt = 'Fixture preview image' }
-    homepage      = [ordered]@{ role = 'studioPortfolio'; order = 100; presentation = 'compact'; visibility = 'visible' }
+    homepage      = [ordered]@{ role = 'studioPortfolio'; order = 100; tier = 'secondary'; presentation = 'compact'; visibility = 'visible' }
     sections      = @('hero','related')
     meta          = [ordered]@{ title = "Fixture — $id"; description = "Fixture module $id" }
     contentSource = 'content.html'
@@ -183,7 +183,7 @@ $t4 = Invoke-ModuleFixture 'eighth-product' {
     brand = [ordered]@{ name = 'Fixture Product'; mark = '/assets/products/fixture-product/brand/logo.svg' }
     hero = [ordered]@{ variant = 'split'; kicker = 'Fixture'; headline = 'A responsive fixture'; lede = 'Generic responsive hero media.'; media = [ordered]@{ src = '/assets/cache-vault/cv-quick-paste.png'; mobileSrc = '/assets/cache-vault/cv-quick-paste-mobile.png'; alt = 'Fixture capture'; caption = 'Fixture caption' } }
     theme = [ordered]@{ accent = '#38BDF8'; accentSecondary = '#2486B9' }
-    homepage = [ordered]@{ role = 'studioPortfolio'; presentation = 'compact'; visibility = 'visible'; order = 5; evidencePriority = 1 }
+    homepage = [ordered]@{ role = 'studioPortfolio'; tier = 'secondary'; presentation = 'compact'; visibility = 'visible'; order = 5; evidencePriority = 1 }
     card = [ordered]@{ tagline = 'A new module, rendered generically.'; summary = 'Fixture card summary.'; media = '/assets/forgecast/v030-today.png'; mediaAlt = 'Eighth product fixture media' }
   } '<main id="main-content"><div class="product-shell"><!-- @product-breadcrumb --><!-- @product-hero --><!-- @product-related --></div></main>'
   Copy-Item (Join-Path $srcProducts 'cleanroom/logo.svg') (Join-Path $fixtureDir 'logo.svg') -Force
@@ -207,7 +207,7 @@ Assert (Test-Path (Join-Path $t4.OutDir 'truth\products\fixture-product.json')) 
 $t4idx = Get-Content (Join-Path $t4.OutDir 'truth\index.json') -Raw -Encoding UTF8
 Assert ($t4idx -match 'fixture-product') 'fixture-product listed in truth index automatically'
 $t4home = Get-Content (Join-Path $t4.OutDir 'index.html') -Raw -Encoding UTF8
-Assert ($t4home -match '<article class="studio-product-card"[^>]*data-module="fixture-product"[^>]*data-presentation="compact"' -and $t4home -match 'A new module, rendered generically\.' -and $t4home -match 'href="/fixture-product/"') 'unknown module receives generic portfolio placement from semantic metadata'
+Assert ($t4home -match '<article class="studio-product-card"[^>]*data-module="fixture-product"[^>]*data-home-role="secondary"[^>]*data-presentation="compact"' -and $t4home -match 'A new module, rendered generically\.' -and $t4home -match 'href="/fixture-product/"') 'unknown module receives generic secondary placement from semantic metadata'
 Assert ($t4home -match '--product-accent:#38BDF8' -and $t4home -match 'data-module="fixture-product"') 'unknown module accent and identity come from module data'
 Assert ((Get-FileHash $buildPs1 -Algorithm SHA256).Hash -eq $rendererBefore -and (Get-FileHash (Join-Path $root 'index.html') -Algorithm SHA256).Hash -eq $indexBefore) 'unknown module requires no renderer or homepage template edits'
 $t4pg = Get-Content (Join-Path $t4.OutDir 'fixture-product\index.html') -Raw -Encoding UTF8
@@ -225,12 +225,12 @@ $controlId = [string]$controlModule.id
 $t4b = Invoke-ModuleFixture 'homepage-presentation-order' {
   param($modDir)
   $path = Join-Path $modDir "$script:controlId\module.json"; $m = Get-Content $path -Raw | ConvertFrom-Json
-  $m.homepage.presentation = 'editorial'; $m.homepage.order = -25
+  $m.homepage.tier = 'major'; $m.homepage | Add-Member -NotePropertyName composition -NotePropertyValue 'media-left' -Force; $m.homepage.presentation = 'editorial'; $m.homepage.order = -25
   [IO.File]::WriteAllText($path, ($m | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
 } -RealOut
 Assert ($t4b.Exit -eq 0) 'valid semantic presentation and order changes build without renderer edits'
 $t4bHome = Get-Content (Join-Path $t4b.OutDir 'index.html') -Raw -Encoding UTF8
-Assert ($t4bHome -match ('data-module="' + [regex]::Escape($controlId) + '"[^>]*data-presentation="editorial"') -and [regex]::Match($t4bHome, '<(?:figure|article)\b[^>]*data-module="([^"]+)"').Groups[1].Value -eq $controlId) 'generic editorial presentation and changed order are reflected in generated homepage markup'
+Assert ($t4bHome -match ('data-module="' + [regex]::Escape($controlId) + '"[^>]*data-home-role="major"[^>]*data-composition="media-left"[^>]*data-presentation="editorial"') -and [regex]::Match($t4bHome, '<(?:figure|article)\b[^>]*data-module="([^"]+)"').Groups[1].Value -eq $controlId) 'generic major role, composition, and changed order are reflected in generated homepage markup'
 
 $t4hiddenHome = Invoke-ModuleFixture 'homepage-hidden' {
   param($modDir)
@@ -250,6 +250,14 @@ $t4badPresentation = Invoke-ModuleFixture 'homepage-bad-presentation' {
   [IO.File]::WriteAllText($path, ($m | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
 } -RealOut
 Assert ($t4badPresentation.Exit -ne 0 -and $t4badPresentation.Output -match 'homepage.presentation must be') 'unknown presentation is rejected by the validated contract'
+
+$t4badTier = Invoke-ModuleFixture 'homepage-bad-tier' {
+  param($modDir)
+  $path = Join-Path $modDir "$script:controlId\module.json"; $m = Get-Content $path -Raw | ConvertFrom-Json
+  $m.homepage.tier = 'bespoke'
+  [IO.File]::WriteAllText($path, ($m | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
+} -RealOut
+Assert ($t4badTier.Exit -ne 0 -and $t4badTier.Output -match 'homepage.tier must be') 'unknown homepage tier is rejected by the validated contract'
 
 $evidenceControl = Invoke-ModuleFixture 'withdrawn-evidence-priority' {
   param($modDir)

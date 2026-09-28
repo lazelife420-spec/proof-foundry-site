@@ -64,7 +64,7 @@ Assert ($valid.Exit -eq 0 -and (Test-Path $modulePath)) 'real-product capsule im
 $module=Get-Content -LiteralPath $modulePath -Raw | ConvertFrom-Json
 Assert ($module.lifecycle -eq 'preview' -and $module.visibility -eq 'hidden' -and -not $module.PSObject.Properties['version']) 'import remains preview-only and invents no release facts'
 Assert ($module.commerce.status -eq 'UNAVAILABLE' -and $module.commerce.label -eq 'No public download yet') 'import defaults to a safe non-acquisition state without commercial truth'
-Assert ($module.homepage.role -eq 'studioPortfolio' -and $module.homepage.presentation -eq 'compact' -and $module.homepage.visibility -eq 'visible' -and -not $module.placement.PSObject.Properties['homepage']) 'capsule placement normalizes into the single module homepage contract'
+Assert ($module.homepage.role -eq 'studioPortfolio' -and $module.homepage.tier -eq 'secondary' -and $module.homepage.presentation -eq 'compact' -and $module.homepage.visibility -eq 'visible' -and -not $module.placement.PSObject.Properties['homepage']) 'capsule placement normalizes into the single module homepage contract'
 Assert ((Test-Path (Join-Path $products 'cache-vault-capsule-fixture/logo.svg')) -and (Test-Path (Join-Path $products 'cache-vault-capsule-fixture/media/hero.png')) -and (Test-Path (Join-Path $products 'cache-vault-capsule-fixture/media/screenshots/01.png'))) 'brand, hero, and screenshot assets normalize to module-local paths'
 Assert ($valid.Output -match 'Before public eligibility') 'importer prints the remaining publication gate'
 Assert ((Get-FileHash (Join-Path $root 'site-manifest.json') -Algorithm SHA256).Hash -eq $manifestHashBefore) 'import leaves canonical manifest unchanged'
@@ -76,7 +76,7 @@ $legacyNone=Copy-TestCapsule 'legacy-homepage-none'
 $legacyNoneDoc=Read-Capsule $legacyNone; $legacyNoneDoc.id='legacy-hidden-capsule'; $legacyNoneDoc.placement.homepageTier='none'; Write-Capsule $legacyNone $legacyNoneDoc
 $legacyNoneResult=Invoke-Pwsh $importer @('-Path',$legacyNone,'-ProductsRoot',$products)
 $legacyNoneModule=Get-Content -LiteralPath (Join-Path $products 'legacy-hidden-capsule/module.json') -Raw | ConvertFrom-Json
-Assert ($legacyNoneResult.Exit -eq 0 -and $legacyNoneModule.homepage.role -eq 'studioPortfolio' -and $legacyNoneModule.homepage.visibility -eq 'hidden') 'legacy capsule value none normalizes to hidden root visibility'
+Assert ($legacyNoneResult.Exit -eq 0 -and $legacyNoneModule.homepage.role -eq 'studioPortfolio' -and $legacyNoneModule.homepage.tier -eq 'secondary' -and $legacyNoneModule.homepage.visibility -eq 'hidden') 'legacy capsule value none normalizes to hidden root visibility'
 
 # Invalid capsules: paths, active SVG, theme, hero, component, extra truth fields.
 foreach ($testCase in @(

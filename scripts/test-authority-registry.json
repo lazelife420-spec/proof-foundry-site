@@ -2,11 +2,11 @@
   "registryVersion": 1,
   "candidate": {
     "branch": "codex/pf-web-real-site-2-visual-corpus",
-    "head": "23a329279dec788fb3d4f0585033270cbbb381da",
-    "tree": "b8c22286846eeca688d0e7a5674315929dcf43a2",
-    "workingTreeManifest": "scripts/qualified-source-real-site-2.sha256.txt",
-    "workingTreeManifestSha256": "a8c8e60e909aa52611f285a0335bae7799fc03cbb717de1779ecd1ca36221dd7",
-    "assertionEvidence": "scripts/qualified-source-real-site-2.sha256.txt",
+    "head": "b4bb76efbf0a120ba0a75fb42c9b409977aca194",
+    "tree": "51d6b0691947102b5e2c082c64119469f9a28aed",
+    "workingTreeManifest": "scripts/qualified-source-real-site-2-d-correction.sha256.txt",
+    "workingTreeManifestSha256": "0d37eeed949a1a043a2475b26385c7cafd718c2d285a5efca32506639837dfae",
+    "assertionEvidence": "scripts/qualified-source-real-site-2-d-correction.sha256.txt",
     "assertionEvidenceRule": "Each historical failing assertion and its baseline/candidate classification is recorded in the contradiction matrix. The registry below assigns each superseded invariant family to its current owner gates."
   },
   "priorQualificationFreezes": [
@@ -18,49 +18,158 @@
       "manifest": "scripts/qualified-source-real-site-1.sha256.txt",
       "manifestSha256": "218e3f0c5b79000071553c74b813c5e8c06511ae6008848091f6d029ddd62799",
       "historicalCandidateCommit": "0b91387009a1e4fb226207069f4465b5a76c5457"
+    },
+    {
+      "name": "PF_WEB_REAL_SITE_2_PRE_D_CORRECTION",
+      "branch": "codex/pf-web-real-site-2-visual-corpus",
+      "baseHead": "23a329279dec788fb3d4f0585033270cbbb381da",
+      "baseTree": "b8c22286846eeca688d0e7a5674315929dcf43a2",
+      "manifest": "scripts/qualified-source-real-site-2.sha256.txt",
+      "manifestSha256": "a8c8e60e909aa52611f285a0335bae7799fc03cbb717de1779ecd1ca36221dd7",
+      "candidateCommit": "b4bb76efbf0a120ba0a75fb42c9b409977aca194",
+      "status": "PREVIOUS_QUALIFIED_CANDIDATE"
     }
   ],
   "qualificationFreeze": {
-    "name": "PF_WEB_REAL_SITE_2",
+    "name": "PF_WEB_REAL_SITE_2_D_CORRECTION",
     "branch": "codex/pf-web-real-site-2-visual-corpus",
-    "baseHead": "23a329279dec788fb3d4f0585033270cbbb381da",
-    "baseTree": "b8c22286846eeca688d0e7a5674315929dcf43a2",
-    "manifest": "scripts/qualified-source-real-site-2.sha256.txt",
-    "manifestSha256": "a8c8e60e909aa52611f285a0335bae7799fc03cbb717de1779ecd1ca36221dd7",
+    "baseHead": "b4bb76efbf0a120ba0a75fb42c9b409977aca194",
+    "baseTree": "51d6b0691947102b5e2c082c64119469f9a28aed",
+    "manifest": "scripts/qualified-source-real-site-2-d-correction.sha256.txt",
+    "manifestSha256": "0d37eeed949a1a043a2475b26385c7cafd718c2d285a5efca32506639837dfae",
     "scriptInventoryCount": 25,
     "registryExclusion": "The source manifest excludes this registry to avoid self-reference; the candidate-wide SHA256SUMS receipt binds the committed registry bytes.",
     "historicalReceiptPreserved": "scripts/qualified-source-real-site-1.sha256.txt",
-    "scope": "REAL SITE 1 qualified commerce/truth changes plus role-driven full-width major scenes, compact secondary portfolio, and indexed Studio Root section seams."
+    "scope": "Customer-facing hero, authenticated product-dense scenes, compact method band, and current release ledger, driven by generic featured/major/secondary module tiers; D visual delta applied without product truth changes.",
+    "previousRealSite2ReceiptPreserved": "scripts/qualified-source-real-site-2.sha256.txt"
   },
   "authorities": [
-    { "id": "H9_HOME", "script": "test-h9-homepage.ps1", "owns": ["Studio Root composition, feature hierarchy, role order, responsive homepage semantics"] },
-    { "id": "H9_BINDING", "script": "test-h9-binding.ps1", "owns": ["source/generated binding, module-to-role rendering, compact proof ledger, catalog contract"] },
-    { "id": "COMMERCE", "script": "test-h13-modular-products.ps1", "owns": ["module commerce state validation, catalog acquisition labels/order, and preservation of the Public Truth v1 shape"] },
-    { "id": "H13", "script": "test-h13-modular-products.ps1", "owns": ["module schema/metadata, registry enumeration, generic renderer, routes, product role and visibility behavior"] },
-    { "id": "CACHE_VAULT_PAGE", "script": "test-cache-vault-page.ps1", "owns": ["Cache Vault product-page hierarchy, responsive mobile story composition, responsive capture media, sample-vault labeling, and page-level alignment with canonical release/capability truth"] },
-    { "id": "H7C", "script": "test-h7c-product-pages.ps1", "owns": ["shared product-page rendering and product-page semantics"] },
-    { "id": "H11", "script": "test-h11-public-truth.ps1", "owns": ["canonical public release and availability truth"] },
-    { "id": "H12", "script": "test-h12-truth-discovery.ps1", "owns": ["truth discovery, public route/sitemap and machine-readable parity"] },
-    { "id": "RELEASE_TRUTH", "script": "test-release-truth.ps1", "owns": ["release and artifact facts across rendered release surfaces"] },
-    { "id": "TRUTH_FILES", "script": "test-truth-files.ps1", "owns": ["generated Truth File parity and product truth records"] },
-    { "id": "RECEIPTS", "script": "test-receipts-invariants.ps1", "owns": ["receipt identity, evidence eligibility, artifact detail and digest treatment"] },
-    { "id": "P2_1", "script": "test-customer-trust-p2-1.ps1", "owns": ["support content, safety/checksum wording and support signposts"] }
+    {
+      "id": "H9_HOME",
+      "script": "test-h9-homepage.ps1",
+      "owns": [
+        "Studio Root composition, featured/major/secondary role order, product UI density, release ledger, proof hierarchy, responsive semantics"
+      ]
+    },
+    {
+      "id": "H9_BINDING",
+      "script": "test-h9-binding.ps1",
+      "owns": [
+        "source/generated binding, module-to-role rendering, compact proof ledger, catalog contract"
+      ]
+    },
+    {
+      "id": "COMMERCE",
+      "script": "test-h13-modular-products.ps1",
+      "owns": [
+        "module commerce state validation, catalog acquisition labels/order, and preservation of the Public Truth v1 shape"
+      ]
+    },
+    {
+      "id": "H13",
+      "script": "test-h13-modular-products.ps1",
+      "owns": [
+        "module schema/metadata including homepage tiers and major-scene composition, registry enumeration, generic renderer, routes, product role and visibility behavior"
+      ]
+    },
+    {
+      "id": "CACHE_VAULT_PAGE",
+      "script": "test-cache-vault-page.ps1",
+      "owns": [
+        "Cache Vault product-page hierarchy, responsive mobile story composition, responsive capture media, sample-vault labeling, and page-level alignment with canonical release/capability truth"
+      ]
+    },
+    {
+      "id": "H7C",
+      "script": "test-h7c-product-pages.ps1",
+      "owns": [
+        "shared product-page rendering and product-page semantics"
+      ]
+    },
+    {
+      "id": "H11",
+      "script": "test-h11-public-truth.ps1",
+      "owns": [
+        "canonical public release and availability truth"
+      ]
+    },
+    {
+      "id": "H12",
+      "script": "test-h12-truth-discovery.ps1",
+      "owns": [
+        "truth discovery, public route/sitemap and machine-readable parity"
+      ]
+    },
+    {
+      "id": "RELEASE_TRUTH",
+      "script": "test-release-truth.ps1",
+      "owns": [
+        "release and artifact facts across rendered release surfaces"
+      ]
+    },
+    {
+      "id": "TRUTH_FILES",
+      "script": "test-truth-files.ps1",
+      "owns": [
+        "generated Truth File parity and product truth records"
+      ]
+    },
+    {
+      "id": "RECEIPTS",
+      "script": "test-receipts-invariants.ps1",
+      "owns": [
+        "receipt identity, evidence eligibility, artifact detail and digest treatment"
+      ]
+    },
+    {
+      "id": "P2_1",
+      "script": "test-customer-trust-p2-1.ps1",
+      "owns": [
+        "support content, safety/checksum wording and support signposts"
+      ]
+    }
   ],
   "legacyScripts": [
     {
       "script": "test-customer-trust-p2-1.ps1",
       "status": "CURRENT_RELEASE_GATE",
       "action": "Retain assertions; footer support-link assertion is markup-agnostic and checks the rendered footer nav.",
-      "families": [{ "name": "Support route and customer trust", "owners": ["P2_1", "H12"] }]
+      "families": [
+        {
+          "name": "Support route and customer trust",
+          "owners": [
+            "P2_1",
+            "H12"
+          ]
+        }
+      ]
     },
     {
       "script": "test-h2-material-rhythm.ps1",
       "status": "SUPERSEDED_CONTRACT",
       "action": "Delegate old signature-era material and scene assumptions to current homepage, module, route, and catalog authorities.",
       "families": [
-        { "name": "Studio Root identity, proof hierarchy, principle labels, hero and ending", "owners": ["H9_HOME", "H9_BINDING"] },
-        { "name": "Catalog media, product identity, public state and dynamic product rendering", "owners": ["H9_BINDING", "H13", "H11"] },
-        { "name": "Founders route discovery", "owners": ["H12"] }
+        {
+          "name": "Studio Root identity, proof hierarchy, principle labels, hero and ending",
+          "owners": [
+            "H9_HOME",
+            "H9_BINDING"
+          ]
+        },
+        {
+          "name": "Catalog media, product identity, public state and dynamic product rendering",
+          "owners": [
+            "H9_BINDING",
+            "H13",
+            "H11"
+          ]
+        },
+        {
+          "name": "Founders route discovery",
+          "owners": [
+            "H12"
+          ]
+        }
       ]
     },
     {
@@ -68,10 +177,35 @@
       "status": "CURRENT_REGRESSION_COVERAGE",
       "action": "Retain still-valid product/support assertions; replace withdrawn-product and former-scene expectations with the current truth and role contracts.",
       "families": [
-        { "name": "Product page, onboarding and evidence semantics", "owners": ["H7C", "H13"] },
-        { "name": "Reality Gate withdrawn state and current release claims", "owners": ["H11", "RELEASE_TRUTH", "TRUTH_FILES"] },
-        { "name": "Studio Root role sequence, proof hierarchy and catalog handoff", "owners": ["H9_HOME", "H9_BINDING"] },
-        { "name": "Support and checksum language", "owners": ["P2_1", "RECEIPTS"] }
+        {
+          "name": "Product page, onboarding and evidence semantics",
+          "owners": [
+            "H7C",
+            "H13"
+          ]
+        },
+        {
+          "name": "Reality Gate withdrawn state and current release claims",
+          "owners": [
+            "H11",
+            "RELEASE_TRUTH",
+            "TRUTH_FILES"
+          ]
+        },
+        {
+          "name": "Studio Root role sequence, proof hierarchy and catalog handoff",
+          "owners": [
+            "H9_HOME",
+            "H9_BINDING"
+          ]
+        },
+        {
+          "name": "Support and checksum language",
+          "owners": [
+            "P2_1",
+            "RECEIPTS"
+          ]
+        }
       ]
     },
     {
@@ -79,9 +213,28 @@
       "status": "CURRENT_REGRESSION_COVERAGE",
       "action": "Keep SEO/canonical/sitemap assertions; compare candidate product truth to candidate authorities rather than stale production bytes.",
       "families": [
-        { "name": "Canonical routes, metadata, sitemap and discovery", "owners": ["H12", "H13"] },
-        { "name": "Canonical release-state parity", "owners": ["H11", "RELEASE_TRUTH", "TRUTH_FILES"] },
-        { "name": "Shared product-page rendering", "owners": ["H7C", "H13"] }
+        {
+          "name": "Canonical routes, metadata, sitemap and discovery",
+          "owners": [
+            "H12",
+            "H13"
+          ]
+        },
+        {
+          "name": "Canonical release-state parity",
+          "owners": [
+            "H11",
+            "RELEASE_TRUTH",
+            "TRUTH_FILES"
+          ]
+        },
+        {
+          "name": "Shared product-page rendering",
+          "owners": [
+            "H7C",
+            "H13"
+          ]
+        }
       ]
     },
     {
@@ -89,8 +242,21 @@
       "status": "CURRENT_REGRESSION_COVERAGE",
       "action": "Keep structured-data validity/reputation assertions; bind release checks to current candidate truth and current product-page contracts.",
       "families": [
-        { "name": "JSON-LD validity and honest availability", "owners": ["H11", "RELEASE_TRUTH", "TRUTH_FILES"] },
-        { "name": "ProofShot release detail and product rendering", "owners": ["H7C", "H13"] }
+        {
+          "name": "JSON-LD validity and honest availability",
+          "owners": [
+            "H11",
+            "RELEASE_TRUTH",
+            "TRUTH_FILES"
+          ]
+        },
+        {
+          "name": "ProofShot release detail and product rendering",
+          "owners": [
+            "H7C",
+            "H13"
+          ]
+        }
       ]
     },
     {
@@ -98,8 +264,19 @@
       "status": "CURRENT_REGRESSION_COVERAGE",
       "action": "Keep contrast and no-JS catalog assertions; replace pre-Studio Root copy/filter selectors with current software-route and role contracts.",
       "families": [
-        { "name": "Progressive enhancement, catalog enumeration and compare behavior", "owners": ["H9_BINDING", "H13"] },
-        { "name": "Studio Root copy hierarchy and catalog handoff", "owners": ["H9_HOME"] }
+        {
+          "name": "Progressive enhancement, catalog enumeration and compare behavior",
+          "owners": [
+            "H9_BINDING",
+            "H13"
+          ]
+        },
+        {
+          "name": "Studio Root copy hierarchy and catalog handoff",
+          "owners": [
+            "H9_HOME"
+          ]
+        }
       ]
     },
     {
@@ -107,8 +284,21 @@
       "status": "SUPERSEDED_CONTRACT",
       "action": "Delegate former hand-authored status-row, inline-style and withdrawn onboarding assumptions to the shared module renderer and truth authorities.",
       "families": [
-        { "name": "Generic product-page hierarchy, evidence and disclosures", "owners": ["H7C", "H13"] },
-        { "name": "Reality Gate withdrawn availability and no-download behavior", "owners": ["H11", "RELEASE_TRUTH", "TRUTH_FILES"] }
+        {
+          "name": "Generic product-page hierarchy, evidence and disclosures",
+          "owners": [
+            "H7C",
+            "H13"
+          ]
+        },
+        {
+          "name": "Reality Gate withdrawn availability and no-download behavior",
+          "owners": [
+            "H11",
+            "RELEASE_TRUTH",
+            "TRUTH_FILES"
+          ]
+        }
       ]
     },
     {
@@ -116,10 +306,39 @@
       "status": "SUPERSEDED_CONTRACT",
       "action": "Historical cinematic scene and baseline custody contract is retired; delegate current module, homepage, truth, receipt and discovery invariants to their owners.",
       "families": [
-        { "name": "Homepage roles/order, one featured product, proof and ending", "owners": ["H9_HOME", "H9_BINDING", "H13"] },
-        { "name": "Product truth, withdrawn availability and generated truth parity", "owners": ["H11", "H12", "RELEASE_TRUTH", "TRUTH_FILES"] },
-        { "name": "Compact homepage proof: no raw digest/source-commit clutter; release record remains linked", "owners": ["H9_HOME", "H9_BINDING", "RECEIPTS"] },
-        { "name": "Canonical artifact filename and full release detail remain available on proof/release surfaces", "owners": ["H9_BINDING", "RECEIPTS", "RELEASE_TRUTH"] }
+        {
+          "name": "Homepage roles/order, one featured product, proof and ending",
+          "owners": [
+            "H9_HOME",
+            "H9_BINDING",
+            "H13"
+          ]
+        },
+        {
+          "name": "Product truth, withdrawn availability and generated truth parity",
+          "owners": [
+            "H11",
+            "H12",
+            "RELEASE_TRUTH",
+            "TRUTH_FILES"
+          ]
+        },
+        {
+          "name": "Compact homepage proof: no raw digest/source-commit clutter; release record remains linked",
+          "owners": [
+            "H9_HOME",
+            "H9_BINDING",
+            "RECEIPTS"
+          ]
+        },
+        {
+          "name": "Canonical artifact filename and full release detail remain available on proof/release surfaces",
+          "owners": [
+            "H9_BINDING",
+            "RECEIPTS",
+            "RELEASE_TRUTH"
+          ]
+        }
       ]
     },
     {
@@ -127,8 +346,22 @@
       "status": "HISTORICAL_ONLY",
       "action": "Retire exact equality with a stale production snapshot; current candidate identity/truth and generated binding remain covered by current gates.",
       "families": [
-        { "name": "Module/source/generated binding and route preservation", "owners": ["H9_BINDING", "H13"] },
-        { "name": "Current truth rather than old production parity", "owners": ["H11", "H12", "RELEASE_TRUTH", "TRUTH_FILES"] }
+        {
+          "name": "Module/source/generated binding and route preservation",
+          "owners": [
+            "H9_BINDING",
+            "H13"
+          ]
+        },
+        {
+          "name": "Current truth rather than old production parity",
+          "owners": [
+            "H11",
+            "H12",
+            "RELEASE_TRUTH",
+            "TRUTH_FILES"
+          ]
+        }
       ]
     },
     {
@@ -136,8 +369,20 @@
       "status": "HISTORICAL_ONLY",
       "action": "Retire Signature-era stylesheet, hero, product-scene and shared-navigation assumptions; current Studio Root and route discovery contracts own these invariants.",
       "families": [
-        { "name": "Current homepage composition and product roles", "owners": ["H9_HOME", "H9_BINDING", "H13"] },
-        { "name": "Founders and public route discovery", "owners": ["H12"] }
+        {
+          "name": "Current homepage composition and product roles",
+          "owners": [
+            "H9_HOME",
+            "H9_BINDING",
+            "H13"
+          ]
+        },
+        {
+          "name": "Founders and public route discovery",
+          "owners": [
+            "H12"
+          ]
+        }
       ]
     }
   ]

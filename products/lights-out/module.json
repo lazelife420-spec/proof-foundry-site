@@ -162,6 +162,7 @@
   "homepage": {
     "role": "studioPortfolio",
     "order": 50,
+      "tier": "secondary",
     "presentation": "compact",
     "visibility": "visible",
     "evidencePriority": 3

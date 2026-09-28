@@ -109,6 +109,7 @@
   "homepage": {
     "role": "studioPortfolio",
     "order": 40,
+      "tier": "secondary",
     "presentation": "compact",
     "visibility": "visible",
     "evidencePriority": 4

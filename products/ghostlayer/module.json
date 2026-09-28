@@ -108,6 +108,8 @@
   "homepage": {
     "role": "studioPortfolio",
     "order": 30,
+      "tier": "major",
+      "composition": "media-left",
     "presentation": "editorial",
     "visibility": "visible"
   }
