@@ -111,6 +111,7 @@
   },
   "hero": {
     "variant": "split",
+    "sceneFamily": "archive-workbench",
     "kicker": "Local clipboard workspace",
     "headline": "Find the clip. Get back to work.",
     "lede": "Cache Vault keeps copied text and images in searchable history. Open Quick Paste from any app to bring a saved clip back without losing your place.",
@@ -142,6 +143,7 @@
     "catalog": true
   },
   "homepage": {
+    "sceneFamily": "archive-workbench",
     "role": "studioPortfolio",
     "order": 10,
       "tier": "featured",

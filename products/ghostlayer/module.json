@@ -77,6 +77,7 @@
   },
   "hero": {
     "variant": "immersive",
+    "sceneFamily": "immersive-staging",
     "kicker": "Volatile file staging",
     "headline": "Choose what becomes permanent.",
     "lede": "A temporary working layer for your files. Stage them in RAM, review your changes, and commit only what you choose to keep.",
@@ -106,6 +107,7 @@
     "catalog": true
   },
   "homepage": {
+    "sceneFamily": "immersive-staging",
     "role": "studioPortfolio",
     "order": 30,
       "tier": "major",

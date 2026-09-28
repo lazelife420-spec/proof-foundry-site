@@ -94,6 +94,7 @@
   },
   "hero": {
     "variant": "cinematic",
+    "sceneFamily": "capture-studio",
     "kicker": "Capture & evidence workbench",
     "headline": "Keep the context. Build the evidence.",
     "lede": "A local workbench for capturing page resources, organizing a case and exporting a bundle you can verify later.",
@@ -123,6 +124,7 @@
     "catalog": true
   },
   "homepage": {
+    "sceneFamily": "capture-studio",
     "role": "studioPortfolio",
     "order": 60,
       "tier": "secondary",

@@ -131,6 +131,7 @@
   },
   "hero": {
     "variant": "centered",
+    "sceneFamily": "night-console",
     "kicker": "Your nightly shutdown ritual",
     "headline": "Call it a night.",
     "lede": "Set the countdown. Let the PC wind down. Pause, snooze or cancel from bed with the Android companion.",
@@ -160,6 +161,7 @@
     "catalog": true
   },
   "homepage": {
+    "sceneFamily": "night-console",
     "role": "studioPortfolio",
     "order": 50,
       "tier": "secondary",

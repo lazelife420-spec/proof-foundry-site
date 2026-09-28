@@ -86,6 +86,7 @@
   },
   "hero": {
     "variant": "device",
+    "sceneFamily": "weather-instrument",
     "kicker": "Weather for what you do",
     "headline": "Know what to wear now. What to bring later.",
     "lede": "ForgeCast turns changing weather into practical decisions — when to head out, what makes sense to wear now, what you may want later, and why.",
@@ -115,6 +116,7 @@
     "catalog": true
   },
   "homepage": {
+    "sceneFamily": "weather-instrument",
     "role": "studioPortfolio",
     "order": 90,
       "tier": "secondary",

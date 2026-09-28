@@ -27,7 +27,7 @@
 <body class="studio studio-root-page">
 <!-- @include header -->
 <main id="main-content">
-  <section class="studio-hero" aria-labelledby="studio-title">
+  <section class="studio-hero" data-foundry-scene="inside" aria-labelledby="studio-title">
     <div class="studio-forge-workbench" aria-hidden="true"><picture><source type="image/avif" srcset="/assets/foundry-strike/forged_pf_emblem_in_smoky_ruins-1280.avif 1280w, /assets/foundry-strike/forged_pf_emblem_in_smoky_ruins-1672.avif 1672w" sizes="100vw"/><img src="/assets/foundry-strike/forged_pf_emblem_in_smoky_ruins-1280.webp" srcset="/assets/foundry-strike/forged_pf_emblem_in_smoky_ruins-1672.webp 1672w, /assets/foundry-strike/forged_pf_emblem_in_smoky_ruins-1280.webp 1280w" sizes="100vw" alt="" fetchpriority="high" decoding="async"/></picture></div>
     <div class="studio-hero-grid">
       <div class="studio-hero-copy">
@@ -45,7 +45,7 @@
     </div>
   </section>
 
-  <section class="studio-portfolio" id="software-made-here" aria-labelledby="portfolio-title">
+  <section class="studio-portfolio" data-foundry-scene="work" id="software-made-here" aria-labelledby="portfolio-title">
     <div class="studio-portfolio-heading">
       <div><p class="studio-kicker"><span class="studio-section-index">PF / 02</span><span>Made here</span></p><h2 id="portfolio-title">Small tools. Fewer loose ends.</h2><p>Start with a real problem. Find the tool built for it.</p></div>
       <a class="studio-text-link" href="/software/">Browse the full catalog <span aria-hidden="true">↗</span></a>
@@ -56,7 +56,7 @@
     </div>
   </section>
 
-  <section class="studio-method" aria-labelledby="method-title">
+  <section class="studio-method" data-foundry-scene="process" aria-labelledby="method-title">
     <div class="studio-section-heading">
       <p class="studio-kicker"><span class="studio-section-index">PF / 03</span><span>How the Foundry works</span></p>
       <h2 id="method-title">BUILD <span>→</span> QUALIFY <span>→</span> RECORD <span>→</span> PUBLISH</h2>
@@ -64,7 +64,7 @@
     </div>
   </section>
 
-  <section class="studio-proof" aria-labelledby="proof-title">
+  <section class="studio-proof" data-foundry-scene="proof" aria-labelledby="proof-title">
     <div class="studio-proof-intro"><p class="studio-kicker"><span class="studio-section-index">PF / 04</span><span>Receipts over hype</span></p><h2 id="proof-title">Claims should have a trail.</h2><p>Public release records show what shipped, what was checked, and where the limits are.</p></div>
     <div class="studio-proof-links">
       <a href="/proof-standard/"><span class="studio-proof-index">01 / DOCTRINE</span><strong>The Proof Standard</strong><span>How release claims are handled <b aria-hidden="true">↗</b></span></a>
@@ -75,7 +75,12 @@
     <!-- @studio-evidence -->
   </section>
 
-  <section class="studio-close" aria-labelledby="closing-title">
+  <section class="studio-threshold" data-foundry-scene="threshold" aria-label="From the workshop to the world">
+    <div class="studio-threshold-line" aria-hidden="true"></div>
+    <p><span>THE THRESHOLD / TRANSITION</span><strong>What leaves the workshop<br/>carries its record with it.</strong></p>
+  </section>
+
+  <section class="studio-close" data-foundry-scene="outside" aria-labelledby="closing-title">
     <div class="studio-close-copy"><p class="studio-kicker"><span class="studio-section-index">PF / 05</span><span>Independent by design</span></p><h2 id="closing-title">Same standard.<br/><em>Different tools.</em></h2><p>The Proof Foundry is an independent studio making software for everyday work and the people who care how it works.</p><a class="studio-action studio-action-primary" href="/about/">About the Foundry <span aria-hidden="true">↗</span></a></div>
     <div class="studio-close-mark" aria-hidden="true"><span>IF IT MATTERS,<br/>KEEP THE RECEIPT.</span><img src="/brand/PF_MARK_G_FORGED.svg" alt="" width="112" height="112"/></div>
   </section>

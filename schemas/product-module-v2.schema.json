@@ -86,6 +86,9 @@
             "media-right"
           ]
         },
+        "sceneFamily": {
+          "enum": ["archive-workbench", "glass-ledger", "immersive-staging", "night-console", "weather-instrument", "capture-studio", "release-control-plane"]
+        },
         "presentation": {
           "enum": [
             "feature",
@@ -189,6 +192,9 @@
             "device",
             "immersive"
           ]
+        },
+        "sceneFamily": {
+          "enum": ["archive-workbench", "glass-ledger", "immersive-staging", "night-console", "weather-instrument", "capture-studio", "release-control-plane"]
         },
         "kicker": {
           "type": "string"

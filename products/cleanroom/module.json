@@ -78,6 +78,7 @@
   },
   "hero": {
     "variant": "split",
+    "sceneFamily": "glass-ledger",
     "kicker": "Precise, reversible Windows cleanup",
     "headline": "Less clutter. A way back.",
     "lede": "Inspect what you want to clear. Archive the files you choose. Restore them to their original paths when you need them again.",
@@ -107,6 +108,7 @@
     "catalog": true
   },
   "homepage": {
+    "sceneFamily": "glass-ledger",
     "role": "studioPortfolio",
     "order": 40,
       "tier": "secondary",

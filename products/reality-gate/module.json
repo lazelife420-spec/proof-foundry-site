@@ -85,6 +85,7 @@
   },
   "hero": {
     "variant": "console",
+    "sceneFamily": "release-control-plane",
     "kicker": "Local developer continuity & execution",
     "headline": "Your projects.",
     "emphasis": "Your execution. Your way back.",
@@ -115,6 +116,7 @@
     "catalog": true
   },
   "homepage": {
+    "sceneFamily": "release-control-plane",
     "role": "studioPortfolio",
     "order": 20,
       "tier": "major",

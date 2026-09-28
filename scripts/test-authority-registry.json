@@ -42,19 +42,19 @@
     }
   ],
   "qualificationFreeze": {
-    "name": "PF_WEB_REAL_SITE_2_PRODUCT_COMMERCE_LABELS",
-    "branch": "codex/pf-web-real-site-2-visual-corpus",
-    "baseHead": "a33481cc7b2d56ef70237efdd340d6bd53d438ac",
-    "baseTree": "31384a29d6fee4518621529da91db869ed7b122f",
-    "manifest": "scripts/qualified-source-real-site-2-commerce-correction.sha256.txt",
-    "manifestSha256": "b399dd069143b075fee49d51f46ecbe2cdce96bd9f41256e285b5304b394b658",
+    "name": "PF_WEB_CONTINUOUS_FOUNDRY",
+    "branch": "codex/continuous-foundry-r2",
+    "baseHead": "05031fd573f654721d537978d377b7be003ea0f1",
+    "baseTree": "bebcfa805015f2e7497824ebc64f440c094ee702",
+    "manifest": "scripts/qualified-source-continuous-foundry.sha256.txt",
+    "manifestSha256": "bbae06b55d69722aefa9fb89671c08275ca77ee92a9d6c419b92f0a564418e91",
     "scriptInventoryCount": 25,
     "registryExclusion": "The source manifest excludes this registry to avoid self-reference; the candidate-wide SHA256SUMS receipt binds the committed registry bytes.",
     "historicalReceiptPreserved": "scripts/qualified-source-real-site-1.sha256.txt",
-    "scope": "Generic product-page acquisition labels derived from module commerce status and explicit price; no homepage, product truth, release, or route changes.",
+    "scope": "Homepage spatial arc, ultrawide layout, generic product scene families, catalog composition, trust-page and Truth Files hierarchy; release truth, commerce, routes, and Reality Gate availability remain frozen.",
     "previousVisualFreeze": "PF_WEB_REAL_SITE_2_D_CORRECTION",
     "previousVisualManifest": "scripts/qualified-source-real-site-2-d-correction.sha256.txt",
-    "protectedPathCount": 4,
+    "protectedPathCount": 0,
     "previousRealSite2ReceiptPreserved": "scripts/qualified-source-real-site-2.sha256.txt"
   },
   "authorities": [

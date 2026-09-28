@@ -1107,6 +1107,7 @@ function Render-ProductCard($p, $cardTemplate, [bool]$catalogMode = $false) {
     $t['moduleCardTheme'] = $themeParts -join ';'
   }
   if ($module.taxonomy.category) { $t['moduleCategory'] = [string]$module.taxonomy.category }
+  if ($module.homepage.sceneFamily) { $t['moduleSceneFamily'] = [string]$module.homepage.sceneFamily }
   if ($module.taxonomy.jobs) {
     $t['moduleJobs'] = (@($module.taxonomy.jobs) -join ', ')
     $t['moduleJobKeys'] = (@($module.taxonomy.jobs) -join '|')
@@ -1117,7 +1118,7 @@ function Render-ProductCard($p, $cardTemplate, [bool]$catalogMode = $false) {
   foreach ($key in @(
     'homeName','name','route','state','statusLabel','summary','cardSummary','statusLine','markSvg','id','meta','cta',
     'visitorStatusLabel','visitorStatusSlug','groupId','cardVersionLabel','cardDetailLine','cardCtaHref',
-    'moduleSummary','moduleCategory','moduleJobs','moduleJobKeys','moduleCardTheme',
+    'moduleSummary','moduleCategory','moduleJobs','moduleJobKeys','moduleCardTheme','moduleSceneFamily',
     'cardProofHref','valueLine','cardImage','cardImageAlt','cardImageWidth','cardImageHeight','cardCta','platform'
   )) {
     $v = [string]$t[$key]
@@ -1302,7 +1303,7 @@ function Build-StudioHeroProduct {
   $status = Get-HomepageStatus $product $tokens
   $accent = if ($module.theme.accent) { [string]$module.theme.accent } else { '#d6bd91' }
   return @"
-<figure class="studio-hero-product" data-module="$(Html-Attr $module.id)" data-home-role="$(Html-Attr $module.homepage.tier)" data-presentation="$(Html-Attr $module.homepage.presentation)" style="--product-accent:$(Html-Attr $accent)">
+<figure class="studio-hero-product" data-module="$(Html-Attr $module.id)" data-home-role="$(Html-Attr $module.homepage.tier)" data-presentation="$(Html-Attr $module.homepage.presentation)" data-scene-family="$(Html-Attr $module.homepage.sceneFamily)" style="--product-accent:$(Html-Attr $accent)">
   <a class="studio-hero-visual" href="$(Html-Attr $module.route)" aria-label="Explore $(Html-Attr $name)"><img src="$(Html-Attr $media)" alt="$(Html-Attr $alt)" fetchpriority="high" decoding="async"/></a>
   <figcaption class="studio-hero-product-caption"><span class="studio-hero-product-kicker">Featured tool</span><strong>$(Html-Text $name)</strong><span class="studio-hero-product-note">$(Html-Text $caption)</span><a href="$(Html-Attr $module.route)">$(Html-Text $status) <span aria-hidden="true">↗</span></a></figcaption>
 </figure>
@@ -1322,7 +1323,7 @@ function Build-StudioPortfolio {
     $accent = if ($module.theme.accent) { [string]$module.theme.accent } else { '#d6bd91' }
     $accent2 = if ($module.theme.accentSecondary) { [string]$module.theme.accentSecondary } else { $accent }
     $cards += @"
-<article class="studio-product-card" data-module="$(Html-Attr $module.id)" data-home-role="$(Html-Attr $module.homepage.tier)" data-composition="$(Html-Attr $module.homepage.composition)" data-presentation="$(Html-Attr $module.homepage.presentation)" style="--product-accent:$(Html-Attr $accent);--product-accent-2:$(Html-Attr $accent2)">
+<article class="studio-product-card" data-module="$(Html-Attr $module.id)" data-home-role="$(Html-Attr $module.homepage.tier)" data-composition="$(Html-Attr $module.homepage.composition)" data-presentation="$(Html-Attr $module.homepage.presentation)" data-scene-family="$(Html-Attr $module.homepage.sceneFamily)" style="--product-accent:$(Html-Attr $accent);--product-accent-2:$(Html-Attr $accent2)">
   <a class="studio-product-media" href="$(Html-Attr $module.route)" aria-label="Explore $(Html-Attr $name)"><img src="$(Html-Attr $image)" alt="$(Html-Attr $alt)" loading="lazy" decoding="async"/></a>
   <div class="studio-product-copy"><div class="studio-product-eyebrow"><span>$(Html-Text $module.taxonomy.category)</span><span>$(Html-Text $tokens.platform)</span></div><h3>$(Html-Text $name)</h3><p>$(Html-Text $tagline)</p><p class="studio-product-state">$(Html-Text $status)</p><a class="studio-product-open" href="$(Html-Attr $module.route)">Explore product <span aria-hidden="true">→</span></a></div>
 </article>
@@ -2198,6 +2199,8 @@ function Get-ProductRegistry {
       if (-not $m.brand.name -or -not ($m.brand.mark -or $m.brand.logo)) { $regErrors += "${tag}: v2 brand.name and a product mark/logo are required" }
       if (-not $m.hero -or [string]::IsNullOrWhiteSpace($m.hero.headline) -or [string]::IsNullOrWhiteSpace($m.hero.kicker) -or [string]::IsNullOrWhiteSpace($m.hero.lede)) { $regErrors += "${tag}: v2 hero requires kicker, headline, and lede" }
       if ($m.hero -and $m.hero.variant -notin $KnownHeroVariants) { $regErrors += "${tag}: unsupported hero variant '$($m.hero.variant)'" }
+      $knownSceneFamilies = @('archive-workbench','glass-ledger','immersive-staging','night-console','weather-instrument','capture-studio','release-control-plane')
+      if ($m.hero.sceneFamily -and $m.hero.sceneFamily -notin $knownSceneFamilies) { $regErrors += "${tag}: hero.sceneFamily must identify a generic composition family" }
       foreach ($colorKey in @('accent','accentSecondary','background','surface','glow','text','muted')) {
         $value = [string]$m.theme.$colorKey
         if ($value -and $value -notmatch '^(#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?|rgba?\(\s*(\d{1,3}\s*,\s*){2}\d{1,3}(\s*,\s*(0|1|0?\.\d+))?\s*\))$') { $regErrors += "${tag}: invalid theme.$colorKey; use hex or rgb(a)" }
@@ -2210,6 +2213,7 @@ function Get-ProductRegistry {
         if ($m.homepage.tier -eq 'major' -and $m.homepage.composition -notin @('media-left','media-right')) { $regErrors += "${tag}: major homepage tiers require composition media-left|media-right" }
         if ($null -ne $m.homepage.composition -and $m.homepage.composition -notin @('media-left','media-right')) { $regErrors += "${tag}: homepage.composition must be media-left|media-right when specified" }
         if ($m.homepage.presentation -notin @('feature','interface','editorial','standard','compact')) { $regErrors += "${tag}: homepage.presentation must be feature|interface|editorial|standard|compact" }
+        if ($m.homepage.sceneFamily -and $m.homepage.sceneFamily -notin $knownSceneFamilies) { $regErrors += "${tag}: homepage.sceneFamily must identify a generic composition family" }
         if ($m.homepage.visibility -notin @('visible','hidden')) { $regErrors += "${tag}: homepage.visibility must be visible|hidden" }
         if (-not ($m.homepage.order -is [int] -or $m.homepage.order -is [long] -or $m.homepage.order -is [double])) { $regErrors += "${tag}: homepage.order must be numeric" }
         if ($null -ne $m.homepage.evidencePriority -and -not ($m.homepage.evidencePriority -is [int] -or $m.homepage.evidencePriority -is [long])) { $regErrors += "${tag}: homepage.evidencePriority must be a positive integer when specified" }
@@ -2391,7 +2395,7 @@ function Render-ModuleHero($module, $product) {
   $secondary = if ($hero.secondaryAction.label -and $hero.secondaryAction.href) { "<a class=`"text-link`" href=`"$(Html-Attr $hero.secondaryAction.href)`">$(Html-Text $hero.secondaryAction.label)</a>" } else { '' }
   $lede = Html-Text $hero.lede
   $layoutClass = if ($variant -eq 'centered') { 'pp-hero-layout pp-hero-centered' } else { "pp-hero-layout pp-hero-$variant" }
-  return "<section class=`"product-hero pp-hero pp-module-hero`" id=`"overview`" data-hero-variant=`"$(Html-Attr $variant)`"><div class=`"product-identity`">$mark<span>$(Html-Text $brandName)</span><span class=`"identity-studio`">by The Proof Foundry</span></div><div class=`"$layoutClass`"><div class=`"product-copy`"><p class=`"kicker pp-kicker`">$(Html-Text $hero.kicker)</p><h1>$headline $emphasis</h1><p class=`"product-lede`">$lede</p><div class=`"studio-actions`">$primary$secondary</div></div><div class=`"hero-media`">$media</div></div></section>"
+  return "<section class=`"product-hero pp-hero pp-module-hero`" id=`"overview`" data-hero-variant=`"$(Html-Attr $variant)`" data-scene-family=`"$(Html-Attr $hero.sceneFamily)`"><div class=`"product-identity`">$mark<span>$(Html-Text $brandName)</span><span class=`"identity-studio`">by The Proof Foundry</span></div><div class=`"$layoutClass`"><div class=`"product-copy`"><p class=`"kicker pp-kicker`">$(Html-Text $hero.kicker)</p><h1>$headline $emphasis</h1><p class=`"product-lede`">$lede</p><div class=`"studio-actions`">$primary$secondary</div></div><div class=`"hero-media`">$media</div></div></section>"
 }
 
 function Render-ProductShell($module, [switch]$Template, [switch]$Preview) {
@@ -2534,6 +2538,12 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
     $assetPath = Join-Path $root $assetName
     $assetVersion = (Get-FileHash $assetPath -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
     $html = $html.Replace('"/' + $assetName + '"', '"/' + $assetName + '?v=' + $assetVersion + '"')
+  }
+  $worldCssPath = Join-Path $root 'foundry-world.css'
+  if (Test-Path $worldCssPath) {
+    $worldVersion = (Get-FileHash $worldCssPath -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
+    $worldLink = "<link href=`"/foundry-world.css?v=$worldVersion`" rel=`"stylesheet`"/>"
+    $html = $html.Replace('</head>', "$worldLink`n</head>")
   }
 
   # Extract @page id
@@ -2809,6 +2819,7 @@ Copy-Item (Join-Path $root 'studio.css')     $publicDir -Force
 Copy-Item (Join-Path $root 'experience.css') $publicDir -Force
 Copy-Item (Join-Path $root 'signature.css')  $publicDir -Force
 Copy-Item (Join-Path $root 'product-page.css') $publicDir -Force
+Copy-Item (Join-Path $root 'foundry-world.css') $publicDir -Force
 Copy-Item (Join-Path $root 'experience.js') $publicDir -Force
 if (Test-Path (Join-Path $root 'h9-homepage.css')) { Copy-Item (Join-Path $root 'h9-homepage.css') $publicDir -Force }
 if (Test-Path (Join-Path $root 'h9-software.css')) { Copy-Item (Join-Path $root 'h9-software.css') $publicDir -Force }
