@@ -107,7 +107,7 @@ if ($t1.Exit -eq 0) {
   $rgEntry = $t1.Registry.products | Where-Object { $_.id -eq 'reality-gate' }
   Assert 'registry shows sentinel withdrawn version' ($rgEntry.release.withdrawnVersion -eq '9.9.9' -and $null -eq $rgEntry.release.publicVersion) "got '$($rgEntry.release.withdrawnVersion)'"
   $homeHtml = [IO.File]::ReadAllText((Join-Path $t1.OutDir 'index.html'))
-  Assert 'homepage shows sentinel v9.9.9'          ($homeHtml -match 'v9\.9\.9')
+  Assert 'homepage does not present a withdrawn historical version as current availability' ($homeHtml -notmatch 'v9\.9\.9' -and $homeHtml -notmatch 'v1\.1\.0')
   $prodHtml = [IO.File]::ReadAllText((Join-Path $t1.OutDir 'reality-gate\index.html'))
   Assert 'product page shows sentinel v9.9.9'      ($prodHtml -match 'v9\.9\.9')
 }

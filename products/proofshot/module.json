@@ -99,9 +99,9 @@
     "headline": "Keep the context. Build the evidence.",
     "lede": "A local workbench for capturing page resources, organizing a case and exporting a bundle you can verify later.",
     "media": {
-      "src": "/assets/proofshot/web-hero.png",
-      "alt": "ProofShot evidence workbench artwork",
-      "caption": "ProofShot evidence workbench"
+      "src": "/assets/proofshot/og-image.png",
+      "alt": "ProofShot wordmark and its capture, receipt, export and verify workflow",
+      "caption": "ProofShot approved brand artwork · no product interface pictured"
     },
     "primaryAction": {
       "label": "Explore product",
@@ -114,9 +114,9 @@
   },
   "card": {
     "tagline": "Keep the context. Build the evidence.",
-    "media": "/assets/proofshot/web-hero.png",
+    "media": "/assets/proofshot/og-image.png",
     "summary": "A local workbench for capturing page resources, organizing a case and exporting a bundle you can verify later.",
-    "mediaAlt": "ProofShot production brand artwork over a dark carbon and vermilion field"
+    "mediaAlt": "ProofShot wordmark over the approved dark brand field"
   },
   "lifecycle": "public-eligible",
   "commerce": { "status": "FREE", "label": "Free download" },
@@ -130,6 +130,7 @@
       "tier": "secondary",
     "presentation": "compact",
     "visibility": "visible",
+    "mediaDisclosure": "Approved ProofShot brand artwork · no product interface pictured.",
     "evidencePriority": 2
   }
 }

@@ -5,71 +5,78 @@ $homeHtml = Get-Content (Join-Path $public 'index.html') -Raw -Encoding UTF8
 $software = Get-Content (Join-Path $public 'software/index.html') -Raw -Encoding UTF8
 $sourceHome = Get-Content (Join-Path $root 'index.html') -Raw -Encoding UTF8
 $homeCss = Get-Content (Join-Path $root 'h9-homepage.css') -Raw -Encoding UTF8
+$worldCss = Get-Content (Join-Path $root 'foundry-world.css') -Raw -Encoding UTF8
+$renderer = Get-Content (Join-Path $root 'scripts/build-site.ps1') -Raw -Encoding UTF8
 $manifest = Get-Content (Join-Path $root 'site-manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 $modules = @(Get-ChildItem (Join-Path $root 'products') -Directory | ForEach-Object { Get-Content (Join-Path $_.FullName 'module.json') -Raw -Encoding UTF8 | ConvertFrom-Json })
-$eligible = @($modules | Where-Object { $_.visibility -eq 'visible' -and $_.lifecycle -eq 'public-eligible' -and $_.homepage.role -eq 'studioPortfolio' -and $_.homepage.visibility -eq 'visible' } | Sort-Object { [int]$_.homepage.order }, { [int]$_.order })
-$rendered = @([regex]::Matches($homeHtml, '<(?:figure|article)\b[^>]*data-module="([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
+$rootModules = @($modules | Where-Object { $_.visibility -eq 'visible' -and $_.lifecycle -eq 'public-eligible' -and $_.homepage.role -eq 'studioPortfolio' -and $_.homepage.visibility -eq 'visible' } | Sort-Object { [int]$_.homepage.order }, { [int]$_.order })
+$publicHomeModules = @($rootModules | Where-Object { (@($manifest.products | Where-Object id -eq $_.id | Select-Object -First 1)[0]).release.releaseStatus -eq 'PUBLIC_RELEASE' })
+$withdrawnHomeModules = @($rootModules | Where-Object { (@($manifest.products | Where-Object id -eq $_.id | Select-Object -First 1)[0]).release.releaseStatus -eq 'WITHDRAWN' })
+$renderedPublic = @([regex]::Matches($homeHtml, '<article class="studio-product-card"[^>]*data-module="([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
+$renderedWithdrawn = @([regex]::Matches($homeHtml, '<article class="studio-withdrawn-product"[^>]*data-module="([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
 $pass = 0; $fail = 0
 function Assert-H9([string]$name, [bool]$condition) { if ($condition) { $script:pass++; Write-Host "PASS: $name" } else { $script:fail++; Write-Host "FAIL: $name" -ForegroundColor Red } }
 Write-Host '=== H9 STUDIO ROOT + CATALOG GUARD ===' -ForegroundColor Cyan
-Assert-H9 'customer-facing software proposition leads; studio doctrine remains supporting copy' ($homeHtml -match 'USEFUL SOFTWARE\.' -and $homeHtml -match 'ON YOUR TERMS\.' -and $homeHtml -match 'Build software\. Keep the receipt\.' -and $homeHtml -match 'studio-hero')
-$sectionOrder = @([regex]::Matches($homeHtml,'<section class="(studio-hero|studio-portfolio|studio-method|studio-proof|studio-close)"') | ForEach-Object { $_.Groups[1].Value })
-Assert-H9 'five approved Studio Root beats remain in order' (($sectionOrder -join ',') -ceq 'studio-hero,studio-portfolio,studio-method,studio-proof,studio-close')
-Assert-H9 'hero uses the verified responsive forged mark as decorative atmosphere' ($homeHtml -match 'class="studio-forge-workbench" aria-hidden="true"' -and $homeHtml -match 'forged_pf_emblem_in_smoky_ruins-1280\.avif' -and $homeHtml -match 'forged_pf_emblem_in_smoky_ruins-1672\.webp')
-Assert-H9 'hero has direct catalog and method actions' ($homeHtml -match 'Find your tool' -and $homeHtml -match 'href="/software/"' -and $homeHtml -match 'How we work' -and $homeHtml -match 'href="/proof-standard/"')
-Assert-H9 'workflow explains Build, Qualify, Record, Publish' ($homeHtml -match 'Build' -and $homeHtml -match 'Qualify' -and $homeHtml -match 'Record' -and $homeHtml -match 'Publish')
-Assert-H9 'editorial section indices PF / 01 through PF / 05 follow the approved five-beat sequence' (([regex]::Matches($homeHtml, 'studio-section-index">PF / 0[1-5]')).Count -eq 5 -and $homeHtml -match 'PF / 01' -and $homeHtml -match 'PF / 02' -and $homeHtml -match 'PF / 03' -and $homeHtml -match 'PF / 04' -and $homeHtml -match 'PF / 05')
-Assert-H9 'generic hero and portfolio order follow visible tier metadata' (($rendered -join ',') -ceq (($eligible | ForEach-Object id) -join ',') -and $rendered.Count -eq $eligible.Count)
-$featuredModules = @($eligible | Where-Object { $_.homepage.tier -eq 'featured' })
-$majorModules = @($eligible | Where-Object { $_.homepage.tier -eq 'major' })
-$secondaryModules = @($eligible | Where-Object { $_.homepage.tier -eq 'secondary' })
-Assert-H9 'exactly one module owns the featured homepage role' ($featuredModules.Count -eq 1 -and ([regex]::Matches($homeHtml, 'class="studio-hero-product"[^>]*data-home-role="featured"')).Count -eq 1)
-Assert-H9 'two major and four secondary scenes are selected through generic module tiers' ($majorModules.Count -eq 2 -and $secondaryModules.Count -eq 4 -and ([regex]::Matches($homeHtml, 'class="studio-product-card"[^>]*data-home-role="major"')).Count -eq 2 -and ([regex]::Matches($homeHtml, 'class="studio-product-card"[^>]*data-home-role="secondary"')).Count -eq 4)
-Assert-H9 'major composition comes from module layout metadata' (@($majorModules | Where-Object { $_.homepage.composition -notin @('media-left','media-right') }).Count -eq 0 -and $homeHtml -match 'data-composition="media-right"' -and $homeHtml -match 'data-composition="media-left"')
-Assert-H9 'hero and cards bind route, authentic image, accent, role, and state to module data' (@($eligible | Where-Object { $m=$_; $media=if($m.homepage.tier -eq 'featured'){$m.hero.media.src}else{$m.card.media}; $homeHtml -notmatch ('data-module="' + [regex]::Escape([string]$m.id) + '"[^>]*data-home-role="' + [regex]::Escape([string]$m.homepage.tier) + '"') -or $homeHtml -notmatch [regex]::Escape([string]$m.route) -or $homeHtml -notmatch [regex]::Escape([string]$media) -or $homeHtml -notmatch [regex]::Escape([string]$m.theme.accent) }).Count -eq 0)
-Assert-H9 'major and secondary layouts use generic tier selectors and accent tokens without product-ID styling' ($homeCss -match 'data-home-role="major"' -and $homeCss -match 'data-home-role="secondary"' -and $homeCss -match 'var\(--product-accent\)' -and $homeCss -notmatch '(?i)cache-vault|reality-gate|ghostlayer|lights-out|cleanroom|proofshot|forgecast')
-Assert-H9 'major scenes alternate media sides with bounded height and stack cleanly on mobile' ($homeCss -match 'data-composition="media-right"' -and $homeCss -match 'data-composition="media-left"' -and $homeCss -match 'max-height:\s*540px' -and $homeCss -match '(?s)@media \(max-width:\s*760px\).*?data-home-role="major".*?flex-direction:\s*column')
-Assert-H9 'each secondary product renders a real module image, status, and route action' (@($secondaryModules | Where-Object { $homeHtml -notmatch [regex]::Escape([string]$_.card.media) -or $homeHtml -notmatch [regex]::Escape([string]$_.route) }).Count -eq 0 -and ([regex]::Matches($homeHtml, 'data-home-role="secondary"')).Count -eq 4)
-Assert-H9 'featured app is a direct large image without simulated window chrome' ($homeHtml -match 'class="studio-hero-visual"' -and $homeHtml -notmatch 'studio-hero-windowbar')
-Assert-H9 'method stays compact as a sequence heading with one supporting sentence' ($homeHtml -match 'BUILD <span>→</span> QUALIFY <span>→</span> RECORD <span>→</span> PUBLISH' -and $homeHtml -match 'Every public release moves' -and $homeHtml -notmatch 'studio-method-steps|studio-method-sequence')
-Assert-H9 'real public release ledger receives its own proof column and stacks on mobile' ($homeCss -match '\.studio-proof \.studio-evidence\s*\{\s*grid-column:\s*2;\s*grid-row:\s*1' -and $homeCss -match '@media \(max-width:\s*760px\)[\s\S]*?\.studio-proof \.studio-evidence\s*\{\s*grid-column:\s*1')
-Assert-H9 'secondary proof links remain reachable' ($homeHtml -match 'href="/proof-standard/"' -and $homeHtml -match 'href="/truth-files/"' -and $homeHtml -match 'href="/proof/"')
-Assert-H9 'closing studio statement exists' ($homeHtml -match 'Same standard\.' -and $homeHtml -match 'Different tools\.')
-Assert-H9 'studio root template contains no fixed product identity or list' ($sourceHome -notmatch '(?i)cache vault|reality gate|ghostlayer|forgecast|proofshot|lights out|cleanroom|data-module=')
-Assert-H9 'generated homepage contains no unresolved template tokens' ($homeHtml -notmatch '\{\{[^}]+\}\}|<!--\s*@studio-')
-Assert-H9 'root has no search/comparison catalog controls' ($homeHtml -notmatch 'product-finder|data-compare=|id="product-search"')
+
+Assert-H9 'studio identity and proposition lead the first scene' ($homeHtml -match 'Useful software\.' -and $homeHtml -match 'On your terms\.' -and $homeHtml -match 'Independent software for a more truthful tomorrow' -and $homeHtml -match 'studio-hero')
+$sectionOrder = @([regex]::Matches($homeHtml,'<section class="(studio-hero|studio-portfolio|studio-proof|studio-withdrawn|studio-threshold|studio-close)"') | ForEach-Object { $_.Groups[1].Value })
+Assert-H9 'journey proceeds from interior to work, proof, withdrawn state, threshold and exterior' (($sectionOrder -join ',') -ceq 'studio-hero,studio-portfolio,studio-proof,studio-withdrawn,studio-threshold,studio-close')
+Assert-H9 'hero uses the cool-metal furnace scene and a mounted Foundry mark' ($homeHtml -match 'studio-forge-workbench' -and $homeHtml -match '/assets/binding-foundry/foundry-ledger\.webp' -and $homeHtml -match 'class="studio-hero-emblem"' -and $homeHtml -match '/brand/PF_MARK_G_FORGED\.svg')
+Assert-H9 'hero links to the catalog and proof standard' ($homeHtml -match 'Explore software' -and $homeHtml -match 'href="/software/"' -and $homeHtml -match 'Read the Proof Standard' -and $homeHtml -match 'href="/proof-standard/"')
+Assert-H9 'hero is brand-first and contains no featured product media or identity' ($sourceHome -notmatch '@studio-hero-product|studio-hero-product|data-module=|Cache Vault|GhostLayer|Lights Out|Cleanroom|ProofShot|ForgeCast|Reality Gate' -and $homeHtml -notmatch 'class="studio-hero-product"')
+Assert-H9 'studio principles keep the independent, local-first and inspectable claims visible' ($homeHtml -match 'Independent<br/>by design' -and $homeHtml -match 'Local-first<br/>where it fits' -and $homeHtml -match 'Inspectable<br/>release records')
+Assert-H9 'editorial section indices remain ordered from PF / 01 through PF / 05' (([regex]::Matches($homeHtml, 'studio-section-index">PF / 0[1-5]')).Count -eq 5)
+Assert-H9 'journey transition and final exterior use the threshold and open-door scene' ($homeHtml -match 'THE THRESHOLD / TRANSITION' -and $homeHtml -match 'What leaves the workshop<br/>carries its record with it\.' -and $homeHtml -match "From the workshop<br/><em>to what’s next\.</em>" -and $homeCss -match 'studio-horizon\.webp')
+
+Assert-H9 'all public homepage modules render as work-area cards in registry order' (($renderedPublic -join ',') -ceq (($publicHomeModules | ForEach-Object id) -join ',') -and $renderedPublic.Count -eq $publicHomeModules.Count)
+Assert-H9 'withdrawn modules render separately, in registry order, outside the public catalog scene' (($renderedWithdrawn -join ',') -ceq (($withdrawnHomeModules | ForEach-Object id) -join ',') -and $renderedWithdrawn.Count -eq $withdrawnHomeModules.Count)
+Assert-H9 'public modules preserve their semantic tier and composition metadata' (@($publicHomeModules | Where-Object { $homeHtml -notmatch ('data-module="' + [regex]::Escape([string]$_.id) + '"[^>]*data-home-role="' + [regex]::Escape([string]$_.homepage.tier) + '"[^>]*data-composition="' + [regex]::Escape([string]$_.homepage.composition) + '"') }).Count -eq 0)
+Assert-H9 'all module routes, images, and accent tokens remain bound to module data' (@($rootModules | Where-Object { $m=$_; $html=$homeHtml; $html -notmatch [regex]::Escape([string]$m.route) -or $html -notmatch [regex]::Escape([string]$m.card.media) -or $html -notmatch [regex]::Escape([string]$m.theme.accent) }).Count -eq 0)
+Assert-H9 'capture notes disclose historical UI, brand art and sample data without claiming current screenshots' ($homeHtml -match 'Dry Run capture from v11\.1\.2' -and $homeHtml -match 'Interface capture from v1\.0\.6' -and $homeHtml -match 'no product interface pictured' -and $homeHtml -match 'not a live forecast' -and $homeHtml -match 'Demo Widget Service')
+Assert-H9 'ProofShot shows approved non-interface artwork without its illustrative bundle-status panel' ($homeHtml -match '/assets/proofshot/og-image\.png' -and $homeHtml -notmatch '/assets/proofshot/web-hero\.png' -and $software -notmatch '/assets/proofshot/web-hero\.png' -and $homeHtml -match 'no product interface pictured')
+Assert-H9 'module identity compositions are generic scene-family and presentation rules' ($homeCss -match 'data-home-role="featured"' -and $homeCss -match 'data-home-role="major"' -and $homeCss -match 'data-home-role="secondary"' -and $homeCss -match 'data-scene-family="weather-instrument"' -and $homeCss -notmatch '(?i)cache-vault|reality-gate|ghostlayer|lights-out|cleanroom|proofshot|forgecast')
+Assert-H9 'wide screens receive an expanded content rail and mobile cards recompose without overflow' ($homeCss -match 'width:\s*min\(2800px' -and $homeCss -match 'grid-template-columns:\s*repeat\(12' -and $homeCss -match '@media \(max-width: 760px\)' -and $homeCss -match 'studio-product-card\[data-home-role="secondary"\].*?grid-column:\s*1')
+Assert-H9 'ultrawide studio and portfolio rails exceed the legacy 1900px cap' ($worldCss -match '\.studio-root-page \.studio-hero-grid \{ width: min\(2800px, calc\(100% - clamp\(36px, 6vw, 144px\)\)\)' -and $worldCss -match '\.studio-root-page \.studio-portfolio-heading,\.studio-root-page \.studio-portfolio-grid \{ width: min\(2800px, calc\(100% - clamp\(36px, 6vw, 144px\)\)\)')
+Assert-H9 'release sequence, Truth Files, standard and canonical receipt routes remain reachable' ($homeHtml -match 'BUILD.*QUALIFY.*RECORD.*PUBLISH' -and $homeHtml -match 'href="/proof-standard/"' -and $homeHtml -match 'href="/truth-files/"' -and $homeHtml -match 'href="/proof/"')
+Assert-H9 'withdrawn work states no public release or download and exposes no download action' ($withdrawnHomeModules.Count -gt 0 -and $homeHtml -match 'Withdrawn · no current public release' -and $homeHtml -match 'No successor release has been publicly proven\.' -and $homeHtml -notmatch 'data-commerce="free"[^>]*Reality Gate|Download[^<]*Reality Gate')
+Assert-H9 'withdrawn renderer remains generic and contains no product identity branch' ($renderer -match 'function Get-StudioWithdrawnEntries' -and $renderer -match 'function Build-StudioWithdrawn' -and $renderer -notmatch '(?s)function Build-StudioWithdrawn.*?(?=function Get-PublicCatalogCount)(?i:cache-vault|reality-gate|ghostlayer|lights-out|cleanroom|proofshot|forgecast)')
+Assert-H9 'studio source contains no fixed product list or product-specific card markup' ($sourceHome -notmatch '(?i)cache vault|reality gate|ghostlayer|forgecast|proofshot|lights out|cleanroom|data-module=')
+Assert-H9 'generated homepage has no unresolved template markers' ($homeHtml -notmatch '\{\{[^}]+\}\}|<!--\s*@studio-')
+Assert-H9 'root keeps catalog search and comparison controls on the software page' ($homeHtml -notmatch 'product-finder|data-compare=|id="product-search"')
 Assert-H9 'software catalog route exists' (Test-Path (Join-Path $public 'software/index.html'))
+
 $catalogIds = @([regex]::Matches($software, '<article\b[^>]*data-product="([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
 $catalogExpected = @($modules | Where-Object { $_.visibility -eq 'visible' -and $_.lifecycle -eq 'public-eligible' -and (-not $_.placement -or $_.placement.catalog -ne $false) } | ForEach-Object id | Sort-Object)
-Assert-H9 'software catalog entries are registry-derived and complete' ((($catalogIds | Sort-Object) -join ',') -ceq ($catalogExpected -join ',') -and $catalogIds.Count -eq $catalogExpected.Count)
-Assert-H9 'catalog controls and comparison enhancement remain on software route' ($software -match 'product-finder|finder-intents' -and $software -match 'compare-choice|data-compare')
-Assert-H9 'catalog comparison controls cover every catalog module' (([regex]::Matches($software, 'data-compare=')).Count -eq $catalogExpected.Count)
+Assert-H9 'software catalog entries remain registry-derived and complete' ((($catalogIds | Sort-Object) -join ',') -ceq ($catalogExpected -join ',') -and $catalogIds.Count -eq $catalogExpected.Count)
+Assert-H9 'catalog search and comparison remain on the software route' ($software -match 'product-finder|finder-intents' -and $software -match 'compare-choice|data-compare')
+Assert-H9 'comparison controls cover every catalog module' (([regex]::Matches($software, 'data-compare=')).Count -eq $catalogExpected.Count)
 $missingA11y = 0
 foreach ($pageHtml in @($homeHtml, $software)) { $ids = @([regex]::Matches($pageHtml, '\bid="([^"]+)"') | ForEach-Object { $_.Groups[1].Value }); $missingA11y += @([regex]::Matches($pageHtml, 'aria-labelledby="([^"]+)"') | ForEach-Object { $_.Groups[1].Value -split '\s+' } | Where-Object { $_ -notin $ids }).Count }
 Assert-H9 'homepage and catalog accessibility references resolve' ($missingA11y -eq 0)
-Assert-H9 'legacy catalog anchor has no generated dead links' (@(Get-ChildItem $public -Recurse -Filter *.html | Where-Object { [IO.File]::ReadAllText($_.FullName) -match 'href="/#products"' }).Count -eq 0)
+Assert-H9 'no generated legacy catalog anchor points to a missing root target' (@(Get-ChildItem $public -Recurse -Filter *.html | Where-Object { [IO.File]::ReadAllText($_.FullName) -match 'href="/#products"' }).Count -eq 0)
 Assert-H9 'no horizontal-scroll primitive or carousel dependency' ($sourceHome -notmatch 'carousel|overflow-x:\s*(scroll|auto)')
-Assert-H9 'reduced motion support remains' ((Get-Content (Join-Path $root 'h9-homepage.css') -Raw) -match 'prefers-reduced-motion')
+Assert-H9 'reduced-motion support remains available' ($homeCss -match 'prefers-reduced-motion')
 
-# Evidence must be derived from an eligible canonical public artifact.
+# The homepage ledger must exactly follow currently eligible canonical receipts.
 $candidateModules = @($modules | Where-Object { $null -ne $_.homepage.evidencePriority } | Sort-Object { [int]$_.homepage.evidencePriority })
-$evidence = [regex]::Match($homeHtml, '(?s)<aside class="studio-evidence".*?</aside>').Value
-$selected = $null
+$expectedEvidence = @()
 foreach ($m in $candidateModules) {
   $p = @($manifest.products | Where-Object id -eq $m.id | Select-Object -First 1)[0]
+  if (-not $p) { continue }
   $artifact = @($p.artifacts | Where-Object { $_.downloadUrl -eq $p.downloadUrl -and $_.sha256 -eq $p.sha256 } | Select-Object -First 1)[0]
-  if ($p.release.releaseStatus -eq 'PUBLIC_RELEASE' -and $p.release.publicVersion -and $p.verification.status -eq 'VERIFIED' -and -not $p.presentation.downloadUnavailable -and $p.downloadUrl -and $p.sha256 -match '^[a-fA-F0-9]{64}$' -and $p.sha256Url -and $artifact -and $m.card.media) { $selected = @{module=$m;product=$p;artifact=$artifact}; break }
+  if ($p.release.releaseStatus -eq 'PUBLIC_RELEASE' -and $p.release.publicVersion -and $p.verification.status -eq 'VERIFIED' -and -not $p.presentation.downloadUnavailable -and $p.downloadUrl -and $p.sha256 -match '^[a-fA-F0-9]{64}$' -and $p.sha256Url -and $artifact -and $m.card.media) { $expectedEvidence += @{module=$m;product=$p;artifact=$artifact} }
 }
-Assert-H9 'evidence component is omitted when no canonical eligible artifact exists, otherwise exactly one is rendered' (($selected -and [regex]::Matches($homeHtml, 'class="studio-evidence"').Count -eq 1) -or (-not $selected -and [regex]::Matches($homeHtml, 'class="studio-evidence"').Count -eq 0))
-Assert-H9 'proof artifact contains four ledger rows with public version, verified state, SHA-256 record marker, date, and links' (([regex]::Matches($evidence, 'class="studio-ledger-row"')).Count -eq 4 -and $evidence -match 'PUBLIC <b>v' -and $evidence -match 'VERIFIED' -and $evidence -match 'SHA-256 on record' -and $evidence -match '<time datetime=' -and $evidence -match 'href="/proof/#receipt-')
-if ($selected) {
-Assert-H9 'compact evidence matches first eligible public release and keeps raw artifact details on the record page' ($evidence.Contains([string]$selected.product.name) -and $evidence.Contains([string]$selected.product.release.publicVersion) -and $evidence.Contains([string]$selected.product.verification.verifiedAt) -and $evidence.Contains('/proof/#receipt-' + [string]$selected.product.id) -and $homeHtml -notmatch [regex]::Escape([string]$selected.product.sha256) -and $homeHtml -notmatch [regex]::Escape([string]$selected.artifact.filename))
+$evidence = [regex]::Match($homeHtml, '(?s)<aside class="studio-evidence".*?</aside>').Value
+$ledgerRows = [regex]::Matches($evidence, 'class="studio-ledger-row"')
+Assert-H9 'evidence is omitted only when no eligible current public artifact exists' (($expectedEvidence.Count -gt 0 -and [regex]::Matches($homeHtml, 'class="studio-evidence"').Count -eq 1) -or ($expectedEvidence.Count -eq 0 -and [regex]::Matches($homeHtml, 'class="studio-evidence"').Count -eq 0))
+Assert-H9 'release ledger includes every eligible current receipt and only manifest-backed values' ($ledgerRows.Count -eq $expectedEvidence.Count -and $evidence -match 'PUBLIC <b>v' -and $evidence -match 'VERIFIED' -and $evidence -match 'SHA-256 on record' -and $evidence -match '<time datetime=' -and $evidence -match 'href="/proof/#receipt-')
+foreach ($selected in $expectedEvidence) {
+  $p = $selected.product
+  $displayName = if ($p.homeName) { [string]$p.homeName } else { [string]$p.name }
+  Assert-H9 "ledger binds $displayName to its current version and receipt" ($evidence.Contains($displayName) -and $evidence.Contains([string]$p.release.publicVersion) -and $evidence.Contains([string]$p.verification.verifiedAt) -and $evidence.Contains('/proof/#receipt-' + [string]$p.id) -and $evidence -notmatch [regex]::Escape([string]$p.sha256) -and $evidence -notmatch [regex]::Escape([string]$selected.artifact.filename))
 }
-$rg = @($manifest.products | Where-Object id -eq 'reality-gate' | Select-Object -First 1)[0]
-Assert-H9 'withdrawn Reality Gate is excluded from evidence selection and has no root download CTA' ($rg.release.releaseStatus -eq 'WITHDRAWN' -and $evidence -notmatch 'Reality Gate' -and $homeHtml -notmatch 'Download[^<]*Reality Gate')
 $proofIndex = Get-Content (Join-Path $public 'proof/index.json') -Raw -Encoding UTF8
-Assert-H9 'root narrative keeps raw checksum digests confined to evidence artifact' ($evidence -and $homeHtml -notmatch ('<dd>' + [regex]::Escape([string]$selected.product.sha256) + '</dd>'))
-Assert-H9 'homepage release references remain generated from canonical manifest data' ($homeHtml -notmatch '\{\{products\.' -and $proofIndex -match '"products"')
+Assert-H9 'homepage release references are generated from canonical manifest data' ($homeHtml -notmatch '\{\{products\.' -and $proofIndex -match '"products"')
 
 if ($fail -gt 0) { Write-Host "=== H9 RESULT: $pass passed, $fail failed ===" -ForegroundColor Red; exit 1 }
 Write-Host "=== H9 RESULT: $pass passed, $fail failed ===" -ForegroundColor Green

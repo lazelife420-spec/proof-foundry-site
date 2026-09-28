@@ -159,7 +159,7 @@ main > .product-shell { width: min(var(--world-rail), calc(100% - var(--world-gu
 .studio-threshold p { width: min(var(--world-copy), 100%); margin: 0 auto; }
 .studio-threshold p span { display: block; margin-bottom: 20px; color: #d8c293; font: 10px/1.4 ui-monospace, monospace; letter-spacing: .18em; }
 .studio-threshold p strong { font: 400 clamp(29px, 4.3vw, 60px)/1.07 Georgia, 'Times New Roman', serif; letter-spacing: -.035em; }
-.studio-root-page .studio-hero-grid { width: min(1900px, 100%); grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: clamp(36px, 4vw, 100px); min-height: clamp(660px, 56vw, 890px); padding-inline: var(--world-gutter); }
+.studio-root-page .studio-hero-grid { width: min(2800px, calc(100% - clamp(36px, 6vw, 144px))); grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: clamp(36px, 4vw, 100px); min-height: clamp(660px, 56vw, 890px); padding-inline: var(--world-gutter); }
 .studio-root-page .studio-hero-copy { max-width: 740px; }
 .studio-root-page .studio-hero h1 { font-size: clamp(58px, 4.2vw, 92px); letter-spacing: -.065em; }
 .studio-root-page .studio-hero h1 span { white-space: normal; }
@@ -168,7 +168,7 @@ main > .product-shell { width: min(var(--world-rail), calc(100% - var(--world-gu
 .studio-root-page .studio-hero-visual img { max-height: min(70vh, 760px); filter: drop-shadow(0 34px 54px #000b); }
 .studio-root-page .studio-hero-product[data-scene-family="archive-workbench"] .studio-hero-visual img { transform: perspective(1500px) rotateY(-4deg); }
 .studio-root-page .studio-hero-product[data-scene-family="archive-workbench"] .studio-hero-product-caption { margin-inline: clamp(10px, 4vw, 65px); }
-.studio-root-page .studio-portfolio-heading,.studio-root-page .studio-portfolio-grid { width: min(1900px, 100%); }
+.studio-root-page .studio-portfolio-heading,.studio-root-page .studio-portfolio-grid { width: min(2800px, calc(100% - clamp(36px, 6vw, 144px))); }
 .studio-root-page .studio-portfolio-heading { align-items: end; }
 .studio-root-page .studio-product-card[data-home-role="major"] { min-height: 500px; max-height: none; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); padding-block: 25px; }
 .studio-root-page .studio-product-card[data-home-role="major"][data-composition="media-right"] .studio-product-copy { grid-column: 1; grid-row: 1; }
@@ -210,6 +210,8 @@ main > .product-shell { width: min(var(--world-rail), calc(100% - var(--world-gu
   .software-catalog-page .product-card:nth-child(3n + 2),
   .software-catalog-page .product-card:nth-child(3n) { grid-column: span 6; grid-template-columns: minmax(0, 1fr); }
   .software-catalog-page .product-card .catalog-image-link { min-height: 230px !important; max-height: 300px !important; border-right: 0; border-bottom: 1px solid #ffffff17; }
+  .software-catalog-page .product-card[data-scene-family] .catalog-image-link { grid-column: 1; grid-row: 1; }
+  .software-catalog-page .product-card[data-scene-family] .card-body { grid-column: 1; grid-row: 2; }
   .studio-root-page .studio-hero-grid { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 36px; }
   .studio-root-page .studio-hero h1 { font-size: clamp(48px, 6vw, 72px); }
 }

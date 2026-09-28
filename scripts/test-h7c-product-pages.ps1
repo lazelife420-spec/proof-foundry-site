@@ -92,7 +92,7 @@ foreach ($p in $h7cProducts) {
     # VR1-R2 visual truth: the hero may not carry a known HyperSnatch-era
     # engine capture; it must use a verified ProofShot-branded asset.
     $hero = [regex]::Match($html, '(?s)hero-product-shot.*?</figure>').Value
-    Assert-Condition ($hero -notmatch 'workbench-home|workbench-proof-cards|hypersnatch|v1\.6\.18' -and $hero -match 'web-hero\.png') "$name - hero carries verified ProofShot-branded visual, no HyperSnatch-era asset"
+    Assert-Condition ($hero -notmatch 'workbench-home|workbench-proof-cards|hypersnatch|v1\.6\.18|web-hero\.png' -and $hero -match 'og-image\.png') "$name - hero carries approved ProofShot brand artwork without illustrative bundle data or HyperSnatch-era UI"
     Assert-Condition ($html -match 'Download ProofShot v2\.0\.0') "$name - real public download CTA present"
     Assert-Condition ($html -match 'ProofShot-Setup-2\.0\.0\.exe' -and $html -notmatch 'Follow development|no public ProofShot release') "$name - current public installer supersedes development-only CTA"
   }

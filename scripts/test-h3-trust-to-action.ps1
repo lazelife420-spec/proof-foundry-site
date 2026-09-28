@@ -124,7 +124,7 @@ Assert-Condition ($stylesCss -match '\.onboarding-list dt') "shared onboarding-l
 # editorial sequence and catalog handoff rather than requiring obsolete markup.
 Assert-Condition ($homeHtml.IndexOf('class="studio-hero"') -lt $homeHtml.IndexOf('class="studio-portfolio"') -and ([regex]::Matches($homeHtml, 'data-presentation="feature"')).Count -eq 1) "H9: studio hero leads into exactly one registry-selected featured product"
 Assert-Condition ($homeHtml -match 'class="studio-portfolio"[\s\S]*?href="/software/"') "H9: portfolio invitation reaches the functional catalog"
-Assert-Condition ($homeHtml -match '<h1 id="studio-title">[\s\S]*?BUILD SOFTWARE\.[\s\S]*?KEEP THE RECEIPT\.') "H9: current studio-root hero headline is preserved"
+Assert-Condition ($homeHtml -match '<h1 id="studio-title">[\s\S]*?Useful software\.[\s\S]*?On your terms\.') "H9: current brand-first studio-root hero headline is preserved"
 Assert-Condition ($homeHtml -notmatch 'Lights Out PC <span aria-hidden="true">') "H2 preserved: homepage short naming intact"
 Assert-Condition ($rg -match 'Your projects\.' -and $rg -match 'Your execution\.' -and $rg -match 'Your way back\.') "H1/H2 preserved: Reality Gate module hero copy remains intact"
 Assert-Condition ($gl -match '<strong>Status</strong> Public release' -and $gl -match '<strong>Version</strong> v0\.4\.0') "truth preserved: GhostLayer public release version remains intact"

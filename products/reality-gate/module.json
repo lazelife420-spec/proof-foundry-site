@@ -92,8 +92,8 @@
     "lede": "Bring your Git projects into a local control room for builds, run records, and recovery. See the source behind a run, inspect its outcome, and keep a recovery path alongside the work.",
     "media": {
       "src": "/assets/reality-gate/08-ci-run-complete.50deeeef7e10fbe8.png",
-      "alt": "Reality Gate Runroom showing a completed run, execution log and verified receipt.",
-      "caption": "The Runroom · a real completed run"
+      "alt": "Reality Gate sample Runroom displaying a completed CI run for Demo Widget Service.",
+      "caption": "Sample Runroom · Demo Widget Service"
     },
     "primaryAction": {
       "label": "Review release status",
@@ -108,7 +108,7 @@
     "tagline": "Your projects. Your execution. Your way back.",
     "media": "/assets/studio/08-ci-run-complete-card-960.png",
     "summary": "Bring your Git projects into a local control room for builds, run records, and recovery. See the source behind a run, inspect its outcome, and keep a recovery path alongside the work.",
-    "mediaAlt": "Reality Gate Runroom displaying a completed CI run in a sample repository"
+    "mediaAlt": "Reality Gate sample Runroom displaying a completed CI run for Demo Widget Service"
   },
   "lifecycle": "public-eligible",
   "commerce": { "status": "WITHDRAWN", "label": "Withdrawn · no public download" },
@@ -122,6 +122,7 @@
       "tier": "major",
       "composition": "media-right",
     "presentation": "interface",
-    "visibility": "visible"
+    "visibility": "visible",
+    "mediaDisclosure": "Sample repository · Demo Widget Service. Reality Gate is withdrawn."
   }
 }

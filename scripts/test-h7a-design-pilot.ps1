@@ -98,7 +98,7 @@ Assert-Condition ($sourceHome -match 'Receipts over hype' -and $sourceHome -matc
 Assert-Condition ($sourceHome -match 'class="studio-portfolio"[\s\S]*?href="/software/"') 'source: homepage portfolio invites visitors to the functional catalog'
 Assert-Condition ($sourceHome -notmatch 'hero-signals|home-reassurance') 'source: hero removes competing secondary signals'
 Assert-Condition ($sourceHome -notmatch 'theater-controls|product-finder|data-compare=') 'source: functional catalog controls do not compete with H9 editorial scenes'
-Assert-Condition ($outputHome -match 'Small tools\. Fewer loose ends\.' -and $outputHome -match 'Browse the full catalog' -and $outputHome -match 'href="/software/"') 'output: Studio Root discovery and catalog CTA survive build'
+Assert-Condition ($outputHome -match 'Different tools\. Same standard\.' -and $outputHome -match 'Explore all tools' -and $outputHome -match 'href="/software/"') 'output: Studio Root portfolio identity and catalog CTA survive build'
 Assert-Condition ($experience -match '\.layer-number\{font:9px Consolas,monospace;color:#969eb5;letter-spacing:\.14em\}') 'source: GhostLayer contrast color is corrected'
 Assert-Condition ($outputExperience -match '\.layer-number\{font:9px Consolas,monospace;color:#969eb5;letter-spacing:\.14em\}') 'output: GhostLayer contrast color survives build'
 Assert-Condition ($layerRatio -ge 4.5) ("WCAG AA: GhostLayer layer number contrast is {0:N2}:1 (>= 4.50:1)" -f $layerRatio)

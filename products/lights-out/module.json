@@ -167,6 +167,7 @@
       "tier": "secondary",
     "presentation": "compact",
     "visibility": "visible",
+    "mediaDisclosure": "Dry Run capture from v11.1.2 · current public release v11.1.3.",
     "evidencePriority": 3
   }
 }

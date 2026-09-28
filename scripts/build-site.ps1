@@ -1237,10 +1237,22 @@ function Get-StudioPortfolioEntries {
     if ($module.lifecycle -ne 'public-eligible' -or $module.visibility -ne 'visible') { continue }
     if (-not $module.homepage -or $module.homepage.role -ne 'studioPortfolio' -or $module.homepage.visibility -ne 'visible') { continue }
     $p = $productStateSource.Get($module.id)
-    if (-not $p -or -not $p.visible) { continue }
+    if (-not $p -or -not $p.visible -or $p.release.releaseStatus -ne 'PUBLIC_RELEASE') { continue }
     $eligible += [PSCustomObject]@{ Module=$module; Product=$p; Order=[int]$module.homepage.order }
   }
   return @($eligible | Sort-Object Order, { [int]$_.Module.order })
+}
+
+function Get-StudioWithdrawnEntries {
+  $withdrawn = @()
+  foreach ($module in $productRegistry) {
+    if ($module.lifecycle -ne 'public-eligible' -or $module.visibility -ne 'visible') { continue }
+    if (-not $module.homepage -or $module.homepage.role -ne 'studioPortfolio' -or $module.homepage.visibility -ne 'visible') { continue }
+    $p = $productStateSource.Get($module.id)
+    if (-not $p -or -not $p.visible -or $p.release.releaseStatus -ne 'WITHDRAWN') { continue }
+    $withdrawn += [PSCustomObject]@{ Module=$module; Product=$p; Order=[int]$module.homepage.order }
+  }
+  return @($withdrawn | Sort-Object Order, { [int]$_.Module.order })
 }
 
 function Get-HomepageStatus($product, $tokens) {
@@ -1270,7 +1282,7 @@ function Get-StudioEvidenceCandidate {
 }
 
 function Build-StudioEvidence {
-  $candidates = @(Get-StudioEvidenceCandidate | Select-Object -First 4)
+  $candidates = @(Get-StudioEvidenceCandidate)
   if ($candidates.Count -eq 0) { return '' }
   $rows = @()
   foreach ($candidate in $candidates) {
@@ -1291,30 +1303,10 @@ function Build-StudioEvidence {
 "@
 }
 
-function Build-StudioHeroProduct {
-  $entry = @(Get-StudioPortfolioEntries | Where-Object { $_.Module.homepage.tier -eq 'featured' }) | Select-Object -First 1
-  if (-not $entry) { return '' }
-  $module = $entry.Module; $product = $entry.Product
-  $name = if ($product.homeName) { [string]$product.homeName } else { [string]$product.name }
-  $media = if ($module.hero.media.src) { [string]$module.hero.media.src } else { [string]$module.card.media }
-  $alt = if ($module.hero.media.alt) { [string]$module.hero.media.alt } else { [string]$module.card.mediaAlt }
-  $caption = if ($module.hero.media.caption) { [string]$module.hero.media.caption } else { [string]$module.hero.headline }
-  $tokens = ProductTokens $product
-  $status = Get-HomepageStatus $product $tokens
-  $accent = if ($module.theme.accent) { [string]$module.theme.accent } else { '#d6bd91' }
-  return @"
-<figure class="studio-hero-product" data-module="$(Html-Attr $module.id)" data-home-role="$(Html-Attr $module.homepage.tier)" data-presentation="$(Html-Attr $module.homepage.presentation)" data-scene-family="$(Html-Attr $module.homepage.sceneFamily)" style="--product-accent:$(Html-Attr $accent)">
-  <a class="studio-hero-visual" href="$(Html-Attr $module.route)" aria-label="Explore $(Html-Attr $name)"><img src="$(Html-Attr $media)" alt="$(Html-Attr $alt)" fetchpriority="high" decoding="async"/></a>
-  <figcaption class="studio-hero-product-caption"><span class="studio-hero-product-kicker">Featured tool</span><strong>$(Html-Text $name)</strong><span class="studio-hero-product-note">$(Html-Text $caption)</span><a href="$(Html-Attr $module.route)">$(Html-Text $status) <span aria-hidden="true">↗</span></a></figcaption>
-</figure>
-"@
-}
-
 function Build-StudioPortfolio {
   $cards = @()
   foreach ($entry in Get-StudioPortfolioEntries) {
     $module = $entry.Module; $product = $entry.Product
-    if ($module.homepage.tier -eq 'featured') { continue }
     $name = if ($product.homeName) { [string]$product.homeName } else { [string]$product.name }
     $image = [string]$module.card.media; $alt = [string]$module.card.mediaAlt
     $tagline = if ($module.card.tagline) { [string]$module.card.tagline } else { [string]$module.hero.lede }
@@ -1322,14 +1314,45 @@ function Build-StudioPortfolio {
     $status = Get-HomepageStatus $product $tokens
     $accent = if ($module.theme.accent) { [string]$module.theme.accent } else { '#d6bd91' }
     $accent2 = if ($module.theme.accentSecondary) { [string]$module.theme.accentSecondary } else { $accent }
+    $mediaNote = if ($module.homepage.mediaDisclosure) { [string]$module.homepage.mediaDisclosure } elseif ($module.hero.media.caption) { [string]$module.hero.media.caption } else { [string]$alt }
+    $downloadAvailable = $product.release.releaseStatus -eq 'PUBLIC_RELEASE' -and -not $product.presentation.downloadUnavailable -and -not [string]::IsNullOrWhiteSpace([string]$product.downloadUrl)
+    $actionHref = if ($downloadAvailable) { [string]$product.downloadUrl } else { [string]$module.route }
+    $actionLabel = if ($downloadAvailable -and $module.commerce.label) { [string]$module.commerce.label } elseif ($downloadAvailable) { 'Free download' } else { 'Explore product' }
+    $downloadAttrs = if ($downloadAvailable) { ' data-commerce="free"' } else { '' }
     $cards += @"
 <article class="studio-product-card" data-module="$(Html-Attr $module.id)" data-home-role="$(Html-Attr $module.homepage.tier)" data-composition="$(Html-Attr $module.homepage.composition)" data-presentation="$(Html-Attr $module.homepage.presentation)" data-scene-family="$(Html-Attr $module.homepage.sceneFamily)" style="--product-accent:$(Html-Attr $accent);--product-accent-2:$(Html-Attr $accent2)">
-  <a class="studio-product-media" href="$(Html-Attr $module.route)" aria-label="Explore $(Html-Attr $name)"><img src="$(Html-Attr $image)" alt="$(Html-Attr $alt)" loading="lazy" decoding="async"/></a>
-  <div class="studio-product-copy"><div class="studio-product-eyebrow"><span>$(Html-Text $module.taxonomy.category)</span><span>$(Html-Text $tokens.platform)</span></div><h3>$(Html-Text $name)</h3><p>$(Html-Text $tagline)</p><p class="studio-product-state">$(Html-Text $status)</p><a class="studio-product-open" href="$(Html-Attr $module.route)">Explore product <span aria-hidden="true">→</span></a></div>
+  <a class="studio-product-media" href="$(Html-Attr $module.route)" aria-label="Explore $(Html-Attr $name)"><img src="$(Html-Attr $image)" alt="$(Html-Attr $alt)" loading="lazy" decoding="async"/><span class="studio-media-note">$(Html-Text $mediaNote)</span></a>
+  <div class="studio-product-copy"><div class="studio-product-eyebrow"><span>$(Html-Text $module.taxonomy.category)</span><span>$(Html-Text $tokens.platform)</span></div><h3><a href="$(Html-Attr $module.route)">$(Html-Text $name)</a></h3><p>$(Html-Text $tagline)</p><p class="studio-product-state">$(Html-Text $status)</p><a class="studio-product-open" href="$(Html-Attr $actionHref)"$downloadAttrs>$(Html-Text $actionLabel) <span aria-hidden="true">→</span></a></div>
 </article>
 "@
   }
   return ($cards -join "`n")
+}
+
+function Build-StudioWithdrawn {
+  $entries = @(Get-StudioWithdrawnEntries)
+  if ($entries.Count -eq 0) { return '' }
+  $cards = @()
+  foreach ($entry in $entries) {
+    $module = $entry.Module; $product = $entry.Product
+    $name = if ($product.homeName) { [string]$product.homeName } else { [string]$product.name }
+    $image = [string]$module.card.media; $alt = [string]$module.card.mediaAlt
+    $mediaNote = if ($module.homepage.mediaDisclosure) { [string]$module.homepage.mediaDisclosure } elseif ($module.hero.media.caption) { [string]$module.hero.media.caption } else { [string]$alt }
+    $accent = if ($module.theme.accent) { [string]$module.theme.accent } else { '#d6bd91' }
+    $notice = if ($product.presentation.downloadNotice) { [string]$product.presentation.downloadNotice } else { 'No current public release or download is available.' }
+    $cards += @"
+<article class="studio-withdrawn-product" data-module="$(Html-Attr $module.id)" data-scene-family="$(Html-Attr $module.homepage.sceneFamily)" style="--product-accent:$(Html-Attr $accent)">
+  <a class="studio-withdrawn-media" href="$(Html-Attr $module.route)" aria-label="Read the $(Html-Attr $name) withdrawal record"><img src="$(Html-Attr $image)" alt="$(Html-Attr $alt)" loading="lazy" decoding="async"/><span class="studio-media-note">$(Html-Text $mediaNote)</span></a>
+  <div class="studio-withdrawn-copy"><span class="studio-withdrawn-state">Withdrawn · no current public release</span><h3><a href="$(Html-Attr $module.route)">$(Html-Text $name)</a></h3><p>$(Html-Text $notice)</p><a class="studio-withdrawn-link" href="$(Html-Attr $module.route)">Read the withdrawal record <span aria-hidden="true">↗</span></a></div>
+</article>
+"@
+  }
+  return @"
+<section class="studio-withdrawn" data-foundry-scene="withdrawn" aria-labelledby="withdrawn-title">
+  <div class="studio-withdrawn-intro"><p class="studio-kicker"><span class="studio-section-index">PF / 04</span><span>Reality, including limits</span></p><h2 id="withdrawn-title">Not everything ships.</h2><p>Some tools stay in the workshop. When a release is withdrawn, the record stays clear.</p></div>
+  <div class="studio-withdrawn-list">$($cards -join "`n")</div>
+</section>
+"@
 }
 
 function Get-PublicCatalogCount { return @(Get-CatalogProductState).Count }
@@ -2600,8 +2623,8 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   $publicCatalogCount = [string](Get-PublicCatalogCount)
   $html = $html.Replace('{{publicProductCount}}', $publicCatalogCount)
   $html = $html.Replace('<!-- @studio-evidence -->', (Build-StudioEvidence))
-  $html = $html.Replace('<!-- @studio-hero-product -->', (Build-StudioHeroProduct))
   $html = $html.Replace('<!-- @studio-portfolio -->', (Build-StudioPortfolio))
+  $html = $html.Replace('<!-- @studio-withdrawn -->', (Build-StudioWithdrawn))
   # The standalone catalog includes the featured product as a normal card.
   $catalogCards = (Build-ProductCards $null $true $true) -replace '<h4 class="card-name">', '<h3 class="card-name">' -replace '</h4>', '</h3>'
   $html = $html -replace '<!--\s*@all-products\s*-->', $catalogCards

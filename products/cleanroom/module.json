@@ -83,9 +83,9 @@
     "headline": "Less clutter. A way back.",
     "lede": "Inspect what you want to clear. Archive the files you choose. Restore them to their original paths when you need them again.",
     "media": {
-      "src": "/assets/cleanroom/cleanroom-activity-ledger.png",
-      "alt": "Cleanroom activity ledger",
-      "caption": "Activity ledger · cleanup record"
+      "src": "/assets/cleanroom/cleanroom-review.png",
+      "alt": "Cleanroom home review showing scan results and archive actions",
+      "caption": "Home review · cleanup candidates and archive actions"
     },
     "primaryAction": {
       "label": "Explore product",
@@ -98,9 +98,9 @@
   },
   "card": {
     "tagline": "Less clutter. A way back.",
-    "media": "/assets/cleanroom/cleanroom-activity-ledger.png",
+    "media": "/assets/cleanroom/cleanroom-review.png",
     "summary": "Inspect what you want to clear. Archive the files you choose. Restore them to their original paths when you need them again.",
-    "mediaAlt": "Cleanroom activity ledger recording cleanup actions and archive locations"
+    "mediaAlt": "Cleanroom review panel with scan status and reversible cleanup actions"
   },
   "lifecycle": "public-eligible",
   "commerce": { "status": "FREE", "label": "Free download" },
@@ -114,6 +114,7 @@
       "tier": "secondary",
     "presentation": "compact",
     "visibility": "visible",
+    "mediaDisclosure": "Interface capture from v1.0.6 · current public release v1.0.7.",
     "evidencePriority": 4
   }
 }
