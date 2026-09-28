@@ -273,3 +273,9 @@ main > .product-shell { width: min(var(--world-rail), calc(100% - var(--world-gu
   html { scroll-behavior: auto; }
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* Scene-family spans are desktop compositions; contain every card in the mobile track. */
+@media (max-width: 760px) {
+  .studio-root-page .studio-portfolio-grid { grid-template-columns: minmax(0, 1fr); }
+  .studio-root-page .studio-portfolio-grid > .studio-product-card[data-scene-family] { grid-column: 1 / -1; min-width: 0; }
+}
