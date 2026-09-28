@@ -118,7 +118,8 @@
       "src": "/assets/cache-vault/cv-quick-paste.png",
       "mobileSrc": "/assets/cache-vault/cv-quick-paste-mobile.png",
       "alt": "Quick Paste search showing a saved command clip ready to reuse.",
-      "caption": "Quick Paste · find a saved clip and return it to the clipboard."
+      "caption": "Quick Paste · find a saved clip and return it to the clipboard.",
+      "anchorId": "quick-paste"
     },
     "primaryAction": {
       "label": "Get Cache Vault for Windows",

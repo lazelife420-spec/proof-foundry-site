@@ -11,15 +11,15 @@
   },
   "qualificationFreeze": {
     "name": "CACHE_VAULT_PRODUCT_PAGE_REFOUNDATION",
-    "branch": "codex/cache-vault-product-page-refoundation",
-    "baseHead": "16735b867c8d9de78485ca3842a282439e626799",
-    "baseTree": "2c7ff8514c0f5eda6d2f1db918e7fcbe7a608d9d",
-    "manifest": "scripts/qualified-source-cache-vault.sha256.txt",
-    "manifestSha256": "03dbdc4dfec298aea580e9177ca240aeb9d5cabdbffb75fab1962ba8058bd58d",
+    "branch": "codex/pf-homepage-old-forge-reintegration",
+    "baseHead": "bb21fe29175a637f5d9d59a59baf5907808a6a19",
+    "baseTree": "2e47d957d5fff16281a91a352ec27cfa11edb9a3",
+    "manifest": "scripts/qualified-source-old-forge-homepage.sha256.txt",
+    "manifestSha256": "3b94ccd6d69c05a2c06e2243b9c3efc7e37e92ccf032668bff58d4120b117d78",
     "scriptInventoryCount": 25,
-    "registryExclusion": "This registry contains the manifest hash and is itself bound by the candidate commit; excluding it avoids a circular digest.",
-    "historicalReceiptPreserved": "receipts/studio-root-2/cta-fix/qualified-source-sha256.txt",
-    "scope": "Current page/source bytes for Cache Vault plus the generic schema, renderer and eighth-product regression fixture required for responsive mobile hero media."
+    "registryExclusion": "Registry is self-referential and is committed with the candidate; this manifest freezes the prior qualified source families plus authorized old-forge homepage and bounded link-repair files for delegated legacy gates.",
+    "historicalReceiptPreserved": "scripts/qualified-source-cache-vault.sha256.txt",
+    "scope": "Exact production-base candidate source plus authorized homepage, generic anchor renderer, empty-evidence-link repair, and their current tests."
   },
   "authorities": [
     { "id": "H9_HOME", "script": "test-h9-homepage.ps1", "owns": ["Studio Root composition, feature hierarchy, role order, responsive homepage semantics"] },

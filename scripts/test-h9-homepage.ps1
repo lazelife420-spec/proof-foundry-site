@@ -12,6 +12,9 @@ $pass = 0; $fail = 0
 function Assert-H9([string]$name, [bool]$condition) { if ($condition) { $script:pass++; Write-Host "PASS: $name" } else { $script:fail++; Write-Host "FAIL: $name" -ForegroundColor Red } }
 Write-Host '=== H9 STUDIO ROOT + CATALOG GUARD ===' -ForegroundColor Cyan
 Assert-H9 'studio proposition and editorial hero render' ($homeHtml -match 'BUILD SOFTWARE\.' -and $homeHtml -match 'KEEP THE RECEIPT\.' -and $homeHtml -match 'studio-hero')
+$sectionOrder = @([regex]::Matches($homeHtml,'<section class="(studio-hero|studio-portfolio|studio-method|studio-proof|studio-close)"') | ForEach-Object { $_.Groups[1].Value })
+Assert-H9 'five approved Studio Root beats remain in order' (($sectionOrder -join ',') -ceq 'studio-hero,studio-portfolio,studio-method,studio-proof,studio-close')
+Assert-H9 'hero uses the verified responsive forged mark as decorative atmosphere' ($homeHtml -match 'class="studio-forge-workbench" aria-hidden="true"' -and $homeHtml -match 'forged_pf_emblem_in_smoky_ruins-1280\.avif' -and $homeHtml -match 'forged_pf_emblem_in_smoky_ruins-1672\.webp')
 Assert-H9 'hero has local software and proof-standard actions' ($homeHtml -match 'href="/software/"' -and $homeHtml -match 'href="/proof-standard/"')
 Assert-H9 'workflow explains Build, Qualify, Record, Publish' ($homeHtml -match 'Build' -and $homeHtml -match 'Qualify' -and $homeHtml -match 'Record' -and $homeHtml -match 'Publish')
 Assert-H9 'featured hero and portfolio order match visible module presentation metadata' (($rendered -join ',') -ceq (($eligible | ForEach-Object id) -join ',') -and $rendered.Count -eq $eligible.Count)

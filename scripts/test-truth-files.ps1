@@ -139,6 +139,10 @@ Assert-TF 'sitemap carries all truth-file routes' ((@('/truth-files/') + ($produ
 $headers = Get-Content (Join-Path $public '_headers') -Raw -Encoding UTF8
 Assert-TF '_headers revalidates truth-files routes' ($headers -match '/truth-files/\*')
 
+$allGeneratedHtml = Get-ChildItem $public -Recurse -File -Filter *.html
+$emptyHrefPattern = 'href\s*=\s*(?:"\s*"|''\s*'')'
+$emptyHrefCount = @($allGeneratedHtml | Where-Object { [IO.File]::ReadAllText($_.FullName) -match $emptyHrefPattern }).Count
+Assert-TF 'all generated public HTML omits empty href attributes' ($emptyHrefCount -eq 0)
 # The machine records still exist alongside (TF1 adds, never replaces).
 Assert-TF 'machine truth surface intact' ((Test-Path (Join-Path $public 'truth/index.json')) -and (Test-Path (Join-Path $public 'truth/products/cache-vault.json')))
 

@@ -1703,7 +1703,13 @@ function Build-TruthFileShell($module, $source) {
   foreach ($e in @($p.evidence)) {
     $eUrl = if ($e -is [string]) { $e } else { $e.url }
     $eLabel = if ($e -is [string]) { ($e -split '/')[-1] } else { $e.label }
-    $rRows += "<li><span class=`"tf-rec-label`">Evidence</span><a href=`"$(Html-Attr $eUrl)`">$(Html-Attr $eLabel) ↗</a></li>"
+    $eLabelHtml = Html-Attr $eLabel
+    if ([string]::IsNullOrWhiteSpace([string]$eUrl)) {
+      $rRows += '<li><span class="tf-rec-label">Evidence</span><span>' + $eLabelHtml + '</span></li>'
+    } else {
+      $eUrlHtml = Html-Attr $eUrl
+      $rRows += '<li><span class="tf-rec-label">Evidence</span><a href="' + $eUrlHtml + '">' + $eLabelHtml + ' ↗</a></li>'
+    }
   }
   foreach ($pl in @($p.proofLinks)) {
     $rRows += "<li><span class=`"tf-rec-label`">Proof</span><a href=`"$(Html-Attr $pl)`">$(Html-Attr (($pl -split '/')[-1])) ↗</a></li>"
@@ -2324,7 +2330,13 @@ function Render-ModuleHero($module, $product) {
     if ($hero.media.mobileSrc) {
       $heroImage = "<picture><source media=`"(max-width: 700px)`" srcset=`"$(Html-Attr $hero.media.mobileSrc)`"/>$heroImage</picture>"
     }
-    $media = "<figure class=`"app-shot hero-product-shot`">$heroImage<figcaption>$(Html-Text $hero.media.caption)</figcaption></figure>"
+    $mediaAnchor = ''
+    if ($hero.media.anchorId) {
+      if ([string]$hero.media.anchorId -notmatch '^[a-z][a-z0-9-]*$') { throw "Invalid hero media anchorId: $($hero.media.anchorId)" }
+      $mediaAnchor = ' id="' + (Html-Attr $hero.media.anchorId) + '"'
+    }
+    $captionHtml = Html-Text $hero.media.caption
+    $media = '<figure class="app-shot hero-product-shot"' + $mediaAnchor + '>' + $heroImage + '<figcaption>' + $captionHtml + '</figcaption></figure>'
   }
   $primary = if ($hero.primaryAction.label -and $hero.primaryAction.href) { "<a class=`"button button-primary`" href=`"$(Html-Attr $hero.primaryAction.href)`">$(Html-Text $hero.primaryAction.label)</a>" } else { '' }
   $secondary = if ($hero.secondaryAction.label -and $hero.secondaryAction.href) { "<a class=`"text-link`" href=`"$(Html-Attr $hero.secondaryAction.href)`">$(Html-Text $hero.secondaryAction.label)</a>" } else { '' }
