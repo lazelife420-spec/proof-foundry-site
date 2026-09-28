@@ -1080,7 +1080,7 @@ function Build-FooterProducts {
   return ($items -join "`n          ")
 }
 
-function Render-ProductCard($p, $cardTemplate) {
+function Render-ProductCard($p, $cardTemplate, [bool]$catalogMode = $false) {
   $t = ProductTokens $p
   $module = @($productRegistry | Where-Object { $_.id -eq $p.id }) | Select-Object -First 1
   if ($module.schemaVersion -eq 2 -and $module.card) {
@@ -1126,6 +1126,13 @@ function Render-ProductCard($p, $cardTemplate) {
   } else {
     $card = $card -replace '<!--\s*@if-version\s*-->', '' -replace '<!--\s*@end-version\s*-->', ''
   }
+  if ($catalogMode -and $module.commerce) {
+    $statusSlug = ([string]$module.commerce.status).ToLowerInvariant().Replace('_','-')
+    $commerceBadge = '<p class="card-commerce" data-commerce="' + (Html-Attr $statusSlug) + '">' + (Html-Text $module.commerce.label) + '</p>'
+    $card = $card.Replace('<!-- @commerce-badge -->', $commerceBadge)
+  } else {
+    $card = $card.Replace('<!-- @commerce-badge -->', '')
+  }
   return $card
 }
 
@@ -1134,14 +1141,21 @@ function Render-ProductCard($p, $cardTemplate) {
 # can never be hand-placed into a group that contradicts its release facts, and a
 # product with a public release is never presented as unreleased just because its
 # newest candidate is not out yet.
-function Build-ProductCards($groupId, [bool]$includeFeatured = $false) {
+function Build-ProductCards($groupId, [bool]$includeFeatured = $false, [bool]$catalogMode = $false) {
   $cardTemplate = Read-File (Join-Path $partialsDir 'product-card.html')
   $cards = @()
-  foreach ($p in $allProductState) {
+  $cardProducts = @($allProductState)
+  if ($catalogMode) {
+    $cardProducts = @($productRegistry | Sort-Object { [double]$_.order } | ForEach-Object {
+      $moduleId = [string]$_.id
+      @($allProductState | Where-Object { $_.id -eq $moduleId } | Select-Object -First 1)
+    } | Where-Object { $null -ne $_ })
+  }
+  foreach ($p in $cardProducts) {
     $module = @($productRegistry | Where-Object { $_.id -eq $p.id }) | Select-Object -First 1
     if ($module.placement -and $module.placement.catalog -eq $false) { continue }
     if ($groupId -and (ProductGroupId $p) -ne $groupId) { continue }
-    $cards += (Render-ProductCard $p $cardTemplate)
+    $cards += (Render-ProductCard $p $cardTemplate $catalogMode)
   }
   return ($cards -join "`n`n          ")
 }
@@ -2136,6 +2150,25 @@ function Get-ProductRegistry {
     if ($m.lifecycle -notin $KnownLifecycles) { $regErrors += "${tag}: lifecycle must be draft|preview|public-eligible" }
     if ($m.lifecycle -eq 'public-eligible' -and $m.visibility -ne 'visible') { $regErrors += "${tag}: public-eligible lifecycle requires visible presentation" }
     if ($m.lifecycle -in @('draft','preview') -and $m.visibility -ne 'hidden') { $regErrors += "${tag}: draft/preview lifecycle requires hidden visibility" }
+    $commerceState = @($manifest.products | Where-Object { $_.id -eq $m.id } | Select-Object -First 1)[0]
+    if (-not $m.commerce -or $m.commerce.status -notin @('FREE','PAID','COMING_SOON','UNAVAILABLE','WITHDRAWN') -or [string]::IsNullOrWhiteSpace([string]$m.commerce.label)) {
+      $regErrors += "${tag}: commerce requires a supported status and visitor-facing label"
+    } elseif ($commerceState) {
+      $expectedCommerce = if ($commerceState.release.releaseStatus -eq 'WITHDRAWN') { 'WITHDRAWN' }
+                          elseif ($commerceState.release.releaseStatus -eq 'PUBLIC_RELEASE' -and $commerceState.downloadUrl) { @('FREE','PAID') }
+                          elseif ($commerceState.release.releaseStatus -in @('PUBLIC_RELEASE','RELEASE_CANDIDATE','ACTIVE_PROOF','HOLD')) { @('UNAVAILABLE','COMING_SOON') }
+                          else { @('COMING_SOON','UNAVAILABLE') }
+      if ($expectedCommerce -is [string]) { $expectedCommerce = @($expectedCommerce) }
+      if ($m.commerce.status -notin $expectedCommerce) { $regErrors += "${tag}: commerce.status '$($m.commerce.status)' conflicts with canonical release/download state" }
+      if ($m.commerce.status -eq 'FREE' -and $m.commerce.label -notmatch '(?i)^free download$') { $regErrors += "${tag}: FREE commerce must be labeled 'Free download'" }
+      if ($m.commerce.status -eq 'WITHDRAWN' -and $m.commerce.label -notmatch '(?i)withdrawn.*no public download') { $regErrors += "${tag}: WITHDRAWN commerce must state withdrawal and no public download" }
+      if ($m.commerce.status -eq 'PAID' -and [string]::IsNullOrWhiteSpace([string]$m.commerce.checkoutUrl)) { $regErrors += "${tag}: PAID commerce requires an explicit checkoutUrl; never infer one from a release URL" }
+      if ($m.commerce.price -and $m.commerce.status -ne 'PAID') { $regErrors += "${tag}: price is only valid for PAID commerce" }
+      if ($m.commerce.checkoutUrl) {
+        if ([string]$m.commerce.checkoutUrl -notmatch '^https://') { $regErrors += "${tag}: commerce.checkoutUrl must use public HTTPS" }
+        Test-PublicUrlSafe ([string]$m.commerce.checkoutUrl) "${tag} commerce checkoutUrl"
+      }
+    }
     if (-not ($m.order -is [int] -or $m.order -is [long] -or $m.order -is [double])) { $regErrors += "${tag}: numeric order required" }
     foreach ($s in @($m.sections)) {
       $type = if ($s -is [string]) { $s } else { [string]$s.type }
@@ -2544,7 +2577,7 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   $html = $html.Replace('<!-- @studio-hero-product -->', (Build-StudioHeroProduct))
   $html = $html.Replace('<!-- @studio-portfolio -->', (Build-StudioPortfolio))
   # The standalone catalog includes the featured product as a normal card.
-  $catalogCards = (Build-ProductCards $null $true) -replace '<h4 class="card-name">', '<h3 class="card-name">' -replace '</h4>', '</h3>'
+  $catalogCards = (Build-ProductCards $null $true $true) -replace '<h4 class="card-name">', '<h3 class="card-name">' -replace '</h4>', '</h3>'
   $html = $html -replace '<!--\s*@all-products\s*-->', $catalogCards
   $html = $html -replace '<!--\s*@products\s*-->', (Build-ProductCards $null)
 

@@ -814,7 +814,7 @@
       "evidence": [
         "https://downloads.theprooffoundry.com/proofshot/v2.0.0/SHA256SUMS.txt",
         "https://downloads.theprooffoundry.com/proofshot/v2.0.0/RELEASE-MANIFEST.json",
-        "https://github.com/lazelife420-spec/ProofShot/releases/tag/v2.0.0"
+        "https://theprooffoundry.com/proof/#receipt-proofshot"
       ],
       "limits": [
         "The Windows installer is not code-signed; Windows SmartScreen will prompt on first launch. Verify the SHA-256 before running.",

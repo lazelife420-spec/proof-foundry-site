@@ -5,6 +5,7 @@
   "order": 90,
   "visibility": "visible",
   "lifecycle": "public-eligible",
+  "commerce": { "status": "FREE", "label": "Free download" },
   "placement": {
     "catalog": true
   },

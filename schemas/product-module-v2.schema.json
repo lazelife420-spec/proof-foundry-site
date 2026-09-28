@@ -10,6 +10,7 @@
     "order",
     "visibility",
     "lifecycle",
+    "commerce",
     "brand",
     "theme",
     "hero",
@@ -43,6 +44,9 @@
         "preview",
         "public-eligible"
       ]
+    },
+    "commerce": {
+      "$ref": "#/$defs/commerce"
     },
     "placement": {
       "type": "object",
@@ -383,6 +387,20 @@
           "pattern": "^(#[A-Za-z0-9_-]+|/[A-Za-z0-9._/-]+)$"
         }
       },
+      "additionalProperties": false
+    },
+    "commerce": {
+      "type": "object",
+      "required": ["status", "label"],
+      "properties": {
+        "status": { "enum": ["FREE", "PAID", "COMING_SOON", "UNAVAILABLE", "WITHDRAWN"] },
+        "label": { "type": "string", "minLength": 1 },
+        "checkoutUrl": { "type": "string", "format": "uri" },
+        "price": { "type": ["string", "number"] }
+      },
+      "allOf": [
+        { "if": { "properties": { "status": { "const": "PAID" } } }, "then": { "required": ["checkoutUrl"] } }
+      ],
       "additionalProperties": false
     }
   },

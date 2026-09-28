@@ -43,6 +43,8 @@ Assert-Condition ($psHtml -match [regex]::Escape('https://downloads.theprooffoun
 Assert-Condition ($psHtml -match 'fa20dc7e44440f0ed96fa08db67a77339d595f8eb27090e24120104ea6744701') 'ProofShot installer SHA-256 exactly matches current production'
 Assert-Condition ($psHtml -notmatch 'no public ProofShot release|no public release package|NOT YET RELEASED') 'ProofShot has no stale unreleased claim'
 Assert-Condition ($psHtml -match 'Unsigned build' -and $psHtml -match 'Screenshots predate the rebrand') 'ProofShot signing and legacy-preview disclosures remain explicit'
+$proofshotManifest = @($manifest.products | Where-Object { $_.id -eq 'proofshot' } | Select-Object -First 1)[0]
+Assert-Condition ($proofshotManifest.evidence -contains 'https://theprooffoundry.com/proof/#receipt-proofshot' -and $proofshotManifest.evidence -notcontains 'https://github.com/lazelife420-spec/ProofShot/releases/tag/v2.0.0') 'ProofShot release detail points to the canonical first-party receipt, not the dead upstream tag'
 
 # 3. Lights Out evidence link assertion (F05)
 $loHtml = Get-Content (Join-Path $publicDir "lights-out\index.html") -Raw

@@ -1,7 +1,7 @@
 {
   "id": "cache-vault",
   "route": "/cache-vault/",
-  "order": 20,
+  "order": 10,
   "visibility": "visible",
   "sections": [
     "hero",
@@ -137,6 +137,7 @@
     "mediaAlt": "Cache Vault Quick Paste interface with searchable sample clipboard items"
   },
   "lifecycle": "public-eligible",
+  "commerce": { "status": "FREE", "label": "Free download" },
   "placement": {
     "catalog": true
   },

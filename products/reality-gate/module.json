@@ -1,7 +1,7 @@
 {
   "id": "reality-gate",
   "route": "/reality-gate/",
-  "order": 10,
+  "order": 70,
   "visibility": "visible",
   "sections": [
     "hero",
@@ -110,6 +110,7 @@
     "mediaAlt": "Reality Gate Runroom displaying a completed CI run in a sample repository"
   },
   "lifecycle": "public-eligible",
+  "commerce": { "status": "WITHDRAWN", "label": "Withdrawn · no public download" },
   "placement": {
     "catalog": true
   },

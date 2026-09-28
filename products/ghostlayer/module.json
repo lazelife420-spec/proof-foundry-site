@@ -1,7 +1,7 @@
 {
   "id": "ghostlayer",
   "route": "/ghostlayer/",
-  "order": 50,
+  "order": 20,
   "visibility": "visible",
   "sections": [
     "hero",
@@ -101,6 +101,7 @@
     "mediaAlt": "GhostLayer RAM staging with sample files and explicit commit controls"
   },
   "lifecycle": "public-eligible",
+  "commerce": { "status": "FREE", "label": "Free download" },
   "placement": {
     "catalog": true
   },

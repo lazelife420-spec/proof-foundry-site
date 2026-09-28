@@ -99,7 +99,7 @@ function Map-CapsuleAsset([string]$relative, [string]$id) {
 
 try { $capsule = Get-Content -LiteralPath $productJsonPath -Raw -Encoding UTF8 | ConvertFrom-Json }
 catch { throw "product.json is invalid JSON: $($_.Exception.Message)" }
-Assert-HasProperties $capsule @('schema','id','brand','theme','hero','card','taxonomy','placement','sections') @('schema','id','lifecycle','brand','theme','hero','card','taxonomy','placement','sections','social') 'product.json'
+Assert-HasProperties $capsule @('schema','id','brand','theme','hero','card','taxonomy','placement','sections') @('schema','id','lifecycle','commerce','brand','theme','hero','card','taxonomy','placement','sections','social') 'product.json'
 if ($capsule.schema -ne 'proof-foundry.product-capsule/v1') { throw 'Unsupported product capsule schema; expected proof-foundry.product-capsule/v1.' }
 if ($capsule.id -notmatch '^[a-z0-9]+(-[a-z0-9]+)*$') { throw 'Product id must be a lowercase kebab-case slug.' }
 Assert-CleanText $capsule 'product.json'
@@ -110,6 +110,15 @@ Assert-HasProperties $capsule.card @('tagline','summary','media','mediaAlt') @('
 Assert-HasProperties $capsule.taxonomy @('category','jobs','platforms') @('category','jobs','platforms') 'taxonomy'
 Assert-HasProperties $capsule.placement @('catalog') @('catalog','homepageTier','homepageOrder','homepageVariant','homepageNote') 'placement'
 if ($capsule.lifecycle -and $capsule.lifecycle -notin @('draft','preview','public-eligible')) { throw 'lifecycle must be draft, preview, or public-eligible.' }
+if ($capsule.commerce) {
+  Assert-HasProperties $capsule.commerce @('status','label') @('status','label','checkoutUrl','price') 'commerce'
+  if ($capsule.commerce.status -notin @('FREE','PAID','COMING_SOON','UNAVAILABLE','WITHDRAWN') -or [string]::IsNullOrWhiteSpace([string]$capsule.commerce.label)) { throw 'commerce requires a supported status and non-empty label.' }
+  $checkoutUrl = if ($capsule.commerce.PSObject.Properties['checkoutUrl']) { [string]$capsule.commerce.checkoutUrl } else { '' }
+  $price = if ($capsule.commerce.PSObject.Properties['price']) { $capsule.commerce.price } else { $null }
+  if ($capsule.commerce.status -eq 'PAID' -and [string]::IsNullOrWhiteSpace($checkoutUrl)) { throw 'PAID commerce requires an explicit checkoutUrl.' }
+  if ($checkoutUrl -and $checkoutUrl -notmatch '^https://') { throw 'commerce.checkoutUrl must use public HTTPS.' }
+  if ($price -and $capsule.commerce.status -ne 'PAID') { throw 'commerce.price is only valid for PAID commerce.' }
+}
 if ($capsule.theme.accent -notmatch '^(#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?|rgba?\(\s*(\d{1,3}\s*,\s*){2}\d{1,3}(\s*,\s*(0|1|0?\.\d+))?\s*\))$' -or
     $capsule.theme.accentSecondary -notmatch '^(#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?|rgba?\(\s*(\d{1,3}\s*,\s*){2}\d{1,3}(\s*,\s*(0|1|0?\.\d+))?\s*\))$') { throw 'Theme colors must be hex, rgb(), or rgba() values.' }
 $atmospheres = @('archive','night','control-room','weather','carbon','memory','clean','foundry','none')
@@ -191,8 +200,9 @@ $manifest = Get-Content -LiteralPath $manifestFile -Raw -Encoding UTF8 | Convert
 $truth = @($manifest.products | Where-Object { $_.id -eq $id }) | Select-Object -First 1
 $requestedLifecycle = if ($capsule.lifecycle) { [string]$capsule.lifecycle } else { 'preview' }
 $gateReady = $truth -and $truth.route -eq "/$id/" -and $truth.visible -and $truth.release.releaseStatus -eq 'PUBLIC_RELEASE' -and $truth.verification.status -eq 'VERIFIED' -and -not [string]::IsNullOrWhiteSpace([string]$truth.release.publicVersion)
+$commerceReady = $capsule.commerce -and $capsule.commerce.status -in @('FREE','PAID')
 $lifecycle = $requestedLifecycle
-if ($requestedLifecycle -eq 'public-eligible' -and -not $gateReady) { $lifecycle = 'preview' }
+if ($requestedLifecycle -eq 'public-eligible' -and (-not $gateReady -or -not $commerceReady)) { $lifecycle = 'preview' }
 $visibility = if ($lifecycle -eq 'public-eligible') { 'visible' } else { 'hidden' }
 $order = 100
 foreach ($otherPath in Get-ChildItem -LiteralPath $productsRoot -Directory -Force) {
@@ -215,8 +225,15 @@ foreach ($section in $capsule.sections) {
   $sectionObjects += $copy
 }
 $moduleSections = @('hero') + $sectionObjects
+$moduleCommerce = if ($capsule.commerce) {
+  $c = [ordered]@{ status=[string]$capsule.commerce.status; label=[string]$capsule.commerce.label }
+  if ($capsule.commerce.PSObject.Properties['checkoutUrl'] -and $capsule.commerce.checkoutUrl) { $c.checkoutUrl=[string]$capsule.commerce.checkoutUrl }
+  if ($capsule.commerce.PSObject.Properties['price'] -and $capsule.commerce.price) { $c.price=$capsule.commerce.price }
+  $c
+} else { [ordered]@{ status='UNAVAILABLE'; label='No public download yet' } }
 $module = [ordered]@{
   id=$id; route="/$id/"; order=$order; visibility=$visibility; lifecycle=$lifecycle
+  commerce=$moduleCommerce
   schemaVersion=2
   brand=[ordered]@{ name=[string]$capsule.brand.name; shortName=[string]$capsule.brand.shortName; mark="/assets/products/$id/brand/logo.svg" }
   theme=[ordered]@{ accent=[string]$capsule.theme.accent; accentSecondary=[string]$capsule.theme.accentSecondary; atmosphere=[string]$capsule.theme.atmosphere }
@@ -254,6 +271,9 @@ $destinationText = "products/$id/ ($lifecycle)"
 Write-Host "Capsule validated. Planned module: $destinationText"
 if ($requestedLifecycle -eq 'public-eligible' -and -not $gateReady) {
   Write-Host 'Publication gate did not match canonical manifest truth; lifecycle will remain preview.'
+}
+if ($requestedLifecycle -eq 'public-eligible' -and -not $commerceReady) {
+  Write-Host 'Public request lacks explicit commerce status; lifecycle will remain preview.'
 }
 Write-Host 'Before public eligibility: a matching verified PUBLIC_RELEASE manifest record, explicit public-eligible lifecycle, visible presentation, and a successful site build are required.'
 if ($PSCmdlet.ShouldProcess($destinationText, 'Import normalized presentation module')) {

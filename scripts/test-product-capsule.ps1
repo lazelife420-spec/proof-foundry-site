@@ -63,6 +63,7 @@ $modulePath=Join-Path $products 'cache-vault-capsule-fixture/module.json'
 Assert ($valid.Exit -eq 0 -and (Test-Path $modulePath)) 'real-product capsule imports into a v2 module'
 $module=Get-Content -LiteralPath $modulePath -Raw | ConvertFrom-Json
 Assert ($module.lifecycle -eq 'preview' -and $module.visibility -eq 'hidden' -and -not $module.PSObject.Properties['version']) 'import remains preview-only and invents no release facts'
+Assert ($module.commerce.status -eq 'UNAVAILABLE' -and $module.commerce.label -eq 'No public download yet') 'import defaults to a safe non-acquisition state without commercial truth'
 Assert ($module.homepage.role -eq 'studioPortfolio' -and $module.homepage.presentation -eq 'compact' -and $module.homepage.visibility -eq 'visible' -and -not $module.placement.PSObject.Properties['homepage']) 'capsule placement normalizes into the single module homepage contract'
 Assert ((Test-Path (Join-Path $products 'cache-vault-capsule-fixture/logo.svg')) -and (Test-Path (Join-Path $products 'cache-vault-capsule-fixture/media/hero.png')) -and (Test-Path (Join-Path $products 'cache-vault-capsule-fixture/media/screenshots/01.png'))) 'brand, hero, and screenshot assets normalize to module-local paths'
 Assert ($valid.Output -match 'Before public eligibility') 'importer prints the remaining publication gate'

@@ -155,6 +155,7 @@
     "mediaAlt": "Lights Out interface showing a sample dry-run night session"
   },
   "lifecycle": "public-eligible",
+  "commerce": { "status": "FREE", "label": "Free download" },
   "placement": {
     "catalog": true
   },

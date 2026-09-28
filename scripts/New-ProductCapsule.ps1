@@ -17,6 +17,7 @@ $starter = [ordered]@{
   schema = 'proof-foundry.product-capsule/v1'
   id = $Id
   lifecycle = 'draft'
+  commerce = [ordered]@{ status = 'UNAVAILABLE'; label = 'No public download yet' }
   brand = [ordered]@{ name = $Name; shortName = $shortName; mark = 'brand/mark.svg' }
   theme = [ordered]@{ accent = '#6FA8A2'; accentSecondary = '#D7B77D'; atmosphere = 'foundry' }
   hero = [ordered]@{

@@ -79,6 +79,7 @@ function New-FixtureModule($modDir, $id, [hashtable]$extra = @{}, [string]$conte
     order         = 100
     visibility    = 'visible'
     lifecycle     = 'public-eligible'
+    commerce      = [ordered]@{ status = 'FREE'; label = 'Free download' }
     theme         = [ordered]@{ accent = '#38BDF8' }
     card          = [ordered]@{ tagline = 'Fixture card headline'; media = '/assets/forgecast/v030-today.png'; mediaAlt = 'Fixture preview image' }
     homepage      = [ordered]@{ role = 'studioPortfolio'; order = 100; presentation = 'compact'; visibility = 'visible' }
@@ -106,6 +107,7 @@ Assert (-not (Test-Path (Join-Path $root 'reality-gate.html'))) 'legacy reality-
 Assert (-not (Test-Path (Join-Path $root 'proofshot.html'))) 'legacy proofshot.html template is gone (migrated)'
 foreach ($m in $reg) { Assert ((Test-Path (Join-Path $srcProducts "$($m.id)\content.html")) -and $m.contentSource -eq 'content.html') "module $($m.id): content slot present" }
 foreach ($m in $reg) { Assert ($m.lifecycle -eq 'public-eligible' -and @($m.sections | Where-Object { $_ -isnot [string] -and $_.type -eq 'outcomes' }).Count -eq 1) "module $($m.id): explicit publication lifecycle and structured outcomes" }
+foreach ($m in $reg) { Assert ($m.commerce.status -in @('FREE','PAID','COMING_SOON','UNAVAILABLE','WITHDRAWN') -and -not [string]::IsNullOrWhiteSpace([string]$m.commerce.label)) "module $($m.id): generic commercial state and visitor label are declared" }
 foreach ($m in $reg) {
   $source = Get-Content (Join-Path $srcProducts "$($m.id)\content.html") -Raw
   Assert ($source -match '<!-- @product-hero -->' -and $source -match '<!-- @structured-sections -->' -and $source -notmatch '<section class="product-hero\b' -and $source -notmatch 'class="pp-outcomes') "$($m.id): repeated hero/outcomes markup migrated to the module renderer"
@@ -123,6 +125,16 @@ foreach ($id in @($reg | Where-Object { $_.visibility -eq 'visible' } | ForEach-
   Assert ($html -match '<nav class="studio-related"') "$id`: renderer-generated related nav present"
   Assert (($html -notmatch '@product-content') -and ($html -notmatch '@product-breadcrumb') -and ($html -notmatch '@product-related')) "$id`: no unresolved render markers"
   Assert ($html -notmatch '\{\{[^}]+\}\}') "$id`: no unresolved tokens"
+}
+$softwareHtml = Get-Content (Join-Path $publicDir 'software\index.html') -Raw -Encoding UTF8
+$softwareHtmlDecoded = [System.Net.WebUtility]::HtmlDecode($softwareHtml)
+$catalogOrder = @([regex]::Matches($softwareHtml, 'data-product="([a-z0-9-]+)"') | ForEach-Object { $_.Groups[1].Value })
+Assert ($catalogOrder.Count -eq $reg.Count -and $catalogOrder[0] -eq 'cache-vault' -and $catalogOrder[-1] -eq 'reality-gate') 'catalog role order puts Cache Vault first and withdrawn products last using module metadata'
+$truthRoot = Join-Path $publicDir 'truth\products'
+foreach ($m in $reg) {
+  $truthProduct = Get-Content (Join-Path $truthRoot ($m.id + '.json')) -Raw -Encoding UTF8 | ConvertFrom-Json
+  Assert ($truthProduct.schemaVersion -eq 1 -and $null -eq $truthProduct.PSObject.Properties['commerce']) "$($m.id): public Truth v1 shape remains unchanged by module presentation commerce"
+  Assert ($softwareHtmlDecoded -match ('data-product="' + [regex]::Escape($m.id) + '"') -and $softwareHtmlDecoded -match ('data-commerce="' + [regex]::Escape($m.commerce.status.ToLowerInvariant().Replace('_','-')) + '"[^>]*>' + [regex]::Escape($m.commerce.label))) "$($m.id): software catalog exposes its generic acquisition label"
 }
 foreach ($id in @('cache-vault','lights-out')) {
   $module = Get-Content (Join-Path $srcProducts "$id\module.json") -Raw | ConvertFrom-Json
@@ -190,6 +202,7 @@ Assert ($t4.Exit -eq 0) "eighth-product fixture build succeeds (exit=$($t4.Exit)
 Assert (Test-Path (Join-Path $t4.OutDir 'fixture-product\index.html')) 'fixture-product routed without touching renderer/routes'
 $t4soft = Get-Content (Join-Path $t4.OutDir 'software\index.html') -Raw -Encoding UTF8
 Assert ($t4soft -match 'data-product="fixture-product"') 'fixture-product appears in software catalog automatically'
+Assert ($t4soft -match 'data-commerce="free"[^>]*>Free download') 'new module commerce label renders without product-specific catalog logic'
 Assert (Test-Path (Join-Path $t4.OutDir 'truth\products\fixture-product.json')) 'fixture-product truth record generated automatically'
 $t4idx = Get-Content (Join-Path $t4.OutDir 'truth\index.json') -Raw -Encoding UTF8
 Assert ($t4idx -match 'fixture-product') 'fixture-product listed in truth index automatically'
@@ -547,6 +560,10 @@ $withdrawn = Invoke-ModuleFixture 'generic-withdrawn' { param($modDir)
   $product.presentation | Add-Member -NotePropertyName downloadUnavailable -NotePropertyValue $true -Force
   $product.presentation | Add-Member -NotePropertyName downloadNotice -NotePropertyValue 'No successor release has been publicly proven.' -Force
   foreach ($artifact in @($product.artifacts)) { $artifact.downloadUrl = $null; $artifact.sha256Url = $null }
+  $modulePath = Join-Path $modDir 'fixture-product\module.json'
+  $module = Get-Content $modulePath -Raw | ConvertFrom-Json
+  $module.commerce.status = 'WITHDRAWN'; $module.commerce.label = 'Withdrawn · no public download'
+  [IO.File]::WriteAllText($modulePath, ($module | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
   $product.evidence = @(); $product.proofLinks = @()
   $m.products += $product
   $m

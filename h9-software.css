@@ -52,6 +52,8 @@
 .software-catalog-page .card-platform,.software-catalog-page .card-version{font:400 .74rem/1.5 var(--font-mono,monospace);color:#cbd8dc}
 .software-catalog-page .card-platform{color:#a4b7c0}
 .software-catalog-page .card-availability{font-size:.78rem;line-height:1.4;color:#b1c9bd;margin-bottom:12px}
+.software-catalog-page .card-commerce{display:inline-flex;align-items:center;width:max-content;max-width:100%;margin:0 0 12px;padding:5px 9px;border:1px solid rgba(169,196,143,.42);border-radius:2px;color:#d5e6c5;font:500 .68rem/1.3 var(--font-mono,monospace);letter-spacing:.015em}
+.software-catalog-page .card-commerce[data-commerce="withdrawn"]{border-color:rgba(217,144,107,.5);color:#f0b99f;background:rgba(217,144,107,.06)}
 .software-catalog-page .card-bottom{margin-top:0;padding-top:0;border-top:0}
 .software-catalog-page .card-explore{display:inline-flex;align-items:center;min-height:44px;font-size:.84rem;color:#eee9dd;font-weight:500}
 .software-catalog-page .card-explore span{margin-left:9px}

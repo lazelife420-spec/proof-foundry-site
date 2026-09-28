@@ -23,6 +23,7 @@ The executable constraints are documented in [`schemas/product-module-v2.schema.
 - `card`: catalog tagline and media.
 - `taxonomy`: category and job tags, with room for platform and audience tags.
 - `lifecycle` and `homepage`: publication readiness plus a tier (`featured`, `major`, `secondary`, or `hidden`), variant, order, and copy. `major` renders a scene; `secondary` renders a compact card. `hidden` keeps the public product route/catalog/truth while omitting it from the homepage. Homepage placement is controlled only by this tier.
+- `commerce`: a generic `FREE`, `PAID`, `COMING_SOON`, `UNAVAILABLE`, or `WITHDRAWN` state and visitor-facing label. Canonical release truth must agree with the state; paid offers require an explicit checkout URL. The catalog renders the label. Public Truth v1 keeps its existing schema and release/download fields; no price is inferred from a download link.
 - `sections`: known component names or structured section objects.
 - `contentSource: content.html` as a migration bridge; it is optional for fully structured/capsule-authored modules.
 
@@ -44,9 +45,10 @@ text is escaped at output.
 
 `software.html` is a shell with generated catalog markers. Cards enumerate
 eligible public modules; copy, image, category, jobs, logo, accent, and alt
-text come from module presentation. Version, platforms, availability,
-downloads, and public status still come from canonical manifest state. There
-is no ID-specific job map in `h9-software.js`.
+text come from module presentation. Version, platforms, release availability,
+downloads, and public status still come from canonical manifest state. The
+commercial/acquisition label is module-authored but build-validated against
+that release state. There is no ID-specific job map in `h9-software.js`.
 
 The generated product showcase markers in `index.html` are registry-driven.
 The builder groups products by the module's homepage tier and orders each

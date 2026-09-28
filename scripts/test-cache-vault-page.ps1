@@ -32,7 +32,7 @@ $routes = @('public/cache-vault/index.html','public/proof/index.html','public/tr
 $routesExist = @($routes | Where-Object { Test-Path (Join-Path $root $_) }).Count -eq $routes.Count
 Check $routesExist 'product, proof, Truth Files, machine-truth, and catalog routes are generated'
 $pageAuthority = @($authorityRegistry.authorities | Where-Object { $_.id -eq 'CACHE_VAULT_PAGE' -and $_.script -eq 'test-cache-vault-page.ps1' }).Count -eq 1
-Check ($pageAuthority -and $authorityRegistry.qualificationFreeze.name -eq 'CACHE_VAULT_PRODUCT_PAGE_REFOUNDATION' -and $authorityRegistry.qualificationFreeze.scriptInventoryCount -eq 25) 'page gate and current candidate freeze are registered; historical Studio Root receipt remains separate'
+Check ($pageAuthority -and $authorityRegistry.qualificationFreeze.name -eq 'PF_WEB_REAL_SITE_2' -and $authorityRegistry.qualificationFreeze.scriptInventoryCount -eq 25 -and $authorityRegistry.priorQualificationFreezes[0].name -eq 'PF_WEB_REAL_SITE_1' -and $authorityRegistry.qualificationFreeze.historicalReceiptPreserved -eq 'scripts/qualified-source-real-site-1.sha256.txt') 'page gate and current Real Site 2 freeze are registered; Real Site 1 source receipt remains preserved'
 
 Write-Host "CACHE VAULT PAGE: $passed passed, $failed failed"
 if ($failed -gt 0) { exit 1 }

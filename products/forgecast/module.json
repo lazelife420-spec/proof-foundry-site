@@ -110,6 +110,7 @@
     "mediaAlt": "ForgeCast Today showing practical weather decisions"
   },
   "lifecycle": "public-eligible",
+  "commerce": { "status": "FREE", "label": "Free download" },
   "placement": {
     "catalog": true
   },

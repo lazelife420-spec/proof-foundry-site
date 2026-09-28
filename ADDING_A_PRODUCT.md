@@ -71,6 +71,14 @@ module must declare:
 ~~~
 
 Also include brand, theme, hero, card, taxonomy, sections, homepage, and meta.
+Every module also declares a generic commerce record, for example
+`"commerce": { "status": "FREE", "label": "Free download" }`. Use `PAID`
+only with an explicit `checkoutUrl`; never infer price or checkout behavior from
+a public artifact link. `COMING_SOON`, `UNAVAILABLE`, and `WITHDRAWN` describe
+distinct release states. The build checks these labels against canonical
+release/download truth. They are presentation metadata; Public Truth v1 keeps
+its existing release/download contract and does not publish module-authored
+commerce copy.
 The renderer escapes all module-authored text. Module JSON does not accept HTML
 templates, scripts, arbitrary CSS, or arbitrary component names. Keep
 `contentSource: content.html` only when preserving a bespoke legacy section;

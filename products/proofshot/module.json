@@ -1,7 +1,7 @@
 {
   "id": "proofshot",
   "route": "/proofshot/",
-  "order": 70,
+  "order": 50,
   "visibility": "visible",
   "sections": [
     "hero",
@@ -118,6 +118,7 @@
     "mediaAlt": "ProofShot production brand artwork over a dark carbon and vermilion field"
   },
   "lifecycle": "public-eligible",
+  "commerce": { "status": "FREE", "label": "Free download" },
   "placement": {
     "catalog": true
   },

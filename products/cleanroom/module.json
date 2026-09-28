@@ -102,6 +102,7 @@
     "mediaAlt": "Cleanroom activity ledger recording cleanup actions and archive locations"
   },
   "lifecycle": "public-eligible",
+  "commerce": { "status": "FREE", "label": "Free download" },
   "placement": {
     "catalog": true
   },
