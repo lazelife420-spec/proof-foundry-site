@@ -102,6 +102,29 @@ foreach ($p in $h7cProducts) {
   Assert-Condition ($html -notmatch '<details class="proof-details"\s+open>') "$name - technical verification disclosure closed by default"
 }
 
+# Generic module commerce state is visible at each product-page acquisition surface.
+$commerceModules = @(Get-ChildItem (Join-Path $Root 'products') -Directory | ForEach-Object {
+  Get-Content (Join-Path $_.FullName 'module.json') -Raw | ConvertFrom-Json
+} | Where-Object { $_.lifecycle -eq 'public-eligible' })
+foreach ($module in $commerceModules) {
+  $file = Join-Path $PublicDir (($module.route.Trim('/') + '\index.html'))
+  if (-not (Test-Path $file)) { $file = Join-Path $PublicDir ($module.route.Trim('/') + '.html') }
+  Assert-Condition (Test-Path $file) "$($module.id) - public product route exists for commerce assertion"
+  if (-not (Test-Path $file)) { continue }
+  $html = [IO.File]::ReadAllText($file)
+  $statusSlug = ([string]$module.commerce.status).ToLowerInvariant().Replace('_','-')
+  if ($module.commerce.status -eq 'FREE') {
+    Assert-Condition ($html -match '<span class="product-commerce-label" data-commerce="free">Free download</span>' -and $html -match 'class="button button-primary"') "$($module.id) - FREE commerce state labels its public acquisition action"
+  } elseif ($module.commerce.status -eq 'WITHDRAWN') {
+    $decodedHtml = [System.Net.WebUtility]::HtmlDecode($html)
+    Assert-Condition ($decodedHtml -match '<span class="product-commerce-label" data-commerce="withdrawn">UNAVAILABLE · WITHDRAWN</span>' -and $html -notmatch 'class="button button-primary" href="https?://') "$($module.id) - withdrawn state is explicit and has no public acquisition action"
+  } elseif ($module.commerce.status -eq 'PAID' -and $module.commerce.price) {
+    Assert-Condition ($html -match ('data-commerce="' + [regex]::Escape($statusSlug) + '">' + [regex]::Escape([string]$module.commerce.price))) "$($module.id) - explicit module price is rendered without inference"
+  } else {
+    Assert-Condition ($html -match ('data-commerce="' + [regex]::Escape($statusSlug) + '">')) "$($module.id) - current commerce state is rendered"
+  }
+}
+
 # 4. The functional catalog's geometry & card consistency checks moved with it.
 Assert-Condition ($catalogHtml -match 'class="products-grid"') "Software catalog contains products-grid container"
 Assert-Condition ($catalogHtml -match 'data-product="cache-vault"') "Software catalog card present for Cache Vault"

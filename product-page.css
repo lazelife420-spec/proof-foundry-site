@@ -211,6 +211,19 @@ body.pp-system .text-link {
   color: var(--pp-gold-light);
 }
 
+/* Canonical commerce state is shown beside every product acquisition action. */
+body.pp-system .product-commerce-label {
+  color: var(--pp-accent);
+  font: 700 .72rem/1.4 Consolas, monospace;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+body.pp-system .product-commerce-label[data-commerce="withdrawn"],
+body.pp-system .product-commerce-label[data-commerce="unavailable"] {
+  color: var(--pp-muted);
+}
+
 /* runroom band: kept as authentic product vocabulary, quieted */
 .pp-band {
   display: flex;

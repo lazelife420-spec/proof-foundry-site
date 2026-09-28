@@ -2,11 +2,11 @@
   "registryVersion": 1,
   "candidate": {
     "branch": "codex/pf-web-real-site-2-visual-corpus",
-    "head": "b4bb76efbf0a120ba0a75fb42c9b409977aca194",
-    "tree": "51d6b0691947102b5e2c082c64119469f9a28aed",
-    "workingTreeManifest": "scripts/qualified-source-real-site-2-d-correction.sha256.txt",
-    "workingTreeManifestSha256": "0d37eeed949a1a043a2475b26385c7cafd718c2d285a5efca32506639837dfae",
-    "assertionEvidence": "scripts/qualified-source-real-site-2-d-correction.sha256.txt",
+    "head": "a33481cc7b2d56ef70237efdd340d6bd53d438ac",
+    "tree": "31384a29d6fee4518621529da91db869ed7b122f",
+    "workingTreeManifest": "scripts/qualified-source-real-site-2-commerce-correction.sha256.txt",
+    "workingTreeManifestSha256": "b399dd069143b075fee49d51f46ecbe2cdce96bd9f41256e285b5304b394b658",
+    "assertionEvidence": "scripts/qualified-source-real-site-2-commerce-correction.sha256.txt",
     "assertionEvidenceRule": "Each historical failing assertion and its baseline/candidate classification is recorded in the contradiction matrix. The registry below assigns each superseded invariant family to its current owner gates."
   },
   "priorQualificationFreezes": [
@@ -28,19 +28,33 @@
       "manifestSha256": "a8c8e60e909aa52611f285a0335bae7799fc03cbb717de1779ecd1ca36221dd7",
       "candidateCommit": "b4bb76efbf0a120ba0a75fb42c9b409977aca194",
       "status": "PREVIOUS_QUALIFIED_CANDIDATE"
+    },
+    {
+      "name": "PF_WEB_REAL_SITE_2_D_CORRECTION",
+      "branch": "codex/pf-web-real-site-2-visual-corpus",
+      "baseHead": "b4bb76efbf0a120ba0a75fb42c9b409977aca194",
+      "baseTree": "51d6b0691947102b5e2c082c64119469f9a28aed",
+      "manifest": "scripts/qualified-source-real-site-2-d-correction.sha256.txt",
+      "manifestSha256": "0d37eeed949a1a043a2475b26385c7cafd718c2d285a5efca32506639837dfae",
+      "candidateCommit": "a33481cc7b2d56ef70237efdd340d6bd53d438ac",
+      "candidateTree": "31384a29d6fee4518621529da91db869ed7b122f",
+      "status": "PREVIOUS_QUALIFIED_CANDIDATE"
     }
   ],
   "qualificationFreeze": {
-    "name": "PF_WEB_REAL_SITE_2_D_CORRECTION",
+    "name": "PF_WEB_REAL_SITE_2_PRODUCT_COMMERCE_LABELS",
     "branch": "codex/pf-web-real-site-2-visual-corpus",
-    "baseHead": "b4bb76efbf0a120ba0a75fb42c9b409977aca194",
-    "baseTree": "51d6b0691947102b5e2c082c64119469f9a28aed",
-    "manifest": "scripts/qualified-source-real-site-2-d-correction.sha256.txt",
-    "manifestSha256": "0d37eeed949a1a043a2475b26385c7cafd718c2d285a5efca32506639837dfae",
+    "baseHead": "a33481cc7b2d56ef70237efdd340d6bd53d438ac",
+    "baseTree": "31384a29d6fee4518621529da91db869ed7b122f",
+    "manifest": "scripts/qualified-source-real-site-2-commerce-correction.sha256.txt",
+    "manifestSha256": "b399dd069143b075fee49d51f46ecbe2cdce96bd9f41256e285b5304b394b658",
     "scriptInventoryCount": 25,
     "registryExclusion": "The source manifest excludes this registry to avoid self-reference; the candidate-wide SHA256SUMS receipt binds the committed registry bytes.",
     "historicalReceiptPreserved": "scripts/qualified-source-real-site-1.sha256.txt",
-    "scope": "Customer-facing hero, authenticated product-dense scenes, compact method band, and current release ledger, driven by generic featured/major/secondary module tiers; D visual delta applied without product truth changes.",
+    "scope": "Generic product-page acquisition labels derived from module commerce status and explicit price; no homepage, product truth, release, or route changes.",
+    "previousVisualFreeze": "PF_WEB_REAL_SITE_2_D_CORRECTION",
+    "previousVisualManifest": "scripts/qualified-source-real-site-2-d-correction.sha256.txt",
+    "protectedPathCount": 4,
     "previousRealSite2ReceiptPreserved": "scripts/qualified-source-real-site-2.sha256.txt"
   },
   "authorities": [
@@ -83,7 +97,8 @@
       "id": "H7C",
       "script": "test-h7c-product-pages.ps1",
       "owns": [
-        "shared product-page rendering and product-page semantics"
+        "shared product-page rendering and product-page semantics",
+        "generic product-page commerce/acquisition labels from module status and explicit price"
       ]
     },
     {

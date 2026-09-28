@@ -965,12 +965,22 @@ function ProductTokens($p) {
 
   # downloadBlock — derive from canonical artifact if available, else legacy fields
   $dlUrl = if ($tokens['artifactDownloadUrl']) { $tokens['artifactDownloadUrl'] } else { $p.downloadUrl }
+  $commerceModule = @($script:allProductModules | Where-Object { $_.id -eq $p.id } | Select-Object -First 1)[0]
+  $commerceStatus = if ($commerceModule -and $commerceModule.commerce) { [string]$commerceModule.commerce.status } else { '' }
+  $commerceSlug = $commerceStatus.ToLowerInvariant().Replace('_','-')
+  $commerceLabel = if ($commerceModule -and $commerceModule.commerce) { [string]$commerceModule.commerce.label } else { '' }
+  if ($commerceStatus -eq 'WITHDRAWN') {
+    $commerceLabel = 'UNAVAILABLE ' + [char]0x00B7 + ' WITHDRAWN'
+  } elseif ($commerceStatus -eq 'PAID' -and -not [string]::IsNullOrWhiteSpace([string]$commerceModule.commerce.price)) {
+    $commerceLabel = [string]$commerceModule.commerce.price
+  }
+  $commerceBadge = if ($commerceLabel) { '<span class="product-commerce-label" data-commerce="' + (Html-Attr $commerceSlug) + '">' + (Html-Text $commerceLabel) + '</span>' } else { '' }
   if ($p.presentation.downloadUnavailable -or [string]::IsNullOrWhiteSpace($dlUrl)) {
     $mutedLabel = if ($p.presentation.downloadUnavailable) { 'Downloads currently unavailable' }
                   elseif (-not [string]::IsNullOrWhiteSpace($p.disabledDownloadLabel)) { $p.disabledDownloadLabel }
                   elseif ($p.state -eq 'proof') { 'No public build yet' }
                   else { 'Coming soon' }
-    $tokens['downloadBlock'] = "<span class=`"button button-muted`" aria-disabled=`"true`">$(Html-Attr $mutedLabel)</span>"
+    $tokens['downloadBlock'] = $commerceBadge + "<span class=`"button button-muted`" aria-disabled=`"true`">$(Html-Attr $mutedLabel)</span>"
   } else {
     $url = Html-Attr $dlUrl
     $label = if ($p.downloadLabel) { $p.downloadLabel } else { 'Download' }
@@ -978,7 +988,7 @@ function ProductTokens($p) {
     $dlAttr = ''
     if (IsExternalUrl $url) { $extAttr = ' target="_blank" rel="noopener"' }
     if (IsFileDownload $url) { $dlAttr = ' download' }
-    $tokens['downloadBlock'] = "<a class=`"button button-primary`" href=`"$url`"$extAttr$dlAttr>$(Html-Attr $label)</a>"
+    $tokens['downloadBlock'] = $commerceBadge + "<a class=`"button button-primary`" href=`"$url`"$extAttr$dlAttr>$(Html-Attr $label)</a>"
     $sha256Link = if ($tokens['artifactSha256Url']) { $tokens['artifactSha256Url'] } else { $p.sha256Url }
     if (-not [string]::IsNullOrWhiteSpace($sha256Link)) {
       $tokens['downloadBlock'] += " <a class=`"button button-secondary`" href=`"$(Html-Attr $sha256Link)`" target=`"_blank`" rel=`"noopener`">SHA-256</a>"
