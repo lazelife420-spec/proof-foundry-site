@@ -20,7 +20,10 @@
 # No network.
 
 [CmdletBinding()]
-param()
+param(
+  [string]$BaselineRef = '',
+  [switch]$NegativeControl
+)
 
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
@@ -62,6 +65,135 @@ function Get-LastContentDate([string[]]$paths) {
   }
   if ($dates.Count -eq 0) { return $null }
   return ($dates | Sort-Object | Select-Object -Last 1)
+}
+
+function Read-GitText([string]$revision, [string]$relativePath) {
+  $spec = "${revision}:$relativePath"
+  & git -C $root cat-file -e $spec 2>$null
+  if ($LASTEXITCODE -ne 0) { return $null }
+  $lines = & git -C $root show $spec
+  if ($LASTEXITCODE -ne 0) { return $null }
+  return ($lines -join "`n")
+}
+
+function Read-GitJson([string]$revision, [string]$relativePath) {
+  $raw = Read-GitText $revision $relativePath
+  if ($null -eq $raw) { return $null }
+  try { return ($raw | ConvertFrom-Json -Depth 100) }
+  catch { throw "Invalid JSON in ${revision}:$relativePath — $($_.Exception.Message)" }
+}
+
+function ConvertTo-InputSignature($value) {
+  return (ConvertTo-Json -InputObject $value -Depth 100 -Compress)
+}
+
+function Get-ModuleRouteSignatures([string]$revision, [string]$productId, [switch]$SimulateProductContentChange) {
+  $modulePath = "products/$productId/module.json"
+  $module = Read-GitJson $revision $modulePath
+  if (-not $module) { return $null }
+  if ($SimulateProductContentChange) {
+    $module.hero.headline = [string]$module.hero.headline + ' [simulated route content change]'
+  }
+  $manifest = Read-GitJson $revision 'site-manifest.json'
+  $productState = @($manifest.products | Where-Object { $_.id -eq $productId } | Select-Object -First 1)[0]
+
+  $productHero = [ordered]@{}
+  foreach ($property in @($module.hero.PSObject.Properties)) {
+    # sceneFamily is a renderer classification data attribute. The public page
+    # art and content are represented by the actual media, copy and section data.
+    if ($property.Name -ne 'sceneFamily') { $productHero[$property.Name] = $property.Value }
+  }
+  $productContent = ''
+  $productSource = ''
+  if ($module.contentSource) {
+    $content = Read-GitText $revision "products/$productId/content.html"
+    if ($null -ne $content) {
+      $productSource = $content
+      # Ignore comments and class-only layout changes. Keep public text, links,
+      # image sources, labels and all other source data in the route signature.
+      $productContent = [regex]::Replace($content, '(?s)<!--.*?-->', '')
+      $productContent = [regex]::Replace($productContent, '(?i)\sclass=("[^"]*"|''[^'']*'')', '')
+      $productContent = [regex]::Replace($productContent, '\s+', ' ').Trim()
+    }
+  }
+
+  $productStateProjection = [ordered]@{
+    name = $productState.name
+    publicVersion = $productState.release.publicVersion
+    releaseStatus = $productState.release.releaseStatus
+    verificationStatus = $productState.verification.status
+    downloadUnavailable = $productState.presentation.downloadUnavailable
+    downloadUrl = $productState.downloadUrl
+    contentTokens = [ordered]@{}
+  }
+  $tokenPaths = @([regex]::Matches($productSource, '\{\{\s*product\.([a-zA-Z0-9_.]+)\s*\}\}') | ForEach-Object { $_.Groups[1].Value } | Sort-Object -Unique)
+  foreach ($tokenPath in $tokenPaths) {
+    $value = $productState
+    foreach ($part in $tokenPath.Split('.')) {
+      $property = if ($null -ne $value) { $value.PSObject.Properties[$part] } else { $null }
+      if ($null -eq $property) { $value = $null; break }
+      $value = $property.Value
+    }
+    $productStateProjection.contentTokens[$tokenPath] = $value
+  }
+
+  $productPage = [ordered]@{
+    id = $module.id; route = $module.route; visibility = $module.visibility; lifecycle = $module.lifecycle
+    schemaVersion = $module.schemaVersion; brand = $module.brand; meta = $module.meta; hero = $productHero
+    theme = $module.theme; sections = $module.sections; contentSource = $module.contentSource
+    inlineCss = $module.inlineCss; jsonLd = $module.jsonLd; content = $productContent; productState = $productStateProjection
+  }
+  $catalogCard = [ordered]@{
+    id = $module.id; route = $module.route; visibility = $module.visibility; order = $module.order
+    placement = $module.placement; commerce = $module.commerce; brand = $module.brand; card = $module.card
+    theme = $module.theme; taxonomy = $module.taxonomy; productState = $productState
+    # The catalog card renderer consumes this one homepage field as a data attribute.
+    catalogSceneFamily = $module.homepage.sceneFamily
+  }
+  $homepageCard = [ordered]@{
+    id = $module.id; route = $module.route; visibility = $module.visibility; lifecycle = $module.lifecycle
+    homepage = $module.homepage; card = $module.card; brand = $module.brand; hero = $module.hero
+    theme = $module.theme; taxonomy = $module.taxonomy; commerce = $module.commerce; order = $module.order
+    placement = $module.placement; productState = $productState
+  }
+
+  return [pscustomobject]@{
+    Id = [string]$module.id; Route = [string]$module.route; Visibility = [string]$module.visibility
+    Product = ConvertTo-InputSignature $productPage
+    Catalog = ConvertTo-InputSignature $catalogCard
+    Homepage = ConvertTo-InputSignature $homepageCard
+  }
+}
+
+function Get-ModuleInputDates([string]$baseline, [string]$productId) {
+  $paths = @("products/$productId/module.json", "products/$productId/content.html", 'site-manifest.json')
+  $commits = @(& git -C $root rev-list --reverse "$baseline..HEAD" -- $paths)
+  $previous = Get-ModuleRouteSignatures $baseline $productId
+  $dates = [ordered]@{ Product = $null; Catalog = $null; Homepage = $null }
+  foreach ($commit in $commits) {
+    $current = Get-ModuleRouteSignatures $commit $productId
+    if (-not $current) { continue }
+    $commitDate = (& git -C $root show -s --format=%cs $commit).Trim()
+    if (-not $previous -or $current.Product -cne $previous.Product) { $dates.Product = $commitDate }
+    if (-not $previous -or $current.Catalog -cne $previous.Catalog) { $dates.Catalog = $commitDate }
+    if (-not $previous -or $current.Homepage -cne $previous.Homepage) { $dates.Homepage = $commitDate }
+    $previous = $current
+  }
+  return [pscustomobject]@{ Product = $dates.Product; Catalog = $dates.Catalog; Homepage = $dates.Homepage }
+}
+
+function Get-ChangedSourceDate([string]$baseline, [string]$relativePath) {
+  $previous = Read-GitText $baseline $relativePath
+  $commits = @(& git -C $root rev-list --reverse "$baseline..HEAD" -- $relativePath)
+  $lastDate = $null
+  foreach ($commit in $commits) {
+    $current = Read-GitText $commit $relativePath
+    if ($current -cne $previous) {
+      $lastDate = (& git -C $root show -s --format=%cs $commit).Trim()
+    }
+    $previous = $current
+  }
+  return $lastDate
 }
 
 Write-Host "=== H4 METADATA / DISCOVERY ASSERTIONS ==="
@@ -164,6 +296,75 @@ foreach ($route in $indexableRoutes) {
 }
 $today = [DateTime]::UtcNow.ToString('yyyy-MM-dd')
 Assert-Condition (@($mods | Where-Object { $_ -gt $today }).Count -eq 0) "sitemap: no lastmod in the future (no manufactured freshness)"
+
+# Generated module routes have more than one public input: the rendered module
+# fields, the module's narrative content, and that product's canonical public
+# state. Compare those inputs with the currently deployed source baseline and
+# require lastmod to match the newest material input commit. Home and software
+# also consume module data, but through different projections. This avoids
+# treating homepage-only module fields or class-only responsive markup as a
+# content change to every product page.
+$baselineRef = $BaselineRef
+if ([string]::IsNullOrWhiteSpace($baselineRef)) { $baselineRef = $env:PF_METADATA_BASELINE_REF }
+if ([string]::IsNullOrWhiteSpace($baselineRef)) {
+  $upstreamRef = (& git -C $root rev-parse --abbrev-ref --symbolic-full-name '@{upstream}' 2>$null)
+  if ($LASTEXITCODE -eq 0 -and $upstreamRef) { $baselineRef = $upstreamRef.Trim() }
+}
+if ([string]::IsNullOrWhiteSpace($baselineRef)) { $baselineRef = 'codex/continuous-foundry-r2' }
+$baselineExists = $false
+& git -C $root rev-parse --verify "$baselineRef^{commit}" 2>$null | Out-Null
+if ($LASTEXITCODE -eq 0) { $baselineExists = $true }
+$baselineCommit = if ($baselineExists) { (& git -C $root merge-base HEAD $baselineRef).Trim() } else { $null }
+Assert-Condition (-not [string]::IsNullOrWhiteSpace($baselineCommit)) "module inputs: deployed baseline resolves ($baselineRef)"
+
+if (-not [string]::IsNullOrWhiteSpace($baselineCommit)) {
+  $routeInputDates = @{ Home = @(); Software = @() }
+  $homeSourceDate = Get-ChangedSourceDate $baselineCommit 'index.html'
+  $softwareSourceDate = Get-ChangedSourceDate $baselineCommit 'software.html'
+  if ($homeSourceDate) { $routeInputDates.Home += $homeSourceDate }
+  if ($softwareSourceDate) { $routeInputDates.Software += $softwareSourceDate }
+
+  $moduleInputs = @()
+  foreach ($dir in (Get-ChildItem (Join-Path $root 'products') -Directory | Sort-Object Name)) {
+    $module = Read-GitJson 'HEAD' "products/$($dir.Name)/module.json"
+    if (-not $module -or $module.visibility -ne 'visible') { continue }
+    $dates = Get-ModuleInputDates $baselineCommit ([string]$module.id)
+    $moduleInputs += [pscustomobject]@{ Module = $module; Dates = $dates }
+    if ($dates.Homepage) { $routeInputDates.Home += $dates.Homepage }
+    if ($dates.Catalog) { $routeInputDates.Software += $dates.Catalog }
+  }
+
+  $negativeRoute = $null
+  foreach ($input in $moduleInputs) {
+    $module = $input.Module
+    $loc = "$originHost$($module.route)"
+    $inputDate = $input.Dates.Product
+    if ($NegativeControl -and -not $negativeRoute) {
+      # Model a future content commit to a discovered module route while leaving
+      # its sitemap entry stale. This must fail the same assertion as real drift.
+      $negativeRoute = $loc
+      $headSignatures = Get-ModuleRouteSignatures 'HEAD' ([string]$module.id)
+      $simulatedSignatures = Get-ModuleRouteSignatures 'HEAD' ([string]$module.id) -SimulateProductContentChange
+      Assert-Condition ($simulatedSignatures.Product -cne $headSignatures.Product) 'negative control: a module hero content change alters the discovered product-route input signature'
+      $inputDate = [DateTime]::UtcNow.AddDays(1).ToString('yyyy-MM-dd')
+      Write-Host "  NEGATIVE CONTROL: simulated module content input changed for $($module.route) without a sitemap refresh"
+    }
+    if ($inputDate) {
+      Assert-Condition ($lastmodByLoc[$loc] -ceq $inputDate) "F5: module-generated route $($module.route) lastmod matches its latest public content input ($inputDate)"
+    }
+  }
+  if ($NegativeControl) {
+    Assert-Condition (-not [string]::IsNullOrWhiteSpace($negativeRoute)) 'negative control: a module-generated route was discovered for drift simulation'
+  }
+
+  foreach ($surface in @(@{ Name = 'Home'; Loc = "$originHost/"; Route = '/' }, @{ Name = 'Software'; Loc = "$originHost/software/"; Route = '/software/' })) {
+    $dates = @($routeInputDates[$surface.Name] | Where-Object { $_ } | Sort-Object -Unique)
+    if ($dates.Count -gt 0) {
+      $inputDate = $dates[-1]
+      Assert-Condition ($lastmodByLoc[$surface.Loc] -ceq $inputDate) "F5: module-generated route $($surface.Route) lastmod matches its latest public content input ($inputDate)"
+    }
+  }
+}
 
 # ── robots.txt: unchanged discovery contract ────────────────────────────────
 $robotsTxt = Get-Content (Join-Path $publicDir 'robots.txt') -Raw -Encoding UTF8
