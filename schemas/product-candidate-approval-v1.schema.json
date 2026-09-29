@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "product-candidate-approval-v1.schema.json",
+  "title": "Proof Foundry Candidate Owner Review Package",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "approvalSchemaVersion", "approvalState", "candidateId", "candidateDigest", "publisherCommit", "publisherTree",
+    "baseSiteCommit", "baseSiteTree", "capsuleSha256", "candidateStateSha256", "candidatePayloadSha256",
+    "productId", "submissionType", "proposedPaths", "artifactInventory", "artifactSha256", "qualificationDimensions",
+    "qualificationResults", "previewIdentity", "previewRoutes", "canonicalStateDelta", "productPresentationChange",
+    "releaseTruthDelta", "publicReleaseTruthChange", "artifactChange", "commerceDelta", "routeDelta", "homepageChange", "truthFileChange",
+    "knownLimits", "publicationBlockers", "livePublication", "createdAt", "futureOwnerApprovalRecord", "approvalPackageDigest"
+  ],
+  "properties": {
+    "approvalSchemaVersion": { "const": 1 },
+    "approvalState": { "const": "FROZEN_FOR_OWNER_REVIEW" },
+    "candidateId": { "type": "string", "pattern": "^pfc-[0-9a-f]{24}$" },
+    "candidateDigest": { "$ref": "#/$defs/hash" },
+    "publisherCommit": { "$ref": "#/$defs/hash" },
+    "publisherTree": { "$ref": "#/$defs/hash" },
+    "baseSiteCommit": { "$ref": "#/$defs/hash" },
+    "baseSiteTree": { "$ref": "#/$defs/hash" },
+    "capsuleSha256": { "$ref": "#/$defs/hash" },
+    "candidateStateSha256": { "$ref": "#/$defs/hash" },
+    "candidatePayloadSha256": { "$ref": "#/$defs/hash" },
+    "productId": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "submissionType": { "enum": ["NEW_PRODUCT", "NEW_VERSION", "PRESENTATION_UPDATE"] },
+    "proposedPaths": { "type": "array", "items": { "type": "object" } },
+    "artifactInventory": { "type": "array", "items": { "type": "object" } },
+    "artifactSha256": { "type": "array", "items": { "$ref": "#/$defs/hash" } },
+    "qualificationDimensions": { "type": "object", "additionalProperties": { "enum": ["PASS", "NOT_RUN"] } },
+    "qualificationResults": { "type": "array", "items": { "type": "object" } },
+    "previewIdentity": { "type": "object" },
+    "previewRoutes": { "type": "array", "items": { "type": "string" } },
+    "canonicalStateDelta": { "$ref": "#/$defs/delta" },
+    "productPresentationChange": { "$ref": "#/$defs/delta" },
+    "releaseTruthDelta": { "$ref": "#/$defs/delta" },
+    "publicReleaseTruthChange": { "$ref": "#/$defs/delta" },
+    "artifactChange": { "$ref": "#/$defs/delta" },
+    "commerceDelta": { "$ref": "#/$defs/delta" },
+    "routeDelta": { "$ref": "#/$defs/delta" },
+    "homepageChange": { "$ref": "#/$defs/delta" },
+    "truthFileChange": { "$ref": "#/$defs/delta" },
+    "knownLimits": { "type": "array", "items": { "type": "string" } },
+    "publicationBlockers": { "type": "array", "items": { "type": "string" } },
+    "livePublication": { "const": "NOT_RUN" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "futureOwnerApprovalRecord": {
+      "type": "object",
+      "required": ["designOnly", "decisionRequired", "bindingFields", "detachedBooleanApprovalAllowed", "publicationMutationImplemented"],
+      "properties": {
+        "designOnly": { "const": true },
+        "decisionRequired": { "const": "OWNER_APPROVES_EXACT_CANDIDATE" },
+        "bindingFields": { "type": "array", "items": { "type": "string" }, "minItems": 6 },
+        "detachedBooleanApprovalAllowed": { "const": false },
+        "publicationMutationImplemented": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "approvalPackageDigest": { "$ref": "#/$defs/hash" }
+  },
+  "$defs": {
+    "hash": { "type": "string", "pattern": "^[0-9a-f]{40,64}$" },
+    "delta": {
+      "type": "object",
+      "required": ["changed"],
+      "properties": { "changed": { "enum": ["YES", "NO"] } },
+      "additionalProperties": true
+    }
+  }
+}

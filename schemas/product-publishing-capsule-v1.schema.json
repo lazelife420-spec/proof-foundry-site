@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://theprooffoundry.com/schemas/product-publishing-capsule-v1.schema.json",
+  "title": "Proof Foundry Product Publishing Capsule V1",
+  "description": "Offline ingestion-package envelope. It is evidence and intent, never canonical publication or verification authority.",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "productId",
+    "submissionType",
+    "requestedLifecycle",
+    "sourceRepository",
+    "sourceCommit",
+    "releaseVersion",
+    "platforms",
+    "modulePath",
+    "releaseManifestPath",
+    "checksumPath",
+    "provenancePath",
+    "artifactRefs"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "productId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "submissionType": {
+      "enum": ["NEW_PRODUCT", "NEW_VERSION", "PRESENTATION_UPDATE"]
+    },
+    "requestedLifecycle": {
+      "description": "Requested lifecycle only. The only accepted values are the existing module lifecycle values; VERIFIED is never a lifecycle.",
+      "enum": ["draft", "preview", "public-eligible"]
+    },
+    "sourceRepository": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^\\s]+$"
+    },
+    "sourceCommit": {
+      "type": "string",
+      "pattern": "^(?:[a-fA-F0-9]{40}|[a-fA-F0-9]{64})$"
+    },
+    "releaseVersion": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-((?:0|[1-9][0-9]*|[0-9A-Za-z-]*[A-Za-z-][0-9A-Za-z-]*)(?:\\.(?:0|[1-9][0-9]*|[0-9A-Za-z-]*[A-Za-z-][0-9A-Za-z-]*))*))?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+    },
+    "platforms": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9 .()+/_-]{0,63}$"
+      }
+    },
+    "modulePath": { "const": "product/module.json" },
+    "contentPath": { "const": "product/content.html" },
+    "releaseManifestPath": { "const": "release/release.json" },
+    "checksumPath": { "const": "release/SHA256SUMS.txt" },
+    "provenancePath": { "const": "provenance/source.json" },
+    "artifactRefs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/artifactRef" }
+    },
+    "qualificationProfiles": {
+      "description": "Bounded built-in evidence profiles only. These select fixed checks and never execute submitted commands.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": ["PRODUCT_MODULE_V2", "H13_REGISTRY", "LOCAL_ARTIFACT_HASH", "CLAIM_EVIDENCE_LINKS"]
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "submissionType": { "enum": ["NEW_PRODUCT", "NEW_VERSION"] } },
+        "required": ["submissionType"]
+      },
+      "then": { "properties": { "artifactRefs": { "minItems": 1 } } }
+    },
+    {
+      "if": {
+        "properties": { "submissionType": { "const": "PRESENTATION_UPDATE" } },
+        "required": ["submissionType"]
+      },
+      "then": { "properties": { "artifactRefs": { "maxItems": 0 } } }
+    }
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "artifactRef": {
+      "type": "object",
+      "required": ["path", "platform", "sha256"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//)release/artifacts/[A-Za-z0-9][A-Za-z0-9._/-]*$"
+        },
+        "platform": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9 .()+/_-]{0,63}$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
