@@ -114,9 +114,9 @@
   },
   "card": {
     "tagline": "Keep the context. Build the evidence.",
-    "media": "/assets/proofshot/og-image.png",
+    "media": "/assets/proofshot/workbench-proof-cards.png",
     "summary": "A local workbench for capturing page resources, organizing a case and exporting a bundle you can verify later.",
-    "mediaAlt": "ProofShot wordmark over the approved dark brand field"
+    "mediaAlt": "Underlying HyperSnatch engine v1.6.18 workbench before the ProofShot rebrand, showing proof cards."
   },
   "lifecycle": "public-eligible",
   "commerce": { "status": "FREE", "label": "Free download" },
@@ -130,7 +130,7 @@
       "tier": "secondary",
     "presentation": "compact",
     "visibility": "visible",
-    "mediaDisclosure": "Approved ProofShot brand artwork · no product interface pictured.",
+    "mediaDisclosure": "Authentic engine workbench · pre-rebrand sample workspace.",
     "evidencePriority": 2
   }
 }

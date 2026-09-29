@@ -1297,7 +1297,7 @@ function Build-StudioEvidence {
   }
   return @"
 <aside class="studio-evidence" aria-label="Public release evidence">
-  <div class="studio-ledger-heading"><div><span class="studio-evidence-label">Public release ledger</span><h3>Real releases. Current records.</h3><p>Each row links to the published evidence behind that version.</p></div><a href="/proof/">Browse all records <span aria-hidden="true">↗</span></a></div>
+  <div class="studio-ledger-heading"><div><span class="studio-evidence-label">Recent public releases</span><h3>Selected current records.</h3><p>Each row links to the published evidence behind that version.</p></div><a href="/proof/">Browse all records <span aria-hidden="true">↗</span></a></div>
   <ul class="studio-ledger-rows">$($rows -join "`n")</ul>
 </aside>
 "@
@@ -1316,13 +1316,25 @@ function Build-StudioPortfolio {
     $accent2 = if ($module.theme.accentSecondary) { [string]$module.theme.accentSecondary } else { $accent }
     $mediaNote = if ($module.homepage.mediaDisclosure) { [string]$module.homepage.mediaDisclosure } elseif ($module.hero.media.caption) { [string]$module.hero.media.caption } else { [string]$alt }
     $downloadAvailable = $product.release.releaseStatus -eq 'PUBLIC_RELEASE' -and -not $product.presentation.downloadUnavailable -and -not [string]::IsNullOrWhiteSpace([string]$product.downloadUrl)
-    $actionHref = if ($downloadAvailable) { [string]$product.downloadUrl } else { [string]$module.route }
-    $actionLabel = if ($downloadAvailable -and $module.commerce.label) { [string]$module.commerce.label } elseif ($downloadAvailable) { 'Free download' } else { 'Explore product' }
-    $downloadAttrs = if ($downloadAvailable) { ' data-commerce="free"' } else { '' }
+    $primaryArtifact = @($product.artifacts | Where-Object { $_.downloadUrl -eq $product.downloadUrl -and $_.sha256 -eq $product.sha256 } | Select-Object -First 1)[0]
+    $artifactPlatform = if ($primaryArtifact -and -not [string]::IsNullOrWhiteSpace([string]$primaryArtifact.platform)) { [string]$primaryArtifact.platform } else { '' }
+    $commerceStatus = if ($module.commerce) { [string]$module.commerce.status } else { '' }
+    $commerceLabel = ''
+    if ($downloadAvailable -and $commerceStatus -eq 'FREE') {
+      $commerceLabel = if ($module.commerce.label) { [string]$module.commerce.label } else { 'Free download' }
+      if ($artifactPlatform) { $commerceLabel += ' ' + [char]0x00B7 + ' ' + $artifactPlatform }
+    } elseif ($downloadAvailable -and $commerceStatus -eq 'PAID') {
+      $commerceLabel = if (-not [string]::IsNullOrWhiteSpace([string]$module.commerce.price)) { [string]$module.commerce.price } else { [string]$module.commerce.label }
+    }
+    $commerceSlug = if ($commerceStatus) { $commerceStatus.ToLowerInvariant().Replace('_','-') } else { '' }
+    $commercePlatformAttr = if ($artifactPlatform) { ' data-platform="' + (Html-Attr $artifactPlatform) + '"' } else { '' }
+    $commerceHtml = if ($commerceLabel) { '<p class="studio-product-state studio-product-commerce" data-commerce="' + (Html-Attr $commerceSlug) + '"' + $commercePlatformAttr + '>' + (Html-Text $commerceLabel) + '</p>' } else { '' }
+    $actionHref = [string]$module.route
+    $actionLabel = if ($downloadAvailable) { "View $name" } else { 'Explore product' }
     $cards += @"
 <article class="studio-product-card" data-module="$(Html-Attr $module.id)" data-home-role="$(Html-Attr $module.homepage.tier)" data-composition="$(Html-Attr $module.homepage.composition)" data-presentation="$(Html-Attr $module.homepage.presentation)" data-scene-family="$(Html-Attr $module.homepage.sceneFamily)" style="--product-accent:$(Html-Attr $accent);--product-accent-2:$(Html-Attr $accent2)">
   <a class="studio-product-media" href="$(Html-Attr $module.route)" aria-label="Explore $(Html-Attr $name)"><img src="$(Html-Attr $image)" alt="$(Html-Attr $alt)" loading="lazy" decoding="async"/><span class="studio-media-note">$(Html-Text $mediaNote)</span></a>
-  <div class="studio-product-copy"><div class="studio-product-eyebrow"><span>$(Html-Text $module.taxonomy.category)</span><span>$(Html-Text $tokens.platform)</span></div><h3><a href="$(Html-Attr $module.route)">$(Html-Text $name)</a></h3><p>$(Html-Text $tagline)</p><p class="studio-product-state">$(Html-Text $status)</p><a class="studio-product-open" href="$(Html-Attr $actionHref)"$downloadAttrs>$(Html-Text $actionLabel) <span aria-hidden="true">→</span></a></div>
+  <div class="studio-product-copy"><div class="studio-product-eyebrow"><span>$(Html-Text $module.taxonomy.category)</span><span>$(Html-Text $tokens.platform)</span></div><h3><a href="$(Html-Attr $module.route)">$(Html-Text $name)</a></h3><p>$(Html-Text $tagline)</p><p class="studio-product-state">$(Html-Text $status)</p>$commerceHtml<a class="studio-product-open" href="$(Html-Attr $actionHref)">$(Html-Text $actionLabel) <span aria-hidden="true">→</span></a></div>
 </article>
 "@
   }

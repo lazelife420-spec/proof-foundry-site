@@ -134,6 +134,10 @@ Assert-Truth ($lastmodByLoc['https://theprooffoundry.com/truth/'] -eq '2026-09-2
 Assert-Truth ($lastmodByLoc['https://theprooffoundry.com/proof-standard/'] -eq '2026-09-20') 'sitemap: /proof-standard/ carries H11 date (H11 changed the page)'
 foreach ($kv in $headLastmod.GetEnumerator()) {
   if ($kv.Key -eq 'https://theprooffoundry.com/proof-standard/') { continue }
+  if ($kv.Key -eq 'https://theprooffoundry.com/') {
+    Assert-Truth ($lastmodByLoc[$kv.Key] -eq '2026-09-28') 'sitemap: homepage lastmod reflects this homepage tranche'
+    continue
+  }
   Assert-Truth ($lastmodByLoc[$kv.Key] -eq $kv.Value) "sitemap: $($kv.Key) retains HEAD lastmod ($($kv.Value)) — H11 did not change it"
 }
 

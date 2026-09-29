@@ -106,6 +106,9 @@ foreach ($r in $requiredRoutes) {
   }
 }
 Assert-Condition $sitemapValid "Sitemap contains valid monotonic lastmod dates (>= 2026-09-17 baseline for modified routes)"
+$freshnessMatches = [regex]::Matches($sitemapText, '(?s)<loc>(https://theprooffoundry\.com/?)</loc>\s*<lastmod>(\d{4}-\d{2}-\d{2})</lastmod>')
+$freshHomeOnly = $freshnessMatches.Count -eq 1 -and $freshnessMatches[0].Groups[2].Value -eq '2026-09-28' -and ([regex]::Matches($sitemapText, '<lastmod>2026-09-28</lastmod>')).Count -eq 1
+Assert-Condition $freshHomeOnly "Sitemap freshness updates only the homepage route for this tranche"
 
 $redirectsText = [IO.File]::ReadAllText((Join-Path $PublicDir '_redirects'))
 Assert-Condition ($redirectsText -match '/about\s+/about/') "_redirects contains /about 301 rule"
