@@ -92,23 +92,42 @@ Assert-Condition ($sitemapText -match 'https://theprooffoundry\.com/about/') "Si
 Assert-Condition ($sitemapText -match 'https://theprooffoundry\.com/proof-standard/') "Sitemap contains /proof-standard/ route"
 
 $requiredRoutes = @('/', '/about/', '/proof-standard/', '/reality-gate/', '/cache-vault/', '/lights-out/', '/cleanroom/', '/ghostlayer/', '/forgecast/', '/proofshot/', '/founders/', '/proof/', '/roadmap/', '/support/')
-$sitemapValid = $true
+$sitemapParseable = $true
+try { [xml]$sitemapXml = $sitemapText } catch { $sitemapParseable = $false }
+Assert-Condition $sitemapParseable "Sitemap parses as XML"
+$sitemapEntries = if ($sitemapParseable) { @($sitemapXml.urlset.url) } else { @() }
+$sitemapLocs = @($sitemapEntries | ForEach-Object { ([string]$_.loc).Trim() })
+Assert-Condition ($sitemapEntries.Count -eq 24) "Sitemap preserves the 24-route inventory"
+Assert-Condition (@($sitemapLocs | Sort-Object -Unique).Count -eq $sitemapLocs.Count) "Sitemap route identities contain no duplicates"
+$requiredRouteCoverage = $true
 foreach ($r in $requiredRoutes) {
-  $escapedR = [regex]::Escape($r)
-  $matches = [regex]::Matches($sitemapText, "<loc>https://theprooffoundry\.com$escapedR</loc>\s*<lastmod>(\d{4}-\d{2}-\d{2})</lastmod>")
-  if ($matches.Count -ne 1) {
-    $sitemapValid = $false
-  } else {
-    $dateStr = $matches[0].Groups[1].Value
-    if ($dateStr -lt '2026-09-17' -and ($r -in @('/', '/about/', '/proof-standard/', '/founders/', '/roadmap/', '/proof/', '/support/', '/lights-out/'))) {
-      $sitemapValid = $false
-    }
+  $expectedLoc = "https://theprooffoundry.com$r"
+  if (@($sitemapLocs | Where-Object { $_ -ceq $expectedLoc }).Count -ne 1) { $requiredRouteCoverage = $false }
+}
+Assert-Condition $requiredRouteCoverage "Sitemap preserves required continuity routes"
+
+# H8-B enforces the shared date floor and parseability only. H4 owns exact
+# route-to-content-input lastmod matching, including module-generated routes.
+$parsedLastmods = @()
+$allLastmodsParseable = ($sitemapEntries.Count -eq 24)
+foreach ($entry in $sitemapEntries) {
+  $dateText = ([string]$entry.lastmod).Trim()
+  try {
+    $parsedDate = [DateTime]::ParseExact($dateText, 'yyyy-MM-dd', [Globalization.CultureInfo]::InvariantCulture)
+    if ($parsedDate.ToString('yyyy-MM-dd', [Globalization.CultureInfo]::InvariantCulture) -cne $dateText) { $allLastmodsParseable = $false }
+    $parsedLastmods += $parsedDate.Date
+  } catch {
+    $allLastmodsParseable = $false
   }
 }
-Assert-Condition $sitemapValid "Sitemap contains valid monotonic lastmod dates (>= 2026-09-17 baseline for modified routes)"
-$freshnessMatches = [regex]::Matches($sitemapText, '(?s)<loc>(https://theprooffoundry\.com/?)</loc>\s*<lastmod>(\d{4}-\d{2}-\d{2})</lastmod>')
-$freshHomeOnly = $freshnessMatches.Count -eq 1 -and $freshnessMatches[0].Groups[2].Value -eq '2026-09-28' -and ([regex]::Matches($sitemapText, '<lastmod>2026-09-28</lastmod>')).Count -eq 1
-Assert-Condition $freshHomeOnly "Sitemap freshness updates only the homepage route for this tranche"
+Assert-Condition ($allLastmodsParseable -and $parsedLastmods.Count -eq 24) "Every sitemap route has one parseable ISO lastmod date"
+$dateFloor = [DateTime]::ParseExact('2026-09-17', 'yyyy-MM-dd', [Globalization.CultureInfo]::InvariantCulture)
+$todayUtc = [DateTime]::UtcNow.Date
+$monotonicDates = ($allLastmodsParseable -and $parsedLastmods.Count -eq 24)
+foreach ($date in $parsedLastmods) {
+  if ($date -lt $dateFloor -or $date -gt $todayUtc) { $monotonicDates = $false }
+}
+Assert-Condition $monotonicDates "Sitemap lastmod dates meet the shared freshness floor (2026-09-17) and are not future-dated"
 
 $redirectsText = [IO.File]::ReadAllText((Join-Path $PublicDir '_redirects'))
 Assert-Condition ($redirectsText -match '/about\s+/about/') "_redirects contains /about 301 rule"

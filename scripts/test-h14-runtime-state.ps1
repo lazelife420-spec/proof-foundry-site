@@ -6,15 +6,62 @@
 #
 # Usage: pwsh -NoProfile -File scripts/test-h14-runtime-state.ps1
 
-$ErrorActionPreference = 'Continue'
+$ErrorActionPreference = 'Stop'
 $root   = (Resolve-Path "$PSScriptRoot\..").Path
 $work   = Join-Path $env:TEMP ("pf-h14-" + [Guid]::NewGuid().ToString('n').Substring(0,8))
-New-Item -ItemType Directory -Force -Path $work | Out-Null
+$fixtureRoot = Join-Path $work 'pages-root'
+$fixturePublic = Join-Path $fixtureRoot 'public'
+$fixtureFunctions = Join-Path $fixtureRoot 'functions'
+$pagesProc = $null; $apiProc = $null
+$workCreated = $false
 $passed = 0; $failed = 0
 function Assert([bool]$cond, [string]$name) {
   if ($cond) { $script:passed++; Write-Host "  PASS  $name" -ForegroundColor Green }
   else { $script:failed++; Write-Host "  FAIL  $name" -ForegroundColor Red }
 }
+function Get-CredentialStoreMetadataFingerprint {
+  # Credential bytes must not be opened or hashed. Fingerprint only the output
+  # of the owner-provided metadata-only diagnostic helper, and never print it.
+  $helper = 'C:\Users\KickA\.proof-foundry\tools\credential-store-status.js'
+  if (-not (Test-Path -LiteralPath $helper -PathType Leaf)) { throw 'Metadata-only credential status helper is unavailable.' }
+  $metadataLines = @(& node $helper 2>$null)
+  if ($LASTEXITCODE -ne 0 -or $metadataLines.Count -eq 0) { throw 'Metadata-only credential status helper failed.' }
+  $metadataText = (($metadataLines | ForEach-Object { [string]$_ }) -join "`n")
+  $sha = [Security.Cryptography.SHA256]::Create()
+  try {
+    $digest = $sha.ComputeHash([Text.Encoding]::UTF8.GetBytes($metadataText))
+    return [Convert]::ToHexString($digest).ToLowerInvariant()
+  } finally { $sha.Dispose() }
+}
+function Get-FreeLoopbackPort {
+  $listener = [Net.Sockets.TcpListener]::new([Net.IPAddress]::Loopback, 0)
+  $listener.Start()
+  try { return ([Net.IPEndPoint]$listener.LocalEndpoint).Port }
+  finally { $listener.Stop() }
+}
+function Stop-ProcessTree([System.Diagnostics.Process]$process) {
+  if ($null -eq $process) { return }
+  try {
+    if (-not $process.HasExited) {
+      & taskkill.exe /PID $process.Id /T /F 2>$null | Out-Null
+      if ($LASTEXITCODE -ne 0) { Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue }
+    }
+  } catch { }
+}
+
+try { $credentialMetadataBefore = Get-CredentialStoreMetadataFingerprint }
+catch {
+  Write-Host 'FAIL: metadata-only credential status check unavailable; refusing to start H14.' -ForegroundColor Red
+  exit 1
+}
+
+try {
+New-Item -ItemType Directory -Force -Path $work | Out-Null
+$workCreated = $true
+$apiPort = Get-FreeLoopbackPort
+do { $pagesPort = Get-FreeLoopbackPort } while ($pagesPort -eq $apiPort)
+$apiBase = "http://127.0.0.1:$apiPort"
+$pagesBase = "http://127.0.0.1:$pagesPort"
 
 # ── Fixture state doc: revision A (current manifest) + B (proofshot changed) ─
 $m = Get-Content (Join-Path $root 'site-manifest.json') -Raw | ConvertFrom-Json
@@ -78,32 +125,33 @@ Assert ($buildOut -match 'Emitted H14 shadow assets') 'build emits __h14 shadow 
 Assert (Test-Path (Join-Path $root 'public\__h14\shells\cleanroom.html')) 'shadow shell emitted'
 Assert (Test-Path (Join-Path $root 'public\__h14\registry.json')) 'registry index emitted'
 
+# Keep the Pages runtime completely outside the source checkout. Copy only the
+# built static output and Functions tree; provide the synthetic API URL with a
+# local Wrangler binding instead of creating any .dev.vars file.
+New-Item -ItemType Directory -Force -Path $fixturePublic, $fixtureFunctions | Out-Null
+Get-ChildItem -LiteralPath (Join-Path $root 'public') -Force | Copy-Item -Destination $fixturePublic -Recurse -Force
+Get-ChildItem -LiteralPath (Join-Path $root 'functions') -Force | Copy-Item -Destination $fixtureFunctions -Recurse -Force
+Assert (([IO.Path]::GetFullPath($fixtureRoot)).StartsWith(([IO.Path]::GetFullPath($env:TEMP).TrimEnd('\') + '\'), [StringComparison]::OrdinalIgnoreCase)) 'Pages fixture is isolated under the temporary directory'
+Assert (-not (Test-Path -LiteralPath (Join-Path $fixtureRoot '.dev.vars'))) 'H14 uses no .dev.vars fixture file'
+
 # ── Start fixture API + wrangler pages dev ───────────────────────────────────
-# Kill stale listeners from a previous run (fixture would die on EADDRINUSE
-# and requests would silently hit the stale instance serving wrong revisions).
-Get-Process -Name node -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -match 'public-state-api|wrangler pages dev' } | Stop-Process -Force -ErrorAction SilentlyContinue
-Start-Sleep 2
 $apiProc = Start-Process -FilePath node -ArgumentList (Join-Path $root 'scripts\h14\public-state-api.mjs') `
   -WorkingDirectory $work -RedirectStandardOutput (Join-Path $work 'api.log') -RedirectStandardError (Join-Path $work 'api.err') `
-  -WindowStyle Hidden -PassThru -Environment @{ PF_FIXTURE_PORT='8799'; PF_FIXTURE_STATE=(Join-Path $work 'state.json') }
-# .dev.vars binds the API base for pages dev (deployment config, not a secret).
-$devVars = Join-Path $root '.dev.vars'
-"PF_PUBLIC_PRODUCT_API_BASE=http://127.0.0.1:8799" | Out-File $devVars -Encoding ascii -NoNewline
+  -WindowStyle Hidden -PassThru -Environment @{ PF_FIXTURE_PORT=[string]$apiPort; PF_FIXTURE_STATE=(Join-Path $work 'state.json') }
 $npx = (Get-Command npx.cmd -ErrorAction SilentlyContinue).Source; if (-not $npx) { $npx = 'npx.cmd' }
-$pagesProc = Start-Process -FilePath $npx -ArgumentList 'wrangler','pages','dev','public','--port','8788','--ip','127.0.0.1' `
-  -WorkingDirectory $root -RedirectStandardOutput (Join-Path $work 'pages.log') -RedirectStandardError (Join-Path $work 'pages.err') `
+$pagesProc = Start-Process -FilePath $npx -ArgumentList @('--yes','wrangler','pages','dev','public','--port',[string]$pagesPort,'--ip','127.0.0.1','--compatibility-date','2026-06-30','--binding',"PF_PUBLIC_PRODUCT_API_BASE=$apiBase",'--persist-to',(Join-Path $work 'wrangler-state')) `
+  -WorkingDirectory $fixtureRoot -RedirectStandardOutput (Join-Path $work 'pages.log') -RedirectStandardError (Join-Path $work 'pages.err') `
   -WindowStyle Hidden -PassThru
 Start-Sleep 12
 
 function Set-Rev($r) { [IO.File]::WriteAllText((Join-Path $work 'current-rev.txt'), $r, [Text.UTF8Encoding]::new($false)) }
 function Set-Fault($f) { if ($f) { [IO.File]::WriteAllText((Join-Path $work 'fault.txt'), $f, [Text.UTF8Encoding]::new($false)) } else { Remove-Item (Join-Path $work 'fault.txt') -Force -ErrorAction SilentlyContinue } }
-function Get-Shadow($path) { try { return Invoke-WebRequest "http://127.0.0.1:8788/__h14$path" -UseBasicParsing -TimeoutSec 45 } catch { return $_.Exception.Response } }
+function Get-Shadow($path) { try { return Invoke-WebRequest "$pagesBase/__h14$path" -UseBasicParsing -TimeoutSec 45 } catch { return $_.Exception.Response } }
 function Src($r) { if ($r -and $r.Headers) { return ($r.Headers['X-PF-State-Source'] | Select-Object -First 1) } return '' }
 function Rev($r) { if ($r -and $r.Headers) { return ($r.Headers['X-PF-State-Revision'] | Select-Object -First 1) } return '' }
 
-try {
   $ready = $false
-  for ($i = 0; $i -lt 20 -and -not $ready; $i++) { try { $null = Invoke-WebRequest 'http://127.0.0.1:8788/__h14/' -UseBasicParsing -TimeoutSec 5; $ready = $true } catch { Start-Sleep 1 } }
+  for ($i = 0; $i -lt 20 -and -not $ready; $i++) { try { $null = Invoke-WebRequest "$pagesBase/__h14/" -UseBasicParsing -TimeoutSec 5; $ready = $true } catch { Start-Sleep 1 } }
   Assert $ready 'wrangler pages dev serving shadow routes'
 
   # ── TEST 1: runtime API success ────────────────────────────────────────────
@@ -143,7 +191,7 @@ try {
   Assert ($swB.Content -match '2\.0\.1') 'catalog reflects revision B'
   $siteHashAfter = (Get-FileHash -LiteralPath (Join-Path $root 'functions\__h14\[[path]].js')).Hash
   Assert ($siteHashBefore -eq $siteHashAfter) 'NO REBUILD — site source byte-identical between revisions'
-  $stB = Invoke-RestMethod 'http://127.0.0.1:8788/truth/products/proofshot.json'
+  $stB = Invoke-RestMethod "$pagesBase/truth/products/proofshot.json"
   Assert ($stB.version -eq '2.0.0') 'static deployed fallback remains revision A'
   Assert ((Rev $pgB) -eq 'B' -and (Rev $swB) -eq 'B' -and $tpB.source.revision -eq 'B') 'catalog/page/truth coherent on B'
   Write-Host "  >>> NO_REDEPLOY_PRODUCT_UPDATE_CONTROL = PASS"
@@ -236,7 +284,7 @@ try {
   Assert ($rn.StatusCode -eq 200 -and $rn.Content -match 'product-breadcrumb') 'API fully down → page serves (last-good/static)'
   $apiProc = Start-Process -FilePath node -ArgumentList (Join-Path $root 'scripts\h14\public-state-api.mjs') `
     -WorkingDirectory $work -RedirectStandardOutput (Join-Path $work 'api.log') -RedirectStandardError (Join-Path $work 'api.err') `
-    -WindowStyle Hidden -PassThru -Environment @{ PF_FIXTURE_PORT='8799'; PF_FIXTURE_STATE=(Join-Path $work 'state.json') }
+    -WindowStyle Hidden -PassThru -Environment @{ PF_FIXTURE_PORT=[string]$apiPort; PF_FIXTURE_STATE=(Join-Path $work 'state.json') }
   Start-Sleep 2
 
   # ── TEST 12: reciprocal discovery — runtime page ↔ runtime truth ──────────
@@ -254,10 +302,28 @@ try {
   $script:failed++
   Write-Host "  FAIL  suite aborted mid-run: $($_.Exception.Message)" -ForegroundColor Red
 } finally {
-  Remove-Item $devVars -Force -ErrorAction SilentlyContinue
-  Stop-Process -Id $pagesProc.Id -Force -ErrorAction SilentlyContinue
-  Stop-Process -Id $apiProc.Id -Force -ErrorAction SilentlyContinue
-  Get-Process -Name node -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -match 'wrangler|public-state-api' } | Stop-Process -Force -ErrorAction SilentlyContinue
+  Stop-ProcessTree $pagesProc
+  if ($null -ne $apiProc) { Stop-Process -Id $apiProc.Id -Force -ErrorAction SilentlyContinue }
+  if ($workCreated -and (Test-Path -LiteralPath $work -PathType Container)) {
+    try {
+      $tempParent = [IO.Path]::GetFullPath($env:TEMP).TrimEnd([IO.Path]::DirectorySeparatorChar, [IO.Path]::AltDirectorySeparatorChar) + [IO.Path]::DirectorySeparatorChar
+      $fullWork = [IO.Path]::GetFullPath($work)
+      if (-not $fullWork.StartsWith($tempParent, [StringComparison]::OrdinalIgnoreCase) -or [IO.Path]::GetFileName($fullWork) -notmatch '^pf-h14-[0-9a-f]{8}$') {
+        throw 'Refusing to remove a path outside the generated H14 temp directory.'
+      }
+      Remove-Item -LiteralPath $fullWork -Recurse -Force
+    } catch {
+      $script:failed++
+      Write-Host '  FAIL  H14 temporary fixture cleanup failed closed' -ForegroundColor Red
+    }
+  }
+  try {
+    $credentialMetadataAfter = Get-CredentialStoreMetadataFingerprint
+    Assert ($credentialMetadataBefore -ceq $credentialMetadataAfter) 'credential-store metadata snapshot unchanged; credential bytes were not read or printed'
+  } catch {
+    $script:failed++
+    Write-Host '  FAIL  credential-store metadata invariant could not be confirmed' -ForegroundColor Red
+  }
 }
 
 Write-Host ""
