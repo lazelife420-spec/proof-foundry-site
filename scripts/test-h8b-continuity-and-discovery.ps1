@@ -45,7 +45,7 @@ Assert-Condition ($psHtml -match 'https://theprooffoundry.com/proof-standard/' -
 
 # 3. Check About page content requirements
 Assert-Condition ($aboutHtml -match 'About The Proof Foundry') "About page contains main title"
-Assert-Condition ($aboutHtml -match 'Build it\. Prove it\. Ship it\.') "About page contains studio slogan"
+Assert-Condition ($aboutHtml -match 'Useful software\. Receipts included\.') "About page uses the master studio slogan"
 Assert-Condition ($aboutHtml -match 'Independent Products') "About page contains independent products principle"
 Assert-Condition ($aboutHtml -match 'Local-first where product function permits') "About page contains local-first principles"
 Assert-Condition ($aboutHtml -match 'Network-dependent functions such as ForgeCast weather transparently send the data required') "About page contains explicit network disclosure"

@@ -1,7 +1,13 @@
 {
   "brand": "The Proof Foundry\u2122",
   "short_name": "Proof Foundry",
-  "tagline": "Build it. Prove it. Ship it.",
+  "tagline": "Useful software. Receipts included.",
+  "brand_language_hierarchy": {
+    "homepage_value_proposition": "Useful software. On your terms.",
+    "proof_line": "Receipts over hype.",
+    "release_doctrine": "Build it. Prove it. Ship it.",
+    "limit_line": "Not everything ships."
+  },
   "positioning": "Proof-first software forged for builders.",
   "palette": {
     "foundry_black": "#0B0F14",
