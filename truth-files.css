@@ -65,6 +65,8 @@
 .tf-page.product-cleanroom .tf-machine { background: #e5efea; }
 .tf-page.product-cleanroom .tf-chip.verified { color: #1f6340; border-color: #699c79; }
 .tf-page.product-cleanroom .tf-machine .button-secondary { border-color: #718f83; }
+/* The global inline-code badge is dark; use Cleanroom's light code palette here. */
+.tf-page.product-cleanroom .tf-fresh code.inline { background: #d9e5dd; color: #183a30; }
 
 /* The ForgeCast sky is brightest behind the right side of this copy. Give
    the summary its own opaque blue surface at every viewport width. */

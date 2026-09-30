@@ -44,6 +44,13 @@ function contrast(foreground, background) {
   const a = luminance(fg.rgb), b = luminance(bg.rgb);
   return (Math.max(a, b) + .05) / (Math.min(a, b) + .05);
 }
+function contrastOver(foreground, background, pageBackground) {
+  const fg = parseColor(foreground), bg = parseColor(background), page = parseColor(pageBackground);
+  if (fg.alpha !== 1 || page.alpha !== 1) return null;
+  const effective = bg.rgb.map((channel, index) => channel * bg.alpha + page.rgb[index] * (1 - bg.alpha));
+  const a = luminance(fg.rgb), b = luminance(effective);
+  return (Math.max(a, b) + .05) / (Math.min(a, b) + .05);
+}
 function within(parent, child) {
   const relative = path.relative(parent, child);
   return relative === '' || (relative !== '..' && !relative.startsWith('..' + path.sep) && !path.isAbsolute(relative));
@@ -138,8 +145,16 @@ try {
     const image=getComputedStyle(surface).backgroundImage;
     const candidates=${JSON.stringify(textSelector)}==='@self'?[surface]:[...surface.querySelectorAll(${JSON.stringify(textSelector)})];
     const texts=candidates.filter(e=>e.checkVisibility({checkVisibilityCSS:true})).map(e=>({text:e.textContent.trim().slice(0,80),color:getComputedStyle(e).color,fontSize:getComputedStyle(e).fontSize}));
-    return {background,image,texts};
+    return {background,image,pageBackground:getComputedStyle(document.body).backgroundColor,pageImage:getComputedStyle(document.body).backgroundImage,texts};
   })()`);
+  const checkCleanroomBadge = async view => {
+    const badge = await surface('.tf-page.product-cleanroom .tf-fresh code.inline', '@self');
+    const ratio = badge?.texts.length === 1 && badge.image === 'none' && badge.pageImage === 'none'
+      ? contrastOver(badge.texts[0].color, badge.background, badge.pageBackground)
+      : null;
+    check('Cleanroom source-commit badge ' + view + ' retains its text', badge?.texts.length === 1 && /^[0-9a-f]{12}$/.test(badge.texts[0].text), badge);
+    check('Cleanroom source-commit badge ' + view + ' contrast >=4.5', ratio !== null && ratio >= 4.5, { badge, ratio });
+  };
   await send('Page.enable');
   await send('Runtime.enable');
 
@@ -151,6 +166,7 @@ try {
     check(`Support ${width}px cards fit their grid`, support.cards.length >= 7 && support.cards.every(card => card.right <= support.grid.right + 1 && card.right <= support.clientWidth + 1), support);
 
     await navigate('/truth-files/cleanroom/');
+    await checkCleanroomBadge(String(width) + 'px');
     for (const [name, selector, text] of [
       ['fact cards', '.tf-fact', 'dt,dd,.tf-sub'],
       ['verification cards', '.tf-verify-list li', 'span,strong,p'],
@@ -204,6 +220,8 @@ try {
     check(`${label} at 200% browser zoom is at least 12 CSS px`, data.length >= expectedCount && data.every(item => item.fontSize >= 12), data);
     check(`${label} at 200% browser zoom is not clipped`, data.length >= expectedCount && data.every(item => item.scrollWidth <= item.clientWidth + 1 && item.scrollHeight <= item.clientHeight + 1), data);
   }
+  await navigate('/truth-files/cleanroom/');
+  await checkCleanroomBadge('at 200% browser zoom');
   const failed = results.filter(result => !result.pass).length;
   process.stdout.write(`RESULT: ${results.length - failed} passed, ${failed} failed\n`);
   if (failed) process.exitCode = 1;
