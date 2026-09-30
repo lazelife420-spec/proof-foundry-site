@@ -214,7 +214,7 @@ body.pp-system .text-link {
 /* Canonical commerce state is shown beside every product acquisition action. */
 body.pp-system .product-commerce-label {
   color: var(--pp-accent);
-  font: 700 .72rem/1.4 Consolas, monospace;
+  font: 700 .75rem/1.4 Consolas, monospace;
   letter-spacing: .1em;
   text-transform: uppercase;
 }
@@ -228,7 +228,7 @@ body.pp-system .product-commerce-label[data-commerce="unavailable"] {
 .pp-band {
   display: flex;
   gap: 34px;
-  font: 11px/1.5 Consolas, monospace;
+  font: 12px/1.5 Consolas, monospace;
   letter-spacing: .16em;
   color: var(--pp-dim);
   border-top: 1px solid var(--pp-line);
@@ -428,7 +428,7 @@ body.pp-system .story-shot img {
 }
 
 .pp-evidence-badge {
-  font: 11px/1.5 Consolas, monospace;
+  font: 12px/1.5 Consolas, monospace;
   letter-spacing: .12em;
   color: #7fc98f;
   margin-bottom: 8px;
@@ -789,16 +789,16 @@ body.pp-system .story-shot img {
 }
 
 .pp-qual-card .pp-qual-lbl {
-  font: 11px/1.5 Consolas, monospace;
+  font: 12px/1.5 Consolas, monospace;
   letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--pp-dim);
+  color: var(--pp-muted);
   margin-top: 6px;
 }
 
 .pp-badge {
   display: inline-block;
-  font: 11px/1.5 Consolas, monospace;
+  font: 12px/1.5 Consolas, monospace;
   letter-spacing: .14em;
   color: #1a1408;
   background: var(--pp-gold);
@@ -934,7 +934,7 @@ body.pp-system .studio-related {
   .pp-system .studio-actions { display: flex; flex-direction: column; align-items: stretch; gap: 12px; }
   .pp-system .studio-actions .text-link { text-align: center; padding: 6px 0; }
   .pp-details > summary, .pp-sub > summary { padding: 16px 0; }
-  .pp-band { gap: 18px; font-size: .6rem; letter-spacing: .1em; }
+  .pp-band { gap: 18px; font-size: .75rem; letter-spacing: .1em; }
 }
 
 /* ---------- Cleanroom Demo Readability Correction (H7C-R2) ---------- */
@@ -1105,3 +1105,12 @@ body:has(.pp-record[open]) .product-dock {
     padding: 20px 0;
   }
 }
+
+/* Readable product identity and verification details at narrow widths. */
+body.pp-system .product-breadcrumb,
+body.pp-system .identity-studio,
+body.pp-system .sha256-value,
+body.pp-system .clip-status,
+body.pp-system .evidence-content .proof-pill { font-size: 12px; }
+body.pp-system .proof-details summary .kicker,
+body.pp-system .experience-jump > span:first-child { font-size: 12px; }
