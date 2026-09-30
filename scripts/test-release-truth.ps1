@@ -98,6 +98,13 @@ $cvSupport = [regex]::Match($supportPage, '(?s)<article class="detail-card">\s*<
 $cvSupportTruth = $registryJson.products | Where-Object { $_.id -eq 'cache-vault' }
 Assert-Condition ($rgRegistry.release.publicVersion -eq $null -and $rgSupport -match 'Withdrawn · no public download' -and $rgSupport -match 'former v1\.1\.0 release is withdrawn and no public download is available') 'Support derives withdrawn status and no-public-version availability from canonical Reality Gate truth'
 Assert-Condition ($cvSupportTruth.release.publicVersion -eq '0.2.4' -and $cvSupport -match 'Public Windows v0\.2\.4 available') 'Support retains the current public version for an available product'
+$cvPage = Get-Content (Join-Path $publicDir 'cache-vault\index.html') -Raw -Encoding UTF8
+$cvSource = @($manifest.products | Where-Object { $_.id -eq 'cache-vault' })[0]
+$cvCompanion = @($cvSource.artifacts | Where-Object { $_.platform -eq 'Android companion' } | Select-Object -First 1)[0]
+$cvCompanionUrl = [string]$cvCompanion.downloadUrl
+$cvCompanionHref = [regex]::Escape('href="' + $cvCompanionUrl + '"')
+$cvCompanionVersion = [regex]::Escape('v' + [string]$cvSource.release.companionPublicVersion)
+Assert-Condition (-not [string]::IsNullOrWhiteSpace($cvCompanionUrl) -and $cvSupportTruth.artifacts[1].downloadUrl -eq $cvCompanionUrl -and $cvSupport -match $cvCompanionHref -and $cvPage -match $cvCompanionHref -and $cvSupport -match "Android companion $cvCompanionVersion" -and $cvPage -match "Android: public companion $cvCompanionVersion" -and $cvSupport -notmatch 'unavailable on GitHub' -and $cvSource.presentation.downloadNotice -notmatch 'unavailable on GitHub') 'Support and Cache Vault use the same canonical public Android version and APK URL without a conflicting availability claim'
 Assert-Condition ($supportPage -notmatch '\{\{products\.' -and $rgSupport -notmatch 'Windows Developer Pilot\s+available\.') 'Support renders canonical availability without unresolved tokens or a malformed pilot-available claim'
 $rgProof = Get-Content (Join-Path $publicDir 'proof\index.html') -Raw -Encoding UTF8
 Assert-Condition ($rgProof -match 'Historical release record: Historical Windows installer ZIP record for v1\.1\.0' -and $rgProof -match 'Downloads currently unavailable') 'release receipt keeps historical evidence and suppresses the download CTA'

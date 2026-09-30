@@ -232,7 +232,7 @@
         "cardImageWidth": 960,
         "cardImageHeight": 540,
         "downloadUnavailable": false,
-        "downloadNotice": "Windows v0.2.4 public security release (founder authority rotation) is available from Proof Foundry downloads. Android companion APK link is currently unavailable on GitHub."
+        "downloadNotice": "Windows v0.2.4 public security release (founder authority rotation) is available from Proof Foundry downloads."
       },
       "release": {
         "publicVersion": "0.2.4",

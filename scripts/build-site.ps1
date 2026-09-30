@@ -1292,7 +1292,7 @@ function Build-StudioEvidence {
     $verifiedAt = [string]$product.verification.verifiedAt
     $verifiedLabel = IsoDateLabel $verifiedAt
     $rows += @"
-<li><a class="studio-ledger-row" href="/proof/#$(Html-Attr $proofId)"><span class="studio-ledger-product"><strong>$(Html-Text $name)</strong><small>SHA-256 on record</small></span><span class="studio-ledger-version">PUBLIC <b>v$(Html-Text $product.release.publicVersion)</b></span><span class="studio-ledger-status"><i aria-hidden="true"></i> VERIFIED</span><time datetime="$(Html-Attr $verifiedAt)">$(Html-Text $verifiedLabel)</time><span class="studio-ledger-open" aria-hidden="true">↗</span></a></li>
+<li><a class="studio-ledger-row" href="/proof/#$(Html-Attr $proofId)"><span class="studio-ledger-product"><strong>$(Html-Text $name)</strong><small>SHA-256 on record</small></span><span class="studio-ledger-version">PUBLIC <b>v$(Html-Text $product.release.publicVersion)</b></span><span class="studio-ledger-status"><i aria-hidden="true"></i> HASH VERIFIED</span><time datetime="$(Html-Attr $verifiedAt)">$(Html-Text $verifiedLabel)</time><span class="studio-ledger-open" aria-hidden="true">↗</span></a></li>
 "@
   }
   return @"

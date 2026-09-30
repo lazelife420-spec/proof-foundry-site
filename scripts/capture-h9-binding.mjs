@@ -170,6 +170,7 @@ async function keyboard(cdp,label,mobile) {
   await cdp.evaluate('document.body.tabIndex=-1;document.body.focus();document.body.removeAttribute("tabindex");scrollTo(0,0)');
   await key(cdp,'Tab','Tab',9);
   check(`${label}: keyboard reaches visible skip link`,await cdp.evaluate(`document.activeElement.matches('.skip-link')&&document.activeElement.getBoundingClientRect().top>=0`));
+  if(label.startsWith('homepage'))await contrast(cdp,`${label}-focused-skip-link`,['.skip-link']);
   const focus=await cdp.evaluate(`(()=>{const s=getComputedStyle(document.activeElement);return {outline:s.outlineStyle,width:s.outlineWidth,boxShadow:s.boxShadow};})()`);
   check(`${label}: keyboard focus has visible treatment`,focus.outline!=='none'&&parseFloat(focus.width)>0||focus.boxShadow!=='none',focus);
   await key(cdp,'Enter','Enter',13);

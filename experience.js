@@ -359,7 +359,12 @@ if (compareChoices.length && window.HTMLDialogElement) {
     tray.hidden=selected.size===0; document.body.classList.toggle('has-compare-tray',selected.size>0);
     message.textContent=selected.size===1?'Choose one more to compare.':`${selected.size} products selected`;
     compare.disabled=selected.size<2;chips.replaceChildren();
-    selected.forEach(id=>{const b=button(`${products[id].name} ×`,'compare-chip');b.setAttribute('aria-label',`Remove ${products[id].name} from comparison`);b.addEventListener('click',()=>{selected.delete(id);update();if(!selected.size) $(`[data-compare="${id}"] input`).focus();});chips.append(b);});
+    selected.forEach(id=>{const b=button(`${products[id].name} ×`,'compare-chip');b.setAttribute('aria-label',`Remove ${products[id].name} from comparison`);b.addEventListener('click',()=>{
+      const index=Array.prototype.indexOf.call(chips.children,b);
+      selected.delete(id);update();
+      if(selected.size) chips.children[Math.min(index,chips.children.length-1)].focus();
+      else $(`[data-compare="${id}"] input`)?.focus();
+    });chips.append(b);});
     compareChoices.forEach(label=>{const input=$('input',label);input.checked=selected.has(label.dataset.compare);label.classList.toggle('is-selected',input.checked);input.disabled=selected.size===3&&!input.checked;});
   }
   compareChoices.forEach(label=>$('input',label).addEventListener('change',event=>{const id=label.dataset.compare;if(event.target.checked&&selected.size<3)selected.add(id);else selected.delete(id);update();}));

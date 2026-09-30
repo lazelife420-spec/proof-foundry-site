@@ -83,8 +83,9 @@ foreach ($m in $candidateModules) {
 }
 $evidence = [regex]::Match($homeHtml, '(?s)<aside class="studio-evidence".*?</aside>').Value
 $ledgerRows = [regex]::Matches($evidence, 'class="studio-ledger-row"')
+$hashVerifiedLabels = [regex]::Matches($evidence, '<span class="studio-ledger-status"><i aria-hidden="true"></i> HASH VERIFIED</span>')
 Assert-H9 'evidence is omitted only when no eligible current public artifact exists' (($expectedEvidence.Count -gt 0 -and [regex]::Matches($homeHtml, 'class="studio-evidence"').Count -eq 1) -or ($expectedEvidence.Count -eq 0 -and [regex]::Matches($homeHtml, 'class="studio-evidence"').Count -eq 0))
-Assert-H9 'release ledger includes every eligible current receipt and only manifest-backed values' ($ledgerRows.Count -eq $expectedEvidence.Count -and $evidence -match 'PUBLIC <b>v' -and $evidence -match 'VERIFIED' -and $evidence -match 'SHA-256 on record' -and $evidence -match '<time datetime=' -and $evidence -match 'href="/proof/#receipt-')
+Assert-H9 'release ledger includes every eligible current receipt and only manifest-backed values' ($ledgerRows.Count -eq $expectedEvidence.Count -and $hashVerifiedLabels.Count -eq $expectedEvidence.Count -and $evidence -match 'PUBLIC <b>v' -and $evidence -match 'SHA-256 on record' -and $evidence -match '<time datetime=' -and $evidence -match 'href="/proof/#receipt-')
 foreach ($selected in $expectedEvidence) {
   $p = $selected.product
   $displayName = if ($p.homeName) { [string]$p.homeName } else { [string]$p.name }
@@ -92,6 +93,10 @@ foreach ($selected in $expectedEvidence) {
 }
 $proofIndex = Get-Content (Join-Path $public 'proof/index.json') -Raw -Encoding UTF8
 Assert-H9 'homepage release references are generated from canonical manifest data' ($homeHtml -notmatch '\{\{products\.' -and $proofIndex -match '"products"')
+$loLedger = [regex]::Match($evidence, '(?s)<li><a class="studio-ledger-row" href="/proof/#receipt-lights-out">.*?</a></li>').Value
+$proofHtml = Get-Content (Join-Path $public 'proof/index.html') -Raw -Encoding UTF8
+$loProof = [regex]::Match($proofHtml, '(?s)<article class="receipt-card" id="receipt-lights-out".*?</article>').Value
+Assert-H9 'Lights Out ledger narrows verification to hash while proof retains pending custody' ($loLedger -match ' HASH VERIFIED</span>' -and $loProof -match '<dt>Artifact hash verified</dt><dd class="status-verified">VERIFIED</dd>' -and $loProof -match '<dt>Artifact custody</dt><dd class="status-pending">PENDING</dd>')
 
 if ($fail -gt 0) { Write-Host "=== H9 RESULT: $pass passed, $fail failed ===" -ForegroundColor Red; exit 1 }
 Write-Host "=== H9 RESULT: $pass passed, $fail failed ===" -ForegroundColor Green

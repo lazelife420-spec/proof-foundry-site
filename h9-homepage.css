@@ -19,6 +19,7 @@
 .studio-root-page section { margin: 0; }
 .studio-root-page h1, .studio-root-page h2, .studio-root-page h3, .studio-root-page p { margin-top: 0; }
 .studio-root-page a { color: inherit; text-decoration: none; }
+.studio-root-page > .skip-link { background: #fff; color: #111; }
 .studio-root-page img { display: block; max-width: 100%; }
 .studio-root-page a:focus-visible { outline: 2px solid #efd09a; outline-offset: 5px; }
 .studio-root-page .site-header { position: relative; z-index: 5; background: #090e0ff2; border-bottom: 1px solid var(--root-line); box-shadow: none; backdrop-filter: none; }
