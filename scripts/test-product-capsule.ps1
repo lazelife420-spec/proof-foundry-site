@@ -9,6 +9,27 @@ $scaffolder = Join-Path $PSScriptRoot 'New-ProductCapsule.ps1'
 $pwsh = (Get-Command pwsh -ErrorAction Stop).Source
 $work = Join-Path ([IO.Path]::GetTempPath()) ('proof-capsule-tests-' + [Guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $work | Out-Null
+
+# The workspace and the one-command preview's generated site are removed when the script ends, pass or fail (the
+# try/finally below). Set PF_KEEP_TEST_TEMP=1 to keep them for debugging. Only a folder directly in the expected temp
+# directory whose name has the expected prefix is ever removed.
+function Remove-TestWorkDir([string]$Path, [string]$ExpectedParent, [string]$Prefix) {
+  if (-not $Path) { return }
+  if ($env:PF_KEEP_TEST_TEMP -eq '1') { Write-Host "=== fixture workspace kept (PF_KEEP_TEST_TEMP=1): $Path ==="; return }
+  $full = [IO.Path]::GetFullPath($Path)
+  $parent = [IO.Path]::GetFullPath($ExpectedParent).TrimEnd('\', '/')
+  if ((Split-Path -Parent $full) -ne $parent -or -not (Split-Path -Leaf $full).StartsWith($Prefix)) {
+    Write-Host "=== fixture workspace NOT removed (unexpected path): $full ===" -ForegroundColor Yellow; return
+  }
+  for ($i = 0; $i -lt 5 -and (Test-Path -LiteralPath $full); $i++) {
+    try { Remove-Item -LiteralPath $full -Recurse -Force -ErrorAction Stop } catch { Start-Sleep -Milliseconds 500 }
+  }
+  if (Test-Path -LiteralPath $full) { Write-Host "=== fixture workspace could not be fully removed: $full ===" -ForegroundColor Yellow }
+  else { Write-Host "=== fixture workspace removed: $full ===" }
+}
+$previewCommand = $null
+
+try {
 $passed=0; $failed=0
 function Assert([bool]$Condition,[string]$Message) {
   if ($Condition) { $script:passed++; Write-Host "PASS: $Message" }
@@ -151,4 +172,12 @@ if ($serverMatch.Success) { Stop-Process -Id ([int]$serverMatch.Groups[1].Value)
 Write-Host ""
 Write-Host "=== RESULT: $passed passed, $failed failed ==="
 Write-Host "=== fixture workspace: $work ==="
+} finally {
+  # Preview-Product.ps1 keeps its generated site for its local server; that server is stopped above, so remove the site.
+  $previewMatch = if ($previewCommand) { [regex]::Match($previewCommand.Output, 'Generated preview files: (.+)') } else { $null }
+  if ($previewMatch -and $previewMatch.Success) {
+    Remove-TestWorkDir $previewMatch.Groups[1].Value.Trim() ([IO.Path]::GetTempPath()) 'proof-foundry-product-preview-cache-vault-'
+  }
+  Remove-TestWorkDir $work ([IO.Path]::GetTempPath()) 'proof-capsule-tests-'
+}
 if ($failed -gt 0) { exit 1 }

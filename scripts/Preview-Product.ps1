@@ -13,6 +13,10 @@ if ($module.id -ne $Id) { throw "Module directory/id mismatch for '$Id'." }
 $buildScript = Join-Path $repoRoot 'scripts/build-site.ps1'
 $previewOut = Join-Path ([IO.Path]::GetTempPath()) ("proof-foundry-product-preview-" + $Id + "-" + [Guid]::NewGuid().ToString('N'))
 if (Test-Path -LiteralPath $previewOut) { throw 'Generated preview folder unexpectedly already exists.' }
+# A failed build or server start leaves nothing behind (the catch below). On success the generated site stays for the
+# local server, and its path is printed.
+$server = $null
+try {
 $pwsh = Get-Command pwsh -ErrorAction SilentlyContinue
 if (-not $pwsh) { throw 'PowerShell 7 (pwsh) is required to run the local preview build.' }
 $startInfo = [Diagnostics.ProcessStartInfo]::new()
@@ -54,9 +58,15 @@ if (-not $ready) {
   if ($server -and -not $server.HasExited) { Stop-Process -Id $server.Id -Force }
   throw 'Local preview server did not become ready; no deployment was attempted.'
 }
+} catch {
+  if ($server -and -not $server.HasExited) { Stop-Process -Id $server.Id -Force -ErrorAction SilentlyContinue }
+  if (Test-Path -LiteralPath $previewOut) { Remove-Item -LiteralPath $previewOut -Recurse -Force -ErrorAction SilentlyContinue }
+  throw
+}
 Write-Host "Product preview: $routeUrl"
 Write-Host "Homepage placement preview: $baseUrl/__preview/"
 Write-Host "Preview catalog: $baseUrl/__preview/software/"
 Write-Host "Local server PID: $($server.Id) (stop it with Stop-Process -Id $($server.Id))"
 Write-Host "Generated preview files: $previewOut"
+Write-Host "When done, stop the server and remove them: Remove-Item -LiteralPath '$previewOut' -Recurse -Force"
 if (-not $NoOpen) { Start-Process $routeUrl | Out-Null }

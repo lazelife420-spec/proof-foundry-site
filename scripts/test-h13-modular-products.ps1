@@ -27,6 +27,27 @@ function Assert([bool]$cond, [string]$name) {
 # then runs the real build with -ProductsDir + -ValidateOnly (or a real out dir).
 $work = Join-Path $env:TEMP ("pf-h13-" + [Guid]::NewGuid().ToString('n').Substring(0,8))
 New-Item -ItemType Directory -Force -Path $work | Out-Null
+
+# Every run leaves ~450 MB of fixture builds in $work, so the workspace is removed at the end of the run, pass or fail,
+# right before the final exit. Deliberately no try/finally: with $ErrorActionPreference = 'Continue' a try block would
+# abandon the remaining tests at the first statement-terminating error and could end with exit 0. Set PF_KEEP_TEST_TEMP=1
+# to keep the workspace for debugging. Only a folder directly in the expected temp directory whose name has the expected
+# prefix is ever removed.
+function Remove-TestWorkDir([string]$Path, [string]$ExpectedParent, [string]$Prefix) {
+  if (-not $Path) { return }
+  if ($env:PF_KEEP_TEST_TEMP -eq '1') { Write-Host "=== fixture workspace kept (PF_KEEP_TEST_TEMP=1): $Path ==="; return }
+  $full = [IO.Path]::GetFullPath($Path)
+  $parent = [IO.Path]::GetFullPath($ExpectedParent).TrimEnd('\', '/')
+  if ((Split-Path -Parent $full) -ne $parent -or -not (Split-Path -Leaf $full).StartsWith($Prefix)) {
+    Write-Host "=== fixture workspace NOT removed (unexpected path): $full ===" -ForegroundColor Yellow; return
+  }
+  for ($i = 0; $i -lt 5 -and (Test-Path -LiteralPath $full); $i++) {
+    try { Remove-Item -LiteralPath $full -Recurse -Force -ErrorAction Stop } catch { Start-Sleep -Milliseconds 500 }
+  }
+  if (Test-Path -LiteralPath $full) { Write-Host "=== fixture workspace could not be fully removed: $full ===" -ForegroundColor Yellow }
+  else { Write-Host "=== fixture workspace removed: $full ===" }
+}
+
 $srcProducts = Join-Path $root 'products'
 
 function Invoke-ModuleFixture([string]$name, [scriptblock]$mutate, [switch]$RealOut, [scriptblock]$mutateManifest, [scriptblock]$mutateState) {
@@ -585,5 +606,6 @@ Assert ((Get-Content (Join-Path $withdrawn.OutDir 'software\index.html') -Raw -E
 Write-Host ""
 
 Write-Host "=== RESULT: $passed passed, $failed failed ==="
+Remove-TestWorkDir $work $env:TEMP 'pf-h13-'
 if ($failed -gt 0) { exit 1 }
 exit 0
