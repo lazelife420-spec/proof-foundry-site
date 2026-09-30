@@ -4,7 +4,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import {
-  MemoryR2FixtureTransport, buildR2Plan, buildR2PutCommand, makeArtifactDryRun,
+  MemoryR2FixtureTransport, assertApprovedSiteBase, buildR2Plan, buildR2PutCommand, makeArtifactDryRun,
   makeOwnerApprovalForFixture, publishArtifactPlan, runP7P9Command, sha256, verifyArtifactReceipt, verifyOwnerApproval
 } from "./pf-product-p7-p9.mjs";
 
@@ -47,6 +47,23 @@ try {
   context.ownerRecord = makeOwnerApprovalForFixture(context.approval, pair.privateKey, allActions);
   context.ownerPublicKey = Buffer.from(publicPem);
   context.ownerApproval = { approvalId: context.ownerRecord.approvalId, approvedAt: context.ownerRecord.approvedAt };
+  const currentBase = { commit: context.approval.baseSiteCommit, tree: context.approval.baseSiteTree, manifestSha256: "5".repeat(64) };
+  const sourceBinding = { baseSiteCommit: currentBase.commit, baseSiteTree: currentBase.tree, baseManifestSha256: currentBase.manifestSha256 };
+  const candidateState = { baseCommit: currentBase.commit, baseTree: currentBase.tree, baseManifestSha256: currentBase.manifestSha256 };
+  assert.doesNotThrow(() => assertApprovedSiteBase(context.approval, sourceBinding, candidateState, currentBase));
+  check(true, "signed package base matches the selected committed site base");
+  assert.throws(() => assertApprovedSiteBase(context.approval, sourceBinding, candidateState, { ...currentBase, commit: "6".repeat(40) }),
+    (error) => error.code === "APPROVAL_STALE");
+  check(true, "later committed site base invalidates an earlier signed package before artifact publication");
+  assert.throws(() => assertApprovedSiteBase(context.approval, sourceBinding, candidateState, { ...currentBase, tree: "7".repeat(40) }),
+    (error) => error.code === "APPROVAL_STALE");
+  check(true, "same commit with a mismatched site tree is rejected");
+  assert.throws(() => assertApprovedSiteBase(context.approval, { ...sourceBinding, baseManifestSha256: "8".repeat(64) }, candidateState, currentBase),
+    (error) => error.code === "APPROVAL_STALE");
+  check(true, "package manifest binding must match the selected committed site manifest");
+  assert.throws(() => assertApprovedSiteBase(context.approval, sourceBinding, { ...candidateState, baseCommit: "9".repeat(40) }, currentBase),
+    (error) => error.code === "APPROVAL_STALE");
+  check(true, "candidate state must match the selected committed site base");
   const plan = await buildR2Plan(context);
   check(plan.bucket === "proof-foundry-downloads" && plan.objectCount === 3, "R2 plan freezes bucket and artifact/checksum/release object count");
   check(plan.objects[0].objectKey === "fixture-product/v1.2.3/fixture-1.2.3.zip" && plan.objects[0].byteLength === artifactBytes.length && plan.objects[0].sha256 === artifactHash, "R2 artifact key, length, and digest bind to candidate bytes");

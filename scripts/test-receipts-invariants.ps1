@@ -98,6 +98,8 @@ $t1 = Invoke-FixtureBuild 'derive' {
   $rg.build = & $bump $rg.build
   $rg.releaseNote = & $bump $rg.releaseNote
   $rg.release.withdrawalReason = & $bump $rg.release.withdrawalReason
+  $rg.presentation.downloadNotice = & $bump $rg.presentation.downloadNotice
+  $rg.limits = @($rg.limits | ForEach-Object { & $bump $_ })
   $o
 }
 Assert 'build succeeds with sentinel version' ($t1.Exit -eq 0) $t1.Output

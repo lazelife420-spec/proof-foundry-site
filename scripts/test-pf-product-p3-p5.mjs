@@ -181,7 +181,7 @@ try {
     const qualification = report(["qualify", candidate]);
     check(qualification.status === 0 && qualification.report.status === "PASS" && qualification.report.publicationState === "QUALIFIED_UNPUBLISHED", "P5 qualifies on final source without publication");
     check(qualification.report.dimensions.LIVE_PUBLICATION_VALID === "NOT_RUN" && Object.values(qualification.report.dimensions).filter((v) => v !== "NOT_RUN").every((v) => v === "PASS"), "all final-source dimensions pass with live publication NOT_RUN");
-    check(qualification.report.regressionSuites.length === 10 && qualification.report.regressionSuites.every((x) => x.status === "PASS"), "all final-source regression authorities pass");
+    check(qualification.report.regressionSuites.length === 11 && qualification.report.regressionSuites.every((x) => x.status === "PASS"), "all final-source regression authorities pass");
     console.log("PF PRODUCT P3-P5 FINAL QUALIFICATION: " + passed + " passed, 0 failed");
   } else {
   const newProduct = await makeNewProduct("new-product");
@@ -299,7 +299,7 @@ try {
   const validCandidate = await report(["qualify", newCandidate]);
   check(validCandidate.status === 0 && validCandidate.report.status === "PASS" && validCandidate.report.publicationState === "QUALIFIED_UNPUBLISHED", "valid candidate qualifies without publication: " + JSON.stringify(validCandidate.report));
   check(validCandidate.report.dimensions.LIVE_PUBLICATION_VALID === "NOT_RUN" && Object.values(validCandidate.report.dimensions).filter((v) => v !== "NOT_RUN").every((v) => v === "PASS"), "independent non-publication qualification dimensions pass");
-  check(validCandidate.report.regressionSuites.length === 10 && validCandidate.report.regressionSuites.every((x) => x.status === "PASS"), "all ten registered regression authorities pass during P5 qualification");
+  check(validCandidate.report.regressionSuites.length === 11 && validCandidate.report.regressionSuites.every((x) => x.status === "PASS"), "all eleven registered regression authorities pass during P5 qualification");
   const newProductFreeze = report(["freeze", newCandidate]);
   check(newProductFreeze.status === 0 && newProductFreeze.report.approvalState === "FROZEN_FOR_OWNER_REVIEW", "NEW_PRODUCT freezes only for owner review");
   console.log("PF PRODUCT P3-P5 QUALIFICATION TESTS: " + passed + " passed, 0 failed");

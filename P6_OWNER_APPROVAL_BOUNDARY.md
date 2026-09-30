@@ -14,6 +14,8 @@ The package is written atomically under `owner-review-package/` inside the exter
 
 The approval binds `approvalSchemaVersion`, `candidateId`, `publisherCommit/tree`, `baseSiteCommit/tree`, `capsuleSha256`, `candidateDigest`, `candidateStateSha256`, `candidatePayloadSha256`, `productId`, `submissionType`, proposed paths, artifact hashes, qualification results, preview identity/routes, `canonicalStateDelta`, `commerceDelta`, `releaseTruthDelta`, `routeDelta`, homepage and Truth deltas, known limits, publication blockers, and `createdAt`. The deterministic `approvalPackageDigest` excludes `createdAt`; timestamp changes therefore do not change candidate or approval identity.
 
+The base site identity is the latest committed site-source change on the verified linear history from the frozen P0–P2 root. At the original publisher integration it is the frozen root; after a committed site correction it advances to that correction and remains fixed across publisher-only commits. Freeze rejects dirty source and records that exact base separately from the publisher implementation commit.
+
 The seven publication-impact labels are explicit `YES` or `NO`: product presentation, public release truth, artifact, commerce, route, homepage, and generated Truth files. A frozen package has state `FROZEN_FOR_OWNER_REVIEW`. It does not set `APPROVED`, `VERIFIED`, or `PUBLISHED`; `LIVE_PUBLICATION_VALID` remains `NOT_RUN`.
 
 ## Future approval record design

@@ -2965,6 +2965,7 @@ $siteConfig = [ordered]@{
   availabilityTaxonomy= $manifest.availabilityTaxonomy
   productGroups       = $manifest.productGroups
   proofRegistryPath   = $manifest.proofRegistryPath
+  navLinks            = $manifest.nav
   navCta              = $manifest.navCta
   siteVerification    = $manifest.siteVerification
 }

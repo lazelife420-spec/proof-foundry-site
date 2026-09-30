@@ -96,7 +96,11 @@ try {
   const head = spawnSync("git", ["show", "-s", "--format=%H", "HEAD"], { cwd: ROOT, encoding: "utf8" }).stdout.trim();
   const tree = spawnSync("git", ["show", "-s", "--format=%T", "HEAD"], { cwd: ROOT, encoding: "utf8" }).stdout.trim();
   check(approval.publisherCommit === head && approval.publisherTree === tree, "approval binds the committed publisher implementation");
-  check(approval.baseSiteCommit === "d52eedb6fcbf5ead060318e8fee0e60406dc19a2" && approval.baseSiteTree === "32cf38d80988871a9fcd29410bbea2fd0b6d7c0f", "approval keeps publisher and frozen site identities distinct");
+  const candidateState = readJson(path.join(candidate, "candidate-state.json"));
+  const approvedBaseTree = spawnSync("git", ["show", "-s", "--format=%T", approval.baseSiteCommit], { cwd: ROOT, encoding: "utf8" });
+  check(approval.baseSiteCommit === candidateState.baseCommit && approval.baseSiteTree === candidateState.baseTree &&
+    approvedBaseTree.status === 0 && approval.baseSiteTree === approvedBaseTree.stdout.trim(),
+    "approval binds the candidate's exact committed site base and tree");
   check(approval.approvalState === "FROZEN_FOR_OWNER_REVIEW" && approval.livePublication === "NOT_RUN" && !Object.hasOwn(approval, "approved") && !Object.hasOwn(approval, "published"), "freeze cannot imply approval or publication");
   check([approval.productPresentationChange, approval.publicReleaseTruthChange, approval.artifactChange, approval.commerceDelta, approval.routeDelta, approval.homepageChange, approval.truthFileChange, approval.releaseTruthDelta].every((x) => ["YES", "NO"].includes(x.changed)), "all seven public-impact deltas and release-truth binding are explicit YES/NO");
   const summary = fs.readFileSync(path.join(packageDir, "candidate-approval-summary.txt"), "utf8");

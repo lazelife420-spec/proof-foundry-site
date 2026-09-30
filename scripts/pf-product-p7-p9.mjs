@@ -5,6 +5,7 @@ import os from "node:os";
 import crypto from "node:crypto";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { verifyPublisherSourceBaseForRepository } from "./pf-product-p3-p5.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const BASE_PROJECT = "proof-foundry-site";
@@ -122,6 +123,16 @@ function verifyPublisherAncestry(expected) {
   const current = currentPublisherIdentity();
   return { ...current, approvalPublisherCommit: expected.publisherCommit, approvalPublisherTree: expected.publisherTree };
 }
+export function assertApprovedSiteBase(approval, sourceBinding, state, currentBase) {
+  if (!approval || !sourceBinding || !state || !currentBase ||
+      approval.baseSiteCommit !== currentBase.commit || approval.baseSiteTree !== currentBase.tree ||
+      sourceBinding.baseSiteCommit !== currentBase.commit || sourceBinding.baseSiteTree !== currentBase.tree ||
+      sourceBinding.baseManifestSha256 !== currentBase.manifestSha256 ||
+      state.baseCommit !== currentBase.commit || state.baseTree !== currentBase.tree ||
+      state.baseManifestSha256 !== currentBase.manifestSha256) {
+    throw new PublicationError("APPROVAL_STALE", "Approved site base differs from the current committed site source.");
+  }
+}
 export function deterministicApprovalDigest(approval) {
   const { createdAt, approvalPackageDigest, ...stable } = approval;
   return sha256(Buffer.from(canonical(stable), "utf8"));
@@ -217,6 +228,9 @@ export async function loadFrozenPackage(packageDirArg, { approvalRecordPath, app
   const publicKey = fs.readFileSync(path.resolve(approvalPublicKeyPath));
   const ownerApproval = verifyOwnerApproval(approval, ownerRecord, publicKey, action);
   verifyPublisherAncestry(approval);
+  let currentBase;
+  try { currentBase = verifyPublisherSourceBaseForRepository(); }
+  catch { throw new PublicationError("SOURCE_BINDING_FAILED", "Current committed site base could not be verified."); }
 
   const packageFiles = [
     "candidate-approval.json", "candidate-changed-paths.json", "candidate-artifacts.json",
@@ -232,6 +246,7 @@ export async function loadFrozenPackage(packageDirArg, { approvalRecordPath, app
   const candidateArtifacts = readJson(path.join(packageDir, "candidate-artifacts.json"));
   const changedPaths = readJson(path.join(packageDir, "candidate-changed-paths.json"));
   const sourceBinding = readJson(path.join(packageDir, "candidate-source-binding.json"));
+  assertApprovedSiteBase(approval, sourceBinding, state, currentBase);
   const preview = readJson(path.join(packageDir, "candidate-preview.json"));
   const qualification = readJson(path.join(packageDir, "candidate-qualification.json"));
   const dimensions = qualification.qualificationDimensions || {};

@@ -219,7 +219,7 @@
 <div class="ps-proof-card">
 <dl class="ps-proof-fields">
 <div><dt>Public status</dt><dd>PUBLIC RELEASE — {{product.versionLabel}}, published {{product.publishedAtLabel}}</dd></div>
-<div><dt>Qualification</dt><dd>{{product.tests.0.result}} unit · {{product.tests.1.result}} packaged E2E · {{product.tests.2.result}} tamper+authority+migration</dd></div>
+<div><dt>Historical release qualification</dt><dd>{{product.tests.0.result}} unit · {{product.tests.1.result}} packaged E2E · {{product.tests.2.result}} tamper+authority+migration</dd></div>
 <div><dt>Codebase</dt><dd>ProofShot {{product.publicVersion}} (Electron + SmartDecode v2.5.0) — the hardened HyperSnatch rebrand</dd></div>
 <div><dt>Public installer</dt><dd>RELEASED — {{product.artifacts.0.filename}} via Proof Foundry downloads</dd></div>
 <div><dt>Signing model</dt><dd>UNSIGNED (no Authenticode) — SHA-256 + Reality Gate custody receipts carry identity</dd></div>
@@ -236,6 +236,10 @@
 <p>Honest about what is not ready.</p>
 </div>
 <div class="detail-grid">
+<article class="detail-card">
+<h3>Licensing authority review</h3>
+<p>The 60/60 tamper, authority and migration result documents release-time qualification. A later licensing-authority finding remains unresolved; that historical result does not establish remediation of the later finding.</p>
+</article>
 <article class="detail-card">
 <h3>Unsigned Windows installer</h3>
 <p>{{product.artifacts.0.filename}} is not Authenticode-signed, so Windows SmartScreen will warn on first launch. Verify the published SHA-256, then choose More info → Run anyway. Artifact identity is backed by SHA-256 and Reality Gate custody receipts.</p>

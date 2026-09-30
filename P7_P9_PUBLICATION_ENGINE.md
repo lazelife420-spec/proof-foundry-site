@@ -24,6 +24,10 @@ Partial writes produce `PARTIAL_PUBLICATION_HOLD`, `artifact-publication-receipt
 
 Promotion rechecks all frozen input digests and base pre-images, applies only the candidate's approved product paths and `site-manifest.json` in a local clone of the approved base, then derives public release fields from the signed Capsule, owner action, and verified artifact receipt. The clone creates an isolated source commit with the approved time as its commit time. It is never pushed or merged into the publisher checkout. The current registry, manifest state source, and `scripts/build-site.ps1` produce the payload. The payload manifest lists every byte path, length, and SHA-256 and binds the candidate source commit/tree and manifest digest. Qualification freezes those bytes; deploy re-hashes them and refuses any difference.
 
+The approved base may be a later committed site correction on the frozen root's linear history. Promotion clones that exact commit, preserving corrected site content. Deployment still requires the supplied production truth snapshot to identify the same predecessor commit and tree; a local correction alone cannot satisfy that check.
+
+At package load, P7–P9 recompute the current committed site base with the P3–P6 resolver. A signed package from an earlier site base is stale and stops before artifact publication, promotion, or deployment, even if its publisher commit remains an ancestor of HEAD. The signed approval, source-binding file, and candidate state must all identify the selected base commit, tree, and committed manifest hash.
+
 `pf-product qualify <promoted-payload>` refreshes ignored canonical `public/`, then runs the publisher, legacy capsule, P7/P8/P9, H13, H11, H12, Truth Files, release truth, receipts, H9 binding, H9 homepage, and `git diff --check` authorities. All must pass before the state becomes `SITE_PAYLOAD_QUALIFIED_UNDEPLOYED`.
 
 ## PAGES and live closure

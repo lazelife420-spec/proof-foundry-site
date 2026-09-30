@@ -22,12 +22,13 @@ const PUBLISHER_SOURCE_PATHS = new Set([
   "schemas/product-publishing-capsule-v1.schema.json", "schemas/product-release-submission-v1.schema.json",
   "schemas/product-candidate-approval-v1.schema.json", "schemas/product-owner-approval-v1.schema.json",
   "scripts/pf-product.mjs", "scripts/pf-product-p3-p5.mjs", "scripts/pf-product-p7-p9.mjs",
-  "scripts/test-pf-product.mjs", "scripts/test-pf-product-p3-p5.mjs", "scripts/test-pf-product-p6.mjs",
+  "scripts/test-pf-product.mjs", "scripts/test-pf-product-p3-p5.mjs", "scripts/test-pf-product-source-base.mjs", "scripts/test-pf-product-p6.mjs",
   "scripts/test-pf-product-p7.mjs", "scripts/test-pf-product-p8.mjs", "scripts/test-pf-product-p9.mjs",
   "P7_P9_PUBLICATION_ENGINE.md"
 ]);
 const TESTS = [
   { id: "PF_PRODUCT", kind: "node", file: "scripts/test-pf-product.mjs" },
+  { id: "SOURCE_BASE", kind: "node", file: "scripts/test-pf-product-source-base.mjs" },
   { id: "LEGACY_CAPSULE", kind: "pwsh", file: "scripts/test-product-capsule.ps1" },
   { id: "H9_BINDING", kind: "pwsh", file: "scripts/test-h9-binding.ps1" },
   { id: "H9_HOME", kind: "pwsh", file: "scripts/test-h9-homepage.ps1" },
@@ -73,27 +74,68 @@ function p2Run(capsuleDir) {
   if (r.error) throw new Error("Capsule validation process could not start.");
   return { report, exitCode: r.status ?? 2 };
 }
-function git(args) {
-  const r = spawnSync("git", args, { cwd: ROOT, encoding: "utf8", timeout: 15000, windowsHide: true });
+function git(args, repoRoot = ROOT) {
+  const r = spawnSync("git", args, { cwd: repoRoot, encoding: "utf8", timeout: 15000, windowsHide: true });
   if (r.error || r.status !== 0) throw new Error("Could not verify the frozen source binding.");
   return (r.stdout || "").trim();
 }
-async function verifyBase() {
-  const commit = git(["rev-parse", "HEAD"]);
-  const tree = git(["show", "-s", "--format=%T", "HEAD"]);
-  const baseTree = git(["show", "-s", "--format=%T", BASE_COMMIT]);
-  const committedAt = git(["show", "-s", "--format=%cI", BASE_COMMIT]);
-  const mergeBase = git(["merge-base", "HEAD", BASE_COMMIT]);
-  const trackedStatus = git(["status", "--porcelain", "--untracked-files=all"]);
-  const manifestSha256 = await shaFile(path.join(ROOT, "site-manifest.json"));
-  if (baseTree !== BASE_TREE || mergeBase !== BASE_COMMIT) throw new Error("Checkout is not based on the frozen P0-P2 baseline.");
-  for (const line of trackedStatus.split(/\r?\n/).filter(Boolean)) {
-    const rel = gitStatusPath(line).replaceAll("\\", "/");
-    if (!PUBLISHER_SOURCE_PATHS.has(rel)) throw new Error("Non-publisher source differs from the frozen site baseline.");
+function gitBytes(args, repoRoot = ROOT) {
+  const r = spawnSync("git", args, { cwd: repoRoot, timeout: 15000, windowsHide: true });
+  if (r.error || r.status !== 0) throw new Error("Could not verify the committed site manifest.");
+  return r.stdout;
+}
+function siteBaseFromFirstParent(repoRoot, frozenSiteCommit, publisherSourcePaths) {
+  const publisherCommit = git(["rev-parse", "HEAD"], repoRoot);
+  const history = git(["rev-list", "--parents", "--first-parent", `${frozenSiteCommit}..HEAD`], repoRoot);
+  let expectedCommit = publisherCommit, baseCommit = frozenSiteCommit;
+  for (const line of history.split(/\r?\n/).filter(Boolean)) {
+    const [commit, parent, ...otherParents] = line.split(" ");
+    if (commit !== expectedCommit || !/^[0-9a-f]{40}$/.test(commit) ||
+        !/^[0-9a-f]{40}$/.test(parent || "") || otherParents.length !== 0) {
+      throw new Error("Publisher source has an unsupported merge or broken first-parent site lineage.");
+    }
+    const changedPaths = git(["diff-tree", "--no-commit-id", "--name-only", "-r", "--no-renames", "-z", parent, commit], repoRoot)
+      .split("\0").filter(Boolean);
+    if (baseCommit === frozenSiteCommit && changedPaths.some((rel) => !publisherSourcePaths.has(rel))) baseCommit = commit;
+    expectedCommit = parent;
   }
-  if (manifestSha256 !== BASE_MANIFEST_SHA256) throw new Error("Canonical manifest differs from the frozen P0-P2 receipt.");
-  return { commit: BASE_COMMIT, tree: BASE_TREE, committedAt, manifestSha256,
-    publisherCommit: commit, publisherTree: tree };
+  if (expectedCommit !== frozenSiteCommit) throw new Error("Publisher source is not on the frozen site's first-parent lineage.");
+  return { publisherCommit, baseCommit };
+}
+export function verifyPublisherSourceBaseForRepository({
+  repoRoot = ROOT, frozenSiteCommit = BASE_COMMIT, frozenSiteTree = BASE_TREE,
+  frozenManifestSha256 = BASE_MANIFEST_SHA256, publisherSourcePaths = PUBLISHER_SOURCE_PATHS
+} = {}) {
+  if (!/^[0-9a-f]{40}$/.test(frozenSiteCommit) || !(publisherSourcePaths instanceof Set)) {
+    throw new Error("Invalid publisher source-binding configuration.");
+  }
+  const anchorTree = git(["show", "-s", "--format=%T", frozenSiteCommit], repoRoot);
+  const anchorManifestSha256 = shaBytes(gitBytes(["show", `${frozenSiteCommit}:site-manifest.json`], repoRoot));
+  if (anchorTree !== frozenSiteTree || anchorManifestSha256 !== frozenManifestSha256) {
+    throw new Error("Frozen P0-P2 site receipt does not match its committed source.");
+  }
+  const { publisherCommit, baseCommit } = siteBaseFromFirstParent(repoRoot, frozenSiteCommit, publisherSourcePaths);
+  const tree = git(["show", "-s", "--format=%T", baseCommit], repoRoot);
+  const committedAt = git(["show", "-s", "--format=%cI", baseCommit], repoRoot);
+  const manifestSha256 = shaBytes(gitBytes(["show", `${baseCommit}:site-manifest.json`], repoRoot));
+  const workingManifestSha256 = shaBytes(fs.readFileSync(path.join(repoRoot, "site-manifest.json")));
+  if (workingManifestSha256 !== manifestSha256) throw new Error("Canonical manifest differs from the selected committed site base.");
+  const status = git(["status", "--porcelain", "--untracked-files=all"], repoRoot);
+  for (const line of status.split(/\r?\n/).filter(Boolean)) {
+    const rel = gitStatusPath(line).replaceAll("\\", "/");
+    if (!publisherSourcePaths.has(rel)) throw new Error("Non-publisher source differs from the selected committed site base.");
+  }
+  return { commit: baseCommit, tree, committedAt, manifestSha256, publisherCommit,
+    publisherTree: git(["show", "-s", "--format=%T", publisherCommit], repoRoot) };
+}
+async function verifyBase() {
+  return verifyPublisherSourceBaseForRepository();
+}
+export function assertCandidateBaseBinding(state, base) {
+  if (!state || !base || state.baseCommit !== base.commit || state.baseTree !== base.tree ||
+      state.baseManifestSha256 !== base.manifestSha256) {
+    throw new Error("Candidate site base advanced or no longer matches its committed source binding.");
+  }
 }
 function gitStatusPath(line) {
   if (line.length >= 3 && line[2] === " ") return line.slice(3);
@@ -491,6 +533,7 @@ async function verifyCandidate(candidateRoot, options = {}) {
     throw new Error("Candidate must remain outside source checkouts.");
   }
   const base = await verifyBase(), state = await parseJsonFile(path.join(root, "candidate-state.json"));
+  assertCandidateBaseBinding(state, base);
   const receipt = await parseJsonFile(path.join(root, "materialization-receipt.json"));
   const capsuleDir = path.join(root, "submitted-capsule"), p2 = p2Run(capsuleDir);
   if (p2.exitCode !== 0 || p2.report.status !== "VALID_UNVERIFIED") throw new Error("Candidate Capsule no longer passes P2 validation.");
@@ -918,8 +961,7 @@ function claimEvidenceAssessment(plan) {
 }
 function jsonReport(value, exitCode) { console.log(JSON.stringify(value, null, 2)); return exitCode; }
 function publisherIdentity(requireFrozen = false) {
-  const commit = git(["rev-parse", "HEAD"]), tree = git(["show", "-s", "--format=%T", "HEAD"]);
-  if (git(["merge-base", "HEAD", BASE_COMMIT]) !== BASE_COMMIT) throw new Error("Publisher source is not based on the frozen site commit.");
+  const base = verifyPublisherSourceBaseForRepository();
   if (requireFrozen) {
     if (!publisherWorkingTreeIsClean()) throw new Error("Owner-review freeze requires a clean committed publisher tree.");
     for (const rel of PUBLISHER_SOURCE_PATHS) {
@@ -927,7 +969,8 @@ function publisherIdentity(requireFrozen = false) {
       if (r.error || r.status !== 0) throw new Error("Publisher source inventory is not fully committed.");
     }
   }
-  return { publisherCommit: commit, publisherTree: tree, baseSiteCommit: BASE_COMMIT, baseSiteTree: BASE_TREE };
+  return { publisherCommit: base.publisherCommit, publisherTree: base.publisherTree,
+    baseSiteCommit: base.commit, baseSiteTree: base.tree };
 }
 export function computeCandidatePayloadSha256(plan) {
   const payload = {

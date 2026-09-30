@@ -64,6 +64,8 @@ P7 plans immutable artifact objects and verifies fixture bytes. P8 rechecks the 
 
 ## Qualification and source boundary
 
-The publisher suites are `scripts/test-pf-product.mjs`, `scripts/test-pf-product-p3-p5.mjs`, `scripts/test-pf-product-p6.mjs`, `scripts/test-pf-product-p7.mjs`, `scripts/test-pf-product-p8.mjs`, and `scripts/test-pf-product-p9.mjs`. Website qualification also covers the legacy Capsule flow, H13, H11, H12, Truth Files, release truth, receipts, H9 binding, H9 homepage, and `git diff --check`.
+Candidate source binding starts at the frozen P0–P2 site receipt and follows a linear first-parent history. Publisher-only commits keep the existing site base; a later committed site change becomes the new base. The working manifest must match that commit, and non-publisher source must be clean. The owner-review package records the site base and publisher commit separately. A candidate created against an earlier base must be rematerialized after the base advances.
+
+The publisher suites are `scripts/test-pf-product.mjs`, `scripts/test-pf-product-source-base.mjs`, `scripts/test-pf-product-p3-p5.mjs`, `scripts/test-pf-product-p6.mjs`, `scripts/test-pf-product-p7.mjs`, `scripts/test-pf-product-p8.mjs`, and `scripts/test-pf-product-p9.mjs`. Website qualification also covers the legacy Capsule flow, H13, H11, H12, Truth Files, release truth, receipts, H9 binding, H9 homepage, and `git diff --check`.
 
 Candidate test fixtures use synthetic identities and bytes only. Do not create a real Capsule for a held product in this workflow. `CACHE_VAULT_ANDROID_0_2_1` and `REALITY_GATE_1_1_1` remain separate product-level holds; this website integration does not adjudicate or alter them.

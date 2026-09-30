@@ -1,8 +1,9 @@
 # P5 — Candidate Qualification
 
-`pf-product qualify <candidate>` revalidates the Capsule, candidate file inventory, proposed path manifest, artifact/evidence bytes, public-state invariants, local preview, source scope, and candidate build. Before the public-surface authorities run, it rebuilds ignored `public/` from the frozen site source. This prevents H9, H11, H13, and release-truth checks from depending on stale generated output. The canonical output is regenerated in the isolated worktree and is not source or approval payload. It then runs the current authority suites registered for this tranche:
+`pf-product qualify <candidate>` revalidates the Capsule, candidate file inventory, proposed path manifest, artifact/evidence bytes, public-state invariants, local preview, source scope, and candidate build. Before the public-surface authorities run, it rebuilds ignored `public/` from the selected committed site source. This prevents H9, H11, H13, and release-truth checks from depending on stale generated output. The canonical output is regenerated in the isolated worktree and is not source or approval payload. It then runs the current authority suites registered for this tranche:
 
 - `test-pf-product.mjs`
+- `test-pf-product-source-base.mjs`
 - legacy Capsule suite
 - H9 binding and homepage
 - H13 modular products

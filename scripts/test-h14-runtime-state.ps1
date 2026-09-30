@@ -78,18 +78,26 @@ $revC.revision = 'C'; $revC.revisionSeq = 3
 $psC = (@($revC.products | Where-Object { $_.id -eq 'cleanroom' }))[0]
 $psC.name = 'Cleanroom"><script>alert(1)</script>'
 $psC.summary = '<img src=x onerror=alert(2)>'
+$psC.platforms = @('<svg onload=alert(5)>')
 $psC | Add-Member -NotePropertyName homeName -NotePropertyValue 'Clean"><img src=x onerror=alert(3)>' -Force
 $psC.presentation | Add-Member -NotePropertyName valueLine -NotePropertyValue '"><svg onload=alert(4)>' -Force
 # revision D: unsafe URL — must be rejected at the boundary
 $revD = ($revA | ConvertTo-Json -Depth 30 | ConvertFrom-Json)
 $revD.revision = 'D'; $revD.revisionSeq = 4
 (@($revD.products | Where-Object { $_.id -eq 'cleanroom' }))[0].downloadUrl = 'javascript:alert(1)'
+# protocol-relative URL must also fail the runtime state boundary
+$revDP = ($revA | ConvertTo-Json -Depth 30 | ConvertFrom-Json)
+$revDP.revision = 'DP'; $revDP.revisionSeq = 4
+(@($revDP.products | Where-Object { $_.id -eq 'cleanroom' }))[0].downloadUrl = '//127.0.0.1/private'
 # revision E: unknown product id (not in registry) + hidden override attempt
 $revE = ($revA | ConvertTo-Json -Depth 30 | ConvertFrom-Json)
 $revE.revision = 'E'; $revE.revisionSeq = 5
 $ghost = (@($revE.products | Where-Object { $_.id -eq 'cleanroom' }))[0] | ConvertTo-Json -Depth 30 | ConvertFrom-Json
 $ghost.id = 'unlisted-product'; $ghost.name = 'Unlisted'; $ghost.route = '/unlisted-product/'
 $revE.products += $ghost
+$hidden = (@($revE.products | Where-Object { $_.id -eq 'cleanroom' }))[0] | ConvertTo-Json -Depth 30 | ConvertFrom-Json
+$hidden.id = 'hidden-fixture'; $hidden.name = 'Hidden Fixture'; $hidden.route = '/hidden-fixture/'
+$revE.products += $hidden
 # revision F: missing product (cleanroom absent from API state)
 $revF = ($revA | ConvertTo-Json -Depth 30 | ConvertFrom-Json)
 $revF.revision = 'F'; $revF.revisionSeq = 6
@@ -112,7 +120,7 @@ $revL = New-SeqDoc 'L' 6 '9.9.5'        # same seq as F (6) but different revisi
 $revM = New-SeqDoc 'M' 10 '2.0.1'       # high-seq valid doc for rollback/discovery phases
 (@($revM.products | Where-Object { $_.id -eq 'proofshot' }))[0].downloadUrl = $null
 (@($revM.products | Where-Object { $_.id -eq 'proofshot' }))[0].presentation | Add-Member -NotePropertyName downloadUnavailable -NotePropertyValue $true -Force
-$stateDoc = [ordered]@{ revisions = [ordered]@{ A = $revA; B = $revB; C = $revC; D = $revD; E = $revE; F = $revF; G = $revG; H = $revH; I = $revI; J = $revJ; K = $revK; L = $revL; M = $revM } }
+$stateDoc = [ordered]@{ revisions = [ordered]@{ A = $revA; B = $revB; C = $revC; D = $revD; DP = $revDP; E = $revE; F = $revF; G = $revG; H = $revH; I = $revI; J = $revJ; K = $revK; L = $revL; M = $revM } }
 [IO.File]::WriteAllText((Join-Path $work 'state.json'), ($stateDoc | ConvertTo-Json -Depth 30), [Text.UTF8Encoding]::new($false))
 [IO.File]::WriteAllText((Join-Path $work 'current-rev.txt'), 'A', [Text.UTF8Encoding]::new($false))
 
@@ -131,6 +139,10 @@ Assert (Test-Path (Join-Path $root 'public\__h14\registry.json')) 'registry inde
 New-Item -ItemType Directory -Force -Path $fixturePublic, $fixtureFunctions | Out-Null
 Get-ChildItem -LiteralPath (Join-Path $root 'public') -Force | Copy-Item -Destination $fixturePublic -Recurse -Force
 Get-ChildItem -LiteralPath (Join-Path $root 'functions') -Force | Copy-Item -Destination $fixtureFunctions -Recurse -Force
+$registryPath = Join-Path $fixturePublic '__h14\registry.json'
+$fixtureRegistry = @(Get-Content -LiteralPath $registryPath -Raw | ConvertFrom-Json)
+$fixtureRegistry += [pscustomobject]@{ id='hidden-fixture'; route='/hidden-fixture/'; order=80; visibility='hidden' }
+[IO.File]::WriteAllText($registryPath, ($fixtureRegistry | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
 Assert (([IO.Path]::GetFullPath($fixtureRoot)).StartsWith(([IO.Path]::GetFullPath($env:TEMP).TrimEnd('\') + '\'), [StringComparison]::OrdinalIgnoreCase)) 'Pages fixture is isolated under the temporary directory'
 Assert (-not (Test-Path -LiteralPath (Join-Path $fixtureRoot '.dev.vars'))) 'H14 uses no .dev.vars fixture file'
 
@@ -153,6 +165,8 @@ function Rev($r) { if ($r -and $r.Headers) { return ($r.Headers['X-PF-State-Revi
   $ready = $false
   for ($i = 0; $i -lt 20 -and -not $ready; $i++) { try { $null = Invoke-WebRequest "$pagesBase/__h14/" -UseBasicParsing -TimeoutSec 5; $ready = $true } catch { Start-Sleep 1 } }
   Assert $ready 'wrangler pages dev serving shadow routes'
+  $landing = Get-Shadow '/'
+  Assert ($landing.Content -match 'name="viewport" content="width=device-width, initial-scale=1"' -and $landing.Content -match '<meta name="robots" content="noindex, nofollow"') 'shadow landing has mobile viewport and noindex metadata'
 
   # ── TEST 1: runtime API success ────────────────────────────────────────────
   Write-Host "--- TEST 1: live runtime state ---"
@@ -168,11 +182,19 @@ function Rev($r) { if ($r -and $r.Headers) { return ($r.Headers['X-PF-State-Revi
   $sw = Get-Shadow '/software/'
   Assert (([regex]::Matches($sw.Content,'data-product="')).Count -eq 7) 'catalog renders 7 products from runtime state'
   Assert ((Src $sw) -in @('live','cache') -and (Rev $sw) -eq 'A') 'catalog revision = live/A'
+  Assert ($sw.Content -notmatch '\{\{[^}]+\}\}' -and $sw.Content -match 'data-category="[^"]+"' -and $sw.Content -match 'data-jobs="[^"]+"' -and $sw.Content -match 'card-commerce') 'catalog resolves all module and global tokens'
+  Assert ($sw.Content -match '<nav class="top-nav"[^>]*>[\s\S]*?href="/__h14/software/"[^>]*aria-current="page"' -and $sw.Content -match 'href="/proof-standard/"' -and $sw.Content -match 'href="/about/"' -and $sw.Content -notmatch 'href="/software/"') 'catalog navigation matches public structure with shadow catalog route'
+  Assert ($sw.Content -notmatch 'href="/(cache-vault|ghostlayer|lights-out|cleanroom|proofshot|forgecast|reality-gate)/"' -and $sw.Content -match 'href="/__h14/cleanroom/"') 'catalog product links stay in shadow namespace'
+  Assert ($sw.Content -match '<meta name="robots" content="noindex, nofollow"' -and $sw.Headers['X-Robots-Tag'] -match 'noindex, nofollow') 'catalog is noindex and nofollow'
   $ti = (Get-Shadow '/truth/index.json').Content | ConvertFrom-Json
   Assert ($ti.schemaVersion -eq 1 -and $ti.products.Count -eq 7) 'runtime truth index schema v1, 7 products'
   Assert ($ti.source.revision -eq 'A') 'truth index revision = A'
   $tp = (Get-Shadow '/truth/products/proofshot.json').Content | ConvertFrom-Json
   Assert ($tp.version -eq '2.0.0' -and $tp.pageUrl -eq '/__h14/proofshot/') 'product truth bound to runtime pageUrl'
+  $rg = Get-Shadow '/reality-gate/'
+  Assert ($rg.Content -notmatch '\{\{[^}]+\}\}' -and $rg.Content -match 'v1\.1\.0' -and $rg.Content -match 'Withdrawn:') 'withdrawn product tokens resolve in shadow page'
+  Assert ($rg.Content -match 'href="/__h14/software/"' -and $rg.Content -match 'href="/__h14/cleanroom/"' -and $rg.Content -notmatch 'href="/#products"') 'product navigation and breadcrumb stay in shadow namespace'
+  Assert ($rg.Content -match '<meta name="robots" content="noindex, nofollow"' -and $rg.Headers['X-Robots-Tag'] -match 'noindex, nofollow') 'product page is noindex and nofollow'
 
   # ── TEST 3: ETag / 304 ────────────────────────────────────────────────────
   Write-Host "--- TEST 3: ETag cache ---"
@@ -213,6 +235,9 @@ function Rev($r) { if ($r -and $r.Headers) { return ($r.Headers['X-PF-State-Revi
   Assert ($rd.Content -notmatch 'href="javascript:') 'unsafe URL never reaches href'
   Assert ((Src $rd) -in @('cache','cache-stale-rejected','static-fallback','static')) "rejected state → fallback (src=$(Src $rd))"
   Assert ($rd.Content -match 'product-breadcrumb') 'page still renders on rejected state'
+  Set-Rev 'DP'; Start-Sleep 1
+  $rdp = Get-Shadow '/cleanroom/'
+  Assert ($rdp.Content -notmatch 'href="//127\.0\.0\.1' -and (Src $rdp) -in @('cache','cache-stale-rejected','static-fallback','static')) 'protocol-relative unsafe URL rejected before rendering'
 
   # ── TEST 7: unknown product — not publicly rendered ──────────────────────
   Write-Host "--- TEST 7: unknown API product ---"
@@ -221,6 +246,9 @@ function Rev($r) { if ($r -and $r.Headers) { return ($r.Headers['X-PF-State-Revi
   Assert ($ru.StatusCode -eq 200 -and $ru.Content -eq 'Not found') 'unknown API product not rendered (registry authority)'
   $swE = Get-Shadow '/software/'
   Assert ($swE.Content -notmatch 'unlisted-product') 'catalog excludes unknown API product'
+  $rh = Get-Shadow '/hidden-fixture/'
+  Assert ($rh.Content -eq 'Not found' -and $swE.Content -notmatch 'hidden-fixture') 'hidden registry product is not public'
+  Assert (((Get-Shadow '/truth/products/hidden-fixture.json').Content) -eq '{}') 'hidden registry product has no Truth record'
 
   # ── TEST 8: missing API product → static fallback for that product ────────
   Write-Host "--- TEST 8: missing API product ---"
@@ -230,6 +258,10 @@ function Rev($r) { if ($r -and $r.Headers) { return ($r.Headers['X-PF-State-Revi
   Assert ((Src $rm) -eq 'static-fallback') 'missing product provenance = static-fallback'
   $tm = (Get-Shadow '/truth/products/cleanroom.json').Content
   Assert ($tm -ne '{}' -and $tm -match 'cleanroom') 'missing product truth still serves (fallback)'
+  $fallbackCatalog = Get-Shadow '/software/'
+  $fallbackIndex = (Get-Shadow '/truth/index.json').Content | ConvertFrom-Json
+  Assert ($fallbackCatalog.Content -match 'href="/__h14/cleanroom/"' -and ([regex]::Matches($fallbackCatalog.Content,'data-product="')).Count -eq 7) 'fallback product remains in shadow catalog'
+  Assert ($fallbackIndex.productCount -eq 7 -and $fallbackIndex.source.fallbackProductIds -contains 'cleanroom' -and (@($fallbackIndex.products | Where-Object { $_.id -eq 'cleanroom' })).Count -eq 1) 'fallback product remains in shadow Truth index with provenance'
 
   # ── TEST 8b: revisionSeq negative controls (S1 hardening) ────────────────
   Write-Host "--- TEST 8b: revisionSeq validation ---"
@@ -298,6 +330,52 @@ function Rev($r) { if ($r -and $r.Headers) { return ($r.Headers['X-PF-State-Revi
   }
   Assert $allOk '7/7 runtime pages ↔ runtime truth reciprocal'
   Assert (((Get-Shadow '/software/').Content) -match '/__h14/truth/index\.json') 'catalog advertises runtime truth index'
+
+  # ── TEST 13: no-API static mode + eighth module ───────────────────────────
+  # Add a structural module and matching static state only to the isolated
+  # fixture, then restart Pages without any API binding. The renderer source
+  # is unchanged; an eighth product must be discoverable through its module.
+  Write-Host "--- TEST 13: static mode and eighth product ---"
+  Stop-ProcessTree $pagesProc
+  $pagesProc = $null
+  $eighthId = 'eighth-fixture'
+  $fixtureRegistry += [pscustomobject]@{ id=$eighthId; route="/$eighthId/"; order=90; visibility='visible' }
+  [IO.File]::WriteAllText($registryPath, ($fixtureRegistry | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
+  $staticPath = Join-Path $fixturePublic '__h14\static-state.json'
+  $staticDoc = Get-Content -LiteralPath $staticPath -Raw | ConvertFrom-Json
+  $eighthState = (@($staticDoc.products | Where-Object { $_.id -eq 'cleanroom' }))[0] | ConvertTo-Json -Depth 30 | ConvertFrom-Json
+  $eighthState.id = $eighthId; $eighthState.name = 'Eighth Fixture'; $eighthState.route = "/$eighthId/"
+  $eighthState.displayName = 'Eighth Fixture'
+  $staticDoc.products += $eighthState
+  [IO.File]::WriteAllText($staticPath, ($staticDoc | ConvertTo-Json -Depth 30), [Text.UTF8Encoding]::new($false))
+  $modulePath = Join-Path $fixturePublic '__h14\modules\cleanroom.json'
+  $eighthModule = Get-Content -LiteralPath $modulePath -Raw | ConvertFrom-Json
+  $eighthModule.id = $eighthId; $eighthModule.route = "/$eighthId/"
+  $eighthModule.brand.name = 'Eighth Fixture'
+  $eighthModule.card.summary = 'Eighth fixture module summary'
+  $eighthModule.taxonomy.jobs = 'single-job-fixture'
+  [IO.File]::WriteAllText((Join-Path $fixturePublic "__h14\modules\$eighthId.json"), ($eighthModule | ConvertTo-Json -Depth 30), [Text.UTF8Encoding]::new($false))
+  Copy-Item -LiteralPath (Join-Path $fixturePublic '__h14\shells\cleanroom.html') -Destination (Join-Path $fixturePublic "__h14\shells\$eighthId.html")
+  Copy-Item -LiteralPath (Join-Path $fixturePublic '__h14\content\cleanroom.html') -Destination (Join-Path $fixturePublic "__h14\content\$eighthId.html")
+  $pagesPort = Get-FreeLoopbackPort
+  $pagesBase = "http://127.0.0.1:$pagesPort"
+  $pagesProc = Start-Process -FilePath $npx -ArgumentList @('--yes','wrangler','pages','dev','public','--port',[string]$pagesPort,'--ip','127.0.0.1','--compatibility-date','2026-06-30','--persist-to',(Join-Path $work 'wrangler-static-state')) `
+    -WorkingDirectory $fixtureRoot -RedirectStandardOutput (Join-Path $work 'pages-static.log') -RedirectStandardError (Join-Path $work 'pages-static.err') `
+    -WindowStyle Hidden -PassThru
+  $staticReady = $false
+  for ($i = 0; $i -lt 25 -and -not $staticReady; $i++) {
+    try { $null = Invoke-WebRequest "$pagesBase/__h14/" -UseBasicParsing -TimeoutSec 5; $staticReady = $true }
+    catch { Start-Sleep 1 }
+  }
+  Assert $staticReady 'shadow runtime serves without public API binding'
+  $staticCatalog = Get-Shadow '/software/'
+  $staticProduct = Get-Shadow "/$eighthId/"
+  $staticTruth = (Get-Shadow '/truth/index.json').Content | ConvertFrom-Json
+  Assert ((Src $staticCatalog) -eq 'static' -and (Src $staticProduct) -eq 'static' -and $staticTruth.source.mode -eq 'static') 'no-API mode uses static state consistently'
+  Assert (([regex]::Matches($staticCatalog.Content,'data-product="')).Count -eq 8 -and $staticCatalog.Content -match 'Eighth fixture module summary' -and $staticCatalog.Content -match 'single-job-fixture' -and $staticCatalog.Content -notmatch '\{\{[^}]+\}\}') 'eighth module with scalar job renders in catalog without renderer edit'
+  Assert ($staticProduct.Content -match 'Eighth Fixture' -and $staticProduct.Content -notmatch '\{\{[^}]+\}\}' -and $staticProduct.Content -match 'href="/__h14/software/"') 'eighth product page renders and navigates within shadow'
+  Assert ($staticTruth.productCount -eq 8 -and (@($staticTruth.products | Where-Object { $_.id -eq $eighthId })).Count -eq 1) 'eighth product appears in shadow Truth'
+  Assert ($staticCatalog.Content -match '<meta name="robots" content="noindex, nofollow"' -and $staticProduct.Content -match '<meta name="robots" content="noindex, nofollow"') 'static shadow surfaces remain noindex and nofollow'
 } catch {
   $script:failed++
   Write-Host "  FAIL  suite aborted mid-run: $($_.Exception.Message)" -ForegroundColor Red

@@ -138,7 +138,7 @@
         "cardImageWidth": 960,
         "cardImageHeight": 540,
         "downloadUnavailable": true,
-        "downloadNotice": "No successor release has been publicly proven."
+        "downloadNotice": "A separate v1.1.1 Developer Pilot has documented historical release evidence, but its website migration was not proven deployed. No current download is authorized while security disposition remains unresolved."
       },
       "release": {
         "publicVersion": null,
@@ -188,9 +188,10 @@
       ],
       "evidence": [],
       "limits": [
-        "The SHA-256 is the checksum of the ZIP; the installer EXE inside carries its own checksum in BUILD-INFO.",
-        "Windows SmartScreen may prompt on first launch — verify the ZIP SHA-256 first.",
-        "Checksum is not a code signature."
+        "The v1.1.0 ZIP is permanently withdrawn and must not be redistributed.",
+        "A separate v1.1.1 Developer Pilot has documented historical release evidence; its website migration was not proven deployed.",
+        "This website offers no current Reality Gate download while security disposition remains unresolved.",
+        "The historical v1.1.0 checksum identifies withdrawn bytes; it is not a code signature."
       ],
       "downloadUrl": null,
       "downloadLabel": null,
@@ -200,7 +201,7 @@
       "sha256Url": null,
       "testStatus": "269/269",
       "testCount": "269/269",
-      "releaseNote": "Historical v1.1.0 qualification record: Static 269/269 · Live registry 24/24 · Installed runtime 20/20. The v1.1.0 package was later withdrawn after a security packaging defect. This record does not establish current availability or successor release status.",
+      "releaseNote": "Historical v1.1.0 qualification record: Static 269/269 · Live registry 24/24 · Installed runtime 20/20. The v1.1.0 package was later permanently withdrawn. A distinct v1.1.1 Developer Pilot has documented historical qualification and publication evidence, but its website migration was not proven deployed. Reality Gate remains withdrawn here with no authorized download while security disposition remains unresolved.",
       "proofStatus": "verified",
       "lastVerified": "2026-08-15",
       "proofLinks": []
@@ -313,7 +314,8 @@
         "Cache Vault v0.2.4 is the current public Windows release, served from Proof Foundry downloads; v0.2.3 is the previous public release (retired founder authority).",
         "Command Center is Phase 1 (Hotkey Actions) only.",
         "Checksum is not a code signature; the production-signed Android companion is a separate artifact.",
-        "The public Android companion is v0.2.0; Android v0.2.1 is qualified and publication is on hold, so it is not a public download."
+        "The public Android companion is v0.2.0; Android v0.2.1 is a historical qualified publication attempt on hold, so it is not a public download.",
+        "Later CacheVault Mobile source v0.3.0 is labeled a release candidate, not an authorized public release; no v0.3.0 download is offered."
       ],
       "downloadUrl": "https://downloads.theprooffoundry.com/cache-vault/v0.2.4/CacheVault-v0.2.4-windows.zip",
       "downloadLabel": "Download v0.2.4 (Windows)",
@@ -559,7 +561,8 @@
         "publicVersion": "0.4.0",
         "candidateVersion": null,
         "releaseStatus": "PUBLIC_RELEASE",
-        "publishedAt": "2026-08-28"
+        "publishedAt": "2026-08-28",
+        "sourceCommit": "6b9ca289ad4d8410f4819575e61d2710b9729042"
       },
       "artifacts": [
         {
@@ -667,7 +670,8 @@
         "publicVersion": "0.3.5",
         "candidateVersion": null,
         "releaseStatus": "PUBLIC_RELEASE",
-        "publishedAt": "2026-09-02"
+        "publishedAt": "2026-09-02",
+        "sourceCommit": "ef0988ae7c53b16e3d53339cb053eeec7c71f848"
       },
       "packageId": "com.prooffoundry.skyfoundry",
       "artifacts": [
@@ -769,7 +773,8 @@
         "publicVersion": "2.0.0",
         "candidateVersion": null,
         "releaseStatus": "PUBLIC_RELEASE",
-        "publishedAt": "2026-09-17"
+        "publishedAt": "2026-09-17",
+        "sourceCommit": "6e7fc6bf4787218c3a32e7debc46253a78ea6579"
       },
       "artifacts": [
         {
@@ -819,12 +824,13 @@
       "limits": [
         "The Windows installer is not code-signed; Windows SmartScreen will prompt on first launch. Verify the SHA-256 before running.",
         "Capture is structural, not photographic — SmartDecode records the page's own resources and structure; there is no pixel-screenshot capture engine.",
-        "ProofForge is a separate project and is not this product."
+        "ProofForge is a separate project and is not this product.",
+        "The 60/60 tamper, authority and migration results document release-time qualification; a later licensing-authority finding remains unresolved, and those tests do not establish its remediation."
       ],
       "downloadUrl": "https://downloads.theprooffoundry.com/proofshot/v2.0.0/ProofShot-Setup-2.0.0.exe",
       "downloadLabel": "Download v2.0.0 (Windows)",
       "distType": "Windows installer (NSIS, unsigned)",
-      "build": "Electron desktop application: SmartDecode extraction pipeline, proof-bundle export (SHA-256 manifests, Proof Passport, offline HTML verifier). Public release v2.0.0 — the hardened ProofShot rebrand of the qualified HyperSnatch engine, with deterministic app.asar, Electron fuses enforced, and Reality Gate source→build→artifact custody.",
+      "build": "Electron desktop application: SmartDecode extraction pipeline, proof-bundle export (SHA-256 manifests, Proof Passport, offline HTML verifier). Public release v2.0.0 — the hardened ProofShot rebrand of the qualified HyperSnatch engine, with deterministic app.asar, Electron fuses enforced, and Reality Gate source→build→artifact custody. The 60/60 tamper, authority and migration result is historical release qualification; a later licensing-authority finding remains unresolved and is not remediated by that result.",
       "sha256": "fa20dc7e44440f0ed96fa08db67a77339d595f8eb27090e24120104ea6744701",
       "sha256Url": "https://downloads.theprooffoundry.com/proofshot/v2.0.0/SHA256SUMS.txt",
       "testStatus": "262/262 unit · 45/45 packaged E2E · 60/60 tamper+authority+migration",

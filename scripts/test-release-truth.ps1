@@ -34,7 +34,8 @@ Assert-Condition ($cvHtml -match 'v0\.2\.4 is the current public Windows release
 Assert-Condition ($cvHtml -match [regex]::Escape('https://downloads.theprooffoundry.com/cache-vault/v0.2.4/CacheVault-v0.2.4-windows.zip')) "Cache Vault primary CTA resolves to the final v0.2.4 Windows ZIP"
 Assert-Condition ($cvHtml -match '717ed13efd3d8d4e5a16d4e412ed5be0fd20b0219918f913d7d2b44f021cae7e') "Cache Vault publishes the final v0.2.4 ZIP SHA-256"
 Assert-Condition ($cvHtml -notmatch 'v0\.2\.3-rc1|v0\.2\.3-rc2') "Cache Vault carries no RC1/RC2 candidate strings"
-Assert-Condition ($cvHtml -notmatch 'release candidate') "Cache Vault does not present v0.2.4 as a candidate"
+Assert-Condition ($cvHtml -match 'v0\.2\.4 is the current public Windows release' -and $cvHtml -notmatch 'v0\.2\.4 is a release candidate|release candidate v0\.2\.4') "Cache Vault presents v0.2.4 as the public release, not a candidate"
+Assert-Condition ($cvHtml -match 'CacheVault Mobile source v0\.3\.0 is labeled a release candidate, with no authorized public artifact') "Cache Vault distinguishes later source candidate v0.3.0 from publication"
 
 # ProofShot's former no-release guard is superseded by the shipped installer.
 $psHtml = Get-Content (Join-Path $publicDir 'proofshot\index.html') -Raw -Encoding UTF8

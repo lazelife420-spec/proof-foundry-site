@@ -11,7 +11,7 @@
 const API_VERSION = 1;
 const FETCH_TIMEOUT_MS = 4000;
 const MAX_STATE_BYTES = 2 * 1024 * 1024;
-const MARKUP_TOKENS = new Set(['proofStrip','downloadBlock','hashBlock','releaseNoteBlock','limitsBlock','markSvg']);
+const MARKUP_TOKENS = new Set(['proofStrip','downloadBlock','hashBlock','releaseNoteBlock','limitsBlock','markSvg','withdrawalNotice']);
 
 // ── Context-appropriate escaping (ports build-site.ps1 Html-Attr) ─────────────
 function esc(s) {
@@ -25,7 +25,11 @@ function esc(s) {
 function assertPublicUrl(url, what) {
   if (url === null || url === undefined || url === '') return;
   url = String(url);
-  if (url.startsWith('/')) return;
+  if (url.startsWith('/')) {
+    // WHATWG URL parsing treats //host and /\\host as off-site navigation.
+    if (new URL(url, 'https://theprooffoundry.com').origin === 'https://theprooffoundry.com') return;
+    throw new Error(`${what}: unsafe origin in public URL state: ${url}`);
+  }
   if (/^https:\/\//i.test(url)) {
     let host;
     try { host = new URL(url).hostname; } catch { throw new Error(`${what}: malformed public URL state: ${url}`); }
@@ -55,6 +59,7 @@ const isBlank = (v) => v === null || v === undefined || String(v).trim() === '';
 const DOT = '·';
 
 function versionLabel(p) {
+  if (p.release && p.release.releaseStatus === 'WITHDRAWN') return '';
   const v = (p.release && p.release.publicVersion) || p.publicVersion || p.version;
   return isBlank(v) ? '' : `v${v}`;
 }
@@ -81,6 +86,7 @@ function isoDateLabel(iso) {
   return d.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric', timeZone:'UTC' });
 }
 function visitorAvailability(p) {
+  if (p.release && p.release.releaseStatus === 'WITHDRAWN') return 'WITHDRAWN';
   const pub = p.release ? p.release.publicVersion : null;
   return isBlank(pub) ? 'NO_PUBLIC_RELEASE' : 'AVAILABLE';
 }
@@ -116,7 +122,7 @@ function cardDetailLine(p) {
       return cand ? `Candidate ${cand} on hold ${DOT} public download currently unavailable` : '';
     case 'ACTIVE_PROOF': return cand ? `${cand} candidate in proof` : '';
     case 'PUBLIC_RELEASE':
-    case 'FROZEN': return (cand && (!pub || `v${cand}` !== pub)) ? `Next build ${cand} in progress` : '';
+    case 'FROZEN': return (cand && cand !== pub) ? `Next build ${cand} in progress` : '';
     case 'UNRELEASED': return cand ? `Engine ${cand} ${DOT} not yet packaged under this name` : 'No public release yet';
     default: return '';
   }
@@ -126,7 +132,7 @@ function cardProofHref(p, cfg) { return `${String(cfg.proofRegistryPath || '').r
 const isExternalUrl = (u) => /^https?:\/\//i.test(String(u || ''));
 const isFileDownload = (u) => /\.(zip|exe|apk)$/i.test(String(u || ''));
 
-function productTokens(p, cfg) {
+function productTokens(p, cfg, module) {
   const t = {};
   const pub = (p.release && p.release.publicVersion) || p.version || '';
   const cand = (p.release && p.release.candidateVersion) || p.currentLocalVersion || '';
@@ -135,8 +141,18 @@ function productTokens(p, cfg) {
   t.statusLabel = stateLabel(p.state);
   t.productStatus = p.productStatus || '';
   t.productStatusLabel = (p.productStatus && cfg.statusTaxonomy && cfg.statusTaxonomy[p.productStatus]) || t.statusLabel;
+  t.availabilityStatement = p.release && p.release.releaseStatus === 'WITHDRAWN'
+    ? `The former v${p.release.withdrawnVersion || ''} release is withdrawn and no public download is available.`
+    : (p.release && p.release.publicVersion)
+      ? `The public v${p.release.publicVersion} release is available.`
+      : 'No current public release is available.';
   t.versionLabel = versionLabel(p);
+  t.withdrawnVersionLabel = (p.release && p.release.withdrawnVersion) ? `v${p.release.withdrawnVersion}` : '';
+  t.withdrawalNotice = (p.release && p.release.releaseStatus === 'WITHDRAWN')
+    ? `<p class="availability-notice"><strong>Withdrawn:</strong> v${esc(p.release.withdrawnVersion || '')} is not available for download. ${esc((p.presentation && p.presentation.downloadNotice) || '')}</p>`
+    : '';
   t.candidateVersionLabel = candidateVersionLabel(p);
+  t.currentVersionLabel = !isBlank(p.currentLocalVersion) ? `Local v${p.currentLocalVersion}` : '';
   t.companionLabel = companionLabel(p);
   t.companionPublicVersionLabel = companionPublicVersionLabel(p);
   t.companionVersion = p.companionVersion || '';
@@ -189,6 +205,7 @@ function productTokens(p, cfg) {
   t.artifactSha256 = primary ? primary.sha256 : (p.sha256 || '');
   t.artifactDownloadUrl = primary ? primary.downloadUrl : (p.downloadUrl || '');
   t.artifactSha256Url = primary ? primary.sha256Url : (p.sha256Url || '');
+  t.artifactSigningStatus = primary && primary.signingStatus ? primary.signingStatus : 'UNSIGNED';
   (p.artifacts || []).forEach((a, i) => {
     t[`artifacts.${i}.sha256`] = a.sha256 || ''; t[`artifacts.${i}.filename`] = a.filename || '';
     t[`artifacts.${i}.downloadUrl`] = a.downloadUrl || ''; t[`artifacts.${i}.sha256Url`] = a.sha256Url || '';
@@ -216,15 +233,24 @@ function productTokens(p, cfg) {
   t.proofStrip = `<div class="proof-strip">${pills.join('\n          ')}</div>`;
   // downloadBlock
   const dlUrl = t.artifactDownloadUrl || p.downloadUrl;
+  const commerce = module && module.commerce;
+  const commerceStatus = commerce && commerce.status ? String(commerce.status) : '';
+  const commerceSlug = commerceStatus.toLowerCase().replace(/_/g, '-');
+  const commerceLabel = commerceStatus === 'WITHDRAWN' ? 'UNAVAILABLE · WITHDRAWN'
+    : commerceStatus === 'PAID' && commerce.price ? String(commerce.price)
+    : commerce && commerce.label ? String(commerce.label) : '';
+  const commerceBadge = commerceLabel
+    ? `<span class="product-commerce-label" data-commerce="${esc(commerceSlug)}">${esc(commerceLabel)}</span>`
+    : '';
   if ((p.presentation && p.presentation.downloadUnavailable) || isBlank(dlUrl)) {
     const muted = (p.presentation && p.presentation.downloadUnavailable) ? 'Downloads currently unavailable'
       : (!isBlank(p.disabledDownloadLabel) ? p.disabledDownloadLabel : (p.state === 'proof' ? 'No public build yet' : 'Coming soon'));
-    t.downloadBlock = `<span class="button button-muted" aria-disabled="true">${esc(muted)}</span>`;
+    t.downloadBlock = `${commerceBadge}<span class="button button-muted" aria-disabled="true">${esc(muted)}</span>`;
   } else {
     const label = p.downloadLabel || 'Download';
     const ext = isExternalUrl(dlUrl) ? ' target="_blank" rel="noopener"' : '';
     const dl = isFileDownload(dlUrl) ? ' download' : '';
-    t.downloadBlock = `<a class="button button-primary" href="${esc(dlUrl)}"${ext}${dl}>${esc(label)}</a>`;
+    t.downloadBlock = `${commerceBadge}<a class="button button-primary" href="${esc(dlUrl)}"${ext}${dl}>${esc(label)}</a>`;
     const shaLink = t.artifactSha256Url || p.sha256Url;
     if (!isBlank(shaLink)) t.downloadBlock += ` <a class="button button-secondary" href="${esc(shaLink)}" target="_blank" rel="noopener">SHA-256</a>`;
   }
@@ -266,8 +292,35 @@ function replaceNamedTokens(html, statesById, cfg) {
 }
 
 // ── Card renderer (ports Render-ProductCard) ──────────────────────────────────
-function renderCard(template, p, cfg) {
-  const t = productTokens(p, cfg);
+function renderCard(template, p, module, cfg) {
+  const t = productTokens(p, cfg, module);
+  t.route = `/__h14/${module.id}/`;
+  if (module.card) {
+    if (module.card.tagline) t.valueLine = module.card.tagline;
+    if (module.card.summary) t.moduleSummary = module.card.summary;
+    if (module.card.media) t.cardImage = module.card.media;
+    if (module.card.mediaAlt) t.cardImageAlt = module.card.mediaAlt;
+  }
+  if (module.brand) {
+    if (module.brand.name) t.homeName = module.brand.name;
+    t.markSvg = module.brand.mark
+      ? `<img class="card-product-mark" src="${esc(module.brand.mark)}" alt="" aria-hidden="true"/>`
+      : '';
+  }
+  if (module.theme && module.theme.accent) {
+    const theme = [`--product-accent:${module.theme.accent}`];
+    if (module.theme.accentSecondary) theme.push(`--product-accent-2:${module.theme.accentSecondary}`);
+    t.moduleCardTheme = theme.join(';');
+  }
+  if (module.taxonomy) {
+    if (module.taxonomy.category) t.moduleCategory = module.taxonomy.category;
+    if (module.taxonomy.jobs) {
+      const jobs = Array.isArray(module.taxonomy.jobs) ? module.taxonomy.jobs : [module.taxonomy.jobs];
+      t.moduleJobs = jobs.join(', ');
+      t.moduleJobKeys = jobs.join('|');
+    }
+  }
+  if (module.homepage && module.homepage.sceneFamily) t.moduleSceneFamily = module.homepage.sceneFamily;
   let card = template;
   card = card.replace(/<!--\s*@if-version\s*-->[\s\S]*?<!--\s*@end-version\s*-->/g,
     t.cardVersionLabel ? (m) => m.replace(/<!--\s*@\w+-?version\s*-->/g, '') : '');
@@ -275,10 +328,15 @@ function renderCard(template, p, cfg) {
     t.cardDetailLine ? (m) => m.replace(/<!--\s*@\w+-?detail\s*-->/g, '') : '');
   for (const k of ['homeName','name','route','state','statusLabel','summary','cardSummary','statusLine','id','meta','cta',
     'visitorStatusLabel','visitorStatusSlug','groupId','cardVersionLabel','cardDetailLine','cardCtaHref',
+    'moduleSummary','moduleCategory','moduleJobs','moduleJobKeys','moduleCardTheme','moduleSceneFamily',
     'cardProofHref','valueLine','cardImage','cardImageAlt','cardImageWidth','cardImageHeight','cardCta','platform']) {
-    card = card.split(`{{${k}}}`).join(esc(t[k]));
+    card = card.split(`{{${k}}}`).join(esc(t[k] ?? ''));
   }
   card = card.split('{{markSvg}}').join(String(t.markSvg));
+  const commerceBadge = module.commerce
+    ? `<p class="card-commerce" data-commerce="${esc(String(module.commerce.status || '').toLowerCase().replace(/_/g, '-'))}">${esc(module.commerce.label || '')}</p>`
+    : '';
+  card = card.replace('<!-- @commerce-badge -->', commerceBadge);
   return card;
 }
 
@@ -463,6 +521,10 @@ async function loadRegistry(env) {
   const res = await env.ASSETS.fetch(new Request('https://assets/__h14/registry.json'));
   return res.json();
 }
+async function loadModule(env, id) {
+  const res = await env.ASSETS.fetch(new Request(`https://assets/__h14/modules/${id}.json`));
+  return res.ok ? res.json() : null;
+}
 async function loadConfig(env) {
   const res = await env.ASSETS.fetch(new Request('https://assets/__h14/site-config.json'));
   return res.json();
@@ -479,6 +541,11 @@ function statesById(doc) {
 }
 
 function respond(body, { type = 'text/html; charset=utf-8', mode, revision } = {}) {
+  if (type.startsWith('text/html')) {
+    // The shadow namespace must never inherit the public page's indexable meta.
+    body = body.replace(/<meta\b[^>]*\bname=["']robots["'][^>]*\/?>(?:\s*)/i, '');
+    body = body.replace(/<head>/i, '<head><meta name="robots" content="noindex, nofollow"/>');
+  }
   return new Response(body, {
     headers: {
       'Content-Type': type,
@@ -491,22 +558,25 @@ function respond(body, { type = 'text/html; charset=utf-8', mode, revision } = {
 }
 const provenance = (mode, revision) => `\n<!-- h14-state: ${mode} revision=${esc(revision)} — shadow runtime output -->\n`;
 
-function buildNavLinks(cfg) {
+function shadowCatalogHref(href) {
+  return href === '/software/' ? '/__h14/software/' : href;
+}
+function buildNavLinks(cfg, activeId) {
   const items = (cfg.navLinks || []);
-  return items.map(i => `<a href="${esc(i.href)}">${esc(i.label)}</a>`).join('\n            ');
+  return items.map(i => `<a href="${esc(shadowCatalogHref(i.href))}"${i.id === activeId ? ' aria-current="page"' : ''}>${esc(i.label)}</a>`).join('\n            ');
 }
 function buildNavCta(cfg) {
   const c = cfg.navCta || {};
-  return `<a class="button button-primary nav-cta" href="${esc(c.href)}">${esc(c.label)}</a>`;
+  return `<a class="button button-primary nav-cta" href="${esc(shadowCatalogHref(c.href))}">${esc(c.label)}</a>`;
 }
 function buildFooter(footerPartial, states, cfg) {
   const items = states.map(p =>
-    `<li><a href="${esc(p.route)}">${esc(p.displayName || p.homeName || p.name)}</a></li>`).join('\n            ');
+    `<li><a href="/__h14/${esc(p.id)}/">${esc(p.displayName || p.homeName || p.name)}</a></li>`).join('\n            ');
   return footerPartial.split('{{footer-products}}').join(items);
 }
-function buildHeader(headerPartial, cfg) {
+function buildHeader(headerPartial, cfg, activeId) {
   return headerPartial
-    .split('{{nav-links}}').join(buildNavLinks(cfg))
+    .split('{{nav-links}}').join(buildNavLinks(cfg, activeId))
     .split('{{nav-cta}}').join(buildNavCta(cfg));
 }
 
@@ -530,18 +600,32 @@ export async function onRequest(context) {
   let fetched = await fetchState(env, ctx, url.hostname);
   let stateDoc = fetched.state;
   let mode = fetched.mode;
+  let staticDoc = null;
   if (!stateDoc) {
-    stateDoc = await staticState(env);
+    staticDoc = await staticState(env);
+    stateDoc = staticDoc;
     mode = mode === 'no-api' ? 'static' : 'static-fallback';
   }
   const byId = statesById(stateDoc);
+  const fallbackIds = new Set();
+  const missing = visible.filter(m => !byId[m.id]);
+  if (missing.length) {
+    staticDoc = staticDoc || await staticState(env);
+    const staticById = statesById(staticDoc);
+    for (const entry of missing) {
+      if (staticById[entry.id]) {
+        byId[entry.id] = staticById[entry.id];
+        fallbackIds.add(entry.id);
+      }
+    }
+  }
   const orderedState = visible.map(m => byId[m.id]).filter(Boolean);
 
   // ── /__h14/ shadow index ──────────────────────────────────────────────────
   if (path === '/' || path === '') {
     const rows = visible.map(m =>
       `<li><a href="/__h14/${m.id}/">${esc(m.id)}</a> — state mode ${mode}, revision ${esc(fetched.revision || 'static')}</li>`).join('\n');
-    return respond(`<!doctype html><html><head><meta charset="utf-8"><title>H14 shadow runtime</title></head>
+    return respond(`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>H14 shadow runtime</title></head>
 <body><h1>H14 shadow runtime</h1><p>State mode: ${esc(mode)} · revision ${esc(fetched.revision || 'static')}</p>
 <ul>${rows}</ul><p><a href="/__h14/software/">catalog</a> · <a href="/__h14/truth/">truth</a> · <a href="/__h14/truth/index.json">truth index JSON</a></p>
 ${provenance(mode, fetched.revision)}</body></html>`, { mode, revision: fetched.revision });
@@ -552,7 +636,7 @@ ${provenance(mode, fetched.revision)}</body></html>`, { mode, revision: fetched.
     const index = {
       schemaVersion: 1, generatedFrom: 'runtime-public-state-api',
       schemaUrl: '/truth/schema-v1.json', canonicalUrl: cfg.canonicalUrl,
-      source: { mode, revision: fetched.revision || null },
+      source: { mode, revision: fetched.revision || null, fallbackProductIds: [...fallbackIds] },
       productCount: orderedState.length,
       products: orderedState.map(p => ({
         id: p.id, name: p.name, state: p.state, status: p.productStatus || null,
@@ -567,14 +651,9 @@ ${provenance(mode, fetched.revision)}</body></html>`, { mode, revision: fetched.
     const id = truthMatch[1];
     const mod = registry.find(m => m.id === id);
     if (!mod || mod.visibility !== 'visible') return respond('{}', { type: 'application/json', mode, revision: fetched.revision });
-    let p = byId[id];
-    let pMode = mode;
-    if (!p) {
-      // API-missing product → static deploy-time snapshot for that product only.
-      p = statesById(await staticState(env))[id];
-      pMode = 'static-fallback';
-      if (!p) return respond('{}', { type: 'application/json', mode, revision: fetched.revision });
-    }
+    const p = byId[id];
+    const pMode = fallbackIds.has(id) ? 'static-fallback' : mode;
+    if (!p) return respond('{}', { type: 'application/json', mode, revision: fetched.revision });
     return respond(JSON.stringify(truthProduct(p, { mode: pMode, revision: fetched.revision || null }, id), null, 2) + '\n',
       { type: 'application/json; charset=utf-8', mode: pMode, revision: fetched.revision });
   }
@@ -608,16 +687,21 @@ ${provenance(mode, fetched.revision)}</body></html>`, { mode, revision: fetched.
   // ── /__h14/software/ catalog ──────────────────────────────────────────────
   if (path === '/software/' || path === '/software') {
     const tmpl = await loadText(env, '/__h14/pages/software.html');
-    const header = buildHeader(await loadText(env, '/__h14/partials/header.html'), cfg);
+    const header = buildHeader(await loadText(env, '/__h14/partials/header.html'), cfg, 'products');
     const footer = buildFooter(await loadText(env, '/__h14/partials/footer.html'), orderedState, cfg);
     const cardT = await loadText(env, '/__h14/partials/product-card.html');
-    const cards = orderedState.map(p => renderCard(cardT, p, cfg)
+    const modules = await Promise.all(visible.map(m => loadModule(env, m.id)));
+    if (modules.some(m => !m)) return respond('Shadow module missing', { type: 'text/plain', mode, revision: fetched.revision });
+    const catalog = visible.map((entry, i) => ({ module: modules[i], state: byId[entry.id] }))
+      .filter(({ module, state }) => state && (!module.placement || module.placement.catalog !== false));
+    const cards = catalog.map(({ module, state }) => renderCard(cardT, state, module, cfg)
       .replace('<h4 class="card-name">', '<h3 class="card-name">').replace('</h4>', '</h3>')).join('\n');
     let html = tmpl
       .replace(/<!--\s*@all-products\s*-->/, cards)
       .replace(/<!--\s*@products\s*-->/, cards)
       .replace(/<!--\s*@include header\s*-->/, header)
-      .replace(/<!--\s*@include footer\s*-->/, footer);
+      .replace(/<!--\s*@include footer\s*-->/, footer)
+      .replace(/\{\{publicProductCount\}\}/g, String(catalog.length));
     html = replaceNamedTokens(html, byId, cfg);
     // H12 reciprocal discovery — runtime catalog advertises the runtime index.
     html = html.replace('</head>', `<link href="/__h14/truth/index.json" rel="alternate" title="Public Truth" type="application/json"/>\n</head>`);
@@ -632,31 +716,26 @@ ${provenance(mode, fetched.revision)}</body></html>`, { mode, revision: fetched.
     const mod = registry.find(m => m.id === id);
     // Registry is structural authority: unknown or hidden → not rendered.
     if (!mod || mod.visibility !== 'visible') return respond('Not found', { type: 'text/plain', mode, revision: fetched.revision });
-    let p = byId[id];
-    let pMode = mode;
-    if (!p) {
-      // API-missing product → static deploy-time state for that product only.
-      const stat = await staticState(env);
-      p = statesById(stat)[id];
-      pMode = 'static-fallback';
-      if (!p) return respond('Not found', { type: 'text/plain', mode, revision: fetched.revision });
-    }
-    const [shell, content, headerP, footerP] = await Promise.all([
+    const p = byId[id];
+    const pMode = fallbackIds.has(id) ? 'static-fallback' : mode;
+    if (!p) return respond('Not found', { type: 'text/plain', mode, revision: fetched.revision });
+    const [shell, content, headerP, footerP, module] = await Promise.all([
       loadText(env, `/__h14/shells/${id}.html`),
       loadText(env, `/__h14/content/${id}.html`),
       loadText(env, '/__h14/partials/header.html'),
       loadText(env, '/__h14/partials/footer.html'),
+      loadModule(env, id),
     ]);
-    if (!shell || !content) return respond('Shadow assets missing', { type: 'text/plain', mode, revision: fetched.revision });
-    const t = productTokens(p, cfg);
-    const crumb = `<nav class="product-breadcrumb" aria-label="Breadcrumb"><a href="/#products">All software</a><span aria-hidden="true">/</span><span>${esc(p.name)}</span></nav>`;
+    if (!shell || !content || !module) return respond('Shadow assets missing', { type: 'text/plain', mode, revision: fetched.revision });
+    const t = productTokens(p, cfg, module);
+    const crumb = `<nav class="product-breadcrumb" aria-label="Breadcrumb"><a href="/__h14/software/">All software</a><span aria-hidden="true">/</span><span>${esc(p.name)}</span></nav>`;
     const related = '<nav class="studio-related" aria-label="More software"><span>More from the foundry</span>'
       + visible.filter(m => m.id !== id).map(m => `<a href="/__h14/${m.id}/">${esc((byId[m.id] || {}).name || m.id)}</a>`).join('')
       + '</nav>';
     let page = shell
       .replace(/<!--\s*@page\s+\S+\s*-->\s*\r?\n?/, '')
       .replace(/<!--\s*@product\s+\S+\s*-->\s*\r?\n?/, '')
-      .replace(/<!--\s*@include header\s*-->/, buildHeader(headerP, cfg));
+      .replace(/<!--\s*@include header\s*-->/, buildHeader(headerP, cfg, 'products'));
     let c = content
       .replace(/<!--\s*@product-breadcrumb\s*-->/, crumb)
       .replace(/<!--\s*@product-related\s*-->/, related)
