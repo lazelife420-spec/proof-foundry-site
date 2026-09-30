@@ -162,7 +162,7 @@ body.studio.product-page{padding:0}
 .state-pending-text{color:#8899a6}
 
 /* Support Hub Reusable Presentation Classes */
-.support-products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:1.5rem}
+.support-products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:1.5rem;margin-top:1.5rem}
 .support-box-dark{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:1.5rem;margin-top:1rem}
 .support-box-dark p{color:var(--text)}
 .support-box-dark .note-muted{color:var(--muted)}

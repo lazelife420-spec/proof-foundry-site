@@ -468,7 +468,7 @@ body.pp-system .story-shot img {
 }
 
 .pp-origin-beat .pp-beat-label {
-  font: 11px/1.5 Consolas, monospace;
+  font: 12px/1.5 Consolas, monospace;
   letter-spacing: .14em;
   text-transform: uppercase;
   color: var(--pp-accent);

@@ -57,6 +57,25 @@
 .tf-machine p { margin: 0; color: var(--muted); font-size: .88rem; max-width: 460px; }
 .tf-machine a { white-space: nowrap; }
 
+/* The Cleanroom Truth File uses dark text on a light product theme. Keep its
+   fact and machine surfaces opaque so their text never inherits a dark card. */
+.tf-page.product-cleanroom .tf-fact,
+.tf-page.product-cleanroom .tf-verify-list li,
+.tf-page.product-cleanroom .tf-limit-list li,
+.tf-page.product-cleanroom .tf-machine { background: #e5efea; }
+.tf-page.product-cleanroom .tf-chip.verified { color: #1f6340; border-color: #699c79; }
+.tf-page.product-cleanroom .tf-machine .button-secondary { border-color: #718f83; }
+
+/* The ForgeCast sky is brightest behind the right side of this copy. Give
+   the summary its own opaque blue surface at every viewport width. */
+.tf-page.product-forgecast .tf-product-summary {
+  max-width: 660px;
+  padding: 12px 16px;
+  border-left: 2px solid #a9c5c8;
+  background: #143647;
+  color: #ecf5f3;
+}
+
 .tf-breadcrumb { font-size: .8rem; color: var(--muted); margin: 0 0 26px; }
 .tf-breadcrumb a { color: var(--muted); text-decoration: none; }
 .tf-breadcrumb a:hover { color: var(--text); }
