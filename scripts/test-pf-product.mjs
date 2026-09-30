@@ -98,6 +98,15 @@ let assertions = 0;
 function check(condition, message) { assert.ok(condition, message); assertions++; }
 
 try {
+  const operatorGuide = fs.readFileSync(path.join(ROOT, "PRODUCT_PUBLISHING.md"), "utf8");
+  const workflow = ["inspect <capsule-directory>", "validate <capsule-directory>", "materialize <capsule-directory>", "preview <candidate-directory>", "qualify <candidate-directory>", "freeze <candidate-directory>"];
+  const workflowPositions = workflow.map((step) => operatorGuide.indexOf(step));
+  check(workflowPositions.every((position) => position >= 0) && workflowPositions.every((position, index) => index === 0 || position > workflowPositions[index - 1]), "operator guide documents the ordered inspect-to-freeze lifecycle");
+  const lifecycleStates = ["INVALID", "VALID_UNVERIFIED", "QUALIFIED_UNPUBLISHED", "FROZEN_FOR_OWNER_REVIEW", "OWNER_APPROVED", "ARTIFACTS_PUBLISHED_VERIFIED", "SITE_PAYLOAD_QUALIFIED_UNDEPLOYED", "DEPLOYED_UNVERIFIED", "PUBLISHED_VERIFIED"];
+  check(lifecycleStates.every((state) => operatorGuide.includes("`" + state + "`")), "operator guide names all publication lifecycle states");
+  check(["NEW_PRODUCT", "NEW_VERSION", "PRESENTATION_UPDATE"].every((type) => operatorGuide.includes("`" + type + "`")), "operator guide distinguishes all supported submission types");
+  check(/Freeze does not approve or publish/i.test(operatorGuide) && /owner-signed Ed25519 decision/i.test(operatorGuide) && /live mutation is disabled/i.test(operatorGuide), "operator guide preserves explicit owner approval and fixture-only live boundary");
+
   const valid = await makeCapsule("valid");
   const pass1 = validate(valid.dir), pass2 = validate(valid.dir);
   check(pass1.result.status === 0 && pass1.report.status === "VALID_UNVERIFIED", "valid package returns VALID_UNVERIFIED");

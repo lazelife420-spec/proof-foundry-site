@@ -16,7 +16,7 @@ const PROTECTED_MASTER = path.dirname(path.resolve(ROOT, git(["rev-parse", "--gi
 const DEFAULT_CANDIDATE_HOME = path.join(os.tmpdir(), "pf-product-publisher-candidates");
 const SUBMISSION_TYPES = new Set(["NEW_PRODUCT", "NEW_VERSION", "PRESENTATION_UPDATE"]);
 const PUBLISHER_SOURCE_PATHS = new Set([
-  "P0_CURRENT_PUBLISHING_ARCHITECTURE.md", "PRODUCT_PUBLISHING_CAPSULE_V1.md",
+  "P0_CURRENT_PUBLISHING_ARCHITECTURE.md", "PRODUCT_PUBLISHING.md", "PRODUCT_PUBLISHING_CAPSULE_V1.md",
   "P3_CANDIDATE_MATERIALIZATION.md", "P4_PRODUCT_PREVIEW.md", "P5_PRODUCT_QUALIFICATION.md",
   "P5C_PUBLISHER_SOURCE_FREEZE.md", "P6_OWNER_APPROVAL_BOUNDARY.md", "pf-product.ps1",
   "schemas/product-publishing-capsule-v1.schema.json", "schemas/product-release-submission-v1.schema.json",

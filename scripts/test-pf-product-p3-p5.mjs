@@ -185,6 +185,8 @@ try {
     console.log("PF PRODUCT P3-P5 FINAL QUALIFICATION: " + passed + " passed, 0 failed");
   } else {
   const newProduct = await makeNewProduct("new-product");
+  const newInspect = run(["inspect", newProduct.dir]);
+  check(newInspect.status === 0 && newInspect.stdout.includes("SUBMISSION_TYPE: NEW_PRODUCT"), "NEW_PRODUCT Capsule is inspected before validation");
   const newValid = report(["validate", newProduct.dir]);
   check(newValid.status === 0 && newValid.report.status === "VALID_UNVERIFIED", "NEW_PRODUCT Capsule validates: " + JSON.stringify(newValid.report));
   const newMat = report(["materialize", newProduct.dir, "--output-dir", OUT]);
@@ -234,6 +236,8 @@ try {
   check(report(["preview", leakedPreview]).report.status === "FAIL", "preview route collision is rejected after output/receipt tampering");
 
   const version = await makeExistingProduct("new-version", "NEW_VERSION");
+  const versionInspect = run(["inspect", version.dir]);
+  check(versionInspect.status === 0 && versionInspect.stdout.includes("SUBMISSION_TYPE: NEW_VERSION"), "NEW_VERSION Capsule is inspected before validation");
   const versionValidation = report(["validate", version.dir]);
   check(versionValidation.status === 0 && versionValidation.report.status === "VALID_UNVERIFIED", "NEW_VERSION Capsule validates against current product state: " + JSON.stringify(versionValidation.report));
   const versionMat = report(["materialize", version.dir, "--output-dir", OUT]);
@@ -243,13 +247,23 @@ try {
   fs.mkdirSync(path.dirname(otherModule), { recursive: true }); fs.writeFileSync(otherModule, "{}\n", "utf8");
   check(report(["qualify", otherProduct]).report.status === "INVALID", "NEW_VERSION cannot change another product or homepage module");
   check(report(["preview", versionMat.report.candidatePath]).report.status === "PASS", "NEW_VERSION local preview passes");
+  const versionQualification = report(["qualify", versionMat.report.candidatePath]);
+  check(versionQualification.status === 0 && versionQualification.report.publicationState === "QUALIFIED_UNPUBLISHED", "NEW_VERSION qualifies against the current website without publishing");
+  const versionFreeze = report(["freeze", versionMat.report.candidatePath]);
+  check(versionFreeze.status === 0 && versionFreeze.report.approvalState === "FROZEN_FOR_OWNER_REVIEW", "NEW_VERSION freezes only for owner review");
 
   const presentation = await makeExistingProduct("presentation-update", "PRESENTATION_UPDATE", { presentationChange: true });
+  const presentationInspect = run(["inspect", presentation.dir]);
+  check(presentationInspect.status === 0 && presentationInspect.stdout.includes("SUBMISSION_TYPE: PRESENTATION_UPDATE"), "PRESENTATION_UPDATE Capsule is inspected before validation");
   const presentationValidation = report(["validate", presentation.dir]);
   check(presentationValidation.status === 0 && presentationValidation.report.status === "VALID_UNVERIFIED", "PRESENTATION_UPDATE Capsule validates");
   const presentationMat = report(["materialize", presentation.dir, "--output-dir", OUT]);
   check(presentationMat.status === 0 && presentationMat.report.changedPaths.length === 1 && presentationMat.report.changedPaths[0].path === "products/cache-vault/module.json", "PRESENTATION_UPDATE changes only product presentation source");
   check(report(["preview", presentationMat.report.candidatePath]).report.status === "PASS", "PRESENTATION_UPDATE local preview passes");
+  const presentationQualification = report(["qualify", presentationMat.report.candidatePath]);
+  check(presentationQualification.status === 0 && presentationQualification.report.publicationState === "QUALIFIED_UNPUBLISHED", "PRESENTATION_UPDATE qualifies without changing release truth");
+  const presentationFreeze = report(["freeze", presentationMat.report.candidatePath]);
+  check(presentationFreeze.status === 0 && presentationFreeze.report.approvalState === "FROZEN_FOR_OWNER_REVIEW", "PRESENTATION_UPDATE freezes only for owner review");
 
   const badUpdateVersion = await makeExistingProduct("presentation-version-mutation", "PRESENTATION_UPDATE");
   const badUpdateCapsule = readJson(path.join(badUpdateVersion.dir, "capsule.json")); badUpdateCapsule.releaseVersion = "0.2.5"; json(path.join(badUpdateVersion.dir, "capsule.json"), badUpdateCapsule);
@@ -286,6 +300,8 @@ try {
   check(validCandidate.status === 0 && validCandidate.report.status === "PASS" && validCandidate.report.publicationState === "QUALIFIED_UNPUBLISHED", "valid candidate qualifies without publication: " + JSON.stringify(validCandidate.report));
   check(validCandidate.report.dimensions.LIVE_PUBLICATION_VALID === "NOT_RUN" && Object.values(validCandidate.report.dimensions).filter((v) => v !== "NOT_RUN").every((v) => v === "PASS"), "independent non-publication qualification dimensions pass");
   check(validCandidate.report.regressionSuites.length === 10 && validCandidate.report.regressionSuites.every((x) => x.status === "PASS"), "all ten registered regression authorities pass during P5 qualification");
+  const newProductFreeze = report(["freeze", newCandidate]);
+  check(newProductFreeze.status === 0 && newProductFreeze.report.approvalState === "FROZEN_FOR_OWNER_REVIEW", "NEW_PRODUCT freezes only for owner review");
   console.log("PF PRODUCT P3-P5 QUALIFICATION TESTS: " + passed + " passed, 0 failed");
   }
 } catch (error) {
