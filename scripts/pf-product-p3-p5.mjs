@@ -20,8 +20,11 @@ const PUBLISHER_SOURCE_PATHS = new Set([
   "P3_CANDIDATE_MATERIALIZATION.md", "P4_PRODUCT_PREVIEW.md", "P5_PRODUCT_QUALIFICATION.md",
   "P5C_PUBLISHER_SOURCE_FREEZE.md", "P6_OWNER_APPROVAL_BOUNDARY.md", "pf-product.ps1",
   "schemas/product-publishing-capsule-v1.schema.json", "schemas/product-release-submission-v1.schema.json",
-  "schemas/product-candidate-approval-v1.schema.json", "scripts/pf-product.mjs", "scripts/pf-product-p3-p5.mjs",
-  "scripts/test-pf-product.mjs", "scripts/test-pf-product-p3-p5.mjs", "scripts/test-pf-product-p6.mjs"
+  "schemas/product-candidate-approval-v1.schema.json", "schemas/product-owner-approval-v1.schema.json",
+  "scripts/pf-product.mjs", "scripts/pf-product-p3-p5.mjs", "scripts/pf-product-p7-p9.mjs",
+  "scripts/test-pf-product.mjs", "scripts/test-pf-product-p3-p5.mjs", "scripts/test-pf-product-p6.mjs",
+  "scripts/test-pf-product-p7.mjs", "scripts/test-pf-product-p8.mjs", "scripts/test-pf-product-p9.mjs",
+  "P7_P9_PUBLICATION_ENGINE.md"
 ]);
 const TESTS = [
   { id: "PF_PRODUCT", kind: "node", file: "scripts/test-pf-product.mjs" },
@@ -85,12 +88,17 @@ async function verifyBase() {
   const manifestSha256 = await shaFile(path.join(ROOT, "site-manifest.json"));
   if (baseTree !== BASE_TREE || mergeBase !== BASE_COMMIT) throw new Error("Checkout is not based on the frozen P0-P2 baseline.");
   for (const line of trackedStatus.split(/\r?\n/).filter(Boolean)) {
-    const rel = line.slice(3).replaceAll("\\", "/");
+    const rel = gitStatusPath(line).replaceAll("\\", "/");
     if (!PUBLISHER_SOURCE_PATHS.has(rel)) throw new Error("Non-publisher source differs from the frozen site baseline.");
   }
   if (manifestSha256 !== BASE_MANIFEST_SHA256) throw new Error("Canonical manifest differs from the frozen P0-P2 receipt.");
   return { commit: BASE_COMMIT, tree: BASE_TREE, committedAt, manifestSha256,
     publisherCommit: commit, publisherTree: tree };
+}
+function gitStatusPath(line) {
+  if (line.length >= 3 && line[2] === " ") return line.slice(3);
+  if (line.length >= 2 && line[1] === " ") return line.slice(2);
+  throw new Error("Git status returned an unsupported porcelain path record.");
 }
 function publisherWorkingTreeIsClean() {
   return git(["status", "--porcelain", "--untracked-files=all"]) === "";
@@ -807,7 +815,7 @@ async function refreshCanonicalPublic() {
 function sourceScopeResult(candidate) {
   const status = git(["status", "--porcelain", "--untracked-files=all"]);
   for (const line of status.split(/\r?\n/).filter(Boolean)) {
-    const rel = line.slice(3).replaceAll("\\", "/");
+    const rel = gitStatusPath(line).replaceAll("\\", "/");
     if (!PUBLISHER_SOURCE_PATHS.has(rel)) return { status: "FAIL", findings: ["Untracked or modified source exists outside the declared publisher implementation."] };
   }
   for (const change of candidate.plan.changes) {
