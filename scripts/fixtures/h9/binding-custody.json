@@ -1616,41 +1616,48 @@
    "lfSha256": "eccd353c55072aaaaa9a055e82876c58796d7e64bcf62c268c84120a20e36c3a",
    "origin": "original-entry-inventory",
    "migration": {
-    "sha256": "149f847920dc3b7c080d617e39f49e21f837a45151f23fe079ded767f0453aec",
+    "sha256": "b5956aa7f85739589505c4cebf0d350c58bffb4b33b3d5b9cddaad4370dc31a0",
     "bytes": 15566,
     "comparison": "utf8-lf",
-    "lfSha256": "149f847920dc3b7c080d617e39f49e21f837a45151f23fe079ded767f0453aec",
-    "reason": "Cache Vault v0.3.1 landing follow-up 2026-10-01: cache-vault content.html source-byte pin recomputed after the release-evidence corrections.",
+    "lfSha256": "b5956aa7f85739589505c4cebf0d350c58bffb4b33b3d5b9cddaad4370dc31a0",
+    "reason": "Cache Vault v0.3.1 landing follow-up 2026-10-01: support.html source-byte pin recomputed after the APK-availability correction.",
     "previousMigration": {
-     "sha256": "3c9cc555254bdb01e650dd2ce45238eb7290a67d9f413ab2d6348d12a84c648f",
+     "sha256": "149f847920dc3b7c080d617e39f49e21f837a45151f23fe079ded767f0453aec",
      "bytes": 15566,
      "comparison": "utf8-lf",
-     "lfSha256": "3c9cc555254bdb01e650dd2ce45238eb7290a67d9f413ab2d6348d12a84c648f",
-     "reason": "Cache Vault v0.3.1 landing follow-up 2026-10-01: cache-vault content.html source-byte pin recomputed after the release-receipt wording fix.",
+     "lfSha256": "149f847920dc3b7c080d617e39f49e21f837a45151f23fe079ded767f0453aec",
+     "reason": "Cache Vault v0.3.1 landing follow-up 2026-10-01: cache-vault content.html source-byte pin recomputed after the release-evidence corrections.",
      "previousMigration": {
-      "sha256": "eb4652c773e5bafd67528e39d98101edad57c8ee9163f9290f33b706f5b6fc94",
+      "sha256": "3c9cc555254bdb01e650dd2ce45238eb7290a67d9f413ab2d6348d12a84c648f",
       "bytes": 15566,
       "comparison": "utf8-lf",
-      "lfSha256": "eb4652c773e5bafd67528e39d98101edad57c8ee9163f9290f33b706f5b6fc94",
-      "reason": "Cache Vault v0.3.1 public-truth landing 2026-10-01 (819a58c): production pin advanced to e75466b; roadmap.html and cache-vault content.html source-bytes re-pinned; homepage source-commit guard moved to eddbae7.",
+      "lfSha256": "3c9cc555254bdb01e650dd2ce45238eb7290a67d9f413ab2d6348d12a84c648f",
+      "reason": "Cache Vault v0.3.1 landing follow-up 2026-10-01: cache-vault content.html source-byte pin recomputed after the release-receipt wording fix.",
       "previousMigration": {
-       "sha256": "1a641116f43b04a57005663d363e1c3d17e24905d729798d16725b6bf59cdd59",
+       "sha256": "eb4652c773e5bafd67528e39d98101edad57c8ee9163f9290f33b706f5b6fc94",
        "bytes": 15566,
        "comparison": "utf8-lf",
-       "lfSha256": "1a641116f43b04a57005663d363e1c3d17e24905d729798d16725b6bf59cdd59",
-       "reason": "PF-TF1 HOLD-1 2026-09-21: companionPublicVersion added to the pinned-field normalization set (canonical truth field absent from production baseline), alongside existing sourceCommit/companionCandidateVersion handling.",
+       "lfSha256": "eb4652c773e5bafd67528e39d98101edad57c8ee9163f9290f33b706f5b6fc94",
+       "reason": "Cache Vault v0.3.1 public-truth landing 2026-10-01 (819a58c): production pin advanced to e75466b; roadmap.html and cache-vault content.html source-bytes re-pinned; homepage source-commit guard moved to eddbae7.",
        "previousMigration": {
-        "sha256": "f3fe4131dc8bd29cc3620577e4a9906e75b11ed639662b8ea8d2529843b054c5",
-        "bytes": 15495,
+        "sha256": "1a641116f43b04a57005663d363e1c3d17e24905d729798d16725b6bf59cdd59",
+        "bytes": 15566,
         "comparison": "utf8-lf",
-        "lfSha256": "f3fe4131dc8bd29cc3620577e4a9906e75b11ed639662b8ea8d2529843b054c5",
-        "reason": "PF-TF1 Truth Files 2026-09-21: route inventory extended for the new /truth-files/ surface (index + 7 product records); footer pin moved from production-comparison to TF1-authorized bytes.",
+        "lfSha256": "1a641116f43b04a57005663d363e1c3d17e24905d729798d16725b6bf59cdd59",
+        "reason": "PF-TF1 HOLD-1 2026-09-21: companionPublicVersion added to the pinned-field normalization set (canonical truth field absent from production baseline), alongside existing sourceCommit/companionCandidateVersion handling.",
         "previousMigration": {
-         "sha256": "6826b1ee76c61cdbe63eb69c4b0796aa0a4f3c0e845c8e213bf4984c382ef9c5",
-         "bytes": 15098,
+         "sha256": "f3fe4131dc8bd29cc3620577e4a9906e75b11ed639662b8ea8d2529843b054c5",
+         "bytes": 15495,
          "comparison": "utf8-lf",
-         "lfSha256": "6826b1ee76c61cdbe63eb69c4b0796aa0a4f3c0e845c8e213bf4984c382ef9c5",
-         "reason": "VR1-R3 pin refresh."
+         "lfSha256": "f3fe4131dc8bd29cc3620577e4a9906e75b11ed639662b8ea8d2529843b054c5",
+         "reason": "PF-TF1 Truth Files 2026-09-21: route inventory extended for the new /truth-files/ surface (index + 7 product records); footer pin moved from production-comparison to TF1-authorized bytes.",
+         "previousMigration": {
+          "sha256": "6826b1ee76c61cdbe63eb69c4b0796aa0a4f3c0e845c8e213bf4984c382ef9c5",
+          "bytes": 15098,
+          "comparison": "utf8-lf",
+          "lfSha256": "6826b1ee76c61cdbe63eb69c4b0796aa0a4f3c0e845c8e213bf4984c382ef9c5",
+          "reason": "VR1-R3 pin refresh."
+         }
         }
        }
       }
@@ -1813,23 +1820,30 @@
    "lfSha256": "3f3f92cf6ce91f6ec92675abf9708c4d315d15a79f4e03db00fdb68413164474",
    "origin": "original-entry-inventory",
    "migration": {
-    "sha256": "16359dfd025340487b11f4d45f1788901c4d4222e782dd520fa4379d8647549a",
-    "bytes": 14251,
+    "sha256": "aed6f365d5c8888a94416b81a51c8ae39c5aa20474ffffe793cd537b045f7806",
+    "bytes": 14345,
     "comparison": "utf8-lf",
-    "lfSha256": "16359dfd025340487b11f4d45f1788901c4d4222e782dd520fa4379d8647549a",
-    "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/.",
+    "lfSha256": "aed6f365d5c8888a94416b81a51c8ae39c5aa20474ffffe793cd537b045f7806",
+    "reason": "Cache Vault v0.3.1 landing follow-up 2026-10-01: the Cache Vault support note claimed the companion APK link is unavailable on GitHub; v0.3.1 is public there and on Proof Foundry downloads. This migration also covers the lights-out truth edits landed at 929d194 that were previously left unrecorded, so the entry bytes match production truth.",
     "previousMigration": {
-     "sha256": "f0ad9c222b317f799dad8e04f08375b55f2616d3af1110e5b47907eab3306f73",
-     "bytes": 14063,
+     "sha256": "16359dfd025340487b11f4d45f1788901c4d4222e782dd520fa4379d8647549a",
+     "bytes": 14251,
      "comparison": "utf8-lf",
-     "lfSha256": "f0ad9c222b317f799dad8e04f08375b55f2616d3af1110e5b47907eab3306f73",
-     "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919.",
+     "lfSha256": "16359dfd025340487b11f4d45f1788901c4d4222e782dd520fa4379d8647549a",
+     "reason": "H10 public-truth consolidation 2026-09-20: duplicated current-state literals (versions, dates, artifact filenames, canonical URLs, receipt ids, package path, qualification strings) replaced by manifest-rendered tokens; rendered output verified byte-identical to the pre-H10 build. sitemap lastmod corrected to the 2026-09-20 roadmap-tranche content date for / and /roadmap/.",
      "previousMigration": {
-      "sha256": "a51a3fcc3f70b22fdb696ded72ef737c883c1a1dd93251b7341aab630c54402a",
-      "bytes": 14007,
+      "sha256": "f0ad9c222b317f799dad8e04f08375b55f2616d3af1110e5b47907eab3306f73",
+      "bytes": 14063,
       "comparison": "utf8-lf",
-      "lfSha256": "a51a3fcc3f70b22fdb696ded72ef737c883c1a1dd93251b7341aab630c54402a",
-      "reason": "Explicit customer-truth repair; see customer-truth-migration.json and customer-truth.patch."
+      "lfSha256": "f0ad9c222b317f799dad8e04f08375b55f2616d3af1110e5b47907eab3306f73",
+      "reason": "ForgeCast copy tranche 2026-09-19: authorized product copy update + skyfoundry package-path truth correction; see forgecast/site-copy-20260919.",
+      "previousMigration": {
+       "sha256": "a51a3fcc3f70b22fdb696ded72ef737c883c1a1dd93251b7341aab630c54402a",
+       "bytes": 14007,
+       "comparison": "utf8-lf",
+       "lfSha256": "a51a3fcc3f70b22fdb696ded72ef737c883c1a1dd93251b7341aab630c54402a",
+       "reason": "Explicit customer-truth repair; see customer-truth-migration.json and customer-truth.patch."
+      }
      }
     }
    }

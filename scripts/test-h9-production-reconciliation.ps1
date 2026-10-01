@@ -132,7 +132,7 @@ $h10Pins = [ordered]@{
   'products/cache-vault/content.html'  = 'b66d145aa225737362304b159161504ee5d1fc8622deb0eb130aa07acfd0fce8'
   'products/forgecast/content.html'    = '8cb15b966760354e6bc03d65ede8984a895ff95d24cae61b8405ac76a7b3c873'
   'products/proofshot/content.html'    = '43104ca30793a63990e658858b1775518b76735d7af88599fe98e7de69409674'
-  'support.html'      = '28d93bb322b0371fb3bf2fa845155a6235ab1e29b8252017ad9c55c0bf117bd8'
+  'support.html'      = '9ff4b0a48b9a39f8a9fa6da15991664edfd2f96e16a80ff59e76bc9bc14f2026'
 }
 # H13 modular renderer (2026-09-20): the seven product pages migrated from
 # per-product {id}.html templates to products/<id>/{module.json,content.html}.
