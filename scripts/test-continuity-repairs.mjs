@@ -51,6 +51,13 @@ function contrastOver(foreground, background, pageBackground) {
   const a = luminance(fg.rgb), b = luminance(effective);
   return (Math.max(a, b) + .05) / (Math.min(a, b) + .05);
 }
+// Record rows can be transparent. Resolve the painted surface through their
+// ancestors before checking link text or an offset focus outline.
+const linkSurfaceExpression = selector => '(()=>{' +
+  'const elements=[...document.querySelectorAll(' + JSON.stringify(selector) + ')];' +
+  'const rgba=value=>{const m=/^rgba?\\(\\s*([\\d.]+)[, ]+([\\d.]+)[, ]+([\\d.]+)(?:[, /]+([\\d.]+))?\\s*\\)$/.exec(value);return m?{rgb:m.slice(1,4).map(Number),alpha:m[4]===undefined?1:Number(m[4])}:null};' +
+  'const painted=element=>{const chain=[];for(let n=element;n;n=n.parentElement)chain.unshift(n);let rgb=[255,255,255],image=false;for(const node of chain){const s=getComputedStyle(node),c=rgba(s.backgroundColor);if(s.backgroundImage!=="none")image=true;if(!c)return null;rgb=c.rgb.map((channel,i)=>channel*c.alpha+rgb[i]*(1-c.alpha));}return {color:"rgb("+rgb.map(Math.round).join(", ")+")",image};};' +
+  'return elements.map(element=>{const s=getComputedStyle(element),r=element.getBoundingClientRect(),p=element.parentElement;return {text:element.textContent.trim(),href:element.getAttribute("href"),color:s.color,background:painted(element),adjacentBackground:painted(p),outlineColor:s.outlineColor,outlineStyle:s.outlineStyle,outlineWidth:parseFloat(s.outlineWidth),outlineOffset:parseFloat(s.outlineOffset),focused:document.activeElement===element,focusVisible:element.matches(":focus-visible"),hovered:element.matches(":hover"),visible:element.checkVisibility({checkVisibilityCSS:true}),rect:{left:r.left,right:r.right,top:r.top,bottom:r.bottom},clientWidth:document.documentElement.clientWidth};});})()';
 function within(parent, child) {
   const relative = path.relative(parent, child);
   return relative === '' || (relative !== '..' && !relative.startsWith('..' + path.sep) && !path.isAbsolute(relative));
@@ -147,6 +154,95 @@ try {
     const texts=candidates.filter(e=>e.checkVisibility({checkVisibilityCSS:true})).map(e=>({text:e.textContent.trim().slice(0,80),color:getComputedStyle(e).color,fontSize:getComputedStyle(e).fontSize}));
     return {background,image,pageBackground:getComputedStyle(document.body).backgroundColor,pageImage:getComputedStyle(document.body).backgroundImage,texts};
   })()`);
+  const linkMetrics = selector => evaluate(linkSurfaceExpression(selector));
+  const textRatio = item => item?.background && !item.background.image
+    ? contrast(item.color, item.background.color) : null;
+  const outlineRatio = item => item?.adjacentBackground && !item.adjacentBackground.image
+    ? contrast(item.outlineColor, item.adjacentBackground.color) : null;
+  const pressTab = async () => {
+    await send('Input.dispatchKeyEvent', { type: 'rawKeyDown', key: 'Tab', code: 'Tab', windowsVirtualKeyCode: 9, nativeVirtualKeyCode: 9 });
+    await send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Tab', code: 'Tab', windowsVirtualKeyCode: 9, nativeVirtualKeyCode: 9 });
+  };
+  const tabUntil = async selector => {
+    for (let i = 0; i < 32; i++) {
+      if (await evaluate('document.activeElement?.matches(' + JSON.stringify(selector) + ') && document.activeElement.matches(":focus-visible")')) return true;
+      await pressTab();
+    }
+    return false;
+  };
+  const checkCleanroomLinks = async view => {
+    const recordLinks = await linkMetrics('.tf-record-list a');
+    check('Cleanroom Record links ' + view + ' default text contrast >=4.5',
+      recordLinks.length === 6 && recordLinks.every(item => item.visible && (textRatio(item) ?? 0) >= 4.5),
+      recordLinks.map(item => ({ text: item.text, color: item.color, background: item.background, ratio: textRatio(item) })));
+
+    await evaluate('document.querySelector(".tf-record-list a").scrollIntoView({block:"center",behavior:"instant"});true');
+    await pause(100);
+    const point = await evaluate('(()=>{const r=document.querySelector(".tf-record-list a").getBoundingClientRect();return {x:(r.left+r.right)/2,y:(r.top+r.bottom)/2}})()');
+    await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: point.x, y: point.y });
+    const hovered = (await linkMetrics('.tf-record-list a'))[0];
+    check('Cleanroom Record link ' + view + ' hover text contrast >=4.5',
+      hovered?.hovered && (textRatio(hovered) ?? 0) >= 4.5,
+      { hovered, ratio: textRatio(hovered) });
+    await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 0, y: 0 });
+
+    // Real same-origin visit/Back; Chromium masks :visited computed color for
+    // privacy, so also require an authored visited rule equal to the measured
+    // default foreground. Do not treat computed color alone as visited proof.
+    await navigate('/proof/');
+    await evaluate('history.back();true');
+    for (let i = 0; i < 100; i++) {
+      if (await evaluate('document.readyState === "complete" && location.pathname === "/truth-files/cleanroom/"')) break;
+      await pause(100);
+    }
+    const visitedLink = (await linkMetrics('.tf-record-list a')).find(item => item.href === '/proof/');
+    const visitedRule = await evaluate('(()=>{for(const sheet of document.styleSheets){let rules;try{rules=sheet.cssRules}catch{continue}for(const rule of rules){if(rule.selectorText?.includes(".tf-page.product-cleanroom .tf-record-list a:visited")){const probe=document.createElement("span");probe.style.color=rule.style.color;document.body.append(probe);const color=getComputedStyle(probe).color;probe.remove();return {selector:rule.selectorText,color};}}}return null})()');
+    check('Cleanroom Record link ' + view + ' visited rule retains >=4.5 text contrast after Back',
+      visitedLink && visitedRule?.color === visitedLink.color && (textRatio(visitedLink) ?? 0) >= 4.5,
+      { visitedLink, visitedRule, ratio: textRatio(visitedLink) });
+
+    await navigate('/truth-files/cleanroom/');
+    const reached = await tabUntil('.tf-breadcrumb a');
+    const focused = [];
+    if (reached) {
+      for (let i = 0; i < 8; i++) {
+        focused.push((await linkMetrics('main a:focus-visible'))[0] || null);
+        if (i < 7) await pressTab();
+      }
+    }
+    const focusData = focused.map(item => ({ text: item?.text, color: item?.outlineColor, background: item?.adjacentBackground, ratio: outlineRatio(item), width: item?.outlineWidth, offset: item?.outlineOffset, focusVisible: item?.focusVisible }));
+    check('Cleanroom main links ' + view + ' keyboard focus indicator contrast >=3',
+      focused.length === 8 && focused.every(item => item?.focused && item.focusVisible && item.outlineStyle === 'solid' && item.outlineWidth >= 2 && (outlineRatio(item) ?? 0) >= 3),
+      focusData);
+    const focusedRecords = focused.filter(item => item?.href && recordLinks.some(record => record.href === item.href));
+    check('Cleanroom Record links ' + view + ' keyboard-focus text contrast >=4.5',
+      focusedRecords.length === 6 && focusedRecords.every(item => (textRatio(item) ?? 0) >= 4.5),
+      focusedRecords.map(item => ({ text: item.text, ratio: textRatio(item) })));
+    const machine = focused.at(-1);
+    check('Cleanroom View JSON ' + view + ' focus outline contrasts with Machine panel >=3',
+      machine?.href === '/truth/products/cleanroom.json' && machine.focusVisible && machine.outlineStyle === 'solid' && machine.outlineWidth >= 2 && (outlineRatio(machine) ?? 0) >= 3,
+      { machine, ratio: outlineRatio(machine) });
+    check('Cleanroom View JSON ' + view + ' label contrast and focus ring fit',
+      machine && (textRatio(machine) ?? 0) >= 4.5 && machine.rect.left - machine.outlineWidth - machine.outlineOffset >= 0 && machine.rect.right + machine.outlineWidth + machine.outlineOffset <= machine.clientWidth + 1,
+      { machine, textRatio: textRatio(machine) });
+    // Start a fresh keyboard path with the Record list in view. This
+    // reproduces the narrow-screen case where Shift+Tab could place its
+    // focused last link entirely behind the sticky header.
+    await navigate('/truth-files/cleanroom/');
+    await evaluate('document.querySelector(".tf-record-list a").scrollIntoView({block:"center",behavior:"instant"});true');
+    const machineReached = await tabUntil('.tf-machine a.button.button-secondary');
+    await pause(700);
+    await send('Input.dispatchKeyEvent', { type: 'rawKeyDown', key: 'Tab', code: 'Tab', windowsVirtualKeyCode: 9, nativeVirtualKeyCode: 9, modifiers: 8 });
+    await send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Tab', code: 'Tab', windowsVirtualKeyCode: 9, nativeVirtualKeyCode: 9, modifiers: 8 });
+    await pause(300);
+    const previous = (await linkMetrics('.tf-record-list a:focus-visible'))[0];
+    const header = await evaluate('(()=>({bottom:document.querySelector(".site-header").getBoundingClientRect().bottom,height:innerHeight}))()');
+    check('Cleanroom last Record link ' + view + ' backward-Tab focus clears sticky header',
+      machineReached && previous?.href === '/cleanroom/' && previous.focused && previous.focusVisible &&
+      previous.rect.top - previous.outlineWidth - previous.outlineOffset >= header.bottom - 1 &&
+      previous.rect.bottom + previous.outlineWidth + previous.outlineOffset <= header.height + 1,
+      { previous, header });
+  };
   const checkCleanroomBadge = async view => {
     const badge = await surface('.tf-page.product-cleanroom .tf-fresh code.inline', '@self');
     const ratio = badge?.texts.length === 1 && badge.image === 'none' && badge.pageImage === 'none'
@@ -167,6 +263,7 @@ try {
 
     await navigate('/truth-files/cleanroom/');
     await checkCleanroomBadge(String(width) + 'px');
+    await checkCleanroomLinks(String(width) + 'px');
     for (const [name, selector, text] of [
       ['fact cards', '.tf-fact', 'dt,dd,.tf-sub'],
       ['verification cards', '.tf-verify-list li', 'span,strong,p'],
@@ -222,6 +319,7 @@ try {
   }
   await navigate('/truth-files/cleanroom/');
   await checkCleanroomBadge('at 200% browser zoom');
+  await checkCleanroomLinks('at 200% browser zoom');
   const failed = results.filter(result => !result.pass).length;
   process.stdout.write(`RESULT: ${results.length - failed} passed, ${failed} failed\n`);
   if (failed) process.exitCode = 1;

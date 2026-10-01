@@ -51,7 +51,7 @@
 .tf-record-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
 .tf-record-list li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; padding: 12px 16px; border: 1px solid var(--line); border-radius: 8px; font-size: .9rem; }
 .tf-record-list .tf-rec-label { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); min-width: 110px; }
-.tf-record-list a { min-width: 0; color: var(--gold); overflow-wrap: anywhere; }
+.tf-record-list a { min-width: 0; color: var(--gold); overflow-wrap: anywhere; scroll-margin-top: 100px; }
 
 .tf-machine { border: 1px dashed #4a5850; border-radius: 10px; padding: 22px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; justify-content: space-between; background: #0d1314; }
 .tf-machine p { margin: 0; color: var(--muted); font-size: .88rem; max-width: 460px; }
@@ -65,6 +65,14 @@
 .tf-page.product-cleanroom .tf-machine { background: #e5efea; }
 .tf-page.product-cleanroom .tf-chip.verified { color: #1f6340; border-color: #699c79; }
 .tf-page.product-cleanroom .tf-machine .button-secondary { border-color: #718f83; }
+/* Record links and offset keyboard rings sit on Cleanroom's light surfaces.
+   Keep the shared gold treatment on dark product pages and the dark chrome. */
+.tf-page.product-cleanroom .tf-record-list a,
+.tf-page.product-cleanroom .tf-record-list a:visited { color: #34544b; }
+.tf-page.product-cleanroom .tf-record-list a:hover,
+.tf-page.product-cleanroom .tf-record-list a:focus-visible { color: #183a30; }
+.tf-page.product-cleanroom main a:focus-visible,
+.tf-page.product-cleanroom > .skip-link:focus-visible { outline-color: #34544b; }
 /* The global inline-code badge is dark; use Cleanroom's light code palette here. */
 .tf-page.product-cleanroom .tf-fresh code.inline { background: #d9e5dd; color: #183a30; }
 
