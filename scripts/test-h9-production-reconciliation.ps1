@@ -5,7 +5,7 @@ param([string]$PublicDir = '', [string]$Root = '')
 if (-not $Root) { $Root = (Resolve-Path "$PSScriptRoot/..").Path }
 if (-not $PublicDir) { $PublicDir = Join-Path $Root 'public' }
 $ErrorActionPreference = 'Stop'
-$production = '34a291d78fa92f1a18cf76cef3ee56b391186e77'
+$production = 'e75466b8c483f60688a9f2f314fc0e63985eb859'
 $pass = 0; $fail = 0
 function Assert-Reconciled([string]$name, [bool]$ok) {
   if ($ok) { $script:pass++; Write-Host "PASS: $name" }
@@ -115,7 +115,7 @@ foreach ($p in $tf1Pins.Keys) {
 # intentionally diverges from pinned production; pin the exact approved source
 # bytes (LF-normalized SHA-256) so drift past the approved state still fails.
 $roadmapSha = Sha256 ([Text.Encoding]::UTF8.GetBytes((Read-Source 'roadmap.html')))
-Assert-Reconciled 'roadmap.html: owner-approved roadmap truth repair + H10 publish-date tokenization + VR1 NOW/PROGRESS/LAB framing preserved' ($roadmapSha -ceq '5ed12ddff3c38b26ee71da5b8d931c76884098b1a04c6c8d2b8483d89ec970e8')
+Assert-Reconciled 'roadmap.html: owner-approved roadmap truth repair + H10 publish-date tokenization + VR1 NOW/PROGRESS/LAB framing preserved' ($roadmapSha -ceq 'c759439cb4088bf499f6eb104daf1c8b504c616cc962579f143c2796b9da8c81')
 
 # H10 public-truth consolidation (2026-09-20): the pages below carry authorized
 # edits that replace duplicated current-state literals (versions, dates, artifact
@@ -129,7 +129,7 @@ $h10Pins = [ordered]@{
   'products/lights-out/content.html'   = '5277b088e6d086eb1edb8c528add3b2005a8416eeff28be0ae76633e7045a257'
   'products/cleanroom/content.html'    = 'e9e1e8efeb0da85c74d3edaab2e7b9456d9f4e79e04f68d193f64a85af843df9'
   'products/ghostlayer/content.html'   = 'ad93b63396d8a91f9f9cf5993b6b7bc59b67e796c26c94ac6e94cfc6fb4fa1cf'
-  'products/cache-vault/content.html'  = '0644137732973884a8086cbe26360e7337125cfee5ef1d21e7fe3727c98f7edb'
+  'products/cache-vault/content.html'  = 'f7bf72458a0911a1627291d19cbe148272ca166961d635db1df695818c601dd7'
   'products/forgecast/content.html'    = '8cb15b966760354e6bc03d65ede8984a895ff95d24cae61b8405ac76a7b3c873'
   'products/proofshot/content.html'    = '43104ca30793a63990e658858b1775518b76735d7af88599fe98e7de69409674'
   'support.html'      = '28d93bb322b0371fb3bf2fa845155a6235ab1e29b8252017ad9c55c0bf117bd8'
@@ -206,9 +206,9 @@ $suffix = if ($catalogCss.Length -gt 5396) { [Text.Encoding]::UTF8.GetString($ca
 Assert-Reconciled 'software CSS appends only: [hidden] repair present, VR1 card meta row is the tail' ($suffix.Contains('.software-catalog-page [hidden]{display:none!important}') -and $suffix.TrimEnd().EndsWith('.software-catalog-page .h9-card-meta{margin:0 0 12px}'))
 
 $homeHtml = Get-Content (Join-Path $PublicDir 'index.html') -Raw -Encoding UTF8
-# VR1: the verified v0.2.4 source commit lives on /proof/ and the product page;
+# VR1: the verified v0.3.1 source commit lives on /proof/ and the product page;
 # the homepage receipt names artifact/version/status without pinning it inline.
-Assert-Reconciled 'Cache Vault receipt keeps the verified v0.2.4 source commit off the homepage narrative' ($homeHtml -notmatch 'abbd84462a8165068405cbfcddf4bfaf6b8f6f29')
+Assert-Reconciled 'Cache Vault receipt keeps the verified v0.3.1 source commit off the homepage narrative' ($homeHtml -notmatch 'eddbae7a2763d1994dae1e43e744ca8225d93eb3')
 Assert-Reconciled 'stale v0.2.3 source commit is absent from H9 receipt' ($homeHtml -notmatch '099be3aaaae93519b8959be529f3ec9a53929149')
 Write-Host "=== H9 RECONCILIATION RESULT: $pass passed, $fail failed ==="
 if ($fail -gt 0) { exit 1 }

@@ -4,7 +4,7 @@ param([string]$PublicDir = '', [string]$Root = '')
 $ErrorActionPreference = 'Stop'
 if (-not $Root) { $Root = (Resolve-Path "$PSScriptRoot/..").Path }
 if (-not $PublicDir) { $PublicDir = Join-Path $Root 'public' }
-$production = '34a291d78fa92f1a18cf76cef3ee56b391186e77'
+$production = 'e75466b8c483f60688a9f2f314fc0e63985eb859'
 $passed = 0; $failed = 0
 function Assert-Binding([string]$name, [bool]$condition) {
   if ($condition) { $script:passed++; Write-Host "PASS: $name" }

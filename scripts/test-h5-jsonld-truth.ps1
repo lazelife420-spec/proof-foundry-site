@@ -124,7 +124,7 @@ Assert-Condition ($lo -match 'href="#release-note"') "H3 guard: Lights Out what-
 # presentation.valueLine carry approved copy. Those three copy fields are
 # neutralized on both sides before comparison; every other field — release,
 # sha256, artifacts, downloads — must still match the pinned baseline exactly.
-$canonical = (git -C $root show 34a291d78fa92f1a18cf76cef3ee56b391186e77:site-manifest.json) -join "`n" | ConvertFrom-Json
+$canonical = (git -C $root show e75466b8c483f60688a9f2f314fc0e63985eb859:site-manifest.json) -join "`n" | ConvertFrom-Json
 $workProducts = @($manifest.products)
 $baseProducts = @($canonical.products)
 foreach ($set in @($workProducts, $baseProducts)) {

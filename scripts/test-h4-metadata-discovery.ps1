@@ -205,7 +205,7 @@ Assert-Condition ((git -C $root status --porcelain -- package.json package-lock.
 # moved the catalog card off the pre-rebrand HyperSnatch capture.
 $authorizedDrift = @('forgecast.presentation', 'proofshot.presentation')
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-$headManifest = (git -C $root show 34a291d78fa92f1a18cf76cef3ee56b391186e77:site-manifest.json) -join "`n" | ConvertFrom-Json
+$headManifest = (git -C $root show e75466b8c483f60688a9f2f314fc0e63985eb859:site-manifest.json) -join "`n" | ConvertFrom-Json
 $workManifest = Get-Content (Join-Path $root 'site-manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 # H10 truth consolidation (2026-09-20): new canonical fields — release.sourceCommit
 # and release.companionCandidateVersion — are absent from the pinned production
