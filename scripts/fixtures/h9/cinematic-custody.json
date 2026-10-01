@@ -1045,23 +1045,30 @@
    "lfSha256": "6e34f112887312c6757842be2c21f110071165b1fe5699190fab1e9cae9e3f47",
    "origin": "original-entry-inventory",
    "migration": {
-    "sha256": "651bc76cbf7411a7887615293f7a4d0301abceb82122c340526f84d4bd4db90a",
-    "bytes": 23001,
+    "sha256": "4040e5923a27cef77067dfed6ae5e6c5beb20a46259249e6c35568b30d24c7a4",
+    "bytes": 23051,
     "comparison": "utf8-lf",
-    "lfSha256": "651bc76cbf7411a7887615293f7a4d0301abceb82122c340526f84d4bd4db90a",
-    "reason": "Cache Vault v0.3.1 landing follow-up 2026-10-01: distribution card labels the v0.3.1 artifact as a release receipt (it is not a canonical gate receipt).",
+    "lfSha256": "4040e5923a27cef77067dfed6ae5e6c5beb20a46259249e6c35568b30d24c7a4",
+    "reason": "Cache Vault v0.3.1 landing follow-up 2026-10-01: release-evidence list corrected — receipt labeled as release receipt, v0.2.4 security-release framing dropped, device-proof claim narrowed to the lanes actually proven.",
     "previousMigration": {
-     "sha256": "803211100732be46857367c4428e161a47a6fdb9ccb765b9ef84d1355b558cfa",
-     "bytes": 23008,
+     "sha256": "651bc76cbf7411a7887615293f7a4d0301abceb82122c340526f84d4bd4db90a",
+     "bytes": 23001,
      "comparison": "utf8-lf",
-     "lfSha256": "803211100732be46857367c4428e161a47a6fdb9ccb765b9ef84d1355b558cfa",
-     "reason": "Cache Vault v0.3.1 public-truth landing 2026-10-01 (e75466b): v0.3.1 release state + standalone phone-vault capture narrative replace v0.2.4/on-hold copy.",
+     "lfSha256": "651bc76cbf7411a7887615293f7a4d0301abceb82122c340526f84d4bd4db90a",
+     "reason": "Cache Vault v0.3.1 landing follow-up 2026-10-01: distribution card labels the v0.3.1 artifact as a release receipt (it is not a canonical gate receipt).",
      "previousMigration": {
-      "sha256": "dcd3001ad54aa5c02b2d9b61535c41ca8b3d304c16c7d9e82c8a163e483a4da2",
-      "bytes": 22636,
+      "sha256": "803211100732be46857367c4428e161a47a6fdb9ccb765b9ef84d1355b558cfa",
+      "bytes": 23008,
       "comparison": "utf8-lf",
-      "lfSha256": "dcd3001ad54aa5c02b2d9b61535c41ca8b3d304c16c7d9e82c8a163e483a4da2",
-      "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
+      "lfSha256": "803211100732be46857367c4428e161a47a6fdb9ccb765b9ef84d1355b558cfa",
+      "reason": "Cache Vault v0.3.1 public-truth landing 2026-10-01 (e75466b): v0.3.1 release state + standalone phone-vault capture narrative replace v0.2.4/on-hold copy.",
+      "previousMigration": {
+       "sha256": "dcd3001ad54aa5c02b2d9b61535c41ca8b3d304c16c7d9e82c8a163e483a4da2",
+       "bytes": 22636,
+       "comparison": "utf8-lf",
+       "lfSha256": "dcd3001ad54aa5c02b2d9b61535c41ca8b3d304c16c7d9e82c8a163e483a4da2",
+       "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
+      }
      }
     }
    },
@@ -1550,35 +1557,42 @@
    "lfSha256": "eccd353c55072aaaaa9a055e82876c58796d7e64bcf62c268c84120a20e36c3a",
    "origin": "original-entry-inventory",
    "migration": {
-    "sha256": "3c9cc555254bdb01e650dd2ce45238eb7290a67d9f413ab2d6348d12a84c648f",
+    "sha256": "149f847920dc3b7c080d617e39f49e21f837a45151f23fe079ded767f0453aec",
     "bytes": 15566,
     "comparison": "utf8-lf",
-    "lfSha256": "3c9cc555254bdb01e650dd2ce45238eb7290a67d9f413ab2d6348d12a84c648f",
-    "reason": "Cache Vault v0.3.1 landing follow-up 2026-10-01: cache-vault content.html source-byte pin recomputed after the release-receipt wording fix.",
+    "lfSha256": "149f847920dc3b7c080d617e39f49e21f837a45151f23fe079ded767f0453aec",
+    "reason": "Cache Vault v0.3.1 landing follow-up 2026-10-01: cache-vault content.html source-byte pin recomputed after the release-evidence corrections.",
     "previousMigration": {
-     "sha256": "eb4652c773e5bafd67528e39d98101edad57c8ee9163f9290f33b706f5b6fc94",
+     "sha256": "3c9cc555254bdb01e650dd2ce45238eb7290a67d9f413ab2d6348d12a84c648f",
      "bytes": 15566,
      "comparison": "utf8-lf",
-     "lfSha256": "eb4652c773e5bafd67528e39d98101edad57c8ee9163f9290f33b706f5b6fc94",
-     "reason": "Cache Vault v0.3.1 public-truth landing 2026-10-01 (819a58c): production pin advanced to e75466b; roadmap.html and cache-vault content.html source-bytes re-pinned; homepage source-commit guard moved to eddbae7.",
+     "lfSha256": "3c9cc555254bdb01e650dd2ce45238eb7290a67d9f413ab2d6348d12a84c648f",
+     "reason": "Cache Vault v0.3.1 landing follow-up 2026-10-01: cache-vault content.html source-byte pin recomputed after the release-receipt wording fix.",
      "previousMigration": {
-      "sha256": "1a641116f43b04a57005663d363e1c3d17e24905d729798d16725b6bf59cdd59",
+      "sha256": "eb4652c773e5bafd67528e39d98101edad57c8ee9163f9290f33b706f5b6fc94",
       "bytes": 15566,
       "comparison": "utf8-lf",
-      "lfSha256": "1a641116f43b04a57005663d363e1c3d17e24905d729798d16725b6bf59cdd59",
-      "reason": "PF-TF1 HOLD-1 2026-09-21: companionPublicVersion added to the pinned-field normalization set (canonical truth field absent from production baseline), alongside existing sourceCommit/companionCandidateVersion handling.",
+      "lfSha256": "eb4652c773e5bafd67528e39d98101edad57c8ee9163f9290f33b706f5b6fc94",
+      "reason": "Cache Vault v0.3.1 public-truth landing 2026-10-01 (819a58c): production pin advanced to e75466b; roadmap.html and cache-vault content.html source-bytes re-pinned; homepage source-commit guard moved to eddbae7.",
       "previousMigration": {
-       "sha256": "f3fe4131dc8bd29cc3620577e4a9906e75b11ed639662b8ea8d2529843b054c5",
-       "bytes": 15495,
+       "sha256": "1a641116f43b04a57005663d363e1c3d17e24905d729798d16725b6bf59cdd59",
+       "bytes": 15566,
        "comparison": "utf8-lf",
-       "lfSha256": "f3fe4131dc8bd29cc3620577e4a9906e75b11ed639662b8ea8d2529843b054c5",
-       "reason": "PF-TF1 Truth Files 2026-09-21: route inventory extended for the new /truth-files/ surface (index + 7 product records); footer pin moved from production-comparison to TF1-authorized bytes.",
+       "lfSha256": "1a641116f43b04a57005663d363e1c3d17e24905d729798d16725b6bf59cdd59",
+       "reason": "PF-TF1 HOLD-1 2026-09-21: companionPublicVersion added to the pinned-field normalization set (canonical truth field absent from production baseline), alongside existing sourceCommit/companionCandidateVersion handling.",
        "previousMigration": {
-        "sha256": "6826b1ee76c61cdbe63eb69c4b0796aa0a4f3c0e845c8e213bf4984c382ef9c5",
-        "bytes": 15098,
+        "sha256": "f3fe4131dc8bd29cc3620577e4a9906e75b11ed639662b8ea8d2529843b054c5",
+        "bytes": 15495,
         "comparison": "utf8-lf",
-        "lfSha256": "6826b1ee76c61cdbe63eb69c4b0796aa0a4f3c0e845c8e213bf4984c382ef9c5",
-        "reason": "VR1-R3 pin refresh."
+        "lfSha256": "f3fe4131dc8bd29cc3620577e4a9906e75b11ed639662b8ea8d2529843b054c5",
+        "reason": "PF-TF1 Truth Files 2026-09-21: route inventory extended for the new /truth-files/ surface (index + 7 product records); footer pin moved from production-comparison to TF1-authorized bytes.",
+        "previousMigration": {
+         "sha256": "6826b1ee76c61cdbe63eb69c4b0796aa0a4f3c0e845c8e213bf4984c382ef9c5",
+         "bytes": 15098,
+         "comparison": "utf8-lf",
+         "lfSha256": "6826b1ee76c61cdbe63eb69c4b0796aa0a4f3c0e845c8e213bf4984c382ef9c5",
+         "reason": "VR1-R3 pin refresh."
+        }
        }
       }
      }
