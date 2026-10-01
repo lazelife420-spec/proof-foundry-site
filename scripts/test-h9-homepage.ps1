@@ -41,7 +41,7 @@ function Test-ProofShotPublic([string]$html) {
   return ($card -match 'Public v2\.0\.0' -and $card -match 'href="/proofshot/"' -and $card -notmatch 'No public release|Explore development')
 }
 Assert-H9 'ProofShot homepage card advertises public v2.0.0' (Test-ProofShotPublic $homeHtml)
-Assert-H9 'Cache Vault hero advertises public v0.2.4' ($homeHtml -match 'PUBLIC v0\.2\.4')
+Assert-H9 'Cache Vault hero advertises public v0.3.1' ($homeHtml -match 'PUBLIC v0\.3\.1')
 Assert-H9 'Reality Gate remains Developer Pilot' ($homeHtml -match 'Reality Gate' -and $homeHtml -match 'Developer Pilot')
 
 # 3. New /software/ Route

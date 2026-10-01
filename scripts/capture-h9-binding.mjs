@@ -201,7 +201,7 @@ async function catalog(cdp,viewport,{captures=true}={}) {
   check(`${label}: comparison enforces three selection maximum`,await cdp.evaluate(`document.querySelectorAll('[data-compare] input:checked').length===3&&document.querySelectorAll('[data-compare] input:disabled').length===4`));
   await cdp.evaluate(`document.querySelector('[data-compare="ghostlayer"] input').click();document.querySelector('.compare-open').focus()`);await key(cdp,'Enter','Enter',13);await settle(cdp,false);
   const comparison=await cdp.evaluate(`(()=>{const e=document.querySelector('.compare-dialog');return {open:e.open,count:e.querySelectorAll('.comparison-product').length,text:e.innerText,scrollWidth:e.scrollWidth,clientWidth:e.clientWidth,focused:document.activeElement.className};})()`);
-  check(`${label}: comparison shows current public releases`,comparison.open&&comparison.count===2&&comparison.text.includes('0.2.4')&&comparison.text.includes('2.0.0')&&!/no public release|in development/i.test(comparison.text),comparison);
+  check(`${label}: comparison shows current public releases`,comparison.open&&comparison.count===2&&comparison.text.includes('0.3.1')&&comparison.text.includes('2.0.0')&&!/no public release|in development/i.test(comparison.text),comparison);
   check(`${label}: comparison width contained`,comparison.scrollWidth<=comparison.clientWidth+1,comparison);
   check(`${label}: comparison opening focuses close control`,comparison.focused==='compare-close',comparison.focused);
   await contrast(cdp,`${label}-comparison`,['.comparison-product h3','.comparison-value','.comparison-product dt','.comparison-product dd','.compare-close']);

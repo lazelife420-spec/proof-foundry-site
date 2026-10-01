@@ -92,7 +92,7 @@ Assert-Condition ($loRegistry.release.releaseStatus -eq 'PUBLIC_RELEASE') "P1 Re
 
 # 10. Hardened Support Release-Truth Parity Assertions
 Assert-Condition ($supportHtml -match 'Reality Gate[\s\S]*?v1\.1\.0') "Support release truth: Reality Gate v1.1.0"
-Assert-Condition ($supportHtml -match 'Cache Vault[\s\S]*?Public Windows v0\.2\.4') "Support release truth: Cache Vault final public v0.2.4"
+Assert-Condition ($supportHtml -match 'Cache Vault[\s\S]*?Public Windows v0\.3\.1') "Support release truth: Cache Vault public v0.3.1"
 Assert-Condition ($supportHtml -notmatch 'v0\.2\.3-rc') "Support release truth: no RC candidate strings for Cache Vault"
 $loSupportCard = [regex]::Match($supportHtml, '(?s)<article class="detail-card">\s*<h3><a href="/lights-out/">.*?</article>').Value
 Assert-Condition ((-not [string]::IsNullOrWhiteSpace($loSupportCard)) -and ($loSupportCard -match 'Public Windows v11\.1\.3 available[\s\S]*?Android companion v11\.1\.1') -and ($loSupportCard -notmatch 'on hold|currently unavailable|candidates? on')) "Support release truth: Lights Out public release, companion parity and download availability agree"

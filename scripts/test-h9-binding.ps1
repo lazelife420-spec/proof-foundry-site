@@ -111,7 +111,7 @@ foreach ($asset in @('cv-quick-paste.png','v030-today.png','08-ci-run-complete.5
   Assert-Binding "authentic media: homepage preserves source $asset" ($homeHtml.Contains($asset))
 }
 Assert-Binding 'truth: ProofShot public 2.0.0 with verified production brand artwork' ($homeHtml -match 'Public v2\.0\.0' -and $homeHtml -match 'proofshot/web-hero\.png' -and $homeHtml -notmatch 'workbench-home\.png' -and $homeHtml -notmatch 'workbench-proof-cards')
-Assert-Binding 'truth: Cache Vault public 0.2.4 retained' ($homeHtml -match '(?i)Public v0\.2\.4')
+Assert-Binding 'truth: Cache Vault public 0.3.1 retained' ($homeHtml -match '(?i)Public v0\.3\.1')
 $realityScene = [regex]::Match($homeHtml,'(?s)<section\b[^>]*data-product="reality-gate".*?</section>').Value
 $weatherScene = [regex]::Match($homeHtml,'(?s)<section\b[^>]*data-product="forgecast".*?</section>').Value
 $ghostScene = [regex]::Match($homeHtml,'(?s)<section\b[^>]*data-product="ghostlayer".*?</section>').Value

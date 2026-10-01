@@ -91,7 +91,7 @@ foreach ($asset in @('cv-quick-paste.png','v030-today.png','08-ci-run-complete.5
   Assert-Cinematic "authentic media: homepage preserves source $asset" ($homeHtml.Contains($asset))
 }
 Assert-Cinematic 'truth: ProofShot public 2.0.0 with verified production brand artwork' ($homeHtml -match 'Public v2\.0\.0' -and $homeHtml -match 'proofshot/web-hero\.png' -and $homeHtml -notmatch 'workbench-home\.png' -and $homeHtml -notmatch 'workbench-proof-cards')
-Assert-Cinematic 'truth: Cache Vault public 0.2.4 retained' ($homeHtml -match '(?i)Public v0\.2\.4')
+Assert-Cinematic 'truth: Cache Vault public 0.3.1 retained' ($homeHtml -match '(?i)Public v0\.3\.1')
 Assert-Cinematic 'truth: Reality Gate explicitly remains Developer Pilot' ($homeHtml -match 'Developer Pilot v1\.1\.0')
 Assert-Cinematic 'truth: ForgeCast network boundary disclosed' ($homeHtml -match '(?i)network|HTTPS')
 Assert-Cinematic 'truth: GhostLayer disk boundary disclosed' ($homeHtml -match '(?i)temporary disk|temporary files|disk copies')

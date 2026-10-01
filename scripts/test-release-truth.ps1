@@ -25,15 +25,15 @@ $rgHtml = Get-Content (Join-Path $publicDir "reality-gate\index.html") -Raw
 Assert-Condition ($rgHtml -match 'First-Class CLI &amp; Instance Discovery \(RG-05\)') "Reality Gate matrix includes RG-05"
 Assert-Condition ($rgHtml -match '(?s)First-Class CLI &amp; Instance Discovery \(RG-05\).*?Branch Qualified') "RG-05 matrix row reports Branch Qualified, resolving F01 contradiction"
 
-# 2. Current production release reconciliation: Cache Vault v0.2.4.
+# 2. Current production release reconciliation: Cache Vault v0.3.1.
 $cvHtml = Get-Content (Join-Path $publicDir "cache-vault\index.html") -Raw
 Assert-Condition ($cvHtml -match 'available from Proof Foundry downloads') "Cache Vault exposes explicit download availability notice"
 Assert-Condition ($cvHtml -match 'Proof Foundry downloads') "Cache Vault states distribution source"
-Assert-Condition ($cvHtml -match 'v0\.2\.4 is the current public Windows release') "Cache Vault leads with final public v0.2.4 release state"
-Assert-Condition ($cvHtml -match [regex]::Escape('https://downloads.theprooffoundry.com/cache-vault/v0.2.4/CacheVault-v0.2.4-windows.zip')) "Cache Vault primary CTA resolves to the final v0.2.4 Windows ZIP"
-Assert-Condition ($cvHtml -match '717ed13efd3d8d4e5a16d4e412ed5be0fd20b0219918f913d7d2b44f021cae7e') "Cache Vault publishes the final v0.2.4 ZIP SHA-256"
+Assert-Condition ($cvHtml -match 'v0\.3\.1 is the current public Windows release') "Cache Vault leads with the current public v0.3.1 release state"
+Assert-Condition ($cvHtml -match [regex]::Escape('https://downloads.theprooffoundry.com/cache-vault/v0.3.1/CacheVault-v0.3.1-windows.zip')) "Cache Vault primary CTA resolves to the v0.3.1 Windows ZIP"
+Assert-Condition ($cvHtml -match 'd0c59c440b1d5787c9319e1bdf8829f117ccaa2d64d3424dd6955a84fb975d45') "Cache Vault publishes the v0.3.1 ZIP SHA-256"
 Assert-Condition ($cvHtml -notmatch 'v0\.2\.3-rc1|v0\.2\.3-rc2') "Cache Vault carries no RC1/RC2 candidate strings"
-Assert-Condition ($cvHtml -notmatch 'release candidate') "Cache Vault does not present v0.2.4 as a candidate"
+Assert-Condition ($cvHtml -notmatch 'release candidate') "Cache Vault does not present v0.3.1 as a candidate"
 
 # ProofShot's former no-release guard is superseded by the shipped installer.
 $psHtml = Get-Content (Join-Path $publicDir 'proofshot\index.html') -Raw -Encoding UTF8
@@ -61,9 +61,9 @@ Assert-Condition ($rgRegistry.release.publicVersion -eq '1.1.0') "Registry Reali
 $cvRegistry = $registryJson.products | Where-Object { $_.id -eq 'cache-vault' }
 Assert-Condition ($cvRegistry.verification.status -eq 'VERIFIED') "Registry Cache Vault verification status is VERIFIED"
 Assert-Condition ($cvRegistry.release.releaseStatus -eq 'PUBLIC_RELEASE') "Registry Cache Vault release status is PUBLIC_RELEASE (final public)"
-Assert-Condition ($cvRegistry.release.publicVersion -eq '0.2.4') "Registry Cache Vault public version is 0.2.4"
-Assert-Condition ($null -eq $cvRegistry.release.candidateVersion) "Registry Cache Vault carries no candidate version (v0.2.4 is final)"
-Assert-Condition ($cvRegistry.release.publishedAt -eq '2026-09-17') "Registry Cache Vault publishedAt matches the final release receipt date"
+Assert-Condition ($cvRegistry.release.publicVersion -eq '0.3.1') "Registry Cache Vault public version is 0.3.1"
+Assert-Condition ($null -eq $cvRegistry.release.candidateVersion) "Registry Cache Vault carries no candidate version (v0.3.1 is public)"
+Assert-Condition ($cvRegistry.release.publishedAt -eq '2026-10-01') "Registry Cache Vault publishedAt matches the release date"
 
 $psRegistry = $registryJson.products | Where-Object { $_.id -eq 'proofshot' }
 Assert-Condition ($psRegistry.release.publicVersion -eq '2.0.0') 'Registry ProofShot public version is 2.0.0'
