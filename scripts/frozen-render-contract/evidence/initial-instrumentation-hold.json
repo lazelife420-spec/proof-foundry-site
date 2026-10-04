@@ -1,0 +1,18 @@
+{
+  "state": "DIAGNOSTIC_INSTRUMENTATION_HOLD",
+  "exitCode": 1,
+  "error": "ValueError: CDP/DOM coordinate mismatch",
+  "affected": "attempt-01/home-mobile-390-full.png.geometry.json",
+  "evidence": {
+    "domClientWidth": 390,
+    "domScrollHeight": 4819,
+    "domScrollY": 3975,
+    "cdpQuadOffsetFromDom": {
+      "x": -7.5,
+      "y": -59
+    }
+  },
+  "explanation": "Full-page capture temporarily hides the scrollbar. Two sequential probes crossed its asynchronous restoration. Pixel images are retained; this receipt cannot establish an exact geometry guard.",
+  "qualificationComparatorChanged": false,
+  "next": "Preserve all first-cohort captures and repeat all eight states five times with two animation frames before post-full-page geometry probes."
+}

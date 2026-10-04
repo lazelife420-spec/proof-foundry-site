@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "candidate": {
+    "commit": "dd5763ee5e841e881ebde9fe49cc2fc2bbd1d159",
+    "tree": "415391ceca5488969f296453c60fd524f82051ad",
+    "parent": "92adc410ebfc32aabc77a04470ca697118879086"
+  },
+  "sourceHashes": {
+    "index.html": "a59a10e8e3cdc7a30f0e99e119bc658792257e7db228c95605858e4723abcaa2",
+    "pf-home-ledger.css": "a4c531dcc9bdec7ee9950d5db79a1f0270fade4f53ddd17285d495f3f7d4d34c",
+    "homepage-ledger.json": "485b30fb9e2a9d287e488017a758393eacee902b77077d7284dfc39cb98701ef",
+    "brand/PF_MARK_G_MONO_DARK.svg": "9ebbb300e52016494a63cada1c7aba7d01ecc70c3e6a5ab2227ee2dd28ada6fe",
+    "brand/PF_MARK_G_MONO_LIGHT.svg": "9cdf61259893ae2ed5515a2661dcb20498381a6e913543c080ee4d1c590b1e17"
+  },
+  "originalCaptureScriptSha256": "8038f50a07522b3bf39097ce35964edec6ef7504b2ec2371b806937c398b7292",
+  "chromeExecutableSha256": "1e9412868bbc9faff92d129babd17331e7ceab0702cc07db02a34f3438ae04f2",
+  "chromeVersion": "Chrome/154.0.8037.93",
+  "formula": "Local plate border-box union non-inset shadows: [dx-spread-1.5*blur, dy-spread-1.5*blur, w+dx+spread+1.5*blur, h+dy+spread+1.5*blur]; project via CDP border-quad homography; map scroll/clip/DPR to screenshot; dilate one raster pixel; subtract unrelated DOM boxes with one raster pixel allowance.",
+  "insideRGBDeltaMaximum": 1,
+  "alphaExact": true,
+  "outsideRGBAExact": true,
+  "references": {
+    "home-desktop-1440-full.png": "481c6e44a5b875cceeefe9f55d74d7a2d928dea03b7d2244121a3a7d3c7ebd70",
+    "home-desktop-1440-top.png": "28fb1ebf858b8949d50f278d5ecf3f04c9942bf306560b14d111ba9e1c841814",
+    "home-mobile-390-full.png": "31ca6b6787df503b92b23a81c2277b7fb0e6dfb1323d4dab1f4961f86c50d6c7",
+    "home-mobile-390-top.png": "f20a237fd4c19389007bae1a932f07a963df5899a54df6e894aec5229dd94a71",
+    "home-narrow-320-top.png": "fdaab9163f7157ffd6b5099adf7a7fac326b80c84b91b0d6bc8ee10b20c11bb7",
+    "home-actual-zoom-200-top.png": "8e24d02af5b82e5e84249ea14dcf60120eac30fef44d228c84f4c26ce24c18ee",
+    "home-actual-zoom-200-mid.png": "c6fbf738a18e412916539ce33ea86875f11f9ea552099aab853986573209a782",
+    "home-actual-zoom-200-footer.png": "1cedc69383b9d9ac3017651831263715698457c8a254ee96c55561f0504676aa"
+  },
+  "phaseA": {
+    "freshCaptures": 40,
+    "pairs": 80,
+    "maximumChangedPixels": 2353,
+    "maximumRGBChannelDelta": 1,
+    "negativeControls": 8,
+    "physicalWindowsReducedMotion": "NOT TESTED"
+  },
+  "rawEvidenceLocation": "C:\\Users\\KickA\\.codex\\worktrees\\proof-ledger-independent-reexecution\\proof-foundry-site\\receipts\\render-contract-20261004"
+}

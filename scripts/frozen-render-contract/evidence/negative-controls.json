@@ -1,0 +1,445 @@
+{
+  "status": "PASS",
+  "controls": [
+    {
+      "control": "A",
+      "method": "runtime-only DOM/CSS override in disposable Chrome profile",
+      "expected": "/elements/.ledger-plate/rect",
+      "expectedRejectionDemonstrated": true,
+      "result": {
+        "pass": false,
+        "reason": [
+          "INSIDE_ENVELOPE_RGB_GT_1"
+        ],
+        "dimensions": [
+          1440,
+          900
+        ],
+        "pixels": 1296000,
+        "changedPixels": 150474,
+        "changedPercentage": 11.610648148148147,
+        "bounds": [
+          777,
+          113,
+          1228,
+          617
+        ],
+        "maxRGBDelta": [
+          181,
+          183,
+          177
+        ],
+        "maxAlphaDelta": 0,
+        "alphaChangedPixels": 0,
+        "changedOutsideEnvelope": 0,
+        "insideExcessPixels": 44816,
+        "allChangedWithinEnvelope": true,
+        "exactDeterministicPixelsChecked": 1061280,
+        "toleratedDecorativePixels": 105658,
+        "guardChanges": [
+          "/boxModel/content",
+          "/boxModel/padding",
+          "/boxModel/border",
+          "/boxModel/margin",
+          "/elements/.ledger-plate-mark/documentRect/y",
+          "/elements/.ledger-plate-mark/documentRect/height",
+          "/elements/.ledger-plate-mark/documentRect/width",
+          "/elements/.ledger-plate-mark/documentRect/x",
+          "/elements/.ledger-plate-mark/rect/y",
+          "/elements/.ledger-plate-mark/rect/bottom",
+          "/elements/.ledger-plate-mark/rect/height",
+          "/elements/.ledger-plate-mark/rect/width",
+          "/elements/.ledger-plate-mark/rect/left",
+          "/elements/.ledger-plate-mark/rect/top",
+          "/elements/.ledger-plate-mark/rect/x",
+          "/elements/.ledger-plate-mark/rect/right",
+          "/elements/.ledger-plate-name/documentRect/y",
+          "/elements/.ledger-plate-name/documentRect/height",
+          "/elements/.ledger-plate-name/documentRect/width",
+          "/elements/.ledger-plate-name/documentRect/x",
+          "/elements/.ledger-plate-name/rect/y",
+          "/elements/.ledger-plate-name/rect/bottom",
+          "/elements/.ledger-plate-name/rect/height",
+          "/elements/.ledger-plate-name/rect/width",
+          "/elements/.ledger-plate-name/rect/left",
+          "/elements/.ledger-plate-name/rect/top",
+          "/elements/.ledger-plate-name/rect/x",
+          "/elements/.ledger-plate-name/rect/right",
+          "/elements/.ledger-plate-edge/documentRect/y",
+          "/elements/.ledger-plate-edge/documentRect/height",
+          "/elements/.ledger-plate-edge/documentRect/width",
+          "/elements/.ledger-plate-edge/documentRect/x",
+          "/elements/.ledger-plate-edge/rect/y",
+          "/elements/.ledger-plate-edge/rect/bottom",
+          "/elements/.ledger-plate-edge/rect/height",
+          "/elements/.ledger-plate-edge/rect/width",
+          "/elements/.ledger-plate-edge/rect/left",
+          "/elements/.ledger-plate-edge/rect/top",
+          "/elements/.ledger-plate-edge/rect/x",
+          "/elements/.ledger-plate-edge/rect/right",
+          "/elements/.ledger-plate-grain/documentRect/y",
+          "/elements/.ledger-plate-grain/documentRect/height",
+          "/elements/.ledger-plate-grain/documentRect/width",
+          "/elements/.ledger-plate-grain/documentRect/x",
+          "/elements/.ledger-plate-grain/rect/y",
+          "/elements/.ledger-plate-grain/rect/bottom",
+          "/elements/.ledger-plate-grain/rect/height",
+          "/elements/.ledger-plate-grain/rect/width",
+          "/elements/.ledger-plate-grain/rect/left",
+          "/elements/.ledger-plate-grain/rect/top",
+          "/elements/.ledger-plate-grain/rect/x",
+          "/elements/.ledger-plate-grain/rect/right",
+          "/elements/.ledger-inlay/documentRect/y",
+          "/elements/.ledger-inlay/documentRect/height",
+          "/elements/.ledger-inlay/documentRect/width",
+          "/elements/.ledger-inlay/documentRect/x",
+          "/elements/.ledger-inlay/rect/y",
+          "/elements/.ledger-inlay/rect/bottom",
+          "/elements/.ledger-inlay/rect/height",
+          "/elements/.ledger-inlay/rect/width",
+          "/elements/.ledger-inlay/rect/left",
+          "/elements/.ledger-inlay/rect/top",
+          "/elements/.ledger-inlay/rect/x",
+          "/elements/.ledger-inlay/rect/right",
+          "/elements/.ledger-plate-serial/documentRect/y",
+          "/elements/.ledger-plate-serial/documentRect/height",
+          "/elements/.ledger-plate-serial/documentRect/width",
+          "/elements/.ledger-plate-serial/documentRect/x",
+          "/elements/.ledger-plate-serial/rect/y",
+          "/elements/.ledger-plate-serial/rect/bottom",
+          "/elements/.ledger-plate-serial/rect/height",
+          "/elements/.ledger-plate-serial/rect/width",
+          "/elements/.ledger-plate-serial/rect/left",
+          "/elements/.ledger-plate-serial/rect/top",
+          "/elements/.ledger-plate-serial/rect/x",
+          "/elements/.ledger-plate-serial/rect/right",
+          "/elements/.ledger-plate/styles/transform",
+          "/elements/.ledger-plate/documentRect/y",
+          "/elements/.ledger-plate/documentRect/height",
+          "/elements/.ledger-plate/documentRect/width",
+          "/elements/.ledger-plate/documentRect/x",
+          "/elements/.ledger-plate/rect/y",
+          "/elements/.ledger-plate/rect/bottom",
+          "/elements/.ledger-plate/rect/height",
+          "/elements/.ledger-plate/rect/width",
+          "/elements/.ledger-plate/rect/left",
+          "/elements/.ledger-plate/rect/top",
+          "/elements/.ledger-plate/rect/x",
+          "/elements/.ledger-plate/rect/right",
+          "/elements/.ledger-plate-emblem/documentRect/y",
+          "/elements/.ledger-plate-emblem/documentRect/height",
+          "/elements/.ledger-plate-emblem/documentRect/width",
+          "/elements/.ledger-plate-emblem/documentRect/x",
+          "/elements/.ledger-plate-emblem/rect/y",
+          "/elements/.ledger-plate-emblem/rect/bottom",
+          "/elements/.ledger-plate-emblem/rect/height",
+          "/elements/.ledger-plate-emblem/rect/width",
+          "/elements/.ledger-plate-emblem/rect/left",
+          "/elements/.ledger-plate-emblem/rect/top",
+          "/elements/.ledger-plate-emblem/rect/x",
+          "/elements/.ledger-plate-emblem/rect/right",
+          "/elements/.ledger-plate-motto/documentRect/y",
+          "/elements/.ledger-plate-motto/documentRect/height",
+          "/elements/.ledger-plate-motto/documentRect/width",
+          "/elements/.ledger-plate-motto/documentRect/x",
+          "/elements/.ledger-plate-motto/rect/y",
+          "/elements/.ledger-plate-motto/rect/bottom",
+          "/elements/.ledger-plate-motto/rect/height",
+          "/elements/.ledger-plate-motto/rect/width",
+          "/elements/.ledger-plate-motto/rect/left",
+          "/elements/.ledger-plate-motto/rect/top",
+          "/elements/.ledger-plate-motto/rect/x",
+          "/elements/.ledger-plate-motto/rect/right"
+        ],
+        "structuralGuardsExact": false,
+        "comparisonPass": false
+      }
+    },
+    {
+      "control": "B",
+      "method": "runtime-only DOM/CSS override in disposable Chrome profile",
+      "expected": "/elements/.ledger-plate-mark/styles/transform",
+      "expectedRejectionDemonstrated": true,
+      "result": {
+        "pass": false,
+        "reason": [
+          "INSIDE_ENVELOPE_RGB_GT_1"
+        ],
+        "dimensions": [
+          1440,
+          900
+        ],
+        "pixels": 1296000,
+        "changedPixels": 22823,
+        "changedPercentage": 1.7610339506172838,
+        "bounds": [
+          867,
+          179,
+          1102,
+          430
+        ],
+        "maxRGBDelta": [
+          158,
+          157,
+          148
+        ],
+        "maxAlphaDelta": 0,
+        "alphaChangedPixels": 0,
+        "changedOutsideEnvelope": 0,
+        "insideExcessPixels": 4768,
+        "allChangedWithinEnvelope": true,
+        "exactDeterministicPixelsChecked": 1061280,
+        "toleratedDecorativePixels": 18055,
+        "guardChanges": [
+          "/elements/.ledger-plate-mark/styles/transform",
+          "/elements/.ledger-plate-mark/documentRect/y",
+          "/elements/.ledger-plate-mark/documentRect/height",
+          "/elements/.ledger-plate-mark/documentRect/width",
+          "/elements/.ledger-plate-mark/documentRect/x",
+          "/elements/.ledger-plate-mark/rect/y",
+          "/elements/.ledger-plate-mark/rect/bottom",
+          "/elements/.ledger-plate-mark/rect/height",
+          "/elements/.ledger-plate-mark/rect/width",
+          "/elements/.ledger-plate-mark/rect/left",
+          "/elements/.ledger-plate-mark/rect/top",
+          "/elements/.ledger-plate-mark/rect/x",
+          "/elements/.ledger-plate-mark/rect/right"
+        ],
+        "structuralGuardsExact": false,
+        "comparisonPass": false
+      }
+    },
+    {
+      "control": "C",
+      "method": "runtime-only DOM/CSS override in disposable Chrome profile",
+      "expected": "/elements/.ledger-plate-name/text",
+      "expectedRejectionDemonstrated": true,
+      "result": {
+        "pass": false,
+        "reason": [
+          "INSIDE_ENVELOPE_RGB_GT_1"
+        ],
+        "dimensions": [
+          1440,
+          900
+        ],
+        "pixels": 1296000,
+        "changedPixels": 2177,
+        "changedPercentage": 0.1679783950617284,
+        "bounds": [
+          878,
+          466,
+          1098,
+          488
+        ],
+        "maxRGBDelta": [
+          119,
+          122,
+          117
+        ],
+        "maxAlphaDelta": 0,
+        "alphaChangedPixels": 0,
+        "changedOutsideEnvelope": 0,
+        "insideExcessPixels": 1983,
+        "allChangedWithinEnvelope": true,
+        "exactDeterministicPixelsChecked": 1061280,
+        "toleratedDecorativePixels": 194,
+        "guardChanges": [
+          "/elements/.ledger-plate-name/text",
+          "/elements/.ledger-plate-scene/text",
+          "/elements/.ledger-plate/text"
+        ],
+        "structuralGuardsExact": false,
+        "comparisonPass": false
+      }
+    },
+    {
+      "control": "E",
+      "method": "runtime-only DOM/CSS override in disposable Chrome profile",
+      "expected": "INSIDE_ENVELOPE_RGB_GT_1",
+      "expectedRejectionDemonstrated": true,
+      "result": {
+        "pass": false,
+        "reason": [
+          "INSIDE_ENVELOPE_RGB_GT_1"
+        ],
+        "dimensions": [
+          1440,
+          900
+        ],
+        "pixels": 1296000,
+        "changedPixels": 143066,
+        "changedPercentage": 11.039043209876544,
+        "bounds": [
+          778,
+          115,
+          1193,
+          582
+        ],
+        "maxRGBDelta": [
+          132,
+          92,
+          40
+        ],
+        "maxAlphaDelta": 0,
+        "alphaChangedPixels": 0,
+        "changedOutsideEnvelope": 0,
+        "insideExcessPixels": 142901,
+        "allChangedWithinEnvelope": true,
+        "exactDeterministicPixelsChecked": 1061280,
+        "toleratedDecorativePixels": 165,
+        "guardChanges": [
+          "/elements/.ledger-plate/styles/background"
+        ],
+        "structuralGuardsExact": false,
+        "comparisonPass": false
+      }
+    },
+    {
+      "control": "D",
+      "method": "disposable PNG derivative: hero headline RGB pixel",
+      "point": [
+        240,
+        164
+      ],
+      "insideEnvelope": false,
+      "expected": "OUTSIDE_ENVELOPE_RGBA",
+      "expectedRejectionDemonstrated": true,
+      "result": {
+        "pass": false,
+        "reason": [
+          "OUTSIDE_ENVELOPE_RGBA"
+        ],
+        "dimensions": [
+          1440,
+          900
+        ],
+        "pixels": 1296000,
+        "changedPixels": 1,
+        "changedPercentage": 0.00007716049382716049,
+        "bounds": [
+          240,
+          164,
+          241,
+          165
+        ],
+        "maxRGBDelta": [
+          1,
+          0,
+          0
+        ],
+        "maxAlphaDelta": 0,
+        "alphaChangedPixels": 0,
+        "changedOutsideEnvelope": 1,
+        "insideExcessPixels": 0,
+        "allChangedWithinEnvelope": false,
+        "exactDeterministicPixelsChecked": 1061280,
+        "toleratedDecorativePixels": 0,
+        "structuralGuardsExact": true,
+        "comparisonPass": false
+      }
+    },
+    {
+      "control": "F",
+      "method": "disposable PNG derivative: plate-envelope alpha pixel",
+      "point": [
+        992,
+        371
+      ],
+      "insideEnvelope": true,
+      "expected": "ALPHA",
+      "expectedRejectionDemonstrated": true,
+      "result": {
+        "pass": false,
+        "reason": [
+          "ALPHA"
+        ],
+        "dimensions": [
+          1440,
+          900
+        ],
+        "pixels": 1296000,
+        "changedPixels": 1,
+        "changedPercentage": 0.00007716049382716049,
+        "bounds": [
+          992,
+          371,
+          993,
+          372
+        ],
+        "maxRGBDelta": [
+          0,
+          0,
+          0
+        ],
+        "maxAlphaDelta": 1,
+        "alphaChangedPixels": 1,
+        "changedOutsideEnvelope": 0,
+        "insideExcessPixels": 0,
+        "allChangedWithinEnvelope": true,
+        "exactDeterministicPixelsChecked": 1061280,
+        "toleratedDecorativePixels": 0,
+        "structuralGuardsExact": true,
+        "comparisonPass": false
+      }
+    },
+    {
+      "control": "G",
+      "method": "disposable PNG derivative: single RGB channel outside envelope",
+      "point": [
+        0,
+        0
+      ],
+      "insideEnvelope": false,
+      "expected": "OUTSIDE_ENVELOPE_RGBA",
+      "expectedRejectionDemonstrated": true,
+      "result": {
+        "pass": false,
+        "reason": [
+          "OUTSIDE_ENVELOPE_RGBA"
+        ],
+        "dimensions": [
+          1440,
+          900
+        ],
+        "pixels": 1296000,
+        "changedPixels": 1,
+        "changedPercentage": 0.00007716049382716049,
+        "bounds": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "maxRGBDelta": [
+          1,
+          0,
+          0
+        ],
+        "maxAlphaDelta": 0,
+        "alphaChangedPixels": 0,
+        "changedOutsideEnvelope": 1,
+        "insideExcessPixels": 0,
+        "allChangedWithinEnvelope": false,
+        "exactDeterministicPixelsChecked": 1061280,
+        "toleratedDecorativePixels": 0,
+        "structuralGuardsExact": true,
+        "comparisonPass": false
+      }
+    },
+    {
+      "control": "H",
+      "method": "disposable asset-receipt hash mutation; candidate asset untouched",
+      "expected": "/sourceHashes/brand/PF_MARK_G_MONO_DARK.svg",
+      "expectedRejectionDemonstrated": true,
+      "guardChanges": [
+        "/sourceHashes/brand/PF_MARK_G_MONO_DARK.svg"
+      ],
+      "pixelsIdentical": true
+    }
+  ],
+  "total": 8,
+  "rejectedAsExpected": 8,
+  "candidateSourceEdited": false,
+  "referencesRegenerated": false
+}

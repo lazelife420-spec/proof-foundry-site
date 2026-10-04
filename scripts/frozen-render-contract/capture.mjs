@@ -1,0 +1,15 @@
+import fs from 'node:fs';import path from 'node:path';import crypto from 'node:crypto';import {spawn} from 'node:child_process';
+const here=import.meta.dirname,[rootArg,originalArg,outArg]=process.argv.slice(2);
+if(!outArg)throw Error('Usage: capture.mjs ROOT APPROVED_BROWSER_HARNESS OUTPUT_DIRECTORY');
+const root=path.resolve(rootArg),originalPath=path.resolve(originalArg),out=path.resolve(outArg),renderManifest=JSON.parse(fs.readFileSync(path.join(here,'manifest.json'))),sha=b=>crypto.createHash('sha256').update(b).digest('hex');
+const bytes=fs.readFileSync(originalPath);if(sha(bytes)!==renderManifest.originalCaptureScriptSha256)throw Error('Approved browser harness byte drift');
+const executable='C:/Program Files/Google/Chrome/Application/chrome.exe';if(sha(fs.readFileSync(executable))!==renderManifest.chromeExecutableSha256)throw Error('Qualified Chrome binary drift');
+for(const[f,hash]of Object.entries(renderManifest.sourceHashes))if(sha(fs.readFileSync(path.join(root,f)))!==hash)throw Error('Frozen source/asset drift '+f);
+let code=bytes.toString('utf8');const anchor='  const capture=async(name,full=false)=>',tail='report.captures.push({name,bytes:bytes.length,sha256:sha(bytes)});};';
+if(!code.includes(anchor)||!code.includes(tail))throw Error('Approved capture hook points changed');
+const prefix='\n  const renderManifest='+JSON.stringify(renderManifest)+';\n';const hook=fs.readFileSync(path.join(here,'geometry-hook.txt'),'utf8');
+code=code.replace(anchor,prefix+hook+anchor).replace(tail,'report.captures.push({name,bytes:bytes.length,sha256:sha(bytes)});await collectGeometry(name,params);};');
+const program=out+'.geometry-program.mjs';fs.writeFileSync(program,code,{flag:'wx'});
+const exitCode=await new Promise((resolve,reject)=>{const child=spawn(process.execPath,[program,root,out],{cwd:root,windowsHide:true,stdio:'inherit'});child.once('error',reject);child.once('close',resolve);});
+if(sha(fs.readFileSync(originalPath))!==renderManifest.originalCaptureScriptSha256)throw Error('Original browser harness changed');
+process.exitCode=exitCode;

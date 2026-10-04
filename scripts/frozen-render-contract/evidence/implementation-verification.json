@@ -1,0 +1,318 @@
+{
+  "rows": [
+    {
+      "name": "positive-1",
+      "exitCode": 0,
+      "expectedExit": 0,
+      "passed": 8,
+      "total": 8,
+      "failedReasons": []
+    },
+    {
+      "name": "positive-2",
+      "exitCode": 0,
+      "expectedExit": 0,
+      "passed": 8,
+      "total": 8,
+      "failedReasons": []
+    },
+    {
+      "name": "positive-3",
+      "exitCode": 0,
+      "expectedExit": 0,
+      "passed": 8,
+      "total": 8,
+      "failedReasons": []
+    },
+    {
+      "name": "positive-4",
+      "exitCode": 0,
+      "expectedExit": 0,
+      "passed": 8,
+      "total": 8,
+      "failedReasons": []
+    },
+    {
+      "name": "positive-5",
+      "exitCode": 0,
+      "expectedExit": 0,
+      "passed": 8,
+      "total": 8,
+      "failedReasons": []
+    },
+    {
+      "name": "negative-A",
+      "exitCode": 1,
+      "expectedExit": 1,
+      "passed": 7,
+      "total": 8,
+      "failedReasons": [
+        {
+          "name": "home-desktop-1440-top.png",
+          "reason": [
+            "INSIDE_ENVELOPE_RGB_GT_1",
+            "EXACT_STRUCTURAL_GUARD",
+            "GEOMETRY_CAPTURE_PIXEL_CONTRACT"
+          ],
+          "guards": [
+            "/boxModel/border",
+            "/boxModel/content",
+            "/boxModel/margin",
+            "/boxModel/padding",
+            "/elements/.ledger-inlay/documentRect/height",
+            "/elements/.ledger-inlay/documentRect/width",
+            "/elements/.ledger-inlay/documentRect/x",
+            "/elements/.ledger-inlay/documentRect/y",
+            "/elements/.ledger-inlay/rect/bottom",
+            "/elements/.ledger-inlay/rect/height",
+            "/elements/.ledger-inlay/rect/left",
+            "/elements/.ledger-inlay/rect/right",
+            "/elements/.ledger-inlay/rect/top",
+            "/elements/.ledger-inlay/rect/width",
+            "/elements/.ledger-inlay/rect/x",
+            "/elements/.ledger-inlay/rect/y",
+            "/elements/.ledger-plate/documentRect/height",
+            "/elements/.ledger-plate/documentRect/width",
+            "/elements/.ledger-plate/documentRect/x",
+            "/elements/.ledger-plate/documentRect/y",
+            "/elements/.ledger-plate/rect/bottom",
+            "/elements/.ledger-plate/rect/height",
+            "/elements/.ledger-plate/rect/left",
+            "/elements/.ledger-plate/rect/right",
+            "/elements/.ledger-plate/rect/top",
+            "/elements/.ledger-plate/rect/width",
+            "/elements/.ledger-plate/rect/x",
+            "/elements/.ledger-plate/rect/y",
+            "/elements/.ledger-plate/styles/transform",
+            "/elements/.ledger-plate-edge/documentRect/height",
+            "/elements/.ledger-plate-edge/documentRect/width",
+            "/elements/.ledger-plate-edge/documentRect/x",
+            "/elements/.ledger-plate-edge/documentRect/y",
+            "/elements/.ledger-plate-edge/rect/bottom",
+            "/elements/.ledger-plate-edge/rect/height",
+            "/elements/.ledger-plate-edge/rect/left",
+            "/elements/.ledger-plate-edge/rect/right",
+            "/elements/.ledger-plate-edge/rect/top",
+            "/elements/.ledger-plate-edge/rect/width",
+            "/elements/.ledger-plate-edge/rect/x",
+            "/elements/.ledger-plate-edge/rect/y",
+            "/elements/.ledger-plate-emblem/documentRect/height",
+            "/elements/.ledger-plate-emblem/documentRect/width",
+            "/elements/.ledger-plate-emblem/documentRect/x",
+            "/elements/.ledger-plate-emblem/documentRect/y",
+            "/elements/.ledger-plate-emblem/rect/bottom",
+            "/elements/.ledger-plate-emblem/rect/height",
+            "/elements/.ledger-plate-emblem/rect/left",
+            "/elements/.ledger-plate-emblem/rect/right",
+            "/elements/.ledger-plate-emblem/rect/top",
+            "/elements/.ledger-plate-emblem/rect/width",
+            "/elements/.ledger-plate-emblem/rect/x",
+            "/elements/.ledger-plate-emblem/rect/y",
+            "/elements/.ledger-plate-grain/documentRect/height",
+            "/elements/.ledger-plate-grain/documentRect/width",
+            "/elements/.ledger-plate-grain/documentRect/x",
+            "/elements/.ledger-plate-grain/documentRect/y",
+            "/elements/.ledger-plate-grain/rect/bottom",
+            "/elements/.ledger-plate-grain/rect/height",
+            "/elements/.ledger-plate-grain/rect/left",
+            "/elements/.ledger-plate-grain/rect/right",
+            "/elements/.ledger-plate-grain/rect/top",
+            "/elements/.ledger-plate-grain/rect/width",
+            "/elements/.ledger-plate-grain/rect/x",
+            "/elements/.ledger-plate-grain/rect/y",
+            "/elements/.ledger-plate-mark/documentRect/height",
+            "/elements/.ledger-plate-mark/documentRect/width",
+            "/elements/.ledger-plate-mark/documentRect/x",
+            "/elements/.ledger-plate-mark/documentRect/y",
+            "/elements/.ledger-plate-mark/rect/bottom",
+            "/elements/.ledger-plate-mark/rect/height",
+            "/elements/.ledger-plate-mark/rect/left",
+            "/elements/.ledger-plate-mark/rect/right",
+            "/elements/.ledger-plate-mark/rect/top",
+            "/elements/.ledger-plate-mark/rect/width",
+            "/elements/.ledger-plate-mark/rect/x",
+            "/elements/.ledger-plate-mark/rect/y",
+            "/elements/.ledger-plate-motto/documentRect/height",
+            "/elements/.ledger-plate-motto/documentRect/width",
+            "/elements/.ledger-plate-motto/documentRect/x",
+            "/elements/.ledger-plate-motto/documentRect/y",
+            "/elements/.ledger-plate-motto/rect/bottom",
+            "/elements/.ledger-plate-motto/rect/height",
+            "/elements/.ledger-plate-motto/rect/left",
+            "/elements/.ledger-plate-motto/rect/right",
+            "/elements/.ledger-plate-motto/rect/top",
+            "/elements/.ledger-plate-motto/rect/width",
+            "/elements/.ledger-plate-motto/rect/x",
+            "/elements/.ledger-plate-motto/rect/y",
+            "/elements/.ledger-plate-name/documentRect/height",
+            "/elements/.ledger-plate-name/documentRect/width",
+            "/elements/.ledger-plate-name/documentRect/x",
+            "/elements/.ledger-plate-name/documentRect/y",
+            "/elements/.ledger-plate-name/rect/bottom",
+            "/elements/.ledger-plate-name/rect/height",
+            "/elements/.ledger-plate-name/rect/left",
+            "/elements/.ledger-plate-name/rect/right",
+            "/elements/.ledger-plate-name/rect/top",
+            "/elements/.ledger-plate-name/rect/width",
+            "/elements/.ledger-plate-name/rect/x",
+            "/elements/.ledger-plate-name/rect/y",
+            "/elements/.ledger-plate-serial/documentRect/height",
+            "/elements/.ledger-plate-serial/documentRect/width",
+            "/elements/.ledger-plate-serial/documentRect/x",
+            "/elements/.ledger-plate-serial/documentRect/y",
+            "/elements/.ledger-plate-serial/rect/bottom",
+            "/elements/.ledger-plate-serial/rect/height",
+            "/elements/.ledger-plate-serial/rect/left",
+            "/elements/.ledger-plate-serial/rect/right",
+            "/elements/.ledger-plate-serial/rect/top",
+            "/elements/.ledger-plate-serial/rect/width",
+            "/elements/.ledger-plate-serial/rect/x",
+            "/elements/.ledger-plate-serial/rect/y"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "negative-B",
+      "exitCode": 1,
+      "expectedExit": 1,
+      "passed": 7,
+      "total": 8,
+      "failedReasons": [
+        {
+          "name": "home-desktop-1440-top.png",
+          "reason": [
+            "INSIDE_ENVELOPE_RGB_GT_1",
+            "EXACT_STRUCTURAL_GUARD",
+            "GEOMETRY_CAPTURE_PIXEL_CONTRACT"
+          ],
+          "guards": [
+            "/elements/.ledger-plate-mark/documentRect/height",
+            "/elements/.ledger-plate-mark/documentRect/width",
+            "/elements/.ledger-plate-mark/documentRect/x",
+            "/elements/.ledger-plate-mark/documentRect/y",
+            "/elements/.ledger-plate-mark/rect/bottom",
+            "/elements/.ledger-plate-mark/rect/height",
+            "/elements/.ledger-plate-mark/rect/left",
+            "/elements/.ledger-plate-mark/rect/right",
+            "/elements/.ledger-plate-mark/rect/top",
+            "/elements/.ledger-plate-mark/rect/width",
+            "/elements/.ledger-plate-mark/rect/x",
+            "/elements/.ledger-plate-mark/rect/y",
+            "/elements/.ledger-plate-mark/styles/transform"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "negative-C",
+      "exitCode": 1,
+      "expectedExit": 1,
+      "passed": 7,
+      "total": 8,
+      "failedReasons": [
+        {
+          "name": "home-desktop-1440-top.png",
+          "reason": [
+            "INSIDE_ENVELOPE_RGB_GT_1",
+            "EXACT_STRUCTURAL_GUARD",
+            "GEOMETRY_CAPTURE_PIXEL_CONTRACT"
+          ],
+          "guards": [
+            "/elements/.ledger-plate/text",
+            "/elements/.ledger-plate-name/text",
+            "/elements/.ledger-plate-scene/text"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "negative-D",
+      "exitCode": 1,
+      "expectedExit": 1,
+      "passed": 7,
+      "total": 8,
+      "failedReasons": [
+        {
+          "name": "home-desktop-1440-top.png",
+          "reason": [
+            "OUTSIDE_ENVELOPE_RGBA"
+          ],
+          "guards": []
+        }
+      ]
+    },
+    {
+      "name": "negative-E",
+      "exitCode": 1,
+      "expectedExit": 1,
+      "passed": 7,
+      "total": 8,
+      "failedReasons": [
+        {
+          "name": "home-desktop-1440-top.png",
+          "reason": [
+            "INSIDE_ENVELOPE_RGB_GT_1",
+            "EXACT_STRUCTURAL_GUARD",
+            "GEOMETRY_CAPTURE_PIXEL_CONTRACT"
+          ],
+          "guards": [
+            "/elements/.ledger-plate/styles/background"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "negative-F",
+      "exitCode": 1,
+      "expectedExit": 1,
+      "passed": 7,
+      "total": 8,
+      "failedReasons": [
+        {
+          "name": "home-desktop-1440-top.png",
+          "reason": [
+            "ALPHA"
+          ],
+          "guards": []
+        }
+      ]
+    },
+    {
+      "name": "negative-G",
+      "exitCode": 1,
+      "expectedExit": 1,
+      "passed": 7,
+      "total": 8,
+      "failedReasons": [
+        {
+          "name": "home-desktop-1440-top.png",
+          "reason": [
+            "OUTSIDE_ENVELOPE_RGBA"
+          ],
+          "guards": []
+        }
+      ]
+    },
+    {
+      "name": "negative-H",
+      "exitCode": 1,
+      "expectedExit": 1,
+      "passed": 7,
+      "total": 8,
+      "failedReasons": [
+        {
+          "name": "home-desktop-1440-top.png",
+          "reason": [
+            "EXACT_STRUCTURAL_GUARD",
+            "FROZEN_SOURCE_ASSET_HASH"
+          ],
+          "guards": [
+            "/sourceHashes/brand/PF_MARK_G_MONO_DARK.svg"
+          ]
+        }
+      ]
+    }
+  ],
+  "allExpected": true
+}
