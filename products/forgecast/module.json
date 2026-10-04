@@ -122,6 +122,7 @@
       "tier": "secondary",
     "presentation": "compact",
     "visibility": "visible",
+    "jobLabel": "Weather planning",
     "mediaDisclosure": "Recorded Victoria conditions · not a live forecast.",
     "evidencePriority": 5
   }

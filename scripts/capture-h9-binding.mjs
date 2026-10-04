@@ -100,31 +100,35 @@ async function performance(cdp,label) {
   const data=await cdp.evaluate(`(()=>{const nav=performance.getEntriesByType('navigation')[0];return {observer:window.__h9perf,paint:performance.getEntriesByType('paint').map(e=>({name:e.name,startTime:e.startTime})),navigation:nav?{domContentLoaded:nav.domContentLoadedEventEnd,load:nav.loadEventEnd,responseStart:nav.responseStart,encodedBodySize:nav.encodedBodySize}:null,resources:performance.getEntriesByType('resource').map(e=>({name:e.name,type:e.initiatorType,duration:e.duration,transferSize:e.transferSize,encodedBodySize:e.encodedBodySize,decodedBodySize:e.decodedBodySize})),images:[...document.images].map(i=>({src:i.currentSrc,width:i.width,height:i.height,naturalWidth:i.naturalWidth,naturalHeight:i.naturalHeight,loading:i.loading}))};})()`);
   report.performance.push({label,method:'One cold-cache headless local sample; unthrottled loopback, reduced motion, initial viewport before scroll. Not Lighthouse, field CWV, or measured INP.',...data});
 }
-async function screenshot(cdp,file,viewport,{full=true,selector=null,state='default'}={}) {
-  const metrics=await cdp.send('Page.getLayoutMetrics');let clip={x:full?0:metrics.cssVisualViewport.pageX,y:full?0:metrics.cssVisualViewport.pageY,width:viewport.width,height:full?Math.ceil(metrics.cssContentSize.height):viewport.height,scale:1};
-  if(selector){const rect=await cdp.evaluate(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw new Error('Missing closeup selector');const r=e.getBoundingClientRect(),x=Math.max(0,Math.floor(r.left+scrollX)),y=Math.max(0,Math.floor(r.top+scrollY));return {x,y,width:Math.ceil(Math.min(innerWidth,r.right+scrollX))-x,height:Math.ceil(r.bottom+scrollY)-y};})()`);Object.assign(clip,rect);}
-  if(clip.height>50000||clip.height<1)throw new Error(`Invalid screenshot extent ${file}`);
-  // Native CDP paint viewport expansion avoids offscreen nested-scroller culling.
-  // Unlike changing the CSS viewport height, this preserves vh/media-query layout.
-  // Protocol authority: ChromeDevTools/devtools-protocol browser_protocol.json.
-  const metricsOverride={width:viewport.width,height:viewport.height,deviceScaleFactor:viewport.dpr||1,mobile:viewport.width<768};
-  const geometryExpression=`JSON.stringify({width:innerWidth,height:innerHeight,sections:[...document.querySelectorAll('main > *, .h9-screen-scroll')].map(e=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y+scrollY,width:r.width,height:r.height};})})`;
-  let result,paintGeometry;
-  try {
-    if(full||selector){
-      const before=await cdp.evaluate(geometryExpression);
-      await cdp.send('Emulation.setDeviceMetricsOverride',{...metricsOverride,viewport:{x:0,y:0,width:viewport.width,height:Math.ceil(metrics.cssContentSize.height),scale:1}});
-      await sleep(200);
-      const after=await cdp.evaluate(geometryExpression);paintGeometry={before:JSON.parse(before),after:JSON.parse(after),unchanged:before===after};
-      check(`capture ${file}: native expanded paint preserves CSS viewport and scene geometry`,before===after,paintGeometry);
-    }
-    result=await cdp.send('Page.captureScreenshot',{format:'png',fromSurface:true,captureBeyondViewport:full||!!selector,clip});
-  } finally {if(full||selector)await cdp.send('Emulation.setDeviceMetricsOverride',metricsOverride);}
+async function screenshot(cdp,file,viewport,{selector=null,state='default'}={}) {
+  if(selector){
+    await cdp.evaluate(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw new Error('Missing closeup selector');e.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'});})()`);
+    await sleep(150);
+  }
+  const metrics=await cdp.send('Page.getLayoutMetrics');
+  const view=metrics.cssVisualViewport;
+  let clip={x:view.pageX,y:view.pageY,width:viewport.width,height:viewport.height,scale:1};
+  if(selector){
+    const rect=await cdp.evaluate(`(()=>{const r=document.querySelector(${JSON.stringify(selector)}).getBoundingClientRect(),x=Math.max(0,Math.floor(r.left)),y=Math.max(0,Math.floor(r.top)),right=Math.min(innerWidth,Math.ceil(r.right)),bottom=Math.min(innerHeight,Math.ceil(r.bottom));return {x,y,width:right-x,height:bottom-y};})()`);
+    if(rect.width<1||rect.height<1)throw new Error(`Scene is outside the native viewport: ${file}`);
+    clip={x:view.pageX+rect.x,y:view.pageY+rect.y,width:rect.width,height:rect.height,scale:1};
+  }
+  const result=await cdp.send('Page.captureScreenshot',{format:'png',fromSurface:true,captureBeyondViewport:false,clip});
   const bytes=Buffer.from(result.data,'base64'),width=bytes.readUInt32BE(16),height=bytes.readUInt32BE(20);
   const expectedWidth=clip.width*(viewport.dpr||1),expectedHeight=clip.height*(viewport.dpr||1);
   if(width!==expectedWidth||height!==expectedHeight)throw new Error(`Capture extent mismatch ${file} ${width}x${height}`);
   const target=path.join(outputDir,file);fs.writeFileSync(target,bytes,{flag:'wx'});
-  report.captures.push({file,state,viewport,clip,pngWidth:width,pngHeight:height,fullDocument:full&&!selector,paintMethod:full||selector?'CDP native visible-area expansion; CSS viewport and scene geometry independently unchanged':'Native viewport',paintGeometry,sha256:hash(target)});console.log(`CAPTURE ${file} ${width}x${height}`);
+  report.captures.push({file,state,viewport,clip,pngWidth:width,pngHeight:height,paintMethod:'Native viewport at actual scroll position; no CDP viewport expansion',sha256:hash(target)});console.log(`CAPTURE ${file} ${width}x${height}`);
+}
+async function scrollCaptures(cdp,prefix,viewport,state='default') {
+  const height=await cdp.evaluate('document.documentElement.scrollHeight');
+  const last=Math.max(0,height-viewport.height),step=Math.max(1,Math.floor(viewport.height*.85));
+  const positions=[...new Set([...Array(Math.ceil(last/step)).keys()].map(i=>Math.min(last,i*step)).concat(last))];
+  for(let i=0;i<positions.length;i++){
+    await cdp.evaluate(`scrollTo({top:${positions[i]},behavior:'instant'})`);await sleep(150);
+    await screenshot(cdp,`${prefix}-scroll-${String(i+1).padStart(2,'0')}.png`,viewport,{state:`${state}; native scroll position ${positions[i]} of ${last}`});
+  }
+  await cdp.evaluate(`scrollTo({top:0,behavior:'instant'})`);await sleep(150);
 }
 async function inspect(cdp,label) {
   const data=await cdp.evaluate(`(()=>{const visible=e=>e.checkVisibility({checkVisibilityCSS:true});const width=document.documentElement.clientWidth;const ids=[...document.querySelectorAll('[id]')].map(e=>e.id);return {width,scrollWidth:Math.max(document.documentElement.scrollWidth,document.body.scrollWidth),missingImages:[...document.images].filter(i=>visible(i)&&(!i.complete||!i.naturalWidth)).map(i=>i.currentSrc||i.src),overflowElements:[...document.querySelectorAll('main *')].filter(e=>visible(e)&&getComputedStyle(e).position!=='absolute'&&e.getBoundingClientRect().right>width+2).slice(0,15).map(e=>({tag:e.tagName,class:e.className,right:e.getBoundingClientRect().right})),h1:document.querySelectorAll('h1').length,main:document.querySelectorAll('main').length,duplicateIds:ids.filter((id,i)=>ids.indexOf(id)!==i),badLabels:[...document.querySelectorAll('[aria-labelledby]')].flatMap(e=>e.getAttribute('aria-labelledby').split(/\\s+/).filter(id=>!document.getElementById(id))),unlabelledInputs:[...document.querySelectorAll('input,select')].filter(e=>visible(e)&&!e.labels?.length&&!e.getAttribute('aria-label')&&!e.getAttribute('aria-labelledby')).map(e=>e.outerHTML),missingAlt:[...document.images].filter(i=>!i.hasAttribute('alt')).map(i=>i.src),headings:[...document.querySelectorAll('h1,h2,h3')].map(e=>({level:e.tagName,text:e.textContent.trim()})),smallTargets:[...document.querySelectorAll('main button,main input,main select,main a.button')].filter(visible).map(e=>({text:e.getAttribute('aria-label')||e.textContent.trim().slice(0,50),width:(e.matches('input[type=checkbox]')&&e.labels?.[0]?e.labels[0]:e).getBoundingClientRect().width,height:(e.matches('input[type=checkbox]')&&e.labels?.[0]?e.labels[0]:e).getBoundingClientRect().height})).filter(e=>e.width<24||e.height<24),mark:document.querySelector('link[rel="icon"]')?.href};})()`);
@@ -183,7 +187,7 @@ async function setSearch(cdp,value) {await cdp.evaluate(`(()=>{const e=document.
 async function catalog(cdp,viewport,{captures=true}={}) {
   const label=`software-${viewport.width}`;
   await cards(cdp,`${label}-default`,expected);
-  if(captures)await screenshot(cdp,`software-${viewport.width}-default.png`,viewport);
+  if(captures)await scrollCaptures(cdp,`software-${viewport.width}-default`,viewport);
   await cdp.evaluate(`document.querySelector('[data-intent="memory"]').click()`);await cards(cdp,`${label}-memory`,['cache-vault','cleanroom','ghostlayer']);
   await cdp.evaluate(`(()=>{const e=document.querySelector('#platform-filter');e.value='android';e.dispatchEvent(new Event('change',{bubbles:true}));})()`);await cards(cdp,`${label}-memory-android`,['cache-vault']);
   await cdp.evaluate(`document.querySelector('[data-filter-reset]').click()`);await cards(cdp,`${label}-reset`,expected);
@@ -195,21 +199,21 @@ async function catalog(cdp,viewport,{captures=true}={}) {
   await setSearch(cdp,'forgecast');await cdp.evaluate(`document.querySelector('#product-search-clear').click()`);await cards(cdp,`${label}-clear-search`,expected);
   await cdp.evaluate(`document.querySelector('[data-intent="build"]').focus()`);await key(cdp,'Enter','Enter',13);await cards(cdp,`${label}-keyboard-filter`,['proofshot','reality-gate']);
   check(`${label}: pressed state follows keyboard filter`,await cdp.evaluate(`document.querySelector('[data-intent="build"]').getAttribute('aria-pressed')==='true'`));
-  await settle(cdp);await inspect(cdp,`${label}-filtered`);if(captures)await screenshot(cdp,`software-${viewport.width}-filtered.png`,viewport,{state:'Build & capture filter: ProofShot and Reality Gate'});
+  await settle(cdp);await inspect(cdp,`${label}-filtered`);if(captures)await scrollCaptures(cdp,`software-${viewport.width}-filtered`,viewport,'Build & capture filter: ProofShot and Reality Gate');
   await cdp.evaluate(`document.querySelector('[data-filter-reset]').click();document.querySelector('[data-compare="cache-vault"] input').focus()`);await key(cdp,' ','Space',32);
   check(`${label}: one selection cannot compare`,await cdp.evaluate(`document.querySelector('.compare-open').disabled`));
   await cdp.evaluate(`document.querySelector('[data-compare="proofshot"] input').click();document.querySelector('[data-compare="ghostlayer"] input').click()`);
   check(`${label}: comparison enforces three selection maximum`,await cdp.evaluate(`document.querySelectorAll('[data-compare] input:checked').length===3&&document.querySelectorAll('[data-compare] input:disabled').length===4`));
   await cdp.evaluate(`document.querySelector('[data-compare="ghostlayer"] input').click();document.querySelector('.compare-open').focus()`);await key(cdp,'Enter','Enter',13);await settle(cdp,false);
   const comparison=await cdp.evaluate(`(()=>{const e=document.querySelector('.compare-dialog');return {open:e.open,count:e.querySelectorAll('.comparison-product').length,text:e.innerText,scrollWidth:e.scrollWidth,clientWidth:e.clientWidth,focused:document.activeElement.className};})()`);
-  check(`${label}: comparison shows current public releases`,comparison.open&&comparison.count===2&&comparison.text.includes('0.2.4')&&comparison.text.includes('2.0.0')&&!/no public release|in development/i.test(comparison.text),comparison);
+  check(`${label}: comparison shows current public releases`,comparison.open&&comparison.count===2&&comparison.text.includes('0.3.1')&&comparison.text.includes('2.0.0')&&!/no public release|in development/i.test(comparison.text),comparison);
   check(`${label}: comparison width contained`,comparison.scrollWidth<=comparison.clientWidth+1,comparison);
   check(`${label}: comparison opening focuses close control`,comparison.focused==='compare-close',comparison.focused);
   await contrast(cdp,`${label}-comparison`,['.comparison-product h3','.comparison-value','.comparison-product dt','.comparison-product dd','.compare-close']);
   for(let i=0;i<6;i++)await key(cdp,'Tab','Tab',9);
   check(`${label}: dialog traps keyboard focus`,await cdp.evaluate(`document.querySelector('.compare-dialog').contains(document.activeElement)`));
   await cdp.evaluate(`document.querySelector('.compare-dialog').scrollTop=0;document.querySelector('.compare-close').focus()`);
-  if(captures)await screenshot(cdp,`software-${viewport.width}-compare.png`,viewport,{full:false,state:'Cache Vault + ProofShot comparison dialog'});
+  if(captures)await screenshot(cdp,`software-${viewport.width}-compare.png`,viewport,{state:'Cache Vault + ProofShot comparison dialog'});
   await key(cdp,'Escape','Escape',27);
   check(`${label}: Escape closes dialog and restores opener focus`,await cdp.evaluate(`!document.querySelector('.compare-dialog').open&&document.activeElement.matches('.compare-open')`));
   await cdp.evaluate(`document.querySelector('.compare-clear').click()`);check(`${label}: clear removes selections and tray`,await cdp.evaluate(`document.querySelector('.compare-tray').hidden&&document.querySelectorAll('[data-compare] input:checked').length===0`));
@@ -219,27 +223,27 @@ async function catalog(cdp,viewport,{captures=true}={}) {
 }
 async function finish(cdp,label) {check(`${label}: no console or JavaScript errors`,!cdp.errors.length,cdp.errors);check(`${label}: no failed assets/requests`,!cdp.networkErrors.length,cdp.networkErrors);check(`${label}: no third-party network requests`,!cdp.external.length,cdp.external);report.network.push({label,errors:cdp.errors,failed:cdp.networkErrors,external:cdp.external,resources:cdp.resources});}
 async function bindingComposition(cdp,viewport) {
-  const selectors=['.studio-hero','.studio-portfolio','.studio-proof','.studio-withdrawn','.studio-threshold','.studio-close'];
+  const selectors=['.studio-hero','.studio-proof'];
   const scenes=await cdp.evaluate(`(${JSON.stringify(selectors)}).map(selector=>{const e=document.querySelector(selector);if(!e)return {selector,missing:true};const r=e.getBoundingClientRect();return {selector,x:r.x,y:r.y+scrollY,width:r.width,height:r.height,bottom:r.bottom+scrollY,heading:e.querySelector('h1,h2,h3')?.textContent.trim(),images:[...e.querySelectorAll('img')].map(i=>({src:i.currentSrc,width:i.getBoundingClientRect().width,height:i.getBoundingClientRect().height})),background:getComputedStyle(e).backgroundImage};})`);
-  (report.composition||=[]).push({viewport,scenes,limitation:'Geometry verifies the inside → work areas → proof → withdrawn state → threshold → outside order. Visual acceptance also uses opened screenshot evidence.'});
+  (report.composition||=[]).push({viewport,scenes,limitation:'Geometry verifies the hero → proof order. Visual acceptance also uses opened screenshot evidence.'});
   const complete=scenes.every(s=>!s.missing&&s.width>0&&s.height>0);
-  check(`binding-${viewport.width}: six current Foundry scenes render`,complete,scenes);
+  check(`binding-${viewport.width}: two current Foundry sections render`,complete,scenes);
   if(!complete)return;
-  const [inside,work,proof,withdrawn,threshold,outside]=scenes;
-  check(`binding-${viewport.width}: Foundry journey reads inside → work → proof → threshold → outside`,inside.y<=work.y&&work.y<=proof.y&&proof.y<=withdrawn.y&&withdrawn.y<=threshold.y&&threshold.y<=outside.y,{inside:inside.y,work:work.y,proof:proof.y,withdrawn:withdrawn.y,threshold:threshold.y,outside:outside.y});
-  const truth=await cdp.evaluate(`(()=>{const cards=[...document.querySelectorAll('.studio-portfolio [data-module]')].map(e=>e.dataset.module);const withdrawn=[...document.querySelectorAll('.studio-withdrawn-product')];return {publicModules:cards.sort(),withdrawn:withdrawn.map(e=>({id:e.dataset.module,state:e.querySelector('.studio-withdrawn-state')?.textContent.trim(),downloads:[...e.querySelectorAll('a')].filter(a=>/download/i.test(a.textContent+' '+a.href)).map(a=>a.href)})),threshold:document.querySelector('.studio-threshold strong')?.innerText.replace(/\\s+/g,' ').trim(),outside:document.querySelector('.studio-close h2')?.innerText.replace(/\\s+/g,' ').trim()};})()`);
-  check(`binding-${viewport.width}: portfolio and Reality Gate retain current public truth`,truth.publicModules.length===6&&!truth.publicModules.includes('reality-gate')&&truth.withdrawn.length===1&&truth.withdrawn[0].id==='reality-gate'&&/withdrawn/i.test(truth.withdrawn[0].state)&&truth.withdrawn[0].downloads.length===0,truth);
+  const [hero,proof]=scenes;
+  check(`binding-${viewport.width}: Foundry journey reads hero → proof`,hero.y<=proof.y&&hero.bottom<=proof.y,{hero:hero.y,heroBottom:hero.bottom,proof:proof.y});
+  const truth=await cdp.evaluate(`(()=>({homeSections:[...document.querySelectorAll('main > section')].map(e=>e.className),productCards:document.querySelectorAll('.studio-product-card[data-module]').length,withdrawn:document.querySelectorAll('.studio-withdrawn-product').length,evidence:document.querySelectorAll('.studio-evidence').length,softwareLink:!!document.querySelector('.studio-hero a[href="/software/"]')}))()`);
+  check(`binding-${viewport.width}: products stay in Software; Home has no standalone withdrawal or receipt card`,truth.homeSections.length===2&&truth.productCards===0&&truth.withdrawn===0&&truth.evidence===0&&truth.softwareLink,truth);
 }
 async function runPage(route,viewport) {
   const name=route==='/'?'homepage':'software',label=`${name}-${viewport.width}`,cdp=await prepare(viewport);
   try {
     await navigate(cdp,route);await performance(cdp,label);await settle(cdp);await inspect(cdp,label);
-    if(viewport.width===1440)await contrast(cdp,label,name==='homepage'?['.studio-hero-lede','.studio-action-primary','.studio-action-quiet','.studio-ledger-product strong','.studio-ledger-version','.studio-ledger-status','.studio-withdrawn-state','.studio-threshold p strong','.studio-close-copy>p:not(.studio-kicker)']:['.card-value','.card-name','.card-availability','.h9-card-meta','.h9-product-finder label','[data-intent][aria-pressed="true"]','.compare-choice']);
+    if(viewport.width===1440)await contrast(cdp,label,name==='homepage'?['.studio-hero-lede','.studio-hero .studio-action-primary','.studio-action-secondary','.studio-proof-copy > p:not(.studio-kicker)','.studio-proof .studio-action-primary']:['.card-value','.card-name','.card-availability','.h9-card-meta','.h9-product-finder label','[data-intent][aria-pressed="true"]','.compare-choice']);
     if(name==='homepage'){
       await bindingComposition(cdp,viewport);
-      if([1440,390].includes(viewport.width))await screenshot(cdp,`homepage-${viewport.width}-first.png`,viewport,{full:false});
-      await screenshot(cdp,`homepage-${viewport.width}-full.png`,viewport);
-      if(viewport.width===1440)for(const [scene,selector]of [['inside','.studio-hero'],['connected-work-areas','.studio-portfolio'],['release-ledger','.studio-proof'],['withdrawn-reality-gate','.studio-withdrawn'],['threshold','.studio-threshold'],['outside-close','.studio-close'],['footer','.studio-root-footer']])await screenshot(cdp,`closeup-${scene}.png`,viewport,{selector,state:`Actual built ${scene} scene`});
+      if([1440,390].includes(viewport.width))await screenshot(cdp,`homepage-${viewport.width}-first.png`,viewport);
+      await scrollCaptures(cdp,`homepage-${viewport.width}`,viewport);
+      if(viewport.width===1440)for(const [scene,selector]of [['hero','.studio-hero'],['release-proof','.studio-proof'],['footer','.studio-root-footer']])await screenshot(cdp,`closeup-${scene}.png`,viewport,{selector,state:`Actual built ${scene} scene`});
       await cdp.evaluate('document.body.tabIndex=-1;document.body.focus();document.body.removeAttribute("tabindex")');
       let tabCount=0;while(tabCount<24&&!await cdp.evaluate('document.activeElement.matches(".studio-action-primary")')){await key(cdp,'Tab','Tab',9);tabCount++;}
       const focusGeometry=await cdp.evaluate(`(()=>{const e=document.querySelector('.studio-action-primary'),r=e.getBoundingClientRect(),s=getComputedStyle(e);return {focused:document.activeElement===e,focusVisible:e.matches(':focus-visible'),tabCount:${tabCount},rect:{x:r.x,y:r.y,width:r.width,height:r.height},outline:s.outlineStyle,outlineWidth:s.outlineWidth,boxShadow:s.boxShadow};})()`);
@@ -252,7 +256,7 @@ async function runPage(route,viewport) {
 async function supplementary() {
   for(const route of ['/','/software/']){
     const viewport={width:390,height:844},cdp=await prepare(viewport,{noJs:true});
-    try{await navigate(cdp,route,{noJs:true});const height=await cdp.evaluate('document.documentElement.scrollHeight');for(let y=0;y<height;y+=650){await cdp.evaluate(`scrollTo(0,${y})`);await sleep(70);}await cdp.evaluate('scrollTo(0,0)');await sleep(350);const label=`${route}-no-JS`;await inspect(cdp,label);if(route==='/software/'){check(`${label}: all seven products accessible`,(await cdp.evaluate(cardsExpression)).join(',')===expected.join(','));check(`${label}: enhancement controls stay hidden`,await cdp.evaluate(`!document.querySelector('.h9-product-finder').checkVisibility()`));}else check(`${label}: all six homepage scenes remain visible without JavaScript`,await cdp.evaluate(`[...document.querySelectorAll('main section')].length===6&&[...document.querySelectorAll('main section')].every(e=>e.checkVisibility()&&e.getBoundingClientRect().height>0)`));await finish(cdp,label);}finally{await cdp.close();}
+    try{await navigate(cdp,route,{noJs:true});const height=await cdp.evaluate('document.documentElement.scrollHeight');for(let y=0;y<height;y+=650){await cdp.evaluate(`scrollTo(0,${y})`);await sleep(70);}await cdp.evaluate('scrollTo(0,0)');await sleep(350);const label=`${route}-no-JS`;await inspect(cdp,label);if(route==='/software/'){check(`${label}: all seven products accessible`,(await cdp.evaluate(cardsExpression)).join(',')===expected.join(','));check(`${label}: enhancement controls stay hidden`,await cdp.evaluate(`!document.querySelector('.h9-product-finder').checkVisibility()`));}else check(`${label}: both homepage sections remain visible without JavaScript`,await cdp.evaluate(`[...document.querySelectorAll('main > section')].length===2&&[...document.querySelectorAll('main > section')].every(e=>e.checkVisibility()&&e.getBoundingClientRect().height>0)`));await finish(cdp,label);}finally{await cdp.close();}
   }
   for(const route of ['/','/software/']){
     // 1440px display at 200% browser zoom has a 720 CSS pixel layout viewport.
@@ -262,18 +266,18 @@ async function supplementary() {
   }
   await qualifyMotion();
 }
-const motionExpression=`(()=>{const elements=[...document.querySelectorAll('main section')].map(e=>({scene:e.dataset.foundryScene||e.className,opacity:Number(getComputedStyle(e).opacity),height:e.getBoundingClientRect().height,animations:e.getAnimations().map(a=>({playState:a.playState,pending:a.pending,currentTime:a.currentTime,duration:a.effect.getComputedTiming().duration,endTime:a.effect.getComputedTiming().endTime}))}));return {now:performance.now(),reduced:matchMedia('(prefers-reduced-motion: reduce)').matches,elements,active:elements.flatMap(e=>e.animations).filter(a=>a.pending||a.playState==='running').length,visible:elements.length===6&&elements.every(e=>e.opacity===1&&e.height>0)};})()`;
+const motionExpression=`(()=>{const elements=[...document.querySelectorAll('main > section')].map(e=>({scene:e.dataset.foundryScene||e.className,opacity:Number(getComputedStyle(e).opacity),height:e.getBoundingClientRect().height,animations:e.getAnimations().map(a=>({playState:a.playState,pending:a.pending,currentTime:a.currentTime,duration:a.effect.getComputedTiming().duration,endTime:a.effect.getComputedTiming().endTime}))}));return {now:performance.now(),reduced:matchMedia('(prefers-reduced-motion: reduce)').matches,elements,active:elements.flatMap(e=>e.animations).filter(a=>a.pending||a.playState==='running').length,visible:elements.length===2&&elements.every(e=>e.opacity===1&&e.height>0)};})()`;
 async function qualifyMotion() {
   const cdp=await prepare({width:1440,height:900},{reduced:false});
   try{
     await navigate(cdp,'/');await settle(cdp);
     const normal=await cdp.evaluate(motionExpression);
-    (report.motion||=[]).push({phase:'normal preference',method:'Inspect six scene visibility and finite active Web Animations after the actual document scrolls through the complete journey.',normal});
+    (report.motion||=[]).push({phase:'normal preference',method:'Inspect two section visibility and finite active Web Animations after the actual document scrolls through the complete journey.',normal});
     check('motion: normal preference keeps the full journey visible without perpetual animations',!normal.reduced&&normal.visible&&normal.active===0,normal);
     await cdp.send('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
     await sleep(100);const reduced=await cdp.evaluate(motionExpression);
     report.motion.push({phase:'reduced preference',reduced});
-    check('motion: reduced preference keeps all six scenes visible without perpetual animations',reduced.reduced&&reduced.visible&&reduced.active===0,reduced);
+    check('motion: reduced preference keeps both sections visible without perpetual animations',reduced.reduced&&reduced.visible&&reduced.active===0,reduced);
     await finish(cdp,'motion-switch');
   }finally{await cdp.close();}
 }
@@ -281,14 +285,14 @@ async function markSheet() {
   const viewport={width:1440,height:580},cdp=await prepare(viewport);
   try{
     await navigate(cdp,'/');
-    const images=(source)=>[16,24,32,64].map(size=>`<figure><img src="${site}/brand/${source}" alt="PF G at ${size} CSS pixels" width="${size}" height="${size}"><figcaption>${size} px</figcaption></figure>`).join('');
-    const markup=`<!doctype html><html><head><meta charset="utf-8"><title>PF Mark G scale qualification</title><link rel="icon" type="image/svg+xml" href="${site}/brand/PF_MARK_G_MASTER.svg"><style>*{box-sizing:border-box}body{margin:0;background:#090e10;color:#eeeae1;font:16px system-ui;padding:34px 48px}h1{font:36px Georgia;margin:0 0 8px}p{color:#b9c5c6}section{display:flex;align-items:center;gap:54px;padding:24px 36px;margin-top:24px;border:1px solid #394245;height:152px}h2{font-size:16px;width:260px}figure{margin:0;min-width:80px;text-align:center}img{display:block;margin:0 auto 12px;object-fit:contain}figcaption{font:13px monospace}.light{background:#eeeae1;color:#111719}.light figcaption{color:#263236}</style></head><body><h1>PF Mark G / actual shipped SVG</h1><p>Native 16, 24, 32 and 64 CSS pixel rendering. These are brand-size checks, not redesigned logo candidates.</p><section><h2>Master · foundry black</h2>${images('PF_MARK_G_MASTER.svg')}</section><section class="light"><h2>Mono dark · receipt white</h2>${images('PF_MARK_G_MONO_DARK.svg')}</section></body></html>`;
+    const images=()=>[16,24,32,64].map(size=>`<figure><img src="${site}/assets/foundry-strike/proof-foundry-forged-artifact.png" alt="Forged PF at ${size} CSS pixels" width="${size}" height="${size}"><figcaption>${size} px</figcaption></figure>`).join('');
+    const markup=`<!doctype html><html><head><meta charset="utf-8"><title>Forged PF mark scale qualification</title><link rel="icon" type="image/png" href="${site}/assets/foundry-strike/proof-foundry-forged-artifact.png"><style>*{box-sizing:border-box}body{margin:0;background:#090e10;color:#eeeae1;font:16px system-ui;padding:34px 48px}h1{font:36px Georgia;margin:0 0 8px}p{color:#b9c5c6}section{display:flex;align-items:center;gap:54px;padding:24px 36px;margin-top:24px;border:1px solid #394245;height:152px}h2{font-size:16px;width:260px}figure{margin:0;min-width:80px;text-align:center}img{display:block;margin:0 auto 12px;object-fit:contain}figcaption{font:13px monospace}.light{background:#eeeae1;color:#111719}.light figcaption{color:#263236}</style></head><body><h1>Forged PF / shipped mark</h1><p>Native 16, 24, 32 and 64 CSS pixel rendering of the same artwork used in the header and footer.</p><section><h2>Foundry black</h2>${images()}</section><section class="light"><h2>Receipt white</h2>${images()}</section></body></html>`;
     fs.writeFileSync(path.join(outputDir,'pf-mark-size-sheet.html'),markup.replaceAll(site,'http://127.0.0.1:8879'),{flag:'wx'});
     await cdp.evaluate(`document.open();document.write(${JSON.stringify(markup)});document.close()`);await settle(cdp,false);
     const sizes=await cdp.evaluate(`[...document.images].map(i=>({width:i.getBoundingClientRect().width,height:i.getBoundingClientRect().height,expected:Number(i.getAttribute('width')),decoded:i.complete&&i.naturalWidth>0,src:i.src}))`);
-    check('identity: actual built G SVG decodes at 16/24/32/64 in both selected variants',sizes.length===8&&sizes.every(s=>s.decoded&&s.width===s.expected&&s.height===s.expected),sizes);
-    await screenshot(cdp,'pf-mark-16-24-32-64.png',viewport,{full:false,state:'Native sized shipped master and mono-dark SVG evidence sheet'});
-    await finish(cdp,'PF-G-size-sheet');
+    check('identity: actual forged PF mark decodes at 16/24/32/64 on dark and light surfaces',sizes.length===8&&sizes.every(s=>s.decoded&&s.width===s.expected&&s.height===s.expected),sizes);
+    await screenshot(cdp,'pf-forged-mark-16-24-32-64.png',viewport,{state:'Native sized shipped forged PF mark on dark and light surfaces'});
+    await finish(cdp,'PF-forged-mark-size-sheet');
   }finally{await cdp.close();}
 }
 async function httpChecks() {
@@ -305,9 +309,18 @@ try{
   if(!within(root,outputDir)||!/(?:receipts|review)[\\/]/.test(path.relative(root,outputDir)))throw new Error('Evidence output must stay in worktree receipts or review');
   if(fs.existsSync(outputDir))throw new Error(`Refusing to overwrite prior evidence: ${outputDir}`);
   fs.mkdirSync(outputDir,{recursive:true});ownsOutput=true;
-  report.sourceHashes=Object.fromEntries(['index.html','software.html','site-manifest.json','h9-homepage.css','h9-homepage.js','h9-software.css','h9-software.js','experience.js','site.js','scripts/build-site.ps1','scripts/capture-h9-binding.mjs','brand/PF_MARK_G_MASTER.svg','brand/PF_MARK_G_FORGED.svg'].map(f=>[f,hash(path.join(root,f))]));report.builtHashes=treeHashes(publicDir);
+  report.sourceHashes=Object.fromEntries(['index.html','software.html','site-manifest.json','h9-homepage.css','h9-homepage.js','h9-software.css','h9-software.js','experience.js','site.js','scripts/build-site.ps1','scripts/capture-h9-binding.mjs','assets/foundry-strike/proof-foundry-forged-artifact.png','assets/foundry-strike/forged_pf_emblem_in_smoky_ruins-1672.webp'].map(f=>[f,hash(path.join(root,f))]));report.builtHashes=treeHashes(publicDir);
   site=await startServer();report.loopbackOrigin=site;await startBrowser();
-  if(process.argv.includes('--motion-probe')){for(let i=0;i<3;i++)await qualifyMotion();}
+  if(process.argv.includes('--hero-native-probe')){
+    const viewport=viewports[0],cdp=await prepare(viewport);
+    try{
+      await navigate(cdp,'/');await settle(cdp);
+      await screenshot(cdp,'homepage-1440-first.png',viewport,{state:'Native desktop viewport'});
+      await screenshot(cdp,'closeup-hero.png',viewport,{selector:'.studio-hero',state:'Native viewport crop of forged PF hero'});
+      await scrollCaptures(cdp,'homepage-1440',viewport,'Native desktop scroll sequence');
+      await finish(cdp,'hero-native-probe');
+    }finally{await cdp.close();}
+  } else if(process.argv.includes('--motion-probe')){for(let i=0;i<3;i++)await qualifyMotion();}
   else {
     await httpChecks();
     for(const viewport of viewports){try{await runPage('/',viewport);}catch(e){fatal(`homepage-${viewport.width}`,e);}}

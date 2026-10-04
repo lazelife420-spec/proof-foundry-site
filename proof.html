@@ -234,6 +234,15 @@
   </main>
 
   <!-- @include footer -->
+  <script>
+    function openLinkedReceipt() {
+      const id = location.hash.slice(1);
+      const card = document.getElementById(id);
+      if (card?.classList.contains('receipt-card')) card.querySelector('.receipt-details').open = true;
+    }
+    openLinkedReceipt();
+    addEventListener('hashchange', openLinkedReceipt);
+  </script>
   <script src="/site.js" defer></script>
 </body>
 </html>

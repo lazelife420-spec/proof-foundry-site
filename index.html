@@ -4,82 +4,62 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>The Proof Foundry — Useful software. On your terms.</title>
-<meta content="Useful software for everyday work, with clear limits and public release records you can inspect." name="description"/>
+<title>The Proof Foundry — Do the work. Skip the detours.</title>
+<meta content="Focused software to find a saved clip, clear a workspace, keep context, capture a result, or plan the day." name="description"/>
 <meta content="index, follow" name="robots"/>
-<meta content="#07090b" name="theme-color"/>
+<meta content="#111918" name="theme-color"/>
 <link href="https://theprooffoundry.com/" rel="canonical"/>
-<meta content="The Proof Foundry — Useful software. On your terms." property="og:title"/>
-<meta content="Useful software for everyday work, with clear limits and public release records you can inspect." property="og:description"/>
+<meta content="The Proof Foundry — Do the work. Skip the detours." property="og:title"/>
+<meta content="Focused software to find a saved clip, clear a workspace, keep context, capture a result, or plan the day." property="og:description"/>
 <meta content="website" property="og:type"/>
 <meta content="https://theprooffoundry.com/" property="og:url"/>
 <meta content="The Proof Foundry" property="og:site_name"/>
 <meta content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" property="og:image"/>
 <meta content="summary_large_image" name="twitter:card"/>
 <meta content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" name="twitter:image"/>
-<link href="/brand/PF_MARK_G_MASTER.svg" rel="icon" type="image/svg+xml"/>
-<link href="/brand/proof-foundry-mark.png" rel="apple-touch-icon"/>
+<link href="/assets/foundry-strike/proof-foundry-forged-artifact.png" rel="icon" type="image/png"/>
+<link href="/assets/foundry-strike/proof-foundry-forged-artifact.png" rel="apple-touch-icon"/>
 <link href="/styles.css" rel="stylesheet"/>
 <link href="/studio.css" rel="stylesheet"/>
 <link href="/h9-homepage.css" rel="stylesheet"/>
-<link rel="preload" as="image" href="/assets/binding-foundry/foundry-ledger.webp" imagesizes="100vw"/>
+<link rel="preload" as="image" href="/assets/binding-foundry/open-forge-scene-1536.webp" media="(min-width: 761px)"/>
+<link rel="preload" as="image" href="/assets/binding-foundry/open-forge-scene-960.webp" media="(max-width: 760px)"/>
 </head>
 <body class="studio studio-root-page">
 <!-- @include header -->
 <main id="main-content">
-  <section class="studio-hero" data-foundry-scene="inside" aria-labelledby="studio-title">
-    <div class="studio-forge-workbench" aria-hidden="true"><img src="/assets/binding-foundry/foundry-ledger.webp" alt="" fetchpriority="high" decoding="async"/></div>
-    <div class="studio-hero-emblem" role="img" aria-label="The Proof Foundry forged PF mark mounted on a steel plate"><img src="/brand/PF_MARK_G_FORGED.svg" alt="" width="248" height="248"/><span>THE PROOF FOUNDRY</span><small>TOOLS · FILES · RELEASES</small></div>
-    <div class="studio-hero-grid">
+  <section class="studio-hero" aria-labelledby="studio-title">
+    <div class="studio-hearth" aria-hidden="true"></div>
+    <picture class="studio-hero-art" aria-hidden="true">
+      <source media="(max-width: 760px)" srcset="/assets/binding-foundry/open-forge-scene-960.webp"/>
+      <img class="studio-hero-image" src="/assets/binding-foundry/open-forge-scene-1536.webp" alt="" width="1536" height="1024" fetchpriority="high" decoding="async"/>
+    </picture>
+    <div class="studio-hero-inner">
       <div class="studio-hero-copy">
-        <p class="studio-kicker"><span class="studio-section-index">PF / 01</span><span>Independent software for a more truthful tomorrow</span></p>
-        <h1 id="studio-title"><span>Useful software.</span><span><em>On your terms.</em></span></h1>
-        <p class="studio-hero-lede">Independent tools for real work. Local control where it fits. Inspectable release records, with clear limits.</p>
+        <p class="studio-kicker"><span class="studio-section-index">THE PROOF FOUNDRY / 01</span><span>Independent software studio</span></p>
+        <h1 id="studio-title">Do the work.<br/><em>Skip the detours.</em></h1>
+        <p class="studio-hero-lede">Find a saved clip, clear a workspace, keep context, capture a result, or plan the day. Pick the focused tool that helps.</p>
         <div class="studio-hero-actions">
-          <a class="studio-action studio-action-primary" href="/software/">Explore software <span aria-hidden="true">↗</span></a>
-          <a class="studio-action studio-action-quiet" href="/proof-standard/">Read the Proof Standard <span aria-hidden="true">→</span></a>
+          <a class="studio-action studio-action-primary" href="/software/">Explore software <svg class="ui-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 13 13 3M5 3h8v8"/></svg></a>
+          <a class="studio-action studio-action-secondary" href="/proof-standard/">See how proof works <svg class="ui-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 13 13 3M5 3h8v8"/></svg></a>
         </div>
-        <ul class="studio-hero-principles" aria-label="Studio principles"><li><span aria-hidden="true">◇</span><span>Independent<br/>by design</span></li><li><span aria-hidden="true">▤</span><span>Local-first<br/>where it fits</span></li><li><span aria-hidden="true">⌕</span><span>Inspectable<br/>release records</span></li></ul>
+        <p class="studio-hero-note">A focused tool for each task, with its public status in plain view.</p>
       </div>
     </div>
   </section>
 
-  <section class="studio-portfolio" data-foundry-scene="work" id="software-made-here" aria-labelledby="portfolio-title">
-    <div class="studio-portfolio-heading">
-      <div><p class="studio-kicker"><span class="studio-section-index">PF / 02</span><span>Tools in the workshop</span></p><h2 id="portfolio-title">Different tools. Same standard.</h2><p>Focused, independent software for real workflows. Built with transparency. Shipped with proof.</p></div>
-      <a class="studio-text-link" href="/software/">Explore all tools <span aria-hidden="true">↗</span></a>
+  <section class="studio-proof" aria-labelledby="proof-title">
+    <div class="studio-outside" aria-hidden="true"></div>
+    <div class="studio-proof-copy">
+      <p class="studio-kicker"><span class="studio-section-index">02 / THE RECORD</span><span>Evidence with its limits</span></p>
+      <h2 id="proof-title">A release should carry its record.</h2>
+      <p>Truth Files state public versions and availability. Release records show checksums, qualification, and what remains unresolved. A verified hash establishes artifact identity; it does not by itself establish custody or safety.</p>
+      <div class="studio-proof-actions"><a class="studio-action studio-action-primary" href="/truth-files/">Read the Truth Files <svg class="ui-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 13 13 3M5 3h8v8"/></svg></a><a class="studio-text-link" href="/proof/">Browse release records <svg class="ui-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 13 13 3M5 3h8v8"/></svg></a></div>
     </div>
-    <!-- Registry-generated portfolio. Module identity and order are not authored here. -->
-    <div class="studio-portfolio-grid" aria-label="Software from The Proof Foundry">
-      <!-- @studio-portfolio -->
-    </div>
-  </section>
-
-  <section class="studio-proof" data-foundry-scene="proof" aria-labelledby="proof-title">
-    <div class="studio-proof-intro"><p class="studio-kicker"><span class="studio-section-index">PF / 03</span><span>Releases &amp; proof</span></p><h2 id="proof-title">Receipts over hype.</h2><p>Public releases are recorded and inspectable. Current records link to the evidence behind each version.</p><p class="studio-proof-sequence">BUILD <span aria-hidden="true">→</span> QUALIFY <span aria-hidden="true">→</span> RECORD <span aria-hidden="true">→</span> PUBLISH</p></div>
-    <div class="studio-proof-links">
-      <a href="/proof-standard/"><span class="studio-proof-index">01 / DOCTRINE</span><strong>The Proof Standard</strong><span>How release claims are handled <b aria-hidden="true">↗</b></span></a>
-      <a href="/truth-files/"><span class="studio-proof-index">02 / CURRENT FACTS</span><strong>Truth Files</strong><span>Version and availability, product by product <b aria-hidden="true">↗</b></span></a>
-      <a href="/proof/"><span class="studio-proof-index">03 / RELEASE EVIDENCE</span><strong>Release records</strong><span>Artifacts, checksums, tests, and limits <b aria-hidden="true">↗</b></span></a>
-    </div>
-    <!-- Build emits only current public artifacts supported by canonical release records. -->
-    <!-- @studio-evidence -->
-  </section>
-
-  <!-- Registry-generated withdrawn work stays visible without implying availability. -->
-  <!-- @studio-withdrawn -->
-
-  <section class="studio-threshold" data-foundry-scene="threshold" aria-label="From the workshop to the world">
-    <div class="studio-threshold-line" aria-hidden="true"></div>
-    <p><span>THE THRESHOLD / TRANSITION</span><strong>What leaves the workshop<br/>carries its record with it.</strong></p>
-  </section>
-
-  <section class="studio-close" data-foundry-scene="outside" aria-labelledby="closing-title">
-    <div class="studio-close-copy"><p class="studio-kicker"><span class="studio-section-index">PF / 05</span><span>Same work. A clearer tomorrow.</span></p><h2 id="closing-title">From the workshop<br/><em>to what’s next.</em></h2><p>The same standard. Different tools. A more truthful tomorrow.</p><a class="studio-action studio-action-primary" href="/software/">Find your tool <span aria-hidden="true">↗</span></a></div>
-    <div class="studio-close-mark" aria-hidden="true"><span>USEFUL TOOLS.<br/>CLEARER TOMORROWS.</span></div>
   </section>
 </main>
-<footer class="studio-root-footer"><a class="h9-footer-brand" href="/" aria-label="Proof Foundry home"><img src="/brand/PF_MARK_G_MASTER.svg" alt="" width="34" height="34"/><span>PROOF FOUNDRY</span></a><p>Independent software studio · Proof over rented trust.</p><nav aria-label="Footer"><a href="/software/">Software</a><a href="/proof-standard/">Proof Standard</a><a href="/truth-files/">Truth Files</a><a href="/proof/">Release records</a><a href="/about/">About</a><a href="/roadmap/">Roadmap</a><a href="/support/">Support</a></nav><span class="h9-copyright">© 2026 Proof Foundry</span></footer>
+<!-- @include compact-footer -->
+<script src="/h9-homepage.js" type="module"></script>
 <script src="/site.js" type="module"></script>
 </body>
 </html>

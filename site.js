@@ -24,9 +24,9 @@
     const text = make('div'); text.append(title,caption);
     const count = make('span','gallery-count'); information.append(text,count);
     const actions = make('div','gallery-actions');
-    const previous = button('← Previous','gallery-previous'), next = button('Next →','gallery-next'), zoom = button('Zoom to 100%','gallery-zoom');
+    const previous = button('Previous','gallery-previous'), next = button('Next','gallery-next'), zoom = button('Zoom to 100%','gallery-zoom');
     zoom.setAttribute('aria-pressed','false');
-    const original = make('a','gallery-original','Open original ↗'); original.target='_blank'; original.rel='noopener';
+    const original = make('a','gallery-original','Open original'); original.target='_blank'; original.rel='noopener';
     actions.append(previous,next,zoom,original);
     const rail = make('div','gallery-thumbnails'); rail.setAttribute('role','group'); rail.setAttribute('aria-label','Choose a screenshot');
     const status = make('p','gallery-status'); status.setAttribute('role','status');

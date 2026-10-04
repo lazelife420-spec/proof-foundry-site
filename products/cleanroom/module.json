@@ -114,6 +114,7 @@
       "tier": "secondary",
     "presentation": "compact",
     "visibility": "visible",
+    "jobLabel": "File cleanup",
     "mediaDisclosure": "Interface capture from v1.0.6 · current public release v1.0.7.",
     "evidencePriority": 4
   }

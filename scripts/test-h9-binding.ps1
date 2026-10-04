@@ -14,8 +14,6 @@ $registry = (Read-Built 'proof/index.json') | ConvertFrom-Json
 $truthIndex = (Read-Built 'truth/index.json') | ConvertFrom-Json
 $sourceModules = @(Get-ChildItem -LiteralPath (Join-Path $Root 'products') -Directory | ForEach-Object { (Read-Source (Join-Path (Join-Path 'products' $_.Name) 'module.json')) | ConvertFrom-Json })
 $publicModules = @($sourceModules | Where-Object { $_.visibility -eq 'visible' -and $_.lifecycle -eq 'public-eligible' })
-$rootModules = @($publicModules | Where-Object { $_.homepage -and $_.homepage.role -eq 'studioPortfolio' -and $_.homepage.visibility -eq 'visible' } | Sort-Object { [int]$_.homepage.order }, { [int]$_.order })
-$releasedRootModules = @($rootModules | Where-Object { (@($manifest.products | Where-Object id -eq $_.id | Select-Object -First 1)[0]).release.releaseStatus -eq 'PUBLIC_RELEASE' })
 $renderedPortfolio = @([regex]::Matches($homeHtml, '<article class="studio-product-card"[^>]*data-module="([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
 $renderedWithdrawn = @([regex]::Matches($homeHtml, '<article class="studio-withdrawn-product"[^>]*data-module="([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
 Write-Host '=== H9 STUDIO ROOT BINDING GUARD ==='
@@ -26,23 +24,17 @@ $moduleIds = @($publicModules | ForEach-Object id | Sort-Object)
 $manifestIds = @($manifest.products | Where-Object visible | ForEach-Object id | Sort-Object)
 $registryIds = @($registry.products | ForEach-Object id | Sort-Object)
 Assert-Binding 'registry identities bind to public module and manifest identities' ((($moduleIds -join ',') -ceq ($manifestIds -join ',')) -and (($registryIds -join ',') -ceq ($manifestIds -join ',')))
-Assert-Binding 'released module metadata → generic portfolio renderer → generated root order agrees' ((($renderedPortfolio -join ',') -ceq ((@($rootModules | Where-Object { (@($manifest.products | Where-Object id -eq $_.id | Select-Object -First 1)[0]).release.releaseStatus -eq 'PUBLIC_RELEASE' } | ForEach-Object id)) -join ',')) -and $renderedPortfolio.Count -eq @($rootModules | Where-Object { (@($manifest.products | Where-Object id -eq $_.id | Select-Object -First 1)[0]).release.releaseStatus -eq 'PUBLIC_RELEASE' }).Count)
-$expectedWithdrawn = @($rootModules | Where-Object { (@($manifest.products | Where-Object id -eq $_.id | Select-Object -First 1)[0]).release.releaseStatus -eq 'WITHDRAWN' })
-Assert-Binding 'withdrawn modules render in their own registry-ordered scene' ((($renderedWithdrawn -join ',') -ceq (($expectedWithdrawn | ForEach-Object id) -join ',')) -and $renderedWithdrawn.Count -eq $expectedWithdrawn.Count)
-Assert-Binding 'the studio hero is brand-owned and contains no featured product renderer' ($homeHtml -match 'studio-hero-emblem' -and $homeHtml -notmatch 'studio-hero-product|@studio-hero-product')
-Assert-Binding 'module presentation metadata selects distinct public card compositions' (@($rootModules | Where-Object { $_.homepage.presentation -eq 'feature' }).Count -ge 1 -and @($rootModules | Where-Object { $_.homepage.presentation -eq 'editorial' }).Count -eq 1 -and ([regex]::Matches($homeHtml, 'data-presentation="feature"')).Count -ge 1 -and ([regex]::Matches($homeHtml, 'data-presentation="editorial"')).Count -eq 1)
-$renderer = Read-Source 'scripts/build-site.ps1'
-$homeRendererStart = $renderer.IndexOf('function Get-StudioPortfolioEntries')
-$homeRendererEnd = $renderer.IndexOf('function Get-PublicCatalogCount')
-$homeRenderer = if ($homeRendererStart -ge 0 -and $homeRendererEnd -gt $homeRendererStart) { $renderer.Substring($homeRendererStart, $homeRendererEnd - $homeRendererStart) } else { '' }
-Assert-Binding 'role renderer contains no product identity branches' ($homeRenderer.Length -gt 0 -and $homeRenderer -notmatch '(?i)cache-vault|reality-gate|forgecast|ghostlayer|lights-out|cleanroom|proofshot')
+$homeSections = @([regex]::Matches($homeHtml, '<section class="(studio-hero|studio-portfolio|studio-proof)"') | ForEach-Object { $_.Groups[1].Value })
+Assert-Binding 'Home contains hero and proof only, with no product portfolio or evidence card' (($homeSections -join ',') -ceq 'studio-hero,studio-proof' -and $renderedPortfolio.Count -eq 0 -and $homeHtml -notmatch 'studio-portfolio|studio-evidence|studio-product-tab|data-home-products')
+$expectedWithdrawn = @($manifest.products | Where-Object { $_.release.releaseStatus -eq 'WITHDRAWN' })
+Assert-Binding 'withdrawn modules do not create a standalone Home scene' ($expectedWithdrawn.Count -gt 0 -and $renderedWithdrawn.Count -eq 0 -and $homeHtml -notmatch 'studio-withdrawn|Withdrawn work')
+Assert-Binding 'the studio hero uses responsive Open Forge artwork and the established PF mark without a featured product renderer' ($homeHtml -match 'open-forge-scene-1536\.webp' -and $homeHtml -match 'open-forge-scene-960\.webp' -and $homeHtml -match 'proof-foundry-forged-artifact\.png' -and $homeHtml -notmatch 'studio-hero-product|@studio-hero-product|studio-hero-emblem')
 Assert-Binding 'root source contains no fixed product list, product identity or product-specific card markup' ((Read-Source 'index.html') -notmatch '(?i)cache vault|reality gate|forgecast|ghostlayer|lights out|cleanroom|proofshot|data-module=')
 Assert-Binding 'root structural CSS uses only generic presentation semantics' ((Read-Source 'h9-homepage.css') -notmatch '(?i)cache-vault|reality-gate|forgecast|ghostlayer|lights-out|cleanroom|proofshot|data-module="')
-$bindingFailures = @($releasedRootModules | Where-Object { $m=$_; $media=$m.card.media; $homeHtml -notmatch ('data-module="' + [regex]::Escape([string]$m.id) + '"[^>]*data-presentation="' + [regex]::Escape([string]$m.homepage.presentation) + '"') -or $homeHtml -notmatch [regex]::Escape([string]$m.route) -or $homeHtml -notmatch [regex]::Escape([string]$media) -or $homeHtml -notmatch [regex]::Escape([string]$m.theme.accent) })
-Assert-Binding 'generated public cards bind role, route, authentic media and accent to module metadata' ($bindingFailures.Count -eq 0)
-Assert-Binding 'withdrawn scene binds media and product route to its module without download controls' (@($expectedWithdrawn | Where-Object { $m=$_; $homeHtml -notmatch ('data-module="' + [regex]::Escape([string]$m.id) + '"') -or $homeHtml -notmatch [regex]::Escape([string]$m.card.media) -or $homeHtml -notmatch [regex]::Escape([string]$m.route) }).Count -eq 0 -and $homeHtml -match 'studio-withdrawn-product' -and $homeHtml -notmatch 'studio-withdrawn-product[^>]*>[\s\S]{0,1200}data-commerce="free"')
-$nonRootVisible = @($publicModules | Where-Object { $_.homepage.visibility -eq 'hidden' })
-Assert-Binding 'root-hidden modules are omitted from root only while routes/catalog/truth remain present' (@($nonRootVisible | Where-Object { $id=$_.id; $homeHtml -match ('data-module="' + [regex]::Escape([string]$id) + '"') -or -not (Test-Path (Join-Path $PublicDir "$id/index.html")) -or $software -notmatch ('data-product="' + [regex]::Escape([string]$id) + '"') -or -not (Test-Path (Join-Path $PublicDir "truth/products/$id.json")) }).Count -eq 0)
+$bindingFailures = @($publicModules | Where-Object { $m=$_; $p=@($manifest.products | Where-Object id -eq $m.id | Select-Object -First 1)[0]; $card=[regex]::Match($software, '(?s)<article class="product-card[^>]*data-product="' + [regex]::Escape([string]$m.id) + '".*?</article>').Value; -not $card -or $card -notmatch [regex]::Escape([string]$m.route) -or $card -notmatch [regex]::Escape([string]$m.card.media) -or $card -notmatch [regex]::Escape([string]$m.theme.accent) -or ($p.release.publicVersion -and $card -notmatch ('v' + [regex]::Escape([string]$p.release.publicVersion))) })
+Assert-Binding 'Software cards bind route, authentic media, accent and public version to module truth' ($bindingFailures.Count -eq 0)
+Assert-Binding 'withdrawn record remains in canonical product and catalog routes' (@($expectedWithdrawn | Where-Object { $m=$_; -not (Test-Path (Join-Path $PublicDir "$($m.id)/index.html")) -or $software -notmatch [regex]::Escape([string]$m.route) }).Count -eq 0)
+Assert-Binding 'all product routes, catalog cards and Truth outputs remain reachable off Home' (@($publicModules | Where-Object { $id=$_.id; $homeHtml -match ('data-module="' + [regex]::Escape([string]$id) + '"') -or -not (Test-Path (Join-Path $PublicDir "$id/index.html")) -or $software -notmatch ('data-product="' + [regex]::Escape([string]$id) + '"') -or -not (Test-Path (Join-Path $PublicDir "truth/products/$id.json")) }).Count -eq 0)
 $missingPublicRoutes = @($manifest.products | Where-Object { $_.visible -and (-not (Test-Path (Join-Path $PublicDir "$($_.id)/index.html")) -or -not (Test-Path (Join-Path $PublicDir "truth/products/$($_.id).json"))) })
 Assert-Binding 'every public canonical product retains route and truth output' ($missingPublicRoutes.Count -eq 0)
 $truthIds = @($truthIndex.products | ForEach-Object id | Sort-Object)
@@ -55,16 +47,11 @@ Assert-Binding 'public navigation keeps software, proof, Truth Files and proof s
 $rg = @($manifest.products | Where-Object id -eq 'reality-gate' | Select-Object -First 1)[0]
 $rgPage = Read-Built 'reality-gate/index.html'
 Assert-Binding 'Reality Gate withdrawal truth remains canonical and routed without a download CTA' ($rg.release.releaseStatus -eq 'WITHDRAWN' -and $rg.release.withdrawnVersion -eq '1.1.0' -and $rg.downloadUrl -eq $null -and $rgPage -match 'Withdrawn' -and $rgPage -notmatch '<a[^>]+>\s*Download')
-$eligibleEvidence = @($sourceModules | Where-Object { $null -ne $_.homepage.evidencePriority } | Sort-Object { [int]$_.homepage.evidencePriority })
-$selectedEvidence = $null
-foreach ($m in $eligibleEvidence) {
-  $p = @($manifest.products | Where-Object id -eq $m.id | Select-Object -First 1)[0]
-  $artifact = @($p.artifacts | Where-Object { $_.downloadUrl -eq $p.downloadUrl -and $_.sha256 -eq $p.sha256 } | Select-Object -First 1)[0]
-  if ($p.release.releaseStatus -eq 'PUBLIC_RELEASE' -and $p.release.publicVersion -and $p.verification.status -eq 'VERIFIED' -and -not $p.presentation.downloadUnavailable -and $p.downloadUrl -and $p.sha256 -match '^[a-fA-F0-9]{64}$' -and $p.sha256Url -and $artifact -and $m.card.media) { $selectedEvidence = $p; break }
-}
-$evidenceHtml = [regex]::Match($homeHtml, '(?s)<aside class="studio-evidence".*?</aside>').Value
-Assert-Binding 'compact evidence selector uses the first canonically eligible public artifact' (($selectedEvidence -and $evidenceHtml -and $evidenceHtml.Contains([string]$selectedEvidence.name) -and $evidenceHtml.Contains([string]$selectedEvidence.release.publicVersion) -and $evidenceHtml.Contains([string]$selectedEvidence.verification.verifiedAt)) -or (-not $selectedEvidence -and -not $evidenceHtml))
-Assert-Binding 'homepage ledger links to the canonical release record without duplicating digests or artifact filenames' (($selectedEvidence -and $evidenceHtml.Contains('/proof/#receipt-' + [string]$selectedEvidence.id) -and $homeHtml -notmatch [regex]::Escape([string]$selectedEvidence.sha256) -and $evidenceHtml -notmatch [regex]::Escape([string]$selectedEvidence.artifacts[0].filename)) -or (-not $selectedEvidence -and -not $evidenceHtml))
+Assert-Binding 'Home proof copy links to canonical records without embedding a product digest' ($homeHtml -match 'href="/proof/"' -and $homeHtml -match 'href="/truth-files/"' -and $homeHtml -match 'does not by itself establish custody or safety' -and @($manifest.products | Where-Object { $_.sha256 -and $homeHtml.Contains([string]$_.sha256) }).Count -eq 0)
+$cvManifest = @($manifest.products | Where-Object id -eq 'cache-vault' | Select-Object -First 1)[0]
+$cvRegistry = @($registry.products | Where-Object id -eq 'cache-vault' | Select-Object -First 1)[0]
+$cvTruth = @($truthIndex.products | Where-Object id -eq 'cache-vault' | Select-Object -First 1)[0]
+Assert-Binding 'Cache Vault Windows and Android v0.3.1 stay source-bound across catalogue and public records' ($cvManifest.release.publicVersion -eq '0.3.1' -and $cvManifest.release.companionPublicVersion -eq '0.3.1' -and $cvRegistry.release.publicVersion -eq '0.3.1' -and $cvRegistry.artifacts.Count -ge 2 -and $cvTruth.version -eq '0.3.1' -and $software -match 'data-product="cache-vault"' -and $software -match 'class="card-version">v0\.3\.1')
 foreach ($page in @(@{name='homepage';html=$homeHtml},@{name='software';html=$software})) {
   $ids = @([regex]::Matches($page.html, '\bid="([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
   Assert-Binding "$($page.name): document IDs are unique" (@($ids | Sort-Object -Unique).Count -eq $ids.Count)

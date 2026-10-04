@@ -1,12 +1,49 @@
 /* Continuous Foundry visual system. Layout follows generic scene metadata, never product IDs. */
 :root {
+  --foundry-ink: #f3eee5;
+  --foundry-muted: #c9c9c0;
+  --foundry-steel: #1b1e1c;
+  --foundry-line: #a7937468;
+  --foundry-glow: #e6b777;
   --world-rail: 1760px;
   --world-copy: 1120px;
   --world-gutter: clamp(24px, 5.2vw, 112px);
   --world-ink: #eef0eb;
-  --world-dim: #bac3bc;
-  --world-line: #c6d0c329;
-  --world-metal: #151d1d;
+  --world-dim: #c6c8c0;
+  --world-line: #bda98739;
+  --world-metal: #1b1e1c;
+}
+
+/* Shared chrome for the homepage-first system; product compositions stay intact. */
+.studio .site-header {
+  border-bottom-color: #b8945d72;
+  background: linear-gradient(90deg, #171a19, #20211e 62%, #171a19);
+}
+.studio .nav-row { width: min(1200px, calc(100% - 48px)); max-width: none; margin-inline: auto; padding: 0; }
+.studio .brand-lockup { display: inline-flex; align-items: center; gap: 10px; color: #f4eadb; }
+.studio .brand-mark { display: block; flex: none; width: 49px; height: 49px; object-fit: cover; object-position: 20% 43%; border: 0; clip-path: polygon(49% 3%, 87% 17%, 100% 62%, 72% 88%, 41% 95%, 13% 79%, 3% 44%, 13% 26%); filter: brightness(1.35) contrast(1.12); }
+.studio .brand-name { display: grid; gap: 2px; color: #f4eadb; font: 700 15px/1.1 "Segoe UI", Arial, sans-serif; letter-spacing: .035em; white-space: nowrap; }
+.studio .brand-name small { color: #c7b494; font: 600 12px/1.2 Consolas, "Courier New", monospace; letter-spacing: .07em; }
+.studio .site-header .nav-cta {
+  border-color: #d1a967;
+  background: #282823;
+  color: #f6e7cb;
+}
+.studio .site-header .nav-cta:hover { background: #3a342b; color: #fff3dc; }
+.studio .site-footer { border-top-color: #786a526e; background: #141817; }
+.studio .site-footer a:hover { color: #f2cb91; }
+.studio .footer-brand-lockup { display: inline-flex; align-items: center; gap: 10px; color: #f4eadb; font: 400 16px/1.25 Georgia, "Times New Roman", serif; letter-spacing: .08em; text-decoration: none; }
+.studio .footer-logo { display: block; flex: none; width: 48px; height: 48px; margin: 0; object-fit: cover; object-position: 20% 43%; border: 0; clip-path: polygon(49% 3%, 87% 17%, 100% 62%, 72% 88%, 41% 95%, 13% 79%, 3% 44%, 13% 26%); filter: brightness(1.35) contrast(1.12); }
+.studio .footer-brand p { margin: 8px 0 0 52px; }
+@media (max-width: 640px) {
+  .studio .nav-row { width: calc(100% - 40px); }
+  .studio .brand-mark { width: 44px; height: 44px; }
+  .studio .brand-name { display: grid; font-size: 13px; letter-spacing: 0; }
+  .studio .brand-name small { font-size: 12px; letter-spacing: 0; }
+}
+@media (max-width: 374px) {
+  .studio .nav-row { width: calc(100% - 32px); }
+  .studio .brand-name small { display: none; }
 }
 
 html { scroll-behavior: smooth; }
@@ -50,44 +87,12 @@ main > .product-shell { width: min(var(--world-rail), calc(100% - var(--world-gu
 .secondary-page .standard-principles-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .secondary-page .standard-card-full { grid-column: 1 / -1; }
 
-/* The catalog is a field of different product instruments, not a grid of clones. */
-.software-catalog-page .h9-software-wrap { width: min(var(--world-rail), calc(100% - var(--world-gutter) * 2)); }
-.software-catalog-page .h9-software-hero { padding-block: clamp(68px, 9vw, 142px) 52px; border-bottom: 1px solid var(--world-line); }
-.software-catalog-page .h9-software-hero > .h9-software-wrap { position: relative; }
-.software-catalog-page .h9-software-hero h1 { max-width: 11ch; font-size: clamp(58px, 9vw, 132px); letter-spacing: -.07em; }
-.software-catalog-page .h9-software-hero p:last-child { max-width: 68ch; font-size: clamp(16px, 1.4vw, 21px); }
-.software-catalog-page .h9-software-body { padding-block: 44px 120px; }
-.software-catalog-page .h9-product-finder { padding-inline: 0; }
-.software-catalog-page .products-grid { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: clamp(18px, 2vw, 34px); }
-.software-catalog-page .product-card { grid-column: span 6; min-height: 385px; grid-template-columns: minmax(180px, .8fr) minmax(0, 1.2fr); border: 0; border-top: 1px solid #b8c5c352; background: linear-gradient(155deg, #15201f, #0b1012 78%); }
-.software-catalog-page .product-card:nth-child(3n + 1) { grid-column: span 7; }
-.software-catalog-page .product-card:nth-child(3n + 2) { grid-column: span 5; grid-template-columns: minmax(0, 1fr); }
-.software-catalog-page .product-card:nth-child(3n + 2) .catalog-image-link { min-height: 205px; max-height: 245px; border-right: 0; border-bottom: 1px solid #ffffff17; }
-.software-catalog-page .product-card:nth-child(3n) { grid-column: span 5; grid-template-columns: minmax(0, 1fr); }
-.software-catalog-page .product-card:nth-child(3n) .catalog-image-link { min-height: 205px; max-height: 245px; border-right: 0; border-bottom: 1px solid #ffffff17; }
-.software-catalog-page .product-card:nth-child(3n + 1) .catalog-image-link { min-height: 330px; }
-.software-catalog-page .product-card .card-body { padding: clamp(20px, 2.3vw, 38px); }
-.software-catalog-page .product-card:nth-child(3n + 2) .card-body,
-.software-catalog-page .product-card:nth-child(3n) .card-body { min-height: 265px; }
-.software-catalog-page .product-card .card-name { font-size: clamp(25px, 2.2vw, 36px); }
-.software-catalog-page .product-card[data-scene-family="archive-workbench"] { grid-column: span 7; grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr); }
-.software-catalog-page .product-card[data-scene-family="archive-workbench"] .catalog-image-link { min-height: 340px; }
-.software-catalog-page .product-card[data-scene-family="glass-ledger"] { grid-column: span 5; grid-template-columns: 1fr; background: linear-gradient(160deg, #172523, #0a1112); }
-.software-catalog-page .product-card[data-scene-family="glass-ledger"] .catalog-image-link { min-height: 210px; max-height: 250px; border-right: 0; border-bottom: 1px solid #ffffff17; }
-.software-catalog-page .product-card[data-scene-family="immersive-staging"] { grid-column: span 7; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); background: linear-gradient(110deg, #171718, #201b16); }
-.software-catalog-page .product-card[data-scene-family="immersive-staging"] .catalog-image-link { grid-column: 2; grid-row: 1; min-height: 350px; background: radial-gradient(ellipse, #a47a4d24, #0b0d0f 72%); }
-.software-catalog-page .product-card[data-scene-family="immersive-staging"] .card-body { grid-column: 1; grid-row: 1; }
-.software-catalog-page .product-card[data-scene-family="night-console"] { grid-column: span 5; grid-template-columns: minmax(0, 1fr); background: linear-gradient(180deg, #18202b, #0a0d12); }
-.software-catalog-page .product-card[data-scene-family="night-console"] .catalog-image-link { min-height: 210px; max-height: 255px; border-right: 0; border-bottom: 1px solid #ffffff17; background: radial-gradient(ellipse, #8ea2bb1a, #080b10 72%); }
-.software-catalog-page .product-card[data-scene-family="capture-studio"] { grid-column: span 5; grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr); background: linear-gradient(145deg, #201d18, #0d1012 76%); }
-.software-catalog-page .product-card[data-scene-family="capture-studio"] .catalog-image-link { grid-column: 2; grid-row: 1; min-height: 300px; aspect-ratio: 1 / 1; }
-.software-catalog-page .product-card[data-scene-family="capture-studio"] .card-body { grid-column: 1; grid-row: 1; }
-.software-catalog-page .product-card[data-scene-family="weather-instrument"] { grid-column: span 7; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); background: linear-gradient(115deg, #142127, #0b1113 75%); }
-.software-catalog-page .product-card[data-scene-family="weather-instrument"] .catalog-image-link { grid-column: 2; grid-row: 1; min-height: 330px; background: radial-gradient(ellipse, #a8c3cc1c, #091013 72%); }
-.software-catalog-page .product-card[data-scene-family="weather-instrument"] .card-body { grid-column: 1; grid-row: 1; }
-.software-catalog-page .product-card[data-scene-family="release-control-plane"] { grid-column: 1 / -1; min-height: 370px; grid-template-columns: minmax(0, 1.4fr) minmax(0, .6fr); background: linear-gradient(100deg, #111a1c, #0b1114 70%, #172021); }
-.software-catalog-page .product-card[data-scene-family="release-control-plane"] .catalog-image-link { grid-column: 1; grid-row: 1; min-height: 350px; }
-.software-catalog-page .product-card[data-scene-family="release-control-plane"] .card-body { grid-column: 2; grid-row: 1; }
+/* Product accents identify each tool within the shared steel catalog. */
+.software-catalog-page .product-card { min-height: 0; }
+.software-catalog-page .product-card[data-scene-family="night-console"] { background: linear-gradient(150deg, #202531, #131b22 80%); }
+.software-catalog-page .product-card[data-scene-family="capture-studio"] { background: linear-gradient(150deg, #30271f, #1a1e1b 80%); }
+.software-catalog-page .product-card[data-scene-family="weather-instrument"] { background: linear-gradient(150deg, #1b2b31, #131f21 80%); }
+.software-catalog-page .product-card[data-scene-family="release-control-plane"] { background: linear-gradient(150deg, #292520, #1b211e 80%); }
 
 /* Product stages inherit a generic family and use different spatial grammars. */
 .pp-module-hero { position: relative; isolation: isolate; width: calc(100% + 2 * var(--world-gutter)); margin-inline: calc(-1 * var(--world-gutter)) !important; padding: clamp(35px, 5.5vw, 88px) var(--world-gutter) clamp(52px, 7vw, 112px); border-bottom: 1px solid var(--world-line); background: radial-gradient(ellipse at 76% 48%, #c4d2c812, transparent 45%), linear-gradient(115deg, #17211f, #0b1012 68%); }
@@ -139,19 +144,27 @@ main > .product-shell { width: min(var(--world-rail), calc(100% - var(--world-gu
 .secondary-page .proof-hero { max-width: var(--world-copy); padding-block: clamp(55px, 8vw, 120px) 40px; border-bottom: 1px solid var(--world-line); }
 .secondary-page .proof-hero h1 { max-width: 14ch; font-size: clamp(42px, 6.4vw, 92px); line-height: .98; letter-spacing: -.055em; }
 .secondary-page .receipts-title { max-width: var(--world-copy); margin: clamp(48px, 7vw, 100px) auto 22px; font-size: clamp(27px, 3vw, 42px); }
-.secondary-page .receipts-grid { display: grid; grid-template-columns: 1fr; gap: 0; }
-.secondary-page .receipt-card { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 clamp(20px, 3vw, 46px); max-width: var(--world-rail); margin-inline: auto; padding: 30px 0 36px; border: 0; border-top: 1px solid #d1bd9455; border-radius: 0; background: transparent; }
+.secondary-page .receipts-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; width: 100%; }
+.secondary-page .receipt-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(210px, .34fr); gap: 0 clamp(20px, 3vw, 46px); width: 100%; max-width: var(--world-rail); margin-inline: auto; padding: 25px 0 27px; border: 0; border-top: 1px solid #d1bd9455; border-radius: 0; background: transparent; }
 .secondary-page .receipt-card::before { display: none; }
-.secondary-page .receipt-card-head,.secondary-page .receipt-card > .build-desc,.secondary-page .receipt-card-action,.secondary-page .receipt-card > .receipt-limitations { grid-column: 1 / -1; }
-.secondary-page .receipt-card-head { align-items: center; margin-bottom: 13px; padding-bottom: 16px; border-bottom: 1px solid var(--world-line); }
+.secondary-page .receipt-card-head,.secondary-page .receipt-card > .build-desc,.secondary-page .receipt-details { grid-column: 1 / -1; }
+.secondary-page .receipt-card-head { align-items: center; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 10px; padding-bottom: 12px; border-bottom: 1px solid var(--world-line); }
 .secondary-page .receipt-card-head h3 { display: inline; margin-right: 12px; font-size: clamp(21px, 2.2vw, 31px); }
 .secondary-page .receipt-card .platform-badge { border: 0; border-radius: 0; background: none; padding: 0; }
-.secondary-page .receipt-card > .build-desc { max-width: 72ch; margin: 0 0 20px; }
-.secondary-page .receipt-card .receipt-section { min-width: 0; padding: 16px 0; border-left: 1px solid var(--world-line); }
-.secondary-page .receipt-card .receipt-section:nth-of-type(2) { border-left: 0; }
-.secondary-page .receipt-card .receipt-section-title { color: #ddc69a; font: 10px/1.5 ui-monospace, monospace; letter-spacing: .15em; text-transform: uppercase; }
+.secondary-page .receipt-card > .build-desc { max-width: 78ch; margin: 0 0 14px; }
+.secondary-page .receipt-card .receipt-section { min-width: 0; margin: 0; padding: 0; border: 0; }
+.secondary-page .receipt-card .receipt-section.receipt-release,.secondary-page .receipt-card .receipt-details-grid .receipt-section { border: 0; }
+.secondary-page .receipt-card .receipt-section-title { color: #ddc69a; font: 12px/1.5 ui-monospace, monospace; letter-spacing: .12em; text-transform: uppercase; }
+.secondary-page .receipt-card .receipt-fields { margin-bottom: 0; }
 .secondary-page .receipt-card .receipt-fields > div { align-items: flex-start; }
-.secondary-page .receipt-card .receipt-card-action { padding-top: 15px; border-top: 1px solid var(--world-line); }
+.secondary-page .receipt-card .receipt-card-action { align-self: center; padding: 0; border: 0; }
+.secondary-page .receipt-details { min-width: 0; margin-top: 18px; border-top: 1px solid var(--world-line); }
+.secondary-page .receipt-details > summary { display: flex; justify-content: space-between; gap: 8px; padding: 14px 0; color: #ead5ad; cursor: pointer; font-size: .91rem; font-weight: 600; list-style: none; }
+.secondary-page .receipt-details > summary::-webkit-details-marker { display: none; }
+.secondary-page .receipt-details > summary:focus-visible { outline: 2px solid #e5bf7c; outline-offset: 3px; }
+.secondary-page .receipt-details[open] > summary span { transform: rotate(45deg); }
+.secondary-page .receipt-details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr)); gap: 22px; padding: 20px 0 12px; }
+.secondary-page .receipt-details .limits-list { margin: 0 0 10px; overflow-wrap: anywhere; }
 
 .studio-threshold { position: relative; display: grid; min-height: 265px; align-content: center; overflow: hidden; padding: 44px var(--world-gutter); background: linear-gradient(90deg, #080b0cf7 0%, #101719e8 48%, #1119188c 100%), url('/assets/binding-foundry/foundry-ledger.webp') center 52% / cover no-repeat; }
 .studio-threshold::before,.studio-threshold::after { position: absolute; right: 0; left: 0; height: 1px; background: linear-gradient(90deg, transparent, #d2b37f9c, transparent); content: ''; }
@@ -205,13 +218,6 @@ main > .product-shell { width: min(var(--world-rail), calc(100% - var(--world-gu
   .studio-root-page .studio-product-card[data-home-role="major"] { min-height: 620px; }
 }
 @media (max-width: 1050px) {
-  .software-catalog-page .product-card,
-  .software-catalog-page .product-card:nth-child(3n + 1),
-  .software-catalog-page .product-card:nth-child(3n + 2),
-  .software-catalog-page .product-card:nth-child(3n) { grid-column: span 6; grid-template-columns: minmax(0, 1fr); }
-  .software-catalog-page .product-card .catalog-image-link { min-height: 230px !important; max-height: 300px !important; border-right: 0; border-bottom: 1px solid #ffffff17; }
-  .software-catalog-page .product-card[data-scene-family] .catalog-image-link { grid-column: 1; grid-row: 1; }
-  .software-catalog-page .product-card[data-scene-family] .card-body { grid-column: 1; grid-row: 2; }
   .studio-root-page .studio-hero-grid { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 36px; }
   .studio-root-page .studio-hero h1 { font-size: clamp(48px, 6vw, 72px); }
 }
@@ -223,17 +229,6 @@ main > .product-shell { width: min(var(--world-rail), calc(100% - var(--world-gu
   .secondary-page .receipt-card .receipt-section:nth-of-type(even) { border-left: 0; }
   .secondary-page .standard-brief-card { display: block; }
   .secondary-page .standard-card-full { grid-column: auto; }
-  .software-catalog-page .h9-software-hero { padding-block: 52px 34px; }
-  .software-catalog-page .h9-software-hero h1 { font-size: clamp(49px, 13vw, 78px); }
-  .software-catalog-page .h9-catalog-heading { align-items: flex-start; flex-direction: column; }
-  .software-catalog-page .h9-catalog-heading h2 { white-space: normal; }
-  .software-catalog-page .products-grid { grid-template-columns: 1fr; }
-  .software-catalog-page .product-card,
-  .software-catalog-page .product-card:nth-child(3n + 1),
-  .software-catalog-page .product-card:nth-child(3n + 2),
-  .software-catalog-page .product-card:nth-child(3n) { grid-column: 1; min-height: 0; }
-  .software-catalog-page .product-card:nth-child(3n + 1) .catalog-image-link { min-height: 210px !important; }
-  .software-catalog-page .product-card .card-body { min-height: 0 !important; padding: 20px; }
   .tf-index .tf-grid { grid-template-columns: 1fr; }
   .secondary-page .receipt-card { grid-template-columns: 1fr; }
   .secondary-page .receipt-card .receipt-section { border-left: 0; border-bottom: 1px solid var(--world-line); }
@@ -640,4 +635,94 @@ main > .product-shell { width: min(var(--world-rail), calc(100% - var(--world-gu
   .studio-root-page .studio-product-card[data-home-role="secondary"] .studio-product-copy > p { font-size: 12px; }
   .studio-root-page .studio-product-open { margin-top: 11px; }
   .studio-root-page .studio-withdrawn-media { border-right: 0; border-bottom: 1px solid #c67c5c38; }
+}
+
+/* Main studio rooms share Home's forged-metal materials and type rhythm. */
+body.studio:is(.secondary-page, .product-support, .product-roadmap, .tf-index):not(.tf-page) {
+  --bg: #151918;
+  --text: #f2eee6;
+  --muted: #c6c8c0;
+  --line: #9d8b6d6b;
+  --gold: #dfb977;
+  background: #151918;
+  color: var(--text);
+}
+body.studio:is(.secondary-page, .product-support, .product-roadmap, .tf-index):not(.tf-page) main {
+  background: radial-gradient(ellipse 62% 460px at 88% 0%, #a46a3826, transparent 80%),
+    repeating-linear-gradient(115deg, transparent 0 5px, #d5c09a05 6px 7px),
+    linear-gradient(150deg, #1d211f, #151918 46%, #1b1e1b);
+}
+body.studio:is(.secondary-page, .product-support, .product-roadmap, .tf-index):not(.tf-page) :is(h1, h2) {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: -.038em;
+}
+body.studio:is(.secondary-page, .product-support, .product-roadmap, .tf-index):not(.tf-page) .kicker {
+  color: #dfc18f;
+}
+.secondary-page .support-hero, .tf-index .tf-hero, .secondary-page .proof-hero {
+  width: min(var(--world-copy), 100%);
+  max-width: var(--world-copy);
+  margin: 0 auto 42px;
+  padding: 58px 0 31px;
+  border-bottom: 1px solid #b49c746f;
+  background: radial-gradient(ellipse 50% 90% at 100% 5%, #aa71372a, transparent 78%);
+}
+.product-support .support-hero { margin-top: 0; padding: 40px 0 24px; border-bottom: 1px solid var(--world-line); }
+.secondary-page .support-hero h1, .tf-index .tf-hero h1, .secondary-page .proof-hero h1 {
+  max-width: 19ch;
+  font: 400 clamp(41px, 5vw, 66px)/1.05 Georgia, "Times New Roman", serif;
+  letter-spacing: -.045em;
+}
+.secondary-page .support-hero p, .tf-index .tf-lede, .secondary-page .proof-hero p {
+  color: #d4d3ca;
+}
+.secondary-page .support-section, .tf-index .tf-section { margin-block: 38px 54px; }
+.secondary-page :is(.standard-brief-card, .standard-doctrine-card, .standard-card, .standard-boundary-card, .standard-route-card, .about-card, .founders-boundary, .support-box-dark),
+.product-support :is(.support-box-dark, .support-content-box, .detail-card) {
+  border: 1px solid #9d8b6d5b;
+  border-radius: 2px;
+  background: linear-gradient(145deg, #292a25, #1b201e 78%);
+  box-shadow: inset 0 1px #ffffff0c;
+}
+.secondary-page .about-intro-box { border-left-color: #dfb977; }
+.secondary-page .about-nav-card, .tf-index .tf-card {
+  border: 1px solid #9d8b6d55;
+  border-radius: 2px;
+  background: linear-gradient(145deg, #252823, #191e1c 85%);
+  padding: 22px;
+}
+.secondary-page .support-grid, .tf-index .tf-grid { gap: 14px; border-top: 0; }
+.secondary-page .detail-card, .tf-index .detail-card { padding: 20px 22px; }
+.product-roadmap .roadmap-studio { padding-top: 54px; padding-bottom: 72px; }
+.product-roadmap .roadmap-studio > h1 { max-width: 16ch; font-size: clamp(43px, 5vw, 66px); line-height: 1.04; }
+.product-roadmap .roadmap-intro { margin: 18px 0 36px; color: #d4d3ca; }
+.product-roadmap .roadmap-list { margin-bottom: 32px; }
+.product-roadmap .roadmap-list article {
+  gap: 28px;
+  margin-bottom: 10px;
+  padding: 20px 23px;
+  border: 1px solid #9d8b6d55;
+  background: linear-gradient(140deg, #252823, #191e1c 85%);
+}
+.product-roadmap .roadmap-list article > p { color: #d0d1c8; }
+.secondary-page .founders-hero { padding-top: 54px; padding-bottom: 31px; }
+.secondary-page .founders-hero h1 { max-width: 17ch; font-size: clamp(42px, 5vw, 66px); line-height: 1.04; }
+.studio .site-footer { padding-top: 43px; }
+.studio .footer-grid, .studio .footer-bottom { width: min(1200px, calc(100% - 48px)); max-width: none; margin-inline: auto; padding-inline: 0; }
+.studio .footer-grid { gap: 28px; }
+.studio .footer-brand p { margin-left: 54px; }
+.studio .ui-arrow { display: inline-block; width: 16px; height: 16px; margin-left: 7px; vertical-align: -.18em; flex: none; }
+.software-catalog-page .h9-footer-brand img { width: 48px; height: 48px; object-fit: cover; object-position: 20% 43%; border: 0; clip-path: polygon(49% 3%, 87% 17%, 100% 62%, 72% 88%, 41% 95%, 13% 79%, 3% 44%, 13% 26%); filter: brightness(1.35) contrast(1.12); }
+.software-catalog-page .studio-root-footer { border-top-color: #786a526e; background: #141817; }
+@media (max-width: 760px) {
+  .secondary-page .support-hero, .tf-index .tf-hero, .secondary-page .proof-hero { margin-bottom: 28px; padding: 38px 0 24px; }
+  .secondary-page .support-hero h1, .tf-index .tf-hero h1, .secondary-page .proof-hero h1 { font-size: clamp(39px, 10vw, 52px); }
+  .secondary-page .support-section, .tf-index .tf-section { margin-block: 30px 42px; }
+  .secondary-page .support-grid, .tf-index .tf-grid { gap: 10px; }
+  .product-roadmap .roadmap-studio { padding-top: 36px; padding-bottom: 54px; }
+  .product-roadmap .roadmap-list article { padding: 18px; }
+  .secondary-page .founders-hero { padding-top: 36px; }
+  .studio .footer-grid, .studio .footer-bottom { width: calc(100% - 40px); }
+  .studio .footer-brand p { margin-left: 0; }
 }

@@ -26,16 +26,17 @@ $rgHtml = Get-Content (Join-Path $publicDir "reality-gate\index.html") -Raw
 Assert-Condition ($rgHtml -match 'First-Class CLI &amp; Instance Discovery \(RG-05\)') "Reality Gate matrix includes RG-05"
 Assert-Condition ($rgHtml -match '(?s)First-Class CLI &amp; Instance Discovery \(RG-05\).*?Branch Qualified') "RG-05 matrix row reports Branch Qualified, resolving F01 contradiction"
 
-# 2. Current production release reconciliation: Cache Vault v0.2.4.
+# 2. Current published release reconciliation: Cache Vault v0.3.1.
 $cvHtml = Get-Content (Join-Path $publicDir "cache-vault\index.html") -Raw
 Assert-Condition ($cvHtml -match 'available from Proof Foundry downloads') "Cache Vault exposes explicit download availability notice"
 Assert-Condition ($cvHtml -match 'Proof Foundry downloads') "Cache Vault states distribution source"
-Assert-Condition ($cvHtml -match 'v0\.2\.4 is the current public Windows release') "Cache Vault leads with final public v0.2.4 release state"
-Assert-Condition ($cvHtml -match [regex]::Escape('https://downloads.theprooffoundry.com/cache-vault/v0.2.4/CacheVault-v0.2.4-windows.zip')) "Cache Vault primary CTA resolves to the final v0.2.4 Windows ZIP"
-Assert-Condition ($cvHtml -match '717ed13efd3d8d4e5a16d4e412ed5be0fd20b0219918f913d7d2b44f021cae7e') "Cache Vault publishes the final v0.2.4 ZIP SHA-256"
+Assert-Condition ($cvHtml -match 'v0\.3\.1 is the current public Windows release') "Cache Vault leads with current public Windows v0.3.1"
+Assert-Condition ($cvHtml -match [regex]::Escape('https://downloads.theprooffoundry.com/cache-vault/v0.3.1/CacheVault-v0.3.1-windows.zip')) "Cache Vault primary CTA resolves to the v0.3.1 Windows ZIP"
+Assert-Condition ($cvHtml -match 'd0c59c440b1d5787c9319e1bdf8829f117ccaa2d64d3424dd6955a84fb975d45') "Cache Vault publishes the v0.3.1 Windows ZIP SHA-256"
 Assert-Condition ($cvHtml -notmatch 'v0\.2\.3-rc1|v0\.2\.3-rc2') "Cache Vault carries no RC1/RC2 candidate strings"
-Assert-Condition ($cvHtml -match 'v0\.2\.4 is the current public Windows release' -and $cvHtml -notmatch 'v0\.2\.4 is a release candidate|release candidate v0\.2\.4') "Cache Vault presents v0.2.4 as the public release, not a candidate"
-Assert-Condition ($cvHtml -match 'CacheVault Mobile source v0\.3\.0 is labeled a release candidate, with no authorized public artifact') "Cache Vault distinguishes later source candidate v0.3.0 from publication"
+Assert-Condition ($cvHtml -match 'v0\.3\.1 is the current public Windows release' -and $cvHtml -match 'v0\.3\.0 \(2026-09-30\) is the previous public release') "Cache Vault distinguishes current v0.3.1 from prior public v0.3.0"
+Assert-Condition ($cvHtml -match 'Recorded from the v0\.2\.4 Windows release line' -and $cvHtml -match 'sample clips only') "Cache Vault keeps the v0.2.4 film historical and sample-labeled"
+Assert-Condition ($cvHtml -match 'Hosted GitHub CI failed separately' -and $cvHtml -match 'debug build' -and $cvHtml -match 'No Reality Gate canonical run was performed') "Cache Vault scopes hosted CI, device smoke and canonical qualification"
 
 # ProofShot's former no-release guard is superseded by the shipped installer.
 $psHtml = Get-Content (Join-Path $publicDir 'proofshot\index.html') -Raw -Encoding UTF8
@@ -97,14 +98,14 @@ $rgSupport = [regex]::Match($supportPage, '(?s)<article class="detail-card">\s*<
 $cvSupport = [regex]::Match($supportPage, '(?s)<article class="detail-card">\s*<h3><a href="/cache-vault/">.*?</article>').Value
 $cvSupportTruth = $registryJson.products | Where-Object { $_.id -eq 'cache-vault' }
 Assert-Condition ($rgRegistry.release.publicVersion -eq $null -and $rgSupport -match 'Withdrawn · no public download' -and $rgSupport -match 'former v1\.1\.0 release is withdrawn and no public download is available') 'Support derives withdrawn status and no-public-version availability from canonical Reality Gate truth'
-Assert-Condition ($cvSupportTruth.release.publicVersion -eq '0.2.4' -and $cvSupport -match 'Public Windows v0\.2\.4 available') 'Support retains the current public version for an available product'
+Assert-Condition ($cvSupportTruth.release.publicVersion -eq '0.3.1' -and $cvSupport -match 'Public Windows v0\.3\.1 available') 'Support retains the current public version for an available product'
 $cvPage = Get-Content (Join-Path $publicDir 'cache-vault\index.html') -Raw -Encoding UTF8
 $cvSource = @($manifest.products | Where-Object { $_.id -eq 'cache-vault' })[0]
 $cvCompanion = @($cvSource.artifacts | Where-Object { $_.platform -eq 'Android companion' } | Select-Object -First 1)[0]
 $cvCompanionUrl = [string]$cvCompanion.downloadUrl
 $cvCompanionHref = [regex]::Escape('href="' + $cvCompanionUrl + '"')
 $cvCompanionVersion = [regex]::Escape('v' + [string]$cvSource.release.companionPublicVersion)
-Assert-Condition (-not [string]::IsNullOrWhiteSpace($cvCompanionUrl) -and $cvSupportTruth.artifacts[1].downloadUrl -eq $cvCompanionUrl -and $cvSupport -match $cvCompanionHref -and $cvPage -match $cvCompanionHref -and $cvSupport -match "Android companion $cvCompanionVersion" -and $cvPage -match "Android: public companion $cvCompanionVersion" -and $cvSupport -notmatch 'unavailable on GitHub' -and $cvSource.presentation.downloadNotice -notmatch 'unavailable on GitHub') 'Support and Cache Vault use the same canonical public Android version and APK URL without a conflicting availability claim'
+Assert-Condition (-not [string]::IsNullOrWhiteSpace($cvCompanionUrl) -and $cvSupportTruth.artifacts[1].downloadUrl -eq $cvCompanionUrl -and $cvSupport -match $cvCompanionHref -and $cvPage -match $cvCompanionHref -and $cvSupport -match "Android companion $cvCompanionVersion" -and $cvPage -match "release-signed $cvCompanionVersion companion APK" -and $cvSupport -notmatch 'unavailable on GitHub' -and $cvSource.presentation.downloadNotice -notmatch 'unavailable on GitHub') 'Support and Cache Vault use the same canonical public Android version and APK URL without a conflicting availability claim'
 Assert-Condition ($supportPage -notmatch '\{\{products\.' -and $rgSupport -notmatch 'Windows Developer Pilot\s+available\.') 'Support renders canonical availability without unresolved tokens or a malformed pilot-available claim'
 $rgProof = Get-Content (Join-Path $publicDir 'proof\index.html') -Raw -Encoding UTF8
 Assert-Condition ($rgProof -match 'Historical release record: Historical Windows installer ZIP record for v1\.1\.0' -and $rgProof -match 'Downloads currently unavailable') 'release receipt keeps historical evidence and suppresses the download CTA'
@@ -116,9 +117,11 @@ Assert-Condition ($roadmapPage -match 'WITHDRAWN' -and $roadmapPage -match 'form
 $cvRegistry = $registryJson.products | Where-Object { $_.id -eq 'cache-vault' }
 Assert-Condition ($cvRegistry.verification.status -eq 'VERIFIED') "Registry Cache Vault verification status is VERIFIED"
 Assert-Condition ($cvRegistry.release.releaseStatus -eq 'PUBLIC_RELEASE') "Registry Cache Vault release status is PUBLIC_RELEASE (final public)"
-Assert-Condition ($cvRegistry.release.publicVersion -eq '0.2.4') "Registry Cache Vault public version is 0.2.4"
-Assert-Condition ($null -eq $cvRegistry.release.candidateVersion) "Registry Cache Vault carries no candidate version (v0.2.4 is final)"
-Assert-Condition ($cvRegistry.release.publishedAt -eq '2026-09-17') "Registry Cache Vault publishedAt matches the final release receipt date"
+Assert-Condition ($cvRegistry.release.publicVersion -eq '0.3.1' -and $cvSource.release.companionPublicVersion -eq '0.3.1') "Registry and manifest Cache Vault Windows and Android public versions are both 0.3.1"
+Assert-Condition ($null -eq $cvRegistry.release.candidateVersion -and $null -eq $cvSource.release.companionCandidateVersion) "Registry and manifest Cache Vault carry no current candidate version"
+Assert-Condition ($cvRegistry.release.publishedAt -eq '2026-10-01' -and $cvSource.release.sourceCommit -eq 'eddbae7a2763d1994dae1e43e744ca8225d93eb3') "Registry and manifest Cache Vault date and source match the v0.3.1 release receipt"
+Assert-Condition ($cvRegistry.artifacts[0].sha256 -eq 'd0c59c440b1d5787c9319e1bdf8829f117ccaa2d64d3424dd6955a84fb975d45' -and $cvRegistry.artifacts[1].sha256 -eq '863f8a5846083cb0372e1046ac1e9363e6203b4880cc2c6a7ca0da8b1b451988') "Registry keeps distinct Windows ZIP and Android APK digests"
+Assert-Condition ($cvRegistry.verification.verificationType -notcontains 'REALITY_GATE' -and $cvRegistry.limits -match 'No Reality Gate canonical run') "Registry does not claim a v0.3.1 canonical Reality Gate run"
 
 $psRegistry = $registryJson.products | Where-Object { $_.id -eq 'proofshot' }
 Assert-Condition ($psRegistry.release.publicVersion -eq '2.0.0') 'Registry ProofShot public version is 2.0.0'

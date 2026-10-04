@@ -109,8 +109,8 @@
     }
   ],
   "navCta": {
-    "label": "Find your tool",
-    "href": "/software/"
+    "label": "Support",
+    "href": "/support/"
   },
   "products": [
     {
@@ -218,10 +218,10 @@
         "Android companion"
       ],
       "platform": "Windows + Android",
-      "summary": "A local-first clipboard vault with receipts, safes, global search, Quick Paste, image capture, exports, Command Center, and an opt-in LAN-only Mobile Bridge paired to a production-signed Android companion.",
+      "summary": "A local-first clipboard vault with receipts, safes, global search, Quick Paste, image capture, exports, Command Center, and a release-signed Android companion that is now a standalone local-first phone vault with its own on-device capture. The PC bridge stays opt-in and LAN-only.",
       "cardSummary": "Local clipboard history, named safes, quick retrieval, and stamped receipts for work that stays on your machine.",
       "markSvg": "<div class=\"card-mark\" aria-hidden=\"true\"><svg viewBox=\"0 0 48 48\" xmlns=\"http://www.w3.org/2000/svg\" width=\"100%\" height=\"100%\"><rect x=\"8.5\" y=\"9\" width=\"4.5\" height=\"30\" rx=\"1.6\" fill=\"#1A9E8C\"/><rect x=\"15.5\" y=\"9\" width=\"23\" height=\"7.5\" rx=\"1.8\" fill=\"#1A9E8C\"/><rect x=\"20.5\" y=\"20.25\" width=\"8.5\" height=\"7.5\" rx=\"1.8\" fill=\"#5f8f87\"/><rect x=\"15.5\" y=\"31.5\" width=\"23\" height=\"7.5\" rx=\"1.8\" fill=\"#1A9E8C\"/><circle cx=\"34.5\" cy=\"24\" r=\"4\" fill=\"#D6A84F\"/></svg></div>",
-      "description": "A local-first Windows clipboard vault with smart classification, sensitive-content auto-expiry, Quick Paste, Safes, Vault Macros, Command Center (Phase 1: Hotkey Actions), and an opt-in LAN-only Mobile Bridge paired to a production-signed Android companion. No cloud account, no subscription, no telemetry.",
+      "description": "A local-first Windows clipboard vault with smart classification, sensitive-content auto-expiry, Quick Paste, Safes, Vault Macros, Command Center (Phase 1: Hotkey Actions), and a release-signed Android companion that is also a standalone local-first phone vault with on-device capture. No cloud account, no subscription, no telemetry.",
       "cta": "View product",
       "visible": true,
       "presentation": {
@@ -232,34 +232,34 @@
         "cardImageWidth": 960,
         "cardImageHeight": 540,
         "downloadUnavailable": false,
-        "downloadNotice": "Windows v0.2.4 public security release (founder authority rotation) is available from Proof Foundry downloads."
+        "downloadNotice": "Windows v0.3.1 is available from Proof Foundry downloads. The release-signed Android companion v0.3.1 APK is available on GitHub Releases and Proof Foundry downloads."
       },
       "release": {
-        "publicVersion": "0.2.4",
+        "publicVersion": "0.3.1",
         "candidateVersion": null,
-        "companionCandidateVersion": "0.2.1",
+        "companionCandidateVersion": null,
         "releaseStatus": "PUBLIC_RELEASE",
-        "publishedAt": "2026-09-17",
-        "sourceCommit": "abbd84462a8165068405cbfcddf4bfaf6b8f6f29",
-        "companionPublicVersion": "0.2.0"
+        "publishedAt": "2026-10-01",
+        "sourceCommit": "eddbae7a2763d1994dae1e43e744ca8225d93eb3",
+        "companionPublicVersion": "0.3.1"
       },
       "artifacts": [
         {
-          "filename": "CacheVault-v0.2.4-windows.zip",
-          "sizeBytes": 43262453,
-          "sha256": "717ed13efd3d8d4e5a16d4e412ed5be0fd20b0219918f913d7d2b44f021cae7e",
-          "downloadUrl": "https://downloads.theprooffoundry.com/cache-vault/v0.2.4/CacheVault-v0.2.4-windows.zip",
-          "sha256Url": "https://downloads.theprooffoundry.com/cache-vault/v0.2.4/SHA256SUMS.txt",
+          "filename": "CacheVault-v0.3.1-windows.zip",
+          "sizeBytes": 43275615,
+          "sha256": "d0c59c440b1d5787c9319e1bdf8829f117ccaa2d64d3424dd6955a84fb975d45",
+          "downloadUrl": "https://downloads.theprooffoundry.com/cache-vault/v0.3.1/CacheVault-v0.3.1-windows.zip",
+          "sha256Url": "https://downloads.theprooffoundry.com/cache-vault/v0.3.1/SHA256SUMS.txt",
           "signingStatus": "UNSIGNED",
           "platform": "Windows",
           "distType": "Windows installer ZIP"
         },
         {
-          "filename": "CacheVault-Mobile-v0.2.0-android.apk",
-          "sizeBytes": 12887895,
-          "sha256": "fb6c5a3034b1d25be55db2da8842e17cfb48a0f40d8c479441faf389040524ad",
-          "downloadUrl": "https://github.com/lazelife420-spec/CacheVault/releases/download/v0.2.0/CacheVault-Mobile-v0.2.0-android.apk",
-          "sha256Url": "https://github.com/lazelife420-spec/CacheVault/releases/download/v0.2.0/SHA256SUMS.txt",
+          "filename": "CacheVault-Mobile-v0.3.1-android.apk",
+          "sizeBytes": 37016478,
+          "sha256": "863f8a5846083cb0372e1046ac1e9363e6203b4880cc2c6a7ca0da8b1b451988",
+          "downloadUrl": "https://downloads.theprooffoundry.com/cachevault/v0.3.1/CacheVault-Mobile-v0.3.1-android.apk",
+          "sha256Url": "https://downloads.theprooffoundry.com/cachevault/v0.3.1/SHA256SUMS.txt",
           "signingStatus": "PRODUCTION_SIGNED",
           "platform": "Android companion",
           "distType": "Android APK"
@@ -267,74 +267,97 @@
       ],
       "verification": {
         "status": "VERIFIED",
-        "verifiedAt": "2026-09-17",
-        "checkedAt": "2026-09-17",
+        "verifiedAt": "2026-10-01",
+        "checkedAt": "2026-10-01",
         "downloadAvailability": "VERIFIED",
         "verificationType": [
           "ARTIFACT_HASH_PUBLISHED",
           "ARTIFACT_HASH_VERIFIED",
           "ARTIFACT_CUSTODY",
           "RUNTIME_VALIDATION",
-          "REALITY_GATE",
           "PUBLIC_DOWNLOAD"
         ],
-        "receiptId": "20260917-190203-canonical-abbd844",
-        "receiptUrl": "https://downloads.theprooffoundry.com/cache-vault/v0.2.4/CACHEVAULT_V0.2.4_CANONICAL_RECEIPT.json"
+        "receiptId": "20261001-release-eddbae7",
+        "receiptUrl": "https://downloads.theprooffoundry.com/cache-vault/v0.3.1/CACHEVAULT_V0.3.1_RELEASE_RECEIPT.json"
       },
       "tests": [
         {
-          "label": "Desktop tests",
-          "result": "2104 passed · 2 skipped (canonical gate)"
+          "label": "Desktop tests · local release gate",
+          "result": "2120 passed · 1 skipped · 0 failed at release source eddbae7"
         },
         {
-          "label": "Android companion tests",
-          "result": "88/88 (v0.2.0 companion, unchanged)"
+          "label": "Android unit and phone-local smoke",
+          "result": "9/9 unit tests · 9/9 S23 Android 16 phone-local capture smoke on a debug build"
+        },
+        {
+          "label": "Hosted GitHub CI",
+          "result": "FAILED at eddbae7: two layout-mode tests and one window-geometry test in each Python 3.12 and 3.13 job"
         }
       ],
       "evidence": [
         {
           "label": "Download (Proof Foundry)",
-          "url": "https://downloads.theprooffoundry.com/cache-vault/v0.2.4/CacheVault-v0.2.4-windows.zip"
+          "url": "https://downloads.theprooffoundry.com/cache-vault/v0.3.1/CacheVault-v0.3.1-windows.zip"
         },
         {
           "label": "SHA256SUMS (Proof Foundry)",
-          "url": "https://downloads.theprooffoundry.com/cache-vault/v0.2.4/SHA256SUMS.txt"
+          "url": "https://downloads.theprooffoundry.com/cache-vault/v0.3.1/SHA256SUMS.txt"
         },
         {
-          "label": "Canonical gate receipt (Proof Foundry)",
-          "url": "https://downloads.theprooffoundry.com/cache-vault/v0.2.4/CACHEVAULT_V0.2.4_CANONICAL_RECEIPT.json"
+          "label": "Release receipt (Proof Foundry)",
+          "url": "https://downloads.theprooffoundry.com/cache-vault/v0.3.1/CACHEVAULT_V0.3.1_RELEASE_RECEIPT.json"
         },
         {
-          "label": "Companion SHA256SUMS (GitHub v0.2.0)",
-          "url": "https://github.com/lazelife420-spec/CacheVault/releases/download/v0.2.0/SHA256SUMS.txt"
+          "label": "Android companion APK (Proof Foundry)",
+          "url": "https://downloads.theprooffoundry.com/cachevault/v0.3.1/CacheVault-Mobile-v0.3.1-android.apk"
+        },
+        {
+          "label": "Companion SHA256SUMS (Proof Foundry)",
+          "url": "https://downloads.theprooffoundry.com/cachevault/v0.3.1/SHA256SUMS.txt"
+        },
+        {
+          "label": "GitHub release (v0.3.1)",
+          "url": "https://github.com/lazelife420-spec/CacheVault/releases/tag/v0.3.1"
+        },
+        {
+          "label": "Hosted CI at eddbae7 (failed)",
+          "url": "https://github.com/lazelife420-spec/CacheVault/actions/runs/36895226107"
+        },
+        {
+          "label": "Release workflow at eddbae7 (failed; package steps skipped)",
+          "url": "https://github.com/lazelife420-spec/CacheVault/actions/runs/36895229375"
         }
       ],
       "limits": [
         "The Windows build is not code-signed, so Windows SmartScreen may prompt on first launch.",
-        "Cache Vault v0.2.4 is the current public Windows release, served from Proof Foundry downloads; v0.2.3 is the previous public release (retired founder authority).",
+        "Cache Vault v0.3.1 is the current public Windows release, served from Proof Foundry downloads; v0.3.0 (2026-09-30) is the previous public release.",
         "Command Center is Phase 1 (Hotkey Actions) only.",
-        "Checksum is not a code signature; the production-signed Android companion is a separate artifact.",
-        "The public Android companion is v0.2.0; Android v0.2.1 is a historical qualified publication attempt on hold, so it is not a public download.",
-        "Later CacheVault Mobile source v0.3.0 is labeled a release candidate, not an authorized public release; no v0.3.0 download is offered."
+        "Checksum is not a code signature; the release-signed Android companion is a separate artifact with its own signing certificate (SHA-256 c2eb5c42a684326ceba1289e65e9690ed71daf770de64e2b83a42bce04026a2c).",
+        "The public Android companion is v0.3.1, published on GitHub Releases and mirrored on Proof Foundry downloads.",
+        "Android grants no application background clipboard access: the companion saves a copy made in another app only when you act on its notification or next open the app.",
+        "The 9/9 physical-phone smoke used a debug-signed app. It establishes phone-local capture behavior on that build, not runtime behavior of the release-signed v0.3.1 APK; the paired-PC lane remains device-unproven.",
+        "The local release gate passed 2120 / 1 skipped / 0 failed at eddbae7. Hosted GitHub CI failed separately on three layout/geometry tests in each Python 3.12 and 3.13 job; the Release workflow stopped at unit tests and skipped packaging and publication.",
+        "No Reality Gate canonical run was performed for the v0.3.1 release."
       ],
-      "downloadUrl": "https://downloads.theprooffoundry.com/cache-vault/v0.2.4/CacheVault-v0.2.4-windows.zip",
-      "downloadLabel": "Download v0.2.4 (Windows)",
+      "downloadUrl": "https://downloads.theprooffoundry.com/cache-vault/v0.3.1/CacheVault-v0.3.1-windows.zip",
+      "downloadLabel": "Download v0.3.1 (Windows)",
       "distType": "Windows installer ZIP + Android APK",
-      "build": "Windows installer delivered inside a ZIP archive, served from Proof Foundry downloads with a Reality Gate canonical receipt (2104 passed / 2 skipped / 0 failed at commit abbd844). The public CacheVault Mobile v0.2.0 Android companion remains on the v0.2.0 GitHub release. The published SHA-256 is the checksum of the ZIP you download.",
-      "sha256": "717ed13efd3d8d4e5a16d4e412ed5be0fd20b0219918f913d7d2b44f021cae7e",
-      "sha256Url": "https://downloads.theprooffoundry.com/cache-vault/v0.2.4/SHA256SUMS.txt",
-      "testStatus": "2104 passed · 2 skipped desktop (canonical gate) · 88/88 Android (v0.2.0)",
-      "testCount": "2104 passed · 2 skipped desktop (canonical gate) · 88/88 Android (v0.2.0)",
-      "releaseNote": "Current download: Cache Vault v0.2.4 for Windows — post-rotation security release (founder authority rotation plus the post-v0.2.3 maintenance tranche), Reality Gate canonical-proven (2104 passed / 2 skipped) and served from Proof Foundry downloads. Builds up to v0.2.3 embed the retired founder authority and cannot validate new-authority licenses. The Windows build is not code-signed, so Windows SmartScreen may prompt on first launch; verify the SHA-256 before running it. The public Android companion is v0.2.0 (unchanged).",
+      "build": "Windows installer delivered inside a ZIP archive, served from Proof Foundry downloads. The release gate was the local CI suite (2120 passed / 1 skipped / 0 failed at commit eddbae7) plus an on-device Android phone-local capture smoke (PASS 9/9 on a debug build, SM-S911W, Android 16). The release-signed Android companion v0.3.1 APK is published on GitHub Releases and mirrored on Proof Foundry downloads. The published SHA-256 is the checksum of the ZIP you download. No Reality Gate canonical run was performed for v0.3.1.",
+      "sha256": "d0c59c440b1d5787c9319e1bdf8829f117ccaa2d64d3424dd6955a84fb975d45",
+      "sha256Url": "https://downloads.theprooffoundry.com/cache-vault/v0.3.1/SHA256SUMS.txt",
+      "testStatus": "Local desktop 2120 passed / 1 skipped / 0 failed · Android unit 9/9 · S23 debug-build smoke 9/9",
+      "testCount": "Local desktop 2120 passed / 1 skipped / 0 failed · Android unit 9/9 · S23 debug-build smoke 9/9",
+      "releaseNote": "Current download: Cache Vault v0.3.1 for Windows. This release adds phone-side capture to the Android companion: copies made on the phone save from the persistent Save last copy notification or when you next open the app, screenshots import automatically, and a sensitive auto-block (on by default) refuses password-, key-, token-, and card-looking clips. Android grants no app background clipboard access, so nothing is captured silently while another app is in front. Companion v0.3.1 is release-signed (certificate SHA-256 c2eb5c42a684326ceba1289e65e9690ed71daf770de64e2b83a42bce04026a2c) and published on GitHub Releases and Proof Foundry downloads. The Windows build is not code-signed, so Windows SmartScreen may prompt on first launch; verify the SHA-256 before running it.",
       "proofStatus": "Verified",
-      "lastVerified": "2026-09-17",
+      "lastVerified": "2026-10-01",
       "proofLinks": [
-        "https://downloads.theprooffoundry.com/cache-vault/v0.2.4/CacheVault-v0.2.4-windows.zip",
-        "https://downloads.theprooffoundry.com/cache-vault/v0.2.4/SHA256SUMS.txt",
-        "https://downloads.theprooffoundry.com/cache-vault/v0.2.4/CACHEVAULT_V0.2.4_CANONICAL_RECEIPT.json"
+        "https://downloads.theprooffoundry.com/cache-vault/v0.3.1/CacheVault-v0.3.1-windows.zip",
+        "https://downloads.theprooffoundry.com/cache-vault/v0.3.1/SHA256SUMS.txt",
+        "https://downloads.theprooffoundry.com/cache-vault/v0.3.1/CACHEVAULT_V0.3.1_RELEASE_RECEIPT.json",
+        "https://downloads.theprooffoundry.com/cachevault/v0.3.1/CacheVault-Mobile-v0.3.1-android.apk"
       ],
       "currentLocalVersion": null,
-      "companionVersion": "0.2.0"
+      "companionVersion": "0.3.1"
     },
     {
       "id": "lights-out",

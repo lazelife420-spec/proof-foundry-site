@@ -1284,32 +1284,36 @@ function Get-StudioEvidenceCandidate {
 function Build-StudioEvidence {
   $candidates = @(Get-StudioEvidenceCandidate)
   if ($candidates.Count -eq 0) { return '' }
-  $rows = @()
-  foreach ($candidate in $candidates) {
-    $module = $candidate.Entry.Module; $product = $candidate.Entry.Product
-    $name = if ($product.homeName) { [string]$product.homeName } else { [string]$product.name }
-    $proofId = 'receipt-' + [string]$module.id
-    $verifiedAt = [string]$product.verification.verifiedAt
-    $verifiedLabel = IsoDateLabel $verifiedAt
-    $rows += @"
-<li><a class="studio-ledger-row" href="/proof/#$(Html-Attr $proofId)"><span class="studio-ledger-product"><strong>$(Html-Text $name)</strong><small>SHA-256 on record</small></span><span class="studio-ledger-version">PUBLIC <b>v$(Html-Text $product.release.publicVersion)</b></span><span class="studio-ledger-status"><i aria-hidden="true"></i> HASH VERIFIED</span><time datetime="$(Html-Attr $verifiedAt)">$(Html-Text $verifiedLabel)</time><span class="studio-ledger-open" aria-hidden="true">↗</span></a></li>
-"@
-  }
+  $candidate = $candidates[0]
+  $module = $candidate.Entry.Module; $product = $candidate.Entry.Product
+  $name = if ($product.homeName) { [string]$product.homeName } else { [string]$product.name }
+  $proofId = 'receipt-' + [string]$module.id
+  $verifiedAt = [string]$product.verification.verifiedAt
+  $verifiedLabel = IsoDateLabel $verifiedAt
   return @"
-<aside class="studio-evidence" aria-label="Public release evidence">
-  <div class="studio-ledger-heading"><div><span class="studio-evidence-label">Recent public releases</span><h3>Selected current records.</h3><p>Each row links to the published evidence behind that version.</p></div><a href="/proof/">Browse all records <span aria-hidden="true">↗</span></a></div>
-  <ul class="studio-ledger-rows">$($rows -join "`n")</ul>
+<aside class="studio-evidence" aria-label="Selected public release evidence">
+  <span class="studio-evidence-label">FROM THE PUBLIC RECORD</span>
+  <h3>$(Html-Text $name) <span>v$(Html-Text $product.release.publicVersion)</span></h3>
+  <p>This public release has a SHA-256 check on record. Read the receipt for its qualification and limits.</p>
+  <div class="studio-evidence-facts"><span>HASH VERIFIED</span><time datetime="$(Html-Attr $verifiedAt)">$(Html-Text $verifiedLabel)</time></div>
+  <a class="studio-evidence-link" href="/proof/#$(Html-Attr $proofId)">Inspect this release record $(StudioArrowSvg)</a>
 </aside>
 "@
 }
 
+function StudioArrowSvg {
+  return '<svg class="ui-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 13 13 3M5 3h8v8"/></svg>'
+}
+
 function Build-StudioPortfolio {
+  $tabs = @()
   $cards = @()
   foreach ($entry in Get-StudioPortfolioEntries) {
     $module = $entry.Module; $product = $entry.Product
     $name = if ($product.homeName) { [string]$product.homeName } else { [string]$product.name }
     $image = [string]$module.card.media; $alt = [string]$module.card.mediaAlt
     $tagline = if ($module.card.tagline) { [string]$module.card.tagline } else { [string]$module.hero.lede }
+    $jobHtml = if ($module.homepage.jobLabel) { '<span class="studio-product-tab-job">' + (Html-Text ([string]$module.homepage.jobLabel)) + '</span>' } else { '' }
     $tokens = ProductTokens $product
     $status = Get-HomepageStatus $product $tokens
     $accent = if ($module.theme.accent) { [string]$module.theme.accent } else { '#d6bd91' }
@@ -1331,14 +1335,26 @@ function Build-StudioPortfolio {
     $commerceHtml = if ($commerceLabel) { '<p class="studio-product-state studio-product-commerce" data-commerce="' + (Html-Attr $commerceSlug) + '"' + $commercePlatformAttr + '>' + (Html-Text $commerceLabel) + '</p>' } else { '' }
     $actionHref = [string]$module.route
     $actionLabel = if ($downloadAvailable) { "View $name" } else { 'Explore product' }
+    $ordinal = '{0:00}' -f ($tabs.Count + 1)
+    $tabId = 'studio-tab-' + [string]$module.id
+    $panelId = 'studio-panel-' + [string]$module.id
+    $isFirst = $tabs.Count -eq 0
+    $selected = if ($isFirst) { 'true' } else { 'false' }
+    # Keep every product-page link keyboard reachable before enhancement.
+    $tabIndex = '0'
+    $hiddenAttr = if ($isFirst) { '' } else { ' hidden' }
+    $loading = if ($isFirst) { 'eager' } else { 'lazy' }
+    $tabs += @"
+<a class="studio-product-tab" id="$(Html-Attr $tabId)" href="$(Html-Attr $module.route)" role="tab" aria-controls="$(Html-Attr $panelId)" aria-selected="$selected" tabindex="$tabIndex" data-home-tab="$(Html-Attr $module.id)"><span class="studio-product-number">$ordinal</span><span class="studio-product-tab-copy"><span class="studio-product-tab-name">$(Html-Text $name)</span>$jobHtml</span><span class="studio-product-tab-cue" aria-hidden="true"></span></a>
+"@
     $cards += @"
-<article class="studio-product-card" data-module="$(Html-Attr $module.id)" data-home-role="$(Html-Attr $module.homepage.tier)" data-composition="$(Html-Attr $module.homepage.composition)" data-presentation="$(Html-Attr $module.homepage.presentation)" data-scene-family="$(Html-Attr $module.homepage.sceneFamily)" style="--product-accent:$(Html-Attr $accent);--product-accent-2:$(Html-Attr $accent2)">
-  <a class="studio-product-media" href="$(Html-Attr $module.route)" aria-label="Explore $(Html-Attr $name)"><img src="$(Html-Attr $image)" alt="$(Html-Attr $alt)" loading="lazy" decoding="async"/><span class="studio-media-note">$(Html-Text $mediaNote)</span></a>
-  <div class="studio-product-copy"><div class="studio-product-eyebrow"><span>$(Html-Text $module.taxonomy.category)</span><span>$(Html-Text $tokens.platform)</span></div><h3><a href="$(Html-Attr $module.route)">$(Html-Text $name)</a></h3><p>$(Html-Text $tagline)</p><p class="studio-product-state">$(Html-Text $status)</p>$commerceHtml<a class="studio-product-open" href="$(Html-Attr $actionHref)">$(Html-Text $actionLabel) <span aria-hidden="true">→</span></a></div>
+<article class="studio-product-card" data-module="$(Html-Attr $module.id)" data-home-role="$(Html-Attr $module.homepage.tier)" data-composition="$(Html-Attr $module.homepage.composition)" data-presentation="$(Html-Attr $module.homepage.presentation)" data-scene-family="$(Html-Attr $module.homepage.sceneFamily)" id="$(Html-Attr $panelId)" role="tabpanel" aria-labelledby="$(Html-Attr $tabId)" tabindex="0" style="--product-accent:$(Html-Attr $accent);--product-accent-2:$(Html-Attr $accent2)"$hiddenAttr>
+  <a class="studio-product-media" href="$(Html-Attr $module.route)" aria-label="Explore $(Html-Attr $name)"><img src="$(Html-Attr $image)" alt="$(Html-Attr $alt)" loading="$loading" decoding="async"/><span class="studio-media-note">$(Html-Text $mediaNote)</span></a>
+  <div class="studio-product-copy"><div class="studio-product-eyebrow"><span>$(Html-Text $module.taxonomy.category)</span><span>$(Html-Text $tokens.platform)</span></div><h3>$(Html-Text $name)</h3><p>$(Html-Text $tagline)</p><p class="studio-product-state">$(Html-Text $status)</p>$commerceHtml<a class="studio-product-open" href="$(Html-Attr $actionHref)">$(Html-Text $actionLabel) $(StudioArrowSvg)</a></div>
 </article>
 "@
   }
-  return ($cards -join "`n")
+  return '<div class="studio-product-tabs" role="tablist" aria-label="Choose a tool">' + ($tabs -join "`n") + '</div><div class="studio-product-preview">' + ($cards -join "`n") + '</div>'
 }
 
 function Build-StudioWithdrawn {
@@ -1348,22 +1364,18 @@ function Build-StudioWithdrawn {
   foreach ($entry in $entries) {
     $module = $entry.Module; $product = $entry.Product
     $name = if ($product.homeName) { [string]$product.homeName } else { [string]$product.name }
-    $image = [string]$module.card.media; $alt = [string]$module.card.mediaAlt
-    $mediaNote = if ($module.homepage.mediaDisclosure) { [string]$module.homepage.mediaDisclosure } elseif ($module.hero.media.caption) { [string]$module.hero.media.caption } else { [string]$alt }
     $accent = if ($module.theme.accent) { [string]$module.theme.accent } else { '#d6bd91' }
-    $notice = if ($product.presentation.downloadNotice) { [string]$product.presentation.downloadNotice } else { 'No current public release or download is available.' }
     $cards += @"
 <article class="studio-withdrawn-product" data-module="$(Html-Attr $module.id)" data-scene-family="$(Html-Attr $module.homepage.sceneFamily)" style="--product-accent:$(Html-Attr $accent)">
-  <a class="studio-withdrawn-media" href="$(Html-Attr $module.route)" aria-label="Read the $(Html-Attr $name) withdrawal record"><img src="$(Html-Attr $image)" alt="$(Html-Attr $alt)" loading="lazy" decoding="async"/><span class="studio-media-note">$(Html-Text $mediaNote)</span></a>
-  <div class="studio-withdrawn-copy"><span class="studio-withdrawn-state">Withdrawn · no current public release</span><h3><a href="$(Html-Attr $module.route)">$(Html-Text $name)</a></h3><p>$(Html-Text $notice)</p><a class="studio-withdrawn-link" href="$(Html-Attr $module.route)">Read the withdrawal record <span aria-hidden="true">↗</span></a></div>
+  <div class="studio-withdrawn-copy"><span class="studio-withdrawn-state">Withdrawn · no current public release</span><h3>$(Html-Text $name)</h3><p>No public download is available.</p></div>
+  <a class="studio-withdrawn-link" href="$(Html-Attr $module.route)">Read the withdrawal record $(StudioArrowSvg)</a>
 </article>
 "@
   }
   return @"
-<section class="studio-withdrawn" data-foundry-scene="withdrawn" aria-labelledby="withdrawn-title">
-  <div class="studio-withdrawn-intro"><p class="studio-kicker"><span class="studio-section-index">PF / 04</span><span>Reality, including limits</span></p><h2 id="withdrawn-title">Not everything ships.</h2><p>Some tools stay in the workshop. When a release is withdrawn, the record stays clear.</p></div>
+<aside class="studio-withdrawn" aria-label="Withdrawn work">
   <div class="studio-withdrawn-list">$($cards -join "`n")</div>
-</section>
+</aside>
 "@
 }
 
@@ -1798,7 +1810,7 @@ function Build-TruthFileShell($module, $source) {
 <meta content="#0B0F14" name="theme-color"/>
 <link href="https://theprooffoundry.com/truth-files/$($p.id)/" rel="canonical"/>
 <link href="/truth/products/$($p.id).json" rel="alternate" title="Machine record" type="application/json"/>
-<link href="/brand/proof-foundry-mark.svg" rel="icon" type="image/svg+xml"/>
+<link href="/assets/foundry-strike/proof-foundry-forged-artifact.png" rel="icon" type="image/png"/>
 <meta content="Truth File — $name" property="og:title"/>
 <meta content="$metaDesc" property="og:description"/>
 <meta content="website" property="og:type"/>
@@ -2102,7 +2114,7 @@ function Build-ReceiptCards {
           </div>
           <p class="build-desc">$build</p>
 
-          <div class="receipt-section">
+          <div class="receipt-section receipt-release">
             <h4 class="receipt-section-title">Release</h4>
             <dl class="receipt-fields">
               <div><dt>Route</dt><dd>$routeLink</dd></div>
@@ -2111,24 +2123,25 @@ function Build-ReceiptCards {
             </dl>
           </div>
 
-          <div class="receipt-section">
-            <h4 class="receipt-section-title">Verification</h4>
-            $matrix
-          </div>
-
-          <div class="receipt-section">
-            <h4 class="receipt-section-title">Artifact</h4>
-            $shaBlock
-          </div>
-
-          <div class="receipt-section">
-            <h4 class="receipt-section-title">Evidence</h4>
-            <dl class="receipt-fields"><div><dt>Links</dt>$evidenceHtml</div><div><dt>Dates</dt>$timestampHtml</div></dl>
-          </div>
-
-          $limitsHtml
-
           <div class="receipt-card-action">$action</div>
+          <details class="receipt-details">
+            <summary>Verification, artifact &amp; evidence <span aria-hidden="true">+</span></summary>
+            <div class="receipt-details-grid">
+              <div class="receipt-section">
+                <h4 class="receipt-section-title">Verification</h4>
+                $matrix
+              </div>
+              <div class="receipt-section">
+                <h4 class="receipt-section-title">Artifact</h4>
+                $shaBlock
+              </div>
+              <div class="receipt-section">
+                <h4 class="receipt-section-title">Evidence</h4>
+                <dl class="receipt-fields"><div><dt>Links</dt>$evidenceHtml</div><div><dt>Dates</dt>$timestampHtml</div></dl>
+              </div>
+            </div>
+            $limitsHtml
+          </details>
         </article>
 "@
   }
@@ -2510,7 +2523,7 @@ $canonicalTag
 <link rel="stylesheet" href="/studio.css">
 <link rel="stylesheet" href="/experience.css">
 <link rel="stylesheet" href="/product-page.css">
-<link href="/brand/proof-foundry-mark.svg" rel="icon" type="image/svg+xml"/>$jsonLdTag$inlineCssTag
+<link href="/assets/foundry-strike/proof-foundry-forged-artifact.png" rel="icon" type="image/png"/>$jsonLdTag$inlineCssTag
 </head>
 <body class="$bodyClass"$themeAttrs data-product-atmosphere="$(Html-Attr $module.theme.atmosphere)" data-acquisition-available="$acquisitionAttr">
 <!-- @include header -->
@@ -2559,6 +2572,7 @@ $latestVerification = Build-LatestVerification
 
 $headerPartial = Read-File (Join-Path $partialsDir 'header.html')
 $footerPartial = Read-File (Join-Path $partialsDir 'footer.html')
+$compactFooterPartial = Read-File (Join-Path $partialsDir 'footer-compact.html')
 
 function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   # H13: when -OverrideHtml is supplied, render that generated markup instead of
@@ -2575,7 +2589,7 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
     $html = $html.Replace('"/' + $assetName + '"', '"/' + $assetName + '?v=' + $assetVersion + '"')
   }
   $worldCssPath = Join-Path $root 'foundry-world.css'
-  if (Test-Path $worldCssPath) {
+  if ($srcName -ne 'index.html' -and (Test-Path $worldCssPath)) {
     $worldVersion = (Get-FileHash $worldCssPath -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
     $worldLink = "<link href=`"/foundry-world.css?v=$worldVersion`" rel=`"stylesheet`"/>"
     $html = $html.Replace('</head>', "$worldLink`n</head>")
@@ -2624,6 +2638,7 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   # Inject partials
   $html = $html -replace '<!--\s*@include header\s*-->', $header
   $html = $html -replace '<!--\s*@include footer\s*-->', $footer
+  $html = $html -replace '<!--\s*@include compact-footer\s*-->', $compactFooterPartial
 
   # The H9 catalog moved to its own route; preserve frozen page source markup.
   $html = $html.Replace('href="/#products"', 'href="/software/"')
@@ -2713,7 +2728,7 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   if (-not $head.Success) { throw "Missing HTML head in $srcName" }
   $iconLinks = @([regex]::Matches($head.Value, '(?is)<link\b[^>]*\brel\s*=\s*["'']([^"'']*)["'']') | Where-Object { ($_.Groups[1].Value -split '\s+') -contains 'icon' })
   if ($iconLinks.Count -eq 0) {
-    $defaultIcon = '<link href="/brand/proof-foundry-mark.svg" rel="icon" type="image/svg+xml"/>' + "`n"
+    $defaultIcon = '<link href="/assets/foundry-strike/proof-foundry-forged-artifact.png" rel="icon" type="image/png"/>' + "`n"
     $headWithIcon = [regex]::Replace($head.Value, '(?i)</head>', $defaultIcon + '</head>')
     $html = $html.Remove($head.Index, $head.Length).Insert($head.Index, $headWithIcon)
   }

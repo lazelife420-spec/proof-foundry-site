@@ -1,34 +1,46 @@
-// Content is visible by default, including when JavaScript is unavailable.
-const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-const animations = new Set();
-let observer;
-function stopMotion() {
-  observer?.disconnect();
-  for (const animation of animations) animation.cancel();
-  animations.clear();
-}
-if (!reduced.matches && 'IntersectionObserver' in window && Element.prototype.animate) {
-  observer = new IntersectionObserver(entries => {
-    for (const entry of entries) {
-      if (!entry.isIntersecting) continue;
-      observer.unobserve(entry.target);
-      if (reduced.matches) continue;
-      const animation = entry.target.animate(
-        [{opacity: .55, transform: 'translateY(12px)'}, {opacity: 1, transform: 'none'}],
-        {duration: 300, easing: 'cubic-bezier(.2,.65,.25,1)'}
-      );
-      animations.add(animation);
-      animation.finished.catch(() => {}).finally(() => animations.delete(animation));
+const forgeHero = document.querySelector('.studio-hero');
+if (forgeHero) {
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  let frame = 0;
+
+  function updateForge() {
+    frame = 0;
+    if (reducedMotion.matches) {
+      forgeHero.style.removeProperty('--forge-depth-y');
+      forgeHero.style.removeProperty('--forge-hearth-y');
+      forgeHero.style.removeProperty('--forge-light-y');
+      forgeHero.style.removeProperty('--forge-light-opacity');
+      document.body.style.removeProperty('--forge-ambient-x');
+      document.body.style.removeProperty('--forge-ambient-y');
+      document.body.style.removeProperty('--forge-ambient-opacity');
+      document.body.style.removeProperty('--forge-outside-y');
+      return;
     }
-  }, {threshold: .08});
-  document.querySelectorAll('.h9-reveal').forEach(node => observer.observe(node));
+    const bounds = forgeHero.getBoundingClientRect();
+    const progress = Math.max(0, Math.min(1, -bounds.top / Math.max(bounds.height, 1)));
+    const depthRange = innerWidth <= 760 ? 10 : 36;
+    forgeHero.style.setProperty('--forge-depth-y', `${Math.round((progress - 0.5) * depthRange)}px`);
+    forgeHero.style.setProperty('--forge-hearth-y', `${Math.round((progress - 0.5) * 28)}px`);
+    forgeHero.style.setProperty('--forge-light-y', `${Math.round(15 - progress * 30)}px`);
+    forgeHero.style.setProperty('--forge-light-opacity', (0.24 + progress * 0.12).toFixed(3));
+    const pageRange = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+    const ambientProgress = Math.max(0, Math.min(1, scrollY / pageRange));
+    const ambientTravel = innerWidth <= 760 ? 14 : 24;
+    document.body.style.setProperty('--forge-ambient-x', `${Math.round((ambientProgress - 0.5) * (innerWidth <= 760 ? 36 : 72))}px`);
+    document.body.style.setProperty('--forge-ambient-y', `${Math.round(-ambientProgress * ambientTravel)}px`);
+    document.body.style.setProperty('--forge-ambient-opacity', (0.22 + ambientProgress * 0.14).toFixed(3));
+    document.body.style.setProperty('--forge-outside-y', `${Math.round((ambientProgress - 0.5) * (innerWidth <= 760 ? 24 : 44))}px`);
+  }
+
+  function scheduleForge() {
+    if (!reducedMotion.matches && !frame) frame = requestAnimationFrame(updateForge);
+  }
+
+  addEventListener('scroll', scheduleForge, { passive: true });
+  addEventListener('resize', scheduleForge);
+  reducedMotion.addEventListener('change', () => {
+    if (frame) cancelAnimationFrame(frame);
+    updateForge();
+  });
+  updateForge();
 }
-reduced.addEventListener('change', event => { if (event.matches) stopMotion(); });
-window.addEventListener('pagehide', stopMotion, {once: true});
-// Begin the small-screen viewport at the real run, keeping the full capture
-// scrollable with touch, trackpad, or keyboard. This does not alter the pixels.
-const compact = matchMedia('(max-width: 760px)');
-const runroom = document.querySelector('.h9-screen-scroll');
-function composeRunroom() { if (runroom) runroom.scrollLeft = compact.matches ? 290 : 210; }
-composeRunroom();
-compact.addEventListener('change', composeRunroom);

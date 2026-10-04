@@ -10,7 +10,7 @@
 <meta content="index, follow" name="robots"/>
 <meta content="#0a0d14" name="theme-color"/>
 <link href="https://theprooffoundry.com/roadmap/" rel="canonical"/>
-<link href="/brand/proof-foundry-mark.svg" rel="icon" type="image/svg+xml"/>
+<link href="/assets/foundry-strike/proof-foundry-forged-artifact.png" rel="icon" type="image/png"/>
 <meta content="What’s next — The Proof Foundry" property="og:title"/>
 <meta content="Current public software releases, candidate builds, platform directions and architectural lineages at The Proof Foundry." property="og:description"/>
 <meta content="website" property="og:type"/>
@@ -35,24 +35,16 @@
     <div class="roadmap-list">
       <article>
         <div>
-          <p class="kicker">{{products.reality-gate.productStatusLabel}}</p>
-          <h2><a href="/reality-gate/">Reality Gate ↗</a></h2>
-        </div>
-        <p>{{products.reality-gate.availabilityStatement}} Agent gateway work remains a future direction and is not included in any current public package.</p>
-      </article>
-
-      <article>
-        <div>
           <p class="kicker">Public Windows {{products.cache-vault.versionLabel}}</p>
-          <h2><a href="/cache-vault/">Cache Vault ↗</a></h2>
+          <h2><a href="/cache-vault/">Cache Vault <svg class="ui-arrow" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.12em" aria-hidden="true" focusable="false"><path d="M3 13 13 3M5 3h8v8"/></svg></a></h2>
         </div>
-        <p>The public Windows release is available from Proof Foundry downloads. The public Android companion's APK link is currently unavailable on GitHub; the next companion update is qualified and remains on hold.</p>
+        <p>The public Windows release is available from Proof Foundry downloads. The release-signed Android companion {{products.cache-vault.companionPublicVersionLabel}} APK is public on GitHub Releases and Proof Foundry downloads. CacheVault Mobile also has a standalone phone-local vault; pairing to the PC remains optional and has not yet been device-proven for this release.</p>
       </article>
 
       <article>
         <div>
           <p class="kicker">Public {{products.cleanroom.versionLabel}} · Next {{products.cleanroom.candidateVersionLabel}}</p>
-          <h2><a href="/cleanroom/">Cleanroom ↗</a></h2>
+          <h2><a href="/cleanroom/">Cleanroom <svg class="ui-arrow" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.12em" aria-hidden="true" focusable="false"><path d="M3 13 13 3M5 3h8v8"/></svg></a></h2>
         </div>
         <p>The public installer stays at {{products.cleanroom.versionLabel}}. Work on {{products.cleanroom.candidateVersionLabel}} has not changed that release.</p>
       </article>
@@ -60,7 +52,7 @@
       <article>
         <div>
           <p class="kicker">Public {{products.ghostlayer.versionLabel}}</p>
-          <h2><a href="/ghostlayer/">GhostLayer ↗</a></h2>
+          <h2><a href="/ghostlayer/">GhostLayer <svg class="ui-arrow" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.12em" aria-hidden="true" focusable="false"><path d="M3 13 13 3M5 3h8v8"/></svg></a></h2>
         </div>
         <p>Multi-select staging, batch commit and discard, keyboard shortcuts, and conflict-aware commit handling are in the public Windows release.</p>
       </article>
@@ -68,7 +60,7 @@
       <article>
         <div>
           <p class="kicker">Public {{products.forgecast.versionLabel}}</p>
-          <h2><a href="/forgecast/">ForgeCast Weather ↗</a></h2>
+          <h2><a href="/forgecast/">ForgeCast Weather <svg class="ui-arrow" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.12em" aria-hidden="true" focusable="false"><path d="M3 13 13 3M5 3h8v8"/></svg></a></h2>
         </div>
         <p>Ask ForgeCast, Wear/Bring guidance and dynamic Android widgets are available in the public release.</p>
       </article>
@@ -76,7 +68,7 @@
       <article>
         <div>
           <p class="kicker">Public release · v{{products.proofshot.publicVersion}} · {{products.proofshot.publishedAtLabel}}</p>
-          <h2><a href="/proofshot/">ProofShot ↗</a></h2>
+          <h2><a href="/proofshot/">ProofShot <svg class="ui-arrow" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.12em" aria-hidden="true" focusable="false"><path d="M3 13 13 3M5 3h8v8"/></svg></a></h2>
         </div>
         <p>The hardened rebrand of the qualified HyperSnatch engine is live, with an unsigned installer backed by SHA-256 checksums and Reality Gate custody receipts.</p>
       </article>
@@ -84,9 +76,20 @@
       <article>
         <div>
           <p class="kicker">Public Windows {{products.lights-out.versionLabel}} · Android {{products.lights-out.companionPublicVersionLabel}}</p>
-          <h2><a href="/lights-out/">Lights Out PC ↗</a></h2>
+          <h2><a href="/lights-out/">Lights Out PC <svg class="ui-arrow" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.12em" aria-hidden="true" focusable="false"><path d="M3 13 13 3M5 3h8v8"/></svg></a></h2>
         </div>
         <p>Windows {{products.lights-out.versionLabel}} is the current public release, published 2026-09-15. The public Android companion remains at {{products.lights-out.companionPublicVersionLabel}}; current downloads and release evidence are on the product page.</p>
+      </article>
+    </div>
+
+    <p class="kicker">Withdrawn · unavailable</p>
+    <div class="roadmap-list roadmap-unavailable">
+      <article>
+        <div>
+          <p class="kicker">{{products.reality-gate.productStatusLabel}}</p>
+          <h2><a href="/reality-gate/">Reality Gate <svg class="ui-arrow" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.12em" aria-hidden="true" focusable="false"><path d="M3 13 13 3M5 3h8v8"/></svg></a></h2>
+        </div>
+        <p>{{products.reality-gate.availabilityStatement}} Agent gateway work remains a future direction and is not included in any current public package.</p>
       </article>
     </div>
 

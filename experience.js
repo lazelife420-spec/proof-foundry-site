@@ -377,7 +377,10 @@ if (compareChoices.length && window.HTMLDialogElement) {
       if(p.releaseVer)dl.append(make('dt','','Public release'),make('dd','',p.releaseVer.replace(/^Public release:\s*/i,'').replace(/^Public\s*/i,'')));
       if(p.availStatus)dl.append(make('dt','','Availability'),make('dd','',p.availStatus));
       if(p.detail)dl.append(make('dt','','Current note'),make('dd','',p.detail));
-      const link=make('a','comparison-link',`Explore ${p.name} ↗`);link.href=p.route;
+      const link=make('a','comparison-link',`Explore ${p.name}`);link.href=p.route;
+      const arrow=document.createElementNS('http://www.w3.org/2000/svg','svg');
+      arrow.setAttribute('class','ui-arrow');arrow.setAttribute('viewBox','0 0 16 16');arrow.setAttribute('fill','none');arrow.setAttribute('stroke','currentColor');arrow.setAttribute('stroke-width','1.7');arrow.setAttribute('stroke-linecap','round');arrow.setAttribute('stroke-linejoin','round');arrow.setAttribute('aria-hidden','true');arrow.setAttribute('focusable','false');
+      const arrowPath=document.createElementNS('http://www.w3.org/2000/svg','path');arrowPath.setAttribute('d','M3 13 13 3M5 3h8v8');arrow.append(arrowPath);link.append(arrow);
       copy.append(category,name,value,dl,link);card.append(media,copy);columns.append(card);
     });dialog.showModal();close.focus();
   });

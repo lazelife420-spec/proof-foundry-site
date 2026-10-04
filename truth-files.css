@@ -42,6 +42,7 @@
 
 .tf-verify-list, .tf-limit-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
 .tf-verify-list li, .tf-limit-list li { padding: 13px 16px; border: 1px solid var(--line); border-radius: 8px; background: #11161880; font-size: .92rem; line-height: 1.55; color: var(--text); }
+.tf-page.product-cache-vault .tf-limit-list li { min-width: 0; overflow-wrap: anywhere; }
 .tf-verify-list .tf-v-label { display: block; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
 .tf-verify-list code.inline { font-size: .75rem; }
 .tf-page .tf-fresh code.inline { font-size: .75rem; }
