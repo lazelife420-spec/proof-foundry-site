@@ -1,0 +1,362 @@
+/* Proof Ledger — Home. The canonical PF silhouette leads the composition. */
+.pf-ledger-page {
+  --ledger-black:#0b0f14; --ledger-iron:#1c232b; --ledger-teal:#00d1b2;
+  --ledger-white:#f4f7f8; --ledger-gold:#d6a84f; --ledger-red:#e5484d;
+  --ledger-muted:#b5c0c5; --ledger-rule:#ffffff29;
+  --ledger-mono:ui-monospace,Consolas,"Liberation Mono",monospace;
+  --ledger-serif:Georgia,"Iowan Old Style",Baskerville,"Times New Roman",serif;
+  margin:0; overflow-x:visible; background:var(--ledger-black); color:var(--ledger-white);
+  font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+.pf-ledger-page * { box-sizing:border-box }
+.pf-ledger-page main { padding-bottom:0 }
+.pf-ledger-page a { color:inherit }
+.pf-ledger-page img { max-width:100% }
+.pf-ledger-page button { font:inherit }
+.pf-ledger-page :where(a,button,summary):focus-visible { outline:3px solid var(--ledger-teal); outline-offset:5px }
+.pf-ledger-page .ledger-paper :where(a,button):focus-visible { outline-color:#006c60 }
+.pf-ledger-wrap { width:min(1280px,calc(100% - 112px)); margin-inline:auto }
+.ledger-label { margin:0; font:11px/1.7 var(--ledger-mono); letter-spacing:.17em; text-transform:uppercase; color:var(--ledger-muted) }
+.ledger-section-label { display:flex; align-items:center; gap:24px; margin-bottom:18px }
+.ledger-section-label::after { content:""; height:1px; background:var(--ledger-rule); flex:1 }
+.ledger-sr { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; border:0 }
+
+/* Working mark and editorial navigation. */
+.pf-ledger-page .skip-link { position:absolute; z-index:100; top:8px; left:12px; transform:translateY(-160%); padding:12px 18px; background:var(--ledger-teal); color:var(--ledger-black) }
+.pf-ledger-page .skip-link:focus { transform:none }
+.pf-ledger-page .site-header { position:relative; z-index:20; background:var(--ledger-black); border-bottom:1px solid var(--ledger-rule); backdrop-filter:none }
+.ledger-nav-row { min-height:78px; display:flex; align-items:center; gap:32px }
+.ledger-brand { display:flex; align-items:center; gap:13px; text-decoration:none; flex:none }
+.ledger-brand img { width:54px; height:56px; object-fit:contain; flex:none }
+.ledger-wordmark { display:flex; flex-direction:column; gap:2px; font:11px/1.65 var(--ledger-mono); letter-spacing:.17em; text-transform:uppercase; white-space:nowrap }
+.ledger-wordmark>span { color:#b5c0c5; font-size:10px; letter-spacing:.24em }
+.ledger-wordmark strong { font:600 12px/1.5 var(--ledger-mono); letter-spacing:.13em }
+.pf-ledger-page .nav-panel { display:flex; align-items:center; justify-content:space-between; gap:35px; flex:1; margin-left:auto }
+.pf-ledger-page .top-nav { display:flex; align-items:center; gap:28px; margin:auto }
+.pf-ledger-page .top-nav a { font-size:13px; text-decoration:none; padding:14px 0; color:#d7dfe2 }
+.pf-ledger-page .top-nav a:hover { color:var(--ledger-teal) }
+.ledger-header-cta { border:1px solid var(--ledger-teal); padding:11px 19px; text-decoration:none; color:var(--ledger-teal)!important; font-size:13px; white-space:nowrap; display:inline-flex; align-items:center; gap:24px }
+.pf-ledger-page .nav-toggle { display:none }
+.ledger-arrow { width:18px; height:18px; flex:none; vertical-align:middle }
+.ledger-button { display:inline-flex; align-items:center; justify-content:space-between; gap:32px; min-height:49px; padding:13px 25px; background:var(--ledger-teal); border:1px solid var(--ledger-teal); color:var(--ledger-black)!important; font-size:14px; font-weight:650; text-decoration:none }
+.ledger-button:hover { background:#38dec6 }
+.ledger-link { display:inline-flex; align-items:center; gap:18px; color:var(--ledger-teal)!important; text-decoration:none; min-height:44px; font-size:14px }
+.ledger-link:hover { text-decoration:underline; text-underline-offset:5px }
+.ledger-actions { display:flex; align-items:center; flex-wrap:wrap; gap:26px; margin-top:22px }
+
+/* The single maker plate: neutral steel, cut PF contours, one gold inlay. */
+.ledger-hero { border-bottom:1px solid var(--ledger-rule); background:radial-gradient(ellipse at 74% 39%,#9aa5ab12,transparent 43%) }
+.ledger-hero-grid { display:grid; grid-template-columns:6.6fr 4.5fr .8fr; gap:28px; align-items:center; padding-block:34px 36px }
+.ledger-hero h1 { font:700 clamp(60px,6vw,86px)/.96 var(--ledger-serif); letter-spacing:-.045em; margin:13px 0 19px; max-width:9.4em }
+.ledger-hero-subtitle { font:400 clamp(21px,2.05vw,29px)/1.3 var(--ledger-serif); margin:0 0 18px; color:#e1e6e8 }
+.ledger-hero-description { max-width:49ch; font-size:16px; line-height:1.55; color:#c4ced2; margin:0 }
+.ledger-hero-note { margin:20px 0 0; font:10px/1.8 var(--ledger-mono); letter-spacing:.15em; color:#aebcc1; text-transform:uppercase }
+.ledger-plate-scene { position:relative; padding:13px 10px 14px 4px; perspective:1400px; isolation:isolate }
+.ledger-plate-scene::before { content:""; position:absolute; inset:7% 0 -4%; z-index:-1; background:radial-gradient(ellipse,#aeb8ba11,transparent 65%); pointer-events:none }
+.ledger-plate {
+  position:relative; max-width:405px; aspect-ratio:.94; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; padding:24px 26px 22px; color:#171e22;
+  background:linear-gradient(117deg,#777d7e 0%,#a3a8a7 16%,#878d8c 33%,#586264 67%,#8b9393 100%);
+  border:1px solid #bfc6c5; border-right:7px solid #303a3e; border-bottom:5px solid #283236;
+  box-shadow:inset 1px 1px 0 #e8ede89c,inset 0 0 0 5px #2530333b,inset 0 0 25px #11191d3d,13px 19px 18px #0008,3px 4px 2px #0009;
+  transform:rotate(-2.5deg) rotateY(-6deg);
+}
+.ledger-plate::before { content:""; position:absolute; inset:12px; border:1px solid #23313766; box-shadow:1px 1px 0 #dae1df57; pointer-events:none }
+.ledger-plate::after { content:""; position:absolute; inset:0; background:linear-gradient(168deg,#ffffff0c,transparent 24%,#0000000b 60%,transparent 61%); pointer-events:none }
+.ledger-plate-grain { position:absolute; inset:0; width:100%; height:100%; opacity:.13; mix-blend-mode:soft-light; pointer-events:none }
+.ledger-plate-emblem { position:relative; width:92%; aspect-ratio:1; flex:none; margin-top:-4px }
+.ledger-plate-edge,.ledger-plate-mark { position:absolute; inset:0; display:block; mask:url('/brand/PF_MARK_G_MONO_DARK.svg') center/contain no-repeat }
+.ledger-plate-edge { background:linear-gradient(138deg,#273134 8%,#283135 43%,#c9d3cf 79%,#b6c4c0); transform:translate(1.35px,1.8px); filter:blur(.2px) }
+.ledger-plate-mark { background:linear-gradient(136deg,#151d22 5%,#10171c 38%,#253035 70%,#182228); filter:drop-shadow(-.7px -.9px .45px #10181e99) }
+.ledger-inlay { position:absolute; inset:0; width:100%; height:100%; overflow:visible }
+.ledger-plate-name { position:relative; z-index:1; font:700 clamp(13px,1.3vw,18px)/1.3 var(--ledger-mono); letter-spacing:.1em; text-align:center; padding:1px 0 13px; border-bottom:1px solid #27363b80; box-shadow:0 1px 0 #d3dcda66; width:100%; text-shadow:0 1px 0 #bfcac580 }
+.ledger-plate-motto { position:relative; z-index:1; font:650 11px/1.5 var(--ledger-mono); text-align:center; letter-spacing:.11em; margin-top:13px; text-transform:uppercase; text-shadow:0 1px 0 #becac680 }
+.ledger-plate-serial { position:relative; z-index:1; font:9px/1.5 var(--ledger-mono); letter-spacing:.13em; margin-top:8px; text-transform:uppercase; color:#27383e }
+.ledger-fastener { position:absolute; z-index:2; width:10px; height:10px; border:2px solid #253237; border-radius:50%; background:linear-gradient(135deg,#263238,#a8b3af 53%,#556663); box-shadow:0 1px 1px #d6dfdca1 }
+.ledger-fastener:nth-child(1) { top:22px; left:22px }
+.ledger-fastener:nth-child(2) { top:22px; right:22px }
+.ledger-fastener:nth-child(3) { bottom:22px; left:22px }
+.ledger-fastener:nth-child(4) { bottom:22px; right:22px }
+.ledger-margin { align-self:stretch; display:flex; flex-direction:column; justify-content:center; gap:26px; font:10px/1.8 var(--ledger-mono); letter-spacing:.15em; text-transform:uppercase; color:#abb8bb }
+.ledger-margin p { margin:0 }
+.ledger-margin p+p { border-top:1px solid #9aa9a36b; padding-top:23px }
+
+/* Proof-chain grammar. */
+.ledger-chain { padding:21px 0 22px; border-bottom:1px solid var(--ledger-rule) }
+.ledger-chain ol { list-style:none; margin:15px 0 0; padding:0; display:grid; grid-template-columns:repeat(5,1fr); gap:25px }
+.ledger-chain li { display:grid; grid-template-columns:49px 1fr; gap:16px; position:relative; align-items:start }
+.ledger-chain li:not(:last-child)::after { content:"→"; position:absolute; right:-17px; top:18px; color:#aebbbc }
+.ledger-chain-icon { width:49px; height:49px; border:1px solid var(--ledger-gold); border-radius:50%; display:grid; place-items:center; color:#e7edea }
+.ledger-chain-icon svg { width:25px; height:25px }
+.ledger-chain h3 { font:500 14px/1.4 var(--ledger-mono); letter-spacing:.05em; margin:2px 0 7px }
+.ledger-chain .ledger-label { font-size:10px }
+.ledger-chain li p:last-child { font-size:12px; line-height:1.5; color:#aebdc1; margin:0; max-width:19ch }
+
+/* Receipt surfaces, with subtle grain instead of a graph-paper grid. */
+.ledger-paper { background:var(--ledger-white); color:var(--ledger-black); background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.91' numOctaves='3' seed='9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='.045' filter='url(%23n)'/%3E%3C/svg%3E") }
+.ledger-paper .ledger-label { color:#45525a }
+.ledger-paper .ledger-section-label::after { background:#0b0f142e }
+.ledger-paper .ledger-link { color:#00685b!important }
+.ledger-doctrine-grid { display:grid; grid-template-columns:6.9fr 3fr 2.1fr; gap:32px; align-items:center; padding-block:28px }
+.ledger-doctrine h2 { font:700 clamp(41px,4.5vw,66px)/1.03 var(--ledger-serif); letter-spacing:-.045em; margin:8px 0 12px }
+.ledger-doctrine-copy { max-width:58ch; margin:0; font-size:15px; line-height:1.55 }
+.ledger-doctrine-note { font:11px/2 var(--ledger-mono); letter-spacing:.08em; text-transform:uppercase; border-left:1px solid #0b0f142e; padding-left:25px; margin:0 }
+.ledger-seal { width:174px; height:174px; justify-self:center; color:#293238; transform:rotate(-9deg); opacity:.94 }
+.ledger-seal svg { display:block; width:100%; height:100%; overflow:visible }
+.ledger-stamp-title { fill:currentColor; font:11px var(--ledger-mono); letter-spacing:2.1px }
+.ledger-stamp-motto { fill:currentColor; font:8.3px var(--ledger-mono); letter-spacing:.8px }
+
+/* Instruments: aligned data and actions, no repeated status badge. */
+.ledger-featured { padding-block:23px 24px }
+.ledger-featured-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px }
+.ledger-instrument { display:grid; grid-template-columns:49px minmax(0,1fr); gap:16px; min-width:0; border:1px solid var(--ledger-rule); padding:18px 18px 16px; background:#12191c45 }
+.ledger-product-mark { width:46px; height:46px; object-fit:contain; align-self:start }
+.ledger-instrument h3 { font:500 17px/1.4 var(--ledger-mono); letter-spacing:.055em; margin:0 0 6px }
+.ledger-instrument .ledger-job { margin:0; min-height:3.1em; font-size:13px; line-height:1.55; color:#c1cbd0; max-width:34ch }
+.ledger-instrument-meta { margin-top:10px; display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:start; gap:12px }
+.ledger-instrument-meta>div { min-width:0; min-height:51px }
+.ledger-version { font:13px/1.5 var(--ledger-mono); color:var(--ledger-teal) }
+.ledger-platform { display:block; font-size:11px; line-height:1.6; color:#bdcbd0; margin-top:3px; overflow-wrap:anywhere }
+.ledger-instrument .ledger-link { font-size:12px; gap:8px; min-height:44px; white-space:nowrap }
+.ledger-status { font:10px/1.6 var(--ledger-mono); letter-spacing:.06em; text-transform:uppercase; color:#b5c0c5 }
+.ledger-instrument .ledger-status { display:none }
+
+/* Canonical release specimen. */
+.ledger-specimen { border-top:1px solid var(--ledger-rule); border-bottom:1px solid var(--ledger-rule); padding-block:22px 24px }
+.ledger-specimen-grid { display:grid; grid-template-columns:7fr 5fr; gap:48px; align-items:center }
+.ledger-record { border:1px solid #4d777277; border-left:2px solid #649086; background:#15212166; padding:19px 20px; min-width:0 }
+.ledger-record dl { display:grid; grid-template-columns:118px minmax(0,1fr); gap:6px 17px; font:12px/1.55 var(--ledger-mono); margin:0 }
+.ledger-record dt { letter-spacing:.09em; text-transform:uppercase; color:#bdcbce }
+.ledger-record dd { margin:0; overflow-wrap:anywhere; color:#e8efef }
+.ledger-record .ledger-current { color:var(--ledger-teal) }
+.ledger-hash { display:block; font:11px/1.65 var(--ledger-mono); overflow-wrap:anywhere; max-width:100% }
+.ledger-record details { margin-top:13px; font-size:12px; color:#cad6d9 }
+.ledger-record summary { cursor:pointer; min-height:34px; padding-block:6px }
+.ledger-record ul { margin:9px 0 0; padding-left:17px; line-height:1.65 }
+.ledger-record .ledger-actions { margin-top:12px }
+.ledger-record .ledger-link { font-size:12px }
+.ledger-specimen-copy h2 { font:400 35px/1.18 var(--ledger-serif); letter-spacing:-.025em; margin:0 0 13px; max-width:15ch }
+.ledger-specimen-copy p { color:#b6c5ca; font-size:14px; line-height:1.6; max-width:44ch; margin:0 0 15px }
+.ledger-specimen-copy .ledger-actions { gap:20px; margin-top:10px }
+.ledger-specimen-copy .ledger-link { font-size:12px }
+
+/* Complete registry ledger. */
+.ledger-index { padding-block:25px 27px }
+.ledger-index-grid { display:grid; grid-template-columns:10fr 2fr; gap:36px; align-items:center }
+.ledger-index table { width:100%; border-collapse:collapse; text-align:left; table-layout:fixed }
+.ledger-index th { font-size:13px; font-weight:600 }
+.ledger-index td { font-size:12px }
+.ledger-index th,.ledger-index td { border-bottom:1px solid #0b0f142e; padding:8px 9px 8px 0; vertical-align:middle; overflow-wrap:anywhere }
+.ledger-index thead th { font:9px/1.5 var(--ledger-mono); letter-spacing:.07em; text-transform:uppercase; color:#45525a }
+.ledger-index th:nth-child(1) { width:25% }
+.ledger-index th:nth-child(2) { width:20% }
+.ledger-index th:nth-child(3) { width:22% }
+.ledger-index th:nth-child(4) { width:24% }
+.ledger-index th:nth-child(5) { width:9% }
+.ledger-index-name { display:flex; align-items:center; gap:12px }
+.ledger-index-name img { width:19px; height:19px; object-fit:contain; filter:brightness(.3) }
+.ledger-index .ledger-version { color:#00685b; font-size:12px }
+.ledger-index .ledger-status { color:#45525a; display:block; font-size:9px }
+.ledger-index tr[data-release-status="WITHDRAWN"] .ledger-status { color:#aa2831; font-size:11px; font-weight:650 }
+.ledger-index .ledger-link { min-height:34px; font-size:12px; gap:7px }
+.ledger-index-margin { font:11px/1.9 var(--ledger-mono); letter-spacing:.13em; text-transform:uppercase; border-left:1px solid #0b0f142e; padding-left:25px; margin:0 }
+
+/* Position and colophon. */
+.ledger-position { padding-block:25px; border-bottom:1px solid var(--ledger-rule) }
+.ledger-position-head { font:400 31px/1.2 var(--ledger-serif); margin:0 0 20px; letter-spacing:-.02em }
+.ledger-principles { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:30px }
+.ledger-principles article { display:grid; grid-template-columns:32px 1fr; gap:18px }
+.ledger-principles article+article { border-left:1px solid var(--ledger-rule); padding-left:26px }
+.ledger-principles svg { width:31px; height:31px; color:#d8e3e5 }
+.ledger-principles h3 { font:400 22px/1.25 var(--ledger-serif); margin:0 0 7px }
+.ledger-principles p { font-size:13px; color:#b6c4c9; line-height:1.55; margin:0; max-width:37ch }
+.ledger-close { padding-block:23px; border-bottom:1px solid var(--ledger-rule) }
+.ledger-close-row { display:flex; justify-content:space-between; align-items:center; gap:35px }
+.ledger-close h2 { font:700 clamp(28px,3.1vw,42px)/1.15 var(--ledger-serif); letter-spacing:-.03em; margin:0 0 6px }
+.ledger-close .ledger-label { font-size:10px }
+.pf-ledger-footer { padding-block:24px 26px }
+.pf-ledger-footer-grid { display:grid; grid-template-columns:4fr 5fr 3fr; gap:25px; align-items:center }
+.pf-ledger-footer .ledger-brand img { width:49px; height:50px }
+.pf-ledger-footer .ledger-wordmark strong { font-size:11px }
+.pf-ledger-footer p { font-size:12px; margin:5px 0 0; color:#b5c3c8 }
+.pf-ledger-footer nav { display:flex; justify-content:center; flex-wrap:wrap; gap:18px }
+.pf-ledger-footer nav a { font-size:11px; padding-block:10px; text-decoration:none }
+.pf-ledger-footer nav a:hover { color:var(--ledger-teal) }
+.ledger-copyright { border-left:1px solid var(--ledger-rule); padding-left:28px; font-size:11px; line-height:1.7; color:#b5c3c8 }
+
+@media(max-width:1200px) {
+  .pf-ledger-wrap { width:calc(100% - 64px) }
+  .ledger-hero-grid { gap:25px; grid-template-columns:6.2fr 4.4fr }
+  .ledger-margin { display:none }
+  .ledger-hero h1 { font-size:clamp(58px,6.6vw,85px) }
+  .pf-ledger-page .top-nav { gap:19px }
+  .ledger-nav-row { gap:23px }
+  .pf-ledger-page .nav-panel { gap:20px }
+  .ledger-chain ol { gap:22px }
+  .ledger-chain li { grid-template-columns:40px 1fr; gap:11px }
+  .ledger-chain-icon { width:40px; height:40px }
+  .ledger-chain-icon svg { width:22px; height:22px }
+  .ledger-doctrine-grid { gap:26px }
+  .ledger-seal { width:151px; height:151px }
+  .ledger-instrument { grid-template-columns:35px minmax(0,1fr); gap:12px; padding:16px 13px }
+  .ledger-product-mark { width:35px; height:35px }
+  .ledger-instrument h3 { font-size:15px }
+  .ledger-instrument-meta { grid-template-columns:1fr; gap:0 }
+  .ledger-instrument-meta>div { min-height:62px }
+  .ledger-instrument .ledger-link { justify-self:start }
+  .ledger-index-grid { grid-template-columns:1fr }
+  .ledger-index-margin { display:none }
+}
+@media(max-width:900px) {
+  .ledger-nav-row { min-height:72px; flex-wrap:wrap; justify-content:space-between; gap:0 }
+  .pf-ledger-page .nav-toggle { display:flex; flex-direction:column; justify-content:center; gap:5px; width:46px; height:46px; padding:10px; border:1px solid #8f9d9a66; border-radius:2px; background:transparent; color:var(--ledger-white); cursor:pointer }
+  .pf-ledger-page .nav-toggle-bar { display:block; width:24px; height:2px; background:currentColor }
+  .pf-ledger-page .nav-panel { display:none; flex-basis:100%; margin:0; padding:8px 0 20px; border-top:1px solid var(--ledger-rule) }
+  .pf-ledger-page .nav-open .nav-panel { display:flex; align-items:stretch; flex-direction:column; gap:12px }
+  .pf-ledger-page .top-nav { margin:0; display:grid; grid-template-columns:repeat(3,1fr); gap:0 18px }
+  .ledger-header-cta { align-self:start }
+  .ledger-hero-grid { grid-template-columns:6fr 4fr; gap:20px; padding-block:29px }
+  .ledger-hero h1 { font-size:clamp(46px,6.7vw,65px) }
+  .ledger-hero-subtitle { font-size:21px }
+  .ledger-hero-description { font-size:14px }
+  .ledger-hero .ledger-actions { gap:8px; margin-top:18px }
+  .ledger-hero .ledger-link { font-size:12px }
+  .ledger-hero .ledger-button { font-size:12px; padding:12px 16px; gap:20px }
+  .ledger-plate { padding:22px 17px 20px }
+  .ledger-plate-name { font-size:12px }
+  .ledger-plate-motto { font-size:8px; letter-spacing:.08em }
+  .ledger-plate-serial { font-size:7px }
+  .ledger-chain ol { gap:20px }
+  .ledger-chain li { display:block }
+  .ledger-chain-icon { margin-bottom:12px }
+  .ledger-chain li:not(:last-child)::after { right:-11px; top:10px }
+  .ledger-chain h3 { font-size:12px }
+  .ledger-chain li p:last-child { font-size:11px }
+  .ledger-doctrine-grid { grid-template-columns:7fr 3fr }
+  .ledger-seal { display:none }
+  .ledger-doctrine h2 { font-size:46px }
+  .ledger-featured-grid { grid-template-columns:1fr; gap:0 }
+  .ledger-instrument { grid-template-columns:42px minmax(0,1fr); padding:16px 0; border:0; border-top:1px solid var(--ledger-rule); background:none }
+  .ledger-product-mark { width:40px; height:40px }
+  .ledger-instrument .ledger-job { min-height:0 }
+  .ledger-instrument-meta { grid-template-columns:minmax(0,1fr) auto; margin-top:8px; gap:15px }
+  .ledger-instrument-meta>div { min-height:38px }
+  .ledger-instrument .ledger-link { justify-self:end }
+  .ledger-specimen-grid { gap:28px }
+  .ledger-record { padding:17px }
+  .ledger-record dl { grid-template-columns:91px 1fr; font-size:11px; gap:6px 10px }
+  .ledger-specimen-copy h2 { font-size:29px }
+  .ledger-specimen-copy p { font-size:12px }
+  .ledger-principles { gap:20px }
+  .ledger-principles article { display:block }
+  .ledger-principles article+article { padding-left:18px }
+  .ledger-principles h3 { font-size:21px; margin-top:12px }
+  .pf-ledger-footer-grid { grid-template-columns:1fr 1fr }
+  .pf-ledger-footer nav { justify-content:flex-end; gap:16px }
+  .ledger-copyright { grid-column:1/-1; border-left:0; border-top:1px solid var(--ledger-rule); padding:13px 0 0 }
+}
+@media(max-width:640px) {
+  .pf-ledger-wrap { width:calc(100% - 40px) }
+  .ledger-label { font-size:10px }
+  .ledger-brand img { width:44px; height:46px }
+  .ledger-wordmark { font-size:10px; letter-spacing:.13em; gap:1px }
+  .ledger-wordmark strong { font-size:11px; letter-spacing:.08em }
+  .ledger-wordmark>span { font-size:9px }
+  .ledger-hero-grid { display:grid; grid-template-columns:minmax(0,1fr); grid-template-areas:'intro' 'plate' 'detail'; gap:17px; padding-block:25px 27px }
+  .ledger-hero-copy { display:contents }
+  .ledger-hero-intro { grid-area:intro; min-width:0 }
+  .ledger-hero-detail { grid-area:detail; min-width:0 }
+  .ledger-hero h1 { font-size:clamp(34px,10.9vw,66px); line-height:1; letter-spacing:-.045em; margin:12px 0 14px }
+  .ledger-hero-subtitle { font-size:21px; max-width:26ch; line-height:1.35; margin-bottom:0 }
+  .ledger-hero-description { font-size:14px; max-width:50ch }
+  .ledger-hero .ledger-actions { gap:8px 20px; margin-top:16px }
+  .ledger-hero .ledger-button { font-size:13px; padding:13px 19px; min-height:48px }
+  .ledger-hero .ledger-link { font-size:13px }
+  .ledger-hero-note { font-size:9px; letter-spacing:.11em; max-width:37ch; margin-top:15px }
+  .ledger-plate-scene { grid-area:plate; width:min(246px,76%); justify-self:center; padding:7px 8px 9px 2px }
+  .ledger-plate { padding:17px 19px 16px; border-right-width:5px; border-bottom-width:4px }
+  .ledger-plate::before { inset:9px }
+  .ledger-plate-emblem { width:89%; margin-top:-3px }
+  .ledger-plate-name { font-size:11px; padding-bottom:9px; letter-spacing:.075em }
+  .ledger-plate-motto { font-size:8px; margin-top:9px; letter-spacing:.015em }
+  .ledger-plate-serial { display:none }
+  .ledger-fastener { width:8px; height:8px; border-width:1.5px }
+  .ledger-fastener:nth-child(1) { top:16px; left:16px }
+  .ledger-fastener:nth-child(2) { top:16px; right:16px }
+  .ledger-fastener:nth-child(3) { bottom:16px; left:16px }
+  .ledger-fastener:nth-child(4) { bottom:16px; right:16px }
+  .ledger-chain { padding-block:23px }
+  .ledger-chain ol { display:block; position:relative; margin-top:19px }
+  .ledger-chain li { display:grid; grid-template-columns:43px 1fr; gap:17px; margin-top:0; padding-bottom:17px }
+  .ledger-chain li:last-child { padding-bottom:0 }
+  .ledger-chain-icon { width:43px; height:43px; margin:0; background:var(--ledger-black); z-index:1 }
+  .ledger-chain li:not(:last-child)::after { content:""; left:21px; top:43px; bottom:0; width:1px; background:#d6a84f70; right:auto }
+  .ledger-chain h3 { font-size:14px; margin:0 0 5px }
+  .ledger-chain li p:last-child { font-size:12px; max-width:29ch }
+  .ledger-chain .ledger-label { font-size:9px }
+  .ledger-doctrine-grid { display:block; padding-block:26px }
+  .ledger-doctrine h2 { font-size:clamp(36px,10vw,47px); margin-top:10px }
+  .ledger-doctrine-copy { font-size:14px }
+  .ledger-doctrine-note { font-size:10px; line-height:1.9; border-left:0; border-top:1px solid #0b0f142e; padding:14px 0 0; margin-top:13px }
+  .ledger-featured { padding-block:22px }
+  .ledger-instrument { gap:15px; padding:15px 0 }
+  .ledger-product-mark { width:38px; height:38px }
+  .ledger-instrument h3 { font-size:15px }
+  .ledger-instrument .ledger-job { font-size:13px }
+  .ledger-instrument-meta { margin-top:8px; gap:10px; grid-template-columns:minmax(0,1fr) auto }
+  .ledger-instrument-meta>div { min-height:46px }
+  .ledger-platform { font-size:11px }
+  .ledger-instrument .ledger-link { font-size:11px; gap:6px }
+  .ledger-specimen { padding-block:24px }
+  .ledger-specimen-grid { display:flex; flex-direction:column; gap:22px; align-items:stretch }
+  .ledger-record { padding:17px }
+  .ledger-record dl { grid-template-columns:1fr; gap:3px; font-size:12px }
+  .ledger-record dt:not(:first-child) { margin-top:8px }
+  .ledger-record dt { font-size:10px }
+  .ledger-record dd { font-size:13px }
+  .ledger-hash { font-size:12px }
+  .ledger-specimen-copy h2 { font-size:30px; max-width:20ch }
+  .ledger-specimen-copy p { font-size:13px }
+  .ledger-specimen-copy .ledger-link { font-size:12px }
+  .ledger-index { padding-block:23px }
+  .ledger-index table,.ledger-index tbody { display:block }
+  .ledger-index thead { display:none }
+  .ledger-index tr { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 12px; border-bottom:1px solid #0b0f142e; padding:12px 0 }
+  .ledger-index th,.ledger-index td { display:block; padding:0; border:0; width:auto!important; font-size:12px }
+  .ledger-index th { grid-column:1; grid-row:1; font-size:14px }
+  .ledger-index td:nth-child(2) { grid-column:2; grid-row:1; align-self:start; text-align:right }
+  .ledger-index td:nth-child(3) { grid-column:1; grid-row:2; font-size:12px; color:#45525a }
+  .ledger-index td:nth-child(4) { grid-column:1; grid-row:3; font-size:12px; line-height:1.45 }
+  .ledger-index td:nth-child(5) { grid-column:2; grid-row:2/4; align-self:end }
+  .ledger-index-name { gap:8px }
+  .ledger-index-name img { width:17px; height:17px }
+  .ledger-index .ledger-status { font-size:8px }
+  .ledger-index tr[data-release-status="WITHDRAWN"] .ledger-status { font-size:10px }
+  .ledger-index .ledger-version { font-size:12px }
+  .ledger-index .ledger-link { min-height:44px; font-size:11px; gap:5px }
+  .ledger-position { padding-block:25px }
+  .ledger-position-head { font-size:28px; margin-bottom:22px }
+  .ledger-principles { display:block }
+  .ledger-principles article { display:grid; grid-template-columns:29px 1fr; gap:17px; margin-top:20px }
+  .ledger-principles article+article { border-left:0; border-top:1px solid var(--ledger-rule); padding:20px 0 0 }
+  .ledger-principles h3 { font-size:23px; margin:0 0 7px }
+  .ledger-principles p { font-size:13px }
+  .ledger-principles svg { width:28px; height:28px }
+  .ledger-close-row { display:block }
+  .ledger-close h2 { font-size:29px }
+  .ledger-close .ledger-label { font-size:9px; max-width:32ch }
+  .ledger-close .ledger-button { margin-top:19px }
+  .pf-ledger-footer-grid { display:block }
+  .pf-ledger-footer nav { justify-content:flex-start; gap:10px 20px; margin-top:16px }
+  .pf-ledger-footer nav a { font-size:12px; min-height:44px }
+  .ledger-copyright { margin-top:12px; font-size:11px }
+}
+@media(prefers-reduced-motion:reduce) {
+  .pf-ledger-page *,.pf-ledger-page *::before,.pf-ledger-page *::after { animation:none!important; transition:none!important; scroll-behavior:auto!important }
+}
+@media(forced-colors:active) {
+  .ledger-plate-mark { background:CanvasText }
+  .ledger-plate { border:2px solid CanvasText }
+  .ledger-button { border:2px solid ButtonText }
+  .ledger-chain-icon { border-color:CanvasText }
+}

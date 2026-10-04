@@ -132,10 +132,21 @@ $headLastmod = @{}
 foreach ($mm in [regex]::Matches($headSitemap, '<loc>([^<]+)</loc>\s*<lastmod>([^<]+)</lastmod>')) { $headLastmod[$mm.Groups[1].Value] = $mm.Groups[2].Value }
 Assert-Truth ($lastmodByLoc['https://theprooffoundry.com/truth/'] -eq '2026-09-20') 'sitemap: /truth/ carries H11 date (new route)'
 Assert-Truth ($lastmodByLoc['https://theprooffoundry.com/proof-standard/'] -eq '2026-09-20') 'sitemap: /proof-standard/ carries H11 date (H11 changed the page)'
+# These five existing content-date corrections close the owner-authorized
+# baseline debt. H4 independently derives each date from material Git inputs.
+# All other routes retain their HEAD dates; no blanket freshness bump.
+$reconciledLastmod = @{
+  'https://theprooffoundry.com/' = '2026-10-03'
+  'https://theprooffoundry.com/cache-vault/' = '2026-10-03'
+  'https://theprooffoundry.com/proofshot/' = '2026-09-30'
+  'https://theprooffoundry.com/reality-gate/' = '2026-09-30'
+  'https://theprooffoundry.com/software/' = '2026-10-03'
+}
 foreach ($kv in $headLastmod.GetEnumerator()) {
   if ($kv.Key -eq 'https://theprooffoundry.com/proof-standard/') { continue }
-  if ($kv.Key -eq 'https://theprooffoundry.com/') {
-    Assert-Truth ($lastmodByLoc[$kv.Key] -eq '2026-09-28') 'sitemap: homepage lastmod reflects this homepage tranche'
+  if ($reconciledLastmod.ContainsKey($kv.Key)) {
+    $expectedDate = $reconciledLastmod[$kv.Key]
+    Assert-Truth ($lastmodByLoc[$kv.Key] -eq $expectedDate) "sitemap: $($kv.Key) matches the reconciled material-content date ($expectedDate)"
     continue
   }
   Assert-Truth ($lastmodByLoc[$kv.Key] -eq $kv.Value) "sitemap: $($kv.Key) retains HEAD lastmod ($($kv.Value)) — H11 did not change it"

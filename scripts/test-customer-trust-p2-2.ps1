@@ -31,7 +31,9 @@ foreach ($p in $products) {
 
 # 2. Cache Vault LAN Disclosure Assertion
 $cvHtml = Get-Content (Join-Path $publicDir "cache-vault\index.html") -Raw -Encoding UTF8
-Assert-Condition ($cvHtml -match 'local Wi-Fi network') "Cache Vault discloses local Wi-Fi / LAN companion transfer"
+# Bind the transfer disclosure to its privacy section, not one obsolete suffix.
+$cvPrivacy = [regex]::Match($cvHtml, '(?s)<section\b[^>]*\bid="privacy-data-flow"[^>]*>.*?</section>').Value
+Assert-Condition ($cvPrivacy -match 'Network &amp; LAN companion egress' -and $cvPrivacy -match 'Optional pairing transfers selected clips directly over local Wi-Fi(?:;|\s|[.<])') "Cache Vault discloses local Wi-Fi / LAN companion transfer"
 Assert-Condition ($cvHtml -notmatch 'clipboard history never leaves your device') "Cache Vault rejects universal 'never leaves your device' claim"
 Assert-Condition ($cvHtml -notmatch 'clipboard data never leaves this device') "Cache Vault rejects 'clipboard data never leaves this device'"
 

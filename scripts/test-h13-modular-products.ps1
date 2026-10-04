@@ -242,7 +242,7 @@ Assert ($t4idx -match 'fixture-product') 'fixture-product listed in truth index 
 $t4home = Get-Content (Join-Path $t4.OutDir 'index.html') -Raw -Encoding UTF8
 $t4Card = Get-CatalogCard $t4soft 'fixture-product'
 $t4Order = @([regex]::Matches($t4soft, 'data-product="([a-z0-9-]+)"') | ForEach-Object { $_.Groups[1].Value })
-Assert ($t4Card -match '<article class="product-card\b' -and $t4Card -match 'A new module, rendered generically\.' -and $t4Card -match 'href="/fixture-product/"' -and $t4Order[0] -eq 'fixture-product' -and $t4home -ceq $canonicalHome -and $t4home -notmatch $homeProductSlots) 'unknown module receives generic catalog copy, route and module order without changing Home'
+Assert ($t4Card -match '<article class="product-card\b' -and $t4Card -match 'A new module, rendered generically\.' -and $t4Card -match 'href="/fixture-product/"' -and $t4Order[0] -eq 'fixture-product' -and $t4home -match '<tr data-ledger-product="fixture-product"' -and $t4home -match 'href="/fixture-product/"') 'unknown module receives generic catalog and Home index copy, route and module order'
 Assert ($t4Card -match '--product-accent:#38BDF8(?:;|\")' -and $t4Card -match '--product-accent-2:#2486B9(?:;|\")' -and $t4Card -match 'data-product="fixture-product"') 'unknown module catalog accent and identity come from module data'
 Assert ((Get-FileHash $buildPs1 -Algorithm SHA256).Hash -eq $rendererBefore -and (Get-FileHash (Join-Path $root 'index.html') -Algorithm SHA256).Hash -eq $indexBefore) 'unknown module requires no renderer or homepage template edits'
 $t4pg = Get-Content (Join-Path $t4.OutDir 'fixture-product\index.html') -Raw -Encoding UTF8
@@ -312,7 +312,8 @@ $evidenceControlHome = Get-Content (Join-Path $evidenceControl.OutDir 'index.htm
 $evidenceControlSoftware = Get-Content (Join-Path $evidenceControl.OutDir 'software\index.html') -Raw -Encoding UTF8
 $evidenceControlCard = Get-CatalogCard $evidenceControlSoftware 'reality-gate'
 $evidenceControlTruth = Get-Content (Join-Path $evidenceControl.OutDir 'truth\products\reality-gate.json') -Raw -Encoding UTF8 | ConvertFrom-Json
-Assert ($evidenceControlHome -ceq $canonicalHome -and $evidenceControlHome -notmatch $homeProductSlots -and $evidenceControlHome -notmatch 'Reality Gate' -and $evidenceControlCard -match 'data-availability="withdrawn-unavailable"' -and $evidenceControlCard -match 'data-commerce="withdrawn"' -and $evidenceControlCard -match 'href="/reality-gate/"' -and $evidenceControlTruth.release.releaseStatus -eq 'WITHDRAWN' -and $null -eq $evidenceControlTruth.version -and $evidenceControlTruth.download.available -eq $false -and $null -eq $evidenceControlTruth.download.url) 'highest evidence priority cannot restore withdrawn availability or product content on frozen Home'
+$withdrawnHomeRow = [regex]::Match($evidenceControlHome, '(?s)<tr data-ledger-product="reality-gate".*?</tr>').Value
+Assert ($evidenceControlHome -ceq $canonicalHome -and $evidenceControlHome -notmatch $homeProductSlots -and $withdrawnHomeRow -match 'data-release-status="WITHDRAWN"' -and $withdrawnHomeRow -match 'Full record available\.' -and $withdrawnHomeRow -notmatch 'v1\.1\.0|>\s*Download' -and $evidenceControlCard -match 'data-availability="withdrawn-unavailable"' -and $evidenceControlCard -match 'data-commerce="withdrawn"' -and $evidenceControlCard -match 'href="/reality-gate/"' -and $evidenceControlTruth.release.releaseStatus -eq 'WITHDRAWN' -and $null -eq $evidenceControlTruth.version -and $evidenceControlTruth.download.available -eq $false -and $null -eq $evidenceControlTruth.download.url) 'highest evidence priority cannot restore withdrawn availability in Home, catalog or truth'
 Write-Host ""
 
 # ── TEST 5: hidden product control ───────────────────────────────────────────
@@ -434,7 +435,7 @@ $t9truth = Get-Content (Join-Path $t9.OutDir 'truth\products\cleanroom.json') -R
 Assert ($t9truth -match 'SWAPPED-STATE-MARKER') 'truth JSON consumed foreign source state'
 $t9home = Get-Content (Join-Path $t9.OutDir 'index.html') -Raw -Encoding UTF8
 $t9footer = [regex]::Match($t9html, '(?s)<footer\b.*?</footer>').Value
-Assert ($t9footer -match 'SWAPPED-HOME-NAME' -and $t9home -ceq $canonicalHome -and $t9home -notmatch $homeProductSlots) 'product footer presentation name consumes foreign source state without changing frozen Home'
+Assert ($t9footer -match 'SWAPPED-HOME-NAME' -and $t9home -match 'SWAPPED-HOME-NAME' -and $t9home -match '<tr data-ledger-product="cleanroom"' -and $t9home -notmatch $homeProductSlots) 'product footer and Home index presentation name consume foreign source state'
 Write-Host ""
 
 # Homepage markup must stay generic: IDs are data, never renderer branches.

@@ -2574,6 +2574,103 @@ $headerPartial = Read-File (Join-Path $partialsDir 'header.html')
 $footerPartial = Read-File (Join-Path $partialsDir 'footer.html')
 $compactFooterPartial = Read-File (Join-Path $partialsDir 'footer-compact.html')
 
+# Proof Ledger is presentation only. Selection contains IDs, never release facts.
+# All consumers use the same registry and state-source adapter as product/truth pages.
+function Get-LedgerEntries {
+  $selection = Get-Content (Join-Path $root 'homepage-ledger.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+  $featuredIds = @($selection.featured)
+  if ($featuredIds.Count -ne 3 -or @($featuredIds | Select-Object -Unique).Count -ne 3) { throw 'Proof Ledger requires three unique presentation selections' }
+  $entries = @()
+  foreach ($module in $productRegistry) {
+    if ($module.visibility -ne 'visible' -or $module.lifecycle -ne 'public-eligible') { continue }
+    if ($module.placement -and $module.placement.catalog -eq $false) { continue }
+    if ($module.homepage -and $module.homepage.visibility -eq 'hidden') { continue }
+    $product = $productStateSource.Get($module.id)
+    if (-not $product -or -not $product.visible) { continue }
+    $rank = [array]::IndexOf($featuredIds, [string]$module.id)
+    if ($rank -lt 0) { $rank = 100 + [int]$module.order }
+    if ($product.release.releaseStatus -eq 'WITHDRAWN') { $rank += 10000 }
+    $entries += [pscustomobject]@{ Module=$module; Product=$product; Rank=$rank }
+  }
+  return @($entries | Sort-Object Rank, { [int]$_.Module.order })
+}
+
+function LedgerArrowSvg {
+  return '<svg class="ledger-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg>'
+}
+
+function LedgerProductMark($module) {
+  $src = if ($module.brand.mark) { [string]$module.brand.mark } else { [string]$module.brand.logo }
+  if (-not $src) { return '' }
+  return '<img class="ledger-product-mark" src="' + (Html-Attr $src) + '" alt="" width="49" height="49" loading="lazy"/>'
+}
+
+function LedgerPlatform($product) {
+  $text = PlatformLabel $product
+  if ($product.release.companionPublicVersion) {
+    $text += ' · companion v' + [string]$product.release.companionPublicVersion
+  }
+  return $text
+}
+
+function Build-LedgerFeatured {
+  $selection = Get-Content (Join-Path $root 'homepage-ledger.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+  $items = @()
+  foreach ($entry in Get-LedgerEntries) {
+    $m = $entry.Module; $p = $entry.Product
+    if ($m.id -notin @($selection.featured) -or $p.release.releaseStatus -ne 'PUBLIC_RELEASE') { continue }
+    $name = if ($p.homeName) { [string]$p.homeName } else { [string]$p.name }
+    $job = if ($m.card.tagline) { [string]$m.card.tagline } else { [string]$p.summary }
+    $items += @"
+<article class="ledger-instrument" data-ledger-feature="$(Html-Attr $m.id)">
+  $(LedgerProductMark $m)<div><h3>$(Html-Text $name)</h3><p class="ledger-job">$(Html-Text $job)</p><div class="ledger-instrument-meta"><div><span class="ledger-version">$(Html-Text (VersionLabel $p))</span><span class="ledger-platform">$(Html-Text (LedgerPlatform $p))</span></div><a class="ledger-link" href="$(Html-Attr $m.route)" aria-label="View $(Html-Attr $name) details">View details $(LedgerArrowSvg)</a></div><span class="ledger-status">$(Html-Text ((VisitorAvailabilityLabel $p).Replace('_', ' ')))</span></div>
+</article>
+"@
+  }
+  return ($items -join "`n")
+}
+
+function Build-LedgerIndex {
+  $rows = @()
+  foreach ($entry in Get-LedgerEntries) {
+    $m = $entry.Module; $p = $entry.Product
+    $name = if ($p.homeName) { [string]$p.homeName } else { [string]$p.name }
+    $withdrawn = $p.release.releaseStatus -eq 'WITHDRAWN'
+    $version = if ($withdrawn) { '' } else { VersionLabel $p }
+    $status = if ($withdrawn) { 'WITHDRAWN' } else { (VisitorAvailabilityLabel $p).Replace('_', ' ') }
+    $job = if ($withdrawn) { 'Full record available.' } elseif ($m.card.tagline) { [string]$m.card.tagline } else { [string]$p.summary }
+    $rows += @"
+<tr data-ledger-product="$(Html-Attr $m.id)" data-release-status="$(Html-Attr $p.release.releaseStatus)"><th scope="row"><span class="ledger-index-name">$(LedgerProductMark $m)<span>$(Html-Text $name)</span></span></th><td><span class="ledger-version">$(Html-Text $version)</span><span class="ledger-status">$(Html-Text $status)</span></td><td>$(Html-Text (LedgerPlatform $p))</td><td>$(Html-Text $job)</td><td><a class="ledger-link" href="$(Html-Attr $m.route)" aria-label="View $(Html-Attr $name) record">View $(LedgerArrowSvg)</a></td></tr>
+"@
+  }
+  return ($rows -join "`n")
+}
+
+function Build-LedgerSpecimen {
+  $selection = Get-Content (Join-Path $root 'homepage-ledger.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+  $entry = @(Get-LedgerEntries | Where-Object { $_.Module.id -eq $selection.releaseSpecimen }) | Select-Object -First 1
+  if (-not $entry -or $entry.Product.release.releaseStatus -ne 'PUBLIC_RELEASE') {
+    return '<div class="ledger-record"><p>No current public release is selected. <a href="/proof/">Read the release records.</a></p></div>'
+  }
+  $p = $entry.Product; $m = $entry.Module
+  $artifact = @($p.artifacts | Where-Object { $_.downloadUrl -eq $p.downloadUrl -and $_.sha256 -eq $p.sha256 }) | Select-Object -First 1
+  if (-not $artifact -or [string]$artifact.sha256 -notmatch '^[a-f0-9]{64}$') { throw 'Proof Ledger specimen must bind an exact canonical artifact and digest' }
+  $limits = @($p.limits)
+  $limit = if ($limits.Count) { [string]$limits[0] } else { 'Read the public record for the scope and limitations of this release.' }
+  $limitItems = (@($limits | ForEach-Object { '<li>' + (Html-Text ([string]$_)) + '</li>' }) -join '')
+  return @"
+<div class="ledger-record" data-ledger-specimen="$(Html-Attr $m.id)"><dl>
+  <dt>Product</dt><dd>$(Html-Text $p.name)</dd>
+  <dt>Version</dt><dd class="ledger-current">$(Html-Text (VersionLabel $p))</dd>
+  <dt>Platform</dt><dd>$(Html-Text $artifact.platform)</dd>
+  <dt>Artifact</dt><dd>$(Html-Text $artifact.filename)</dd>
+  <dt>SHA-256</dt><dd><code class="ledger-hash">$(Html-Text $artifact.sha256)</code></dd>
+  <dt>Status</dt><dd class="ledger-current">$(Html-Text (VisitorAvailabilityLabel $p))</dd>
+  <dt>Known limit</dt><dd>$(Html-Text $limit)</dd>
+  </dl><details><summary>All $($limits.Count) documented limitations</summary><ul>$limitItems</ul></details><div class="ledger-actions"><a class="ledger-link" href="/proof/#receipt-$(Html-Attr $m.id)">Full release record $(LedgerArrowSvg)</a><a class="ledger-link" href="/truth-files/$(Html-Attr $m.id)/">View Truth File $(LedgerArrowSvg)</a></div></div>
+"@
+}
+
 function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   # H13: when -OverrideHtml is supplied, render that generated markup instead of
   # reading $srcPath — lets Render-ProductShell feed module-built pages through
@@ -2596,6 +2693,13 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   }
 
   # Extract @page id
+  if ($srcName -eq 'index.html' -and $html.Contains('<!-- @ledger-featured -->')) {
+    $ledgerVersion = (Get-FileHash (Join-Path $root 'pf-home-ledger.css') -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
+    $html = $html.Replace('"/pf-home-ledger.css"', '"/pf-home-ledger.css?v=' + $ledgerVersion + '"')
+    $html = $html.Replace('<!-- @ledger-featured -->', (Build-LedgerFeatured))
+    $html = $html.Replace('<!-- @ledger-index -->', (Build-LedgerIndex))
+    $html = $html.Replace('<!-- @ledger-specimen -->', (Build-LedgerSpecimen))
+  }
   $pageId = ''
   if ($html -match '<!--\s*@page\s+(\S+)\s*-->') { $pageId = $Matches[1] }
   $html = $html -replace '<!--\s*@page\s+\S+\s*-->\s*\r?\n?', ''
@@ -2865,6 +2969,7 @@ Write-Host "==> Generated Truth Files: /truth-files/ + $(($productRegistry | Whe
 # Copy static assets
 # ─────────────────────────────────────────────────────────────────────────────
 Copy-Item (Join-Path $root 'styles.css')     $publicDir -Force
+Copy-Item (Join-Path $root 'pf-home-ledger.css') $publicDir -Force
 Copy-Item (Join-Path $root 'studio.css')     $publicDir -Force
 Copy-Item (Join-Path $root 'experience.css') $publicDir -Force
 Copy-Item (Join-Path $root 'signature.css')  $publicDir -Force
