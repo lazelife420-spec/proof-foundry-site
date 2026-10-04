@@ -22,7 +22,7 @@ async function makeCapsule(name, opts = {}) {
   const dir = path.join(TEMP, name);
   const id = opts.id || "pf-capsule-fixture";
   const type = opts.type || "NEW_PRODUCT";
-  const version = opts.version || (type === "PRESENTATION_UPDATE" ? "0.2.4" : "1.0.0");
+  const version = opts.version || (type === "PRESENTATION_UPDATE" ? "0.3.1" : "1.0.0");
   const lifecycle = opts.lifecycle || (type === "PRESENTATION_UPDATE" ? "public-eligible" : "preview");
   const module = JSON.parse(fs.readFileSync(path.join(FIXTURE, "module.json"), "utf8"));
   const moduleText = JSON.stringify(module).replaceAll("fixture-product", id);
@@ -117,6 +117,20 @@ try {
   const inspect = run(["inspect", valid.dir]);
   check(inspect.status === 0 && inspect.stdout.includes("PF PRODUCT CAPSULE INVENTORY") && inspect.stdout.includes("CAPSULE_SHA256: "), "inspect prints a readable hashed inventory");
   check(!inspect.stdout.includes("proof-foundry/pf-capsule-fixture") && inspect.stdout.includes("SOURCE_REPOSITORY_PATH: [WITHHELD]"), "inspect withholds repository path components");
+
+  const homepageJobLabel = copyCapsule(valid.dir, "unsupported-homepage-job-label");
+  const homepageJobLabelModule = JSON.parse(fs.readFileSync(path.join(homepageJobLabel, "product/module.json"), "utf8"));
+  homepageJobLabelModule.homepage.jobLabel = "Clipboard history";
+  saveJson(path.join(homepageJobLabel, "product/module.json"), homepageJobLabelModule);
+  const homepageJobLabelResult = validate(homepageJobLabel);
+  check(homepageJobLabelResult.result.status === 1 && homepageJobLabelResult.report.status === "INVALID" && homepageJobLabelResult.report.schemaValidation.module === "FAIL" && homepageJobLabelResult.report.validationErrors.includes("product/module.json.homepage has unsupported property jobLabel"), "Capsule module schema rejects homepage.jobLabel with its exact unsupported-property error");
+
+  const homepageUnknown = copyCapsule(valid.dir, "unsupported-homepage-property");
+  const homepageUnknownModule = JSON.parse(fs.readFileSync(path.join(homepageUnknown, "product/module.json"), "utf8"));
+  homepageUnknownModule.homepage.unrecognizedProperty = "fixture-only unknown field";
+  saveJson(path.join(homepageUnknown, "product/module.json"), homepageUnknownModule);
+  const homepageUnknownResult = validate(homepageUnknown);
+  check(homepageUnknownResult.result.status === 1 && homepageUnknownResult.report.status === "INVALID" && homepageUnknownResult.report.schemaValidation.module === "FAIL" && homepageUnknownResult.report.validationErrors.includes("product/module.json.homepage has unsupported property unrecognizedProperty"), "Capsule module schema rejects arbitrary unknown homepage properties with their exact unsupported-property error");
 
   const missing = copyCapsule(valid.dir, "missing-artifact");
   fs.rmSync(path.join(missing, valid.artifactPath));

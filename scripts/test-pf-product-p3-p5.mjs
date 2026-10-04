@@ -115,12 +115,12 @@ async function makeExistingProduct(name, type, options = {}) {
   if (options.presentationChange) module.card.tagline = "Find the clip. Keep moving.";
   const capsuleModule = clone(module);
   delete capsuleModule.homepage.mediaDisclosure;
-  const version = type === "NEW_VERSION" ? "0.2.5" : "0.2.4";
+  const version = type === "NEW_VERSION" ? "0.3.2" : "0.3.1";
   const capsule = baseCapsule(id, type, version, module.lifecycle);
   capsule.contentPath = "product/content.html";
   if (type === "NEW_VERSION") {
-    const artifactBytes = Buffer.from("synthetic cache vault candidate 0.2.5\n");
-    const artifactPath = "release/artifacts/cache-vault-0.2.5-windows.zip";
+    const artifactBytes = Buffer.from("synthetic cache vault candidate 0.3.2\n");
+    const artifactPath = "release/artifacts/cache-vault-0.3.2-windows.zip";
     const evidenceBytes = Buffer.from("synthetic candidate build receipt\n");
     const evidencePath = "release/evidence/build.txt";
     capsule.artifactRefs = [{ path: artifactPath, platform: "Windows", sha256: sha(artifactBytes) }];
@@ -266,8 +266,8 @@ try {
   check(presentationFreeze.status === 0 && presentationFreeze.report.approvalState === "FROZEN_FOR_OWNER_REVIEW", "PRESENTATION_UPDATE freezes only for owner review");
 
   const badUpdateVersion = await makeExistingProduct("presentation-version-mutation", "PRESENTATION_UPDATE");
-  const badUpdateCapsule = readJson(path.join(badUpdateVersion.dir, "capsule.json")); badUpdateCapsule.releaseVersion = "0.2.5"; json(path.join(badUpdateVersion.dir, "capsule.json"), badUpdateCapsule);
-  const badUpdateRelease = readJson(path.join(badUpdateVersion.dir, "release", "release.json")); badUpdateRelease.version = "0.2.5"; json(path.join(badUpdateVersion.dir, "release", "release.json"), badUpdateRelease);
+  const badUpdateCapsule = readJson(path.join(badUpdateVersion.dir, "capsule.json")); badUpdateCapsule.releaseVersion = "0.3.2"; json(path.join(badUpdateVersion.dir, "capsule.json"), badUpdateCapsule);
+  const badUpdateRelease = readJson(path.join(badUpdateVersion.dir, "release", "release.json")); badUpdateRelease.version = "0.3.2"; json(path.join(badUpdateVersion.dir, "release", "release.json"), badUpdateRelease);
   check(report(["validate", badUpdateVersion.dir]).report.status === "INVALID", "PRESENTATION_UPDATE release-version mutation is rejected");
   const badUpdateHash = await makeExistingProduct("presentation-artifact-mutation", "PRESENTATION_UPDATE");
   const badUpdateHashCapsule = readJson(path.join(badUpdateHash.dir, "capsule.json"));

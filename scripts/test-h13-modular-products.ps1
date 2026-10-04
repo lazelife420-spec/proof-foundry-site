@@ -21,6 +21,9 @@ function Assert([bool]$cond, [string]$name) {
   if ($cond) { $script:passed++; Write-Host "PASS: $name" }
   else { $script:failed++; Write-Host "FAIL: $name" -ForegroundColor Red }
 }
+function Get-CatalogCard([string]$Html, [string]$Id) {
+  return [regex]::Match($Html, ('(?s)<article\b[^>]*\bdata-product="' + [regex]::Escape($Id) + '"[^>]*>.*?</article>')).Value
+}
 
 # ── Fixture helper ────────────────────────────────────────────────────────────
 # Clones the products/ module tree into a temp dir, applies a mutation script,
@@ -149,6 +152,10 @@ foreach ($id in @($reg | Where-Object { $_.visibility -eq 'visible' } | ForEach-
 }
 $softwareHtml = Get-Content (Join-Path $publicDir 'software\index.html') -Raw -Encoding UTF8
 $softwareHtmlDecoded = [System.Net.WebUtility]::HtmlDecode($softwareHtml)
+# The frozen Home intentionally has no product browsing. Product presentation
+# controls exercise the Software catalog; mutations must leave Home unchanged.
+$canonicalHome = Get-Content (Join-Path $publicDir 'index.html') -Raw -Encoding UTF8
+$homeProductSlots = 'class="studio-product-card"|data-home-tab=|class="studio-withdrawn"|class="studio-evidence"'
 $catalogOrder = @([regex]::Matches($softwareHtml, 'data-product="([a-z0-9-]+)"') | ForEach-Object { $_.Groups[1].Value })
 Assert ($catalogOrder.Count -eq $reg.Count -and $catalogOrder[0] -eq 'cache-vault' -and $catalogOrder[-1] -eq 'reality-gate') 'catalog role order puts Cache Vault first and withdrawn products last using module metadata'
 $truthRoot = Join-Path $publicDir 'truth\products'
@@ -189,7 +196,12 @@ $t3HomeFixture = Invoke-ModuleFixture 'fake-home-facts' {
   [IO.File]::WriteAllText((Join-Path $modDir 'cache-vault\module.json'), ($m | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
 } -RealOut
 $t3Home = Get-Content (Join-Path $t3HomeFixture.OutDir 'index.html') -Raw -Encoding UTF8
-Assert ($t3HomeFixture.Exit -eq 0 -and $t3Home -match "Public v$([regex]::Escape($cvPublicVersion))" -and $t3Home -notmatch '99\.99\.99|evil\.example') 'homepage version/status and links remain governed by canonical public state'
+$t3Software = Get-Content (Join-Path $t3HomeFixture.OutDir 'software\index.html') -Raw -Encoding UTF8
+$t3Card = Get-CatalogCard $t3Software 'cache-vault'
+$t3Product = Get-Content (Join-Path $t3HomeFixture.OutDir 'cache-vault\index.html') -Raw -Encoding UTF8
+$t3Truth = Get-Content (Join-Path $t3HomeFixture.OutDir 'truth\products\cache-vault.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+$cvState = @($manifestObj.products | Where-Object id -eq 'cache-vault')[0]
+Assert ($t3HomeFixture.Exit -eq 0 -and $t3Card -match ('class="card-version">v' + [regex]::Escape($cvPublicVersion) + '<') -and $t3Card -match 'data-availability="public-release"' -and $t3Card -match 'href="/cache-vault/"' -and $t3Product -match [regex]::Escape($cvState.downloadUrl) -and $t3Truth.version -eq $cvPublicVersion -and $t3Truth.download.url -eq $cvState.downloadUrl -and $t3Truth.download.sha256 -eq $cvState.sha256 -and ($t3Software + $t3Product + ($t3Truth | ConvertTo-Json -Depth 20) + $t3Home) -notmatch '99\.99\.99|evil\.example' -and $t3Home -ceq $canonicalHome -and $t3Home -notmatch $homeProductSlots) 'catalog/product/truth facts remain canonical while frozen Home stays product-free'
 Write-Host ""
 
 # ── TEST 4: eighth-product modularity control ─────────────────────────────────
@@ -228,8 +240,10 @@ Assert (Test-Path (Join-Path $t4.OutDir 'truth\products\fixture-product.json')) 
 $t4idx = Get-Content (Join-Path $t4.OutDir 'truth\index.json') -Raw -Encoding UTF8
 Assert ($t4idx -match 'fixture-product') 'fixture-product listed in truth index automatically'
 $t4home = Get-Content (Join-Path $t4.OutDir 'index.html') -Raw -Encoding UTF8
-Assert ($t4home -match '<article class="studio-product-card"[^>]*data-module="fixture-product"[^>]*data-home-role="secondary"[^>]*data-presentation="compact"' -and $t4home -match 'A new module, rendered generically\.' -and $t4home -match 'href="/fixture-product/"') 'unknown module receives generic secondary placement from semantic metadata'
-Assert ($t4home -match '--product-accent:#38BDF8' -and $t4home -match 'data-module="fixture-product"') 'unknown module accent and identity come from module data'
+$t4Card = Get-CatalogCard $t4soft 'fixture-product'
+$t4Order = @([regex]::Matches($t4soft, 'data-product="([a-z0-9-]+)"') | ForEach-Object { $_.Groups[1].Value })
+Assert ($t4Card -match '<article class="product-card\b' -and $t4Card -match 'A new module, rendered generically\.' -and $t4Card -match 'href="/fixture-product/"' -and $t4Order[0] -eq 'fixture-product' -and $t4home -ceq $canonicalHome -and $t4home -notmatch $homeProductSlots) 'unknown module receives generic catalog copy, route and module order without changing Home'
+Assert ($t4Card -match '--product-accent:#38BDF8(?:;|\")' -and $t4Card -match '--product-accent-2:#2486B9(?:;|\")' -and $t4Card -match 'data-product="fixture-product"') 'unknown module catalog accent and identity come from module data'
 Assert ((Get-FileHash $buildPs1 -Algorithm SHA256).Hash -eq $rendererBefore -and (Get-FileHash (Join-Path $root 'index.html') -Algorithm SHA256).Hash -eq $indexBefore) 'unknown module requires no renderer or homepage template edits'
 $t4pg = Get-Content (Join-Path $t4.OutDir 'fixture-product\index.html') -Raw -Encoding UTF8
 Assert ($t4pg -match '<picture><source media="\(max-width: 700px\)" srcset="/assets/cache-vault/cv-quick-paste-mobile\.png"/><img src="/assets/cache-vault/cv-quick-paste\.png"' -and $t4pg -match 'alt="Fixture capture"') 'generic hero renderer selects optional mobile asset and preserves desktop fallback/alt'
@@ -241,17 +255,22 @@ Write-Host ""
 
 # ── TEST 4B: presentation metadata and root visibility are data-driven ────────
 Write-Host "--- TEST 4B: homepage presentation/visibility mutation ---"
-$controlModule = @($reg | Where-Object { $_.homepage.visibility -eq 'visible' } | Select-Object -First 1)[0]
+# Select a nonfirst public product so moving it to the front proves catalog
+# ordering rather than merely observing the already-first Cache Vault card.
+$controlModule = @($reg | Where-Object { $_.homepage.visibility -eq 'visible' -and $_.id -ne $catalogOrder[0] -and $_.commerce.status -ne 'WITHDRAWN' } | Sort-Object order | Select-Object -First 1)[0]
 $controlId = [string]$controlModule.id
 $t4b = Invoke-ModuleFixture 'homepage-presentation-order' {
   param($modDir)
   $path = Join-Path $modDir "$script:controlId\module.json"; $m = Get-Content $path -Raw | ConvertFrom-Json
   $m.homepage.tier = 'major'; $m.homepage | Add-Member -NotePropertyName composition -NotePropertyValue 'media-left' -Force; $m.homepage.presentation = 'editorial'; $m.homepage.order = -25
+  $m.order = -25
   [IO.File]::WriteAllText($path, ($m | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
 } -RealOut
 Assert ($t4b.Exit -eq 0) 'valid semantic presentation and order changes build without renderer edits'
 $t4bHome = Get-Content (Join-Path $t4b.OutDir 'index.html') -Raw -Encoding UTF8
-Assert ($t4bHome -match ('data-module="' + [regex]::Escape($controlId) + '"[^>]*data-home-role="major"[^>]*data-composition="media-left"[^>]*data-presentation="editorial"') -and [regex]::Match($t4bHome, '<(?:figure|article)\b[^>]*data-module="([^"]+)"').Groups[1].Value -eq $controlId) 'generic major role, composition, and changed order are reflected in generated homepage markup'
+$t4bSoftware = Get-Content (Join-Path $t4b.OutDir 'software\index.html') -Raw -Encoding UTF8
+$t4bOrder = @([regex]::Matches($t4bSoftware, 'data-product="([a-z0-9-]+)"') | ForEach-Object { $_.Groups[1].Value })
+Assert ($controlId -ne $catalogOrder[0] -and $t4bOrder.Count -eq $catalogOrder.Count -and $t4bOrder[0] -eq $controlId -and (Get-CatalogCard $t4bSoftware $controlId) -match ('href="/' + [regex]::Escape($controlId) + '/"') -and $t4bHome -ceq $canonicalHome -and $t4bHome -notmatch $homeProductSlots) 'changed module order moves a nonfirst catalog product first while semantic Home metadata leaves frozen Home intact'
 
 $t4hiddenHome = Invoke-ModuleFixture 'homepage-hidden' {
   param($modDir)
@@ -290,8 +309,10 @@ $evidenceControl = Invoke-ModuleFixture 'withdrawn-evidence-priority' {
 } -RealOut
 Assert ($evidenceControl.Exit -eq 0) 'withdrawn-evidence priority control builds'
 $evidenceControlHome = Get-Content (Join-Path $evidenceControl.OutDir 'index.html') -Raw -Encoding UTF8
-$evidenceControlBlock = [regex]::Match($evidenceControlHome, '(?s)<aside class="studio-evidence".*?</aside>').Value
-Assert ($evidenceControlBlock -and $evidenceControlBlock -notmatch 'Reality Gate') 'withdrawn public state is skipped even when assigned highest editorial evidence priority'
+$evidenceControlSoftware = Get-Content (Join-Path $evidenceControl.OutDir 'software\index.html') -Raw -Encoding UTF8
+$evidenceControlCard = Get-CatalogCard $evidenceControlSoftware 'reality-gate'
+$evidenceControlTruth = Get-Content (Join-Path $evidenceControl.OutDir 'truth\products\reality-gate.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+Assert ($evidenceControlHome -ceq $canonicalHome -and $evidenceControlHome -notmatch $homeProductSlots -and $evidenceControlHome -notmatch 'Reality Gate' -and $evidenceControlCard -match 'data-availability="withdrawn-unavailable"' -and $evidenceControlCard -match 'data-commerce="withdrawn"' -and $evidenceControlCard -match 'href="/reality-gate/"' -and $evidenceControlTruth.release.releaseStatus -eq 'WITHDRAWN' -and $null -eq $evidenceControlTruth.version -and $evidenceControlTruth.download.available -eq $false -and $null -eq $evidenceControlTruth.download.url) 'highest evidence priority cannot restore withdrawn availability or product content on frozen Home'
 Write-Host ""
 
 # ── TEST 5: hidden product control ───────────────────────────────────────────
@@ -412,7 +433,8 @@ Assert ($t9soft -match 'data-product="cleanroom"') 'catalog rendered under forei
 $t9truth = Get-Content (Join-Path $t9.OutDir 'truth\products\cleanroom.json') -Raw -Encoding UTF8
 Assert ($t9truth -match 'SWAPPED-STATE-MARKER') 'truth JSON consumed foreign source state'
 $t9home = Get-Content (Join-Path $t9.OutDir 'index.html') -Raw -Encoding UTF8
-Assert ($t9home -match 'SWAPPED-HOME-NAME') 'homepage presentation name consumed foreign source state'
+$t9footer = [regex]::Match($t9html, '(?s)<footer\b.*?</footer>').Value
+Assert ($t9footer -match 'SWAPPED-HOME-NAME' -and $t9home -ceq $canonicalHome -and $t9home -notmatch $homeProductSlots) 'product footer presentation name consumes foreign source state without changing frozen Home'
 Write-Host ""
 
 # Homepage markup must stay generic: IDs are data, never renderer branches.
@@ -447,7 +469,17 @@ Write-Host ""
 
 # ── TEST 11 (R1): hostile dynamic-state strings are escaped at emission ───────
 Write-Host "--- TEST 11 (R1): hostile state strings escaped (product/catalog/footer) ---"
-$r1 = Invoke-ModuleFixture 'hostile-strings' {} -mutateManifest { param($m)
+$r1 = Invoke-ModuleFixture 'hostile-strings' {
+  param($modDir)
+  # V2 catalog copy comes from these module fields, not manifest narrative.
+  # Keep the manifest payloads below to retain product/footer/state coverage.
+  $modulePath = Join-Path $modDir 'cleanroom\module.json'
+  $module = Get-Content $modulePath -Raw | ConvertFrom-Json
+  $module.brand.name = 'MODULE"><script>alert(4)</script>'
+  $module.card.summary = '<img src=x onerror=alert(5)>'
+  $module.card.tagline = '"><svg onload=alert(6)>'
+  [IO.File]::WriteAllText($modulePath, ($module | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
+} -mutateManifest { param($m)
   $c = (@($m.products | Where-Object { $_.id -eq 'cleanroom' }))[0]
   $c.name = 'Cleanroom"><script>alert(1)</script>'
   $c.summary = '<img src=x onerror=alert(2)>'
@@ -461,7 +493,8 @@ Assert ($r1page -notmatch '<img src=x') 'product page: no raw img payload'
 Assert ($r1page -match '&lt;script&gt;|&quot;&gt;&lt;') 'product page: name emitted as entities'
 $r1soft = Get-Content (Join-Path $r1.OutDir 'software\index.html') -Raw -Encoding UTF8
 Assert ($r1soft -notmatch '<script>alert|<img src=x|<svg onload') 'catalog: no executable markup from name/summary/valueLine'
-Assert ($r1soft -match '&lt;script&gt;|&lt;img|&lt;svg') 'catalog: hostile text emitted as entities'
+$r1Card = Get-CatalogCard $r1soft 'cleanroom'
+Assert ($r1Card.Contains('MODULE&quot;&gt;&lt;script&gt;alert(4)&lt;/script&gt;') -and $r1Card.Contains('&lt;img src=x onerror=alert(5)&gt;') -and $r1Card.Contains('&quot;&gt;&lt;svg onload=alert(6)&gt;')) 'catalog: actual module brand/summary/tagline payloads each emitted as exact entities'
 $r1footer = ([regex]::Match($r1page, '(?s)<footer.*?</footer>')).Value
 Assert ($r1footer -notmatch '<script>alert') 'footer: no executable markup'
 Assert ($r1footer -match '&lt;script&gt;|&quot;&gt;') 'footer: name emitted as entities'
