@@ -1,0 +1,872 @@
+{
+  "schemaVersion": "proof-foundry-release-truth/v2",
+  "modelId": "pf-shared-release-truth",
+  "revision": 2,
+  "authority": {
+    "facts": "AUTHORED",
+    "adoption": "RECONCILED_CANDIDATE",
+    "currentWebsiteSource": "site-manifest.json",
+    "currentWebsiteCommit": "c7d8a49972e95aa2dd9e4edd8c2085ae1d9f30ce",
+    "currentWebsiteTree": "47445fe7606399780038e5f83e4b6bb71401a68b",
+    "canonicalCandidate": "release-truth.json",
+    "cutover": "NOT_PERFORMED"
+  },
+  "productionSigningAuthority": "HOLD",
+  "sourceEvidence": [
+    {
+      "id": "shipped-site-manifest",
+      "kind": "AUTHORED_SITE_MANIFEST",
+      "role": "AUTHORING_EVIDENCE",
+      "uri": "https://github.com/lazelife420-spec/proof-foundry-site/blob/c7d8a49972e95aa2dd9e4edd8c2085ae1d9f30ce/site-manifest.json",
+      "sha256": "4014fe36792da7faa186f4480d44d1a842f62b36bc848635fef1827fc9713c5f",
+      "commit": "c7d8a49972e95aa2dd9e4edd8c2085ae1d9f30ce",
+      "tree": "47445fe7606399780038e5f83e4b6bb71401a68b",
+      "observedAt": "2026-10-05T03:02:19.941Z"
+    },
+    {
+      "id": "app-shared-fixture",
+      "kind": "FROZEN_APP_FIXTURE",
+      "role": "AUTHORING_EVIDENCE",
+      "uri": "repo:proof-foundry-app/packages/pf-store-core/src/shared/fixtures/sharedCatalogFixture.js",
+      "sha256": "459be62d58c7313c9b9c1baed3478a286b49f3c8a76e5d8f5751eeb3d63f4478",
+      "commit": "cfb293c9219d77c1115f9e8f2f66c641b4a143af",
+      "tree": "bde1241ee3aedf9c78bcf84be5e046c4fcdd86bf",
+      "observedAt": "2026-10-05T03:02:19.941Z"
+    }
+  ],
+  "products": [
+    {
+      "id": "cache-vault",
+      "name": "Cache Vault",
+      "status": "PUBLIC_RELEASE",
+      "primaryPlatform": "windows",
+      "verification": {
+        "qualificationState": "REPORTED_BY_AUTHORED_SOURCE",
+        "scope": "PRIMARY_RELEASE",
+        "platform": "windows",
+        "version": "0.3.1",
+        "report": {
+          "status": "VERIFIED",
+          "verifiedAt": "2026-10-01",
+          "checkedAt": "2026-10-01",
+          "downloadAvailability": "VERIFIED",
+          "verificationType": [
+            "ARTIFACT_HASH_PUBLISHED",
+            "ARTIFACT_HASH_VERIFIED",
+            "ARTIFACT_CUSTODY",
+            "RUNTIME_VALIDATION",
+            "PUBLIC_DOWNLOAD"
+          ],
+          "receiptId": "20261001-release-eddbae7",
+          "receiptUrl": "https://downloads.theprooffoundry.com/cache-vault/v0.3.1/CACHEVAULT_V0.3.1_RELEASE_RECEIPT.json"
+        },
+        "tests": [
+          {
+            "label": "Desktop tests · local release gate",
+            "result": "2120 passed · 1 skipped · 0 failed at release source eddbae7"
+          },
+          {
+            "label": "Android unit and phone-local smoke",
+            "result": "9/9 unit tests · 9/9 S23 Android 16 phone-local capture smoke on a debug build"
+          },
+          {
+            "label": "Hosted GitHub CI",
+            "result": "FAILED at eddbae7: two layout-mode tests and one window-geometry test in each Python 3.12 and 3.13 job"
+          }
+        ],
+        "evidence": [
+          {
+            "label": "Download (Proof Foundry)",
+            "url": "https://downloads.theprooffoundry.com/cache-vault/v0.3.1/CacheVault-v0.3.1-windows.zip"
+          },
+          {
+            "label": "SHA256SUMS (Proof Foundry)",
+            "url": "https://downloads.theprooffoundry.com/cache-vault/v0.3.1/SHA256SUMS.txt"
+          },
+          {
+            "label": "Release receipt (Proof Foundry)",
+            "url": "https://downloads.theprooffoundry.com/cache-vault/v0.3.1/CACHEVAULT_V0.3.1_RELEASE_RECEIPT.json"
+          },
+          {
+            "label": "Android companion APK (Proof Foundry)",
+            "url": "https://downloads.theprooffoundry.com/cachevault/v0.3.1/CacheVault-Mobile-v0.3.1-android.apk"
+          },
+          {
+            "label": "Companion SHA256SUMS (Proof Foundry)",
+            "url": "https://downloads.theprooffoundry.com/cachevault/v0.3.1/SHA256SUMS.txt"
+          },
+          {
+            "label": "GitHub release (v0.3.1)",
+            "url": "https://github.com/lazelife420-spec/CacheVault/releases/tag/v0.3.1"
+          },
+          {
+            "label": "Hosted CI at eddbae7 (failed)",
+            "url": "https://github.com/lazelife420-spec/CacheVault/actions/runs/36895226107"
+          },
+          {
+            "label": "Release workflow at eddbae7 (failed; package steps skipped)",
+            "url": "https://github.com/lazelife420-spec/CacheVault/actions/runs/36895229375"
+          }
+        ],
+        "limitations": [
+          "The Windows build is not code-signed, so Windows SmartScreen may prompt on first launch.",
+          "Cache Vault v0.3.1 is the current public Windows release, served from Proof Foundry downloads; v0.3.0 (2026-09-30) is the previous public release.",
+          "Command Center is Phase 1 (Hotkey Actions) only.",
+          "Checksum is not a code signature; the release-signed Android companion is a separate artifact with its own signing certificate (SHA-256 c2eb5c42a684326ceba1289e65e9690ed71daf770de64e2b83a42bce04026a2c).",
+          "The public Android companion is v0.3.1, published on GitHub Releases and mirrored on Proof Foundry downloads.",
+          "Android grants no application background clipboard access: the companion saves a copy made in another app only when you act on its notification or next open the app.",
+          "The 9/9 physical-phone smoke used a debug-signed app. It establishes phone-local capture behavior on that build, not runtime behavior of the release-signed v0.3.1 APK; the paired-PC lane remains device-unproven.",
+          "The local release gate passed 2120 / 1 skipped / 0 failed at eddbae7. Hosted GitHub CI failed separately on three layout/geometry tests in each Python 3.12 and 3.13 job; the Release workflow stopped at unit tests and skipped packaging and publication.",
+          "No Reality Gate canonical run was performed for the v0.3.1 release."
+        ],
+        "evidenceIds": [
+          "shipped-site-manifest"
+        ]
+      },
+      "channels": [
+        {
+          "id": "windows-public",
+          "platform": "windows",
+          "track": "PUBLIC",
+          "version": "0.3.1",
+          "publicationState": "PUBLIC_RELEASE",
+          "publishedAt": "2026-10-01",
+          "sourceCommit": "eddbae7a2763d1994dae1e43e744ca8225d93eb3",
+          "artifacts": [
+            {
+              "filename": "CacheVault-v0.3.1-windows.zip",
+              "sizeBytes": 43275615,
+              "sha256": "d0c59c440b1d5787c9319e1bdf8829f117ccaa2d64d3424dd6955a84fb975d45",
+              "downloadUrl": "https://downloads.theprooffoundry.com/cache-vault/v0.3.1/CacheVault-v0.3.1-windows.zip",
+              "sha256Url": "https://downloads.theprooffoundry.com/cache-vault/v0.3.1/SHA256SUMS.txt",
+              "signingStatus": "UNSIGNED",
+              "distributionType": "Windows installer ZIP",
+              "sourcePlatform": "Windows"
+            }
+          ],
+          "packageIdentity": null,
+          "withdrawal": null,
+          "verification": {
+            "qualificationState": "PRIMARY_RELEASE_REPORT",
+            "scope": "THIS_CHANNEL_ONLY",
+            "evidenceIds": [
+              "shipped-site-manifest"
+            ],
+            "note": "Primary release-time report retained with all limitations; neither current blanket PASS nor signing authority."
+          },
+          "evidenceIds": [
+            "shipped-site-manifest"
+          ]
+        },
+        {
+          "id": "android-public",
+          "platform": "android",
+          "track": "PUBLIC",
+          "version": "0.3.1",
+          "publicationState": "PUBLIC_RELEASE",
+          "publishedAt": null,
+          "sourceCommit": null,
+          "artifacts": [
+            {
+              "filename": "CacheVault-Mobile-v0.3.1-android.apk",
+              "sizeBytes": 37016478,
+              "sha256": "863f8a5846083cb0372e1046ac1e9363e6203b4880cc2c6a7ca0da8b1b451988",
+              "downloadUrl": "https://downloads.theprooffoundry.com/cachevault/v0.3.1/CacheVault-Mobile-v0.3.1-android.apk",
+              "sha256Url": "https://downloads.theprooffoundry.com/cachevault/v0.3.1/SHA256SUMS.txt",
+              "signingStatus": "PRODUCTION_SIGNED",
+              "distributionType": "Android APK",
+              "sourcePlatform": "Android companion"
+            }
+          ],
+          "packageIdentity": {
+            "packageName": null,
+            "versionName": null,
+            "versionCode": null,
+            "currentSignerSha256": null,
+            "signingHistory": [],
+            "artifactSha256": null,
+            "evidenceIds": [
+              "shipped-site-manifest"
+            ]
+          },
+          "withdrawal": null,
+          "verification": {
+            "qualificationState": "NOT_ESTABLISHED",
+            "scope": "THIS_CHANNEL_ONLY",
+            "evidenceIds": [
+              "shipped-site-manifest"
+            ],
+            "note": "Public companion version is recorded; primary Windows qualification does not establish runtime qualification of this Android release."
+          },
+          "evidenceIds": [
+            "shipped-site-manifest"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cleanroom",
+      "name": "Cleanroom",
+      "status": "PUBLIC_RELEASE",
+      "primaryPlatform": "windows",
+      "verification": {
+        "qualificationState": "REPORTED_BY_AUTHORED_SOURCE",
+        "scope": "PRIMARY_RELEASE",
+        "platform": "windows",
+        "version": "1.0.7",
+        "report": {
+          "status": "VERIFIED",
+          "verifiedAt": "2026-08-28",
+          "checkedAt": null,
+          "downloadAvailability": null,
+          "verificationType": [
+            "ARTIFACT_HASH_PUBLISHED",
+            "ARTIFACT_HASH_VERIFIED",
+            "ARTIFACT_CUSTODY",
+            "RUNTIME_VALIDATION",
+            "PUBLIC_DOWNLOAD"
+          ],
+          "receiptId": null,
+          "receiptUrl": null
+        },
+        "tests": [
+          {
+            "label": "Full suite",
+            "result": "366/366"
+          }
+        ],
+        "evidence": [
+          {
+            "label": "Windows installer",
+            "url": "https://downloads.theprooffoundry.com/cleanroom/v1.0.7/Cleanroom-Setup-1.0.7.exe"
+          },
+          {
+            "label": "SHA256SUMS",
+            "url": "https://downloads.theprooffoundry.com/cleanroom/v1.0.7/SHA256SUMS.txt"
+          }
+        ],
+        "limitations": [
+          "Source has advanced locally to v1.0.10 (627 tests collected, 608 passed, publication on hold).",
+          "The Windows installer is not Authenticode-signed.",
+          "Checksum is not a code signature."
+        ],
+        "evidenceIds": [
+          "shipped-site-manifest"
+        ]
+      },
+      "channels": [
+        {
+          "id": "windows-public",
+          "platform": "windows",
+          "track": "PUBLIC",
+          "version": "1.0.7",
+          "publicationState": "PUBLIC_RELEASE",
+          "publishedAt": "2026-08-28",
+          "sourceCommit": null,
+          "artifacts": [
+            {
+              "filename": "Cleanroom-Setup-1.0.7.exe",
+              "sizeBytes": null,
+              "sha256": "2cd6953015ce0b8e429c869564be11ad10504332aded10b442a58ea2b990a76e",
+              "downloadUrl": "https://downloads.theprooffoundry.com/cleanroom/v1.0.7/Cleanroom-Setup-1.0.7.exe",
+              "sha256Url": "https://downloads.theprooffoundry.com/cleanroom/v1.0.7/SHA256SUMS.txt",
+              "signingStatus": "UNSIGNED",
+              "distributionType": "Windows Installer EXE",
+              "sourcePlatform": "Windows"
+            }
+          ],
+          "packageIdentity": null,
+          "withdrawal": null,
+          "verification": {
+            "qualificationState": "PRIMARY_RELEASE_REPORT",
+            "scope": "THIS_CHANNEL_ONLY",
+            "evidenceIds": [
+              "shipped-site-manifest"
+            ],
+            "note": "Primary release-time report retained with all limitations; neither current blanket PASS nor signing authority."
+          },
+          "evidenceIds": [
+            "shipped-site-manifest"
+          ]
+        },
+        {
+          "id": "windows-candidate",
+          "platform": "windows",
+          "track": "CANDIDATE",
+          "version": "1.0.10",
+          "publicationState": "CANDIDATE",
+          "publishedAt": null,
+          "sourceCommit": null,
+          "artifacts": [],
+          "packageIdentity": null,
+          "withdrawal": null,
+          "verification": {
+            "qualificationState": "NOT_ESTABLISHED",
+            "scope": "THIS_CHANNEL_ONLY",
+            "evidenceIds": [
+              "shipped-site-manifest"
+            ],
+            "note": "Candidate publication is on hold; primary public-release qualification does not transfer to this candidate."
+          },
+          "evidenceIds": [
+            "shipped-site-manifest"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "forgecast",
+      "name": "ForgeCast Weather",
+      "status": "PUBLIC_RELEASE",
+      "primaryPlatform": "android",
+      "verification": {
+        "qualificationState": "REPORTED_BY_AUTHORED_SOURCE",
+        "scope": "PRIMARY_RELEASE",
+        "platform": "android",
+        "version": "0.3.5",
+        "report": {
+          "status": "VERIFIED",
+          "verifiedAt": "2026-09-02",
+          "checkedAt": null,
+          "downloadAvailability": null,
+          "verificationType": [
+            "ARTIFACT_HASH_PUBLISHED",
+            "ARTIFACT_HASH_VERIFIED",
+            "ARTIFACT_CUSTODY",
+            "RUNTIME_VALIDATION",
+            "REALITY_GATE",
+            "PUBLIC_DOWNLOAD",
+            "CODE_SIGNING",
+            "RELEASE_AUTHORIZATION"
+          ],
+          "receiptId": null,
+          "receiptUrl": null
+        },
+        "tests": [
+          {
+            "label": "Full suite",
+            "result": "1110/1110"
+          }
+        ],
+        "evidence": [
+          {
+            "label": "APK download (Proof Foundry)",
+            "url": "https://downloads.theprooffoundry.com/forgecast/v0.3.5/ForgeCast-Weather-v0.3.5-android-release.apk"
+          },
+          {
+            "label": "SHA256SUMS (Proof Foundry)",
+            "url": "https://downloads.theprooffoundry.com/forgecast/v0.3.5/ForgeCast-Weather-v0.3.5-android-release.apk.sha256.txt"
+          },
+          {
+            "label": "GitHub release v0.3.5",
+            "url": "https://github.com/lazelife420-spec/ForgeCast/releases/tag/v0.3.5"
+          }
+        ],
+        "limitations": [
+          "Users upgrading from ForgeCast v0.3.3 or earlier must uninstall the old app before installing v0.3.5: the signing identity changed at v0.3.4, and v0.3.5 does not restore in-place compatibility with those builds.",
+          "Users upgrading from v0.3.4 can install v0.3.5 normally: same signing identity, settings and data carry over (verified by an on-device upgrade test).",
+          "Because ForgeCast is local-first, uninstalling the old app removes app-local settings and other locally stored data unless separately preserved.",
+          "Checksum is not a code signature.",
+          "GitHub release assets may be unavailable to anonymous visitors due to an account-level restriction; Proof Foundry distribution is the authoritative public download path."
+        ],
+        "evidenceIds": [
+          "shipped-site-manifest"
+        ]
+      },
+      "channels": [
+        {
+          "id": "android-public",
+          "platform": "android",
+          "track": "PUBLIC",
+          "version": "0.3.5",
+          "publicationState": "PUBLIC_RELEASE",
+          "publishedAt": "2026-09-02",
+          "sourceCommit": "ef0988ae7c53b16e3d53339cb053eeec7c71f848",
+          "artifacts": [
+            {
+              "filename": "ForgeCast-Weather-v0.3.5-android-release.apk",
+              "sizeBytes": 77331690,
+              "sha256": "a28db27cd16b3e45f3e75cc0d7c7a4b101646573de9954ec40dbf03e5439bea1",
+              "downloadUrl": "https://downloads.theprooffoundry.com/forgecast/v0.3.5/ForgeCast-Weather-v0.3.5-android-release.apk",
+              "sha256Url": "https://downloads.theprooffoundry.com/forgecast/v0.3.5/ForgeCast-Weather-v0.3.5-android-release.apk.sha256.txt",
+              "signingStatus": "PRODUCTION_SIGNED",
+              "distributionType": "Android APK Package (private production signing identity)",
+              "sourcePlatform": "Android"
+            }
+          ],
+          "packageIdentity": {
+            "packageName": "com.prooffoundry.skyfoundry",
+            "versionName": "0.3.5",
+            "versionCode": 16,
+            "currentSignerSha256": "240fa29e5f49369bce4cb092b2bf548c69d5a374dd80709f723872264bd88da7",
+            "signingHistory": [
+              {
+                "inPlaceUpdate": "BLOCKED",
+                "retiredAtRelease": "0.3.4",
+                "signerSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c"
+              }
+            ],
+            "artifactSha256": "a28db27cd16b3e45f3e75cc0d7c7a4b101646573de9954ec40dbf03e5439bea1",
+            "evidenceIds": [
+              "app-shared-fixture"
+            ]
+          },
+          "withdrawal": null,
+          "verification": {
+            "qualificationState": "PRIMARY_RELEASE_REPORT",
+            "scope": "THIS_CHANNEL_ONLY",
+            "evidenceIds": [
+              "shipped-site-manifest"
+            ],
+            "note": "Primary release-time report retained with all limitations; neither current blanket PASS nor signing authority."
+          },
+          "evidenceIds": [
+            "shipped-site-manifest",
+            "app-shared-fixture"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ghostlayer",
+      "name": "GhostLayer",
+      "status": "PUBLIC_RELEASE",
+      "primaryPlatform": "windows",
+      "verification": {
+        "qualificationState": "REPORTED_BY_AUTHORED_SOURCE",
+        "scope": "PRIMARY_RELEASE",
+        "platform": "windows",
+        "version": "0.4.0",
+        "report": {
+          "status": "VERIFIED",
+          "verifiedAt": "2026-08-28",
+          "checkedAt": null,
+          "downloadAvailability": null,
+          "verificationType": [
+            "ARTIFACT_HASH_PUBLISHED",
+            "ARTIFACT_HASH_VERIFIED",
+            "ARTIFACT_CUSTODY",
+            "RUNTIME_VALIDATION",
+            "PUBLIC_DOWNLOAD"
+          ],
+          "receiptId": null,
+          "receiptUrl": "https://downloads.theprooffoundry.com/ghostlayer/v0.4.0/GHOSTLAYER_V0.4.0_PROOF_FOUNDRY_RELEASE_RECEIPT.json"
+        },
+        "tests": [
+          {
+            "label": "Full suite",
+            "result": "188/188"
+          },
+          {
+            "label": "Packaged runtime qualification",
+            "result": "13/13"
+          }
+        ],
+        "evidence": [
+          {
+            "label": "JSON receipt",
+            "url": "https://downloads.theprooffoundry.com/ghostlayer/v0.4.0/GHOSTLAYER_V0.4.0_PROOF_FOUNDRY_RELEASE_RECEIPT.json"
+          },
+          {
+            "label": "Markdown receipt",
+            "url": "https://downloads.theprooffoundry.com/ghostlayer/v0.4.0/GHOSTLAYER_V0.4.0_PROOF_FOUNDRY_RELEASE_RECEIPT.md"
+          },
+          {
+            "label": "Release package manifest",
+            "url": "https://downloads.theprooffoundry.com/ghostlayer/v0.4.0/GHOSTLAYER_V0.4.0_RELEASE_PACKAGE_MANIFEST.md"
+          },
+          {
+            "label": "Release notes",
+            "url": "https://downloads.theprooffoundry.com/ghostlayer/v0.4.0/RELEASE_NOTES_v0.4.0.md"
+          }
+        ],
+        "limitations": [
+          "Unsigned by Windows — not Microsoft publisher signed, not SmartScreen trusted.",
+          "Windows SmartScreen may prompt on first launch; choose More info, then Run anyway.",
+          "Checksum is not a code signature.",
+          "Custody receipt does not constitute malware certification or Microsoft signing."
+        ],
+        "evidenceIds": [
+          "shipped-site-manifest"
+        ]
+      },
+      "channels": [
+        {
+          "id": "windows-public",
+          "platform": "windows",
+          "track": "PUBLIC",
+          "version": "0.4.0",
+          "publicationState": "PUBLIC_RELEASE",
+          "publishedAt": "2026-08-28",
+          "sourceCommit": "6b9ca289ad4d8410f4819575e61d2710b9729042",
+          "artifacts": [
+            {
+              "filename": "GhostLayer-Setup-0.4.0.exe",
+              "sizeBytes": null,
+              "sha256": "5c0f00fb7e6e58526f400e25a0f05e9f948c503479c82d6be4eb7d0aa9f06251",
+              "downloadUrl": "https://downloads.theprooffoundry.com/ghostlayer/v0.4.0/GhostLayer-Setup-0.4.0.exe",
+              "sha256Url": null,
+              "signingStatus": "UNSIGNED",
+              "distributionType": "Windows Installer EXE (unsigned, receipt-backed)",
+              "sourcePlatform": "Windows"
+            }
+          ],
+          "packageIdentity": null,
+          "withdrawal": null,
+          "verification": {
+            "qualificationState": "PRIMARY_RELEASE_REPORT",
+            "scope": "THIS_CHANNEL_ONLY",
+            "evidenceIds": [
+              "shipped-site-manifest"
+            ],
+            "note": "Primary release-time report retained with all limitations; neither current blanket PASS nor signing authority."
+          },
+          "evidenceIds": [
+            "shipped-site-manifest"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lights-out",
+      "name": "Lights Out PC",
+      "status": "PUBLIC_RELEASE",
+      "primaryPlatform": "windows",
+      "verification": {
+        "qualificationState": "REPORTED_BY_AUTHORED_SOURCE",
+        "scope": "PRIMARY_RELEASE",
+        "platform": "windows",
+        "version": "11.1.3",
+        "report": {
+          "status": "VERIFIED",
+          "verifiedAt": "2026-09-15",
+          "checkedAt": "2026-09-22",
+          "downloadAvailability": "VERIFIED",
+          "verificationType": [
+            "ARTIFACT_HASH_PUBLISHED",
+            "ARTIFACT_HASH_VERIFIED",
+            "RUNTIME_VALIDATION",
+            "REALITY_GATE",
+            "PUBLIC_DOWNLOAD"
+          ],
+          "receiptId": "342c11bc-d2d6-4918-8920-a495211ff69b",
+          "receiptUrl": null
+        },
+        "tests": [
+          {
+            "label": "Reality Gate qualification",
+            "result": "PASSED ×3 consecutive"
+          }
+        ],
+        "evidence": [
+          {
+            "label": "Reality Gate receipts 342c11bc-d2d6-4918-8920-a495211ff69b + 6323d762-859a-4385-91d7-923cd1bc1610 (final artifacts) and adff2359-3350-4d6d-9e04-74c295003c58 (pre-publication)",
+            "url": null
+          }
+        ],
+        "limitations": [
+          "These are unsigned Windows builds — not Authenticode code-signed.",
+          "The public Android companion remains v11.1.1; companion v11.1.3 is built but not publicly released.",
+          "A GitHub release record exists but anonymous access is blocked; canonical public downloads are the Proof Foundry download mirror.",
+          "Reality Gate qualification is not a security certification and does not suppress Windows SmartScreen warnings."
+        ],
+        "evidenceIds": [
+          "shipped-site-manifest"
+        ]
+      },
+      "channels": [
+        {
+          "id": "windows-public",
+          "platform": "windows",
+          "track": "PUBLIC",
+          "version": "11.1.3",
+          "publicationState": "PUBLIC_RELEASE",
+          "publishedAt": "2026-09-15",
+          "sourceCommit": "5f8ede7281396dcde84ccb20796a4b1459def44d",
+          "artifacts": [
+            {
+              "filename": "Lights-Out-Portable-v11.1.3-win-x64.zip",
+              "sizeBytes": 153902955,
+              "sha256": "b4a5f4a4332b53106618433bc1817f4fcc5decede9f97ebb3817b69cef6b7e62",
+              "downloadUrl": "https://downloads.theprooffoundry.com/lights-out/v11.1.3/Lights-Out-Portable-v11.1.3-win-x64.zip",
+              "sha256Url": "https://downloads.theprooffoundry.com/lights-out/v11.1.3/SHA256SUMS.txt",
+              "signingStatus": "UNSIGNED",
+              "distributionType": "Portable ZIP (unsigned)",
+              "sourcePlatform": "Windows"
+            },
+            {
+              "filename": "Lights-Out-v11.1.3-Win-x64.exe",
+              "sizeBytes": 225784320,
+              "sha256": "dc4ffa82a254820e4946a1056a8b894aea3c39b171c39e79d4a34747a010545a",
+              "downloadUrl": "https://downloads.theprooffoundry.com/lights-out/v11.1.3/Lights-Out-v11.1.3-Win-x64.exe",
+              "sha256Url": "https://downloads.theprooffoundry.com/lights-out/v11.1.3/SHA256SUMS.txt",
+              "signingStatus": "UNSIGNED",
+              "distributionType": "Windows installer EXE (unsigned)",
+              "sourcePlatform": "Windows"
+            }
+          ],
+          "packageIdentity": null,
+          "withdrawal": null,
+          "verification": {
+            "qualificationState": "PRIMARY_RELEASE_REPORT",
+            "scope": "THIS_CHANNEL_ONLY",
+            "evidenceIds": [
+              "shipped-site-manifest"
+            ],
+            "note": "Primary release-time report retained with all limitations; neither current blanket PASS nor signing authority."
+          },
+          "evidenceIds": [
+            "shipped-site-manifest"
+          ]
+        },
+        {
+          "id": "android-public",
+          "platform": "android",
+          "track": "PUBLIC",
+          "version": "11.1.1",
+          "publicationState": "PUBLIC_RELEASE",
+          "publishedAt": null,
+          "sourceCommit": null,
+          "artifacts": [],
+          "packageIdentity": {
+            "packageName": null,
+            "versionName": null,
+            "versionCode": null,
+            "currentSignerSha256": null,
+            "signingHistory": [],
+            "artifactSha256": null,
+            "evidenceIds": [
+              "shipped-site-manifest"
+            ]
+          },
+          "withdrawal": null,
+          "verification": {
+            "qualificationState": "NOT_ESTABLISHED",
+            "scope": "THIS_CHANNEL_ONLY",
+            "evidenceIds": [
+              "shipped-site-manifest"
+            ],
+            "note": "Public companion version is recorded; primary Windows qualification does not establish runtime qualification of this Android release."
+          },
+          "evidenceIds": [
+            "shipped-site-manifest"
+          ]
+        },
+        {
+          "id": "android-built",
+          "platform": "android",
+          "track": "BUILT",
+          "version": "11.1.3",
+          "publicationState": "BUILT_NOT_PUBLIC",
+          "publishedAt": null,
+          "sourceCommit": null,
+          "artifacts": [],
+          "packageIdentity": {
+            "packageName": null,
+            "versionName": null,
+            "versionCode": null,
+            "currentSignerSha256": null,
+            "signingHistory": [],
+            "artifactSha256": null,
+            "evidenceIds": [
+              "shipped-site-manifest"
+            ]
+          },
+          "withdrawal": null,
+          "verification": {
+            "qualificationState": "BUILT_ONLY_NOT_QUALIFIED",
+            "scope": "THIS_CHANNEL_ONLY",
+            "evidenceIds": [
+              "shipped-site-manifest"
+            ],
+            "note": "Authored manifest limits identify a built, unpublished companion; artifact identity and runtime qualification are not established."
+          },
+          "evidenceIds": [
+            "shipped-site-manifest"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proofshot",
+      "name": "ProofShot",
+      "status": "PUBLIC_RELEASE",
+      "primaryPlatform": "windows",
+      "verification": {
+        "qualificationState": "REPORTED_BY_AUTHORED_SOURCE",
+        "scope": "PRIMARY_RELEASE",
+        "platform": "windows",
+        "version": "2.0.0",
+        "report": {
+          "status": "VERIFIED",
+          "verifiedAt": "2026-09-17",
+          "checkedAt": null,
+          "downloadAvailability": null,
+          "verificationType": [
+            "ARTIFACT_HASH_PUBLISHED",
+            "ARTIFACT_HASH_VERIFIED",
+            "ARTIFACT_CUSTODY",
+            "RUNTIME_VALIDATION",
+            "REALITY_GATE",
+            "PUBLIC_DOWNLOAD"
+          ],
+          "receiptId": "14162b59-f382-4c1d-92b3-308a9899351c",
+          "receiptUrl": "https://downloads.theprooffoundry.com/proofshot/v2.0.0/RELEASE-MANIFEST.json"
+        },
+        "tests": [
+          {
+            "label": "Unit suite",
+            "result": "262/262"
+          },
+          {
+            "label": "Packaged E2E",
+            "result": "45/45"
+          },
+          {
+            "label": "Tamper / authority / migration",
+            "result": "60/60"
+          }
+        ],
+        "evidence": [
+          "https://downloads.theprooffoundry.com/proofshot/v2.0.0/SHA256SUMS.txt",
+          "https://downloads.theprooffoundry.com/proofshot/v2.0.0/RELEASE-MANIFEST.json",
+          "https://theprooffoundry.com/proof/#receipt-proofshot"
+        ],
+        "limitations": [
+          "The Windows installer is not code-signed; Windows SmartScreen will prompt on first launch. Verify the SHA-256 before running.",
+          "Capture is structural, not photographic — SmartDecode records the page's own resources and structure; there is no pixel-screenshot capture engine.",
+          "ProofForge is a separate project and is not this product.",
+          "The 60/60 tamper, authority and migration results document release-time qualification; a later licensing-authority finding remains unresolved, and those tests do not establish its remediation."
+        ],
+        "evidenceIds": [
+          "shipped-site-manifest"
+        ]
+      },
+      "channels": [
+        {
+          "id": "windows-public",
+          "platform": "windows",
+          "track": "PUBLIC",
+          "version": "2.0.0",
+          "publicationState": "PUBLIC_RELEASE",
+          "publishedAt": "2026-09-17",
+          "sourceCommit": "6e7fc6bf4787218c3a32e7debc46253a78ea6579",
+          "artifacts": [
+            {
+              "filename": "ProofShot-Setup-2.0.0.exe",
+              "sizeBytes": 121733716,
+              "sha256": "fa20dc7e44440f0ed96fa08db67a77339d595f8eb27090e24120104ea6744701",
+              "downloadUrl": "https://downloads.theprooffoundry.com/proofshot/v2.0.0/ProofShot-Setup-2.0.0.exe",
+              "sha256Url": "https://downloads.theprooffoundry.com/proofshot/v2.0.0/SHA256SUMS.txt",
+              "signingStatus": "UNSIGNED",
+              "distributionType": "NSIS installer",
+              "sourcePlatform": "Windows"
+            }
+          ],
+          "packageIdentity": null,
+          "withdrawal": null,
+          "verification": {
+            "qualificationState": "PRIMARY_RELEASE_REPORT",
+            "scope": "THIS_CHANNEL_ONLY",
+            "evidenceIds": [
+              "shipped-site-manifest"
+            ],
+            "note": "Primary release-time report retained with all limitations; neither current blanket PASS nor signing authority."
+          },
+          "evidenceIds": [
+            "shipped-site-manifest"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reality-gate",
+      "name": "Reality Gate",
+      "status": "WITHDRAWN",
+      "primaryPlatform": "windows",
+      "verification": {
+        "qualificationState": "REPORTED_BY_AUTHORED_SOURCE",
+        "scope": "HISTORICAL_WITHDRAWN_RELEASE",
+        "platform": "windows",
+        "version": "1.1.0",
+        "report": {
+          "status": "VERIFIED",
+          "verifiedAt": "2026-08-15",
+          "checkedAt": null,
+          "downloadAvailability": null,
+          "verificationType": [
+            "ARTIFACT_HASH_PUBLISHED",
+            "ARTIFACT_HASH_VERIFIED",
+            "RUNTIME_VALIDATION",
+            "PUBLIC_DOWNLOAD"
+          ],
+          "receiptId": null,
+          "receiptUrl": null
+        },
+        "tests": [
+          {
+            "label": "Static blocks",
+            "result": "269/269"
+          },
+          {
+            "label": "Live registry",
+            "result": "24/24"
+          },
+          {
+            "label": "Installed runtime",
+            "result": "20/20"
+          }
+        ],
+        "evidence": [],
+        "limitations": [
+          "The v1.1.0 ZIP is permanently withdrawn and must not be redistributed.",
+          "A separate v1.1.1 Developer Pilot has documented historical release evidence; its website migration was not proven deployed.",
+          "This website offers no current Reality Gate download while security disposition remains unresolved.",
+          "The historical v1.1.0 checksum identifies withdrawn bytes; it is not a code signature."
+        ],
+        "evidenceIds": [
+          "shipped-site-manifest"
+        ]
+      },
+      "channels": [
+        {
+          "id": "windows-withdrawn",
+          "platform": "windows",
+          "track": "WITHDRAWN",
+          "version": "1.1.0",
+          "publicationState": "WITHDRAWN",
+          "publishedAt": "2026-08-15",
+          "sourceCommit": null,
+          "artifacts": [
+            {
+              "filename": "Reality-Gate-1.1.0-Developer-Pilot.zip",
+              "sizeBytes": null,
+              "sha256": "58cc27d22bdee8157ee4598e116e17ff42d0efc95630c97bee4b2bc6be6ce756",
+              "downloadUrl": null,
+              "sha256Url": null,
+              "signingStatus": "UNSIGNED",
+              "distributionType": "Windows Installer ZIP",
+              "sourcePlatform": "Windows"
+            }
+          ],
+          "packageIdentity": null,
+          "withdrawal": {
+            "withdrawnVersion": "1.1.0",
+            "reason": "Security packaging defect; v1.1.0 must not be distributed."
+          },
+          "verification": {
+            "qualificationState": "PRIMARY_RELEASE_REPORT",
+            "scope": "THIS_CHANNEL_ONLY",
+            "evidenceIds": [
+              "shipped-site-manifest"
+            ],
+            "note": "Primary release-time report retained with all limitations; neither current blanket PASS nor signing authority."
+          },
+          "evidenceIds": [
+            "shipped-site-manifest"
+          ]
+        }
+      ]
+    }
+  ]
+}

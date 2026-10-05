@@ -1,0 +1,30 @@
+{
+  "tranche": "PF_WEBSITE_SHARED_RELEASE_TRUTH_PREVIEW",
+  "mode": "PREVIEW_ONLY",
+  "shippedWebsiteBaseCommit": "c7d8a49972e95aa2dd9e4edd8c2085ae1d9f30ce",
+  "shippedWebsiteBaseTree": "47445fe7606399780038e5f83e4b6bb71401a68b",
+  "sharedModelSourceCommit": "c5df5bb805f88af41456351e3a648063f3da03c8",
+  "foundationCommit": "2258341bfa47de187147b03617e7dfa9ade678bf",
+  "modelSha256": "456810ca16c61872f982b54a9975858903bc209387f1b819ef26de39474aeb7a",
+  "websiteProjectionSha256": "364d4e48b9fcec3a1b9b0595b692049e3045a1980bdd4657d08738d36567269d",
+  "authorship": "The App repository holds the canonical authored facts. This website candidate embeds a digest-sealed mirror and byte-identical pure projection component from the verified private remote. Website output is never a source input.",
+  "siteManifest": "Presentation, product ordering, navigation, website-only evidence wording and legacy presentation labels. Canonical identity/status/channel/artifact/qualification/withdrawal values are removed and derived from the shared projection.",
+  "activation": "Explicit -SharedReleaseTruthPreview only. Alternate manifest/state transports are refused in this mode. Default build and production deploy refuse this candidate.",
+  "output": "Existing /proof/index.json, /truth/index.json and /truth/products/*.json keep their release facts; provenance names release-truth.json and PREVIEW_ONLY. /shared-release-truth/website.json exposes the exact deterministic projection with channel scopes intact.",
+  "provenanceChanges": [
+    "Public Truth preview uses schemaVersion 2 and /truth/schema-v2.json, as required by PUBLIC_TRUTH_VERSIONING.md; schema-v1.json remains byte-identical to shipped source",
+    "Proof registry uses additive schemaVersion 1.1.0 for its source provenance annotation",
+    "generatedFrom and generated-file source comments identify release-truth.json",
+    "source identity binds the website candidate commit/tree/timestamp; releaseFactsSource binds the canonical App commit and model/projection digests",
+    "proof.generatedAt is the committed source timestamp rather than a wall clock",
+    "human truth/proof pages identify the preview-only release authority"
+  ],
+  "determinismRepair": "Product theme declaration order is explicit and stable; CSS values, selectors, layout and assets remain unchanged.",
+  "shadowCompatibility": "The existing H14 shadow state preserves optional null-field presence through presentation selectors, with no authored release values; full channel/withdrawal semantics remain in the unchanged shared projection.",
+  "verificationSemantics": "Source-reported qualification, failed tests and unresolved findings remain scoped evidence. Public artifact identity and historic signing labels do not confer production signing or App installation authority.",
+  "currentProductionAuthority": "Shipped site-manifest.json at the Proof Ledger release remains authoritative; the dirty active Reality Gate site checkout is not production authority.",
+  "productionCutover": "NOT_PERFORMED",
+  "androidRc4": "FROZEN_UNCHANGED",
+  "windowsInstallation": "BLOCKED_PENDING_INSTALL_PROFILE_QUALIFICATION",
+  "productionSigningAuthority": "HOLD"
+}

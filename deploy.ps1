@@ -22,6 +22,9 @@ param(
 
 $ErrorActionPreference = 'Stop'
 Set-Location $PSScriptRoot
+if (Test-Path (Join-Path $PSScriptRoot 'release-truth.json')) {
+  throw 'Shared release truth candidate is PREVIEW ONLY. Production authority migration is not authorized.'
+}
 
 Write-Host "==> Checking working tree is clean before build/deploy"
 $dirty = git status --porcelain=v1

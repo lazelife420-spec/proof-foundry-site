@@ -4,7 +4,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "pwsh -NoProfile -File scripts/build-site.ps1"
+    "build": "pwsh -NoProfile -File scripts/build-site.ps1",
+    "build:shared-truth-preview": "pwsh -NoProfile -File scripts/build-site.ps1 -SharedReleaseTruthPreview",
+    "test:shared-truth-preview": "node --test scripts/shared-release-truth.test.cjs"
   },
   "devDependencies": { "vite": "7.1.3" }
 }
