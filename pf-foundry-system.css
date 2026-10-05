@@ -143,6 +143,12 @@ body.studio.pp-system .studio-threshold { background:#141b20 }
 .studio.secondary-page .receipt-card h3 { font:600 27px/1.25 var(--pf-serif) }
 body.studio.tf-page .tf-product-head h1 { font-size:clamp(42px,5vw,68px); max-width:18ch }
 body.studio.tf-page .tf-product-summary { max-width:72ch; line-height:1.8 }
+/* A record has one masthead and one stamp; do not stack the general document
+   hero spacing and watermark with the product-record header inside it. */
+body.studio.tf-page .tf-hero { padding-block:30px 0 }
+body.studio.tf-page .tf-hero::before { display:none }
+body.studio.tf-page .tf-product-head { padding-block:18px 24px }
+body.studio.tf-page .tf-product-head::before { width:190px; height:190px; top:0 }
 body.studio.tf-page .tf-fact { padding:22px; border-top:2px solid #0b0f1440 }
 body.studio.tf-page .tf-fact dd { font:500 20px/1.4 var(--pf-mono); overflow-wrap:anywhere }
 body.studio.tf-page :is(.tf-verify-list li,.tf-limit-list li,.tf-record-list li) { padding:20px; line-height:1.75 }
