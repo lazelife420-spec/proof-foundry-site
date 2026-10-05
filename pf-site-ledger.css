@@ -1,0 +1,215 @@
+/* Proof Ledger beyond Home: the same steel, paper, type and maker geometry.
+   Presentation only. Product facts and acquisition behavior stay in their
+   authored model and existing runtime. Loaded after the older scene sheets. */
+:root {
+  --pf-black:#0b0f14; --pf-iron:#1c232b; --pf-paper:#f4f7f8;
+  --pf-teal:#00d1b2; --pf-gold:#d6a84f; --pf-muted:#b5c0c5;
+  --pf-rule:#ffffff29; --pf-paper-rule:#0b0f142e;
+  --pf-mono:ui-monospace,Consolas,"Liberation Mono",monospace;
+  --pf-serif:Georgia,"Iowan Old Style",Baskerville,"Times New Roman",serif;
+  --world-rail:1280px; --world-copy:1280px; --world-gutter:56px;
+  --world-line:var(--pf-rule); --world-dim:var(--pf-muted);
+  --world-metal:var(--pf-iron); --world-ink:var(--pf-paper);
+}
+body.studio,
+body.studio:is(.secondary-page,.product-support,.product-roadmap,.tf-index):not(.tf-page),
+body.studio.pp-system[data-product-atmosphere] {
+  --bg:var(--pf-black); --text:var(--pf-paper); --muted:var(--pf-muted);
+  --line:var(--pf-rule); --teal:var(--pf-teal); --gold:var(--pf-gold);
+  --pp-ink:var(--pf-black); --pp-panel:var(--pf-iron);
+  --pp-warm:var(--pf-paper); --pp-muted:var(--pf-muted); --pp-line:var(--pf-rule);
+  background:var(--pf-black); color:var(--pf-paper); color-scheme:dark;
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+body.studio main,
+body.studio:is(.secondary-page,.product-support,.product-roadmap,.tf-index):not(.tf-page) main { background:transparent }
+.studio .store-shell,.studio .product-shell { padding-inline:0 }
+.studio :is(h1,h2),
+body.studio:is(.secondary-page,.product-support,.product-roadmap,.tf-index):not(.tf-page) :is(h1,h2) {
+  font-family:var(--pf-serif); letter-spacing:-.04em; color:var(--text);
+}
+.studio :is(h3,h4) { color:var(--text); letter-spacing:-.025em }
+.studio :is(.kicker,.eyebrow,.tf-hero-kicker,.h9-software-kicker,.receipt-section-title),
+body.studio:is(.secondary-page,.product-support,.product-roadmap,.tf-index):not(.tf-page) .kicker {
+  color:var(--muted); font:11px/1.7 var(--pf-mono); letter-spacing:.17em; text-transform:uppercase;
+}
+.studio :where(a,button,input,select,summary):focus-visible { outline:3px solid var(--teal); outline-offset:5px }
+.studio :is(.button,.nav-cta) { border-radius:0; box-shadow:none }
+.studio .button-primary { background:var(--teal); border-color:var(--teal); color:var(--pf-black) }
+.studio .button-primary:hover { background:#38dec6; border-color:#38dec6; transform:none }
+.studio .button-secondary { background:transparent; border-color:var(--line); color:var(--text) }
+.studio :is(.text-link,.pp-link-row a) { color:var(--teal); text-decoration-color:currentColor }
+.studio :is(.text-link,.pp-link-row a):hover { color:#38dec6 }
+.studio .button[aria-disabled="true"] { color:var(--muted); border-color:var(--line); background:var(--pf-iron) }
+
+/* One navigation and colophon treatment across all page families. */
+body.studio .site-header { position:relative; background:var(--pf-black); border-color:var(--pf-rule); backdrop-filter:none }
+body.studio .nav-row { width:min(1280px,calc(100% - 112px)); min-height:78px; padding:0; gap:32px }
+body.studio .brand-lockup { gap:13px; color:var(--pf-paper) }
+body.studio .brand-mark { width:54px; height:56px; padding:7px; object-fit:contain; clip-path:none; filter:none }
+body.studio .brand-name { color:var(--pf-paper); font:600 12px/1.5 var(--pf-mono); letter-spacing:.13em; text-transform:uppercase }
+body.studio .brand-name small { color:var(--pf-muted); font:10px/1.65 var(--pf-mono); letter-spacing:.08em }
+body.studio .top-nav { gap:28px }
+body.studio .top-nav a { padding:14px 0; font-size:13px; color:#d7dfe2; font-weight:400 }
+body.studio .top-nav a:hover,body.studio .top-nav a[aria-current="page"] { color:var(--pf-teal) }
+body.studio .site-header .nav-cta { padding:11px 19px; border:1px solid var(--pf-teal); background:transparent; color:var(--pf-teal); font-size:13px; font-weight:400 }
+body.studio .site-header .nav-cta:hover { color:var(--pf-black); background:var(--pf-teal) }
+body.studio .nav-toggle { border-color:var(--pf-rule); background:transparent; border-radius:0 }
+body.studio .nav-toggle-bar { background:var(--pf-paper) }
+body.studio .site-footer,body.studio .studio-root-footer { background:var(--pf-black); border-color:var(--pf-rule); color:var(--pf-paper) }
+body.studio .footer-grid,body.studio .footer-bottom { width:min(1280px,calc(100% - 112px)) }
+body.studio .footer-brand-lockup { color:var(--pf-paper); font:600 12px/1.5 var(--pf-mono); letter-spacing:.13em; text-transform:uppercase }
+body.studio .footer-logo { width:49px; height:50px; padding:5px; object-fit:contain; filter:none; clip-path:none }
+body.studio .site-footer h2 { font:11px/1.7 var(--pf-mono); letter-spacing:.13em; color:var(--pf-muted); text-transform:uppercase }
+body.studio .site-footer :is(p,li),body.studio .studio-root-footer :is(p,small) { color:var(--pf-muted); font-size:12px }
+body.studio .site-footer a:hover,body.studio .studio-root-footer a:hover { color:var(--pf-teal) }
+body.studio .studio-root-footer { padding-inline:max(56px,calc((100% - 1280px)/2)) }
+body.studio .h9-footer-brand { color:var(--pf-paper) }
+body.studio .h9-footer-brand img { width:49px; height:50px; padding:5px; object-fit:contain; object-position:center; filter:none; clip-path:none }
+
+/* Catalog: the tools lead; the same pressed plate anchors its masthead. */
+.studio .h9-software-wrap { width:min(1280px,calc(100% - 112px)) }
+.studio .h9-software-hero { min-height:310px; background:radial-gradient(ellipse at 82% 42%,#9aa5ab12,transparent 43%); border-color:var(--line) }
+.studio .h9-software-hero::before { display:none }
+.studio .h9-software-hero-image { right:max(56px,calc((100% - 1280px)/2)); left:auto; top:24px; bottom:24px; width:220px; height:262px; object-fit:contain; object-position:center; transform:rotate(-2.5deg) }
+.studio .h9-software-hero h1 { color:var(--text); font:700 clamp(52px,5vw,72px)/1.02 var(--pf-serif) }
+.studio .h9-software-hero p:last-child { color:#c4ced2; max-width:59ch }
+.studio .h9-software-body { background:var(--pf-black) }
+.studio .h9-catalog-heading h2 { font:400 26px/1.2 var(--pf-serif); white-space:normal }
+.studio .h9-search-field,.studio .finder-platform select { border-color:var(--line); border-radius:0; background:var(--pf-iron) }
+.studio .h9-search-field:focus-within { outline-color:var(--teal) }
+.studio .h9-search-field>svg { color:var(--muted) }
+.studio .finder-intents button { border-color:var(--line); border-radius:0; background:transparent; color:var(--text) }
+.studio .finder-intents button[aria-pressed="true"] { background:var(--teal); border-color:var(--teal); color:var(--pf-black) }
+.studio .h9-finder-summary button { color:var(--teal) }
+.studio .h9-finder-summary button:disabled { color:var(--muted) }
+.studio.software-catalog-page .product-card[data-scene-family] { background:#12191c45; border-color:var(--line); border-top:2px solid var(--product-accent); border-radius:0 }
+.studio.software-catalog-page .product-card:hover,.studio.software-catalog-page .product-card:focus-within { border-color:var(--teal) }
+.studio.software-catalog-page .card-name { font:500 21px/1.25 var(--pf-mono); letter-spacing:.025em }
+.studio.software-catalog-page .card-name a,.studio.software-catalog-page .card-cleanroom .card-name a { color:var(--text) }
+.studio.software-catalog-page :is(.card-explore,.card-more summary) { color:var(--teal) }
+.studio.software-catalog-page .card-commerce { border-radius:0 }
+.studio.software-catalog-page :is(.compare-tray,.compare-dialog,.compare-header,.comparison-product,.compare-chip) { background:var(--pf-iron); border-color:var(--line); border-radius:0 }
+.studio.software-catalog-page .compare-open { background:var(--teal); border-color:var(--teal); color:var(--pf-black) }
+.studio.software-catalog-page .compare-clear { color:var(--teal) }
+
+/* Product compositions retain their media, geometry and own identifying accent. */
+body.studio.pp-system .pp-module-hero[data-scene-family] { background:radial-gradient(ellipse at 76% 42%,var(--product-glow),transparent 48%),var(--pf-black); border-color:var(--pf-rule) }
+body.studio.pp-system .product-copy h1 { font-family:var(--pf-serif); font-weight:700; letter-spacing:-.045em }
+body.studio.pp-system .product-shell>.pp-module-hero { margin-top:30px; padding-top:30px; padding-bottom:56px }
+body.studio.pp-system .pp-module-hero .pp-hero-layout { min-height:540px; gap:60px }
+body.studio.pp-system .studio-actions .button-primary { background:var(--pf-teal); border-color:var(--pf-teal); color:var(--pf-black) }
+body.studio.pp-system :is(.pp-panel,.pp-outcome,.pp-details,.pp-sub,.pp-get,.pp-fact,.pp-step) { border-radius:0; box-shadow:none }
+body.studio.pp-system .pp-get { background:var(--pf-iron) }
+body.studio.pp-system .studio-threshold { background:var(--pf-iron); border-block:1px solid var(--pf-rule) }
+body.studio.pp-system .pp-warning { border-left-color:var(--pf-gold) }
+body.studio.pp-system .proof-pill { background:var(--pf-iron); border-color:var(--pf-rule); color:var(--pf-muted) }
+body.studio.pp-system .proof-pill strong { color:var(--pf-paper) }
+body.studio.pp-system .archive-demo { --text:var(--pf-black); --muted:#45525a; background:var(--pf-paper); color:var(--text) }
+body.studio.pp-system .archive-demo :is(.pp-kicker,h2) { color:var(--text) }
+
+/* Secondary pages read like the doctrine and release index on Home. */
+body.studio.secondary-page:not(.tf-page) { background:var(--pf-paper) }
+body.studio.secondary-page:not(.tf-page) main {
+  --text:var(--pf-black); --muted:#45525a; --line:var(--pf-paper-rule);
+  --teal:#00685b; --gold:#725215; --world-line:var(--pf-paper-rule); --world-dim:#45525a;
+  background:var(--pf-paper); color:var(--pf-black); color-scheme:light;
+}
+.studio.secondary-page :is(.support-hero,.tf-hero,.proof-hero) { background:none; border-color:var(--line); padding-block:50px 30px }
+.studio.secondary-page :is(.support-hero,.tf-hero,.proof-hero)::after { background:var(--line) }
+.studio.secondary-page :is(.support-hero h1,.tf-hero h1,.proof-hero h1) { font-weight:700; color:var(--text) }
+.studio.secondary-page :is(.support-hero p,.tf-lede,.proof-hero p,.roadmap-intro) { color:var(--muted) }
+.studio.secondary-page :is(.standard-brief-card,.standard-doctrine-card,.standard-card,.standard-boundary-card,.standard-route-card,.about-card,.about-nav-card,.founders-boundary,.support-box-dark,.support-content-box,.tf-card,.detail-card),
+.studio.product-roadmap .roadmap-list article {
+  border-color:var(--line); border-radius:0; background:transparent; box-shadow:none; color:var(--text);
+}
+.studio.secondary-page :is(.detail-card h3,.about-nav-card h3,.support-content-box h2,.tf-card h2) { color:var(--text) }
+.studio.secondary-page :is(.detail-card p,.about-nav-card p,.tf-card p,.roadmap-list article>p) { color:var(--muted) }
+.studio.secondary-page .about-intro-box { border-left-color:var(--teal) }
+.studio.secondary-page .tf-card:hover { color:var(--teal); border-color:var(--teal) }
+.studio.secondary-page :is(.tf-open,.tf-axiom,.proof-count,.receipt-section-title,.receipt-details>summary) { color:var(--teal) }
+.studio.secondary-page .receipt-card { border-color:var(--line); color:var(--text) }
+.studio.secondary-page .receipt-card .receipt-section-title { color:var(--muted); font-family:var(--pf-mono) }
+.studio.secondary-page .receipt-details>summary { color:var(--teal) }
+.studio.secondary-page :is(.code-block,.sha256-block,code.inline,.receipt-limit,.support-command) { background:#e6edef; color:var(--text); border-color:var(--line) }
+.studio.secondary-page .sha256-block code { background:transparent; color:var(--text) }
+.studio.secondary-page .sha256-copy { background:var(--teal); border-color:var(--teal); color:var(--pf-paper); border-radius:0 }
+.studio.secondary-page .sha256-copy:hover { background:#005247 }
+.studio.secondary-page :is(.state-pending-text,.status-not-published) { color:var(--muted) }
+.studio.secondary-page :is(.state-verified-text,.status-published) { color:var(--teal) }
+.studio.secondary-page .tf-fresh a { color:var(--teal) }
+.studio.secondary-page .detail-card h3 a { color:var(--teal) }
+.studio.secondary-page :is(.platform-badge,.proof-pill,.chip,.tf-card-state) { color:var(--text); border-color:var(--line); background:transparent; border-radius:0 }
+.studio.secondary-page .founders-hero { width:min(1280px,calc(100% - 112px)); padding-inline:0; gap:64px }
+.studio.secondary-page .founders-hero .hero-copy { border:0; padding:0; background:transparent; box-shadow:none }
+.studio.secondary-page .founders-receipt { align-self:center; border:1px solid var(--line); border-radius:0; background:#e6edef; box-shadow:6px 6px 0 #0b0f1410; color:var(--text) }
+.studio.secondary-page .receipt-seal { width:72px; height:72px; opacity:.65 }
+.studio.secondary-page .receipt-status { border-color:var(--line); border-radius:0; color:var(--teal) }
+.studio.secondary-page :is(.founders-cap,.founders-ledger,.founders-boundary) { width:min(1280px,calc(100% - 112px)); padding-inline:0 }
+.studio.secondary-page .cap-line { background:transparent; border:0; border-block:1px solid var(--line); border-radius:0; color:var(--muted) }
+.studio.secondary-page :is(.ledger-wrap,.ledger-table,.ledger-table th,.ledger-table td) { background:transparent; border-color:var(--line); color:var(--text); border-radius:0 }
+.studio.secondary-page .ledger-table :is(.status-open,.receipt-id) { color:var(--teal) }
+.studio.secondary-page .button[aria-disabled="true"] { background:#e6edef; color:var(--muted) }
+.studio.secondary-page .button-primary:not([aria-disabled="true"]) { color:var(--pf-paper) }
+.studio.secondary-page .founders-hero h1 span { color:var(--text) }
+.studio.secondary-page .founders-hero .hero-lede { color:var(--muted) }
+
+/* Every Truth File is the same paper record, independent of product theme. */
+body.studio.tf-page { --text:var(--pf-black); --muted:#45525a; --line:var(--pf-paper-rule); --gold:#725215; --teal:#00685b; --world-line:var(--pf-paper-rule); background:var(--pf-paper); color:var(--pf-black); color-scheme:light }
+body.studio.tf-page main { background:var(--pf-paper) }
+body.studio.tf-page :is(.tf-product-head h1,.tf-product-summary,.tf-fact dd,.tf-v-val) { color:var(--text) }
+body.studio.tf-page .tf-product-head h1 { font:700 clamp(38px,4vw,60px)/1.05 var(--pf-serif) }
+body.studio.tf-page :is(.tf-fact,.tf-verify-list li,.tf-limit-list li,.tf-record-list li,.tf-machine) { border-color:var(--line); border-radius:0; background:transparent; color:var(--text) }
+body.studio.tf-page .tf-product-summary { background:transparent; padding:0; border:0 }
+body.studio.tf-page :is(.tf-record-list a,.tf-record-list a:visited) { color:var(--teal) }
+body.studio.tf-page :is(.tf-chip.verified,.tf-chip.pending,.tf-chip.not-published) { color:var(--text); border-color:var(--line); background:transparent; border-radius:0 }
+body.studio.tf-page .tf-fresh code.inline { background:#e6edef; color:var(--text) }
+body.studio.tf-page .button-primary { color:var(--pf-paper) }
+body.studio.tf-page .button-secondary { color:var(--text); border-color:var(--line) }
+body.studio.tf-page .tf-breadcrumb { padding-top:25px }
+body.studio.tf-page .store-shell>section { margin-block:36px }
+body.studio.tf-page .tf-section>h2 { color:var(--muted); font:11px/1.7 var(--pf-mono); letter-spacing:.17em; text-transform:uppercase }
+body.studio.tf-page :is(.site-header,.site-footer) { --text:var(--pf-paper); --muted:var(--pf-muted); --line:var(--pf-rule); --teal:var(--pf-teal) }
+body.studio.tf-page .site-footer { color:var(--pf-paper) }
+
+@media(max-width:1200px) {
+  :root { --world-gutter:32px }
+  body.studio .nav-row,body.studio .footer-grid,body.studio .footer-bottom,.studio .h9-software-wrap,
+  .studio.secondary-page :is(.founders-hero,.founders-cap,.founders-ledger,.founders-boundary) { width:calc(100% - 64px) }
+  body.studio .nav-row { gap:23px }
+  body.studio .top-nav { gap:19px }
+  body.studio .studio-root-footer { padding-inline:32px }
+  .studio .h9-software-hero-image { right:32px; width:190px }
+  .studio .h9-software-hero p:last-child { max-width:52ch }
+}
+@media(max-width:900px) {
+  .studio .h9-software-hero-image { opacity:.18; right:-40px; width:230px }
+  .studio .h9-software-hero .h9-software-wrap { position:relative }
+  .studio.secondary-page .founders-hero { gap:30px }
+}
+@media(max-width:760px) {
+  :root { --world-gutter:20px }
+  body.studio .nav-row,body.studio .footer-grid,body.studio .footer-bottom,.studio .h9-software-wrap,
+  .studio.secondary-page :is(.founders-hero,.founders-cap,.founders-ledger,.founders-boundary) { width:calc(100% - 40px) }
+  body.studio .nav-row { min-height:72px; gap:12px }
+  body.studio .brand-mark { width:44px; height:46px; padding:5px }
+  body.studio .brand-name { font-size:11px; letter-spacing:.08em }
+  body.studio .brand-name small { font-size:9px; letter-spacing:.025em }
+  body.studio .nav-panel { background:var(--pf-black); border-color:var(--pf-rule) }
+  body.studio .studio-root-footer { padding-inline:20px }
+  .studio.secondary-page :is(.support-hero,.tf-hero,.proof-hero) { padding-block:34px 25px }
+  .studio .h9-software-hero { min-height:285px; padding-block:34px }
+  .studio .h9-software-hero-image { right:-62px; opacity:.1 }
+  .studio .h9-software-hero h1 { font-size:50px }
+  .studio .h9-software-hero p:last-child { font-size:16px }
+  .studio.secondary-page .founders-hero { grid-template-columns:1fr }
+  .studio.secondary-page .founders-hero h1 { max-width:100% }
+  body.studio.pp-system .pp-module-hero .pp-hero-layout { min-height:0; gap:32px }
+}
+@media(forced-colors:active) {
+  body.studio { color-scheme:light dark; --pf-black:Canvas; --pf-iron:Canvas; --pf-paper:Canvas; --pf-rule:CanvasText; --pf-paper-rule:CanvasText; --pf-teal:LinkText; --pf-muted:CanvasText }
+  body.studio :is(main,.site-header,.site-footer) { background:Canvas; color:CanvasText }
+  .studio :is(.h9-software-hero-image,.receipt-seal) { display:none }
+  .studio :where(a,button,input,select,summary):focus-visible { outline-color:Highlight }
+}
+@media(prefers-reduced-motion:reduce) { .studio { scroll-behavior:auto } }

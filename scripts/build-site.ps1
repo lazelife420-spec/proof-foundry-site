@@ -1832,15 +1832,15 @@ function Build-TruthFileShell($module, $source) {
 <meta content="#0B0F14" name="theme-color"/>
 <link href="https://theprooffoundry.com/truth-files/$($p.id)/" rel="canonical"/>
 <link href="/truth/products/$($p.id).json" rel="alternate" title="Machine record" type="application/json"/>
-<link href="/assets/foundry-strike/proof-foundry-forged-artifact.png" rel="icon" type="image/png"/>
+<link href="/brand/PF_HEADER_MARK.svg" rel="icon" type="image/svg+xml"/>
 <meta content="Truth File — $name" property="og:title"/>
 <meta content="$metaDesc" property="og:description"/>
 <meta content="website" property="og:type"/>
 <meta content="https://theprooffoundry.com/truth-files/$($p.id)/" property="og:url"/>
 <meta content="The Proof Foundry" property="og:site_name"/>
-<meta content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" property="og:image"/>
+<meta content="https://theprooffoundry.com/brand/PF_SOCIAL_CARD.png" property="og:image"/>
 <meta content="summary_large_image" name="twitter:card"/>
-<meta content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" name="twitter:image"/>
+<meta content="https://theprooffoundry.com/brand/PF_SOCIAL_CARD.png" name="twitter:image"/>
 <link href="/styles.css" rel="stylesheet"/>
 <link href="/studio.css" rel="stylesheet"/>
 <link href="/truth-files.css" rel="stylesheet"/>
@@ -2495,7 +2495,7 @@ function Render-ProductShell($module, [switch]$Template, [switch]$Preview) {
   $robots    = Html-Attr $(if ($Preview) { 'noindex, nofollow' } elseif ($module.meta.robots) { $module.meta.robots } else { 'index, follow' })
   $themeTag  = if ($module.meta.themeColor) { "`n<meta content=`"$(Html-Attr $module.meta.themeColor)`" name=`"theme-color`"/>" } else { '' }
   $ogType    = Html-Attr $(if ($module.meta.ogType) { $module.meta.ogType } else { 'product' })
-  $ogImage   = Html-Attr $(if ($module.meta.ogImage) { $module.meta.ogImage } else { 'https://theprooffoundry.com/brand/proof-foundry-social-card.png' })
+  $ogImage   = Html-Attr $(if ($module.meta.ogImage) { $module.meta.ogImage } else { 'https://theprooffoundry.com/brand/PF_SOCIAL_CARD.png' })
   $ogDescRaw = if ($module.meta.ogDescription) { $module.meta.ogDescription } else { $module.meta.description }
   $ogDesc    = Html-Attr ([System.Net.WebUtility]::HtmlDecode([string]$ogDescRaw))
   $twCard    = Html-Attr $(if ($module.meta.twitterCard) { $module.meta.twitterCard } else { 'summary_large_image' })
@@ -2545,7 +2545,7 @@ $canonicalTag
 <link rel="stylesheet" href="/studio.css">
 <link rel="stylesheet" href="/experience.css">
 <link rel="stylesheet" href="/product-page.css">
-<link href="/assets/foundry-strike/proof-foundry-forged-artifact.png" rel="icon" type="image/png"/>$jsonLdTag$inlineCssTag
+<link href="/brand/PF_HEADER_MARK.svg" rel="icon" type="image/svg+xml"/>$jsonLdTag$inlineCssTag
 </head>
 <body class="$bodyClass"$themeAttrs data-product-atmosphere="$(Html-Attr $module.theme.atmosphere)" data-acquisition-available="$acquisitionAttr">
 <!-- @include header -->
@@ -2712,6 +2712,9 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
     $worldVersion = (Get-FileHash $worldCssPath -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
     $worldLink = "<link href=`"/foundry-world.css?v=$worldVersion`" rel=`"stylesheet`"/>"
     $html = $html.Replace('</head>', "$worldLink`n</head>")
+    $ledgerSiteVersion = (Get-FileHash (Join-Path $root 'pf-site-ledger.css') -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
+    $ledgerSiteLink = "<link href=`"/pf-site-ledger.css?v=$ledgerSiteVersion`" rel=`"stylesheet`"/>"
+    $html = $html.Replace('</head>', "$ledgerSiteLink`n</head>")
   }
 
   # Extract @page id
@@ -2855,9 +2858,13 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   if (-not $head.Success) { throw "Missing HTML head in $srcName" }
   $iconLinks = @([regex]::Matches($head.Value, '(?is)<link\b[^>]*\brel\s*=\s*["'']([^"'']*)["'']') | Where-Object { ($_.Groups[1].Value -split '\s+') -contains 'icon' })
   if ($iconLinks.Count -eq 0) {
-    $defaultIcon = '<link href="/assets/foundry-strike/proof-foundry-forged-artifact.png" rel="icon" type="image/png"/>' + "`n"
+    $defaultIcon = '<link href="/brand/PF_HEADER_MARK.svg" rel="icon" type="image/svg+xml"/>' + "`n"
     $headWithIcon = [regex]::Replace($head.Value, '(?i)</head>', $defaultIcon + '</head>')
     $html = $html.Remove($head.Index, $head.Length).Insert($head.Index, $headWithIcon)
+  }
+  # The touch tile derives from the same micro mark, on an opaque steel ground.
+  if ($html -notmatch '(?i)rel=["'']apple-touch-icon["'']') {
+    $html = $html.Replace('</head>', "<link href=`"/brand/PF_HEADER_TOUCH.png`" rel=`"apple-touch-icon`"/>`n</head>")
   }
 
   # Generated-file warning (after doctype)
@@ -3006,6 +3013,7 @@ Write-Host "==> Generated Truth Files: /truth-files/ + $(($productRegistry | Whe
 # ─────────────────────────────────────────────────────────────────────────────
 Copy-Item (Join-Path $root 'styles.css')     $publicDir -Force
 Copy-Item (Join-Path $root 'pf-home-ledger.css') $publicDir -Force
+Copy-Item (Join-Path $root 'pf-site-ledger.css') $publicDir -Force
 Copy-Item (Join-Path $root 'studio.css')     $publicDir -Force
 Copy-Item (Join-Path $root 'experience.css') $publicDir -Force
 Copy-Item (Join-Path $root 'signature.css')  $publicDir -Force

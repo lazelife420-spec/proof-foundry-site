@@ -50,9 +50,9 @@
     "ogTitle": "Reality Gate — Your projects. Your execution. Your way back.",
     "ogDescription": "Reality Gate is local-first software for Git project continuity, build records, and recovery. Its former release was withdrawn; no current public download is available.",
     "ogType": "product",
-    "ogImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png",
+    "ogImage": "https://theprooffoundry.com/brand/PF_SOCIAL_CARD.png",
     "twitterCard": "summary_large_image",
-    "twitterImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png"
+    "twitterImage": "https://theprooffoundry.com/brand/PF_SOCIAL_CARD.png"
   },
   "contentSource": "content.html",
   "inlineCss": " /* H3 readability correction (retained): the origin narrative beats carry light    copy that was authored against a dark paired surface. Keep that pairing so    the copy stays legible. No copy, layout, or hierarchy change. */ .product-reality-gate #origin {   background: #101418;   border: 1px solid rgba(255,255,255,0.08); } .product-reality-gate #origin .section-heading h2, .product-reality-gate #origin .section-heading p {   color: #f2f0eb; } ",

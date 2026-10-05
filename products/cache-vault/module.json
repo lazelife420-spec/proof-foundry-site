@@ -77,9 +77,9 @@
     "ogTitle": "Cache Vault — Find the clip. Get back to work.",
     "ogDescription": "A local clipboard workspace for Windows. Keep copied text and images searchable, then bring saved clips back with Quick Paste. Public {{product.versionLabel}}.",
     "ogType": "product",
-    "ogImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png",
+    "ogImage": "https://theprooffoundry.com/brand/PF_SOCIAL_CARD.png",
     "twitterCard": "summary_large_image",
-    "twitterImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png"
+    "twitterImage": "https://theprooffoundry.com/brand/PF_SOCIAL_CARD.png"
   },
   "contentSource": "content.html",
   "schemaVersion": 2,
