@@ -1,3 +1,4 @@
+. "$PSScriptRoot/release-qualification.ps1"
 # PF-TF1 — Truth Files qualification: human layer must agree byte-for-byte with
 # the manifest facts that also generate /truth/*.json, and must never leak
 # internal data.
@@ -5,7 +6,7 @@ $ErrorActionPreference = 'Stop'
 
 $root   = (Resolve-Path "$PSScriptRoot/..").Path
 $public = Join-Path $root 'public'
-$manifest = Get-Content (Join-Path $root 'site-manifest.json') -Raw | ConvertFrom-Json
+$manifest = Get-AuthoredReleaseManifest
 
 $indexPath = Join-Path $public 'truth-files/index.html'
 if (-not (Test-Path $indexPath)) { throw "Generated Truth Files index missing: $indexPath" }

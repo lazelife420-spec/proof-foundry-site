@@ -25,6 +25,7 @@ param(
   [switch]$NegativeControl
 )
 
+. "$PSScriptRoot/release-qualification.ps1"
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
 $publicDir = Join-Path $root 'public'
@@ -83,8 +84,25 @@ function Read-GitJson([string]$revision, [string]$relativePath) {
   catch { throw "Invalid JSON in ${revision}:$relativePath — $($_.Exception.Message)" }
 }
 
+function ConvertTo-CanonicalInput($value) {
+  if ($null -eq $value -or $value -is [string] -or $value -is [ValueType]) { return $value }
+  if ($value -is [array]) {
+    $items = [System.Collections.Generic.List[object]]::new()
+    foreach ($item in $value) { $items.Add((ConvertTo-CanonicalInput $item)) }
+    return ,$items.ToArray()
+  }
+  $sorted = [ordered]@{}
+  if ($value -is [System.Collections.IDictionary]) {
+    foreach ($key in @($value.Keys | Sort-Object -CaseSensitive)) { $sorted[$key] = ConvertTo-CanonicalInput $value[$key] }
+  } else {
+    foreach ($property in @($value.PSObject.Properties | Sort-Object Name -CaseSensitive)) { $sorted[$property.Name] = ConvertTo-CanonicalInput $property.Value }
+  }
+  return $sorted
+}
 function ConvertTo-InputSignature($value) {
-  return (ConvertTo-Json -InputObject $value -Depth 100 -Compress)
+  # Object insertion order is not a public content change. Values, arrays,
+  # presence and nulls still participate in the complete input comparison.
+  return (ConvertTo-Json -InputObject (ConvertTo-CanonicalInput $value) -Depth 100 -Compress)
 }
 
 function Get-ModuleRouteSignatures([string]$revision, [string]$productId, [switch]$SimulateProductContentChange) {
@@ -94,7 +112,7 @@ function Get-ModuleRouteSignatures([string]$revision, [string]$productId, [switc
   if ($SimulateProductContentChange) {
     $module.hero.headline = [string]$module.hero.headline + ' [simulated route content change]'
   }
-  $manifest = Read-GitJson $revision 'site-manifest.json'
+  $manifest = Get-AuthoredReleaseManifestAt $revision
   $productState = @($manifest.products | Where-Object { $_.id -eq $productId } | Select-Object -First 1)[0]
 
   $productHero = [ordered]@{}
@@ -166,7 +184,7 @@ function Get-ModuleRouteSignatures([string]$revision, [string]$productId, [switc
 }
 
 function Get-ModuleInputDates([string]$baseline, [string]$productId) {
-  $paths = @("products/$productId/module.json", "products/$productId/content.html", 'site-manifest.json')
+  $paths = @("products/$productId/module.json", "products/$productId/content.html", 'site-manifest.json', 'release-truth.json')
   $commits = @(& git -C $root rev-list --reverse "$baseline..HEAD" -- $paths)
   $previous = Get-ModuleRouteSignatures $baseline $productId
   $dates = [ordered]@{ Product = $null; Catalog = $null; Homepage = $null }
@@ -310,7 +328,7 @@ if ([string]::IsNullOrWhiteSpace($baselineRef)) {
   $upstreamRef = (& git -C $root rev-parse --abbrev-ref --symbolic-full-name '@{upstream}' 2>$null)
   if ($LASTEXITCODE -eq 0 -and $upstreamRef) { $baselineRef = $upstreamRef.Trim() }
 }
-if ([string]::IsNullOrWhiteSpace($baselineRef)) { $baselineRef = 'codex/continuous-foundry-r2' }
+if ([string]::IsNullOrWhiteSpace($baselineRef)) { $baselineRef = 'c7d8a49972e95aa2dd9e4edd8c2085ae1d9f30ce' }
 $baselineExists = $false
 & git -C $root rev-parse --verify "$baselineRef^{commit}" 2>$null | Out-Null
 if ($LASTEXITCODE -eq 0) { $baselineExists = $true }
@@ -399,7 +417,7 @@ Assert-Condition ((git -C $root status --porcelain -- package.json package-lock.
 # Product truth follows the candidate manifest. Production can intentionally
 # lag a qualified candidate; the generated public proof registry must bind to
 # the same candidate release fields instead of a historical production blob.
-$workManifest = Get-Content (Join-Path $root 'site-manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+$workManifest = Get-AuthoredReleaseManifest
 $proofRegistry = Get-Content (Join-Path $publicDir 'proof\index.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 $truthDrift = @()
 foreach ($p in $workManifest.products) {

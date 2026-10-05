@@ -1,3 +1,4 @@
+. "$PSScriptRoot/release-qualification.ps1"
 # PowerShell script for testing P1 Release Truth Invariants
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
@@ -6,7 +7,7 @@ Write-Host "=== P1 RELEASE TRUTH INVARIANTS TEST SUITE ===" -ForegroundColor Cya
 
 $publicDir = Join-Path $PSScriptRoot "..\public"
 $manifestPath = Join-Path $PSScriptRoot "..\site-manifest.json"
-$manifest = Get-Content $manifestPath -Raw -Encoding UTF8 | ConvertFrom-Json
+$manifest = Get-AuthoredReleaseManifest
 
 $passed = 0
 $failed = 0
@@ -58,7 +59,7 @@ Assert-Condition ($loHtml -match 'Windows may show an unrecognized-app or &quot;
 
 # 5. Machine Registry parity assertion (R01)
 $registryJson = Get-Content (Join-Path $publicDir "proof\index.json") -Raw | ConvertFrom-Json
-$canonicalProductCount = @((Get-Content $manifestPath -Raw -Encoding UTF8 | ConvertFrom-Json).products | Where-Object visible).Count
+$canonicalProductCount = @((Get-AuthoredReleaseManifest).products | Where-Object visible).Count
 Assert-Condition ($registryJson.products.Count -eq $canonicalProductCount) 'Registry covers every canonical visible product dynamically'
 
 $rgRegistry = $registryJson.products | Where-Object { $_.id -eq 'reality-gate' }

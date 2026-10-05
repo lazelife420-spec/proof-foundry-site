@@ -1,3 +1,4 @@
+. "$PSScriptRoot/release-qualification.ps1"
 # test-receipts-invariants.ps1 — invariant tests for the canonical Receipts pipeline.
 #
 # Every test runs the real build against a FIXTURE manifest written to a temp
@@ -22,7 +23,7 @@
 $ErrorActionPreference = 'Stop'
 
 $root      = (Resolve-Path "$PSScriptRoot/..").Path
-$buildPs1  = Join-Path $root 'scripts\build-site.ps1'
+$buildPs1  = Join-Path $root 'scripts\build-qualification-fixture.ps1'
 $canonical = Join-Path $root 'site-manifest.json'
 $work      = Join-Path ([IO.Path]::GetTempPath()) ("pf-invariants-" + [Guid]::NewGuid().ToString('N').Substring(0, 8))
 New-Item -ItemType Directory -Force -Path $work | Out-Null
@@ -41,7 +42,7 @@ function Invoke-FixtureBuild([string]$name, [scriptblock]$mutate, [switch]$Valid
   $fixManifest = Join-Path $fixDir 'site-manifest.json'
   $outDir = Join-Path $fixDir 'out'
 
-  $obj = Get-Content $canonical -Raw -Encoding UTF8 | ConvertFrom-Json
+  $obj = Get-AuthoredReleaseManifest
   if ($mutate) { $obj = & $mutate $obj }
   $json = $obj | ConvertTo-Json -Depth 12
   [IO.File]::WriteAllText($fixManifest, $json, (New-Object System.Text.UTF8Encoding $false))

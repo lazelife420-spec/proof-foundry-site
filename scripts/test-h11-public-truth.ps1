@@ -8,6 +8,7 @@
 [CmdletBinding()]
 param()
 
+. "$PSScriptRoot/release-qualification.ps1"
 $ErrorActionPreference = 'Stop'
 $root = (Resolve-Path "$PSScriptRoot/..").Path
 $publicDir = Join-Path $root 'public'
@@ -17,7 +18,7 @@ function Assert-Truth([bool]$cond, [string]$name) {
   else { $script:failed++; Write-Host "FAIL: $name" -ForegroundColor Red }
 }
 
-$manifest = Get-Content (Join-Path $root 'site-manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+$manifest = Get-AuthoredReleaseManifest
 $schema = Get-Content (Join-Path $root 'schemas/public-truth-v1.schema.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 $truthDir = Join-Path $publicDir 'truth'
 $truthIndex = Get-Content (Join-Path $truthDir 'index.json') -Raw -Encoding UTF8 | ConvertFrom-Json
@@ -155,9 +156,9 @@ foreach ($kv in $headLastmod.GetEnumerator()) {
 # ── Sanitization negative controls (Phase L) — disposable fixture builds ──────
 $tmp = Join-Path $env:TEMP ("pf-h11-" + [guid]::NewGuid().ToString('N').Substring(0,8))
 New-Item -ItemType Directory -Force -Path "$tmp\public" | Out-Null
-Copy-Item (Join-Path $root 'site-manifest.json') "$tmp\manifest.json"
+[IO.File]::WriteAllText("$tmp\manifest.json", ((Get-AuthoredReleaseManifest) | ConvertTo-Json -Depth 100), [Text.UTF8Encoding]::new($false))
 $tCommit = 'a' * 40; $tTree = 'b' * 40; $tAt = '2026-09-20T00:00:00+00:00'
-$buildScript = Join-Path $root 'scripts/build-site.ps1'
+$buildScript = Join-Path $root 'scripts/build-qualification-fixture.ps1'
 
 # Inject internal/private-shaped fields into a fixture manifest
 $fm = Get-Content "$tmp\manifest.json" -Raw -Encoding UTF8 | ConvertFrom-Json
@@ -233,44 +234,44 @@ try {
 }
 
 # ── H11-R1: deploy preflight — tracked-dirty can NEVER publish ────────────────
-# Disposable committed repo containing the candidate deploy.ps1. Assert that
-# tracked changes (staged AND unstaged) are blocked even with -AllowDirtyDeploy,
-# while untracked-only material passes the preflight under the flag. Wrangler is
-# never reached on the negative path; on the untracked path the guard is proven
-# by the warning line, then the script may fail later — that is out of scope.
+# Disposable committed repo containing the unchanged sealed-source deploy gate.
+# Tracked and untracked source changes must fail before artifact or auth access.
 $drepo = Join-Path $tmp 'deployrepo'
 New-Item -ItemType Directory -Force -Path $drepo | Out-Null
-foreach ($p in @('deploy.ps1','scripts\build-site.ps1','site-manifest.json','schemas')) {
+foreach ($p in @('deploy.ps1','scripts\authority-deployment.cjs','site-manifest.json','schemas')) {
   $dest = Join-Path $drepo $p
   if ((Get-Item (Join-Path $root $p)).PSIsContainer) { robocopy (Join-Path $root $p) $dest /E /NFL /NDL /NJH /NJS /NP | Out-Null }
   else { New-Item -ItemType Directory -Force -Path (Split-Path $dest) | Out-Null; Copy-Item (Join-Path $root $p) $dest }
 }
 Push-Location $drepo
 try {
+  $sealed = Join-Path $tmp 'sealed-unqualified'
+  New-Item -ItemType Directory -Path $sealed | Out-Null
+  $receipt = Join-Path $tmp 'unqualified.json'
+  [IO.File]::WriteAllText($receipt, '{}')
   git init -q 2>$null; git add -A 2>$null; git -c user.email=t@t -c user.name=t commit -qm base 2>$null | Out-Null
-  # Control A: tracked unstaged mutation — deploy must fail even with the flag
+  # Control A: tracked unstaged mutation blocks at source preflight.
   Add-Content 'site-manifest.json' "`n" -NoNewline
-  & pwsh -NoProfile -File '.\deploy.ps1' -AllowDirtyDeploy *> "$tmp\dep-a.log"
+  & pwsh -NoProfile -File '.\deploy.ps1' -Mode stage -Artifact $sealed -QualificationReceipt $receipt *> "$tmp\dep-a.log"
   $logA = Get-Content "$tmp\dep-a.log" -Raw
-  Assert-Truth ($LASTEXITCODE -eq 1 -and $logA -match 'tracked source is not clean') 'deploy guard: tracked unstaged change blocked even with -AllowDirtyDeploy'
+  Assert-Truth ($LASTEXITCODE -ne 0 -and $logA -match 'Dirty source cannot be deployed') 'deploy guard: tracked unstaged change blocked before artifact or authentication access'
   git checkout -- 'site-manifest.json' 2>$null
   # Control B: staged tracked mutation — same block
   Add-Content 'site-manifest.json' "`n" -NoNewline; git add 'site-manifest.json' 2>$null
-  & pwsh -NoProfile -File '.\deploy.ps1' -AllowDirtyDeploy *> "$tmp\dep-b.log"
+  & pwsh -NoProfile -File '.\deploy.ps1' -Mode stage -Artifact $sealed -QualificationReceipt $receipt *> "$tmp\dep-b.log"
   $logB = Get-Content "$tmp\dep-b.log" -Raw
-  Assert-Truth ($LASTEXITCODE -eq 1 -and $logB -match 'tracked source is not clean') 'deploy guard: staged tracked change blocked even with -AllowDirtyDeploy'
+  Assert-Truth ($LASTEXITCODE -ne 0 -and $logB -match 'Dirty source cannot be deployed') 'deploy guard: staged tracked change blocked before artifact or authentication access'
   git reset -q --hard 2>$null
-  # Control C: untracked-only — preflight passes under the flag (build proceeds;
-  # later wrangler step may fail for creds — irrelevant to the guard).
+  # Control C: untracked-only material also blocks at source preflight.
   # NB: absolute path — .NET file APIs ignore Push-Location.
   [IO.File]::WriteAllText((Join-Path $drepo 'review-note.tmp'), 'custody evidence')
-  & pwsh -NoProfile -File '.\deploy.ps1' -AllowDirtyDeploy *> "$tmp\dep-c.log"
+  & pwsh -NoProfile -File '.\deploy.ps1' -Mode stage -Artifact $sealed -QualificationReceipt $receipt *> "$tmp\dep-c.log"
   $logC = Get-Content "$tmp\dep-c.log" -Raw
-  Assert-Truth ($logC -match 'WARNING: -AllowDirtyDeploy set' -and $logC -match 'Building public/') 'deploy guard: untracked-only material passes preflight under -AllowDirtyDeploy'
-  # Control D: untracked-only without the flag still blocks (conservative default)
-  & pwsh -NoProfile -File '.\deploy.ps1' *> "$tmp\dep-d.log"
+  Assert-Truth ($LASTEXITCODE -ne 0 -and $logC -match 'Dirty source cannot be deployed' -and $logC -notmatch 'Uploading|Building public/') 'deploy guard: untracked-only material is also blocked by the sealed-source policy'
+  # Control D: the removed dirty-deploy flag cannot bypass source preflight.
+  & pwsh -NoProfile -File '.\deploy.ps1' -AllowDirtyDeploy *> "$tmp\dep-d.log"
   $logD = Get-Content "$tmp\dep-d.log" -Raw
-  Assert-Truth ($LASTEXITCODE -eq 1 -and $logD -match 'untracked files present') 'deploy guard: untracked-only still requires -AllowDirtyDeploy (conservative default)'
+  Assert-Truth ($LASTEXITCODE -ne 0 -and $logD -match 'AllowDirtyDeploy' -and $logD -notmatch 'Uploading|Building public/') 'deploy guard: removed AllowDirtyDeploy cannot bypass source custody'
 } finally {
   Pop-Location
 }

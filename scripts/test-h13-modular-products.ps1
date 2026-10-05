@@ -12,9 +12,10 @@
 #   H11 truth + H12 discovery still registry-driven and correct
 
 [CmdletBinding()] param()
+. "$PSScriptRoot/release-qualification.ps1"
 $ErrorActionPreference = 'Continue'
 $root = (Resolve-Path "$PSScriptRoot/..").Path
-$buildPs1 = Join-Path $root 'scripts\build-site.ps1'
+$buildPs1 = Join-Path $root 'scripts\build-qualification-fixture.ps1'
 $publicDir = Join-Path $root 'public'
 $passed = 0; $failed = 0
 function Assert([bool]$cond, [string]$name) {
@@ -62,7 +63,7 @@ function Invoke-ModuleFixture([string]$name, [scriptblock]$mutate, [switch]$Real
   $outDir = Join-Path $fixDir 'out'
   $manifestArg = ''
   if ($mutateManifest) {
-    $mObj = Get-Content (Join-Path $root 'site-manifest.json') -Raw | ConvertFrom-Json
+    $mObj = Get-AuthoredReleaseManifest
     $mObj = & $mutateManifest $mObj
     $mPath = Join-Path $fixDir 'site-manifest.json'
     [IO.File]::WriteAllText($mPath, ($mObj | ConvertTo-Json -Depth 30), [Text.UTF8Encoding]::new($false))
@@ -73,7 +74,7 @@ function Invoke-ModuleFixture([string]$name, [scriptblock]$mutate, [switch]$Real
   # adapter boundary instead of reading site-manifest.json for product state.
   $stateArg = ''
   if ($mutateState) {
-    $sObj = Get-Content (Join-Path $root 'site-manifest.json') -Raw | ConvertFrom-Json
+    $sObj = Get-AuthoredReleaseManifest
     $sObj = & $mutateState $sObj
     $sPath = Join-Path $fixDir 'state-source.json'
     [IO.File]::WriteAllText($sPath, (@{ products = $sObj.products } | ConvertTo-Json -Depth 30), [Text.UTF8Encoding]::new($false))
@@ -152,9 +153,12 @@ foreach ($id in @($reg | Where-Object { $_.visibility -eq 'visible' } | ForEach-
 }
 $softwareHtml = Get-Content (Join-Path $publicDir 'software\index.html') -Raw -Encoding UTF8
 $softwareHtmlDecoded = [System.Net.WebUtility]::HtmlDecode($softwareHtml)
-# The frozen Home intentionally has no product browsing. Product presentation
-# controls exercise the Software catalog; mutations must leave Home unchanged.
-$canonicalHome = Get-Content (Join-Path $publicDir 'index.html') -Raw -Encoding UTF8
+# Compare fixture mutations against an independently built, unmodified transport
+# from the same authored model and renderer. Production's complete byte identity
+# is checked separately, including its richer authority metadata and v2 files.
+$canonicalFixture = Invoke-ModuleFixture 'unmodified-authored-transport' {} -RealOut
+if ($canonicalFixture.Exit -ne 0) { throw 'Unmodified authored fixture transport failed; mutation controls cannot proceed.' }
+$canonicalHome = Get-Content (Join-Path $canonicalFixture.OutDir 'index.html') -Raw -Encoding UTF8
 $homeProductSlots = 'class="studio-product-card"|data-home-tab=|class="studio-withdrawn"|class="studio-evidence"'
 $catalogOrder = @([regex]::Matches($softwareHtml, 'data-product="([a-z0-9-]+)"') | ForEach-Object { $_.Groups[1].Value })
 Assert ($catalogOrder.Count -eq $reg.Count -and $catalogOrder[0] -eq 'cache-vault' -and $catalogOrder[-1] -eq 'reality-gate') 'catalog role order puts Cache Vault first and withdrawn products last using module metadata'
@@ -173,10 +177,10 @@ Write-Host ""
 
 # ── TEST 3: public fact authority — module cannot override canonical facts ───
 Write-Host "--- TEST 3: module fields cannot override canonical public facts ---"
-$manifestObj = Get-Content (Join-Path $root 'site-manifest.json') -Raw | ConvertFrom-Json
+$manifestObj = Get-AuthoredReleaseManifest
 $rgState = @($manifestObj.products | Where-Object { $_.id -eq 'reality-gate' })[0]
 $rgHtml = Get-Content (Join-Path $publicDir 'reality-gate\index.html') -Raw -Encoding UTF8
-Assert ($rgHtml -match [regex]::Escape($rgState.version)) 'renderer emits the canonical manifest version'
+Assert ($rgState.release.withdrawnVersion -eq '1.1.0' -and $rgHtml -match [regex]::Escape($rgState.release.withdrawnVersion)) 'renderer emits the authored withdrawn version explicitly'
 $t3 = Invoke-ModuleFixture 'fake-version' {
   param($modDir)
   $m = Get-Content (Join-Path $modDir 'reality-gate\module.json') -Raw | ConvertFrom-Json
@@ -186,8 +190,8 @@ $t3 = Invoke-ModuleFixture 'fake-version' {
 } -RealOut
 Assert ($t3.Exit -eq 0) 'build accepts module carrying fake facts (they are inert)'
 $t3Html = Get-Content (Join-Path $t3.OutDir 'reality-gate\index.html') -Raw -Encoding UTF8
-Assert ($t3Html -match [regex]::Escape($rgState.version) -and $t3Html -notmatch '99\.99\.99' -and $t3Html -notmatch 'evil\.example') 'rendered page still shows canonical facts — module claims ignored'
-$cvPublicVersion = [string]((Get-Content (Join-Path $root 'site-manifest.json') -Raw | ConvertFrom-Json).products | Where-Object id -eq 'cache-vault' | Select-Object -ExpandProperty release | Select-Object -ExpandProperty publicVersion)
+Assert ($t3Html -match [regex]::Escape($rgState.release.withdrawnVersion) -and $t3Html -notmatch '99\.99\.99' -and $t3Html -notmatch 'evil\.example') 'rendered page still shows authored withdrawn facts — module claims ignored'
+$cvPublicVersion = [string]((Get-AuthoredReleaseManifest).products | Where-Object id -eq 'cache-vault' | Select-Object -ExpandProperty release | Select-Object -ExpandProperty publicVersion)
 $t3HomeFixture = Invoke-ModuleFixture 'fake-home-facts' {
   param($modDir)
   $m = Get-Content (Join-Path $modDir 'cache-vault\module.json') -Raw | ConvertFrom-Json
@@ -201,12 +205,12 @@ $t3Card = Get-CatalogCard $t3Software 'cache-vault'
 $t3Product = Get-Content (Join-Path $t3HomeFixture.OutDir 'cache-vault\index.html') -Raw -Encoding UTF8
 $t3Truth = Get-Content (Join-Path $t3HomeFixture.OutDir 'truth\products\cache-vault.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 $cvState = @($manifestObj.products | Where-Object id -eq 'cache-vault')[0]
-Assert ($t3HomeFixture.Exit -eq 0 -and $t3Card -match ('class="card-version">v' + [regex]::Escape($cvPublicVersion) + '<') -and $t3Card -match 'data-availability="public-release"' -and $t3Card -match 'href="/cache-vault/"' -and $t3Product -match [regex]::Escape($cvState.downloadUrl) -and $t3Truth.version -eq $cvPublicVersion -and $t3Truth.download.url -eq $cvState.downloadUrl -and $t3Truth.download.sha256 -eq $cvState.sha256 -and ($t3Software + $t3Product + ($t3Truth | ConvertTo-Json -Depth 20) + $t3Home) -notmatch '99\.99\.99|evil\.example' -and $t3Home -ceq $canonicalHome -and $t3Home -notmatch $homeProductSlots) 'catalog/product/truth facts remain canonical while frozen Home stays product-free'
+Assert ($t3HomeFixture.Exit -eq 0 -and $t3Card -match ('class="card-version">v' + [regex]::Escape($cvPublicVersion) + '<') -and $t3Card -match 'data-availability="public-release"' -and $t3Card -match 'href="/cache-vault/"' -and $t3Product -match [regex]::Escape($cvState.downloadUrl) -and $t3Truth.version -eq $cvPublicVersion -and $t3Truth.download.url -eq $cvState.downloadUrl -and $t3Truth.download.sha256 -eq $cvState.sha256 -and ($t3Software + $t3Product + ($t3Truth | ConvertTo-Json -Depth 20) + $t3Home) -notmatch '99\.99\.99|evil\.example' -and $t3Home -ceq $canonicalHome -and $t3Home -notmatch $homeProductSlots) 'catalog/product/truth facts remain canonical while the frozen Ledger content remains identical'
 Write-Host ""
 
 # ── TEST 4: eighth-product modularity control ─────────────────────────────────
 Write-Host "--- TEST 4: eighth-product modularity (fixture-product) ---"
-$rendererBefore = (Get-FileHash $buildPs1 -Algorithm SHA256).Hash
+$rendererBefore = (Get-FileHash (Join-Path $root 'scripts/build-site.ps1') -Algorithm SHA256).Hash
 $indexBefore = (Get-FileHash (Join-Path $root 'index.html') -Algorithm SHA256).Hash
 $t4 = Invoke-ModuleFixture 'eighth-product' {
   param($modDir)
@@ -244,7 +248,7 @@ $t4Card = Get-CatalogCard $t4soft 'fixture-product'
 $t4Order = @([regex]::Matches($t4soft, 'data-product="([a-z0-9-]+)"') | ForEach-Object { $_.Groups[1].Value })
 Assert ($t4Card -match '<article class="product-card\b' -and $t4Card -match 'A new module, rendered generically\.' -and $t4Card -match 'href="/fixture-product/"' -and $t4Order[0] -eq 'fixture-product' -and $t4home -match '<tr data-ledger-product="fixture-product"' -and $t4home -match 'href="/fixture-product/"') 'unknown module receives generic catalog and Home index copy, route and module order'
 Assert ($t4Card -match '--product-accent:#38BDF8(?:;|\")' -and $t4Card -match '--product-accent-2:#2486B9(?:;|\")' -and $t4Card -match 'data-product="fixture-product"') 'unknown module catalog accent and identity come from module data'
-Assert ((Get-FileHash $buildPs1 -Algorithm SHA256).Hash -eq $rendererBefore -and (Get-FileHash (Join-Path $root 'index.html') -Algorithm SHA256).Hash -eq $indexBefore) 'unknown module requires no renderer or homepage template edits'
+Assert ((Get-FileHash (Join-Path $root 'scripts/build-site.ps1') -Algorithm SHA256).Hash -eq $rendererBefore -and (Get-FileHash (Join-Path $root 'index.html') -Algorithm SHA256).Hash -eq $indexBefore) 'unknown module requires no renderer or homepage template edits'
 $t4pg = Get-Content (Join-Path $t4.OutDir 'fixture-product\index.html') -Raw -Encoding UTF8
 Assert ($t4pg -match '<picture><source media="\(max-width: 700px\)" srcset="/assets/cache-vault/cv-quick-paste-mobile\.png"/><img src="/assets/cache-vault/cv-quick-paste\.png"' -and $t4pg -match 'alt="Fixture capture"') 'generic hero renderer selects optional mobile asset and preserves desktop fallback/alt'
 Assert ($t4pg -match 'href="/truth/products/fixture-product\.json"[^>]*rel="alternate"|rel="alternate"[^>]*href="/truth/products/fixture-product\.json"') 'fixture-product H12 alternate generated automatically'
@@ -439,9 +443,9 @@ Assert ($t9footer -match 'SWAPPED-HOME-NAME' -and $t9home -match 'SWAPPED-HOME-N
 Write-Host ""
 
 # Homepage markup must stay generic: IDs are data, never renderer branches.
-$renderer = Get-Content $buildPs1 -Raw -Encoding UTF8
-$homeRendererStart = $renderer.IndexOf('function Get-StudioPortfolioEntries')
-$homeRendererEnd = $renderer.IndexOf('function Get-PublicCatalogCount')
+$renderer = Get-Content (Join-Path $root 'scripts/build-site.ps1') -Raw -Encoding UTF8
+$homeRendererStart = $renderer.IndexOf('function Get-LedgerEntries')
+$homeRendererEnd = $renderer.IndexOf('function Process-Template')
 $homeRendererSource = if ($homeRendererStart -ge 0 -and $homeRendererEnd -gt $homeRendererStart) { $renderer.Substring($homeRendererStart, $homeRendererEnd - $homeRendererStart) } else { '' }
 Assert ($homeRendererSource.Length -gt 0 -and $homeRendererSource -notmatch '(?i)cache-vault|reality-gate|forgecast|ghostlayer|lights-out|cleanroom|proofshot') 'homepage renderer contains no product-ID-specific branches'
 
@@ -501,7 +505,7 @@ Assert ($r1footer -notmatch '<script>alert') 'footer: no executable markup'
 Assert ($r1footer -match '&lt;script&gt;|&quot;&gt;') 'footer: name emitted as entities'
 $r1truth = Get-Content (Join-Path $r1.OutDir 'truth\products\cleanroom.json') -Raw -Encoding UTF8
 Assert ($r1truth -match 'Cleanroom\\"><script>alert') 'truth JSON carries safely JSON-encoded literal name'
-Assert ($r1truth -notmatch 'java' -or $true) 'truth JSON string encoding inert'
+Assert ((($r1truth | ConvertFrom-Json).name) -ceq 'Cleanroom"><script>alert(1)</script>') 'truth JSON parses hostile input as the exact literal string'
 Write-Host ""
 
 # ── TEST 12 (R1): unsafe public URL schemes/hosts rejected before emission ────

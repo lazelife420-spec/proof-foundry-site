@@ -114,6 +114,14 @@ try {
   check(pass1.report.artifactInventory[0].status === "PASS" && pass1.report.artifactSha256[0].sha256 === sha(fs.readFileSync(path.join(valid.dir, valid.artifactPath))), "artifact bytes and SHA-256 are inventoried");
   check(pass1.report.manifestCompatibility.status === "PASS" && pass1.report.publicationCollisions.length === 0, "new product has no current registry/manifest collision");
   check(pass1.text === pass2.text, "validation report is byte-deterministic");
+  if (JSON.parse(fs.readFileSync(path.join(ROOT, 'site-manifest.json'), 'utf8')).releaseFactsSource) {
+    const blockedOutput = path.join(TEMP, 'blocked-release-proposal');
+    const blocked = run(['materialize', valid.dir, '--output-dir', blockedOutput]);
+    const blockedReport = JSON.parse(blocked.stdout);
+    check(blocked.status !== 0 && blockedReport.code === 'SHARED_RELEASE_AUTHORITY_MIGRATION_REQUIRED' && !fs.existsSync(blockedOutput), 'authored authority blocks the real legacy proposal entry before creating output');
+    const promote = run(['promote', 'nonexistent-qualification-package', 'nonexistent-receipt', '--fixture']);
+    check(promote.status !== 0 && JSON.parse(promote.stdout).code === 'SHARED_RELEASE_AUTHORITY_MIGRATION_REQUIRED', 'authored authority blocks the real legacy promotion entry before package or signer access');
+  }
   const inspect = run(["inspect", valid.dir]);
   check(inspect.status === 0 && inspect.stdout.includes("PF PRODUCT CAPSULE INVENTORY") && inspect.stdout.includes("CAPSULE_SHA256: "), "inspect prints a readable hashed inventory");
   check(!inspect.stdout.includes("proof-foundry/pf-capsule-fixture") && inspect.stdout.includes("SOURCE_REPOSITORY_PATH: [WITHHELD]"), "inspect withholds repository path components");
@@ -215,6 +223,10 @@ try {
   const presentationResult = validate(presentation.dir);
   check(presentationResult.result.status === 0 && presentationResult.report.status === "VALID_UNVERIFIED", "presentation update without new artifacts is accepted as unverified");
   check(presentationResult.report.artifactInventory.length === 0, "presentation update does not invent artifact refs");
+  if(JSON.parse(fs.readFileSync(path.join(ROOT,"site-manifest.json"),"utf8")).releaseFactsSource){
+    const output=path.join(TEMP,"blocked-presentation-publisher"),blocked=run(["materialize",presentation.dir,"--output-dir",output]);
+    check(blocked.status !== 0 && JSON.parse(blocked.stdout).code === "SHARED_RELEASE_AUTHORITY_MIGRATION_REQUIRED" && !fs.existsSync(output), "legacy presentation publishing also fails closed until its complete shared-authority contract is migrated");
+  }
 
   const profiles = copyCapsule(valid.dir, "bounded-qualification-profiles");
   const profilesDoc = JSON.parse(fs.readFileSync(path.join(profiles, "capsule.json"), "utf8"));

@@ -21,10 +21,11 @@
 [CmdletBinding()]
 param()
 
+. "$PSScriptRoot/release-qualification.ps1"
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
 $publicDir = Join-Path $root 'public'
-$manifest = Get-Content (Join-Path $root 'site-manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+$manifest = Get-AuthoredReleaseManifest
 
 $script:passed = 0
 $script:failed = 0

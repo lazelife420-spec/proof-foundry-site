@@ -121,9 +121,9 @@ Assert-Condition ($stylesCss -match '\.onboarding-list dt') "shared onboarding-l
 
 # ── H1/H2 preservation guards (this tranche touches shared files) ───────────
 # H9 keeps the forge-to-outside Home journey concise; product browsing is on Software.
-Assert-Condition ($homeHtml.IndexOf('class="studio-hero"') -lt $homeHtml.IndexOf('class="studio-proof"') -and $homeHtml -notmatch 'class="studio-portfolio"|data-presentation="feature"|studio-evidence') "H9: studio hero leads directly to proof without an embedded product preview"
-Assert-Condition ($homeHtml -match 'class="studio-hero"[\s\S]*?href="/software/"' -and ([regex]::Matches($catalogHtml, '<article class="product-card')).Count -eq 7) "H9: hero invitation reaches the complete functional catalog"
-Assert-Condition ($homeHtml -match '<h1 id="studio-title">[\s\S]*?Do the work\.[\s\S]*?Skip the detours\.') "H9: current brand-first studio-root hero headline is preserved"
+Assert-Condition ($homeHtml.IndexOf('class="ledger-hero"') -lt $homeHtml.IndexOf('class="ledger-chain"') -and $homeHtml -match 'id="chain-title"' -and $homeHtml -notmatch 'class="studio-portfolio"|studio-evidence') "Proof Ledger: hero leads to the five-step proof chain"
+Assert-Condition ($homeHtml -match 'class="ledger-hero"[\s\S]*?href="/software/"' -and ([regex]::Matches($catalogHtml, '<article class="product-card')).Count -eq 7) "Proof Ledger: hero invitation reaches the complete functional catalog"
+Assert-Condition ($homeHtml -match '<h1 id="ledger-title">Real software<br/>leaves a record\.</h1>' -and $homeHtml -match 'Useful tools\. Verifiable releases\. Clear limits\.') "Proof Ledger: shipped brand-first headline and truth-scoped subtitle are preserved"
 Assert-Condition ($homeHtml -notmatch 'Lights Out PC <span aria-hidden="true">') "H2 preserved: homepage short naming intact"
 Assert-Condition ($rg -match 'Your projects\.' -and $rg -match 'Your execution\.' -and $rg -match 'Your way back\.') "H1/H2 preserved: Reality Gate module hero copy remains intact"
 Assert-Condition ($gl -match '<strong>Status</strong> Public release' -and $gl -match '<strong>Version</strong> v0\.4\.0') "truth preserved: GhostLayer public release version remains intact"
