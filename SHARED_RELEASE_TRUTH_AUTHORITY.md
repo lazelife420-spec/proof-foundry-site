@@ -53,6 +53,10 @@ seven-product parity, 11 channels, visual parity and the pinned rollback.
 `deploy.ps1 -Mode stage` uploads that artifact to a preview branch without
 rebuilding it. Production additionally requires a receipt verifying every
 servable byte and actual Pages runtime parity at that immutable preview URL.
+The 29 H14 helper assets are deliberately intercepted by the existing Worker
+router, and remain sealed internal upload inputs. Their runtime products and
+index are exercised directly. The 228 public assets are verified byte-for-byte;
+the four Pages control inputs are sealed with the complete artifact inventory.
 Production uploads the same artifact using pinned Wrangler 4.105.0 and
 `--no-bundle`. Uploads with an unknown outcome are inspected, never retried
 automatically.

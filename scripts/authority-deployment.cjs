@@ -32,7 +32,12 @@ function validateStage(stage,qualification){
   assert.equal(stage.outputInventorySha256,qualification.outputInventorySha256);
   assert.match(stage.origin,/^https:\/\/[a-f0-9]+\.proof-foundry-site\.pages\.dev$/,'Immutable stage deployment URL required');
   assert.equal(stage.environment,'preview');
-  assert.deepEqual(stage.served,qualification.hashes.filter(r=>!['_worker.js','_routes.json','_headers','_redirects'].includes(r.file)),'Every public candidate byte must have been verified');
+  // The unchanged /__h14/* Worker deliberately intercepts its helper assets.
+  // Those files are sealed upload inputs, exercised through runtime outputs;
+  // they cannot be fetched as public static assets through that route.
+  assert.deepEqual(stage.served,qualification.hashes.filter(r=>!r.file.startsWith('__h14/')&&!['_worker.js','_routes.json','_headers','_redirects'].includes(r.file)),'Every public candidate byte must have been verified');
+  assert.equal(stage.runtime.length,8,'Seven actual runtime product records and index required');
+  assert.ok(stage.runtime.every(r=>r.parity==='PASS'),'Every runtime record must retain baseline semantics');
   assert.equal(stage.runtimeParity,'PASS','Existing Pages runtime parity required');
 }
 function load(artifact,receiptFile){
