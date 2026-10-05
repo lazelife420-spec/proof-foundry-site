@@ -80,8 +80,20 @@ if ($manifest.releaseFactsSource -and -not $SharedReleaseTruthPreview) {
 }
 if ($SharedReleaseTruthPreview) {
   if ($PSBoundParameters.ContainsKey('ManifestPath') -or $StateSourcePath -or $PreviewProductId) { throw 'Shared-truth preview cannot substitute a manifest, transport or product preview.' }
-  $adapterJson = & node (Join-Path $root 'scripts/shared-release-truth.cjs')
-  if ($LASTEXITCODE -ne 0) { throw 'Shared release truth projection failed; no output is published.' }
+  # Native stdout decoding must be explicit: a C locale can otherwise turn
+  # UTF-8 source wording into OEM-codepage mojibake before JSON is parsed.
+  $previousConsoleEncoding = [Console]::OutputEncoding
+  $previousOutputEncoding = $OutputEncoding
+  try {
+    [Console]::OutputEncoding = [Text.UTF8Encoding]::new($false)
+    $OutputEncoding = [Text.UTF8Encoding]::new($false)
+    $adapterJson = & node (Join-Path $root 'scripts/shared-release-truth.cjs')
+    $adapterExitCode = $LASTEXITCODE
+  } finally {
+    [Console]::OutputEncoding = $previousConsoleEncoding
+    $OutputEncoding = $previousOutputEncoding
+  }
+  if ($adapterExitCode -ne 0) { throw 'Shared release truth projection failed; no output is published.' }
   $script:sharedReleaseTruth = ($adapterJson -join "`n") | ConvertFrom-Json -Depth 100
   $manifest = $script:sharedReleaseTruth.manifest
 }
