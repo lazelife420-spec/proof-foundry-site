@@ -59,10 +59,16 @@ PUBLISHED PUBLIC TRUTH    — is valid only when generated for deployment from
                             bytes served.
 ```
 
-The deploy guard (`deploy.ps1`) enforces this: tracked staged/unstaged changes
-always block deploy; only untracked non-source material (custody evidence,
-review artifacts — which never enter `public/`) may be waived with
-`-AllowDirtyDeploy`.
+The deploy guard (`deploy.ps1`) enforces a completely clean candidate commit
+and sealed artifact. A production upload requires prior exact served-byte
+verification of that same artifact on the immutable preview deployment.
+There is no dirty-source override or publication-time rebuild.
 
 Local worktree state is intentionally **not** a public field: whether the
 operator's tree was dirty is build-environment information, not product truth.
+
+V1 remains at the existing paths; richer v2 records live at `/truth/v2/`.
+V1's `generatedFrom` refers to the derived compatibility manifest. The sole
+authored release-fact input is `release-truth.json`, identified in v2 source
+provenance. See `SHARED_RELEASE_TRUTH_AUTHORITY.md` for the authority decision
+and inherited v1 schema exceptions.

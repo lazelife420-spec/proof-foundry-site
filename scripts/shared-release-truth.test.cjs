@@ -26,15 +26,15 @@ function fixture() {
   return dir;
 }
 
-test('website preview uses the remotely preserved seven-product model and exact website projection', () => {
+test('website authority uses the remotely preserved seven-product model and exact website projection', () => {
   const result = readAuthoredInputs();
   assert.equal(result.manifest.products.length, 7);
   assert.equal(result.projection.modelSha256, '456810ca16c61872f982b54a9975858903bc209387f1b819ef26de39474aeb7a');
   assert.equal(crypto.createHash('sha256').update(result.projectionBytes).digest('hex'), '364d4e48b9fcec3a1b9b0595b692049e3045a1980bdd4657d08738d36567269d');
-  assert.equal(result.provenance.mode, 'PREVIEW_ONLY');
-  assert.equal(result.provenance.productionCutover, 'NOT_PERFORMED');
+  assert.equal(result.provenance.mode, 'WEBSITE_SOURCE_AUTHORITY');
+  assert.equal(result.provenance.foundationAuthorityScope, 'HISTORICAL_RECONCILIATION_SNAPSHOT');
 });
-test('website preview has exactly one owner of release facts', () => {
+test('website authority has exactly one owner of release facts', () => {
   for (const p of presentation.products) for (const key of FACT_FIELDS) assert.equal(Object.hasOwn(p, key), false, p.id + '.' + key);
   for (const key of ['release', 'downloadUrl', 'artifacts', 'verification', 'state', 'platform']) {
     const p = copy(presentation); p.products[0][key] = 'contradictory authored fixture';
@@ -90,7 +90,7 @@ test('shadow transport omits irrelevant optional nulls without changing the comp
   assert.equal(product(compiled.manifest, 'cache-vault').release.companionCandidateVersion, null);
   assert.equal(product(compiled.manifest, 'reality-gate').release.withdrawnVersion, '1.1.0');
 });
-test('preview authority metadata has an explicit new truth version and leaves the shipped v1 contract unchanged', () => {
+test('authority metadata has an explicit new truth version and leaves the shipped v1 contract unchanged', () => {
   const { execFileSync } = require('node:child_process');
   const shipped = execFileSync('git', ['show', 'c7d8a49972e95aa2dd9e4edd8c2085ae1d9f30ce:schemas/public-truth-v1.schema.json'], { cwd: root, windowsHide: true });
   assert.ok(fs.readFileSync(path.join(root, 'schemas/public-truth-v1.schema.json')).equals(shipped));
@@ -100,7 +100,7 @@ test('preview authority metadata has an explicit new truth version and leaves th
   assert.equal(schema.$defs.truthIndex.properties.schemaUrl.const, '/truth/schema-v2.json');
   assert.equal(schema.$defs.truthIndex.properties.generatedFrom.const, 'release-truth.json');
 });
-test('shared preview loader reads only authored inputs and pinned reducer bytes', () => {
+test('shared authority loader reads only authored inputs and pinned reducer bytes', () => {
   const original = fs.readFileSync;
   const allowed = new Set(['release-truth.json', 'site-manifest.json', 'vendor/pf-shared-release-truth/provenance.json', 'vendor/pf-shared-release-truth/pf-release-truth/index.js', 'vendor/pf-shared-release-truth/pf-store-core/src/shared/CanonicalJson.js'].map(f => path.join(root, f)));
   const reads = [];
@@ -142,14 +142,9 @@ test('missing vendor seals cannot silently disable component verification', () =
   const p = JSON.parse(fs.readFileSync(file)); p.files = []; fs.writeFileSync(file, JSON.stringify(p));
   assert.throws(() => readAuthoredInputs(dir), /Exact remotely preserved/);
 });
-test('candidate production deploy entry point refuses before build or credential use', () => {
-  const r = spawnSync('pwsh', ['-NoProfile', '-File', path.join(root, 'deploy.ps1')], { cwd: root, encoding: 'utf8', windowsHide: true });
-  assert.notEqual(r.status, 0); assert.match(r.stderr, /PREVIEW ONLY/);
-  assert.doesNotMatch(r.stdout, /Building public|Deploying proof-foundry-site/);
-});
-test('candidate build needs explicit preview activation and rejects alternate state transports', () => {
-  const r = spawnSync('pwsh', ['-NoProfile', '-File', path.join(__dirname, 'build-site.ps1'), '-ValidateOnly'], { cwd: root, encoding: 'utf8', windowsHide: true });
-  assert.notEqual(r.status, 0); assert.match(r.stderr, /Explicit -SharedReleaseTruthPreview/);
-  const other = spawnSync('pwsh', ['-NoProfile', '-File', path.join(__dirname, 'build-site.ps1'), '-SharedReleaseTruthPreview', '-StateSourcePath', 'unused.json', '-ValidateOnly'], { cwd: root, encoding: 'utf8', windowsHide: true });
+test('default build adopts canonical facts and rejects alternate runtime transports', () => {
+  const other = spawnSync('pwsh', ['-NoProfile', '-File', path.join(__dirname, 'build-site.ps1'), '-StateSourcePath', 'unused.json', '-ValidateOnly'], { cwd: root, encoding: 'utf8', windowsHide: true });
   assert.notEqual(other.status, 0); assert.match(other.stderr, /cannot substitute/);
+  const r = spawnSync('pwsh', ['-NoProfile', '-File', path.join(__dirname, 'build-site.ps1'), '-ValidateOnly'], { cwd: root, encoding: 'utf8', windowsHide: true });
+  assert.equal(r.status, 0, r.stderr);
 });

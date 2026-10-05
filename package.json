@@ -5,8 +5,10 @@
   "scripts": {
     "dev": "vite",
     "build": "pwsh -NoProfile -File scripts/build-site.ps1",
-    "build:shared-truth-preview": "pwsh -NoProfile -File scripts/build-site.ps1 -SharedReleaseTruthPreview",
-    "test:shared-truth-preview": "node --test scripts/shared-release-truth.test.cjs"
+    "test:shared-truth": "node --test scripts/shared-release-truth.test.cjs scripts/authority-deployment.test.cjs"
   },
-  "devDependencies": { "vite": "7.1.3" }
+  "devDependencies": {
+    "vite": "7.1.3",
+    "wrangler": "4.105.0"
+  }
 }

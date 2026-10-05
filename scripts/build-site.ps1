@@ -1,7 +1,7 @@
 # scripts/build-site.ps1 — Manifest-driven static site generator for The Proof Foundry.
 #
-# Preview release authority: release-truth.json -> shared deterministic projection.
-# Site presentation: site-manifest.json; production authority is unchanged.
+# Authored release authority: release-truth.json -> shared deterministic projection.
+# Site presentation: site-manifest.json. Public manifest is a derived v1 compatibility input.
 # Shared chrome:    partials/*.html
 # Page content:     root *.html files (templates with markers + tokens)
 # Output:           public/  (GENERATED — never hand-edit)
@@ -75,11 +75,8 @@ if (-not (Test-Path $manifestPath)) { throw "site-manifest.json not found at $ma
 # decodes those bytes as mojibake (Â·, â€") into every generated page.
 $manifest = Get-Content $manifestPath -Raw -Encoding UTF8 | ConvertFrom-Json
 $script:sharedReleaseTruth = $null
-if ($manifest.releaseFactsSource -and -not $SharedReleaseTruthPreview) {
-  throw 'This source is a shared-truth preview candidate. Explicit -SharedReleaseTruthPreview is required; production build/deploy is disabled.'
-}
-if ($SharedReleaseTruthPreview) {
-  if ($PSBoundParameters.ContainsKey('ManifestPath') -or $StateSourcePath -or $PreviewProductId) { throw 'Shared-truth preview cannot substitute a manifest, transport or product preview.' }
+if ($manifest.releaseFactsSource) {
+  if ($PSBoundParameters.ContainsKey('ManifestPath') -or $StateSourcePath -or $PreviewProductId -or $PSBoundParameters.ContainsKey('ProductsDir')) { throw 'Shared authored truth cannot substitute a manifest, transport or product registry.' }
   # Native stdout decoding must be explicit: a C locale can otherwise turn
   # UTF-8 source wording into OEM-codepage mojibake before JSON is parsed.
   $previousConsoleEncoding = [Console]::OutputEncoding
@@ -1625,7 +1622,7 @@ function Build-PublicTruthProduct($p, $source) {
   $proofLinksArr = @(); if ($p.proofLinks) { $proofLinksArr = @($p.proofLinks) }
 
   return [ordered]@{
-    schemaVersion = if ($script:sharedReleaseTruth) { 2 } else { 1 }
+    schemaVersion = 1
     id            = $p.id
     name          = $p.name
     state         = $p.state
@@ -1669,9 +1666,9 @@ function Build-PublicTruth($source) {
     $productDocs += Build-PublicTruthProduct $p $source
   }
   $index = [ordered]@{
-    schemaVersion = if ($script:sharedReleaseTruth) { 2 } else { 1 }
-    generatedFrom = if ($script:sharedReleaseTruth) { 'release-truth.json' } else { 'site-manifest.json' }
-    schemaUrl     = if ($script:sharedReleaseTruth) { '/truth/schema-v2.json' } else { '/truth/schema-v1.json' }
+    schemaVersion = 1
+    generatedFrom = 'site-manifest.json'
+    schemaUrl     = '/truth/schema-v1.json'
     canonicalUrl  = $manifest.canonicalUrl
     source        = $source
     productCount  = $indexEntries.Count
@@ -2812,7 +2809,7 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
 "@
   }
   $html = $html -replace [regex]::Escape('{{latestVerification.block}}'), $latestBlock
-  if ($script:sharedReleaseTruth) { $html = $html.Replace('<code class="inline">site-manifest.json</code>', '<code class="inline">release-truth.json</code> (preview-only release facts)') }
+  if ($script:sharedReleaseTruth) { $html = $html.Replace('<code class="inline">site-manifest.json</code>', '<code class="inline">release-truth.json</code> (authored release facts)') }
 
   # Site verification receipt link, from canonical data. Previously the date was a
   # literal in proof.html, so the receipt could silently disagree with the receipt
@@ -2864,7 +2861,9 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   }
 
   # Generated-file warning (after doctype)
-  $factSourceLabel = if ($script:sharedReleaseTruth) { ' + release-truth.json (preview facts)' } else { '' }
+  # Preserve existing page bytes: site-manifest names the immediate derived
+  # compatibility input. V2 provenance identifies the authored release model.
+  $factSourceLabel = ''
   $warning = "<!-- GENERATED FILE - DO NOT EDIT. Source: $srcName + site-manifest.json$factSourceLabel. Run scripts/build-site.ps1 to rebuild. -->`r`n"
   $html = $html -replace '(<!doctype[^>]*>\s*\r?\n)', "`$1$warning"
 
@@ -2967,7 +2966,7 @@ Write-Host "==> Generated proof registry: /proof/index.json" -ForegroundColor Gr
 # Public truth surface (H11): deterministic, sanitized, versioned JSON contract.
 # ─────────────────────────────────────────────────────────────────────────────
 $truthSource = Get-SourceIdentity
-if ($script:sharedReleaseTruth) { $truthSource['releaseFactsSource'] = $script:sharedReleaseTruth.provenance }
+
 $truth = Build-PublicTruth $truthSource
 $truthDir = Join-Path $publicDir 'truth'
 $truthProductsDir = Join-Path $truthDir 'products'
@@ -2985,7 +2984,11 @@ Copy-Item (Join-Path $root 'schemas\public-truth-v1.schema.json') (Join-Path $tr
 if ($script:sharedReleaseTruth) {
   Copy-Item (Join-Path $root 'schemas\public-truth-v2.schema.json') (Join-Path $truthDir 'schema-v2.json') -Force
 }
-$truthSchemaLabel = if ($script:sharedReleaseTruth) { 'schema-v2.json (preview), unchanged schema-v1.json retained' } else { 'schema-v1.json' }
+if ($script:sharedReleaseTruth) {
+  & node (Join-Path $root 'scripts/build-truth-v2.cjs') $publicDir
+  if ($LASTEXITCODE -ne 0) { throw 'Rich public truth generation failed.' }
+}
+$truthSchemaLabel = 'schema-v1.json compatibility + schema-v2.json rich channels'
 Write-Host "==> Generated public truth: /truth/index.json + $($truth.products.Count) product records + $truthSchemaLabel" -ForegroundColor Green
 
 # PF-TF1: per-product Truth Files — human pages bound to the same truth source.
@@ -3018,12 +3021,14 @@ if (Test-Path (Join-Path $root 'site.js'))   { Copy-Item (Join-Path $root 'site.
 Copy-Item (Join-Path $root 'CNAME')          $publicDir -Force
 Copy-Item (Join-Path $root 'robots.txt')     $publicDir -Force
 Copy-Item (Join-Path $root 'sitemap.xml')    $publicDir -Force
-Copy-Item (Join-Path $root 'site-manifest.json') $publicDir -Force
-if ($script:sharedReleaseTruth) {
-  $projectionDir = Join-Path $publicDir 'shared-release-truth'
-  New-Item -ItemType Directory $projectionDir -Force | Out-Null
-  [IO.File]::WriteAllText((Join-Path $projectionDir 'website.json'), $script:sharedReleaseTruth.projectionBytes, $noBom)
-}
+# This is a derived compatibility transport, never an upstream authored input.
+# v1's immutable generatedFrom names this immediate materialized manifest.
+$compatDocument = $manifest | ConvertTo-Json -Depth 100 | ConvertFrom-Json -Depth 100
+$compatDocument | Add-Member -NotePropertyName documentRole -NotePropertyValue 'DERIVED_V1_COMPATIBILITY'
+$compatDocument | Add-Member -NotePropertyName generatedFrom -NotePropertyValue 'release-truth.json'
+$compatManifest = $compatDocument | ConvertTo-Json -Depth 100
+[IO.File]::WriteAllText((Join-Path $publicDir 'site-manifest.json'), ($compatManifest + "
+"), $noBom)
 Copy-Item (Join-Path $root 'brand')  $publicDir -Recurse -Force
 Copy-Item (Join-Path $root 'assets') $publicDir -Recurse -Force
 

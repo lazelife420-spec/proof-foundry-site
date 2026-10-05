@@ -1,6 +1,6 @@
 'use strict';
 
-// Preview adapter: the authored model owns release facts. The site manifest
+// Authority adapter: the authored model owns release facts. The site manifest
 // owns presentation, navigation, ordering and website-only evidence wording.
 // Generated machine records are never read as upstream inputs.
 const fs = require('node:fs');
@@ -12,8 +12,8 @@ const FACT_FIELDS = ['name', 'state', 'productStatus', 'platform', 'platforms', 
 const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 
 function compile(model, presentation) {
-  if (presentation.releaseFactsSource?.mode !== 'SHARED_RELEASE_TRUTH_PREVIEW_ONLY' || presentation.releaseFactsSource.authoredFile !== 'release-truth.json' || presentation.releaseFactsSource.productionCutover !== 'NOT_PERFORMED') {
-    throw new Error('Explicit preview-only presentation authority required.');
+  if (presentation.releaseFactsSource?.mode !== 'SHARED_RELEASE_TRUTH_AUTHORITY' || presentation.releaseFactsSource.authoredFile !== 'release-truth.json') {
+    throw new Error('Explicit shared authored release authority required.');
   }
   const projection = projectReleaseTruth(model, 'website');
   const ids = presentation.products?.map(p => p.id);
@@ -62,12 +62,13 @@ function compile(model, presentation) {
     return product;
   });
   const provenance = {
-    mode: 'PREVIEW_ONLY', authoredFile: 'release-truth.json',
+    mode: 'WEBSITE_SOURCE_AUTHORITY', authoredFile: 'release-truth.json',
     modelSha256: projection.modelSha256,
     websiteProjectionSha256: sha(serialize(projection) + '\n'),
     appSourceCommit: 'c5df5bb805f88af41456351e3a648063f3da03c8',
     websiteSourceBaseCommit: model.authority.currentWebsiteCommit,
-    productionCutover: 'NOT_PERFORMED', productionSigningAuthority: 'HOLD',
+    foundationAuthorityScope: 'HISTORICAL_RECONCILIATION_SNAPSHOT',
+    productionSigningAuthority: 'HOLD', installationAuthority: 'NONE',
     qualificationInterpretation: 'REPORTED_BY_AUTHORED_SOURCE'
   };
   return { manifest: { ...presentation, products }, projection, projectionBytes: serialize(projection) + '\n', provenance };

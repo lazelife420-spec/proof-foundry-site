@@ -354,9 +354,7 @@
     }
   ],
   "releaseFactsSource": {
-    "mode": "SHARED_RELEASE_TRUTH_PREVIEW_ONLY",
-    "authoredFile": "release-truth.json",
-    "currentProductionSource": "site-manifest.json",
-    "productionCutover": "NOT_PERFORMED"
+    "mode": "SHARED_RELEASE_TRUTH_AUTHORITY",
+    "authoredFile": "release-truth.json"
   }
 }

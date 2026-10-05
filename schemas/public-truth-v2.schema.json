@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://theprooffoundry.com/truth/schema-v2.json",
-  "title": "Proof Foundry Public Truth v2 — Shared Authority Preview",
-  "description": "Public product truth. Production uses site-manifest.json; this preview candidate derives release facts from authored release-truth.json, with explicit source provenance and no production cutover.",
+  "title": "Proof Foundry Public Truth v2 — Authored Release Authority",
+  "description": "Rich public channel facts derived from release-truth.json. Existing /truth/index.json and /truth/products/*.json remain v1 compatibility projections. Qualification is scoped reported evidence and grants no installation or signing authority.",
   "type": "object",
   "$defs": {
     "sourceIdentity": {
@@ -164,7 +164,10 @@
         "version",
         "pageUrl",
         "truthUrl",
-        "source"
+        "source",
+        "channels",
+        "verificationEvidence",
+        "installationAuthority"
       ],
       "additionalProperties": false,
       "properties": {
@@ -212,7 +215,7 @@
         },
         "truthUrl": {
           "type": "string",
-          "pattern": "^/truth/products/[a-z0-9-]+\\.json$"
+          "pattern": "^/truth/v2/products/[a-z0-9-]+\\.json$"
         },
         "release": {
           "type": [
@@ -390,6 +393,19 @@
         },
         "source": {
           "$ref": "#/$defs/sourceIdentity"
+        },
+        "channels": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/channel"
+          }
+        },
+        "verificationEvidence": {
+          "$ref": "#/$defs/scopedVerification"
+        },
+        "installationAuthority": {
+          "const": "NONE"
         }
       },
       "allOf": [
@@ -487,7 +503,7 @@
         },
         "truthUrl": {
           "type": "string",
-          "pattern": "^/truth/products/[a-z0-9-]+\\.json$"
+          "pattern": "^/truth/v2/products/[a-z0-9-]+\\.json$"
         }
       }
     },
@@ -556,6 +572,7 @@
     },
     "sharedReleaseFactsProvenance": {
       "type": "object",
+      "additionalProperties": false,
       "required": [
         "mode",
         "authoredFile",
@@ -563,42 +580,620 @@
         "websiteProjectionSha256",
         "appSourceCommit",
         "websiteSourceBaseCommit",
-        "productionCutover",
+        "foundationAuthorityScope",
         "productionSigningAuthority",
+        "installationAuthority",
         "qualificationInterpretation"
       ],
-      "additionalProperties": false,
       "properties": {
         "mode": {
-          "const": "PREVIEW_ONLY"
+          "const": "WEBSITE_SOURCE_AUTHORITY"
         },
         "authoredFile": {
           "const": "release-truth.json"
         },
         "modelSha256": {
           "type": "string",
-          "pattern": "^[0-9a-f]{64}$"
+          "pattern": "^[a-f0-9]{64}$"
         },
         "websiteProjectionSha256": {
           "type": "string",
-          "pattern": "^[0-9a-f]{64}$"
+          "pattern": "^[a-f0-9]{64}$"
         },
         "appSourceCommit": {
-          "const": "c5df5bb805f88af41456351e3a648063f3da03c8"
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
         },
         "websiteSourceBaseCommit": {
-          "const": "c7d8a49972e95aa2dd9e4edd8c2085ae1d9f30ce"
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
         },
-        "productionCutover": {
-          "const": "NOT_PERFORMED"
+        "foundationAuthorityScope": {
+          "const": "HISTORICAL_RECONCILIATION_SNAPSHOT"
         },
         "productionSigningAuthority": {
           "const": "HOLD"
+        },
+        "installationAuthority": {
+          "const": "NONE"
         },
         "qualificationInterpretation": {
           "const": "REPORTED_BY_AUTHORED_SOURCE"
         }
       }
+    },
+    "channelArtifact": {
+      "type": "object",
+      "properties": {
+        "distributionType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "downloadUrl": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^https://[^\\s]+$"
+        },
+        "filename": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "sha256Url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^https://[^\\s]+$"
+        },
+        "signingStatus": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sizeBytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "sourcePlatform": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "distributionType",
+        "downloadUrl",
+        "filename",
+        "sha256",
+        "sha256Url",
+        "signingStatus",
+        "sizeBytes",
+        "sourcePlatform"
+      ],
+      "additionalProperties": false
+    },
+    "packageIdentity": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "artifactSha256": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "currentSignerSha256": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "evidenceIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "packageName": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "signingHistory": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "inPlaceUpdate",
+                  "retiredAtRelease",
+                  "signerSha256"
+                ],
+                "properties": {
+                  "inPlaceUpdate": {
+                    "const": "BLOCKED"
+                  },
+                  "retiredAtRelease": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "pattern": "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9._]+)?$"
+                  },
+                  "signerSha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  }
+                }
+              }
+            },
+            "versionCode": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1
+            },
+            "versionName": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9._]+)?$"
+            }
+          },
+          "required": [
+            "artifactSha256",
+            "currentSignerSha256",
+            "evidenceIds",
+            "packageName",
+            "signingHistory",
+            "versionCode",
+            "versionName"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "withdrawal": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "reason": {
+              "type": "string"
+            },
+            "withdrawnVersion": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9._]+)?$"
+            }
+          },
+          "required": [
+            "reason",
+            "withdrawnVersion"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "channelVerification": {
+      "type": "object",
+      "properties": {
+        "evidenceIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "note": {
+          "type": "string"
+        },
+        "qualificationState": {
+          "type": "string",
+          "enum": [
+            "PRIMARY_RELEASE_REPORT",
+            "NOT_ESTABLISHED",
+            "BUILT_ONLY_NOT_QUALIFIED",
+            "CANDIDATE_NOT_QUALIFIED",
+            "WITHDRAWN_NOT_QUALIFIED"
+          ]
+        },
+        "scope": {
+          "const": "THIS_CHANNEL_ONLY"
+        }
+      },
+      "required": [
+        "evidenceIds",
+        "note",
+        "qualificationState",
+        "scope"
+      ],
+      "additionalProperties": false
+    },
+    "channel": {
+      "type": "object",
+      "properties": {
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/channelArtifact"
+          }
+        },
+        "evidenceIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "id": {
+          "type": "string"
+        },
+        "packageIdentity": {
+          "$ref": "#/$defs/packageIdentity"
+        },
+        "platform": {
+          "enum": [
+            "windows",
+            "android"
+          ]
+        },
+        "publicationState": {
+          "enum": [
+            "PUBLIC_RELEASE",
+            "CANDIDATE",
+            "BUILT_NOT_PUBLIC",
+            "WITHDRAWN"
+          ]
+        },
+        "publishedAt": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sourceCommit": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "track": {
+          "enum": [
+            "PUBLIC",
+            "CANDIDATE",
+            "BUILT",
+            "WITHDRAWN"
+          ]
+        },
+        "verification": {
+          "$ref": "#/$defs/channelVerification"
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9._]+)?$"
+        },
+        "withdrawal": {
+          "$ref": "#/$defs/withdrawal"
+        }
+      },
+      "required": [
+        "artifacts",
+        "evidenceIds",
+        "id",
+        "packageIdentity",
+        "platform",
+        "publicationState",
+        "publishedAt",
+        "sourceCommit",
+        "track",
+        "verification",
+        "version",
+        "withdrawal"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "track": {
+                "const": "PUBLIC"
+              }
+            },
+            "required": [
+              "track"
+            ]
+          },
+          "then": {
+            "properties": {
+              "publicationState": {
+                "const": "PUBLIC_RELEASE"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "track": {
+                "const": "CANDIDATE"
+              }
+            },
+            "required": [
+              "track"
+            ]
+          },
+          "then": {
+            "properties": {
+              "publicationState": {
+                "const": "CANDIDATE"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "track": {
+                "const": "BUILT"
+              }
+            },
+            "required": [
+              "track"
+            ]
+          },
+          "then": {
+            "properties": {
+              "publicationState": {
+                "const": "BUILT_NOT_PUBLIC"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "track": {
+                "const": "WITHDRAWN"
+              }
+            },
+            "required": [
+              "track"
+            ]
+          },
+          "then": {
+            "properties": {
+              "publicationState": {
+                "const": "WITHDRAWN"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "track": {
+                "enum": [
+                  "CANDIDATE",
+                  "BUILT",
+                  "WITHDRAWN"
+                ]
+              }
+            },
+            "required": [
+              "track"
+            ]
+          },
+          "then": {
+            "properties": {
+              "artifacts": {
+                "items": {
+                  "properties": {
+                    "downloadUrl": {
+                      "type": "null"
+                    },
+                    "sha256Url": {
+                      "type": "null"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "track": {
+                "const": "WITHDRAWN"
+              }
+            },
+            "required": [
+              "track"
+            ]
+          },
+          "then": {
+            "properties": {
+              "withdrawal": {
+                "type": "object"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "withdrawal": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "scopedVerification": {
+      "type": "object",
+      "properties": {
+        "evidence": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/link"
+              },
+              {
+                "type": "string",
+                "pattern": "^https://[^\\s]+$"
+              }
+            ]
+          }
+        },
+        "evidenceIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "platform": {
+          "enum": [
+            "windows",
+            "android"
+          ]
+        },
+        "qualificationState": {
+          "const": "REPORTED_BY_AUTHORED_SOURCE"
+        },
+        "report": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "required": [
+            "status",
+            "verifiedAt",
+            "checkedAt",
+            "verificationType",
+            "downloadAvailability",
+            "receiptId",
+            "receiptUrl"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "verifiedAt": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "checkedAt": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "verificationType": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "downloadAvailability": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "receiptId": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "receiptUrl": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^https://[^\\s]+$"
+            }
+          }
+        },
+        "scope": {
+          "enum": [
+            "PRIMARY_RELEASE",
+            "HISTORICAL_WITHDRAWN_RELEASE"
+          ]
+        },
+        "tests": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/testResult"
+          }
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9._]+)?$"
+        }
+      },
+      "required": [
+        "evidence",
+        "evidenceIds",
+        "limitations",
+        "platform",
+        "qualificationState",
+        "report",
+        "scope",
+        "tests",
+        "version"
+      ],
+      "additionalProperties": false
     }
   },
   "oneOf": [
