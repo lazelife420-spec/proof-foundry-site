@@ -11,7 +11,7 @@
   --pf-rail:min(1280px,calc(100% - 112px));
 }
 html { scroll-padding-top:24px }
-body:is(.studio,.pf-ledger-page) { font-family:var(--pf-sans); line-height:1.65; -webkit-font-smoothing:antialiased }
+body:is(.studio,.pf-ledger-page) { font-family:var(--pf-sans); font-size:16px; line-height:1.65; -webkit-font-smoothing:antialiased }
 body:is(.studio,.pf-ledger-page) :where(h1,h2,h3,p) { text-wrap:pretty }
 body:is(.studio,.pf-ledger-page) :where(h1,h2) { text-wrap:balance }
 body:is(.studio,.pf-ledger-page) :where(a,button,input,select,summary):focus-visible { outline:3px solid var(--teal,var(--pf-teal)); outline-offset:5px }
@@ -29,7 +29,7 @@ body:is(.studio,.pf-ledger-page) .nav-row {
 }
 body:is(.studio,.pf-ledger-page) .brand-lockup { flex:none; gap:14px; color:var(--pf-paper); text-decoration:none }
 body:is(.studio,.pf-ledger-page) .brand-mark { display:block; width:56px; height:58px; padding:6px; object-fit:contain; filter:none; clip-path:none }
-body:is(.studio,.pf-ledger-page) .brand-name { font:600 12px/1.55 var(--pf-mono); letter-spacing:.13em; text-transform:uppercase; color:var(--pf-paper); white-space:nowrap }
+body:is(.studio,.pf-ledger-page) .brand-name { display:block; font:600 12px/1.55 var(--pf-mono); letter-spacing:.13em; text-transform:uppercase; color:var(--pf-paper); white-space:nowrap }
 body:is(.studio,.pf-ledger-page) .brand-name small { display:block; margin-top:4px; font:10px/1.6 var(--pf-mono); letter-spacing:.08em; color:var(--pf-muted) }
 body:is(.studio,.pf-ledger-page) .nav-panel { position:static; display:flex; align-items:center; flex:1; justify-content:flex-end; gap:36px; margin-left:auto; padding:0; border:0; background:transparent }
 body:is(.studio,.pf-ledger-page) .top-nav { display:flex; align-items:center; gap:30px; margin:0 }
