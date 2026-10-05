@@ -43,6 +43,12 @@ ordinary builds must produce identical static bytes at the same committed
 source. The homepage body and its stylesheet are preserved; only its share-card
 metadata changes in this successor.
 
+Sitemap dates for the five product routes with new share-card metadata, Home and
+Software record the actual 2026-10-05 content event. Product release dates stay
+unchanged. Forced-color mode uses system text, surface and action colors; the
+paper theme's ordinary foreground/background tokens must not hide headings or
+change the embedded SVG's dark/light palette selection.
+
 ## Authority and scope
 
 No page copy, release fact, artifact identity, qualification claim or acquisition

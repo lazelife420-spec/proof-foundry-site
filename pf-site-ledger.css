@@ -207,8 +207,17 @@ body.studio.tf-page .site-footer { color:var(--pf-paper) }
   body.studio.pp-system .pp-module-hero .pp-hero-layout { min-height:0; gap:32px }
 }
 @media(forced-colors:active) {
-  body.studio { color-scheme:light dark; --pf-black:Canvas; --pf-iron:Canvas; --pf-paper:Canvas; --pf-rule:CanvasText; --pf-paper-rule:CanvasText; --pf-teal:LinkText; --pf-muted:CanvasText }
+  body.studio { --pf-black:Canvas; --pf-iron:Canvas; --pf-paper:CanvasText; --pf-rule:CanvasText; --pf-paper-rule:CanvasText; --pf-teal:LinkText; --pf-muted:CanvasText }
+  body.studio,body.studio main {
+    --text:CanvasText!important; --muted:CanvasText!important;
+    --line:CanvasText!important; --teal:LinkText!important;
+    color:CanvasText!important; background:Canvas!important;
+    color-scheme:light dark!important;
+  }
   body.studio :is(main,.site-header,.site-footer) { background:Canvas; color:CanvasText }
+  body.studio :is(a,.text-link,.pp-link-row a) { color:LinkText!important }
+  body.studio :is(button,.button) { color:ButtonText!important; background:ButtonFace!important; border-color:ButtonText!important }
+  body.studio :is([disabled],[aria-disabled="true"]) { color:GrayText!important }
   .studio :is(.h9-software-hero-image,.receipt-seal) { display:none }
   .studio :where(a,button,input,select,summary):focus-visible { outline-color:Highlight }
 }
