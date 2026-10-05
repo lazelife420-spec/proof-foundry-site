@@ -36,8 +36,8 @@
 <text data-maker-mark="record-code" x="234" y="112" transform="rotate(90 234 112)" fill="#415359" font-family="ui-monospace,Consolas,monospace" font-size="3.3" letter-spacing=".55">record(source, artifact)</text></g>
 <g data-maker-mark="fastener-1" transform="translate(24 24)"><circle r="4.4" fill="#445257" stroke="#b0b9b3" stroke-width="1"/><path d="M-2.3 0H2.3" transform="rotate(45)" stroke="#202e34" stroke-width="1.1"/></g>
 <g data-maker-mark="fastener-2" transform="translate(376 24)"><circle r="4.4" fill="#445257" stroke="#b0b9b3" stroke-width="1"/><path d="M-2.3 0H2.3" transform="rotate(-45)" stroke="#202e34" stroke-width="1.1"/></g>
-<g data-maker-mark="fastener-3" transform="translate(24 416)"><circle r="4.4" fill="#445257" stroke="#b0b9b3" stroke-width="1"/><path d="M-2.3 0H2.3" transform="rotate(45)" stroke="#202e34" stroke-width="1.1"/></g>
-<g data-maker-mark="fastener-4" transform="translate(376 416)"><circle r="4.4" fill="#445257" stroke="#b0b9b3" stroke-width="1"/><path d="M-2.3 0H2.3" transform="rotate(-45)" stroke="#202e34" stroke-width="1.1"/></g>
+<g data-maker-mark="fastener-3" transform="translate(24 416)"><circle r="4.4" fill="#445257" stroke="#b0b9b3" stroke-width="1"/><path d="M-2.3 0H2.3" transform="rotate(-45)" stroke="#202e34" stroke-width="1.1"/></g>
+<g data-maker-mark="fastener-4" transform="translate(376 416)"><circle r="4.4" fill="#445257" stroke="#b0b9b3" stroke-width="1"/><path d="M-2.3 0H2.3" transform="rotate(45)" stroke="#202e34" stroke-width="1.1"/></g>
 <path d="M37 373H363" stroke="#405459"/>
 <text x="200" y="360" text-anchor="middle" fill="#23363c" font-family="ui-monospace,Consolas,monospace" font-size="17" font-weight="700" letter-spacing="1.5">THE PROOF FOUNDRY</text>
 <text x="200" y="397" text-anchor="middle" fill="#273b40" font-family="ui-monospace,Consolas,monospace" font-size="9.5" letter-spacing="1.1">BUILD IT · PROVE IT · SHIP IT</text>

@@ -21,7 +21,7 @@
 }
 .studio .nav-row { width: min(1200px, calc(100% - 48px)); max-width: none; margin-inline: auto; padding: 0; }
 .studio .brand-lockup { display: inline-flex; align-items: center; gap: 10px; color: #f4eadb; }
-.studio .brand-mark { display: block; flex: none; width: 49px; height: 49px; object-fit: cover; object-position: 20% 43%; border: 0; clip-path: polygon(49% 3%, 87% 17%, 100% 62%, 72% 88%, 41% 95%, 13% 79%, 3% 44%, 13% 26%); filter: brightness(1.35) contrast(1.12); }
+.studio .brand-mark { display: block; flex: none; width: 49px; height: 49px; object-fit: contain; object-position: center; border: 0; clip-path: none; filter: none; }
 .studio .brand-name { display: grid; gap: 2px; color: #f4eadb; font: 700 15px/1.1 "Segoe UI", Arial, sans-serif; letter-spacing: .035em; white-space: nowrap; }
 .studio .brand-name small { color: #c7b494; font: 600 12px/1.2 Consolas, "Courier New", monospace; letter-spacing: .07em; }
 .studio .site-header .nav-cta {
@@ -33,7 +33,7 @@
 .studio .site-footer { border-top-color: #786a526e; background: #141817; }
 .studio .site-footer a:hover { color: #f2cb91; }
 .studio .footer-brand-lockup { display: inline-flex; align-items: center; gap: 10px; color: #f4eadb; font: 400 16px/1.25 Georgia, "Times New Roman", serif; letter-spacing: .08em; text-decoration: none; }
-.studio .footer-logo { display: block; flex: none; width: 48px; height: 48px; margin: 0; object-fit: cover; object-position: 20% 43%; border: 0; clip-path: polygon(49% 3%, 87% 17%, 100% 62%, 72% 88%, 41% 95%, 13% 79%, 3% 44%, 13% 26%); filter: brightness(1.35) contrast(1.12); }
+.studio .footer-logo { display: block; flex: none; width: 48px; height: 48px; margin: 0; object-fit: contain; object-position: center; border: 0; clip-path: none; filter: none; }
 .studio .footer-brand p { margin: 8px 0 0 52px; }
 @media (max-width: 640px) {
   .studio .nav-row { width: calc(100% - 40px); }

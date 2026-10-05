@@ -60,7 +60,7 @@ const watermark = `<g fill="none" stroke="#293c41"><circle data-maker-mark="pres
 ${core('#293c41', '#886a36')}
 ${register('#886a36')}${stages('#886a36')}`;
 
-const fasteners = [[24,24],[376,24],[24,416],[376,416]].map(([x,y], i) => `<g data-maker-mark="fastener-${i + 1}" transform="translate(${x} ${y})"><circle r="4.4" fill="#445257" stroke="#b0b9b3" stroke-width="1"/><path d="M-2.3 0H2.3" transform="rotate(${i % 2 ? -45 : 45})" stroke="#202e34" stroke-width="1.1"/></g>`).join('\n');
+const fasteners = [[24,24],[376,24],[24,416],[376,416]].map(([x,y], i) => `<g data-maker-mark="fastener-${i + 1}" transform="translate(${x} ${y})"><circle r="4.4" fill="#445257" stroke="#b0b9b3" stroke-width="1"/><path d="M-2.3 0H2.3" transform="rotate(${i === 1 || i === 2 ? -45 : 45})" stroke="#202e34" stroke-width="1.1"/></g>`).join('\n');
 const plate = `<defs>
   <linearGradient id="pf-plate-steel" x1="0" y1="0" x2="1" y2=".8"><stop stop-color="#7d8788"/><stop offset=".23" stop-color="#a0a9a6"/><stop offset=".58" stop-color="#627174"/><stop offset="1" stop-color="#818f90"/></linearGradient>
   <filter id="pf-plate-grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".73" numOctaves="3" seed="31"/><feColorMatrix type="saturate" values="0"/></filter>

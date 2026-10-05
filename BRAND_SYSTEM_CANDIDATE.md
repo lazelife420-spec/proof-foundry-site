@@ -34,6 +34,6 @@ The generator preserves the exact three path strings in shipped `PF_MARK_G_MASTE
 
 ## Scope and review
 
-Homepage copy, section order, dimensions, product records and page interactions are preserved. Shared header/footer changes replace only their logo image references. The two H9 guards retain their assertion populations and now require all three actual unified assets while rejecting the former competing mark on the homepage. No release reducer, authority model, machine schema, intake policy or product asset changes are included.
+Homepage copy, section order, dimensions, product records and page interactions are preserved. Shared header/footer changes replace their logo image references and remove the legacy photographic crop/filter from those image elements, preserving their box sizes. The two H9 guards retain their assertion populations and now require all three actual unified assets while rejecting the former competing mark on the homepage. No release reducer, authority model, machine schema, intake policy or product asset changes are included.
 
 The review package contains desktop/mobile before-and-after renders, 24/32/40 px samples on light and dark backgrounds, and magnified hidden-element callouts. Machine and visual checks are candidate evidence, not visual approval. This candidate is not merged to master, pushed or deployed. Production signing stays HOLD and installation authority stays NONE.
