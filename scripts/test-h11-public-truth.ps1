@@ -131,15 +131,15 @@ foreach ($mm in [regex]::Matches($sitemap, '<loc>([^<]+)</loc>\s*<lastmod>([^<]+
 $headSitemap = (git -C $root show 'HEAD:sitemap.xml') -join "`n"
 $headLastmod = @{}
 foreach ($mm in [regex]::Matches($headSitemap, '<loc>([^<]+)</loc>\s*<lastmod>([^<]+)</lastmod>')) { $headLastmod[$mm.Groups[1].Value] = $mm.Groups[2].Value }
-Assert-Truth ($lastmodByLoc['https://theprooffoundry.com/truth/'] -eq '2026-09-20') 'sitemap: /truth/ carries H11 date (new route)'
-Assert-Truth ($lastmodByLoc['https://theprooffoundry.com/proof-standard/'] -eq '2026-09-20') 'sitemap: /proof-standard/ carries H11 date (H11 changed the page)'
-# These five existing content-date corrections close the owner-authorized
-# baseline debt. H4 independently derives each date from material Git inputs.
-# All other routes retain their HEAD dates; no blanket freshness bump.
+Assert-Truth ($lastmodByLoc['https://theprooffoundry.com/truth/'] -eq '2026-10-05') 'sitemap: /truth/ carries shared-navigation material date (2026-10-05)'
+Assert-Truth ($lastmodByLoc['https://theprooffoundry.com/proof-standard/'] -eq '2026-10-05') 'sitemap: /proof-standard/ carries shared-navigation material date (2026-10-05)'
+# Every route changed through the shared header/footer on 2026-10-05. These
+# exact assertions and HEAD equality retain the sitemap gate population; H4
+# independently checks material dates. Release dates are not website dates.
 $reconciledLastmod = @{
   'https://theprooffoundry.com/' = '2026-10-05'
   'https://theprooffoundry.com/cache-vault/' = '2026-10-05'
-  'https://theprooffoundry.com/proofshot/' = '2026-09-30'
+  'https://theprooffoundry.com/proofshot/' = '2026-10-05'
   'https://theprooffoundry.com/reality-gate/' = '2026-10-05'
   'https://theprooffoundry.com/software/' = '2026-10-05'
 }

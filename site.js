@@ -119,7 +119,10 @@
 
     // Close on Escape
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape" && header.classList.contains("nav-open")) {
+        setOpen(false);
+        toggle.focus();
+      }
     });
 
     // Close when the menu is open and a click lands outside the header

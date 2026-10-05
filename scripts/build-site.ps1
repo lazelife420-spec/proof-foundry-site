@@ -2645,7 +2645,8 @@ function Build-LedgerFeatured {
     $job = if ($m.card.tagline) { [string]$m.card.tagline } else { [string]$p.summary }
     $items += @"
 <article class="ledger-instrument" data-ledger-feature="$(Html-Attr $m.id)">
-  $(LedgerProductMark $m)<div><h3>$(Html-Text $name)</h3><p class="ledger-job">$(Html-Text $job)</p><div class="ledger-instrument-meta"><div><span class="ledger-version">$(Html-Text (VersionLabel $p))</span><span class="ledger-platform">$(Html-Text (LedgerPlatform $p))</span></div><a class="ledger-link" href="$(Html-Attr $m.route)" aria-label="View $(Html-Attr $name) details">View details $(LedgerArrowSvg)</a></div><span class="ledger-status">$(Html-Text ((VisitorAvailabilityLabel $p).Replace('_', ' ')))</span></div>
+  <a class="ledger-feature-media" href="$(Html-Attr $m.route)" aria-label="Explore $(Html-Attr $name)"><img src="$(Html-Attr $m.card.media)" alt="$(Html-Attr $m.card.mediaAlt)" width="640" height="366" loading="lazy" decoding="async"/></a>
+  <div class="ledger-instrument-body">$(LedgerProductMark $m)<div><h3>$(Html-Text $name)</h3><p class="ledger-job">$(Html-Text $job)</p><div class="ledger-instrument-meta"><div><span class="ledger-version">$(Html-Text (VersionLabel $p))</span><span class="ledger-platform">$(Html-Text (LedgerPlatform $p))</span></div><a class="ledger-link" href="$(Html-Attr $m.route)" aria-label="View $(Html-Attr $name) details">View details $(LedgerArrowSvg)</a></div><span class="ledger-status">$(Html-Text ((VisitorAvailabilityLabel $p).Replace('_', ' ')))</span></div></div>
 </article>
 "@
   }
@@ -2718,6 +2719,9 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   }
 
   # Extract @page id
+  $systemVersion = (Get-FileHash (Join-Path $root 'pf-foundry-system.css') -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
+  $html = $html.Replace('</head>', "<link href=`"/pf-foundry-system.css?v=$systemVersion`" rel=`"stylesheet`"/>`n</head>")
+
   if ($srcName -eq 'index.html' -and $html.Contains('<!-- @ledger-featured -->')) {
     $ledgerVersion = (Get-FileHash (Join-Path $root 'pf-home-ledger.css') -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
     $html = $html.Replace('"/pf-home-ledger.css"', '"/pf-home-ledger.css?v=' + $ledgerVersion + '"')
@@ -2767,7 +2771,7 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   # Inject partials
   $html = $html -replace '<!--\s*@include header\s*-->', $header
   $html = $html -replace '<!--\s*@include footer\s*-->', $footer
-  $html = $html -replace '<!--\s*@include compact-footer\s*-->', $compactFooterPartial
+  $html = $html -replace '<!--\s*@include compact-footer\s*-->', $footer
 
   # The H9 catalog moved to its own route; preserve frozen page source markup.
   $html = $html.Replace('href="/#products"', 'href="/software/"')
@@ -3014,6 +3018,7 @@ Write-Host "==> Generated Truth Files: /truth-files/ + $(($productRegistry | Whe
 Copy-Item (Join-Path $root 'styles.css')     $publicDir -Force
 Copy-Item (Join-Path $root 'pf-home-ledger.css') $publicDir -Force
 Copy-Item (Join-Path $root 'pf-site-ledger.css') $publicDir -Force
+Copy-Item (Join-Path $root 'pf-foundry-system.css') $publicDir -Force
 Copy-Item (Join-Path $root 'studio.css')     $publicDir -Force
 Copy-Item (Join-Path $root 'experience.css') $publicDir -Force
 Copy-Item (Join-Path $root 'signature.css')  $publicDir -Force

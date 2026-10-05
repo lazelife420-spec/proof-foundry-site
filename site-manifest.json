@@ -103,6 +103,11 @@
       "href": "/proof-standard/"
     },
     {
+      "id": "truth-files",
+      "label": "Truth Files",
+      "href": "/truth-files/"
+    },
+    {
       "id": "about",
       "label": "About",
       "href": "/about/"

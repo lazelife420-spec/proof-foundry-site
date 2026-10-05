@@ -1,0 +1,297 @@
+/* The shared Foundry skin. Material, typography, navigation and rhythm belong
+   to the studio; release facts and each tool's identifying media stay separate. */
+:root {
+  --pf-black:#0b0f14; --pf-iron:#1c232b; --pf-paper:#f4f7f8;
+  --pf-teal:#00d1b2; --pf-gold:#d6a84f; --pf-muted:#b5c0c5;
+  --pf-rule:#ffffff29; --pf-paper-rule:#0b0f142e;
+  --pf-mono:ui-monospace,Consolas,"Liberation Mono",monospace;
+  --pf-serif:Georgia,"Iowan Old Style",Baskerville,"Times New Roman",serif;
+  --pf-sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+  --pf-steel:url('/brand/PF_WELDED_STEEL_v1.webp');
+  --pf-rail:min(1280px,calc(100% - 112px));
+}
+html { scroll-padding-top:24px }
+body:is(.studio,.pf-ledger-page) { font-family:var(--pf-sans); line-height:1.65; -webkit-font-smoothing:antialiased }
+body:is(.studio,.pf-ledger-page) :where(h1,h2,h3,p) { text-wrap:pretty }
+body:is(.studio,.pf-ledger-page) :where(h1,h2) { text-wrap:balance }
+body:is(.studio,.pf-ledger-page) :where(a,button,input,select,summary):focus-visible { outline:3px solid var(--teal,var(--pf-teal)); outline-offset:5px }
+body:is(.studio,.pf-ledger-page) .skip-link { z-index:101; background:var(--pf-teal); color:var(--pf-black) }
+
+/* One source partial and one set of rules: every route gets the same header. */
+body:is(.studio,.pf-ledger-page) .site-header {
+  position:relative; z-index:40; background:var(--pf-black); color:var(--pf-paper);
+  border-bottom:1px solid var(--pf-rule); backdrop-filter:none;
+  --text:var(--pf-paper); --muted:var(--pf-muted); --teal:var(--pf-teal);
+}
+body:is(.studio,.pf-ledger-page) .nav-row {
+  width:var(--pf-rail); max-width:none; min-height:92px; margin-inline:auto;
+  padding:0; display:flex; align-items:center; justify-content:space-between; gap:36px;
+}
+body:is(.studio,.pf-ledger-page) .brand-lockup { flex:none; gap:14px; color:var(--pf-paper); text-decoration:none }
+body:is(.studio,.pf-ledger-page) .brand-mark { display:block; width:56px; height:58px; padding:6px; object-fit:contain; filter:none; clip-path:none }
+body:is(.studio,.pf-ledger-page) .brand-name { font:600 12px/1.55 var(--pf-mono); letter-spacing:.13em; text-transform:uppercase; color:var(--pf-paper); white-space:nowrap }
+body:is(.studio,.pf-ledger-page) .brand-name small { display:block; margin-top:4px; font:10px/1.6 var(--pf-mono); letter-spacing:.08em; color:var(--pf-muted) }
+body:is(.studio,.pf-ledger-page) .nav-panel { position:static; display:flex; align-items:center; flex:1; justify-content:flex-end; gap:36px; margin-left:auto; padding:0; border:0; background:transparent }
+body:is(.studio,.pf-ledger-page) .top-nav { display:flex; align-items:center; gap:30px; margin:0 }
+body:is(.studio,.pf-ledger-page) .top-nav a { padding:15px 0; font:400 13px/1.5 var(--pf-sans); color:#d7dfe2; border-bottom:1px solid transparent; text-decoration:none }
+body:is(.studio,.pf-ledger-page) .top-nav a:hover { color:var(--pf-teal) }
+body:is(.studio,.pf-ledger-page) .top-nav a[aria-current="page"] { color:var(--pf-teal); border-color:var(--pf-teal) }
+body:is(.studio,.pf-ledger-page) .site-header .nav-panel .nav-cta { min-height:46px; padding:11px 24px; border:1px solid var(--pf-teal); border-radius:0; background:transparent; color:var(--pf-teal); font:500 13px/1.5 var(--pf-sans); box-shadow:none; transform:none }
+body:is(.studio,.pf-ledger-page) .site-header .nav-panel .nav-cta:hover { background:var(--pf-teal); color:var(--pf-black) }
+body:is(.studio,.pf-ledger-page) .nav-toggle { display:none; border-radius:0; border-color:var(--pf-rule); background:transparent; width:46px; height:46px }
+body:is(.studio,.pf-ledger-page) .nav-toggle-bar { background:var(--pf-paper) }
+
+/* Real, quiet material at the studio threshold. The seam stays peripheral;
+   opaque reading surfaces keep texture out of factual records and controls. */
+.pf-ledger-page .ledger-hero,
+.studio .h9-software-hero,
+body.studio.pp-system .pp-module-hero[data-scene-family],
+.studio.product-support .support-hero {
+  background-color:var(--pf-black);
+  background-image:linear-gradient(90deg,#0b0f14ed 0%,#0b0f14c9 54%,#0b0f14b8 100%),var(--pf-steel);
+  background-size:cover; background-position:center; background-repeat:no-repeat;
+}
+.ledger-hero-grid { grid-template-columns:minmax(0,6.6fr) minmax(0,4.5fr) .8fr; min-height:650px; padding-block:64px 72px; gap:34px }
+.ledger-hero h1 { font-size:clamp(60px,6.3vw,92px); line-height:.98; letter-spacing:-.055em; margin-block:24px }
+.ledger-hero-subtitle { font-size:clamp(22px,2vw,29px); line-height:1.4; max-width:24ch }
+.ledger-hero-description { max-width:44ch; line-height:1.75; color:#c4ced2 }
+.ledger-hero .ledger-actions { margin-top:30px; gap:16px 26px }
+.ledger-hero-note { margin-top:27px }
+.ledger-margin { border-left:1px solid #ffffff1c; padding-left:22px }
+.ledger-plate-scene { padding-right:5px }
+.ledger-plate { max-width:420px; transform:rotate(-3deg) rotateY(-5deg); box-shadow:inset 1px 1px 0 #e8ede89c,inset 0 0 0 5px #2530333b,inset 0 0 25px #11191d3d,16px 27px 30px #0009,3px 4px 2px #0009 }
+.ledger-chain { padding-block:28px 32px; background:#10151a }
+.ledger-chain ol { margin-top:23px }
+.ledger-chain-icon { background:#161d22; border-color:#d6a84f80 }
+.ledger-chain li:not(:last-child)::after { content:""; top:25px; right:-16px; width:9px; height:9px; border-top:1px solid #aebbbc; border-right:1px solid #aebbbc; transform:rotate(45deg) }
+.ledger-doctrine-grid { padding-block:66px; gap:46px }
+.ledger-doctrine h2 { margin-block:15px 20px }
+.ledger-doctrine-copy { font-size:16px; line-height:1.75; max-width:51ch }
+.ledger-doctrine .ledger-link { margin-top:16px }
+.ledger-seal { width:190px; height:190px }
+.ledger-featured,.ledger-specimen,.ledger-index,.ledger-position { padding-block:60px 68px }
+.ledger-section-label { margin-bottom:30px }
+.ledger-featured-grid { gap:24px }
+.ledger-instrument { display:flex; flex-direction:column; gap:0; padding:0; background:#12191e; border-color:#ffffff26; transition:border-color 160ms ease,transform 160ms ease; position:relative }
+.ledger-instrument:hover,.ledger-instrument:focus-within { border-color:#00d1b27a; transform:translateY(-3px) }
+.ledger-feature-media { display:block; aspect-ratio:1.75; overflow:hidden; border-bottom:1px solid #ffffff26; background:#171e23; padding:18px 18px 0 }
+.ledger-feature-media img { display:block; width:100%; height:100%; object-fit:cover; object-position:top; border:1px solid #ffffff1c; border-bottom:0 }
+.ledger-instrument-body { padding:25px 24px 24px; display:grid; grid-template-columns:38px minmax(0,1fr); gap:15px }
+.ledger-instrument .ledger-product-mark { width:35px; height:35px }
+.ledger-instrument h3 { font-size:18px; letter-spacing:.025em }
+.ledger-instrument .ledger-job { line-height:1.65; min-height:3.3em }
+.ledger-instrument-meta { margin-top:18px; grid-template-columns:minmax(0,1fr) auto; gap:10px }
+.ledger-instrument .ledger-link { gap:8px; font-size:12px }
+.ledger-preview-note { margin:18px 0 0; font-size:12px; line-height:1.7; color:var(--pf-muted); max-width:82ch }
+.ledger-specimen-grid { gap:70px; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) }
+.ledger-record { background:#12191e; border:1px solid #ffffff29; border-left:2px solid var(--pf-gold); padding:30px; box-shadow:9px 9px 0 #0003 }
+.ledger-record dl { line-height:1.7; gap:12px 18px }
+.ledger-specimen-copy h2 { font-size:clamp(32px,3vw,44px); max-width:16ch }
+.ledger-specimen-copy p { font-size:16px; line-height:1.75; max-width:43ch }
+.ledger-index-grid { gap:50px }
+.ledger-index th,.ledger-index td { padding-block:21px }
+.ledger-index tbody tr:hover { background:#0b0f1405 }
+.ledger-index-name { gap:15px }
+.ledger-position-head { font-size:clamp(32px,3.4vw,48px); max-width:25ch; margin-bottom:40px }
+.ledger-principles { gap:35px }
+.ledger-principles h3 { margin-bottom:14px }
+.ledger-principles p { line-height:1.75 }
+.ledger-close { padding-block:46px; background:#141b20 }
+.ledger-close h2 { font-size:clamp(32px,4vw,53px) }
+
+/* Catalog = a working instrument panel, with generous authentic previews. */
+.studio .h9-software-hero { min-height:380px; padding-block:68px }
+.studio .h9-software-hero-image { width:252px; height:302px; top:38px; bottom:auto }
+.studio .h9-software-hero h1 { font-size:clamp(52px,5.8vw,82px); letter-spacing:-.055em; margin-block:20px }
+.studio .h9-software-hero p:last-child { line-height:1.75 }
+.studio .h9-software-body { padding-block:52px 70px }
+.studio .h9-catalog-heading { gap:60px; margin-bottom:28px }
+.studio .h9-catalog-heading h2 { font-size:29px }
+.studio .product-finder { padding-block:27px; border-color:var(--pf-rule) }
+.studio .h9-search-field,.studio .finder-platform select { min-height:52px }
+.studio.software-catalog-page .products-grid { gap:28px }
+.studio.software-catalog-page .product-card[data-scene-family] { background:#12191e; border-color:#ffffff26; border-top-color:var(--product-accent); box-shadow:0 12px 28px #0002 }
+.studio.software-catalog-page .card-body { padding:28px }
+.studio.software-catalog-page .card-name { font-size:23px }
+.studio.software-catalog-page .catalog-image-link { margin-inline:22px }
+
+/* Product pages retain their own screenshot, silhouette and truthful action. */
+body.studio.pp-system .product-shell>.pp-module-hero { margin-top:22px; padding-block:40px 70px }
+body.studio.pp-system .pp-module-hero .pp-hero-layout { min-height:540px; gap:62px }
+body.studio.pp-system .product-copy h1 { font-size:clamp(46px,5.3vw,76px); line-height:1.04 }
+body.studio.pp-system .product-lede { font-size:18px; line-height:1.8; max-width:53ch }
+body.studio.pp-system .product-identity { margin-bottom:35px }
+body.studio.pp-system .pp-panel { border-color:var(--pf-rule) }
+body.studio.pp-system .pp-section { padding-block:65px }
+body.studio.pp-system .pp-section-head h2 { font-size:clamp(32px,3.5vw,48px) }
+body.studio.pp-system .studio-threshold { background:#141b20 }
+
+/* Paper documents are precision-cut sheets, not a second branding system. */
+.studio.secondary-page :is(.support-hero,.tf-hero,.proof-hero),
+.studio.tf-page .tf-product-head { position:relative; isolation:isolate; padding-block:64px 45px }
+.studio.secondary-page :is(.support-hero,.tf-hero,.proof-hero)::before,
+.studio.tf-page .tf-product-head::before { content:""; position:absolute; z-index:-1; pointer-events:none; right:0; top:28px; width:230px; height:230px; background:url('/brand/PF_RECEIPT_WATERMARK.svg') center/contain no-repeat; opacity:.065; transform:rotate(-9deg) }
+.studio.secondary-page :is(.support-hero h1,.tf-hero h1,.proof-hero h1) { font-size:clamp(44px,5.3vw,76px); line-height:1.07; letter-spacing:-.055em; max-width:18ch }
+.studio.secondary-page :is(.support-section,.tf-section,.proof-section) { margin-block:48px }
+.studio.secondary-page .section-heading h2 { font-size:clamp(32px,3.3vw,47px) }
+.studio.secondary-page :is(.about-grid,.about-nav-grid,.standard-grid,.support-grid) { gap:22px }
+.studio.secondary-page :is(.about-card,.about-nav-card,.standard-card,.standard-doctrine-card,.standard-boundary-card,.standard-route-card,.tf-card,.detail-card) { padding:28px; background:#ffffff55; box-shadow:0 3px 0 #0b0f1405 }
+.studio.secondary-page :is(.about-card,.about-nav-card,.tf-card,.detail-card) h3 { font:500 25px/1.25 var(--pf-serif); letter-spacing:-.025em }
+.studio.secondary-page :is(.detail-card,.about-nav-card,.tf-card) p { line-height:1.75 }
+.studio.secondary-page .about-intro-box { padding:28px 38px; background:#ffffff55; border-left:2px solid var(--teal); max-width:920px }
+.studio.secondary-page .receipt-card { padding-block:34px }
+.studio.secondary-page .receipt-card h3 { font:600 27px/1.25 var(--pf-serif) }
+body.studio.tf-page .tf-product-head h1 { font-size:clamp(42px,5vw,68px); max-width:18ch }
+body.studio.tf-page .tf-product-summary { max-width:72ch; line-height:1.8 }
+body.studio.tf-page .tf-fact { padding:22px; border-top:2px solid #0b0f1440 }
+body.studio.tf-page .tf-fact dd { font:500 20px/1.4 var(--pf-mono); overflow-wrap:anywhere }
+body.studio.tf-page :is(.tf-verify-list li,.tf-limit-list li,.tf-record-list li) { padding:20px; line-height:1.75 }
+body.studio.tf-page .tf-section>h2 { padding-bottom:12px; border-bottom:1px solid var(--line) }
+.studio.product-support .support-hero { padding:60px 36px; border:1px solid var(--pf-rule) }
+.studio.product-support :is(.detail-card,.support-content-box) { padding:28px; background:#141b20 }
+.studio.product-support .detail-card h3 { font:500 25px/1.3 var(--pf-serif) }
+
+/* The shared colophon is the same on Home, product and record pages. */
+body:is(.studio,.pf-ledger-page) .site-footer {
+  background-image:linear-gradient(#0b0f14e6,#0b0f14f5),var(--pf-steel);
+  background-size:cover; background-position:center; background-color:var(--pf-black);
+  --text:var(--pf-paper); --muted:var(--pf-muted); --teal:var(--pf-teal); --line:var(--pf-rule);
+  color:var(--pf-paper); padding:58px 0 0; border-top:1px solid var(--pf-rule); color-scheme:dark;
+}
+body:is(.studio,.pf-ledger-page) .footer-grid { display:grid; grid-template-columns:1.6fr 1fr 1fr; gap:65px; padding:0 0 45px; width:var(--pf-rail); max-width:none; margin-inline:auto }
+body:is(.studio,.pf-ledger-page) .footer-brand-lockup { display:inline-flex; align-items:center; gap:14px; font:600 12px/1.5 var(--pf-mono); letter-spacing:.13em; color:var(--pf-paper); text-decoration:none; text-transform:uppercase }
+body:is(.studio,.pf-ledger-page) .footer-logo { width:54px; height:56px; padding:6px; object-fit:contain; filter:none; clip-path:none }
+body:is(.studio,.pf-ledger-page) .footer-brand p { font:400 24px/1.4 var(--pf-serif); color:var(--pf-paper); margin-top:22px }
+body:is(.studio,.pf-ledger-page) .footer-brand .footer-maker-note { font:10px/1.8 var(--pf-mono); letter-spacing:.13em; color:var(--pf-muted); max-width:28ch; text-transform:uppercase; margin-top:16px }
+body:is(.studio,.pf-ledger-page) .site-footer h2 { font:11px/1.7 var(--pf-mono); letter-spacing:.17em; color:var(--pf-muted); text-transform:uppercase; margin-bottom:20px }
+body:is(.studio,.pf-ledger-page) .site-footer ul { list-style:none; padding:0; margin:0 }
+body:is(.studio,.pf-ledger-page) .site-footer li { margin:0 }
+body:is(.studio,.pf-ledger-page) .site-footer li a { display:inline-block; padding-block:6px; font:13px/1.6 var(--pf-sans); color:#d7dfe2; text-decoration:none }
+body:is(.studio,.pf-ledger-page) .site-footer a:hover { color:var(--pf-teal); text-decoration:underline; text-underline-offset:5px }
+body:is(.studio,.pf-ledger-page) .footer-bottom { width:var(--pf-rail); max-width:none; margin-inline:auto; padding:22px 0; border-top:1px solid var(--pf-rule); display:flex; align-items:center; justify-content:space-between; gap:20px }
+body:is(.studio,.pf-ledger-page) .footer-bottom p { color:var(--pf-muted); font:11px/1.7 var(--pf-mono); margin:0 }
+.footer-registration { display:flex; align-items:center; gap:9px }
+.footer-registration i { display:block; width:5px; height:12px; background:var(--pf-gold) }
+.footer-registration i:nth-child(2) { height:18px }
+
+@media(max-width:1200px) {
+  :root { --pf-rail:calc(100% - 64px) }
+  body:is(.studio,.pf-ledger-page) .nav-row { gap:24px }
+  body:is(.studio,.pf-ledger-page) .nav-panel { gap:24px }
+  body:is(.studio,.pf-ledger-page) .top-nav { gap:22px }
+  .ledger-hero-grid { gap:24px; min-height:590px }
+  .ledger-margin { display:none }
+  .ledger-hero-grid { grid-template-columns:1.3fr 1fr }
+  .ledger-instrument-body { padding:22px 18px; grid-template-columns:30px minmax(0,1fr); gap:12px }
+  .ledger-instrument .ledger-product-mark { width:28px; height:28px }
+  .ledger-instrument-meta { grid-template-columns:1fr }
+  .studio .h9-software-hero-image { right:32px; width:220px }
+}
+@media(max-width:900px) {
+  body:is(.studio,.pf-ledger-page) .nav-row { min-height:80px; gap:15px }
+  body:is(.studio,.pf-ledger-page) .nav-toggle { display:flex }
+  body:is(.studio,.pf-ledger-page) .nav-panel { display:none; position:absolute; inset:100% 0 auto; margin:0; padding:18px 32px 24px; background:var(--pf-black); border-bottom:1px solid var(--pf-rule); flex-direction:column; align-items:stretch; gap:12px }
+  body:is(.studio,.pf-ledger-page) .site-header.nav-open .nav-panel { display:flex }
+  body:is(.studio,.pf-ledger-page) .nav-panel .top-nav { flex-direction:column; align-items:stretch; gap:0; width:100% }
+  body:is(.studio,.pf-ledger-page) .nav-panel .top-nav a { padding:14px 0; font-size:15px; border-bottom:1px solid var(--pf-rule); min-height:48px }
+  body:is(.studio,.pf-ledger-page) .nav-panel .nav-cta { width:100%; margin-top:8px }
+  .ledger-hero-grid { min-height:0; padding-block:52px; gap:24px }
+  .ledger-hero h1 { font-size:clamp(48px,6.9vw,62px) }
+  .ledger-hero-subtitle { font-size:23px }
+  .ledger-featured-grid { gap:16px }
+  .ledger-instrument-body { display:block }
+  .ledger-instrument .ledger-product-mark { margin-bottom:15px }
+  .ledger-instrument h3 { font-size:16px }
+  .ledger-specimen-grid { gap:35px }
+  .studio .h9-software-hero-image { width:240px; opacity:.12; right:-30px }
+  .studio.secondary-page :is(.support-hero,.tf-hero,.proof-hero)::before { width:180px; height:180px }
+  body:is(.studio,.pf-ledger-page) .footer-grid { gap:38px }
+}
+@media(max-width:640px) {
+  :root { --pf-rail:calc(100% - 40px) }
+  body:is(.studio,.pf-ledger-page) .nav-row { min-height:76px }
+  body:is(.studio,.pf-ledger-page) .brand-mark { width:46px; height:48px; padding:4px }
+  body:is(.studio,.pf-ledger-page) .brand-lockup { gap:10px }
+  body:is(.studio,.pf-ledger-page) .brand-name { font-size:10px; letter-spacing:.09em }
+  body:is(.studio,.pf-ledger-page) .brand-name small { font-size:9px; letter-spacing:.025em }
+  body:is(.studio,.pf-ledger-page) .nav-panel { padding-inline:20px }
+  .ledger-hero-grid { display:flex; flex-direction:column; align-items:stretch; gap:36px; padding-block:38px 44px }
+  .ledger-hero h1 { font-size:clamp(43px,11.7vw,63px); margin-block:18px }
+  .ledger-hero-subtitle { font-size:23px; max-width:23ch }
+  .ledger-hero-description { font-size:15px; line-height:1.75 }
+  .ledger-hero-detail { margin-top:20px }
+  .ledger-hero .ledger-actions { gap:12px; margin-top:23px }
+  .ledger-hero .ledger-button { width:100%; min-height:52px }
+  .ledger-hero .ledger-link { font-size:13px }
+  .ledger-hero-note { margin-top:20px; font-size:9px }
+  .ledger-plate-scene { width:86%; max-width:360px; margin-inline:auto; padding:0 }
+  .ledger-plate { width:100%; aspect-ratio:.94 }
+  .ledger-chain { padding-block:29px }
+  .ledger-chain li { padding-bottom:20px }
+  .ledger-chain li:not(:last-child)::after { transform:none; border:0; left:21px; top:43px; bottom:0; width:1px; height:auto; background:#d6a84f70 }
+  .ledger-doctrine-grid { padding-block:42px; gap:24px }
+  .ledger-doctrine h2 { font-size:clamp(38px,10.5vw,51px) }
+  .ledger-doctrine-copy { font-size:15px }
+  .ledger-featured,.ledger-specimen,.ledger-index,.ledger-position { padding-block:40px 45px }
+  .ledger-section-label { font-size:10px; gap:15px; margin-bottom:25px }
+  .ledger-featured-grid { grid-template-columns:1fr; gap:24px }
+  .ledger-feature-media { aspect-ratio:1.85; padding:17px 17px 0 }
+  .ledger-instrument-body { display:grid; grid-template-columns:34px minmax(0,1fr); gap:14px; padding:22px }
+  .ledger-instrument .ledger-product-mark { width:32px; height:32px; margin:0 }
+  .ledger-instrument h3 { font-size:19px }
+  .ledger-instrument .ledger-job { min-height:0; font-size:14px }
+  .ledger-instrument-meta { grid-template-columns:minmax(0,1fr) auto; margin-top:15px }
+  .ledger-record { padding:22px }
+  .ledger-record dl { gap:4px }
+  .ledger-record dd { font-size:12px }
+  .ledger-specimen-grid { gap:36px }
+  .ledger-specimen-copy h2 { font-size:35px }
+  .ledger-specimen-copy p { font-size:15px }
+  .ledger-index th,.ledger-index td { padding-block:0 }
+  .ledger-index tr { padding-block:18px }
+  .ledger-principles article+article { padding-top:24px }
+  .ledger-position-head { font-size:34px }
+  .ledger-principles p { font-size:14px }
+  .ledger-close { padding-block:36px }
+  .studio .h9-software-hero { min-height:300px; padding-block:40px }
+  .studio .h9-software-hero h1 { font-size:54px }
+  .studio .h9-software-body { padding-block:35px 45px }
+  .studio .h9-catalog-heading h2 { font-size:28px }
+  .studio.software-catalog-page .card-body { padding:24px 20px }
+  .studio.software-catalog-page .catalog-image-link { margin-inline:18px }
+  body.studio.pp-system .product-shell>.pp-module-hero { padding-block:28px 40px }
+  body.studio.pp-system .pp-module-hero .pp-hero-layout { min-height:0; gap:30px }
+  body.studio.pp-system .product-copy h1 { font-size:clamp(40px,11vw,57px) }
+  body.studio.pp-system .product-lede { font-size:16px; line-height:1.75 }
+  body.studio.pp-system .pp-section { padding-block:40px }
+  .studio.secondary-page :is(.support-hero,.tf-hero,.proof-hero),.studio.tf-page .tf-product-head { padding-block:39px 30px }
+  .studio.secondary-page :is(.support-hero h1,.tf-hero h1,.proof-hero h1),body.studio.tf-page .tf-product-head h1 { font-size:clamp(40px,10.8vw,58px) }
+  .studio.secondary-page :is(.support-hero,.tf-hero,.proof-hero)::before,.studio.tf-page .tf-product-head::before { width:150px; height:150px; opacity:.05 }
+  .studio.secondary-page :is(.about-card,.about-nav-card,.standard-card,.standard-doctrine-card,.standard-boundary-card,.standard-route-card,.tf-card,.detail-card) { padding:23px }
+  .studio.secondary-page .about-intro-box { padding:23px }
+  .studio.product-support .support-hero { padding:30px 22px }
+  .studio.product-support :is(.detail-card,.support-content-box) { padding:23px }
+  body.studio.tf-page .tf-fact { padding:18px }
+  body.studio.tf-page .tf-fact dd { font-size:18px }
+  body:is(.studio,.pf-ledger-page) .site-footer { padding-top:40px }
+  body:is(.studio,.pf-ledger-page) .footer-grid { grid-template-columns:1fr 1fr; gap:32px 26px; padding-bottom:32px }
+  body:is(.studio,.pf-ledger-page) .footer-brand { grid-column:1/-1 }
+  body:is(.studio,.pf-ledger-page) .footer-brand p { font-size:26px; margin-top:19px }
+  body:is(.studio,.pf-ledger-page) .site-footer li a { padding-block:11px; min-height:44px; font-size:12px }
+  body:is(.studio,.pf-ledger-page) .footer-bottom { gap:15px }
+  body:is(.studio,.pf-ledger-page) .footer-bottom p { font-size:10px }
+}
+@media(prefers-reduced-motion:reduce) {
+  body:is(.studio,.pf-ledger-page) *,body:is(.studio,.pf-ledger-page) *::before,body:is(.studio,.pf-ledger-page) *::after { animation:none!important; transition:none!important; scroll-behavior:auto!important }
+  .ledger-instrument:hover,.ledger-instrument:focus-within { transform:none }
+}
+@media(forced-colors:active) {
+  body:is(.studio,.pf-ledger-page) { --pf-black:Canvas; --pf-iron:Canvas; --pf-paper:CanvasText; --pf-rule:CanvasText; --pf-teal:LinkText; --pf-muted:CanvasText; --pf-gold:CanvasText; --pf-steel:none }
+  body:is(.studio,.pf-ledger-page) :is(.site-header,.site-footer,.nav-panel,.ledger-hero,.h9-software-hero,.pp-module-hero,.support-hero,.ledger-chain,.ledger-close,.ledger-instrument,.ledger-record,.ledger-paper,.ledger-feature-media,.tf-fact,.tf-verify-list li,.tf-limit-list li,.tf-record-list li,.tf-machine,.tf-product-summary) { background:Canvas; color:CanvasText; border-color:CanvasText; box-shadow:none }
+  body:is(.studio,.pf-ledger-page) :is(.site-header,.site-footer) { background-image:none }
+  body:is(.studio,.pf-ledger-page) :is(.brand-name,.brand-name small,.footer-brand-lockup,.footer-brand p,.footer-maker-note,.footer-bottom p,.site-footer h2) { color:CanvasText }
+  body:is(.studio,.pf-ledger-page) :is(.top-nav a,.site-footer li a,.site-header .nav-cta) { color:LinkText }
+  body:is(.studio,.pf-ledger-page) .site-header .nav-panel .nav-cta { border:1px solid ButtonText; background:ButtonFace; color:ButtonText }
+  .studio.secondary-page :is(.support-hero,.tf-hero,.proof-hero)::before,.studio.tf-page .tf-product-head::before,.footer-registration { display:none }
+  .ledger-instrument:hover,.ledger-instrument:focus-within { transform:none }
+}
