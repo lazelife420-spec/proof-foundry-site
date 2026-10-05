@@ -274,7 +274,22 @@ Assert ($t4b.Exit -eq 0) 'valid semantic presentation and order changes build wi
 $t4bHome = Get-Content (Join-Path $t4b.OutDir 'index.html') -Raw -Encoding UTF8
 $t4bSoftware = Get-Content (Join-Path $t4b.OutDir 'software\index.html') -Raw -Encoding UTF8
 $t4bOrder = @([regex]::Matches($t4bSoftware, 'data-product="([a-z0-9-]+)"') | ForEach-Object { $_.Groups[1].Value })
-Assert ($controlId -ne $catalogOrder[0] -and $t4bOrder.Count -eq $catalogOrder.Count -and $t4bOrder[0] -eq $controlId -and (Get-CatalogCard $t4bSoftware $controlId) -match ('href="/' + [regex]::Escape($controlId) + '/"') -and $t4bHome -ceq $canonicalHome -and $t4bHome -notmatch $homeProductSlots) 'changed module order moves a nonfirst catalog product first while semantic Home metadata leaves frozen Home intact'
+# Home now uses the shared registry-driven footer. Permit only its product
+# list ordering to follow module order; every item and all other Home bytes
+# must stay exact. This is a presentation mutation, not release-fact drift.
+$footerProductsPattern = '(?s)(<h2>Products</h2>\s*<ul>)(.*?)(</ul>)'
+function Normalize-HomeFooterProductOrder([string]$html) {
+  if ([regex]::Matches($html, $script:footerProductsPattern).Count -ne 1) { throw 'Expected one shared footer product list' }
+  return [regex]::Replace($html, $script:footerProductsPattern, [System.Text.RegularExpressions.MatchEvaluator]{
+    param($match)
+    $items = @([regex]::Matches($match.Groups[2].Value, '<li\b[^>]*>.*?</li>') | ForEach-Object { $_.Value } | Sort-Object)
+    if ([regex]::Replace($match.Groups[2].Value, '<li\b[^>]*>.*?</li>', '').Trim()) { throw 'Unexpected content outside footer list items' }
+    return $match.Groups[1].Value + ($items -join '') + $match.Groups[3].Value
+  })
+}
+$t4bFooterList = [regex]::Match($t4bHome, $footerProductsPattern).Groups[2].Value
+$t4bFooterOrder = @([regex]::Matches($t4bFooterList, '<a href="/([a-z0-9-]+)/"') | ForEach-Object { $_.Groups[1].Value })
+Assert ($controlId -ne $catalogOrder[0] -and $t4bOrder.Count -eq $catalogOrder.Count -and $t4bOrder[0] -eq $controlId -and (Get-CatalogCard $t4bSoftware $controlId) -match ('href="/' + [regex]::Escape($controlId) + '/"') -and $t4bFooterOrder.Count -eq $catalogOrder.Count -and $t4bFooterOrder[0] -eq $controlId -and (Normalize-HomeFooterProductOrder $t4bHome) -ceq (Normalize-HomeFooterProductOrder $canonicalHome) -and (Normalize-HomeFooterProductOrder ($t4bHome.Replace('href="/support/"', 'href="/broken-support/"'))) -cne (Normalize-HomeFooterProductOrder $canonicalHome) -and (Normalize-HomeFooterProductOrder ($t4bHome.Replace('<a href="/' + $controlId + '/">', '<a href="/broken-footer-product/">'))) -cne (Normalize-HomeFooterProductOrder $canonicalHome) -and $t4bHome -notmatch $homeProductSlots) 'changed module order moves catalog and shared footer products first; only footer item order changes, all labels/links and other Home bytes remain exact'
 
 $t4hiddenHome = Invoke-ModuleFixture 'homepage-hidden' {
   param($modDir)

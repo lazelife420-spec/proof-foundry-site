@@ -12,6 +12,8 @@ The dark hero and colophon surfaces use a low-contrast, real-material welded ste
 
 The shared navigation/footer is a material content event for all indexable routes, so all 24 sitemap lastmod values are `2026-10-05`. These are website material dates; release versions, dates and qualification states are unchanged. The H9 guard now asserts canonical header equality across page families instead of the superseded Home-only header; H11 retains exact sitemap assertions at the new material date. No qualification population is removed or skipped.
 
+H13's module-order mutation now permits the shared Home footer product list to follow registry order. It still compares the complete Home document exactly after normalizing only that list's item order, checks the expected first product and population, refuses unexpected non-item content, and includes negative controls for changing a product link and an unrelated support link. The 200-assertion population is retained. The original full-suite failure and all attempted qualifications are preserved in the review evidence; dependent publisher gates are rerun on the exact repaired candidate.
+
 ## Authored authority and protected boundaries
 
 `release-truth.json`, the shared compiler, presentation product records, artifact URLs, hashes, sizes, channels and withdrawal remain unchanged. The sole `site-manifest.json` change adds the Truth Files navigation link; it remains presentation/compatibility data. No signing or installation authority is introduced. Machine projections differ only in independently verified website commit/tree/time provenance.
