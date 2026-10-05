@@ -137,11 +137,11 @@ Assert-Truth ($lastmodByLoc['https://theprooffoundry.com/proof-standard/'] -eq '
 # baseline debt. H4 independently derives each date from material Git inputs.
 # All other routes retain their HEAD dates; no blanket freshness bump.
 $reconciledLastmod = @{
-  'https://theprooffoundry.com/' = '2026-10-04'
-  'https://theprooffoundry.com/cache-vault/' = '2026-10-03'
+  'https://theprooffoundry.com/' = '2026-10-05'
+  'https://theprooffoundry.com/cache-vault/' = '2026-10-05'
   'https://theprooffoundry.com/proofshot/' = '2026-09-30'
-  'https://theprooffoundry.com/reality-gate/' = '2026-09-30'
-  'https://theprooffoundry.com/software/' = '2026-10-03'
+  'https://theprooffoundry.com/reality-gate/' = '2026-10-05'
+  'https://theprooffoundry.com/software/' = '2026-10-05'
 }
 foreach ($kv in $headLastmod.GetEnumerator()) {
   if ($kv.Key -eq 'https://theprooffoundry.com/proof-standard/') { continue }
