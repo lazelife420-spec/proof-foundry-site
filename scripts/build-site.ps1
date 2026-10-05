@@ -1089,6 +1089,8 @@ function Replace-ProductTokens($text, $tokens, [switch]$Strict) {
 # ─────────────────────────────────────────────────────────────────────────────
 function Build-NavLinks($activeId) {
   if ($activeId -eq 'software') { $activeId = 'products' }
+  if ($activeId -eq 'proof') { $activeId = 'proof-standard' }
+  if ($activeId -eq 'truth' -or $activeId -like 'truth-files-*') { $activeId = 'truth-files' }
   # Product pages map to the "products" nav item
   $productIds = @()
   foreach ($p in $allProductState) { $productIds += $p.id }
