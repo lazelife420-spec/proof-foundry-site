@@ -32,7 +32,7 @@ Assert-H9 'hero is brand-owned and contains no fixed product identity' ($sourceH
 
 Assert-H9 'product browsing lives on Software rather than Home' ($publicModules.Count -gt 0 -and $renderedPublic.Count -eq 0 -and $homeHtml -notmatch 'studio-product-tab|role="tablist"|role="tabpanel"|studio-evidence')
 Assert-H9 'withdrawn product stays on its record without a standalone Home panel' ($withdrawnModules.Count -gt 0 -and $renderedWithdrawn.Count -eq 0 -and $sourceHome -notmatch '@studio-withdrawn' -and $homeHtml -notmatch 'studio-withdrawn|Withdrawn work' -and $realityGate -match 'Withdrawn')
-Assert-H9 'shared mono PF mark and ledger footer appear without glyph arrows' (([regex]::Matches($homeHtml, '<img[^>]*PF_MARK_G_MONO_LIGHT\.svg')).Count -eq 2 -and $homeHtml -match 'class="pf-ledger-footer"' -and $homeHtml -notmatch '↗|→|←' -and $homeHtml -match 'class="ledger-arrow"')
+Assert-H9 'shared PF micro mark and unified seal derivatives appear without glyph arrows' (([regex]::Matches($homeHtml, '<img[^>]*PF_HEADER_MARK\.svg')).Count -eq 2 -and $homeHtml -match 'PF_MAKER_SEAL\.svg' -and $homeHtml -match 'PF_RECEIPT_WATERMARK\.svg' -and $homeHtml -notmatch 'pf-stamp-top|PF_MARK_G_MONO_LIGHT\.svg' -and $homeHtml -match 'class="pf-ledger-footer"' -and $homeHtml -notmatch '↗|→|←' -and $homeHtml -match 'class="ledger-arrow"')
 
 $catalogFailures = @()
 foreach ($p in @($manifest.products | Where-Object visible)) {

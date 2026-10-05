@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Proof Foundry PF micro mark, dark">
+<title>Proof Foundry PF micro mark, dark</title><desc>Dark small-size derivative using the same geometry. No microtext.</desc>
+<path data-maker-mark="plate-edge" d="M17 7H239L249 17V239L239 249H17L7 239V17Z" fill="none" stroke="#52656a" stroke-width="7"/>
+<g data-maker-mark="pressed-seal" fill="none" stroke="#52656a" stroke-width="4"><path d="M37 98A95 95 0 0 1 219 98M219 158A95 95 0 0 1 37 158"/></g>
+<g data-pf-geometry="shipped-G" transform="translate(31.52 35.84) scale(.72)">
+  
+  <g fill="#18242a"><path d="M42 34H116C157 34 181 56 181 91C181 126 157 148 116 148H82V222H42V34ZM82 70V112H115C132 112 141 104 141 91C141 78 132 70 115 70H82Z"/><path d="M146 34H226V72H186V106H218V143H186V222H146V34Z"/><path d="M138 70H186V106H138Z"/></g>
+  <path data-maker-mark="receipt-fold" d="M90 77H109L118 86V106H90ZM109 77V86H118" fill="none" stroke="#735927" stroke-width="2" stroke-linejoin="miter"/>
+  
+  <path data-maker-mark="record-crossbar" d="M139 103.5H185" stroke="#735927" stroke-width="3.1"/>
+</g>
+<path data-maker-mark="alignment" d="M128 9V20M236 128H247M128 236V247M9 128H20" stroke="#735927" stroke-width="5"/>
+</svg>
