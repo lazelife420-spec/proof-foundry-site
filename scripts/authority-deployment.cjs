@@ -39,6 +39,7 @@ function load(artifact,receiptFile){
   assert.equal(git('status','--porcelain=v1','--untracked-files=all'),'','Dirty source cannot be deployed');
   const receipt=JSON.parse(fs.readFileSync(receiptFile,'utf8'));
   validateReceipt(receipt,{commit:git('rev-parse','HEAD'),tree:git('rev-parse','HEAD^{tree}')},inventory(artifact));
+  assert.ok(!fs.readFileSync(path.join(artifact,'_worker.js'),'utf8').startsWith('------'),'Multipart envelope cannot be uploaded as Worker source');
   return receipt;
 }
 function deploy(mode,artifact,receiptFile,stageFile){
