@@ -21,6 +21,13 @@ File use the paper record treatment. Mobile navigation, catalog search,
 comparison, galleries, disclosures, checksum copying and existing links remain
 under their existing runtime.
 
+Support retains its dark help-desk composition with neutral steel cards and teal
+record rules. Truth File fact, verification, limit, machine and summary surfaces
+retain explicit opaque paper backings; forced colors map those backings to
+Canvas. Cleanroom's authored visited-link rule uses the same shared teal token
+as its default record links. Existing opaque-surface, link contrast, keyboard
+focus and 200% zoom assertions remain unchanged.
+
 The compact footer and generated-page favicons now use `PF_HEADER_MARK.svg`.
 The Founders receipt preview uses `PF_RECEIPT_WATERMARK.svg` as a maker's mark;
 it does not imply a verified purchase. Its reserved/claim semantics are intact.

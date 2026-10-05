@@ -108,6 +108,19 @@ body.studio.pp-system .proof-pill strong { color:var(--pf-paper) }
 body.studio.pp-system .archive-demo { --text:var(--pf-black); --muted:#45525a; background:var(--pf-paper); color:var(--text) }
 body.studio.pp-system .archive-demo :is(.pp-kicker,h2) { color:var(--text) }
 
+/* Support keeps the dark help desk, with the same neutral steel surfaces. */
+.studio.product-support .support-hero { background:none; border-color:var(--line) }
+.studio.product-support :is(.support-box-dark,.support-content-box,.detail-card) {
+  background:var(--pf-iron); border-color:var(--line); border-radius:0; box-shadow:none;
+}
+.studio.product-support .detail-card h3 a { color:var(--text) }
+.studio.product-support .detail-card h3 a:hover { color:var(--teal) }
+.studio.product-support .detail-card p { color:var(--muted) }
+.studio.product-support .detail-card .note { border-left-color:var(--teal) }
+.studio.product-support :is(.support-command,.support-diagnostic-textarea) {
+  background:var(--pf-iron); color:var(--text); border-color:var(--line); border-radius:0;
+}
+
 /* Secondary pages read like the doctrine and release index on Home. */
 body.studio.secondary-page:not(.tf-page) { background:var(--pf-paper) }
 body.studio.secondary-page:not(.tf-page) main {
@@ -159,8 +172,8 @@ body.studio.tf-page { --text:var(--pf-black); --muted:#45525a; --line:var(--pf-p
 body.studio.tf-page main { background:var(--pf-paper) }
 body.studio.tf-page :is(.tf-product-head h1,.tf-product-summary,.tf-fact dd,.tf-v-val) { color:var(--text) }
 body.studio.tf-page .tf-product-head h1 { font:700 clamp(38px,4vw,60px)/1.05 var(--pf-serif) }
-body.studio.tf-page :is(.tf-fact,.tf-verify-list li,.tf-limit-list li,.tf-record-list li,.tf-machine) { border-color:var(--line); border-radius:0; background:transparent; color:var(--text) }
-body.studio.tf-page .tf-product-summary { background:transparent; padding:0; border:0 }
+body.studio.tf-page :is(.tf-fact,.tf-verify-list li,.tf-limit-list li,.tf-record-list li,.tf-machine) { border-color:var(--line); border-radius:0; background:var(--pf-paper); color:var(--text) }
+body.studio.tf-page .tf-product-summary { background:var(--pf-paper); padding:0; border:0 }
 body.studio.tf-page :is(.tf-record-list a,.tf-record-list a:visited) { color:var(--teal) }
 body.studio.tf-page :is(.tf-chip.verified,.tf-chip.pending,.tf-chip.not-published) { color:var(--text); border-color:var(--line); background:transparent; border-radius:0 }
 body.studio.tf-page .tf-fresh code.inline { background:#e6edef; color:var(--text) }
@@ -215,6 +228,7 @@ body.studio.tf-page .site-footer { color:var(--pf-paper) }
     color-scheme:light dark!important;
   }
   body.studio :is(main,.site-header,.site-footer) { background:Canvas; color:CanvasText }
+  body.studio.tf-page :is(.tf-fact,.tf-verify-list li,.tf-limit-list li,.tf-record-list li,.tf-machine,.tf-product-summary) { background:Canvas; color:CanvasText }
   body.studio :is(a,.text-link,.pp-link-row a) { color:LinkText!important }
   body.studio :is(button,.button) { color:ButtonText!important; background:ButtonFace!important; border-color:ButtonText!important }
   body.studio :is([disabled],[aria-disabled="true"]) { color:GrayText!important }
