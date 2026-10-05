@@ -15,7 +15,28 @@ const receipt = 'M90 77H109L118 86V106H90ZM109 77V86H118';
 const placement = 'translate(31.52 35.84) scale(.72)';
 const mono = 'ui-monospace,Consolas,monospace';
 const title = (name, description) => `<title>${name}</title><desc>${description}</desc>`;
-const wrap = (name, description, content, box = '0 0 256 256') => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${box}" role="img" aria-label="${name}">\n${title(name, description)}\n${content}\n</svg>\n`;
+const systemColors = `<style>
+@media (forced-colors:active) {
+  svg { color-scheme:light dark }
+  [data-pf-geometry]>g { fill:CanvasText }
+  [data-pf-geometry]>g[transform] { display:none }
+  [data-pf-geometry]>path { stroke:CanvasText }
+  [data-maker-mark="pressed-seal"] circle,[data-maker-mark="pressed-seal"] path,
+  [data-maker-mark="alignment"],[data-maker-mark="three-stages"],
+  [data-maker-mark="plate-edge"] { stroke:CanvasText }
+  [data-maker-mark="plate-edge"] { fill:none }
+  text { fill:CanvasText }
+}
+@media (forced-colors:active) and (prefers-color-scheme:dark) {
+  [data-pf-geometry]>g { fill:#fff }
+  [data-pf-geometry]>path { stroke:#fff }
+  [data-maker-mark="pressed-seal"] circle,[data-maker-mark="pressed-seal"] path,
+  [data-maker-mark="alignment"],[data-maker-mark="three-stages"],
+  [data-maker-mark="plate-edge"] { stroke:#fff }
+  text { fill:#fff }
+}
+</style>`;
+const wrap = (name, description, content, box = '0 0 256 256') => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${box}" role="img" aria-label="${name}">\n${title(name, description)}\n${systemColors}\n${content}\n</svg>\n`;
 const core = (ink, detail, embossed = false) => `<g data-pf-geometry="shipped-G" transform="${placement}">
   ${embossed ? `<g fill="#c4ceca" transform="translate(1.2 1.8)"><path d="${p}"/><path d="${f}"/><path d="${bridge}"/></g>` : ''}
   <g fill="${ink}"><path d="${p}"/><path d="${f}"/><path d="${bridge}"/></g>

@@ -42,7 +42,9 @@ foreach ($p in @($manifest.products | Where-Object visible)) {
 }
 Assert-H9 'Software cards retain registry routes, authentic images and public versions' ($catalogFailures.Count -eq 0)
 Assert-H9 'Software explains that illustrative and historical previews are not current runtime evidence' ($software -match 'App previews may show earlier builds' -and $software -match "ProofShot's preview retains its earlier HyperSnatch name")
-Assert-H9 'active ledger preserves decorative motion limits and forced-color accessibility' ($homeCss -match 'prefers-reduced-motion:reduce' -and $homeCss -match 'animation:none!important' -and $homeCss -match 'forced-colors:active' -and $homeCss -match 'background:CanvasText')
+$headerMark = Get-Content (Join-Path $public 'brand/PF_HEADER_MARK.svg') -Raw -Encoding UTF8
+$makerSeal = Get-Content (Join-Path $public 'brand/PF_MAKER_SEAL.svg') -Raw -Encoding UTF8
+Assert-H9 'active ledger preserves motion limits and actual SVG forced-color support' ($homeCss -match 'prefers-reduced-motion:reduce' -and $homeCss -match 'animation:none!important' -and $homeCss -match 'forced-colors:active' -and $homeCss -match 'background:Canvas' -and $headerMark -match 'forced-colors:active' -and $headerMark -match 'fill:CanvasText' -and $makerSeal -match 'fill:CanvasText' -and $makerSeal -match 'stroke:CanvasText')
 
 Assert-H9 'Home proof link scopes hash identity and custody honestly' ($homeHtml -match 'A verified hash establishes artifact identity' -and $homeHtml -match 'does not by itself establish custody or safety' -and $homeHtml -notmatch 'HASH VERIFIED' -and $proof -match 'Artifact custody')
 Assert-H9 'dedicated Truth, proof, catalogue and support routes remain reachable' ($homeHtml -match 'href="/truth-files/"' -and $homeHtml -match 'href="/proof/"' -and $homeHtml -match 'href="/software/"' -and $homeHtml -match 'href="/support/"')

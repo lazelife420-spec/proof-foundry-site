@@ -16,6 +16,8 @@ The rectangular steel plate and circular impression form one primary mark. The s
 
 The generator preserves the exact three path strings in shipped `PF_MARK_G_MASTER.svg`. None of the pre-existing brand files is overwritten. The PF has one shared transform: `translate(31.52 35.84) scale(.72)`.
 
+The SVGs map their actual PF fills and construction strokes to `CanvasText` in forced-color mode, with explicit white ink for the dark palette so embedded SVG system-color resolution cannot erase the mark. The plate uses `Canvas` and suppresses decorative grain in that mode. Both light and dark forced-color palettes are rendered in the review evidence; ordinary colors and geometry stay the same.
+
 ## Every discoverable element
 
 | Element | Location and exact content | Meaning | Intended viewing scale |
