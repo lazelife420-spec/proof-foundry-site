@@ -72,6 +72,7 @@ body.studio.pp-system .pp-module-hero[data-scene-family],
 .ledger-featured,.ledger-specimen,.ledger-index,.ledger-position { padding-block:60px 68px }
 .ledger-section-label { margin-bottom:30px }
 .ledger-featured-grid { gap:24px }
+.pf-preview-picture { display:contents }
 .ledger-instrument { display:flex; flex-direction:column; gap:0; padding:0; background:#12191e; border-color:#ffffff26; transition:border-color 160ms ease,transform 160ms ease; position:relative }
 .ledger-instrument:hover,.ledger-instrument:focus-within { border-color:#00d1b27a; transform:translateY(-3px) }
 .ledger-feature-media { display:block; aspect-ratio:1.75; overflow:hidden; border-bottom:1px solid #ffffff26; background:#171e23; padding:18px 18px 0 }

@@ -685,6 +685,16 @@ function StatusLine($p) {
 # decode to the literal characters in every HTML context.
 function Html-Attr($s) { return ($s -replace '&','&amp;' -replace '<','&lt;' -replace '>','&gt;' -replace '"','&quot;' -replace "'",'&#39;') }
 
+# An optional lossless delivery derivative never replaces the module's original
+# media identity. The PNG img remains the format fallback and link/alt source.
+function Build-PreviewWebpSource([string]$media) {
+  if ($media -cnotmatch '^/assets/[A-Za-z0-9_./-]+\.png$' -or $media -match '/\.{1,2}(?:/|$)') { return '' }
+  $webp = [IO.Path]::ChangeExtension($media, '.webp')
+  $file = Join-Path $root $webp.TrimStart('/')
+  if (-not [IO.File]::Exists($file)) { return '' }
+  return '<source type="image/webp" srcset="' + (Html-Attr $webp) + '"/>'
+}
+
 # Public-state URL policy: the only URL shapes allowed to cross into public
 # surfaces are site-relative paths and https:// absolute URLs on public hosts.
 # Everything else (javascript:, data:, file:, vbscript:, about:, blob:,
@@ -1136,7 +1146,7 @@ function Render-ProductCard($p, $cardTemplate, [bool]$catalogMode = $false) {
     $t['moduleJobs'] = (@($module.taxonomy.jobs) -join ', ')
     $t['moduleJobKeys'] = (@($module.taxonomy.jobs) -join '|')
   }
-  $card = $cardTemplate
+  $card = $cardTemplate.Replace('<!-- @card-preview-source -->', (Build-PreviewWebpSource $t['cardImage']))
   # cardVersionLabel is substituted before versionLabel would be, and the token
   # names are distinct, so ordering here is incidental rather than load-bearing.
   foreach ($key in @(
@@ -2647,7 +2657,7 @@ function Build-LedgerFeatured {
     $job = if ($m.card.tagline) { [string]$m.card.tagline } else { [string]$p.summary }
     $items += @"
 <article class="ledger-instrument" data-ledger-feature="$(Html-Attr $m.id)">
-  <a class="ledger-feature-media" href="$(Html-Attr $m.route)" aria-label="Explore $(Html-Attr $name)"><img src="$(Html-Attr $m.card.media)" alt="$(Html-Attr $m.card.mediaAlt)" width="640" height="366" loading="lazy" decoding="async"/></a>
+  <a class="ledger-feature-media" href="$(Html-Attr $m.route)" aria-label="Explore $(Html-Attr $name)"><picture class="pf-preview-picture">$(Build-PreviewWebpSource $m.card.media)<img src="$(Html-Attr $m.card.media)" alt="$(Html-Attr $m.card.mediaAlt)" width="640" height="366" loading="lazy" decoding="async"/></picture></a>
   <div class="ledger-instrument-body">$(LedgerProductMark $m)<div><h3>$(Html-Text $name)</h3><p class="ledger-job">$(Html-Text $job)</p><div class="ledger-instrument-meta"><div><span class="ledger-version">$(Html-Text (VersionLabel $p))</span><span class="ledger-platform">$(Html-Text (LedgerPlatform $p))</span></div><a class="ledger-link" href="$(Html-Attr $m.route)" aria-label="View $(Html-Attr $name) details">View details $(LedgerArrowSvg)</a></div><span class="ledger-status">$(Html-Text ((VisitorAvailabilityLabel $p).Replace('_', ' ')))</span></div></div>
 </article>
 "@
