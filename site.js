@@ -5,6 +5,128 @@
 (function () {
   "use strict";
 
+  // One motion policy for every page. Content never starts hidden, and the
+  // device's accessibility settings take precedence over a saved preference.
+  function initMotion() {
+    var root = document.documentElement;
+    var reduced = matchMedia("(prefers-reduced-motion: reduce)");
+    var forced = matchMedia("(forced-colors: active)");
+    var fine = matchMedia("(hover: hover) and (pointer: fine)");
+    var preference = "on", active = false, progressFrame = 0, tiltFrame = 0;
+    try { if (localStorage.getItem("pf-motion") === "off") preference = "off"; } catch (_) {}
+    var button = document.createElement("button");
+    button.type = "button";
+    button.className = "motion-toggle";
+    var progress = document.createElement("div");
+    progress.className = "pf-reading-progress";
+    progress.setAttribute("aria-hidden", "true");
+    var plate = document.querySelector(".ledger-plate");
+    var scene = document.querySelector(".ledger-plate-scene");
+    var running = new Set();
+
+    function resetPlate() {
+      cancelAnimationFrame(tiltFrame);
+      if (plate) {
+        plate.style.removeProperty("--pf-tilt-x");
+        plate.style.removeProperty("--pf-tilt-y");
+      }
+    }
+    function updateProgress() {
+      progressFrame = 0;
+      var distance = document.documentElement.scrollHeight - innerHeight;
+      var value = distance > 0 ? Math.min(1, Math.max(0, scrollY / distance)) : 0;
+      progress.style.transform = "scaleX(" + value + ")";
+    }
+    function scheduleProgress() {
+      if (active && !progressFrame) progressFrame = requestAnimationFrame(updateProgress);
+    }
+    function apply() {
+      active = !reduced.matches && !forced.matches && preference === "on";
+      root.dataset.motion = active ? "on" : "off";
+      button.textContent = reduced.matches ? "Reduced motion" : forced.matches ? "Motion off" : "Motion " + (active ? "on" : "off");
+      button.setAttribute("aria-pressed", String(active));
+      button.setAttribute("aria-label", reduced.matches || forced.matches ? "Website motion follows your device accessibility setting" : "Website motion");
+      button.disabled = reduced.matches || forced.matches;
+      progress.hidden = !active;
+      if (!active) {
+        cancelAnimationFrame(progressFrame);
+        progressFrame = 0;
+        resetPlate();
+        running.forEach(animation => animation.cancel());
+        // Includes the existing product screen-change enhancement.
+        document.getAnimations?.().forEach(animation => animation.cancel());
+      } else scheduleProgress();
+    }
+    document.querySelector(".footer-bottom")?.append(button);
+    document.body.append(progress);
+    button.addEventListener("click", function () {
+      preference = preference === "on" ? "off" : "on";
+      try { localStorage.setItem("pf-motion", preference); } catch (_) {}
+      apply();
+    });
+    reduced.addEventListener("change", apply);
+    forced.addEventListener("change", apply);
+    fine.addEventListener("change", resetPlate);
+    addEventListener("storage", function (event) {
+      if (event.key === "pf-motion" || event.key === null) {
+        preference = event.newValue === "off" ? "off" : "on";
+        apply();
+      }
+    });
+    addEventListener("scroll", scheduleProgress, { passive: true });
+    addEventListener("resize", scheduleProgress, { passive: true });
+    if (window.ResizeObserver) new ResizeObserver(scheduleProgress).observe(document.body);
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) resetPlate();
+      else scheduleProgress();
+    });
+    apply();
+
+    if (scene && plate) {
+      scene.addEventListener("pointermove", function (event) {
+        if (!active || !fine.matches || event.pointerType !== "mouse") return;
+        var bounds = scene.getBoundingClientRect();
+        var x = Math.min(.5, Math.max(-.5, (event.clientX - bounds.left) / bounds.width - .5));
+        var y = Math.min(.5, Math.max(-.5, (event.clientY - bounds.top) / bounds.height - .5));
+        cancelAnimationFrame(tiltFrame);
+        tiltFrame = requestAnimationFrame(function () {
+          if (!active) return;
+          plate.style.setProperty("--pf-tilt-x", (-y * 4).toFixed(2) + "deg");
+          plate.style.setProperty("--pf-tilt-y", (x * 5).toFixed(2) + "deg");
+        });
+      });
+      scene.addEventListener("pointerleave", resetPlate);
+      scene.addEventListener("pointercancel", resetPlate);
+    }
+
+    // Animate only small headings and cards arriving below the first viewport.
+    // Never animate a whole release record, a focused control, or a hash target.
+    if (window.IntersectionObserver && Element.prototype.animate) {
+      var arrivals = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          arrivals.unobserve(entry.target);
+          if (!active || entry.target.contains(document.activeElement) || location.hash) return;
+          var animation = entry.target.animate([
+            { transform: "translateY(10px)", opacity: .88 },
+            { transform: "translateY(0)", opacity: 1 }
+          ], { duration: 420, easing: "cubic-bezier(.2,.7,.3,1)" });
+          running.add(animation);
+          animation.finished.then(() => running.delete(animation), () => running.delete(animation));
+        });
+      }, { threshold: .08 });
+      document.querySelectorAll(".ledger-section-label,.ledger-instrument,.section-heading,.section-head,.experience-heading,.product-card,.about-nav-card,.tf-section > h2").forEach(function (element) {
+        if (element.getBoundingClientRect().top >= innerHeight) arrivals.observe(element);
+      });
+      document.addEventListener("focusin", function (event) {
+        running.forEach(function (animation) {
+          if (animation.effect.target.contains(event.target)) animation.cancel();
+        });
+      });
+      addEventListener("hashchange", function () { running.forEach(animation => animation.cancel()); });
+    }
+  }
+
   function initScreenshots() {
     const links = [...document.querySelectorAll('[data-screenshot]')];
     if (!links.length || !window.HTMLDialogElement) return;
@@ -212,6 +334,7 @@
       initTemplateCopy();
       initScreenshots();
       revealDeepLink();
+      initMotion();
     });
   } else {
     initNavToggle();
@@ -219,5 +342,6 @@
     initTemplateCopy();
     initScreenshots();
     revealDeepLink();
+    initMotion();
   }
 })();

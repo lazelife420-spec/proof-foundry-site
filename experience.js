@@ -5,32 +5,7 @@ const products = {"cache-vault": {"name": "Cache Vault", "tab": "Keep", "line": 
 const $ = (s, root = document) => root.querySelector(s);
 const $$ = (s, root = document) => [...root.querySelectorAll(s)];
 const root = document.documentElement;
-const motionQuery = matchMedia('(prefers-reduced-motion: reduce)');
-let motionPreference = 'on';
-try { motionPreference = localStorage.getItem('pf-motion') || 'on'; } catch (_) {}
-const motionButton = document.createElement('button');
-motionButton.type = 'button';
-motionButton.className = 'motion-toggle';
-function applyMotion() {
-  const active = !motionQuery.matches && motionPreference === 'on';
-  root.dataset.motion = active ? 'on' : 'off';
-  motionButton.textContent = motionQuery.matches ? 'Reduced motion' : `Motion ${active ? 'on' : 'off'}`;
-  motionButton.setAttribute('aria-pressed', String(active));
-  motionButton.setAttribute('aria-label', motionQuery.matches ? 'Reduced motion follows your device setting' : 'Website motion');
-  motionButton.disabled = motionQuery.matches;
-  if (!active) {
-    $$('[data-tilt]').forEach(e => e.style.transform = '');
-    document.getAnimations?.().forEach(animation => animation.cancel());
-  }
-}
-applyMotion();
-motionQuery.addEventListener('change', applyMotion);
-motionButton.addEventListener('click', () => {
-  motionPreference = motionPreference === 'on' ? 'off' : 'on';
-  try { localStorage.setItem('pf-motion', motionPreference); } catch (_) {}
-  applyMotion();
-});
-$('.footer-bottom')?.append(motionButton);
+// Motion preference and arrivals are owned by the shared site.js shell.
 
 // Change only after the real screen loads, retaining the current view if it fails.
 const pendingScreens = new WeakMap();
@@ -302,27 +277,6 @@ if (forecast) {
 }
 // Enhancements are visible only after their behaviors have initialized.
 $$('[data-enhance]').forEach(e => e.hidden = false);
-// Short, one-shot arrival motion, with content visible even if JavaScript is absent.
-if ('IntersectionObserver' in window) {
-  const arrivals = new IntersectionObserver(entries => entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      if (root.dataset.motion === 'on') entry.target.animate([{ transform:'translateY(20px)', opacity:.55 },{ transform:'translateY(0)', opacity:1 }], { duration:600, easing:'cubic-bezier(.2,.7,.3,1)' });
-      arrivals.unobserve(entry.target);
-    }
-  }), { threshold: .12 });
-  $$('.experience-section,.product-card,.studio-featured,.section-heading').forEach(e => arrivals.observe(e));
-}
-const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
-$$('[data-tilt]').forEach(stage => {
-  let frame;
-  stage.addEventListener('pointermove', event => {
-    if (!finePointer.matches || root.dataset.motion !== 'on') return;
-    cancelAnimationFrame(frame);
-    const bounds = stage.getBoundingClientRect(), x = (event.clientX - bounds.left) / bounds.width - .5, y = (event.clientY - bounds.top) / bounds.height - .5;
-    frame = requestAnimationFrame(() => stage.style.transform = `perspective(900px) rotateX(${-y*4}deg) rotateY(${x*5}deg)`);
-  });
-  stage.addEventListener('pointerleave', () => { cancelAnimationFrame(frame); stage.style.transform = ''; });
-});
 // Compare cards use the rendered, manifest-derived content as their source.
 const compareChoices = $$('[data-compare]');
 if (compareChoices.length && window.HTMLDialogElement) {

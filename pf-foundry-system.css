@@ -59,7 +59,7 @@ body.studio.pp-system .pp-module-hero[data-scene-family],
 .ledger-hero-note { margin-top:27px }
 .ledger-margin { border-left:1px solid #ffffff1c; padding-left:22px }
 .ledger-plate-scene { padding-right:5px }
-.ledger-plate { max-width:420px; transform:rotate(-3deg) rotateY(-5deg); box-shadow:inset 1px 1px 0 #e8ede89c,inset 0 0 0 5px #2530333b,inset 0 0 25px #11191d3d,16px 27px 30px #0009,3px 4px 2px #0009 }
+.ledger-plate { max-width:420px; transform:rotate(-3deg) rotateY(calc(-5deg + var(--pf-tilt-y,0deg))) rotateX(var(--pf-tilt-x,0deg)); transition:transform 180ms ease-out; box-shadow:inset 1px 1px 0 #e8ede89c,inset 0 0 0 5px #2530333b,inset 0 0 25px #11191d3d,16px 27px 30px #0009,3px 4px 2px #0009 }
 .ledger-chain { padding-block:28px 32px; background:#10151a }
 .ledger-chain ol { margin-top:23px }
 .ledger-chain-icon { background:#161d22; border-color:#d6a84f80 }
@@ -180,6 +180,30 @@ body:is(.studio,.pf-ledger-page) .footer-bottom p { color:var(--pf-muted); font:
 .footer-registration { display:flex; align-items:center; gap:9px }
 .footer-registration i { display:block; width:5px; height:12px; background:var(--pf-gold) }
 .footer-registration i:nth-child(2) { height:18px }
+
+/* Shared motion language: feedback on action, calm records, no idle loops. */
+body:is(.studio,.pf-ledger-page) .motion-toggle { min-height:44px; padding:9px 13px; border:1px solid var(--pf-rule); border-radius:2px; background:transparent; color:var(--pf-paper); font:11px/1.4 var(--pf-mono)!important; letter-spacing:.04em; white-space:nowrap; cursor:pointer }
+body:is(.studio,.pf-ledger-page) .motion-toggle::before { content:""; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--pf-teal); margin-right:9px }
+body:is(.studio,.pf-ledger-page) .motion-toggle[aria-pressed="false"]::before { background:var(--pf-muted) }
+body:is(.studio,.pf-ledger-page) .motion-toggle:disabled { cursor:default; color:var(--pf-muted) }
+body:is(.studio,.pf-ledger-page) .footer-bottom { flex-wrap:wrap }
+.pf-reading-progress { position:fixed; z-index:60; pointer-events:none; inset:0 0 auto; height:2px; background:var(--pf-teal); transform:scaleX(0); transform-origin:left }
+.pf-reading-progress[hidden] { display:none }
+html[data-motion="on"] body:is(.studio,.pf-ledger-page) :is(.ledger-link,.button-primary,.button-secondary,.nav-cta,.motion-toggle,.gallery-launch) { transition:color 160ms ease,background-color 160ms ease,border-color 160ms ease }
+html[data-motion="on"] :is(.ledger-arrow,.ui-arrow) { transition:transform 180ms ease }
+html[data-motion="on"] a:is(:hover,:focus-visible) :is(.ledger-arrow,.ui-arrow) { transform:translateX(3px) }
+html[data-motion="on"] :is(.ledger-instrument,.about-nav-card,.tf-card):focus-within { transform:none; transition:none }
+@media(hover:hover) and (pointer:fine) {
+  html[data-motion="on"] .studio.secondary-page :is(.about-nav-card,.tf-card) { transition:transform 180ms ease,border-color 180ms ease }
+  html[data-motion="on"] .studio.secondary-page :is(.about-nav-card,.tf-card):hover { transform:translateY(-2px) }
+}
+@keyframes pf-nav-arrival { from { opacity:.9; transform:translateY(-6px) } to { opacity:1; transform:translateY(0) } }
+@media(max-width:900px) {
+  html[data-motion="on"] .nav-open .nav-panel { animation:pf-nav-arrival 180ms ease-out }
+  body:is(.studio,.pf-ledger-page) .footer-bottom .motion-toggle { margin-left:auto }
+}
+html[data-motion="off"] *,html[data-motion="off"] *::before,html[data-motion="off"] *::after { animation:none!important; transition:none!important; scroll-behavior:auto!important }
+html[data-motion="off"] :is(.ledger-instrument,.about-nav-card,.tf-card):is(:hover,:focus-within) { transform:none }
 
 @media(max-width:1200px) {
   :root { --pf-rail:calc(100% - 64px) }
