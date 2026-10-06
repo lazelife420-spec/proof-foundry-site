@@ -332,11 +332,13 @@ html[data-motion="off"] :is(.ledger-instrument,.about-nav-card,.tf-card):is(:hov
 /* A real interface workbench. Static panels are the fallback; tabs are a
    keyboard enhancement, without autoplay, synthetic captures or new facts. */
 .pf-workbench { padding-block:70px 60px; border-bottom:1px solid var(--pf-rule); background:var(--pf-black); color:var(--pf-paper) }
+.pf-ledger-page .ledger-featured { padding-top:0 }
+.ledger-featured>.pf-workbench { border-bottom:0; padding-bottom:36px }
 .pf-workbench-heading { display:flex; align-items:end; justify-content:space-between; gap:48px; margin-bottom:30px }
 .pf-workbench-heading .ledger-label { color:var(--pf-teal); margin:0 0 12px }
 .pf-workbench-heading h2 { font:400 clamp(32px,3.2vw,46px)/1.15 var(--pf-serif); letter-spacing:-.03em; margin:0 }
 .pf-workbench-heading>p { max-width:37ch; color:var(--pf-muted); font-size:14px; line-height:1.75; margin:0 }
-.pf-workbench-tabs { display:flex; border:1px solid var(--pf-rule); border-bottom:0; overflow-x:auto; scrollbar-width:thin }
+.pf-workbench-tabs { display:flex; border:1px solid var(--pf-rule); border-bottom:0; overflow-x:auto; scrollbar-width:thin; scrollbar-color:#63727c var(--pf-black) }
 .pf-workbench-tabs[hidden],.pf-workbench-panel[hidden] { display:none }
 .pf-workbench-tabs button { flex:1 0 auto; min-height:52px; padding:12px 17px; border:0; border-right:1px solid var(--pf-rule); border-bottom:3px solid transparent; border-radius:0; background:transparent; color:var(--pf-muted); font:12px/1.5 var(--pf-mono); cursor:pointer }
 .pf-workbench-tabs button:last-child { border-right:0 }
@@ -364,12 +366,13 @@ html[data-motion="off"] :is(.ledger-instrument,.about-nav-card,.tf-card):is(:hov
 .pf-workbench-media noscript { display:contents }
 .pf-workbench-media img { display:block; width:auto; height:auto; max-width:100%; max-height:100%; object-fit:contain; border-radius:3px }
 .pf-workbench-inspect { position:absolute; right:10px; bottom:10px; background:var(--pf-black); border:1px solid var(--pf-rule); padding:7px 10px; color:var(--pf-paper); font:10px/1.5 var(--pf-mono) }
+.pf-workbench-inspect .ledger-arrow { width:13px; height:13px; margin-left:6px; vertical-align:middle }
 .pf-workbench-media figcaption,.pf-workbench-disclosure { font:11px/1.8 var(--pf-mono); color:var(--pf-muted); margin:13px 0 0 }
 .pf-workbench-disclosure { max-width:95ch; margin-top:20px }
 /* Shared, progressive product navigation replaces the transient demo dock. */
 body.studio.pp-system .pf-product-navigation { position:sticky; top:0; z-index:30; display:flex; align-items:center; justify-content:space-between; gap:22px; min-height:59px; padding:0 18px; border:1px solid var(--pf-rule); background:var(--pf-black); color:var(--pf-paper); margin-bottom:15px }
 .pf-product-navigation-name { font:11px/1.6 var(--pf-mono); white-space:nowrap; color:var(--pf-muted) }
-.pf-product-navigation>div { display:flex; align-items:center; overflow-x:auto; scrollbar-width:thin; min-width:0; gap:20px; padding:0 3px }
+.pf-product-navigation>div { display:flex; align-items:center; overflow-x:auto; scrollbar-width:thin; scrollbar-color:#63727c var(--pf-black); min-width:0; gap:20px; padding:0 3px }
 .pf-product-navigation a { display:flex; align-items:center; white-space:nowrap; min-height:57px; color:var(--pf-muted); text-decoration:none; border-bottom:2px solid transparent; font:12px/1.5 var(--pf-sans) }
 .pf-product-navigation a:hover,.pf-product-navigation a[aria-current="location"] { color:var(--pf-teal); border-bottom-color:var(--pf-teal) }
 .pf-product-navigation a:focus-visible { outline-offset:-4px!important }
@@ -380,7 +383,7 @@ body.studio.pp-system .pf-product-navigation { position:sticky; top:0; z-index:3
 .pf-support-fields { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:20px }
 .pf-support-fields>label { display:flex; flex-direction:column; gap:9px; font-size:13px; color:var(--pf-paper) }
 .pf-support-wide { grid-column:1/-1 }
-.studio.product-support .pf-support-fields :is(input,select,textarea) { width:100%; box-sizing:border-box; border:1px solid var(--pf-rule); border-radius:0; min-height:46px; padding:11px 12px; background:var(--pf-black); color:var(--pf-paper); font:14px/1.6 var(--pf-sans) }
+.studio.product-support .pf-support-fields :is(input,select,textarea) { width:100%; box-sizing:border-box; border:1px solid var(--pf-rule); border-radius:0; min-height:46px; padding:11px 12px; background:var(--pf-black); color:var(--pf-paper); color-scheme:dark; font:14px/1.6 var(--pf-sans) }
 .pf-support-fields textarea { resize:vertical }
 .pf-support-fields :is(input,textarea)::placeholder { color:var(--pf-muted); opacity:1 }
 .pf-support-draft-actions { display:flex; gap:22px; align-items:center; justify-content:space-between; margin-top:22px }

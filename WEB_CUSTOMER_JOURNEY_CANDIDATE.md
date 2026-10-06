@@ -10,6 +10,9 @@ to the same system rather than another design vocabulary.
 
 Home presents actual existing product captures, their authored provenance,
 and release facts obtained through the existing shared-release-truth projection.
+The workbench belongs to the existing Featured Software section; all eight
+shipped top-level sections and their order are preserved. Inspection links use
+the shared SVG arrow, matching the established icon system.
 The first three presentation selections come from `homepage-ledger.json`;
 remaining eligible products sort by identity, independently of catalog order.
 Homepage-hidden modules remain excluded. No release facts are authored here.
