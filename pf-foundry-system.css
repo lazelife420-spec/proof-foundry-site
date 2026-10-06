@@ -11,10 +11,12 @@
   --pf-rail:min(1280px,calc(100% - 112px));
 }
 html { scroll-padding-top:24px }
+html:has(.pf-product-navigation) { scroll-padding-top:88px }
 body:is(.studio,.pf-ledger-page) { font-family:var(--pf-sans); font-size:16px; line-height:1.65; -webkit-font-smoothing:antialiased }
 body:is(.studio,.pf-ledger-page) :where(h1,h2,h3,p) { text-wrap:pretty }
 body:is(.studio,.pf-ledger-page) :where(h1,h2) { text-wrap:balance }
 body:is(.studio,.pf-ledger-page) :where(a,button,input,select,summary):focus-visible { outline:3px solid var(--teal,var(--pf-teal)); outline-offset:5px }
+body:is(.studio,.pf-ledger-page) :where(textarea,[role="tabpanel"]):focus-visible { outline:3px solid var(--pf-teal); outline-offset:5px }
 body:is(.studio,.pf-ledger-page) .skip-link { z-index:101; background:var(--pf-teal); color:var(--pf-black) }
 
 /* One source partial and one set of rules: every route gets the same header. */
@@ -325,4 +327,88 @@ html[data-motion="off"] :is(.ledger-instrument,.about-nav-card,.tf-card):is(:hov
   body:is(.studio,.pf-ledger-page) .site-header .nav-panel .nav-cta { border:1px solid ButtonText; background:ButtonFace; color:ButtonText }
   .studio.secondary-page :is(.support-hero,.tf-hero,.proof-hero)::before,.studio.tf-page .tf-product-head::before,.footer-registration { display:none }
   .ledger-instrument:hover,.ledger-instrument:focus-within { transform:none }
+}
+
+/* A real interface workbench. Static panels are the fallback; tabs are a
+   keyboard enhancement, without autoplay, synthetic captures or new facts. */
+.pf-workbench { padding-block:70px 60px; border-bottom:1px solid var(--pf-rule); background:var(--pf-black); color:var(--pf-paper) }
+.pf-workbench-heading { display:flex; align-items:end; justify-content:space-between; gap:48px; margin-bottom:30px }
+.pf-workbench-heading .ledger-label { color:var(--pf-teal); margin:0 0 12px }
+.pf-workbench-heading h2 { font:400 clamp(32px,3.2vw,46px)/1.15 var(--pf-serif); letter-spacing:-.03em; margin:0 }
+.pf-workbench-heading>p { max-width:37ch; color:var(--pf-muted); font-size:14px; line-height:1.75; margin:0 }
+.pf-workbench-tabs { display:flex; border:1px solid var(--pf-rule); border-bottom:0; overflow-x:auto; scrollbar-width:thin }
+.pf-workbench-tabs[hidden],.pf-workbench-panel[hidden] { display:none }
+.pf-workbench-tabs button { flex:1 0 auto; min-height:52px; padding:12px 17px; border:0; border-right:1px solid var(--pf-rule); border-bottom:3px solid transparent; border-radius:0; background:transparent; color:var(--pf-muted); font:12px/1.5 var(--pf-mono); cursor:pointer }
+.pf-workbench-tabs button:last-child { border-right:0 }
+.pf-workbench-tabs button:hover { color:var(--pf-paper); background:#ffffff07 }
+.pf-workbench-tabs button[aria-selected="true"] { color:var(--pf-teal); background:#00d1b20b; border-bottom-color:var(--pf-teal) }
+.pf-workbench-tabs button:focus-visible { outline-offset:-5px!important }
+.pf-workbench-panel { display:grid; grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr); border:1px solid var(--pf-rule); padding:38px; gap:44px; align-items:center; background:linear-gradient(130deg,#ffffff04,transparent 60%) }
+.pf-workbench-panel+.pf-workbench-panel:not([hidden]) { margin-top:24px }
+.pf-workbench:has([role="tablist"]) .pf-workbench-panel { margin-top:0; min-height:488px }
+.pf-workbench-identity { display:flex; gap:14px; align-items:center; margin-bottom:24px }
+.pf-workbench-identity .ledger-product-mark { width:32px; height:32px }
+.pf-workbench-identity .ledger-label { font-size:11px; color:var(--pf-muted); margin:0 }
+.pf-workbench-copy h3 { font:400 clamp(26px,2.5vw,35px)/1.2 var(--pf-serif); letter-spacing:-.02em; margin:0 0 17px; max-width:20ch }
+.pf-workbench-summary { color:var(--pf-muted); font-size:14px; line-height:1.75; margin:0 0 24px; max-width:45ch }
+.pf-workbench-facts { display:grid; grid-template-columns:100px minmax(0,1fr); gap:8px 14px; margin:0; font:11px/1.7 var(--pf-mono) }
+.pf-workbench-facts dt { color:var(--pf-muted) }
+.pf-workbench-facts dd { margin:0; overflow-wrap:anywhere }
+.pf-workbench-note { color:var(--pf-muted); font-size:12px; line-height:1.7; min-height:21px; margin:14px 0 24px }
+.pf-workbench-copy .ledger-actions { gap:18px }
+.pf-workbench-copy .ledger-link { font-size:12px }
+.pf-workbench-media { margin:0; min-width:0 }
+.pf-workbench-media>a { display:flex; align-items:center; justify-content:center; position:relative; min-height:310px; height:310px; padding:14px; background:#171e25; border:1px solid var(--pf-rule); text-decoration:none; border-radius:0 }
+.pf-workbench-media .pf-preview-picture { display:flex; width:100%; height:100%; align-items:center; justify-content:center }
+.pf-workbench-media img { display:block; width:auto; height:auto; max-width:100%; max-height:100%; object-fit:contain; border-radius:3px }
+.pf-workbench-inspect { position:absolute; right:10px; bottom:10px; background:var(--pf-black); border:1px solid var(--pf-rule); padding:7px 10px; color:var(--pf-paper); font:10px/1.5 var(--pf-mono) }
+.pf-workbench-media figcaption,.pf-workbench-disclosure { font:11px/1.8 var(--pf-mono); color:var(--pf-muted); margin:13px 0 0 }
+.pf-workbench-disclosure { max-width:95ch; margin-top:20px }
+/* Shared, progressive product navigation replaces the transient demo dock. */
+body.studio.pp-system .pf-product-navigation { position:sticky; top:0; z-index:30; display:flex; align-items:center; justify-content:space-between; gap:22px; min-height:59px; padding:0 18px; border:1px solid var(--pf-rule); background:var(--pf-black); color:var(--pf-paper); margin-bottom:15px }
+.pf-product-navigation-name { font:11px/1.6 var(--pf-mono); white-space:nowrap; color:var(--pf-muted) }
+.pf-product-navigation>div { display:flex; align-items:center; overflow-x:auto; scrollbar-width:thin; min-width:0; gap:20px; padding:0 3px }
+.pf-product-navigation a { display:flex; align-items:center; white-space:nowrap; min-height:57px; color:var(--pf-muted); text-decoration:none; border-bottom:2px solid transparent; font:12px/1.5 var(--pf-sans) }
+.pf-product-navigation a:hover,.pf-product-navigation a[aria-current="location"] { color:var(--pf-teal); border-bottom-color:var(--pf-teal) }
+.pf-product-navigation a:focus-visible { outline-offset:-4px!important }
+/* A support worksheet with no account, submission, upload or persistence. */
+.pf-support-draft { border-block:1px solid var(--pf-rule); padding-block:25px; margin-block:25px }
+.pf-support-draft-heading h3 { font:400 26px/1.25 var(--pf-serif); margin:0 0 9px }
+.pf-support-draft-heading p { font-size:13px; color:var(--pf-muted); margin:0 0 23px }
+.pf-support-fields { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:20px }
+.pf-support-fields>label { display:flex; flex-direction:column; gap:9px; font-size:13px; color:var(--pf-paper) }
+.pf-support-wide { grid-column:1/-1 }
+.studio.product-support .pf-support-fields :is(input,select,textarea) { width:100%; box-sizing:border-box; border:1px solid var(--pf-rule); border-radius:0; min-height:46px; padding:11px 12px; background:var(--pf-black); color:var(--pf-paper); font:14px/1.6 var(--pf-sans) }
+.pf-support-fields textarea { resize:vertical }
+.pf-support-fields :is(input,textarea)::placeholder { color:var(--pf-muted); opacity:1 }
+.pf-support-draft-actions { display:flex; gap:22px; align-items:center; justify-content:space-between; margin-top:22px }
+.pf-product-navigation [hidden],[data-support-draft][hidden],[data-support-record][hidden] { display:none!important }
+@media(max-width:1050px) {
+  .pf-workbench-heading { gap:28px }
+  .pf-workbench-panel { padding:26px; gap:28px; grid-template-columns:minmax(0,1fr) minmax(0,1fr) }
+  .pf-workbench-tabs button { font-size:11px; padding-inline:14px }
+  .pf-product-navigation-name { display:none }
+  .pf-product-navigation>div { width:100%; justify-content:space-between }
+}
+@media(max-width:700px) {
+  .pf-workbench { padding-block:42px }
+  .pf-workbench-heading { display:block; margin-bottom:24px }
+  .pf-workbench-heading>p { max-width:45ch; margin-top:18px; font-size:13px }
+  .pf-workbench-tabs button { min-height:48px; padding:11px 15px }
+  .pf-workbench-panel { grid-template-columns:1fr; padding:23px; gap:26px }
+  .pf-workbench:has([role="tablist"]) .pf-workbench-panel { min-height:0 }
+  .pf-workbench-copy h3 { font-size:29px; max-width:22ch }
+  .pf-workbench-identity { margin-bottom:19px }
+  .pf-workbench-media>a { height:230px; min-height:230px; padding:8px }
+  .pf-workbench-copy .ledger-actions { align-items:start; flex-direction:column; gap:15px }
+  body.studio.pp-system .pf-product-navigation { padding-inline:10px; min-height:52px; margin-top:14px }
+  .pf-product-navigation>div { gap:17px; justify-content:start }
+  .pf-product-navigation a { min-height:50px; font-size:12px }
+  .pf-support-fields { grid-template-columns:1fr }
+  .pf-support-wide { grid-column:auto }
+  .pf-support-draft-actions { align-items:start; flex-direction:column }
+}
+@media(forced-colors:active) {
+  .pf-workbench,.pf-workbench-panel,.pf-workbench-media>a,.pf-workbench-inspect,body.studio.pp-system .pf-product-navigation,.studio.product-support .pf-support-fields :is(input,select,textarea) { background:Canvas; color:CanvasText; border-color:CanvasText }
+  .pf-workbench-tabs button[aria-selected="true"] { color:HighlightText; background:Highlight; border-color:Highlight }
 }

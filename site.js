@@ -210,14 +210,107 @@
     try { id = decodeURIComponent(location.hash.slice(1)); } catch (error) { return; }
     var target = document.getElementById(id);
     if (!target) return;
-    var details = target.closest("details");
-    if (!details && id === "proof") details = target.querySelector("details");
-    if (details && !details.open) {
-      details.open = true;
-      target.scrollIntoView({ block: "start" });
+    // Evidence can sit inside more than one disclosure. Open the full chain,
+    // including the proof section's own record, before scrolling to it.
+    var changed = false;
+    var parent = target;
+    while (parent) {
+      if (parent.tagName === "DETAILS" && !parent.open) { parent.open = true; changed = true; }
+      parent = parent.parentElement;
     }
+    var record = id === "proof" ? target.querySelector("details") : null;
+    if (record && !record.open) { record.open = true; changed = true; }
+    if (changed) target.scrollIntoView({ block: "start", behavior: "instant" });
   }
   window.addEventListener("hashchange", revealDeepLink);
+
+  function initProductWayfinding() {
+    var nav = document.querySelector(".pf-product-navigation");
+    if (!nav) return;
+    var links = Array.from(nav.querySelectorAll("[data-product-section]"));
+    var pending = false;
+    function indicate() {
+      pending = false;
+      var current = links[0];
+      links.forEach(function (link) {
+        var section = document.getElementById(link.dataset.productSection);
+        if (section && section.getClientRects().length && section.getBoundingClientRect().top <= nav.offsetHeight + 90) current = link;
+      });
+      links.forEach(function (link) {
+        if (link === current) link.setAttribute("aria-current", "location");
+        else link.removeAttribute("aria-current");
+      });
+    }
+    function schedule() { if (!pending) { pending = true; requestAnimationFrame(indicate); } }
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule, { passive: true });
+    document.addEventListener("toggle", schedule, true);
+    indicate();
+  }
+
+  function initWorkbench() {
+    var workbench = document.querySelector("[data-workbench]");
+    if (!workbench) return;
+    var panels = Array.from(workbench.querySelectorAll("[data-workbench-product]"));
+    var tabs = workbench.querySelector(".pf-workbench-tabs");
+    if (!panels.length || !tabs) return;
+    tabs.setAttribute("role", "tablist");
+    var buttons = panels.map(function (panel) {
+      var button = document.createElement("button");
+      button.type = "button";
+      button.id = "tab-" + panel.id;
+      button.setAttribute("role", "tab");
+      button.setAttribute("aria-controls", panel.id);
+      button.textContent = panel.dataset.workbenchName;
+      panel.setAttribute("role", "tabpanel");
+      panel.setAttribute("aria-labelledby", button.id);
+      panel.tabIndex = 0;
+      tabs.append(button);
+      return button;
+    });
+    function select(index, focus) {
+      panels.forEach(function (panel, i) { panel.hidden = i !== index; });
+      buttons.forEach(function (button, i) { button.setAttribute("aria-selected", String(i === index)); button.tabIndex = i === index ? 0 : -1; });
+      if (focus) { buttons[index].focus({ preventScroll: true }); buttons[index].scrollIntoView({ block: "nearest", inline: "nearest", behavior: "instant" }); }
+    }
+    buttons.forEach(function (button, index) {
+      button.addEventListener("click", function () { select(index, false); });
+      button.addEventListener("keydown", function (event) {
+        var next = event.key === "ArrowRight" ? (index + 1) % buttons.length : event.key === "ArrowLeft" ? (index + buttons.length - 1) % buttons.length : event.key === "Home" ? 0 : event.key === "End" ? buttons.length - 1 : -1;
+        if (next !== -1) { event.preventDefault(); select(next, true); }
+      });
+    });
+    tabs.hidden = false;
+    select(0, false);
+  }
+
+  function initSupportDraft() {
+    var draft = document.querySelector("[data-support-draft]");
+    var output = document.getElementById("diagnostic-template");
+    if (!draft || !output) return;
+    var product = draft.querySelector('[name="product"]');
+    var record = draft.querySelector("[data-support-record]");
+    var fields = [["version","Version"],["os","Operating system / Android version"],["device","Device model (if relevant)"],["install","Install type"],["source","Where the file came from"],["hash","Did the published SHA-256 match?"],["happened","What happened"],["steps","Steps to reproduce"],["expected","Expected behavior"],["actual","Actual behavior"],["error","Exact sanitized error text"],["attachment","Optional screenshot/log"]];
+    function update() {
+      var option = product.options[product.selectedIndex];
+      var lines = ["Product: " + (product.value ? option.textContent : "")];
+      fields.forEach(function (field) { var value = draft.querySelector('[name="' + field[0] + '"]').value.trim(); lines.push(field[1] + ":" + (value.includes("\n") ? "\n" : " ") + value); });
+      output.value = lines.join("\n");
+      record.hidden = !product.value;
+      if (product.value) record.setAttribute("href", option.dataset.record);
+      else record.removeAttribute("href");
+    }
+    var requested = new URLSearchParams(location.search).get("product");
+    if (Array.from(product.options).some(function (option) { return option.value === requested; })) product.value = requested;
+    draft.addEventListener("input", update);
+    draft.addEventListener("change", update);
+    draft.querySelector("[data-support-reset]").addEventListener("click", function () {
+      draft.querySelectorAll("input,textarea,select").forEach(function (field) { field.value = ""; });
+      update(); product.focus();
+    });
+    draft.hidden = false;
+    update();
+  }
 
   function initNavToggle() {
     var header = document.querySelector(".site-header");
@@ -333,6 +426,9 @@
       initSha256Copy();
       initTemplateCopy();
       initScreenshots();
+      initWorkbench();
+      initProductWayfinding();
+      initSupportDraft();
       revealDeepLink();
       initMotion();
     });
@@ -341,6 +437,9 @@
     initSha256Copy();
     initTemplateCopy();
     initScreenshots();
+    initWorkbench();
+    initProductWayfinding();
+    initSupportDraft();
     revealDeepLink();
     initMotion();
   }

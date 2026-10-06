@@ -340,22 +340,6 @@ if (compareChoices.length && window.HTMLDialogElement) {
   });
   close.addEventListener('click',()=>dialog.close());
 }
-// Keep the page's own navigation and availability action close while exploring.
-const hero = $('.product-hero');
-if(hero && 'IntersectionObserver' in window) {
-  const identity=$('.product-identity > span').textContent;
-  const dock=document.createElement('nav');dock.className='product-dock';dock.setAttribute('aria-label',`${identity} page navigation`);dock.hidden=true;
-  const name=document.createElement('span');name.className='dock-product';name.textContent=identity;dock.append(name);
-  const acquisitionAvailable=document.body.dataset.acquisitionAvailable==='true';
-  const availability=acquisitionAvailable?(document.body.classList.contains('product-proofshot')?'Status':document.body.classList.contains('product-cache-vault')?'Availability':document.body.classList.contains('product-lights-out')?'Releases':'Get the app'):'Release status';
-  const entries=[['overview','Overview'],['try-it','Try it'],['download',availability],['proof','Proof']];
-  entries.forEach(([id,label])=>{const link=document.createElement('a');link.href=`#${id}`;link.textContent=label;link.dataset.section=id;dock.append(link);});document.body.append(dock);
-  let heroVisible=true,footerVisible=false;
-  function toggleDock(){dock.hidden=heroVisible||footerVisible;}
-  const regions=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.target===hero)heroVisible=entry.isIntersecting;else footerVisible=entry.isIntersecting;});toggleDock();},{threshold:0});
-  regions.observe(hero);if($('.site-footer'))regions.observe($('.site-footer'));
-  let scheduled=false;
-  function indicate(){scheduled=false;const current=entries.filter(([id])=>document.getElementById(id)?.getBoundingClientRect().top<innerHeight*.45).at(-1)?.[0]||'overview';$$('a',dock).forEach(a=>{if(a.dataset.section===current)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});}
-  addEventListener('scroll',()=>{if(!scheduled){scheduled=true;requestAnimationFrame(indicate);}},{passive:true});indicate();
-}
+// Product wayfinding is authored by the shared renderer and enhanced in
+// site.js, so it remains available without this optional demo script.
 })();

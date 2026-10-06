@@ -187,6 +187,26 @@
       <div class="support-content-box support-box-dark">
         <p class="support-warning-lead">Direct online support submission is not published yet. You can use the diagnostic template below to collect and format the details that will be useful when a support channel is available.</p>
 
+        <div class="pf-support-draft" data-support-draft hidden>
+          <div class="pf-support-draft-heading"><h3>Build a clear report.</h3><p>Local worksheet. Nothing is sent or saved by this page.</p></div>
+          <div class="pf-support-fields">
+            <label>Product<select name="product"><option value="">Choose the affected product</option><!-- @support-product-options --></select></label>
+            <label>Version<input name="version" type="text" maxlength="120" placeholder="Exact version from the app or artifact" autocomplete="off"/></label>
+            <label>Operating system / Android version<input name="os" type="text" maxlength="180" placeholder="For example: Windows 11" autocomplete="off"/></label>
+            <label>Install type<input name="install" type="text" maxlength="180" placeholder="Portable ZIP, EXE or APK" autocomplete="off"/></label>
+            <label class="pf-support-wide">Where the file came from<input name="source" type="text" maxlength="400" placeholder="Public release page or artifact filename" autocomplete="off"/></label>
+            <label>Published SHA-256 match<select name="hash"><option value="">Not checked</option><option>Yes</option><option>No</option><option>Not applicable</option></select></label>
+            <label>Device model, if relevant<input name="device" type="text" maxlength="180" autocomplete="off"/></label>
+            <label class="pf-support-wide">What happened<textarea name="happened" rows="3" maxlength="3000" placeholder="Describe the problem without private data"></textarea></label>
+            <label class="pf-support-wide">Steps to reproduce<textarea name="steps" rows="3" maxlength="3000" placeholder="1. Open…&#10;2. Choose…&#10;3. The problem appears…"></textarea></label>
+            <label>Expected behavior<textarea name="expected" rows="3" maxlength="1500"></textarea></label>
+            <label>Actual behavior<textarea name="actual" rows="3" maxlength="1500"></textarea></label>
+            <label class="pf-support-wide">Exact sanitized error text<textarea name="error" rows="3" maxlength="3000" placeholder="Remove tokens, personal paths and confidential text first"></textarea></label>
+            <label class="pf-support-wide">Optional screenshot / log description<input name="attachment" type="text" maxlength="400" placeholder="Describe a relevant sanitized capture; this page does not upload files" autocomplete="off"/></label>
+          </div>
+          <div class="pf-support-draft-actions"><a class="text-link" data-support-record hidden>Read this product’s Truth File</a><button type="button" class="button button-secondary" data-support-reset>Clear worksheet</button></div>
+        </div>
+
         <div class="support-copy-row">
           <label for="diagnostic-template" class="support-diagnostic-label">Diagnostic Report Template</label>
           <textarea id="diagnostic-template" readonly rows="16" class="support-diagnostic-textarea">Product:

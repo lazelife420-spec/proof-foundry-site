@@ -2488,7 +2488,7 @@ function Render-ProductShell($module, [switch]$Template, [switch]$Preview) {
   # never hand-maintained per product.
   $p = $productStateSource.Get($module.id)
   $name = Html-Attr $p.name
-  $crumb = "<nav class=`"product-breadcrumb`" aria-label=`"Breadcrumb`"><a href=`"/#products`">All software</a><span aria-hidden=`"true`">/</span><span>$name</span></nav>"
+  $crumb = "<nav class=`"product-breadcrumb`" aria-label=`"Breadcrumb`"><a href=`"/software/`">All software</a><span aria-hidden=`"true`">/</span><span>$name</span></nav>"
   $related = "<nav class=`"studio-related`" aria-label=`"More software`"><span>More from the foundry</span>" +
     (($productRegistry | Where-Object { $_.visibility -eq 'visible' -and $_.id -ne $module.id } | ForEach-Object {
       $rp = $productStateSource.Get($_.id); "<a href=`"$($_.route)`">$(Html-Attr $rp.name)</a>" }) -join '') + "</nav>"
@@ -2592,6 +2592,22 @@ $canonicalTag
     $generatedSections = @($module.sections | Where-Object { $_ -isnot [string] } | ForEach-Object { Render-StructuredSection $_ }) -join "`n"
     $content = "<main id=`"main-content`"><div class=`"product-shell`">$crumb" + (Render-ModuleHero $module $product) + $generatedSections + "</div></main>" + $related
   }
+  # Ordinary links work without JavaScript. Only link to sections actually
+  # present in the rendered narrative; availability remains a record, never
+  # an implied installation permission.
+  $wayfinding = @()
+  foreach ($section in @(@('overview','Overview'), @('try-it','Try it'), @('download','Release status'), @('proof','Evidence'))) {
+    if ($content -match ('\bid="' + [regex]::Escape($section[0]) + '"')) {
+      $enhancement = if ($section[0] -eq 'try-it') { ' data-enhance hidden' } else { '' }
+      $wayfinding += '<a href="#' + $section[0] + '" data-product-section="' + $section[0] + '"' + $enhancement + '>' + $section[1] + '</a>'
+    }
+  }
+  if (-not $Preview) {
+    $wayfinding += '<a href="/truth-files/' + (Html-Attr $module.id) + '/">Truth File</a>'
+    $wayfinding += '<a href="/support/?product=' + (Html-Attr $module.id) + '#report">Help</a>'
+  }
+  $navigation = '<nav class="pf-product-navigation" aria-label="' + $name + ' page navigation"><span class="pf-product-navigation-name">' + $name + '</span><div>' + ($wayfinding -join '') + '</div></nav>'
+  $content = $content.Replace($crumb, $crumb + $navigation)
   $shell = $shell -replace '<!--\s*@product-content\s*-->', $content
   return $shell
 }
@@ -2681,6 +2697,35 @@ function Build-LedgerIndex {
   return ($rows -join "`n")
 }
 
+function Build-LedgerWorkbench {
+  # Presentation selection is independent of catalog ordering. Reordering a
+  # module cannot silently rearrange Home; hidden Home modules stay excluded.
+  $selection = Get-Content (Join-Path $root 'homepage-ledger.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+  $entries = @(Get-LedgerEntries | Sort-Object @{ Expression={ $i = [array]::IndexOf(@($selection.featured), [string]$_.Module.id); if ($i -ge 0) { $i } else { 100 } } }, { [string]$_.Module.id })
+  $panels = @()
+  foreach ($entry in $entries) {
+    $m = $entry.Module; $p = $entry.Product
+    $tokens = ProductTokens $p
+    $withdrawn = $p.release.releaseStatus -eq 'WITHDRAWN'
+    $version = if ($withdrawn) { 'No public download' } else { CardVersionLabel $p }
+    $context = if ($withdrawn) { 'Historical preview · withdrawn product. No public download.' } else { [string]$m.homepage.mediaDisclosure }
+    $panels += @"
+<article class="pf-workbench-panel" id="workbench-$(Html-Attr $m.id)" data-workbench-product="$(Html-Attr $m.id)" data-workbench-name="$(Html-Attr $p.name)" data-release-status="$(Html-Attr $p.release.releaseStatus)">
+  <div class="pf-workbench-copy"><div class="pf-workbench-identity">$(LedgerProductMark $m)<p class="ledger-label">$(Html-Text $p.name)</p></div><h3>$(Html-Text $m.card.tagline)</h3><p class="pf-workbench-summary">$(Html-Text $m.card.summary)</p><dl class="pf-workbench-facts"><dt>Public record</dt><dd>$(Html-Text $version)</dd><dt>Platform</dt><dd>$(Html-Text (LedgerPlatform $p))</dd><dt>Availability</dt><dd>$(Html-Text ((VisitorAvailabilityLabel $p).Replace('_',' ')))</dd></dl><p class="pf-workbench-note">$(Html-Text $tokens.cardDetailLine)</p><div class="ledger-actions"><a class="ledger-link" href="$(Html-Attr $m.route)">Explore $(Html-Text $p.name) $(LedgerArrowSvg)</a><a class="ledger-link" href="/truth-files/$(Html-Attr $m.id)/">Read the Truth File $(LedgerArrowSvg)</a></div></div>
+  <figure class="pf-workbench-media"><a href="$(Html-Attr $m.card.media)" class="screenshot-link" data-screenshot data-gallery="workbench" data-gallery-title="$(Html-Attr $p.name)" data-caption="$(Html-Attr $context)" aria-label="Inspect $(Html-Attr $p.name) capture"><picture class="pf-preview-picture">$(Build-PreviewWebpSource $m.card.media)<img src="$(Html-Attr $m.card.media)" alt="$(Html-Attr $m.card.mediaAlt)" width="640" height="366" loading="lazy" decoding="async"/></picture><span class="pf-workbench-inspect">Inspect capture ↗</span></a><figcaption>$(Html-Text $context)</figcaption></figure>
+</article>
+"@
+  }
+  return ($panels -join "`n")
+}
+
+function Build-SupportProductOptions {
+  return (@($productRegistry | Where-Object { $_.visibility -eq 'visible' -and $_.lifecycle -eq 'public-eligible' } | ForEach-Object {
+    $p = $productStateSource.Get($_.id)
+    '<option value="' + (Html-Attr $_.id) + '" data-record="/truth-files/' + (Html-Attr $_.id) + '/">' + (Html-Text $p.name) + '</option>'
+  }) -join "`n")
+}
+
 function Build-LedgerSpecimen {
   $selection = Get-Content (Join-Path $root 'homepage-ledger.json') -Raw -Encoding UTF8 | ConvertFrom-Json
   $entry = @(Get-LedgerEntries | Where-Object { $_.Module.id -eq $selection.releaseSpecimen }) | Select-Object -First 1
@@ -2740,7 +2785,9 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
     $html = $html.Replace('<!-- @ledger-featured -->', (Build-LedgerFeatured))
     $html = $html.Replace('<!-- @ledger-index -->', (Build-LedgerIndex))
     $html = $html.Replace('<!-- @ledger-specimen -->', (Build-LedgerSpecimen))
+    $html = $html.Replace('<!-- @ledger-workbench -->', (Build-LedgerWorkbench))
   }
+  if ($srcName -eq 'support.html') { $html = $html.Replace('<!-- @support-product-options -->', (Build-SupportProductOptions)) }
   $pageId = ''
   if ($html -match '<!--\s*@page\s+(\S+)\s*-->') { $pageId = $Matches[1] }
   $html = $html -replace '<!--\s*@page\s+\S+\s*-->\s*\r?\n?', ''
