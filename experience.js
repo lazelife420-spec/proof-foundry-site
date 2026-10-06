@@ -340,6 +340,12 @@ if (compareChoices.length && window.HTMLDialogElement) {
   });
   close.addEventListener('click',()=>dialog.close());
 }
-// Product wayfinding is authored by the shared renderer and enhanced in
-// site.js, so it remains available without this optional demo script.
+// The shared renderer owns ordinary product links; site.js indicates the
+// current section. Preserve eligibility-derived labels on the release link.
+const releaseNavigation=$('.pf-product-navigation [data-product-section="download"]');
+if(releaseNavigation) {
+  const acquisitionAvailable=document.body.dataset.acquisitionAvailable==='true';
+  const availability=acquisitionAvailable?(document.body.classList.contains('product-proofshot')?'Status':document.body.classList.contains('product-cache-vault')?'Availability':document.body.classList.contains('product-lights-out')?'Releases':'Get the app'):'Release status';
+  releaseNavigation.textContent=availability;
+}
 })();

@@ -34,6 +34,9 @@ revealed by the existing optional demo script after initialization. Other links
 work without JavaScript. The catalog breadcrumb now reaches `/software/`.
 Truth File and contextual self-service help connect the page to its records.
 The former transient demo dock is removed to avoid duplicate navigation.
+Its existing eligibility-derived release labels are retained on the shared
+navigator. The no-JS label defaults to release status. Withdrawn historical
+versions remain on detailed records, outside the Home availability preview.
 
 Deep links open all enclosing disclosures, plus the proof section's record,
 before scrolling. No acquisition, installer, signature or qualification
