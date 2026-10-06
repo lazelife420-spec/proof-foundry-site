@@ -136,9 +136,14 @@ Assert-Truth ($lastmodByLoc['https://theprooffoundry.com/proof-standard/'] -eq '
 # Every route changed through the shared header/footer on 2026-10-05. These
 # exact assertions and HEAD equality retain the sitemap gate population; H4
 # independently checks material dates. Release dates are not website dates.
+# Cache Vault's film loading markup changed after the historical reconciliation.
+# Bind this exact expectation to its committed content input, independently of
+# the sitemap under test. H4 also checks the complete material-input signature.
+$cacheVaultMaterialDate = (& git -C $root log -1 --format=%cs -- 'products/cache-vault/content.html').Trim()
+Assert-Truth ($LASTEXITCODE -eq 0 -and $cacheVaultMaterialDate -match '^\d{4}-\d{2}-\d{2}$') 'sitemap: Cache Vault material date resolves from committed product content'
 $reconciledLastmod = @{
   'https://theprooffoundry.com/' = '2026-10-05'
-  'https://theprooffoundry.com/cache-vault/' = '2026-10-05'
+  'https://theprooffoundry.com/cache-vault/' = $cacheVaultMaterialDate
   'https://theprooffoundry.com/proofshot/' = '2026-10-05'
   'https://theprooffoundry.com/reality-gate/' = '2026-10-05'
   'https://theprooffoundry.com/software/' = '2026-10-05'
