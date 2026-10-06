@@ -20,6 +20,8 @@ capture/product/Truth File links remain readable. The shared image inspector
 retains the original captures and context. Historical/pre-rebrand captures are
 disclosed. Reality Gate remains withdrawn with no public download. Cleanroom
 and Lights Out retain their public/candidate/platform distinctions.
+Dormant captures have no fetchable image source until selected. A noscript
+projection retains the authentic media when JavaScript is unavailable.
 
 ## Product continuity and evidence
 

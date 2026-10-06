@@ -1,6 +1,8 @@
 // site.js — interactive behavior only.
 // The site shell (header, footer, product cards, status strips) is generated
-// at build time from site-manifest.json. This file handles navigation, the real-image gallery and small affordances. Navigation works without it.
+// at build time from shared release truth and presentation modules. This file
+// handles navigation, the real-image gallery and small affordances. Navigation
+// works without it.
 
 (function () {
   "use strict";
@@ -162,7 +164,7 @@
       links.forEach(a => {
         if (template && a.href !== href) return;
         const i = a.querySelector('img'); if (!i) return;
-        add({original:a.href,thumb:i.currentSrc || i.src,preview:i.src,width:i.width,height:i.height,title:i.alt,caption:a.closest('figure')?.querySelector('figcaption')?.textContent || 'Actual product screenshot.'});
+        add({original:a.href,thumb:i.currentSrc || i.src || i.dataset.src,preview:i.dataset.src || i.src,width:i.width,height:i.height,title:i.alt,caption:a.closest('figure')?.querySelector('figcaption')?.textContent || 'Actual product screenshot.'});
       });
       return items;
     }
@@ -269,6 +271,15 @@
       return button;
     });
     function select(index, focus) {
+      // Dormant captures carry no fetchable source. Load only the selected
+      // panel; noscript retains all seven authentic captures as ordinary HTML.
+      var picture = panels[index].querySelector("[data-workbench-preview]");
+      if (picture && picture.hidden) {
+        picture.querySelectorAll("[data-srcset]").forEach(function (source) { source.srcset = source.dataset.srcset; });
+        var image = picture.querySelector("img");
+        image.src = image.dataset.src;
+        picture.hidden = false;
+      }
       panels.forEach(function (panel, i) { panel.hidden = i !== index; });
       buttons.forEach(function (button, i) { button.setAttribute("aria-selected", String(i === index)); button.tabIndex = i === index ? 0 : -1; });
       if (focus) { buttons[index].focus({ preventScroll: true }); buttons[index].scrollIntoView({ block: "nearest", inline: "nearest", behavior: "instant" }); }
@@ -425,8 +436,8 @@
       initNavToggle();
       initSha256Copy();
       initTemplateCopy();
-      initScreenshots();
       initWorkbench();
+      initScreenshots();
       initProductWayfinding();
       initSupportDraft();
       revealDeepLink();
@@ -436,8 +447,8 @@
     initNavToggle();
     initSha256Copy();
     initTemplateCopy();
-    initScreenshots();
     initWorkbench();
+    initScreenshots();
     initProductWayfinding();
     initSupportDraft();
     revealDeepLink();
