@@ -159,11 +159,11 @@ if (archive) {
       const kind = document.createElement('span'); kind.className = 'clip-kind'; kind.textContent = clip.type;
       const title = document.createElement('h3'); title.textContent = clip.title;
       const body = document.createElement('p'); body.textContent = clip.text;
-      const pin = document.createElement('button'); pin.type = 'button'; pin.textContent = clip.pinned ? 'Pinned' : 'Pin'; pin.setAttribute('aria-label', `Pin ${clip.title}`); pin.setAttribute('aria-pressed', String(clip.pinned));
+      const pin = document.createElement('button'); pin.type = 'button'; pin.textContent = clip.pinned ? 'Pinned' : 'Pin'; pin.setAttribute('aria-label', `${pin.textContent}: ${clip.title}`); pin.setAttribute('aria-pressed', String(clip.pinned));
       pin.addEventListener('click', () => {
         clip.pinned = !clip.pinned;
         if (filter === 'pinned') { renderClips(); $('[data-clip-filter="pinned"]', archive).focus(); }
-        else { pin.textContent = clip.pinned ? 'Pinned' : 'Pin'; pin.setAttribute('aria-pressed', String(clip.pinned)); $('[data-pin-count]', archive).textContent = clips.filter(c => c.pinned).length; }
+        else { pin.textContent = clip.pinned ? 'Pinned' : 'Pin'; pin.setAttribute('aria-label', `${pin.textContent}: ${clip.title}`); pin.setAttribute('aria-pressed', String(clip.pinned)); $('[data-pin-count]', archive).textContent = clips.filter(c => c.pinned).length; }
       });
       item.append(kind, title, body, pin); list.append(item);
     });

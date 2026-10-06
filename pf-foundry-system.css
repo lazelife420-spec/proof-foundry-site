@@ -417,3 +417,134 @@ body.studio.pp-system .pf-product-navigation { position:sticky; top:0; z-index:3
   .pf-workbench,.pf-workbench-panel,.pf-workbench-media>a,.pf-workbench-inspect,body.studio.pp-system .pf-product-navigation,.studio.product-support .pf-support-fields :is(input,select,textarea) { background:Canvas; color:CanvasText; border-color:CanvasText }
   .pf-workbench-tabs button[aria-selected="true"] { color:HighlightText; background:Highlight; border-color:Highlight }
 }
+
+/* Foundry proof chassis. Continuous material zones, two structural joints,
+   and opaque inspection sheets. The approved PF artwork is never modified. */
+body:is(.studio,.pf-ledger-page) {
+  background-color:#111923;
+  background-image:linear-gradient(110deg,#10202bd9,#15212bce 52%,#0c141be8),var(--pf-steel);
+  background-size:112% auto;
+  background-position:left top;
+  background-repeat:no-repeat;
+}
+body:is(.studio,.pf-ledger-page) .site-header {
+  background:linear-gradient(105deg,#14202ae8,#0e171fed);
+  box-shadow:inset 0 -1px 0 #060d13,0 1px 0 #71818b24;
+}
+.pf-ledger-page .ledger-hero,
+.studio .h9-software-hero,
+body.studio.pp-system .pp-module-hero[data-scene-family],
+.studio.product-support .support-hero {
+  background-color:#14202a;
+  background-image:radial-gradient(ellipse at 68% 28%,#8c9aa524,transparent 58%),linear-gradient(105deg,#0c1722d4,#17252db0 57%,#0c151bb5),var(--pf-steel);
+  background-size:100% 100%,100% 100%,112% auto;
+  background-position:center,center,left top;
+  background-repeat:no-repeat;
+}
+.ledger-hero { position:relative; isolation:isolate; border-bottom:0 }
+.ledger-hero::after {
+  content:""; position:absolute; pointer-events:none; bottom:-3px;
+  left:calc((100% - var(--pf-rail)) / 2); right:2.8%; height:6px; z-index:1;
+  background:linear-gradient(180deg,#94a2a458,#07101899),repeating-linear-gradient(135deg,#65727b 0 1px,#26333d 1px 3px,#68716b 3px 4px,#17242d 4px 7px);
+  border-block:1px solid #070f17; box-shadow:0 -2px 5px #b0905430,0 3px 7px #0008;
+}
+.ledger-hero-grid { padding-block:68px 76px }
+.ledger-plate-scene { padding:14px 12px 14px 8px; margin-block:15px; }
+.ledger-plate-scene::before {
+  inset:-13px -9px -17px -13px;
+  background:linear-gradient(120deg,#25323b,#121c25 48%,#202e38);
+  border:1px solid #71808a66; border-bottom:2px solid #0a1218;
+  box-shadow:inset 3px 5px 14px #000a,inset -1px -1px 0 #8e9b9b42,0 1px 0 #83939d24;
+  clip-path:polygon(0 16px,16px 0,100% 0,100% calc(100% - 16px),calc(100% - 16px) 100%,0 100%);
+}
+.ledger-plate-scene::after {
+  content:"01010000 01000110 / PF"; position:absolute; left:18px; bottom:-14px;
+  padding-inline:9px; color:#a6b5ba8f; background:#15222b;
+  font:8px/1.7 var(--pf-mono); letter-spacing:.2em; pointer-events:none;
+}
+.ledger-plate {
+  transform:rotate(-1deg) rotateY(calc(-3deg + var(--pf-tilt-y,0deg))) rotateX(var(--pf-tilt-x,0deg));
+  box-shadow:inset 1px 1px 0 #e8ede89c,inset 0 0 0 5px #2530333b,inset 0 0 25px #11191d3d,5px 9px 13px #000b,1px 2px 1px #000b;
+}
+.ledger-chain { background:linear-gradient(105deg,#1a2731,#111c25); box-shadow:inset 0 -1px 0 #73818b25 }
+.ledger-chain-icon { background:#101b24; border-color:#788a925c; box-shadow:inset 0 2px 5px #0006 }
+.ledger-chain li:nth-child(3) .ledger-chain-icon { border-color:#d6a84f80 }
+.ledger-featured,.ledger-position {
+  background:linear-gradient(110deg,#14212dd9,#17232de5 60%,#101c26df);
+}
+.pf-workbench { background:transparent }
+.pf-workbench-tabs { background:#101c25; border-color:#74849155 }
+.pf-workbench-panel { background:linear-gradient(110deg,#192832,#14212c); border-color:#74849155; box-shadow:inset 0 1px 0 #94a6b013 }
+.pf-workbench-media>a { background:#0b1720; box-shadow:inset 0 3px 12px #0007 }
+.ledger-featured-grid { gap:0; border:1px solid #74849155; background:#13202a }
+.ledger-instrument { border:0; background:transparent; box-shadow:none }
+.ledger-instrument+.ledger-instrument { border-left:1px solid #74849155 }
+.ledger-instrument:is(:hover,:focus-within) { transform:none; background:#1c2b34 }
+.ledger-feature-media { background:#101c25; border-color:#74849140 }
+.ledger-specimen { background:linear-gradient(105deg,#22303a,#17252f); border-color:#74849140 }
+.ledger-record { background:#0e1b24; box-shadow:inset 0 2px 9px #0008; border-color:#697c8761; border-left-color:var(--pf-gold) }
+.ledger-paper { background-color:#e8edef; background-image:linear-gradient(110deg,#f4f7f84d,transparent) }
+.ledger-doctrine,.ledger-index { border-block:1px solid #6d7e8773; box-shadow:inset 0 1px 0 #fff8,inset 0 -1px 0 #0b172324 }
+.ledger-close { background:linear-gradient(110deg,#22313b,#14232c); border-top:1px solid #74849140 }
+body.studio.secondary-page:not(.tf-page) { background-color:#14212b }
+body.studio.secondary-page:not(.tf-page) main,
+body.studio.tf-page main {
+  background-color:var(--pf-paper); border-inline:1px solid #83909966;
+  box-shadow:0 0 0 9px #0b172329;
+}
+body.studio.pp-system .pp-panel,
+.studio.software-catalog-page .product-card[data-scene-family],
+.studio.product-support :is(.detail-card,.support-content-box) {
+  background:linear-gradient(115deg,#1c2a34,#15222c); box-shadow:inset 0 1px 0 #aab7bc14;
+}
+body:is(.studio,.pf-ledger-page) .site-footer {
+  background-image:linear-gradient(110deg,#111f2adb,#0d1822e5),var(--pf-steel);
+  background-size:100% 100%,112% auto; background-position:center,left top;
+  box-shadow:inset 0 1px 0 #798b9540;
+}
+/* Paired document colors replace the legacy dark overlays on light paper. */
+.studio.secondary-page .receipt-card .status-indicator {
+  background:#e2ece8; color:#164e43; border-color:#52746a80;
+}
+.studio.secondary-page .receipt-card .status-indicator.withdrawn {
+  background:#e1e6e8; color:#394851; border-color:#67747c;
+}
+.studio.secondary-page .verification-ledger {
+  background:#e1e7e9; color:#172a34; border-color:#83929a;
+  border-radius:0; box-shadow:inset 0 1px 0 #fff9;
+}
+.studio.secondary-page .verification-ledger p { color:#32424a }
+.studio.product-support .note a { text-decoration:underline; text-underline-offset:.18em }
+@media(max-width:900px) {
+  .ledger-hero-grid { padding-block:44px 52px }
+  .pf-ledger-page .ledger-hero { background-size:100% 100%,100% 100%,220% auto }
+  .ledger-plate-scene { margin:17px 10px 22px; }
+  .ledger-plate-scene::before { inset:-11px -9px -17px; border-bottom:2px solid #7b858766 }
+  body:is(.studio,.pf-ledger-page) .nav-open .nav-panel { background:#111f29 }
+}
+@media(max-width:700px) {
+  .ledger-plate-scene { width:calc(100% - 24px); max-width:360px; margin-inline:auto }
+  .ledger-featured-grid { gap:0 }
+  .ledger-instrument+.ledger-instrument { border-left:0; border-top:1px solid #74849155 }
+  body:is(.studio,.pf-ledger-page) { background-size:220% auto }
+  .ledger-hero::after { height:4px; right:20px }
+  .studio .h9-software-hero,body.studio.pp-system .pp-module-hero[data-scene-family],.studio.product-support .support-hero { background-size:100% 100%,100% 100%,220% auto }
+}
+@media(forced-colors:active) {
+  body:is(.studio,.pf-ledger-page),body:is(.studio,.pf-ledger-page) .site-header,
+  .pf-ledger-page .ledger-hero,.studio .h9-software-hero,
+  body.studio.pp-system .pp-module-hero[data-scene-family],.studio.product-support .support-hero,
+  .ledger-chain,.ledger-featured,.ledger-position,.ledger-featured-grid,.ledger-instrument,
+  .ledger-specimen,.ledger-record,.ledger-paper,.ledger-close,.pf-workbench-tabs,.pf-workbench-panel,
+  body.studio.secondary-page:not(.tf-page),body.studio.secondary-page:not(.tf-page) main,body.studio.tf-page main,
+  body.studio.pp-system .pp-panel,.studio.software-catalog-page .product-card[data-scene-family],
+  .studio.product-support :is(.detail-card,.support-content-box),body:is(.studio,.pf-ledger-page) .site-footer,
+  .studio.secondary-page .receipt-card .status-indicator,.studio.secondary-page .receipt-card .status-indicator.withdrawn,.studio.secondary-page .verification-ledger {
+    background:Canvas; color:CanvasText; border-color:CanvasText; box-shadow:none;
+  }
+  .studio.secondary-page .verification-ledger p { color:CanvasText }
+  .ledger-plate { box-shadow:none; transform:none }
+  .pf-workbench-media>a { background:Canvas; box-shadow:none }
+  body:is(.studio,.pf-ledger-page) .nav-open .nav-panel { background:Canvas }
+  .ledger-hero::after,.ledger-plate-scene::before,.ledger-plate-scene::after { display:none }
+}

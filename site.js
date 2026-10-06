@@ -47,7 +47,7 @@
       root.dataset.motion = active ? "on" : "off";
       button.textContent = reduced.matches ? "Reduced motion" : forced.matches ? "Motion off" : "Motion " + (active ? "on" : "off");
       button.setAttribute("aria-pressed", String(active));
-      button.setAttribute("aria-label", reduced.matches || forced.matches ? "Website motion follows your device accessibility setting" : "Website motion");
+      button.setAttribute("aria-label", button.textContent + (reduced.matches || forced.matches ? " — follows your device accessibility setting" : ""));
       button.disabled = reduced.matches || forced.matches;
       progress.hidden = !active;
       if (!active) {
@@ -431,6 +431,26 @@
     });
   }
 
+  // A below-fold film must not compete with the release hero for bandwidth.
+  // Native controls and the direct film link remain usable without JavaScript.
+  function initFilmPosters() {
+    var videos = Array.from(document.querySelectorAll("video[data-poster]"));
+    if (!videos.length) return;
+    function reveal(video) {
+      if (!video.hasAttribute("poster")) video.setAttribute("poster", video.dataset.poster);
+    }
+    if (!window.IntersectionObserver) { videos.forEach(reveal); return; }
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) { reveal(entry.target); observer.unobserve(entry.target); }
+      });
+    }, { rootMargin: "300px 0px" });
+    videos.forEach(function (video) {
+      observer.observe(video);
+      video.addEventListener("play", function () { reveal(video); observer.unobserve(video); }, { once: true });
+    });
+  }
+
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", function () {
       initNavToggle();
@@ -442,6 +462,7 @@
       initSupportDraft();
       revealDeepLink();
       initMotion();
+      initFilmPosters();
     });
   } else {
     initNavToggle();
@@ -453,5 +474,6 @@
     initSupportDraft();
     revealDeepLink();
     initMotion();
+    initFilmPosters();
   }
 })();

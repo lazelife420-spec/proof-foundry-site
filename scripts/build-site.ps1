@@ -2674,7 +2674,7 @@ function Build-LedgerFeatured {
     $items += @"
 <article class="ledger-instrument" data-ledger-feature="$(Html-Attr $m.id)">
   <a class="ledger-feature-media" href="$(Html-Attr $m.route)" aria-label="Explore $(Html-Attr $name)"><picture class="pf-preview-picture">$(Build-PreviewWebpSource $m.card.media)<img src="$(Html-Attr $m.card.media)" alt="$(Html-Attr $m.card.mediaAlt)" width="640" height="366" loading="lazy" decoding="async"/></picture></a>
-  <div class="ledger-instrument-body">$(LedgerProductMark $m)<div><h3>$(Html-Text $name)</h3><p class="ledger-job">$(Html-Text $job)</p><div class="ledger-instrument-meta"><div><span class="ledger-version">$(Html-Text (VersionLabel $p))</span><span class="ledger-platform">$(Html-Text (LedgerPlatform $p))</span></div><a class="ledger-link" href="$(Html-Attr $m.route)" aria-label="View $(Html-Attr $name) details">View details $(LedgerArrowSvg)</a></div><span class="ledger-status">$(Html-Text ((VisitorAvailabilityLabel $p).Replace('_', ' ')))</span></div></div>
+  <div class="ledger-instrument-body">$(LedgerProductMark $m)<div><h3>$(Html-Text $name)</h3><p class="ledger-job">$(Html-Text $job)</p><div class="ledger-instrument-meta"><div><span class="ledger-version">$(Html-Text (VersionLabel $p))</span><span class="ledger-platform">$(Html-Text (LedgerPlatform $p))</span></div><a class="ledger-link" href="$(Html-Attr $m.route)" aria-label="View details for $(Html-Attr $name)">View details $(LedgerArrowSvg)</a></div><span class="ledger-status">$(Html-Text ((VisitorAvailabilityLabel $p).Replace('_', ' ')))</span></div></div>
 </article>
 "@
   }
@@ -2714,10 +2714,10 @@ function Build-LedgerWorkbench {
     $deferredImage = $image.Replace('class="pf-preview-picture"', 'class="pf-preview-picture" data-workbench-preview hidden').Replace(' src="', ' data-src="').Replace(' srcset="', ' data-srcset="')
     $capture = $deferredImage + '<noscript>' + $image + '</noscript>'
     $panels += @"
-<article class="pf-workbench-panel" id="workbench-$(Html-Attr $m.id)" data-workbench-product="$(Html-Attr $m.id)" data-workbench-name="$(Html-Attr $p.name)" data-release-status="$(Html-Attr $p.release.releaseStatus)">
+<div class="pf-workbench-panel" id="workbench-$(Html-Attr $m.id)" data-workbench-product="$(Html-Attr $m.id)" data-workbench-name="$(Html-Attr $p.name)" data-release-status="$(Html-Attr $p.release.releaseStatus)">
   <div class="pf-workbench-copy"><div class="pf-workbench-identity">$(LedgerProductMark $m)<p class="ledger-label">$(Html-Text $p.name)</p></div><h3>$(Html-Text $m.card.tagline)</h3><p class="pf-workbench-summary">$(Html-Text $m.card.summary)</p><dl class="pf-workbench-facts"><dt>Public record</dt><dd>$(Html-Text $version)</dd><dt>Platform</dt><dd>$(Html-Text (LedgerPlatform $p))</dd><dt>Availability</dt><dd>$(Html-Text ((VisitorAvailabilityLabel $p).Replace('_',' ')))</dd></dl><p class="pf-workbench-note">$(Html-Text $detail)</p><div class="ledger-actions"><a class="ledger-link" href="$(Html-Attr $m.route)">Explore $(Html-Text $p.name) $(LedgerArrowSvg)</a><a class="ledger-link" href="/truth-files/$(Html-Attr $m.id)/">Read the Truth File $(LedgerArrowSvg)</a></div></div>
-  <figure class="pf-workbench-media"><a href="$(Html-Attr $m.card.media)" class="screenshot-link" data-screenshot data-gallery="workbench" data-gallery-title="$(Html-Attr $p.name)" data-caption="$(Html-Attr $context)" aria-label="Inspect $(Html-Attr $p.name) capture">$capture<span class="pf-workbench-inspect">Inspect capture $(LedgerArrowSvg)</span></a><figcaption>$(Html-Text $context)</figcaption></figure>
-</article>
+  <figure class="pf-workbench-media"><a href="$(Html-Attr $m.card.media)" class="screenshot-link" data-screenshot data-gallery="workbench" data-gallery-title="$(Html-Attr $p.name)" data-caption="$(Html-Attr $context)" aria-label="Inspect capture of $(Html-Attr $p.name)">$capture<span class="pf-workbench-inspect">Inspect capture $(LedgerArrowSvg)</span></a><figcaption>$(Html-Text $context)</figcaption></figure>
+</div>
 "@
   }
   return ($panels -join "`n")
