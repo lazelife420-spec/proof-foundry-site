@@ -155,25 +155,30 @@ Assert-Truth ($lastmodByLoc['https://theprooffoundry.com/proof-standard/'] -eq '
 # Every route changed through the shared header/footer on 2026-10-05. These
 # exact assertions and HEAD equality retain the sitemap gate population; H4
 # independently checks material dates. Release dates are not website dates.
-# Cache Vault's film loading markup changed after the historical reconciliation.
-# Bind this exact expectation to its committed content input, independently of
-# the sitemap under test. H4 also checks the complete material-input signature.
-$cacheVaultMaterialDate = (& git -C $root log -1 --format=%cs -- 'products/cache-vault/content.html').Trim()
-Assert-Truth ($LASTEXITCODE -eq 0 -and $cacheVaultMaterialDate -match '^\d{4}-\d{2}-\d{2}$') 'sitemap: Cache Vault material date resolves from committed product content'
-# Home's template changed after the reconciliation too (V5 port). Bind it the
-# same way, to its committed template; H4 checks Home's full input signature.
-# Home's material inputs also include module card and hero fields; the literal is the last commit that moved its H4 signature.
+# The verified V5 live-parity reconstruction (48e3e4e, V5_LIVE_BASE_CUSTODY.md)
+# collapsed per-file Git dates to 2026-10-25, so Cache Vault's material date is
+# pinned to its deployed content date (2026-10-20, verified byte-identical to
+# live) until real per-file history resumes past the reconstruction.
+# H4 checks the complete material-input signature from the reconstruction baseline.
+# Home's material date still derives from its committed template (the
+# reconstruction is its last committed change); the literal floor predates the port.
 $homeMaterialDate = (& git -C $root log -1 --format=%cs -- 'index.html').Trim()
 Assert-Truth ($LASTEXITCODE -eq 0 -and $homeMaterialDate -match '^\d{4}-\d{2}-\d{2}$') 'sitemap: Home material date resolves from the committed homepage template'
 # T0 is not authorised: a commit that moves /proofshot/, /reality-gate/ or
 # /software/ edits its literal below in the same commit as its sitemap date.
+# 2026-10-25 unified port: /, /about/, /lights-out/, /roadmap/, /support/ and
+# /software/ moved (Lights Out v11.2.0, studio-wide header mark, About rewrite);
+# each was bumped in the same commit as its content change.
 $reconciledLastmod = @{
   'https://theprooffoundry.com/' = (@($homeMaterialDate, '2026-10-20') | Sort-Object | Select-Object -Last 1)
-  'https://theprooffoundry.com/cache-vault/' = $cacheVaultMaterialDate
+  'https://theprooffoundry.com/about/' = '2026-10-25'
+  'https://theprooffoundry.com/cache-vault/' = '2026-10-20'
+  'https://theprooffoundry.com/lights-out/' = '2026-10-25'
   'https://theprooffoundry.com/proofshot/' = '2026-10-20'
   'https://theprooffoundry.com/reality-gate/' = '2026-10-20'
-  'https://theprooffoundry.com/software/' = '2026-10-21'
-  'https://theprooffoundry.com/support/' = '2026-10-21'
+  'https://theprooffoundry.com/roadmap/' = '2026-10-25'
+  'https://theprooffoundry.com/software/' = '2026-10-25'
+  'https://theprooffoundry.com/support/' = '2026-10-25'
 }
 foreach ($kv in $headLastmod.GetEnumerator()) {
   if ($kv.Key -eq 'https://theprooffoundry.com/proof-standard/') { continue }

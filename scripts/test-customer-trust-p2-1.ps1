@@ -103,7 +103,7 @@ Assert-Condition ($supportHtml -match 'Reality Gate[\s\S]*?v1\.1\.0') "Support r
 Assert-Condition ($supportHtml -match 'Cache Vault[\s\S]*?Public Windows v0\.3\.1') "Support release truth: Cache Vault public Windows v0.3.1"
 Assert-Condition ($supportHtml -notmatch 'v0\.2\.3-rc') "Support release truth: no RC candidate strings for Cache Vault"
 $loSupportCard = [regex]::Match($supportHtml, '(?s)<article class="detail-card">\s*<h3><a href="/lights-out/">.*?</article>').Value
-Assert-Condition ((-not [string]::IsNullOrWhiteSpace($loSupportCard)) -and ($loSupportCard -match 'Public Windows v11\.1\.3 available[\s\S]*?Android companion v11\.1\.1') -and ($loSupportCard -notmatch 'on hold|currently unavailable|candidates? on')) "Support release truth: Lights Out public release, companion parity and download availability agree"
+Assert-Condition ((-not [string]::IsNullOrWhiteSpace($loSupportCard)) -and ($loSupportCard -match 'Public Windows v11\.2\.0 available[\s\S]*?Android companion v11\.1\.1') -and ($loSupportCard -notmatch 'on hold|currently unavailable|candidates? on')) "Support release truth: Lights Out public release, companion parity and download availability agree"
 Assert-Condition ($supportHtml -match 'Cleanroom[\s\S]*?v1\.0\.7[\s\S]*?v1\.0\.10') "Support release truth: Cleanroom v1.0.7 / candidate v1.0.10"
 Assert-Condition ($supportHtml -notmatch 'Cleanroom[\s\S]*?v1\.2\.0') "Support release truth: Cleanroom rejects incorrect v1.2.0"
 Assert-Condition ($supportHtml -notmatch 'Cleanroom[\s\S]*?v1\.3\.0') "Support release truth: Cleanroom rejects incorrect v1.3.0"

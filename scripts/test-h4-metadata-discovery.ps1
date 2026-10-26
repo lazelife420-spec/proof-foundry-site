@@ -329,7 +329,7 @@ if ([string]::IsNullOrWhiteSpace($baselineRef)) {
   $upstreamRef = (& git -C $root rev-parse --abbrev-ref --symbolic-full-name '@{upstream}' 2>$null)
   if ($LASTEXITCODE -eq 0 -and $upstreamRef) { $baselineRef = $upstreamRef.Trim() }
 }
-if ([string]::IsNullOrWhiteSpace($baselineRef)) { $baselineRef = 'c7d8a49972e95aa2dd9e4edd8c2085ae1d9f30ce' }
+if ([string]::IsNullOrWhiteSpace($baselineRef)) { $baselineRef = '48e3e4e32d2fba6af2f8d4687d9128df57658c6a' } # verified V5 live-parity reconstruction (V5_LIVE_BASE_CUSTODY.md): the deployed source baseline; per-file V5 history is lost, so material-date derivation starts here
 $baselineExists = $false
 & git -C $root rev-parse --verify "$baselineRef^{commit}" 2>$null | Out-Null
 if ($LASTEXITCODE -eq 0) { $baselineExists = $true }

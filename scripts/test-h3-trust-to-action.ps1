@@ -73,13 +73,13 @@ Assert-Condition ($rg -match 'Withdrawn:</strong> v1\.1\.0 is not available for 
 Assert-Condition ($cl -match 'onboarding-list[\s\S]*%APPDATA%\\Cleanroom\\Archive\\') "P1: Cleanroom leftovers cite %APPDATA%\Cleanroom\Archive\"
 Assert-Condition ($gl -match 'onboarding-list[\s\S]*%TEMP%\\GhostLayer\\') "P1: GhostLayer leftovers cite %TEMP%\GhostLayer\"
 Assert-Condition ($fc -match 'onboarding-list[\s\S]*com\.prooffoundry\.skyfoundry') "P1: ForgeCast leftovers cite app-private storage"
-# Onboarding stays availability-honest per product: Lights Out v11.1.3 is now a
+# Onboarding stays availability-honest per product: Lights Out v11.2.0 is now a
 # public release, so its onboarding names the real download; Cache Vault ships a
 # final public release and its onboarding must match the live v0.3.1 download
 # instead of the RC-era "unavailable" wording.
 Assert-Condition ($lo -match 'Install, update, uninstall') "P1: Lights Out onboarding block present (public-release honest)"
 Assert-Condition ($cv -match 'Install, update, uninstall') "P1: Cache Vault onboarding block present (final-release honest)"
-Assert-Condition ($lo -match 'Download Lights Out v11\.1\.3' -and $lo -notmatch 'not publicly downloadable|currently unavailable') "P1: Lights Out onboarding names the public v11.1.3 download"
+Assert-Condition ($lo -match 'Download Lights Out v11\.2\.0' -and $lo -notmatch 'not publicly downloadable|currently unavailable') "P1: Lights Out onboarding names the public v11.2.0 download"
 Assert-Condition ($cv -match 'Download v0\.3\.1 \(Windows\)') "P1: Cache Vault onboarding matches the live v0.3.1 download CTA"
 Assert-Condition ($cv -match 'The public Windows v0\.3\.1 release is available from Proof Foundry downloads') "P1: Cache Vault install guidance names the live v0.3.1 release"
 Assert-Condition ($cv -match 'public, release-signed v0\.3\.1 companion APK') "P1: Cache Vault Android public APK is accurately labeled"

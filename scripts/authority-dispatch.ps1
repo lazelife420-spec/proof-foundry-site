@@ -39,6 +39,12 @@ $failed = 0
 $testInventory = @(Get-ChildItem -LiteralPath $PSScriptRoot -Filter 'test-*.ps1' -File | ForEach-Object { $_.Name })
 $expectedTestCount = if ($freeze.scriptInventoryCount) { [int]$freeze.scriptInventoryCount } else { 24 }
 if ($testInventory.Count -ne $expectedTestCount) { Write-Error "Expected $expectedTestCount test scripts in the qualification inventory; found $($testInventory.Count)."; exit 1 }
+if ($freeze.scriptInventory) {
+  $frozenNames = @($freeze.scriptInventory | ForEach-Object { [string]$_ })
+  $unexpected = @($testInventory | Where-Object { $frozenNames -cnotcontains $_ })
+  $absent = @($frozenNames | Where-Object { $testInventory -cnotcontains $_ })
+  if ($unexpected.Count -or $absent.Count) { Write-Error "Qualification inventory differs from $($freeze.name): unexpected [$($unexpected -join ', ')]; missing [$($absent -join ', ')]."; exit 1 }
+}
 Write-Host "=== TEST AUTHORITY: $TestName [$($entry.status)] ==="
 Write-Host "Reason: $($entry.action)"
 

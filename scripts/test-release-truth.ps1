@@ -145,17 +145,17 @@ Assert-Condition ($psRegistry.release.publishedAt -eq '2026-09-17') 'Registry Pr
 
 $loRegistry = $registryJson.products | Where-Object { $_.id -eq 'lights-out' }
 Assert-Condition ($loRegistry.release.releaseStatus -eq 'PUBLIC_RELEASE') "Registry Lights Out release status is PUBLIC_RELEASE"
-Assert-Condition ($loRegistry.release.publicVersion -eq '11.1.3') "Registry Lights Out public version is 11.1.3"
-Assert-Condition ($null -eq $loRegistry.release.candidateVersion) "Registry Lights Out carries no candidate version (v11.1.3 is final)"
-Assert-Condition ($loRegistry.release.publishedAt -eq '2026-09-15') "Registry Lights Out publishedAt matches the final release date"
+Assert-Condition ($loRegistry.release.publicVersion -eq '11.2.0') "Registry Lights Out public version is 11.2.0"
+Assert-Condition ($null -eq $loRegistry.release.candidateVersion) "Registry Lights Out carries no candidate version (v11.2.0 is final)"
+Assert-Condition ($loRegistry.release.publishedAt -eq '2026-10-16') "Registry Lights Out publishedAt matches the final release date"
 $loTruthJson = Get-Content (Join-Path $publicDir "truth\products\lights-out.json") -Raw | ConvertFrom-Json
 Assert-Condition ($loTruthJson.release.companionPublicVersion -eq '11.1.1') "Truth record Lights Out public companion remains 11.1.1"
 Assert-Condition ($loTruthJson.download.available -eq $true) "Truth record Lights Out download is available"
-Assert-Condition ($loHtml -match [regex]::Escape('https://downloads.theprooffoundry.com/lights-out/v11.1.3/Lights-Out-Portable-v11.1.3-win-x64.zip')) "Lights Out download resolves to the published v11.1.3 R2 mirror ZIP"
-Assert-Condition ($loHtml -match 'b4a5f4a4332b53106618433bc1817f4fcc5decede9f97ebb3817b69cef6b7e62') "Lights Out publishes the final v11.1.3 portable ZIP SHA-256"
-Assert-Condition ($loHtml -match 'dc4ffa82a254820e4946a1056a8b894aea3c39b171c39e79d4a34747a010545a') "Lights Out publishes the final v11.1.3 installer SHA-256"
+Assert-Condition ($loHtml -match [regex]::Escape('https://github.com/lazelife420-spec/Lights-out/releases/download/v11.2.0/Lights-Out-Portable-v11.2.0-win-x64.zip')) "Lights Out download resolves to the public v11.2.0 GitHub release ZIP"
+Assert-Condition ($loHtml -match '7e855475c3f7a3e65a4921bc7d9237a1a69480514943de597f65ad3cfb273b39') "Lights Out publishes the v11.2.0 portable ZIP SHA-256"
+Assert-Condition ($loHtml -match '83c590c3de54b16b26bfeb4961858e44a225dd59c7501e77d72248a5882a37c0') "Lights Out publishes the v11.2.0 installer SHA-256"
 Assert-Condition ($loHtml -notmatch 'c7872350101906471e83d8c0649e1e65c5f9baa4591e0c02ccfd8780215726d6') "Lights Out does not present the superseded RC4 artifact hash"
-Assert-Condition ($loHtml -match 'Receipt</dt><dd>342c11bc-d2d6-4918-8920-a495211ff69b') "Lights Out receipt binding is the final-artifact qualification receipt"
+Assert-Condition ($loHtml -notmatch 'Receipt</dt><dd>342c11bc' -and $loRegistry.verification.verificationType -notcontains 'REALITY_GATE') "Lights Out v11.2.0 does not borrow the v11.1.3 Reality Gate receipt"
 
 # 6. K2: one withdrawn Reality Gate story on every page (dateless; W/PROPOSAL.md A-01)
 function Get-K2Text([string]$html) {
