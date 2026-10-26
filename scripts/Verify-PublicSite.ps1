@@ -60,9 +60,26 @@ function Esc($s) { return [regex]::Escape($s) }
 
 # Derive per-product expectations from the manifest --------------------------
 
-# Cache Vault — final public release: v0.2.3 (previous public v0.2.2; RC candidate lane closed)
+# Release-truth model — the v2 release-fact authority the build compiles into
+# the site; the authored site manifest no longer carries version/artifact facts.
+$truthPath = Join-Path (Split-Path -Parent $PSScriptRoot) "release-truth.json"
+if (-not (Test-Path $truthPath)) {
+    Write-Host "==> FATAL: release-truth.json not found at $truthPath" -ForegroundColor Red
+    exit 2
+}
+$truthModel = (Get-Content $truthPath -Raw | ConvertFrom-Json)
+function Get-TruthChannel($id, $channelId) {
+    return (($truthModel.products | Where-Object { $_.id -eq $id }).channels | Where-Object { $_.id -eq $channelId } | Select-Object -First 1)
+}
+function Get-ChannelArtifact($ch) {
+    if ($ch -and $ch.artifacts) { return ($ch.artifacts | Where-Object { -not [string]::IsNullOrWhiteSpace($_.sha256) } | Select-Object -First 1) }
+    return $null
+}
+
+# Cache Vault — public release derived from release-truth.json (windows-public channel)
 $cv = Get-Product "cache-vault"
-$cvArtifact = Get-PrimaryArtifact $cv
+$cvCh = Get-TruthChannel "cache-vault" "windows-public"
+$cvArtifact = Get-ChannelArtifact $cvCh
 $cvStatusLabel = Get-StatusLabel $cv
 $cvDownloadPattern = Esc $cv.downloadLabel
 if ($cv.presentation.downloadUnavailable) {
@@ -70,18 +87,11 @@ if ($cv.presentation.downloadUnavailable) {
 }
 $cvArtifactPattern = Esc $cvArtifact.filename
 $cvSha256 = $cvArtifact.sha256
+$cvPublicVer = "v$($cvCh.version)"
 
 # Lights Out — public Windows v11.2.0 (GitHub release), no open candidate
 # Android: public companion v11.1.1; a companion v11.2.0 build exists but is not public.
-# Lights Out version facts derive from release-truth.json (the v2 release-fact
-# authority the build compiles into the site); the authored site manifest no
-# longer carries them.
-$loTruthPath = Join-Path (Split-Path -Parent $PSScriptRoot) "release-truth.json"
-if (-not (Test-Path $loTruthPath)) {
-    Write-Host "==> FATAL: release-truth.json not found at $loTruthPath" -ForegroundColor Red
-    exit 2
-}
-$loTruth = (Get-Content $loTruthPath -Raw | ConvertFrom-Json).products | Where-Object { $_.id -eq "lights-out" } | Select-Object -First 1
+$loTruth = $truthModel.products | Where-Object { $_.id -eq "lights-out" } | Select-Object -First 1
 $loPublicVer = "v$(($loTruth.channels | Where-Object { $_.id -eq 'windows-public' }).version)"
 $loCompanionPublicVer = "v$(($loTruth.channels | Where-Object { $_.id -eq 'android-public' }).version)"
 $loCompanionBuiltVer = "v$(($loTruth.channels | Where-Object { $_.id -eq 'android-built' }).version)"
@@ -91,10 +101,11 @@ $cln = Get-Product "cleanroom"
 $clnStatusLabel = Get-StatusLabel $cln
 $clnDownloadPattern = Esc $cln.downloadLabel
 
-# ForgeCast — public release v0.3.5, production-signed APK
+# ForgeCast — public release derived from release-truth.json (android-public channel), production-signed APK
 $fc = Get-Product "forgecast"
-$fcArtifact = Get-PrimaryArtifact $fc
-$fcPublicVer = "v$($fc.release.publicVersion)"
+$fcCh = Get-TruthChannel "forgecast" "android-public"
+$fcArtifact = Get-ChannelArtifact $fcCh
+$fcPublicVer = "v$($fcCh.version)"
 $fcSha256 = $fcArtifact.sha256
 $fcApkUrl = $fcArtifact.downloadUrl
 $fcShaUrl = $fcArtifact.sha256Url
@@ -106,10 +117,15 @@ $rgArtifact = Get-PrimaryArtifact $rg
 $rgSha256 = $rgArtifact.sha256
 $rgStateLabel = Get-StateLabel $rg
 
-# ProofShot — public release v2.0.0
+# ProofShot — public release derived from release-truth.json (windows-public channel)
 $ps = Get-Product "proofshot"
 $psStatusLabel = Get-StatusLabel $ps
-$psPublicVer = $ps.release.publicVersion
+$psCh = Get-TruthChannel "proofshot" "windows-public"
+$psArtifact = Get-ChannelArtifact $psCh
+$psPublicVer = $psCh.version
+$psUrl = $psArtifact.downloadUrl
+$psSha256 = $psArtifact.sha256
+$psShaUrl = $psArtifact.sha256Url
 
 # ---------------------------------------------------------------------------
 # Test helpers
@@ -313,7 +329,7 @@ foreach ($target in $TargetUrls) {
     # canonical "ForgeCast Weather" remains asserted on the product/proof pages below.
     Test-UrlContent -Url "$target/" -ContainsPatterns @(
         "Reality Gate", "Lights Out", "Cache Vault", "Cleanroom",
-        "ForgeCast", "ProofShot", "Proof Standard", "Explore our software"
+        "ForgeCast", "ProofShot", "Proof Standard", "leaves a record"
     ) -NotContainsPatterns @("(?<!prooffoundry\.)SkyFoundry")
 
     # 2. Lights Out — canonical route: feature checks + release-truth-derived version truth
@@ -427,11 +443,11 @@ foreach ($target in $TargetUrls) {
     Test-UrlContent -Url "$target/cache-vault/" -Name "product truth" -ContainsPatterns @(
         "Cache Vault",
         $cvDownloadPattern,
-        "$(Esc ('v' + $cv.release.publicVersion)) is the current public Windows release",
+        "$(Esc $cvPublicVer) is the current public Windows release",
         $cvStatusLabel,
         $cvArtifactPattern,
         $cvSha256
-    ) -NotContainsPatterns @("(?<!prooffoundry\.)SkyFoundry", "Get Cache Vault", "v0\.2\.3-rc1", "v0\.2\.3-rc2", "release candidate")
+    ) -NotContainsPatterns @("(?<!prooffoundry\.)SkyFoundry", "v0\.2\.3-rc1", "v0\.2\.3-rc2", "release candidate")
     Test-UrlContent -Url "$target/cache-vault" -ContainsPatterns @(
         "Cache Vault"
     ) -NotContainsPatterns @("(?<!prooffoundry\.)SkyFoundry") -FollowRedirects $true
@@ -450,7 +466,7 @@ foreach ($target in $TargetUrls) {
 
     # 12. ProofShot — manifest-derived release truth (public release since 2026-09-17)
     Test-UrlContent -Url "$target/proofshot/" -ContainsPatterns @(
-        "ProofShot", "Download ProofShot v$(Esc $psPublicVer)", (Esc $ps.downloadUrl), (Esc $ps.sha256), $psStatusLabel
+        "ProofShot", "Download ProofShot v$(Esc $psPublicVer)", (Esc $psUrl), (Esc $psSha256), $psStatusLabel
     ) -NotContainsPatterns @("(?<!prooffoundry\.)SkyFoundry", "no public ProofShot release", "NOT YET RELEASED")
     Test-UrlContent -Url "$target/proofshot" -ContainsPatterns @(
         "ProofShot"
@@ -466,8 +482,8 @@ Test-UrlContent -Url $fcShaUrl -Name "SHA256" -ContainsPatterns @($fcSha256)
 
 # 13b. ProofShot installer and SHA256 availability (R2 / Proof Foundry distribution)
 Write-Host "`n---> Testing ProofShot distribution files"
-Test-AssetHead -Url $ps.downloadUrl -Name "ProofShot installer" -ExpectedContentType "application/"
-Test-UrlContent -Url $ps.sha256Url -Name "ProofShot SHA256" -ContainsPatterns @($ps.sha256)
+Test-AssetHead -Url $psUrl -Name "ProofShot installer" -ExpectedContentType "application/"
+Test-UrlContent -Url $psShaUrl -Name "ProofShot SHA256" -ContainsPatterns @($psSha256)
 
 # 14. Hash chain: landing page and SHA file both expose the expected SHA
 foreach ($target in $TargetUrls) {
