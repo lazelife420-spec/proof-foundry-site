@@ -565,6 +565,10 @@
           {
             "label": "v11.2.0 release qualification evidence and limits (GitHub)",
             "url": "https://github.com/lazelife420-spec/Lights-out/blob/v11.2.0/docs/RELEASE_QUALIFICATION_11.2.0.md"
+          },
+          {
+            "label": "Historical Reality Gate receipts 342c11bc-d2d6-4918-8920-a495211ff69b + 6323d762-859a-4385-91d7-923cd1bc1610 (v11.1.3 final artifacts) and adff2359-3350-4d6d-9e04-74c295003c58 (v11.1.3 pre-publication); they qualify v11.1.3 only, not v11.2.0",
+            "url": null
           }
         ],
         "limitations": [

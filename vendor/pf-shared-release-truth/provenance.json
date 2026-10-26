@@ -5,13 +5,13 @@
   "sourceCommit": "c5df5bb805f88af41456351e3a648063f3da03c8",
   "sourceTree": "5be20b8ab334a9f85d4d2b74edb8200c5ab21122",
   "foundationCommit": "2258341bfa47de187147b03617e7dfa9ade678bf",
-  "modelSha256": "58d422c9292db4c9af8d43861b6bcc4b240949729409736e415a37cd069634e9",
+  "modelSha256": "c1a57e8f4c3c5cbe5a658d4dcbfe44186de08dee7fdc60b92cfff544b901441b",
   "files": [
     {
       "source": "proof-foundry-app/release-truth/release-truth.json",
       "destination": "release-truth.json",
       "blob": null,
-      "sha256": "b378231b7724b5269c91ce29c5901a392485274c82bedff84c4c56f649a67415"
+      "sha256": "737ededa475ee63757009f87cde14a06351fd4e1ca798aafa7891a4c9e11320b"
     },
     {
       "source": "proof-foundry-app/packages/pf-release-truth/index.js",
@@ -31,7 +31,7 @@
     {
       "amendedAt": "2026-10-25",
       "file": "release-truth.json",
-      "scope": "lights-out product only: Windows public release 11.1.3 -> 11.2.0 (GitHub release artifacts, hashes, first-party qualification record), Android built-only companion 11.1.3 -> 11.2.0",
+      "scope": "lights-out product only: Windows public release 11.1.3 -> 11.2.0 (GitHub release artifacts, hashes, first-party qualification record), Android built-only companion 11.1.3 -> 11.2.0; historical v11.1.3 Reality Gate receipt references retained word-for-word as url-less unlinked evidence (they qualify v11.1.3 only, not v11.2.0)",
       "authorization": "Owner directive 2026-10-25 (re-port onto the verified V5 live base); XrossPoint CP-0129 guidance that release-truth.json is the versioned authority",
       "priorFileSha256": "65e5b92a164b525b3a0d9f0308a4046b2fb66a9eb93c23c223181b4a47c0bfb9",
       "priorModelSha256": "456810ca16c61872f982b54a9975858903bc209387f1b819ef26de39474aeb7a",
