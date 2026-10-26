@@ -57,8 +57,8 @@ test('Cleanroom candidate remains separate from its public artifact and reported
 });
 test('Lights Out public companion and built-only companion never collapse into one channel', () => {
   const compiled = compile(model, presentation), p = product(compiled.manifest, 'lights-out');
-  assert.equal(p.release.publicVersion, '11.1.3'); assert.equal(p.release.companionPublicVersion, '11.1.1');
-  assert.equal(p.companionVersion, '11.1.3');
+  assert.equal(p.release.publicVersion, '11.2.0'); assert.equal(p.release.companionPublicVersion, '11.1.1');
+  assert.equal(p.companionVersion, '11.2.0');
   const c = product(compiled.projection, 'lights-out').channels;
   assert.equal(c.find(x => x.platform === 'android' && x.track === 'BUILT').publicationState, 'BUILT_NOT_PUBLIC');
   assert.ok(p.artifacts.every(a => a.platform === 'Windows'));
@@ -71,7 +71,7 @@ test('Lights Out receipt references without a public URL stay word for word as u
   for (const id of ['342c11bc-d2d6-4918-8920-a495211ff69b', '6323d762-859a-4385-91d7-923cd1bc1610', 'adff2359-3350-4d6d-9e04-74c295003c58']) assert.ok(labelOnly[0].label.includes(id), id);
   assert.deepEqual(p.unlinkedEvidence, labelOnly.map(row => row.label));
   assert.deepEqual(p.evidence, authored.filter(row => typeof row === 'string' || row.url !== null));
-  assert.equal(p.verification.receiptId, '342c11bc-d2d6-4918-8920-a495211ff69b');
+  assert.equal(p.verification.receiptId, null);
   assert.deepEqual(product(compiled.projection, 'lights-out').verification.evidence, authored);
   for (const q of compiled.manifest.products) {
     assert.ok(q.evidence.every(row => typeof row === 'string' || (typeof row.url === 'string' && row.url.length > 0)), q.id);

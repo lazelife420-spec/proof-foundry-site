@@ -53,7 +53,7 @@ function Test-Order([string]$html, [string[]]$needles, [string]$label) {
 
 # 3. Test each H7C target product page
 $h7cProducts = @(
-  @{ Name = 'Lights Out'; Slug = 'lights-out'; PublicVer = 'v11.1.2'; CandidateVer = 'v11.1.3'; Unreleased = $false },
+  @{ Name = 'Lights Out'; Slug = 'lights-out'; PublicVer = 'v11.2.0'; CandidateVer = ''; Unreleased = $false },
   @{ Name = 'Cleanroom'; Slug = 'cleanroom'; PublicVer = 'v1.0.7'; CandidateVer = 'v1.0.10'; Unreleased = $false },
   @{ Name = 'GhostLayer'; Slug = 'ghostlayer'; PublicVer = 'v0.4.0'; CandidateVer = 'v0.4.0'; Unreleased = $false },
   @{ Name = 'ForgeCast'; Slug = 'forgecast'; PublicVer = 'v0.3.5'; CandidateVer = 'v0.3.5'; Unreleased = $false },

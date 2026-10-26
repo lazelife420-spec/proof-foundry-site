@@ -263,8 +263,8 @@
       "build": "Electron v11.2.0 · This site offers no Android companion download.",
       "testStatus": "Windows qualification passed · 614/614 files matched",
       "testCount": "Windows release qualification passed: the installer and the portable build each matched all 614 files recorded in the build manifest, and 60 installed-runtime settings layout checks passed (WINDOWS-VERIFICATION.json). Published hashes were re-verified on 2026-10-25 against bytes downloaded anonymously from the GitHub release.",
-      "releaseNote": "Lights Out v11.2.0 is the current public Windows release, published 2026-10-16 from source commit 335ba77. It refines the Settings menu and forms, adds experimental WiZ smart-light controls and richer calendar rules. The installer EXE and portable ZIP are public on the GitHub release alongside SHA256SUMS.txt, a build manifest and a Windows verification record; both hashes were re-checked against anonymously downloaded bytes. No Reality Gate receipt has been published for this version. These are unsigned Windows builds — not Authenticode-signed. The public Android companion remains v11.1.1.",
-      "proofStatus": "Hash-verified · unsigned",
+      "releaseNote": "Lights Out v11.2.0 is the current public Windows release, published 2026-10-16 from source commit 335ba77. It refines the Settings menu and forms, adds experimental WiZ smart-light controls and richer calendar rules. The installer EXE and portable ZIP are public on the GitHub release alongside SHA256SUMS.txt, a build manifest and a Windows verification record; both hashes were re-checked against anonymously downloaded bytes. No Reality Gate receipt has been published for this version. These are unsigned Windows builds — not Authenticode-signed. The Android companion stays at v11.1.1; no new companion APK ships with this version.",
+      "proofStatus": "First-party qualification · unsigned",
       "proofLinks": [],
       "releasePresentation": {
         "localVersionLane": "PUBLIC",

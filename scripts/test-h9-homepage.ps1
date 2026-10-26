@@ -78,8 +78,15 @@ $microStart = $microSource.IndexOf('</style>') + '</style>'.Length
 $microBody = ($microSource.Substring($microStart, $microSource.LastIndexOf('</svg>') - $microStart).Trim() -replace '>\s+<', '><')
 $homeFcHeaderMark = '<span class="pf-mark-fc pf-mark-fc--header" hidden><svg viewBox="0 0 256 256" aria-hidden="true" focusable="false">' + $microBody + '</svg></span>'
 Assert-H9 'Home header: the forced-colours micro mark is one hidden, aria-hidden, non-focusable inline copy of PF_HEADER_MARK.svg, right after the brand picture' ($microStart -gt 8 -and ([regex]::Matches($homeHeader, [regex]::Escape($homeFcHeaderMark))).Count -eq 1 -and $homeHeader.Contains($homeMarkPicture + $homeFcHeaderMark) -and ([regex]::Matches($homeHtml, 'class="pf-mark-fc ')).Count -eq 2)
-$canonicalHeader = $homeHeader.Replace($homeFcHeaderMark, '').Replace($homeMarkPicture, $sharedMarkImg)
-$headerParity = @($software, $proof, $realityGate | ForEach-Object { ([regex]::Match($_, '(?s)<header class="site-header".*?</header>').Value -replace ' aria-current="page"', '') -ceq $canonicalHeader })
+# Studio-wide mark (2026-10-25): every page family header carries the same PF Mark G
+# picture and inline forced-colours mark, so each header is normalized identically
+# before the parity comparison.
+$normalizeHeader = { param($h) (([regex]::Match($h, '(?s)<header class="site-header".*?</header>').Value -replace ' aria-current="page"', '').Replace($homeFcHeaderMark, '').Replace($homeMarkPicture, $sharedMarkImg)) }
+$canonicalHeader = & $normalizeHeader $homeHtml
+$familyMarkCounts = @($software, $proof, $realityGate | ForEach-Object { ([regex]::Matches($_, [regex]::Escape($homeMarkPicture + $homeFcHeaderMark))).Count })
+$familyFcTotals = @($software, $proof, $realityGate | ForEach-Object { ([regex]::Matches($_, 'class="pf-mark-fc ')).Count })
+Assert-H9 'every page family header carries the PF Mark G picture and inline forced-colours mark (studio-wide)' (@($familyMarkCounts | Where-Object { $_ -ne 1 }).Count -eq 0 -and @($familyFcTotals | Where-Object { $_ -ne 2 }).Count -eq 0)
+$headerParity = @($software, $proof, $realityGate | ForEach-Object { (& $normalizeHeader $_) -ceq $canonicalHeader })
 Assert-H9 'all page families share canonical navigation, support CTA and reachable catalog' ($canonicalHeader -match 'href="/software/"' -and $canonicalHeader -match 'href="/proof-standard/"' -and $canonicalHeader -match 'href="/truth-files/"' -and $canonicalHeader -match 'href="/about/"' -and $canonicalHeader -match 'class="button button-primary nav-cta" href="/support/">Support</a>' -and $homeHtml -match 'class="ledger-button" href="/software/"' -and $manifest.navCta.href -eq '/support/' -and $manifest.navCta.label -eq 'Support' -and $headerParity.Count -eq 3 -and @($headerParity | Where-Object { -not $_ }).Count -eq 0)
 Assert-H9 'hero is brand-owned and contains no fixed product identity' ($sourceHome -notmatch '(?i)cache vault|reality gate|ghostlayer|forgecast|proofshot|lights out|cleanroom|data-module=' -and $homeHtml -notmatch 'class="studio-hero-product"')
 
