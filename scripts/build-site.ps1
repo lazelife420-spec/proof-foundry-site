@@ -3388,6 +3388,7 @@ Copy-Item (Join-Path $root 'pf-truth-receipt.js') $publicDir -Force
 Copy-Item (Join-Path $root 'CNAME')          $publicDir -Force
 Copy-Item (Join-Path $root 'robots.txt')     $publicDir -Force
 Copy-Item (Join-Path $root 'sitemap.xml')    $publicDir -Force
+if (Test-Path (Join-Path $root 'favicon.ico')) { Copy-Item (Join-Path $root 'favicon.ico') $publicDir -Force }
 if (Test-Path (Join-Path $root '.well-known')) {
   $wellKnownOut = Join-Path $publicDir '.well-known'
   New-Item -ItemType Directory $wellKnownOut -Force | Out-Null
