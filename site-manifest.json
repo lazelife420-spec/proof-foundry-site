@@ -256,15 +256,15 @@
         "cardImageWidth": 1600,
         "cardImageHeight": 902,
         "unofferedArtifacts": [1],
-        "evidenceClass": { "ARTIFACT_CUSTODY": "NONE", "RUNTIME_VALIDATION": "ID_ONLY", "REALITY_GATE": "ID_ONLY" }
+        "evidenceClass": { "ARTIFACT_CUSTODY": "NONE", "RUNTIME_VALIDATION": "NONE", "REALITY_GATE": "NONE" }
       },
-      "downloadLabel": "Download Lights Out v11.1.3",
+      "downloadLabel": "Download Lights Out v11.2.0",
       "distType": "Portable ZIP + Windows installer EXE (unsigned)",
-      "build": "Electron v11.1.3 · This site offers no Android companion download.",
-      "testStatus": "3 consecutive Reality Gate runs PASSED",
-      "testCount": "Reality Gate release qualification: three consecutive runs PASSED on the final release source commit 5f8ede7 — receipts 342c11bc-d2d6-4918-8920-a495211ff69b and 6323d762-859a-4385-91d7-923cd1bc1610, plus pre-publication run adff2359-3350-4d6d-9e04-74c295003c58, all receipt-verified.",
-      "releaseNote": "Lights Out v11.1.3 is the current public Windows release, published 2026-09-15 from release source commit 5f8ede7. The shipped artifacts — the Windows installer EXE and the portable ZIP — were qualified by three consecutive Reality Gate runs on that exact source identity (receipts 342c11bc-d2d6-4918-8920-a495211ff69b and 6323d762-859a-4385-91d7-923cd1bc1610, plus pre-publication run adff2359-3350-4d6d-9e04-74c295003c58; all PASSED, receipt-verified), then hash-verified after upload. Public downloads are served from the Proof Foundry mirror alongside a published SHA256SUMS.txt; a GitHub release record exists but anonymous access is blocked. These are unsigned Windows builds — not Authenticode-signed. The earlier RC4-candidate qualification (receipt 6b67a712-33ba-4cd6-9c4a-81e66f056750, artifact SHA-256 c7872350...) covered superseded candidate bytes and is retained only as historical evidence.",
-      "proofStatus": "First-party qualification · unsigned",
+      "build": "Electron v11.2.0 · This site offers no Android companion download.",
+      "testStatus": "Windows qualification passed · 614/614 files matched",
+      "testCount": "Windows release qualification passed: the installer and the portable build each matched all 614 files recorded in the build manifest, and 60 installed-runtime settings layout checks passed (WINDOWS-VERIFICATION.json). Published hashes were re-verified on 2026-10-25 against bytes downloaded anonymously from the GitHub release.",
+      "releaseNote": "Lights Out v11.2.0 is the current public Windows release, published 2026-10-16 from source commit 335ba77. It refines the Settings menu and forms, adds experimental WiZ smart-light controls and richer calendar rules. The installer EXE and portable ZIP are public on the GitHub release alongside SHA256SUMS.txt, a build manifest and a Windows verification record; both hashes were re-checked against anonymously downloaded bytes. No Reality Gate receipt has been published for this version. These are unsigned Windows builds — not Authenticode-signed. The public Android companion remains v11.1.1.",
+      "proofStatus": "Hash-verified · unsigned",
       "proofLinks": [],
       "releasePresentation": {
         "localVersionLane": "PUBLIC",

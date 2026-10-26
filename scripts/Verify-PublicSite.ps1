@@ -71,12 +71,20 @@ if ($cv.presentation.downloadUnavailable) {
 $cvArtifactPattern = Esc $cvArtifact.filename
 $cvSha256 = $cvArtifact.sha256
 
-# Lights Out — active proof / on hold: public Windows v11.1.2, candidate v11.1.3
-# Android public companion v11.1.1 (from release.companionPublicVersion)
-$lo = Get-Product "lights-out"
-$loPublicVer = "v$($lo.release.publicVersion)"
-$loCandidateVer = "v$($lo.release.candidateVersion)"
-$loCompanionPublicVer = "v$($lo.release.companionPublicVersion)"
+# Lights Out — public Windows v11.2.0 (GitHub release), no open candidate
+# Android: public companion v11.1.1; a companion v11.2.0 build exists but is not public.
+# Lights Out version facts derive from release-truth.json (the v2 release-fact
+# authority the build compiles into the site); the authored site manifest no
+# longer carries them.
+$loTruthPath = Join-Path (Split-Path -Parent $PSScriptRoot) "release-truth.json"
+if (-not (Test-Path $loTruthPath)) {
+    Write-Host "==> FATAL: release-truth.json not found at $loTruthPath" -ForegroundColor Red
+    exit 2
+}
+$loTruth = (Get-Content $loTruthPath -Raw | ConvertFrom-Json).products | Where-Object { $_.id -eq "lights-out" } | Select-Object -First 1
+$loPublicVer = "v$(($loTruth.channels | Where-Object { $_.id -eq 'windows-public' }).version)"
+$loCompanionPublicVer = "v$(($loTruth.channels | Where-Object { $_.id -eq 'android-public' }).version)"
+$loCompanionBuiltVer = "v$(($loTruth.channels | Where-Object { $_.id -eq 'android-built' }).version)"
 
 # Cleanroom — public release: public v1.0.7, next/local v1.0.10
 $cln = Get-Product "cleanroom"
@@ -308,17 +316,18 @@ foreach ($target in $TargetUrls) {
         "ForgeCast", "ProofShot", "Proof Standard", "Explore our software"
     ) -NotContainsPatterns @("(?<!prooffoundry\.)SkyFoundry")
 
-    # 2. Lights Out — canonical route: feature checks + manifest-derived version truth
+    # 2. Lights Out — canonical route: feature checks + release-truth-derived version truth
     Test-UrlContent -Url "$target/lights-out/" -Name "product truth" -ContainsPatterns @(
         "Wi-Fi Guard",
         "ForgeCast Weather",
-        "Public Windows $(Esc $loPublicVer)",
-        "candidate companion.*$(Esc $loCandidateVer)",
-        "public Android companion.*$(Esc $loCompanionPublicVer)",
-        "Neither the Windows $(Esc $loCandidateVer) candidate nor the Android"
+        "Windows $(Esc $loPublicVer) is the current public release, published 2026-10-16",
+        "No successor candidate is open",
+        "no companion $(Esc $loCompanionBuiltVer) build has been released publicly",
+        "Android companion $(Esc $loCompanionPublicVer)"
     ) -NotContainsPatterns @(
         "Electron packaged", "(?<!prooffoundry\.)SkyFoundry", "guided breathing",
-        "breathing ritual", "ambient soundscapes", "soundscapes", "screen shift"
+        "breathing ritual", "ambient soundscapes", "soundscapes", "screen shift",
+        "candidate companion"
     )
 
     # 3. Lights Out — redirect routes (follow to canonical, basic content check)

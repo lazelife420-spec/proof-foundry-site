@@ -50,11 +50,11 @@
         },
         {
           "title": "What does \"First-party qualification\" mean?",
-          "body": "Proof Foundry's own qualification tool (Reality Gate) ran this Windows build three times and recorded PASS. The run receipts (IDs below) are not published, and this is not an independent or security certification. Earlier runs also drove the Android companion on a physical phone; that does not qualify the current companion. The qualification does not mean the file is digitally signed, and it has no effect on Windows SmartScreen."
+          "body": "For v11.2.0 it means the release's own Windows qualification passed: the installer and the portable build each matched all 614 files recorded in the build manifest, and 60 installed-runtime settings checks passed (WINDOWS-VERIFICATION.json). Proof Foundry re-checked both published SHA-256 hashes against anonymously downloaded bytes. This is first-party evidence — not an independent or security certification, not a code signature, and with no effect on Windows SmartScreen. Earlier Reality Gate runs covered v11.1.3 only."
         },
         {
           "title": "Is this hosted on GitHub?",
-          "body": "A GitHub release record exists for accountability, but anonymous downloads are blocked there. Canonical public downloads are served from the Proof Foundry download mirror by design."
+          "body": "Yes. The v11.2.0 installer, portable ZIP and SHA256SUMS.txt are public on the GitHub release, and the download button on this page points there."
         },
         {
           "title": "How do I verify the download?",
@@ -167,7 +167,7 @@
       "tier": "secondary",
     "presentation": "compact",
     "visibility": "visible",
-    "mediaDisclosure": "Dry Run capture from v11.1.2 · current public release v11.1.3.",
+    "mediaDisclosure": "Dry Run capture from v11.1.2 · current public release v11.2.0.",
     "evidencePriority": 3
   }
 }

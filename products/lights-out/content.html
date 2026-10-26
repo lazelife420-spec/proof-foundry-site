@@ -14,7 +14,7 @@
 <section class="product-story pp-story pp-section"><div class="story-copy"><p class="kicker pp-kicker">Make it a ritual</p><h2>A different ritual for every night.</h2><p>Start with a Night Mode or save a profile for the routine you use most. Your movie night and your early start do not need the same ending.</p><div class="pp-story-evidence-card"><div class="pp-evidence-badge"><span class="pp-status-glyph glyph-pass">●</span> NIGHT MODES, SCHEDULES &amp; FIRST LIGHT</div><div class="pp-evidence-meta"><span>Routine systems: <strong>Night Modes, scheduling, First Light wake alarm, smart lights, Wi-Fi Guard</strong></span><span>Documented with real interface captures in the technical evidence below.</span></div></div></div><figure class="app-shot story-shot"><a class="screenshot-link" href="/assets/lights-out/night-modes-panel.png" data-screenshot aria-label="Enlarge: Lights Out Night Modes panel with bedtime presets."><img src="/assets/studio/night-modes-panel-1600.webp" srcset="/assets/studio/night-modes-panel-480.webp 480w, /assets/studio/night-modes-panel-960.webp 960w, /assets/studio/night-modes-panel-1600.webp 1600w" sizes="(max-width: 700px) 92vw, 60vw" width="1600" height="1002" alt="Lights Out Night Modes panel with bedtime presets." loading="lazy"  decoding="async"></a><figcaption>Night Modes · real Windows v11.1.2 interface</figcaption></figure></section>
 
 <!-- 7 · GET / AVAILABILITY -->
-<section class="pp-get" id="download"><div id="release-status"></div><p class="kicker pp-kicker">Get the software</p><h2 class="pp-h2">A better end to your day.</h2><p class="download-description">The public Windows release is {{product.versionLabel}}. The download offered here is the portable ZIP, served from Proof Foundry's own mirror with a published SHA256SUMS.txt — verify the hash before running.</p><div class="studio-actions">{{product.downloadBlock}}</div><p class="pp-warning">This site offers no Android companion download. The release record lists Android companion {{product.companionPublicVersionLabel}} but publishes no companion file or checksum. A companion v{{product.companionVersion}} build exists alongside Windows {{product.versionLabel}} but has not been released publicly.</p><p class="pp-link-row"><a class="text-link" href="#release-note">What changed in {{product.versionLabel}} ↓</a> &nbsp;·&nbsp; <a class="text-link" href="#proof">Read release evidence ↓</a></p></section>
+<section class="pp-get" id="download"><div id="release-status"></div><p class="kicker pp-kicker">Get the software</p><h2 class="pp-h2">A better end to your day.</h2><p class="download-description">The public Windows release is {{product.versionLabel}}. The download offered here is the portable ZIP, served from the public GitHub release with a published SHA256SUMS.txt — verify the hash before running.</p><div class="studio-actions">{{product.downloadBlock}}</div><p class="pp-warning">This site offers no Android companion download. The release record lists Android companion {{product.companionPublicVersionLabel}} but publishes no companion file or checksum. A companion v{{product.companionVersion}} build exists alongside Windows {{product.versionLabel}} but has not been released publicly.</p><p class="pp-link-row"><a class="text-link" href="#release-note">What changed in {{product.versionLabel}} ↓</a> &nbsp;·&nbsp; <a class="text-link" href="#proof">Read release evidence ↓</a></p></section>
 
 <!-- 8 · ONBOARDING -->
 <details class="pp-record" id="record">
@@ -310,28 +310,26 @@
 <section aria-labelledby="release-title" class="evidence-section">
 <div class="section-head">
 <h3 id="release-title">Release status &amp; evidence</h3>
-<p>Lights Out {{product.versionLabel}} is the public release. It passed qualification by Reality Gate (Proof Foundry's internal qualification tool) on the exact shipped artifacts below — see "What this does not claim" further down for what that proof does and does not cover.</p>
+<p>Lights Out {{product.versionLabel}} is the public release. Its installer and portable ZIP passed the release's own Windows qualification, and both published hashes were re-checked against downloaded bytes — see "What this does not claim" further down for what that does and does not cover.</p>
 </div>
 <div class="lo-proof-card">
 <dl class="lo-proof-fields">
-<div><dt>Reality Gate result</dt><dd>{{product.testStatus}}</dd></div>
-<div><dt>Receipt</dt><dd>{{product.receiptId}} · verified GREEN</dd></div>
+<div><dt>Qualification</dt><dd>{{product.testStatus}}</dd></div>
+<div><dt>Source commit</dt><dd><code>335ba77</code></dd></div>
 <div><dt>Artifact</dt><dd>{{product.artifacts.0.filename}}</dd></div>
 <div><dt>Build</dt><dd>{{product.build}}</dd></div>
-<div><dt>Distribution</dt><dd>Portable ZIP (unsigned), linked above. The mirror's SHA256SUMS.txt also lists an unsigned installer EXE that this site does not offer; its bytes have not been independently re-checked.</dd></div>
-<div><dt>Public download</dt><dd>Available — Proof Foundry downloads</dd></div>
+<div><dt>Distribution</dt><dd>Portable ZIP (unsigned), linked above, published on the GitHub release. The release's SHA256SUMS.txt also lists an unsigned installer EXE that this site does not offer; both published hashes were re-checked against downloaded bytes on 2026-10-25.</dd></div>
+<div><dt>Public download</dt><dd>Available — GitHub release v11.2.0</dd></div>
 </dl>
         <div id="release-note">{{product.releaseNoteBlock}}</div>
       </div>
 <div class="lo-proof-card">
-<h3>What Reality Gate proved</h3>
+<h3>What was checked</h3>
 <ul class="lo-story-list">
-<li>Three consecutive Reality Gate qualification runs <strong>PASSED</strong> on the final release source commit <code>5f8ede7</code>: receipts <code>{{product.receiptId}}</code> and <code>6323d762-859a-4385-91d7-923cd1bc1610</code>, plus the pre-publication run <code>adff2359-3350-4d6d-9e04-74c295003c58</code>.</li>
-<li>Reality Gate is Proof Foundry's internal qualification tool. These run receipts are not published, and this is not an independent or security certification.</li>
-<li>Published artifact hashes were verified again after upload to the public download mirror — the downloaded bytes match the qualified bytes.</li>
-<li>Earlier validation included real physical Android companion automation on a Samsung Galaxy S23 — not a simulator; that does not qualify the current companion.</li>
-<li>An earlier run (receipt <code>a9203e13-7661-47f0-aad5-36bbf210ea1b</code>) is kept only as evidence of a runner toolchain issue that was found and fixed (Node 22 rejects shell-less .cmd spawns; resolved with the runner's documented shell-free toolchain override) — it does not count as a passing result and is never cited as one.</li>
-<li>The RC4-candidate qualification (receipt <code>6b67a712-33ba-4cd6-9c4a-81e66f056750</code>, artifact SHA-256 <code>c7872350…</code>) covered superseded candidate bytes and is retained only as historical evidence — it does not verify the shipped artifacts.</li>
+<li>The release's own Windows qualification passed on source commit <code>335ba77</code>: the installer and the portable build each matched all 614 files recorded in the build manifest, and 60 installed-runtime settings layout checks passed (<code>WINDOWS-VERIFICATION.json</code>).</li>
+<li>Both published SHA-256 hashes were re-verified on 2026-10-25 against bytes downloaded anonymously from the GitHub release — the downloaded bytes match the published hashes.</li>
+<li>This qualification is first-party: Proof Foundry qualified its own release. It is not an independent or security certification.</li>
+<li>Earlier Reality Gate receipts covered v11.1.3 only; they do not qualify v11.2.0 and are retained as historical evidence.</li>
 </ul>
 </div>
 <div class="lo-proof-card">
@@ -341,9 +339,9 @@
 <p>Expected portable ZIP SHA-256:</p>
         {{product.hashBlock}}
         <h4>Also listed in SHA256SUMS.txt (not offered here)</h4>
-<p>The mirror's SHA256SUMS.txt also lists the installer EXE <code>{{product.artifacts.1.filename}}</code>. This site does not offer that file; its published SHA-256 is:</p>
+<p>The GitHub release's SHA256SUMS.txt also lists the installer EXE <code>{{product.artifacts.1.filename}}</code>. This site does not offer that file; its published SHA-256 is:</p>
 <div class="code-block">{{product.artifacts.1.sha256}}</div>
-<p class="note">Both digests are also published in <a href="{{product.artifacts.0.sha256Url}}">SHA256SUMS.txt</a> on the download mirror. If the hash doesn't match exactly, do not run the file — treat a mismatch as a stop signal and <a href="/support/#report">see the support guide</a>.</p>
+<p class="note">Both digests are also published in <a href="{{product.artifacts.0.sha256Url}}">SHA256SUMS.txt</a> on the GitHub release. If the hash doesn't match exactly, do not run the file — treat a mismatch as a stop signal and <a href="/support/#report">see the support guide</a>.</p>
 </div>
 <div class="lo-proof-card">
 <h3>Unsigned build disclosure</h3>
@@ -355,8 +353,8 @@
 <li>Not a signed Windows release.</li>
 <li>Not a trusted-publisher build.</li>
 <li>Not SmartScreen trusted.</li>
-<li>Does not claim the GitHub release record is anonymously accessible — it is not; canonical public downloads are the Proof Foundry mirror.</li>
-<li>Not a re-verification of the earlier, separately frozen v11.1.2 GitHub release ZIP, which remains blocked from anonymous GitHub access for unrelated account-level reasons.</li>
+<li>No Reality Gate receipt is published for v11.2.0 — the qualification above is first-party, not an independent certification.</li>
+<li>Not a re-verification of the earlier, separately frozen v11.1.2 GitHub release ZIP.</li>
 </ul>
 </div>
 </section>
@@ -369,11 +367,11 @@
 <div class="detail-grid">
 <article class="detail-card">
 <h3>Publication status</h3>
-<p>Windows {{product.versionLabel}} is the current public release, published 2026-09-15. No successor candidate is open, and no companion v{{product.companionVersion}} build has been released publicly.</p>
+<p>Windows {{product.versionLabel}} is the current public release, published 2026-10-16. No successor candidate is open, and no companion v{{product.companionVersion}} build has been released publicly.</p>
 </article>
 <article class="detail-card">
-<h3>GitHub release records are not anonymously accessible</h3>
-<p>The v11.1.2 and v11.1.3 release records exist in the publisher's authenticated GitHub control plane, but an external account-level restriction makes them return 404 to anonymous visitors. Canonical public downloads are the Proof Foundry mirror — this is unrelated to, and unaffected by, the Reality Gate proof above.</p>
+<h3>Canonical downloads are the public GitHub release</h3>
+<p>The v11.2.0 installer, portable ZIP, SHA256SUMS.txt, build manifest and Windows verification record are all public on the GitHub release — that release is the canonical download source for this version. Earlier v11.1.x releases were distributed from the Proof Foundry mirror.</p>
 </article>
 <article class="detail-card">
 <h3>Windows desktop + Android companion</h3>
