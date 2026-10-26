@@ -5,6 +5,7 @@ import path from "node:path";
 import os from "node:os";
 import crypto from "node:crypto";
 import { fileURLToPath } from "node:url";
+import releaseInputs from "./release-inputs.cjs";
 import { spawnSync } from "node:child_process";
 import { runProductPublisherCommand } from "./pf-product-p3-p5.mjs";
 import { runP7P9Command } from "./pf-product-p7-p9.mjs";
@@ -14,7 +15,7 @@ const SC={
  release:path.join(ROOT,"schemas/product-release-submission-v1.schema.json"),
  module:path.join(ROOT,"schemas/product-module-v2.schema.json")
 };
-const BUILD=path.join(ROOT,"scripts/build-site.ps1");
+const BUILD=path.join(ROOT,"scripts/build-qualification-fixture.ps1");
 const SEMVER=/^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-((?:0|[1-9][0-9]*|[0-9A-Za-z-]*[A-Za-z-][0-9A-Za-z-]*)(?:\.(?:0|[1-9][0-9]*|[0-9A-Za-z-]*[A-Za-z-][0-9A-Za-z-]*))*))?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$/;
 const SLUG=/^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const TEXT=new Set([".json",".html",".htm",".svg",".txt",".md",".xml",".css",".js",".mjs",".ts",".yaml",".yml",".ps1",".toml",".ini",".cfg"]);
@@ -66,9 +67,9 @@ function scanUrls(s,file,out){
 function scanText(rows,out){for(const f of rows){if(!TEXT.has(path.extname(f.path).toLowerCase()))continue;const s=fs.readFileSync(f.full,"utf8");for(const[n,re]of PRIVATE_PATH)if(re.test(s))out.push("Possible "+n+" disclosed in "+f.path+".");scanUrls(s,f.path,out);}}
 function semver(s){const m=typeof s==="string"&&s.match(SEMVER);return m?{n:[BigInt(m[1]),BigInt(m[2]),BigInt(m[3])],pre:m[4]?m[4].split("."):[]}:null;}
 function compare(a,b){const x=semver(a),y=semver(b);if(!x||!y)return null;for(let i=0;i<3;i++)if(x.n[i]!==y.n[i])return x.n[i]<y.n[i]?-1:1;if(!x.pre.length||!y.pre.length)return x.pre.length===y.pre.length?0:x.pre.length?-1:1;for(let i=0;i<Math.min(x.pre.length,y.pre.length);i++){const p=x.pre[i],q=y.pre[i];if(p===q)continue;const pn=/^(0|[1-9][0-9]*)$/.test(p),qn=/^(0|[1-9][0-9]*)$/.test(q);if(pn&&qn)return BigInt(p)<BigInt(q)?-1:1;if(pn!==qn)return pn?-1:1;return p<q?-1:1;}return x.pre.length<y.pre.length?-1:x.pre.length>y.pre.length?1:0;}
-async function repoJson(rel){return parseJson(await fsp.readFile(path.join(ROOT,rel),"utf8"),rel);}
+async function repoJson(rel){return rel==="site-manifest.json" ? releaseInputs.readReleaseManifest() : parseJson(await fsp.readFile(path.join(ROOT,rel),"utf8"),rel);}
 async function repoModules(){const rows=[],ids=new Map();for(const d of await fsp.readdir(path.join(ROOT,"products"),{withFileTypes:true})){if(!d.isDirectory())continue;const rel="products/"+d.name+"/module.json",f=path.join(ROOT,rel);if(!fs.existsSync(f))continue;try{const m=parseJson(await fsp.readFile(f,"utf8"),rel);rows.push({id:m.id,route:m.route,dir:d.name,module:m});if(m.id)ids.set(m.id,m);}catch{}}return{rows,ids};}
-function reservedRoutes(){const s=fs.readFileSync(BUILD,"utf8"),m=s.match(/\$ReservedRoutes\s*=\s*@\(([^)]*)\)/);if(!m)throw Error("Reserved-route registry unavailable");return[...m[1].matchAll(/'([^']+)'/g)].map(x=>x[1].toLowerCase());}
+function reservedRoutes(){const s=fs.readFileSync(path.join(ROOT,"scripts/build-site.ps1"),"utf8"),m=s.match(/\$ReservedRoutes\s*=\s*@\(([^)]*)\)/);if(!m)throw Error("Reserved-route registry unavailable");return[...m[1].matchAll(/'([^']+)'/g)].map(x=>x[1].toLowerCase());}
 function canonicalVersion(p){return p&&p.release&&(p.release.publicVersion||p.release.withdrawnVersion||p.release.version)||null;}
 function manifestCheck(c,m,manifest,mods,errors,missing,collisions,unverified){if(!c||!m)return"FAIL";const rec=(manifest.products||[]).find(x=>x.id===c.productId),old=mods.ids.get(c.productId),dir=mods.rows.some(x=>x.dir===c.productId),route="/"+c.productId+"/";if(m.id!==c.productId)errors.push("Module id must match capsule productId.");if(m.route!==route)collisions.push("Product route must be "+route+".");if(m.route&&reservedRoutes().includes(m.route.toLowerCase()))collisions.push("Product route collides with a reserved site route.");for(const x of mods.rows)if(x.id!==c.productId&&x.route&&m.route&&x.route.toLowerCase()===m.route.toLowerCase())collisions.push("Product route collides with existing module "+x.id+".");if(c.submissionType==="NEW_PRODUCT"){if(rec||old||dir)collisions.push("NEW_PRODUCT id already exists in manifest or module registry.");}else if(["NEW_VERSION","PRESENTATION_UPDATE"].includes(c.submissionType)){if(!rec)missing.push("site-manifest.json product record for "+c.productId);if(!old||!dir)missing.push("existing products/"+c.productId+"/module.json");if(rec&&old&&old.route!==m.route)collisions.push("Existing route differs from submitted module.");const v=canonicalVersion(rec);if(v&&c.submissionType==="NEW_VERSION"&&compare(c.releaseVersion,v)<=0)errors.push("NEW_VERSION must exceed canonical current version.");if(v&&c.submissionType==="PRESENTATION_UPDATE"&&c.releaseVersion!==v)errors.push("PRESENTATION_UPDATE must equal canonical current version.");if(rec&&!v)unverified.push("No public or withdrawn version exists in the current manifest.");if(rec&&rec.release&&rec.release.releaseStatus==="WITHDRAWN")unverified.push("The canonical product is WITHDRAWN; this Capsule cannot change availability or withdrawal state.");}return errors.length||missing.length||collisions.length?"FAIL":"PASS";}
 function moduleAuthority(m,e){if(!m)return;for(const k of ["version","release","releaseStatus","publicVersion","withdrawnVersion","downloadUrl","sha256","artifacts","verification"])if(Object.hasOwn(m,k))e.push("product/module.json."+k+" duplicates canonical release/verification authority.");rejectAuthority(m,"product/module.json",e);}

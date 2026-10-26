@@ -5,6 +5,7 @@ import os from "node:os";
 import crypto from "node:crypto";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import releaseInputs from "./release-inputs.cjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CLI = path.join(ROOT, "scripts", "pf-product.mjs");
@@ -24,7 +25,12 @@ const PUBLISHER_SOURCE_PATHS = new Set([
   "scripts/pf-product.mjs", "scripts/pf-product-p3-p5.mjs", "scripts/pf-product-p7-p9.mjs",
   "scripts/test-pf-product.mjs", "scripts/test-pf-product-p3-p5.mjs", "scripts/test-pf-product-source-base.mjs", "scripts/test-pf-product-p6.mjs",
   "scripts/test-pf-product-p7.mjs", "scripts/test-pf-product-p8.mjs", "scripts/test-pf-product-p9.mjs",
-  "P7_P9_PUBLICATION_ENGINE.md"
+  "P7_P9_PUBLICATION_ENGINE.md",
+  "QUALIFICATION_AUTHORITY_REPAIR.md", "scripts/release-inputs.cjs",
+  "scripts/release-qualification.ps1", "scripts/qualification-authority.cjs",
+  "scripts/build-qualification-fixture.ps1", "scripts/legacy-intake-fixture.mjs",
+  "scripts/test-h3-trust-to-action.ps1", "scripts/test-h4-metadata-discovery.ps1",
+  "scripts/test-h5-jsonld-truth.ps1", "scripts/test-h7a-design-pilot.ps1"
 ]);
 const TESTS = [
   { id: "PF_PRODUCT", kind: "node", file: "scripts/test-pf-product.mjs" },
@@ -285,7 +291,8 @@ async function createPlan(capsuleDir, validationReport, base) {
   const submittedModule = await parseJsonFile(path.join(capsuleDir, "product", "module.json"));
   const release = await parseJsonFile(path.join(capsuleDir, "release", "release.json"));
   if (!SUBMISSION_TYPES.has(c.submissionType)) throw new Error("Unsupported submission type.");
-  const manifest = await parseJsonFile(path.join(ROOT, "site-manifest.json"));
+  releaseInputs.assertLegacyReleaseWriterDisabled("materialize", c.submissionType);
+  const manifest = releaseInputs.readReleaseManifest();
   const manifestProduct = (manifest.products || []).find((p) => p.id === c.productId) || null;
   const productDir = path.join(ROOT, "products", c.productId);
   const moduleFile = path.join(productDir, "module.json");
@@ -586,6 +593,8 @@ async function materializeCommand(capsuleArg, args) {
     if (!stat.isDirectory() || stat.isSymbolicLink()) return jsonReport({ status: "INVALID", error: "Capsule input must be a real directory." }, 2);
     const p2 = p2Run(capsuleDir);
     if (p2.exitCode !== 0 || p2.report.status !== "VALID_UNVERIFIED") return jsonReport({ status: "INVALID", validation: p2.report, publicationState: "INVALID" }, 1);
+    const submission = await parseJsonFile(path.join(capsuleDir, "capsule.json"));
+    releaseInputs.assertLegacyReleaseWriterDisabled("materialize", submission.submissionType);
     const base = await verifyBase(), plan = await createPlan(capsuleDir, p2.report, base);
     const outputBase = await safeOutputBase(parseMaterializeArgs(args), capsuleDir);
     const final = path.join(outputBase, plan.candidateId);
@@ -614,7 +623,8 @@ async function materializeCommand(capsuleArg, args) {
       changedPaths: plan.changes, artifacts: plan.artifactInventory, publicationState: "VALID_UNVERIFIED",
       exactNextAction: "Run pf-product preview " + final
     }, 0);
-  } catch {
+  } catch (error) {
+    if (error.code === 'SHARED_RELEASE_AUTHORITY_MIGRATION_REQUIRED') return jsonReport({ command: 'materialize', status: 'INVALID', publicationState: 'INVALID', code: error.code, error: error.message }, 1);
     return jsonReport({ command: "materialize", status: "INVALID", publicationState: "INVALID", error: "Candidate materialization failed validation or source-scope checks; inspect the Capsule and frozen-baseline binding." }, 1);
   }
 }

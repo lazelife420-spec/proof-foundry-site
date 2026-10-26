@@ -1,3 +1,4 @@
+. "$PSScriptRoot/release-qualification.ps1"
 # test-receipts-invariants.ps1 — invariant tests for the canonical Receipts pipeline.
 #
 # Every test runs the real build against a FIXTURE manifest written to a temp
@@ -19,10 +20,12 @@
 #  11. template purity - canonical digests cannot be hardcoded into templates
 #  12. tracked evidence- public receipt must be tracked by git, not merely on disk
 #  13. token integrity - a dangling artifact token fails instead of rendering blank
+#  14. public channel  - a public download advertises only public-channel versions
+#  15. limit notes     - a website note fails closed when its custody limit moves
 $ErrorActionPreference = 'Stop'
 
 $root      = (Resolve-Path "$PSScriptRoot/..").Path
-$buildPs1  = Join-Path $root 'scripts\build-site.ps1'
+$buildPs1  = Join-Path $root 'scripts\build-qualification-fixture.ps1'
 $canonical = Join-Path $root 'site-manifest.json'
 $work      = Join-Path ([IO.Path]::GetTempPath()) ("pf-invariants-" + [Guid]::NewGuid().ToString('N').Substring(0, 8))
 New-Item -ItemType Directory -Force -Path $work | Out-Null
@@ -41,7 +44,7 @@ function Invoke-FixtureBuild([string]$name, [scriptblock]$mutate, [switch]$Valid
   $fixManifest = Join-Path $fixDir 'site-manifest.json'
   $outDir = Join-Path $fixDir 'out'
 
-  $obj = Get-Content $canonical -Raw -Encoding UTF8 | ConvertFrom-Json
+  $obj = Get-AuthoredReleaseManifest
   if ($mutate) { $obj = & $mutate $obj }
   $json = $obj | ConvertTo-Json -Depth 12
   [IO.File]::WriteAllText($fixManifest, $json, (New-Object System.Text.UTF8Encoding $false))
@@ -63,10 +66,25 @@ function Invoke-FixtureBuild([string]$name, [scriptblock]$mutate, [switch]$Valid
   $pinfo.UseShellExecute = $false
   $pinfo.CreateNoWindow = $true
   $p = [System.Diagnostics.Process]::Start($pinfo)
-  $stdout = $p.StandardOutput.ReadToEnd()
-  $stderr = $p.StandardError.ReadToEnd()
+  # Drain both pipes at once. Reading stdout to the end first deadlocks when a
+  # failing build writes more than one pipe buffer (4 KiB) of error text.
+  $stderrTask = $p.StandardError.ReadToEndAsync()
+  $stdoutTask = $p.StandardOutput.ReadToEndAsync()
+  if (-not $p.WaitForExit(600000)) {
+    $p.Kill($true)
+    throw "fixture build '$name' did not exit within 600 s"
+  }
+  # Output can stay open after exit if a descendant inherited the pipes.
+  if (-not [System.Threading.Tasks.Task]::WaitAll([System.Threading.Tasks.Task[]]@($stdoutTask, $stderrTask), 60000)) {
+    throw "fixture build '$name' exited but its output stayed open for 60 s"
+  }
+  $stdout = $stdoutTask.GetAwaiter().GetResult()
+  $stderr = $stderrTask.GetAwaiter().GetResult()
   $p.WaitForExit()
   $code = $p.ExitCode
+  # A fixture build ends with 0 or 1. Anything else (a killed or crashed
+  # process) must never count as the expected failure of a negative test.
+  if ($code -ne 0 -and $code -ne 1) { throw "fixture build '$name' ended abnormally (exit $code)" }
   $out = ($stdout + "`n" + $stderr).Trim()
 
   $proofHtml = $null; $registry = $null
@@ -164,8 +182,8 @@ $t4 = Invoke-FixtureBuild 'nodate' {
 }
 Assert 'build succeeds with no dates' ($t4.Exit -eq 0) $t4.Output
 if ($t4.Exit -eq 0) {
-  Assert 'renders the explicit no-verification fallback' ($t4.ProofHtml -match 'No verified site verification event')
-  Assert 'does not claim a Latest verification event'    ($t4.ProofHtml -notmatch 'Latest verification event:')
+  Assert 'renders the explicit no-event fallback' ($t4.ProofHtml -match 'No product release event is recorded\.')
+  Assert 'does not claim a most recent product release event' ($t4.ProofHtml -notmatch 'Most recent product release event:' -and $t4.ProofHtml -notmatch 'Latest verification event:')
 }
 Write-Host ""
 
@@ -191,12 +209,12 @@ $r1 = Invoke-FixtureBuild 'tie1' $tieMutate
 $r2 = Invoke-FixtureBuild 'tie2' $tieMutate
 Assert 'both tie builds succeed' (($r1.Exit -eq 0) -and ($r2.Exit -eq 0)) "$($r1.Exit)/$($r2.Exit)"
 if (($r1.Exit -eq 0) -and ($r2.Exit -eq 0)) {
-  $m1 = [regex]::Match($r1.ProofHtml, 'Latest verification event:\s*<strong>(.*?)</strong>')
-  $m2 = [regex]::Match($r2.ProofHtml, 'Latest verification event:\s*<strong>(.*?)</strong>')
+  $m1 = [regex]::Match($r1.ProofHtml, 'Most recent product release event:\s*<strong>(.*?)</strong>')
+  $m2 = [regex]::Match($r2.ProofHtml, 'Most recent product release event:\s*<strong>(.*?)</strong>')
   Assert 'tie resolves to a named product'   ($m1.Success -and $m2.Success)
   Assert 'tie resolves identically each run' ($m1.Groups[1].Value -eq $m2.Groups[1].Value) "run1='$($m1.Groups[1].Value)' run2='$($m2.Groups[1].Value)'"
   Assert 'tie winner is first in manifest order (cache-vault)' ($m1.Groups[1].Value -match 'Cache Vault') "got '$($m1.Groups[1].Value)'"
-  Assert 'tie date is the shared maximum'    ($r1.ProofHtml -match 'Latest verification event:.*?<time datetime="2026-12-30">')
+  Assert 'tie date is the shared maximum'    ($r1.ProofHtml -match 'Most recent product release event:.*?<time datetime="2026-12-30">')
 }
 Write-Host ""
 
@@ -240,6 +258,18 @@ if ($t7.Exit -eq 0) {
     }
   }
   Assert 'no broken internal links in generated output' ($brokenLinks.Count -eq 0) ($brokenLinks | Select-Object -First 8 | Out-String)
+  # K6 (A-07/A-08). Fixture builds carry no /truth/v2/ output, so they must not
+  # link it; the real build's v2 links are checked in test-h11-public-truth.ps1.
+  $proofMain = [regex]::Match($t7.ProofHtml, '(?s)<main\b.*?</main>').Value
+  $nb = [string][char]0x2011; $dot = [string][char]0x00B7
+  $sv = (Get-AuthoredReleaseManifest).siteVerification
+  $expectedReceiptLabel = "Historical site receipt ($($sv.receiptDate -replace '-', $nb) $dot route checks and ForgeCast v0.3.3; its site commit is not part of the current site source history)"
+  Assert 'site verification receipts are labelled historical' ($t7.ProofHtml -match '<h2>Site verification receipts \(historical\)</h2>' -and $t7.ProofHtml -notmatch 'Latest site verification')
+  Assert 'no site receipt is claimed for the current build' ($t7.ProofHtml -match 'No site verification receipt has been published for the current build yet\.')
+  Assert 'the receipt button names its date and scope as historical' ($t7.ProofHtml.Contains($expectedReceiptLabel) -and $t7.ProofHtml -notmatch 'View verification receipt')
+  Assert '/proof/ links the Truth Files from the page body' ($proofMain -match 'href="/truth-files/"')
+  $v2LinkPages = @(Get-ChildItem $t7.OutDir -Recurse -Filter *.html | Where-Object { [IO.File]::ReadAllText($_.FullName) -match 'href="/truth/v2/' } | ForEach-Object { $_.Name })
+  Assert 'a build without v2 records emits no /truth/v2/ link' ($v2LinkPages.Count -eq 0) ($v2LinkPages -join ', ')
 }
 Write-Host ""
 
@@ -261,6 +291,18 @@ $t8b = Invoke-FixtureBuild 'receipt-mismatch' {
 } -ValidateOnly
 Assert 'receiptDate/receiptPath mismatch fails' ($t8b.Exit -ne 0) "exit=$($t8b.Exit)"
 Assert 'error explains the mismatch'            ($t8b.Output -match 'does not match receiptPath')
+
+# T8c (K6/A-08): the historical label belongs to one reviewed receipt; linking
+# another receipt must fail the render, not inherit that receipt's description.
+# Never 2026-08-27 (T8b's probe date).
+$t8c = Invoke-FixtureBuild 'receipt-unreviewed-scope' {
+  param($o)
+  $o.siteVerification.receiptPath = '/reports/deploy-receipts/2026-09-08-proof-foundry-site.md'
+  $o.siteVerification.receiptDate = '2026-09-08'
+  $o
+}
+Assert 'an unreviewed site receipt fails the build instead of inheriting a label' ($t8c.Exit -ne 0) "exit=$($t8c.Exit)"
+Assert 'error names the missing reviewed label' ($t8c.Output -match 'No reviewed historical scope label')
 Write-Host ""
 
 # ── TEST 9: registry output is deterministic ────────────────────────────────
@@ -377,6 +419,91 @@ if ($t13.Exit -ne 0) {
   $rendered = if (Test-Path $loOut) { [IO.File]::ReadAllText($loOut) } else { '' }
   Assert 'no page was published with an empty checksum block' ($rendered -notmatch '<div class="code-block">\s*</div>')
 }
+Write-Host ""
+
+# ── TEST 13b/13c: a withheld-file index cannot hide the offered download or dangle ──
+Write-Host "--- TEST 13b: unofferedArtifacts cannot name the offered download or a missing artifact ---"
+$t13b = Invoke-FixtureBuild 'unoffered-primary' {
+  param($o)
+  $lo = $o.products | Where-Object { $_.id -eq 'lights-out' }
+  $lo.presentation.unofferedArtifacts = @(0)
+  $o
+} -ValidateOnly
+Assert 'withholding the offered download fails validation' ($t13b.Exit -ne 0 -and $t13b.Output -match 'unofferedArtifacts lists artifact \[0\], which is the download this site offers') "exit=$($t13b.Exit)"
+$t13c = Invoke-FixtureBuild 'unoffered-dangling' {
+  param($o)
+  $lo = $o.products | Where-Object { $_.id -eq 'lights-out' }
+  $lo.presentation.unofferedArtifacts = @(1, 2)
+  $o
+}
+Assert 'an index the record does not list fails the build' ($t13c.Exit -ne 0 -and $t13c.Output -match 'unofferedArtifacts names an artifact index the release record does not list') "exit=$($t13c.Exit)"
+Assert 'no proof registry is written with a dangling index' (-not (Test-Path (Join-Path $t13c.OutDir 'proof\index.json')))
+Write-Host ""
+
+# ── TEST 14: a public download advertises only public-channel versions ──────
+# release.publicVersion and release.companionPublicVersion come from PUBLIC
+# channels. companionVersion is a presentation lane that can name a BUILT,
+# unpublished build (the Lights Out companion lane is BUILT), so it is declared
+# but must never be admitted on something the public can download.
+Write-Host "--- TEST 14: public downloads admit only public-channel versions ---"
+$builtOnlyVersion = '9.9.8'
+$t14a = Invoke-FixtureBuild 'built-companion-on-public-download' {
+  param($o)
+  $lo = $o.products | Where-Object { $_.id -eq 'lights-out' }
+  $loPublic = [string]$lo.release.publicVersion
+  $zip = @($lo.artifacts)[0]
+  if (-not $zip -or [string]::IsNullOrWhiteSpace($loPublic) -or "$($zip.downloadUrl)" -notlike "*$loPublic*") { throw 'TEST 14 needs a Lights Out public download that names its public version' }
+  $lo | Add-Member -NotePropertyName companionVersion -NotePropertyValue $builtOnlyVersion -Force
+  # The product's primary link follows its first artifact, so it moves too.
+  if ($lo.downloadUrl -eq $zip.downloadUrl) { $lo.downloadUrl = ([string]$lo.downloadUrl).Replace($loPublic, $builtOnlyVersion) }
+  if ($lo.sha256Url -eq $zip.sha256Url) { $lo.sha256Url = ([string]$lo.sha256Url).Replace($loPublic, $builtOnlyVersion) }
+  foreach ($field in @('filename', 'downloadUrl', 'sha256Url')) {
+    if ($zip.$field) { $zip.$field = ([string]$zip.$field).Replace($loPublic, $builtOnlyVersion) }
+  }
+  $o
+} -ValidateOnly
+$loAuthored = @((Get-AuthoredReleaseManifest).products | Where-Object { $_.id -eq 'lights-out' })[0]
+$loPublicChannels = @($loAuthored.release.publicVersion, $loAuthored.release.companionPublicVersion) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+Assert 'a public download advertising a built-only companion version fails the build' ($t14a.Exit -ne 0) "exit=$($t14a.Exit)"
+Assert 'error names the artifact and the built-only version' ($t14a.Output -match ('\[lights-out\] artifact\[0\] is publicly downloadable under PUBLIC_RELEASE but advertises non-public version\(s\) ' + [regex]::Escape($builtOnlyVersion))) $t14a.Output
+Assert 'the built-only version is declared, so the public-channel rule rejects it' ($t14a.Output -notmatch ('embeds version ' + [regex]::Escape($builtOnlyVersion) + ' which')) $t14a.Output
+Assert 'admitted versions are the PUBLIC channel versions only' ($t14a.Output.Contains("(public: $($loPublicChannels -join ', '))")) $t14a.Output
+
+$companionChannelVersion = '9.9.6'
+$t14b = Invoke-FixtureBuild 'public-companion-channel' {
+  param($o)
+  $cv = $o.products | Where-Object { $_.id -eq 'cache-vault' }
+  $cvCompanion = [string]$cv.release.companionPublicVersion
+  $apk = @($cv.artifacts | Where-Object { "$($_.filename)" -like '*.apk' })[0]
+  if (-not $apk -or [string]::IsNullOrWhiteSpace($cvCompanion) -or "$($apk.downloadUrl)" -notlike "*$cvCompanion*") { throw 'TEST 14 needs a Cache Vault companion APK download that names its public companion version' }
+  $cv.release.companionPublicVersion = $companionChannelVersion
+  $cv | Add-Member -NotePropertyName companionVersion -NotePropertyValue $companionChannelVersion -Force
+  foreach ($field in @('filename', 'downloadUrl', 'sha256Url')) {
+    if ($apk.$field) { $apk.$field = ([string]$apk.$field).Replace($cvCompanion, $companionChannelVersion) }
+  }
+  $o
+} -ValidateOnly
+Assert 'a companion download on its own PUBLIC channel version is still admitted' ($t14b.Exit -eq 0) $t14b.Output
+Write-Host ""
+
+# ── TEST 15: a website limit note must still annotate the limit it was written for ──
+# limitNotes (A-13) are bound to a custody limit by index plus a verbatim anchor.
+# A reworded or reordered limit must fail the build, not move the note.
+Write-Host "--- TEST 15: limit notes fail closed when their custody limit moves ---"
+$t15a = Invoke-FixtureBuild 'limit-note-anchor' {
+  param($o)
+  @($o.limitNotes)[0].anchor = 'text that is in no custody limit'
+  $o
+} -ValidateOnly
+Assert 'a limit note whose anchor is not in its limit fails validation' ($t15a.Exit -ne 0) "exit=$($t15a.Exit)"
+Assert 'error names the limit note anchor' ($t15a.Output -match '\[limitNotes\[0\]\] anchor') $t15a.Output
+$t15b = Invoke-FixtureBuild 'limit-note-index' {
+  param($o)
+  @($o.limitNotes)[0].limitIndex = 99
+  $o
+} -ValidateOnly
+Assert 'a limit note pointing past the product limits fails validation' ($t15b.Exit -ne 0) "exit=$($t15b.Exit)"
+Assert 'error names the limit note index' ($t15b.Output -match '\[limitNotes\[0\]\] limitIndex') $t15b.Output
 Write-Host ""
 
 # ── canonical data untouched ─────────────────────────────────────────────────

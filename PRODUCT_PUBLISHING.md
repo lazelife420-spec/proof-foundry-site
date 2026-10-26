@@ -1,3 +1,14 @@
+# Current authored-authority gate
+
+Production release facts now belong to `release-truth.json`. Capsule inspection,
+unverified validation and local presentation preview remain available. The legacy
+publishing pipeline below is retained for compatibility regression fixtures;
+`materialize`, `publish-artifacts`, `promote` and `deploy-site` fail closed under current shared authority with
+`SHARED_RELEASE_AUTHORITY_MIGRATION_REQUIRED`. No release facts may be proposed
+or promoted into `site-manifest.json`. A separately qualified shared-model intake
+must replace that writer before publication can resume. See
+`QUALIFICATION_AUTHORITY_REPAIR.md` for the exact boundary and qualification scope.
+
 # Product publishing operator workflow
 
 This is the operator guide for the Proof Foundry Product Publisher. It describes the local, fixture-first path from a submitted Product Capsule to an owner-reviewed publication candidate. It does not add a public website workflow or change product release truth.

@@ -94,6 +94,26 @@ foreach ($f in $allHtmlFiles) {
 }
 Assert-Condition (-not $overclaimFound) "Forbidden overclaim sweep passed across all generated HTML"
 
+# 10b. K4 (A-05): verification and independence words stay scoped to their evidence.
+# The only allowed context is a correct disclaimer ("not [been] independently verified").
+$pubRoot = (Resolve-Path $publicDir).Path
+$k4Forbidden = [ordered]@{
+  'independently verified'  = 'independently verified'
+  'independent adversarial' = 'independent adversarial'
+  'Proof verified pill'     = '<strong>Proof</strong>\s*verified'
+  'custody receipts'        = 'custody receipts'
+  'without trust'           = 'without trust'
+  'audited source'          = '\baudited\b'
+}
+$k4Texts = @{}
+foreach ($f in $allHtmlFiles) {
+  $k4Texts[$f.FullName] = [regex]::Replace((Get-Content $f.FullName -Raw -Encoding UTF8), '(?i)\bnot\s+(?:been\s+)?independently verified', '')
+}
+foreach ($label in $k4Forbidden.Keys) {
+  $hits = @($k4Texts.Keys | Where-Object { $k4Texts[$_] -match $k4Forbidden[$label] } | ForEach-Object { $_.Substring($pubRoot.Length) })
+  Assert-Condition ($hits.Count -eq 0) "K4 sweep: no '$label' wording in generated HTML ($($hits -join ', '))"
+}
+
 # 11. P1 & P2-1 Regression Controls
 Assert-Condition ($spHtml -match 'SHA-256 match = byte-identity verification against the published digest') "P2-1 Checksum byte-identity standard intact"
 Assert-Condition ($rgHtml -match '(?s)First-Class CLI &amp; Instance Discovery \(RG-05\).*?Branch Qualified') "P1 Reality Gate RG-05 status intact"

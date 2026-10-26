@@ -64,7 +64,13 @@ $apiBase = "http://127.0.0.1:$apiPort"
 $pagesBase = "http://127.0.0.1:$pagesPort"
 
 # ── Fixture state doc: revision A (current manifest) + B (proofshot changed) ─
-$m = Get-Content (Join-Path $root 'site-manifest.json') -Raw | ConvertFrom-Json
+$previousEncoding = [Console]::OutputEncoding
+try {
+  [Console]::OutputEncoding = [Text.UTF8Encoding]::new($false)
+  $compiled = & node (Join-Path $root 'scripts/shared-release-truth.cjs')
+  if ($LASTEXITCODE -ne 0) { throw 'Authored shared-truth fixture projection failed.' }
+  $m = (($compiled -join "`n") | ConvertFrom-Json -Depth 100).manifest
+} finally { [Console]::OutputEncoding = $previousEncoding }
 $revA = [ordered]@{ apiVersion = 1; revision = 'A'; revisionSeq = 1; products = $m.products }
 $revB = ($revA | ConvertTo-Json -Depth 30 | ConvertFrom-Json)
 $revB.revision = 'B'; $revB.revisionSeq = 2
@@ -150,8 +156,8 @@ Assert (-not (Test-Path -LiteralPath (Join-Path $fixtureRoot '.dev.vars'))) 'H14
 $apiProc = Start-Process -FilePath node -ArgumentList (Join-Path $root 'scripts\h14\public-state-api.mjs') `
   -WorkingDirectory $work -RedirectStandardOutput (Join-Path $work 'api.log') -RedirectStandardError (Join-Path $work 'api.err') `
   -WindowStyle Hidden -PassThru -Environment @{ PF_FIXTURE_PORT=[string]$apiPort; PF_FIXTURE_STATE=(Join-Path $work 'state.json') }
-$npx = (Get-Command npx.cmd -ErrorAction SilentlyContinue).Source; if (-not $npx) { $npx = 'npx.cmd' }
-$pagesProc = Start-Process -FilePath $npx -ArgumentList @('--yes','wrangler','pages','dev','public','--port',[string]$pagesPort,'--ip','127.0.0.1','--compatibility-date','2026-06-30','--binding',"PF_PUBLIC_PRODUCT_API_BASE=$apiBase",'--persist-to',(Join-Path $work 'wrangler-state')) `
+$wranglerCli = Join-Path $root 'node_modules/wrangler/bin/wrangler.js'
+$pagesProc = Start-Process -FilePath node -ArgumentList @($wranglerCli,'pages','dev','public','--port',[string]$pagesPort,'--ip','127.0.0.1','--compatibility-date','2026-06-30','--binding',"PF_PUBLIC_PRODUCT_API_BASE=$apiBase",'--persist-to',(Join-Path $work 'wrangler-state')) `
   -WorkingDirectory $fixtureRoot -RedirectStandardOutput (Join-Path $work 'pages.log') -RedirectStandardError (Join-Path $work 'pages.err') `
   -WindowStyle Hidden -PassThru
 Start-Sleep 12
@@ -359,7 +365,7 @@ function Rev($r) { if ($r -and $r.Headers) { return ($r.Headers['X-PF-State-Revi
   Copy-Item -LiteralPath (Join-Path $fixturePublic '__h14\content\cleanroom.html') -Destination (Join-Path $fixturePublic "__h14\content\$eighthId.html")
   $pagesPort = Get-FreeLoopbackPort
   $pagesBase = "http://127.0.0.1:$pagesPort"
-  $pagesProc = Start-Process -FilePath $npx -ArgumentList @('--yes','wrangler','pages','dev','public','--port',[string]$pagesPort,'--ip','127.0.0.1','--compatibility-date','2026-06-30','--persist-to',(Join-Path $work 'wrangler-static-state')) `
+  $pagesProc = Start-Process -FilePath node -ArgumentList @($wranglerCli,'pages','dev','public','--port',[string]$pagesPort,'--ip','127.0.0.1','--compatibility-date','2026-06-30','--persist-to',(Join-Path $work 'wrangler-static-state')) `
     -WorkingDirectory $fixtureRoot -RedirectStandardOutput (Join-Path $work 'pages-static.log') -RedirectStandardError (Join-Path $work 'pages-static.err') `
     -WindowStyle Hidden -PassThru
   $staticReady = $false

@@ -37,16 +37,16 @@
   ],
   "meta": {
     "title": "Cleanroom — Less clutter. A way back. | The Proof Foundry",
-    "description": "Review Windows cleanup candidates, archive selected files and restore them to their original paths. Cleanroom public {{product.versionLabel}}; next build {{product.candidateVersionLabel}}.",
+    "description": "Review Windows cleanup candidates, archive selected files and restore them to their original paths. Public release {{product.versionLabel}}. {{product.candidateStatus}}",
     "viewport": "width=device-width, initial-scale=1",
     "robots": "index, follow",
     "themeColor": "#0B0F14",
     "ogTitle": "Cleanroom — Less clutter. A way back.",
-    "ogDescription": "Review Windows cleanup candidates, archive selected files and restore them to their original paths. Cleanroom public {{product.versionLabel}}; next build {{product.candidateVersionLabel}}.",
+    "ogDescription": "Review Windows cleanup candidates, archive selected files and restore them to their original paths. Public release {{product.versionLabel}}. {{product.candidateStatus}}",
     "ogType": "product",
-    "ogImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png",
+    "ogImage": "https://theprooffoundry.com/brand/PF_SOCIAL_CARD.png",
     "twitterCard": "summary_large_image",
-    "twitterImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png"
+    "twitterImage": "https://theprooffoundry.com/brand/PF_SOCIAL_CARD.png"
   },
   "contentSource": "content.html",
   "schemaVersion": 2,
@@ -84,8 +84,8 @@
     "lede": "Inspect what you want to clear. Archive the files you choose. Restore them to their original paths when you need them again.",
     "media": {
       "src": "/assets/cleanroom/cleanroom-review.png",
-      "alt": "Cleanroom home review showing scan results and archive actions",
-      "caption": "Home review · cleanup candidates and archive actions"
+      "alt": "Cleanroom v1.0.6 Home after a completed scan: no cleanup candidates found, 0 items to review and 0.00B reclaimable, with the Scan Again, Archive & Clean and Proof Ledger controls",
+      "caption": "Home review · scan complete, no cleanup candidates found · Interface capture from v1.0.6 · current public release v1.0.7"
     },
     "primaryAction": {
       "label": "Explore product",

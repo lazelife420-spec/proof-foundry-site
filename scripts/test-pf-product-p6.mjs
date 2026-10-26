@@ -1,3 +1,5 @@
+import {runLegacyIntakeRegression} from "./legacy-intake-fixture.mjs";
+if(runLegacyIntakeRegression(import.meta.url)) process.exit(process.exitCode || 0);
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import fsp from "node:fs/promises";
@@ -31,6 +33,7 @@ function report(args) {
   const result = run(args);
   let value;
   try { value = JSON.parse(result.stdout || ""); } catch { throw new Error("Expected structured CLI output for " + args[0]); }
+  if(args[0] === "qualify") console.log(JSON.stringify({qualification:value.status,dimensions:value.dimensions,regressionSuites:value.regressionSuites}));
   return { ...result, report: value };
 }
 async function makeNewProduct() {

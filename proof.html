@@ -14,9 +14,9 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://theprooffoundry.com/proof/" />
   <meta property="og:site_name" content="The Proof Foundry" />
-  <meta property="og:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
+  <meta property="og:image" content="https://theprooffoundry.com/brand/PF_SOCIAL_CARD.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" />
+  <meta name="twitter:image" content="https://theprooffoundry.com/brand/PF_SOCIAL_CARD.png" />
 
   <link rel="stylesheet" href="/styles.css" />
   <style>
@@ -211,12 +211,13 @@
       <p class="eyebrow">Public receipts</p>
       <h1 id="proof-title">Proof Foundry <span>Receipts</span></h1>
       <p>Public proof for what we ship: routes, releases, checksums, receipts, and verification status.</p>
+      <p>Each product's current public record, in plain language, is in <a class="text-link" href="/truth-files/">the Truth Files</a>.</p>
     </section>
 
     <section aria-labelledby="receipts-title">
       <h2 id="receipts-title" class="receipts-title">Product receipts</h2>
       <p class="receipts-note">
-        <strong>Verification state guide:</strong> <span class="state-verified-text">VERIFIED</span> confirms that a dimension has been validated against published evidence or gate checks. <span class="state-pending-text">PENDING</span> indicates that an evidence field has not been closed under the current Proof Standard; it does not invalidate separately verified dimensions.
+        <strong>Verification state guide:</strong> <span class="state-verified-text">VERIFIED</span>, PUBLISHED, NOT_PUBLISHED and <span class="state-pending-text">PENDING</span> describe what Proof Foundry's authored release record lists for each dimension; they are not independent certification. Where a receipt or manifest is linked, you can read what it records. A SHA-256 hash shows file identity, not safety.
       </p>
       <div class="receipts-grid" id="products-grid">
           <!-- @receipts -->
@@ -224,7 +225,8 @@
     </section>
 
     <section class="verification-ledger">
-      <h2>Latest site verification</h2>
+      <h2>Site verification receipts (historical)</h2>
+      <p>No site verification receipt has been published for the current build yet.</p>
       {{latestVerification.block}}
       <div class="verification-ledger-actions">
         {{siteVerification.receiptLink}}

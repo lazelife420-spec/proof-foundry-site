@@ -1,0 +1,4 @@
+# Proof Foundry Security Disclosure (RFC 9116)
+Contact: mailto:security@theprooffoundry.com
+Expires: 2027-10-21T20:00:00.000Z
+Preferred-Languages: en

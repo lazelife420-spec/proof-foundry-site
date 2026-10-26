@@ -10,7 +10,7 @@ $moduleFile = Join-Path $repoRoot "products/$Id/module.json"
 if (-not (Test-Path -LiteralPath $moduleFile -PathType Leaf)) { throw "No product module exists for '$Id'." }
 $module = Get-Content -LiteralPath $moduleFile -Raw -Encoding UTF8 | ConvertFrom-Json
 if ($module.id -ne $Id) { throw "Module directory/id mismatch for '$Id'." }
-$buildScript = Join-Path $repoRoot 'scripts/build-site.ps1'
+$buildScript = Join-Path $repoRoot 'scripts/build-qualification-fixture.ps1'
 $previewOut = Join-Path ([IO.Path]::GetTempPath()) ("proof-foundry-product-preview-" + $Id + "-" + [Guid]::NewGuid().ToString('N'))
 if (Test-Path -LiteralPath $previewOut) { throw 'Generated preview folder unexpectedly already exists.' }
 # A failed build or server start leaves nothing behind (the catch below). On success the generated site stays for the

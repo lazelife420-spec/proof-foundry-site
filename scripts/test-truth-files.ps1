@@ -1,3 +1,4 @@
+. "$PSScriptRoot/release-qualification.ps1"
 # PF-TF1 — Truth Files qualification: human layer must agree byte-for-byte with
 # the manifest facts that also generate /truth/*.json, and must never leak
 # internal data.
@@ -5,7 +6,7 @@ $ErrorActionPreference = 'Stop'
 
 $root   = (Resolve-Path "$PSScriptRoot/..").Path
 $public = Join-Path $root 'public'
-$manifest = Get-Content (Join-Path $root 'site-manifest.json') -Raw | ConvertFrom-Json
+$manifest = Get-AuthoredReleaseManifest
 
 $indexPath = Join-Path $public 'truth-files/index.html'
 if (-not (Test-Path $indexPath)) { throw "Generated Truth Files index missing: $indexPath" }
@@ -61,7 +62,16 @@ foreach ($p in ($manifest.products | Where-Object { $_.visible })) {
     Assert-TF "$($p.id): artifact sha256 prefix rendered" ($h -match $p.artifacts[0].sha256.Substring(0,16))
   }
   if ($p.verification -and $p.verification.status) {
-    Assert-TF "$($p.id): qualification state rendered" ($h -match $p.verification.status)
+    $words = $manifest.labels
+    $isWithdrawn = $p.release -and $p.release.releaseStatus -eq 'WITHDRAWN'
+    $chipText = if ($isWithdrawn) { $words.releaseReportWithdrawn } elseif ($p.verification.status -ceq 'VERIFIED') { $words.releaseReportPassing } else { $p.verification.status }
+    $chip = '<span class="tf-v-label">' + [regex]::Escape($words.releaseReportChip) + '</span><span class="tf-v-val"><span class="tf-chip [a-z-]+" data-report-status="' + [regex]::Escape($p.verification.status) + '">' + [regex]::Escape($chipText) + '</span>'
+    Assert-TF "$($p.id): release-report state renders the record status, in words" ($h -cmatch $chip)
+    Assert-TF "$($p.id): no 'Qualification state' or 'Last verified' wording" ($h -cnotmatch 'Qualification state|Last verified')
+    if ($p.verification.verifiedAt) {
+      Assert-TF "$($p.id): release report date shown, not a verified date" ($h -cmatch [regex]::Escape("$($words.releaseReportStamp) $($p.verification.verifiedAt)") -and $h -cmatch ([regex]::Escape($words.releaseReportDate) + '</span><span>' + [regex]::Escape($p.verification.verifiedAt)) -and $h -cnotmatch ('Verified ' + [regex]::Escape($p.verification.verifiedAt)))
+    }
+    if ($isWithdrawn) { Assert-TF "$($p.id): a withdrawn record never reads as passing" ($h -cnotmatch [regex]::Escape($words.releaseReportPassing)) }
   }
   if ($p.release -and $p.release.sourceCommit) {
     Assert-TF "$($p.id): source commit prefix rendered" ($h -match $p.release.sourceCommit.Substring(0,12))
@@ -74,6 +84,7 @@ foreach ($p in ($manifest.products | Where-Object { $_.visible })) {
     Assert-TF "$($p.id): empty limits disclosed" ($h -match 'No product-specific limits are recorded')
   }
   Assert-TF "$($p.id): machine record links to product truth JSON" ($h -match "href=`"/truth/products/$($p.id)\.json`"")
+  Assert-TF "$($p.id): machine record also links the canonical v2 record" (($h -match "href=`"/truth/v2/products/$([regex]::Escape($p.id))\.json`"") -and (Test-Path -LiteralPath (Join-Path $public "truth/v2/products/$($p.id).json") -PathType Leaf))
   Assert-TF "$($p.id): ledger + product page linked" ($h -match 'href="/proof/"' -and $h -match "href=`"$([regex]::Escape($p.route))`"")
   Assert-TF "$($p.id): freshness line binds source commit" ($h -match 'Generated from source commit')
 }
@@ -90,6 +101,26 @@ foreach ($p in ($manifest.products | Where-Object { $_.visible })) {
     $bad  = if ($isPub) { "$n recorded artifact" } else { "$n public artifact" }
     Assert-TF "HOLD-1 $($p.id): artifact scope label is '$good'" ($h -match [regex]::Escape($good) -and $h -notmatch [regex]::Escape($bad))
   }
+}
+
+# ── TF1-HOLD-1b: a recorded file the site withholds is never counted or linked as offered ──
+foreach ($p in ($manifest.products | Where-Object { $_.visible })) {
+  $pagePath = Join-Path $public "truth-files/$($p.id)/index.html"
+  if (-not (Test-Path $pagePath)) { continue }
+  $h = Get-Content $pagePath -Raw -Encoding UTF8
+  $uoProp = if ($p.presentation) { $p.presentation.PSObject.Properties['unofferedArtifacts'] } else { $null }
+  $uo = @(if ($uoProp) { $uoProp.Value | ForEach-Object { [int]$_ } })
+  if ($uo.Count -eq 0) {
+    Assert-TF "HOLD-1b $($p.id): no offered-file markers without a withheld file" ($h -notmatch 'Offered here:' -and $h -notmatch 'offered here ·')
+    continue
+  }
+  $n = @($p.artifacts).Count
+  $offered = @(0..($n - 1) | Where-Object { $uo -notcontains $_ -and $p.artifacts[$_].downloadUrl }).Count
+  $more = $n - $offered
+  $line = "$offered file$(if ($offered -ne 1) { 's' }) offered here · $more more recorded in the release record"
+  Assert-TF "HOLD-1b $($p.id): Truth File counts $offered offered and $more recorded-only file(s)" ($h.Contains($line))
+  Assert-TF "HOLD-1b $($p.id): one Offered-here marker per artifact" (([regex]::Matches($h, 'Offered here: yes')).Count -eq $offered -and ([regex]::Matches($h, 'Offered here: no')).Count -eq $more)
+  foreach ($i in $uo) { Assert-TF "HOLD-1b $($p.id): withheld artifact $i is not linked" (-not $p.artifacts[$i].downloadUrl -or -not $h.Contains('href="' + [string]$p.artifacts[$i].downloadUrl + '"')) }
 }
 
 # ── TF1-HOLD-2: companion parity — machine record and human page agree ────────
@@ -123,6 +154,46 @@ foreach ($p in ($manifest.products | Where-Object { $_.visible })) {
   Assert-TF "HOLD-3 $($p.id): human/machine download parity" (($h -match 'Artifact available for download') -eq [bool]$j.download.available)
 }
 
+# ── A-13: dated website notes beside custody-pinned limits ───────────────────
+# A note is website presentation (site-manifest.json limitNotes). It renders in
+# the annotated limit's own list item, after the verbatim custody text, on the
+# Truth File and the /proof/ receipt card, and never enters a release record.
+function ConvertTo-TfEscaped([string]$s) { $s -replace '&','&amp;' -replace '<','&lt;' -replace '>','&gt;' -replace '"','&quot;' -replace "'",'&#39;' }
+$lnNotes = @(@($manifest.limitNotes) | Where-Object { $_ })
+$lnHeadDate = (& git -C $root log -1 --format=%cs).Trim()
+Assert-TF 'A13: limitNotes annotate exactly the four reviewed custody limits' ((@($lnNotes | ForEach-Object { "$($_.productId)#$($_.limitIndex)" } | Sort-Object) -join ',') -ceq 'forgecast#4,ghostlayer#0,ghostlayer#1,reality-gate#1')
+$lnProofHtml = Get-Content (Join-Path $public 'proof/index.html') -Raw -Encoding UTF8
+function Get-TfReceiptCard([string]$id) { [regex]::Match($lnProofHtml, '(?s)<article\b[^>]*\bid="receipt-' + [regex]::Escape($id) + '"[^>]*>.*?</article>').Value }
+foreach ($lnNote in $lnNotes) {
+  $lnTag = "A13 $($lnNote.productId)#$($lnNote.limitIndex)"
+  $lnProduct = @($manifest.products | Where-Object { $_.id -ceq [string]$lnNote.productId })[0]
+  $lnLimit = [string]@($lnProduct.limits)[[int]$lnNote.limitIndex]
+  Assert-TF "${lnTag}: anchor still names the annotated custody limit" (-not [string]::IsNullOrWhiteSpace([string]$lnNote.anchor) -and $lnLimit.Contains([string]$lnNote.anchor))
+  Assert-TF "${lnTag}: note is dated and not later than its commit" ([string]$lnNote.asOf -match '^\d{4}-\d{2}-\d{2}$' -and [string]::CompareOrdinal([string]$lnNote.asOf, $lnHeadDate) -le 0)
+  $lnBare = '<li>' + (ConvertTo-TfEscaped $lnLimit) + '</li>'
+  $lnLi = '<li>' + (ConvertTo-TfEscaped $lnLimit) + '<br><span class="limit-note"><strong>Website note (as of ' + (ConvertTo-TfEscaped ([string]$lnNote.asOf)) + ').</strong> ' + (ConvertTo-TfEscaped ([string]$lnNote.note)) + '</span></li>'
+  $lnTf = Get-Content (Join-Path $public "truth-files/$($lnNote.productId)/index.html") -Raw -Encoding UTF8
+  Assert-TF "${lnTag}: Truth File shows the dated note directly under its verbatim limit" ($lnTf.Contains($lnLi) -and -not $lnTf.Contains($lnBare))
+  $lnCard = Get-TfReceiptCard ([string]$lnNote.productId)
+  Assert-TF "${lnTag}: /proof/ receipt card shows the dated note directly under its verbatim limit" ($lnCard.Contains($lnLi) -and -not $lnCard.Contains($lnBare))
+}
+foreach ($p in ($manifest.products | Where-Object { $_.visible })) {
+  $lnOwn = @($lnNotes | Where-Object { [string]$_.productId -ceq $p.id }).Count
+  $lnTf = Get-Content (Join-Path $public "truth-files/$($p.id)/index.html") -Raw -Encoding UTF8
+  Assert-TF "A13 $($p.id): Truth File carries only its own website notes" ([regex]::Matches($lnTf, 'class="limit-note"').Count -eq $lnOwn)
+  Assert-TF "A13 $($p.id): /proof/ receipt card carries only its own website notes" ([regex]::Matches((Get-TfReceiptCard $p.id), 'class="limit-note"').Count -eq $lnOwn)
+}
+# Notes never enter release limits in the data files.
+$lnRegistry = Get-Content (Join-Path $public 'proof/index.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+$lnDerived = Get-Content (Join-Path $public 'site-manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+$lnDrift = @(foreach ($p in $manifest.products) {
+  $want = ConvertTo-Json -Compress -InputObject @($p.limits)
+  $r = @($lnRegistry.products | Where-Object { $_.id -ceq $p.id })[0]
+  $d = @($lnDerived.products | Where-Object { $_.id -ceq $p.id })[0]
+  if (-not $r -or -not $d -or (ConvertTo-Json -Compress -InputObject @($r.limits)) -cne $want -or (ConvertTo-Json -Compress -InputObject @($d.limits)) -cne $want) { $p.id }
+})
+Assert-TF "A13: website notes never enter release limits in /proof/index.json or /site-manifest.json (drift: $($lnDrift -join ', '))" ($lnDrift.Count -eq 0)
+
 # Safety: no internal/private patterns in emitted truth-files HTML.
 $unsafe = 'C:\\|file://|localhost|127\.0\.0\.1|api[_-]?key|secret|bearer\s+[A-Za-z0-9]|password|javascript:|data:|vbscript:'
 $allTf = Get-ChildItem (Join-Path $public 'truth-files') -Recurse -Filter *.html
@@ -138,6 +209,8 @@ $sitemap = Get-Content (Join-Path $public 'sitemap.xml') -Raw -Encoding UTF8
 Assert-TF 'sitemap carries all truth-file routes' ((@('/truth-files/') + ($productIds | ForEach-Object { "/truth-files/$_/" }) | Where-Object { $sitemap -notmatch [regex]::Escape("https://theprooffoundry.com$_") }).Count -eq 0)
 $headers = Get-Content (Join-Path $public '_headers') -Raw -Encoding UTF8
 Assert-TF '_headers revalidates truth-files routes' ($headers -match '/truth-files/\*')
+$mainOf = { param($rel) [regex]::Match((Get-Content (Join-Path $public $rel) -Raw -Encoding UTF8), '(?s)<main\b.*?</main>').Value }
+Assert-TF '/proof/ and /proof-standard/ link Truth Files from the page body' (((& $mainOf 'proof/index.html') -match 'href="/truth-files/"') -and ((& $mainOf 'proof-standard/index.html') -match 'href="/truth-files/"'))
 
 $allGeneratedHtml = Get-ChildItem $public -Recurse -File -Filter *.html
 $emptyHrefPattern = 'href\s*=\s*(?:"\s*"|''\s*'')'

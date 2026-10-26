@@ -46,11 +46,11 @@
         },
         {
           "title": "Is this signed?",
-          "body": "No. The installer EXE and the portable ZIP are both unsigned Windows builds — not Authenticode code-signed. Code signing is a separate, tracked piece of future work, not something this release claims."
+          "body": "No. The portable ZIP and the app inside it are not code-signed, according to the release record. Code signing is a separate, tracked piece of future work, not something this release claims."
         },
         {
-          "title": "What does \"Reality Gate Verified\" mean?",
-          "body": "It means this exact build passed a full, real, 20-step automated validation pipeline — including packaged-app checks and live physical-phone companion automation — and produced a cryptographically signed, independently verified proof receipt. It does not mean the file is digitally signed, and it has no effect on Windows SmartScreen."
+          "title": "What does \"First-party qualification\" mean?",
+          "body": "Proof Foundry's own qualification tool (Reality Gate) ran this Windows build three times and recorded PASS. The run receipts (IDs below) are not published, and this is not an independent or security certification. Earlier runs also drove the Android companion on a physical phone; that does not qualify the current companion. The qualification does not mean the file is digitally signed, and it has no effect on Windows SmartScreen."
         },
         {
           "title": "Is this hosted on GitHub?",
@@ -62,7 +62,7 @@
         },
         {
           "title": "Is the Android app also {{product.versionLabel}}?",
-          "body": "The public Android companion remains at {{product.companionPublicVersionLabel}}. A companion v{{product.companionVersion}} build exists alongside Windows {{product.versionLabel}} but has not been released publicly. The current public versions are Windows {{product.versionLabel}} and Android companion {{product.companionPublicVersionLabel}}."
+          "body": "This site offers no Android companion download. The release record lists Android companion {{product.companionPublicVersionLabel}} but publishes no companion file or checksum. A companion v{{product.companionVersion}} build exists alongside Windows {{product.versionLabel}} but has not been released publicly."
         }
       ]
     },
@@ -73,12 +73,12 @@
   ],
   "meta": {
     "title": "Lights Out — Give your night a gentle ending. | The Proof Foundry",
-    "description": "Plan a Windows shutdown or sleep timer, then pause, snooze or cancel from your Android companion. Public Windows {{product.versionLabel}}; public Android companion {{product.companionPublicVersionLabel}}.",
+    "description": "Plan a Windows shutdown or sleep timer, then pause, snooze or cancel from your Android companion. Public Windows {{product.versionLabel}}; this site offers no Android companion download.",
     "viewport": "width=device-width, initial-scale=1",
     "robots": "index, follow",
     "themeColor": "#0B0F14",
     "ogTitle": "Lights Out — Give your night a gentle ending.",
-    "ogDescription": "Plan a Windows shutdown or sleep timer, then pause, snooze or cancel from your Android companion. Public Windows {{product.versionLabel}}; public Android companion {{product.companionPublicVersionLabel}}.",
+    "ogDescription": "Plan a Windows shutdown or sleep timer, then pause, snooze or cancel from your Android companion. Public Windows {{product.versionLabel}}; this site offers no Android companion download.",
     "ogType": "website",
     "ogImage": "https://theprooffoundry.com/assets/lights-out/lights-out-og-image.png",
     "twitterCard": "summary_large_image",
@@ -138,7 +138,7 @@
     "media": {
       "src": "/assets/lights-out/tonight-active-hero.png",
       "alt": "Lights Out desktop with an active countdown and session controls.",
-      "caption": "Tonight · Windows interface"
+      "caption": "Tonight · Windows interface · CAPTURED · Lights Out v11.1.2 dry run"
     },
     "primaryAction": {
       "label": "View release options",
@@ -151,7 +151,7 @@
   },
   "card": {
     "tagline": "A deliberate end to the day.",
-    "media": "/assets/studio/tonight-active-hero-card-960.png",
+    "media": "/assets/lights-out/tonight-active-hero.png",
     "summary": "Set the countdown. Let the PC wind down. Pause, snooze or cancel from bed with the Android companion.",
     "mediaAlt": "Lights Out interface showing a sample dry-run night session"
   },

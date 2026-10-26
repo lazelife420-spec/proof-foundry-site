@@ -5,6 +5,7 @@ import os from "node:os";
 import crypto from "node:crypto";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import releaseInputs from "./release-inputs.cjs";
 import { verifyPublisherSourceBaseForRepository } from "./pf-product-p3-p5.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -855,6 +856,7 @@ async function readDirectoryPublic(dir, url) {
 async function publishCommand(packageDir, args) {
   const { positional, flags } = parseArgs(args);
   if (flags.live) requireNoLive(flags);
+  releaseInputs.assertLegacyReleaseWriterDisabled("publish-artifacts");
   requireFixtureMode(flags);
   const context = await loadFrozenPackage(packageDir, { ...keyAndApprovalFlags(flags), action: "PUBLISH_ARTIFACTS" });
   const plan = await buildR2Plan(context);
@@ -899,6 +901,7 @@ class FileR2FixtureTransport extends MemoryR2FixtureTransport {
 async function promoteCommand(packageDir, receiptArg, args) {
   const { positional, flags } = parseArgs(args);
   if (flags.live) requireNoLive(flags);
+  releaseInputs.assertLegacyReleaseWriterDisabled("promote");
   if (!flags.fixture) throw new PublicationError("ISOLATED_CANDIDATE_REQUIRED", "Canonical promotion in this tranche requires --fixture and an isolated output directory.");
   const context = await loadFrozenPackage(packageDir, { ...keyAndApprovalFlags(flags), action: "PROMOTE_CANONICAL_STATE" });
   const plan = await buildR2Plan(context);
@@ -1077,6 +1080,7 @@ export async function qualifyPromotedPayload(stageDirArg) {
 async function deployCommand(packageDir, payloadArg, args) {
   const { positional, flags } = parseArgs(args);
   if (flags.live) requireNoLive(flags);
+  releaseInputs.assertLegacyReleaseWriterDisabled("deploy-site");
   requireFixtureMode(flags);
   const context = await loadFrozenPackage(packageDir, { ...keyAndApprovalFlags(flags), action: "DEPLOY_SITE" });
   const stage = path.resolve(payloadArg), promotionPath = path.join(stage, "promotion-receipt.json"), qualificationPath = path.join(stage, "site-payload-qualification.json");

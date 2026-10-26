@@ -10,15 +10,15 @@
 <meta content="index, follow" name="robots"/>
 <meta content="#0a0d14" name="theme-color"/>
 <link href="https://theprooffoundry.com/roadmap/" rel="canonical"/>
-<link href="/assets/foundry-strike/proof-foundry-forged-artifact.png" rel="icon" type="image/png"/>
+<link href="/brand/PF_HEADER_MARK.svg" rel="icon" type="image/svg+xml"/>
 <meta content="What’s next — The Proof Foundry" property="og:title"/>
 <meta content="Current public software releases, candidate builds, platform directions and architectural lineages at The Proof Foundry." property="og:description"/>
 <meta content="website" property="og:type"/>
 <meta content="https://theprooffoundry.com/roadmap/" property="og:url"/>
 <meta content="The Proof Foundry" property="og:site_name"/>
-<meta content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" property="og:image"/>
+<meta content="https://theprooffoundry.com/brand/PF_SOCIAL_CARD.png" property="og:image"/>
 <meta content="summary_large_image" name="twitter:card"/>
-<meta content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" name="twitter:image"/>
+<meta content="https://theprooffoundry.com/brand/PF_SOCIAL_CARD.png" name="twitter:image"/>
 <link href="/styles.css" rel="stylesheet"/>
 <link href="/studio.css" rel="stylesheet"/>
 </head>
@@ -43,10 +43,10 @@
 
       <article>
         <div>
-          <p class="kicker">Public {{products.cleanroom.versionLabel}} · Next {{products.cleanroom.candidateVersionLabel}}</p>
+          <p class="kicker">Public {{products.cleanroom.versionLabel}}</p>
           <h2><a href="/cleanroom/">Cleanroom <svg class="ui-arrow" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.12em" aria-hidden="true" focusable="false"><path d="M3 13 13 3M5 3h8v8"/></svg></a></h2>
         </div>
-        <p>The public installer stays at {{products.cleanroom.versionLabel}}. Work on {{products.cleanroom.candidateVersionLabel}} has not changed that release.</p>
+        <p>The public installer stays at {{products.cleanroom.versionLabel}}. {{products.cleanroom.candidateStatus}}</p>
       </article>
 
       <article>
@@ -70,15 +70,15 @@
           <p class="kicker">Public release · v{{products.proofshot.publicVersion}} · {{products.proofshot.publishedAtLabel}}</p>
           <h2><a href="/proofshot/">ProofShot <svg class="ui-arrow" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.12em" aria-hidden="true" focusable="false"><path d="M3 13 13 3M5 3h8v8"/></svg></a></h2>
         </div>
-        <p>The hardened rebrand of the qualified HyperSnatch engine is live, with an unsigned installer backed by SHA-256 checksums and Reality Gate custody receipts.</p>
+        <p>The hardened rebrand of the qualified HyperSnatch engine is live, with an unsigned installer backed by SHA-256 checksums plus a release manifest that names Proof Foundry's internal Reality Gate receipts (the receipts are not published).</p>
       </article>
 
       <article>
         <div>
-          <p class="kicker">Public Windows {{products.lights-out.versionLabel}} · Android {{products.lights-out.companionPublicVersionLabel}}</p>
+          <p class="kicker">Public Windows {{products.lights-out.versionLabel}} · No Android companion download</p>
           <h2><a href="/lights-out/">Lights Out PC <svg class="ui-arrow" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.12em" aria-hidden="true" focusable="false"><path d="M3 13 13 3M5 3h8v8"/></svg></a></h2>
         </div>
-        <p>Windows {{products.lights-out.versionLabel}} is the current public release, published 2026-09-15. The public Android companion remains at {{products.lights-out.companionPublicVersionLabel}}; current downloads and release evidence are on the product page.</p>
+        <p>Windows {{products.lights-out.versionLabel}} is the current public release, published 2026-09-15. This site offers no Android companion download. The release record lists Android companion {{products.lights-out.companionPublicVersionLabel}} but publishes no companion file or checksum. The current download and release evidence are on the product page.</p>
       </article>
     </div>
 
@@ -101,12 +101,12 @@
         <h2>Platform directions</h2>
         <p>Distinct development and delivery directions explored across The Proof Foundry environment:</p>
         <ul class="roadmap-directions-list">
-          <li><strong>Reality Gate Agent Gateway:</strong> Planned future bridge for local coding agents to inspect projects and request governed runs. Implementation and release status remain separate from the current Reality Gate release.</li>
+          <li><strong>Reality Gate Agent Gateway:</strong> Planned future bridge for local coding agents to inspect projects and request governed runs. Implementation and release status are separate from the withdrawn {{products.reality-gate.withdrawnVersionLabel}} package; no Reality Gate release is currently offered.</li>
           <li><strong>Android Proof Foundry Store:</strong> Substantial pre-production/internal distribution line; not claimed as public production.</li>
           <li><strong>Windows Store / Launcher:</strong> Prototype / earlier implementation direction for integrated desktop catalog launching.</li>
           <li><strong>Proof Foundry Developers:</strong> Publisher and release-authoring direction, distinct from the consumer software catalog.</li>
           <li><strong>Website Storefront:</strong> future public Store/catalog direction building on today's direct-download pages and verified receipt model.</li>
-          <li><strong>Reality Gate:</strong> Separate engineering proof and control plane powering automated qualification.</li>
+          <li><strong>Reality Gate:</strong> {{products.reality-gate.statusStatement}}</li>
         </ul>
 
         <h2>Architectural lineages</h2>

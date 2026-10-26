@@ -158,9 +158,9 @@ body.studio.pp-system .pp-hero h1 {
 }
 
 body.studio.pp-system .pp-hero h1 em {
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--pf-sans, "Archivo", sans-serif);
   font-style: italic;
-  font-weight: 500;
+  font-weight: 700;
   color: var(--pp-gold-light);
 }
 
@@ -171,6 +171,16 @@ body.studio.pp-system .pp-hero h1 em {
   font-size: 1.09rem;
   line-height: 1.7;
 }
+
+/* Withdrawn status line under the product headline: the words carry the state; the accent only reinforces it. */
+.pp-hero .pp-hero-status {
+  margin: 18px 0 0;
+  max-width: 34rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  color: var(--pp-accent);
+}
+.pp-hero .pp-hero-status + .product-lede { margin-top: 12px; }
 
 .pp-hero .studio-actions {
   margin-top: 30px;

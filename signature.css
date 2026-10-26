@@ -620,8 +620,9 @@
 .compare-choice input[type="checkbox"] {
   appearance: none;
   -webkit-appearance: none;
-  width: 16px;
-  height: 16px;
+  position: relative;
+  width: 18px;
+  height: 18px;
   border: 1px solid rgba(214, 168, 79, .6);
   border-radius: 2px;
   background: rgba(214, 168, 79, .08);
@@ -633,6 +634,18 @@
   transition: background .15s, border-color .15s;
 }
 
+@media (pointer: coarse) {
+  .compare-choice input[type="checkbox"]::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
 .signature-home .compare-choice input[type="checkbox"]:checked,
 .compare-choice input[type="checkbox"]:checked {
   background: var(--pf-brass-light, #efc978);
@@ -642,8 +655,8 @@
 .signature-home .compare-choice input[type="checkbox"]::before,
 .compare-choice input[type="checkbox"]::before {
   content: "";
-  width: 9px;
-  height: 9px;
+  width: 10px;
+  height: 10px;
   transform: scale(0);
   transition: transform 0.15s ease-in-out;
   background-color: #171b1b;

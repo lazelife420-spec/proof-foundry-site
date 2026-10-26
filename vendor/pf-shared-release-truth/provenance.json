@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "pf-shared-release-truth-vendor/v1",
+  "sourceRepository": "lazelife420-spec/proof-foundry-app",
+  "sourceBranch": "codex/pf-shared-release-truth",
+  "sourceCommit": "c5df5bb805f88af41456351e3a648063f3da03c8",
+  "sourceTree": "5be20b8ab334a9f85d4d2b74edb8200c5ab21122",
+  "foundationCommit": "2258341bfa47de187147b03617e7dfa9ade678bf",
+  "modelSha256": "456810ca16c61872f982b54a9975858903bc209387f1b819ef26de39474aeb7a",
+  "files": [
+    {
+      "source": "proof-foundry-app/release-truth/release-truth.json",
+      "destination": "release-truth.json",
+      "blob": "f6402378fb6407f95d0d4b9299032d8200da0eba",
+      "sha256": "65e5b92a164b525b3a0d9f0308a4046b2fb66a9eb93c23c223181b4a47c0bfb9"
+    },
+    {
+      "source": "proof-foundry-app/packages/pf-release-truth/index.js",
+      "destination": "vendor/pf-shared-release-truth/pf-release-truth/index.js",
+      "blob": "9aadc9bc69612a443339c906187bc596a65c71ce",
+      "sha256": "322d54b3940865e43cdbf4820e2d714ff6fdd51a5f5e13518fe862540c573f40"
+    },
+    {
+      "source": "proof-foundry-app/packages/pf-store-core/src/shared/CanonicalJson.js",
+      "destination": "vendor/pf-shared-release-truth/pf-store-core/src/shared/CanonicalJson.js",
+      "blob": "a26cea1ba82188e2dbe20e2f0c5d5e6d76d6903d",
+      "sha256": "c0cc92e08075328f933425956c67153e4ce1c5a8db52c9f9a4df046e9a3da532"
+    }
+  ],
+  "rule": "Read authored model and shared pure reducer only. No generated website output or shipped manifest release fact is an upstream input."
+}

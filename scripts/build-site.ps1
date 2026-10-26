@@ -1,6 +1,7 @@
 # scripts/build-site.ps1 — Manifest-driven static site generator for The Proof Foundry.
 #
-# Source of truth: site-manifest.json (product identity / status / release facts)
+# Authored release authority: release-truth.json -> shared deterministic projection.
+# Site presentation: site-manifest.json. Public manifest is a derived v1 compatibility input.
 # Shared chrome:    partials/*.html
 # Page content:     root *.html files (templates with markers + tokens)
 # Output:           public/  (GENERATED — never hand-edit)
@@ -51,7 +52,8 @@ param(
   # public API response ({ products: [...] }). When set, product state flows
   # through New-FixtureApiProductStateSource instead of the manifest — the
   # adapter seam tests exercise, and the shape a real API source will take.
-  [string]$StateSourcePath
+  [string]$StateSourcePath,
+  [switch]$SharedReleaseTruthPreview
 )
 
 $ErrorActionPreference = 'Stop'
@@ -72,6 +74,26 @@ if (-not (Test-Path $manifestPath)) { throw "site-manifest.json not found at $ma
 # back to the platform default (Windows-1252 on Windows PowerShell), which
 # decodes those bytes as mojibake (Â·, â€") into every generated page.
 $manifest = Get-Content $manifestPath -Raw -Encoding UTF8 | ConvertFrom-Json
+$script:sharedReleaseTruth = $null
+if ($manifest.releaseFactsSource) {
+  if ($PSBoundParameters.ContainsKey('ManifestPath') -or $StateSourcePath -or $PreviewProductId -or $PSBoundParameters.ContainsKey('ProductsDir')) { throw 'Shared authored truth cannot substitute a manifest, transport or product registry.' }
+  # Native stdout decoding must be explicit: a C locale can otherwise turn
+  # UTF-8 source wording into OEM-codepage mojibake before JSON is parsed.
+  $previousConsoleEncoding = [Console]::OutputEncoding
+  $previousOutputEncoding = $OutputEncoding
+  try {
+    [Console]::OutputEncoding = [Text.UTF8Encoding]::new($false)
+    $OutputEncoding = [Text.UTF8Encoding]::new($false)
+    $adapterJson = & node (Join-Path $root 'scripts/shared-release-truth.cjs')
+    $adapterExitCode = $LASTEXITCODE
+  } finally {
+    [Console]::OutputEncoding = $previousConsoleEncoding
+    $OutputEncoding = $previousOutputEncoding
+  }
+  if ($adapterExitCode -ne 0) { throw 'Shared release truth projection failed; no output is published.' }
+  $script:sharedReleaseTruth = ($adapterJson -join "`n") | ConvertFrom-Json -Depth 100
+  $manifest = $script:sharedReleaseTruth.manifest
+}
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Validation
@@ -83,10 +105,20 @@ $allowedReleaseStatuses = @('PUBLIC_RELEASE','RELEASE_CANDIDATE','ACTIVE_PROOF',
 $allowedVerificationStatuses = @('VERIFIED','PENDING','NOT_PUBLISHED','NOT_VERIFIED')
 $allowedVerificationTypes = @('ARTIFACT_HASH_PUBLISHED','ARTIFACT_HASH_VERIFIED','ARTIFACT_CUSTODY','RUNTIME_VALIDATION','REALITY_GATE','PUBLIC_DOWNLOAD','CODE_SIGNING','RELEASE_AUTHORIZATION','PUBLICATION_STATUS')
 $allowedSigningStatuses = @('UNSIGNED','DEBUG_SIGNED','PRODUCTION_SIGNED','NOT_APPLICABLE')
+# K5: what backs an evidence-gated check. Only a published, self-consistent
+# receipt reads VERIFIED; an unknown or missing class reads PENDING.
+$evidenceGatedDimensions = @('ARTIFACT_CUSTODY','RUNTIME_VALIDATION','REALITY_GATE')
+$evidenceClassStates = @{ 'PUBLISHED_RECEIPT' = 'VERIFIED'; 'MANIFEST_ONLY' = 'NOT_PUBLISHED'; 'OWNER_STAMPED_UNPUBLISHED' = 'NOT_PUBLISHED'; 'ID_ONLY' = 'NOT_PUBLISHED'; 'RECEIPT_SCOPE_UNASSESSED' = 'PENDING'; 'NONE' = 'PENDING' }
+$requiredStateWords = @('releaseReportChip','releaseReportPassing','releaseReportWithdrawn','releaseReportDate','releaseReportStamp','artifactVerifiedStamp','candidatePill','withdrawnVersionCell','withdrawnChecks','withdrawnHomeStatus')
 $errors = @()
 
 function StateLabel($state) {
   return $manifest.stateLabels.$state
+}
+function StateWord([string]$key) {
+  $v = if ($manifest.labels -and $manifest.labels.PSObject.Properties[$key]) { [string]$manifest.labels.$key } else { '' }
+  if ([string]::IsNullOrWhiteSpace($v)) { throw "site-manifest.json labels.$key is required" }
+  return $v
 }
 
 $seenIds = @{}
@@ -154,6 +186,28 @@ foreach ($p in $manifest.products) {
       }
       if ($pr.cardCta -match '(?i)release candidate' -and $p.release.releaseStatus -ne 'RELEASE_CANDIDATE') {
         $errors += "$tag presentation.cardCta '$($pr.cardCta)' offers a release candidate but releaseStatus is $($p.release.releaseStatus)"
+      }
+      if ($pr.PSObject.Properties['evidenceClass']) {
+        foreach ($ec in @($pr.evidenceClass.PSObject.Properties)) {
+          if ($evidenceGatedDimensions -notcontains $ec.Name) { $errors += "$tag presentation.evidenceClass.$($ec.Name) is not an evidence-gated verification dimension" }
+          if (-not $evidenceClassStates.ContainsKey([string]$ec.Value)) { $errors += "$tag presentation.evidenceClass.$($ec.Name) '$($ec.Value)' is not a known evidence class" }
+          if (@('PUBLISHED_RECEIPT','MANIFEST_ONLY','OWNER_STAMPED_UNPUBLISHED','RECEIPT_SCOPE_UNASSESSED') -contains [string]$ec.Value -and [string]$p.verification.receiptUrl -notlike 'https://*') { $errors += "$tag presentation.evidenceClass.$($ec.Name) '$($ec.Value)' needs a published https verification.receiptUrl" }
+          if ([string]$ec.Value -eq 'ID_ONLY' -and [string]::IsNullOrWhiteSpace([string]$p.verification.receiptId)) { $errors += "$tag presentation.evidenceClass.$($ec.Name) 'ID_ONLY' needs a verification.receiptId" }
+        }
+      }
+      # Recorded files this site withholds are named by artifacts[] index. The
+      # offered download can never be withheld. Range is enforced when the proof
+      # registry is generated, so a dangling template token still fails first (T13).
+      if ($pr.PSObject.Properties['unofferedArtifacts']) {
+        $uo = @($pr.unofferedArtifacts)
+        if (@($uo | Where-Object { -not ($_ -is [int] -or $_ -is [long]) -or [long]$_ -lt 0 }).Count -gt 0 -or @($uo | Select-Object -Unique).Count -ne $uo.Count) {
+          $errors += "$tag presentation.unofferedArtifacts must be distinct non-negative artifact indexes; got [$($uo -join ', ')]"
+        } else {
+          foreach ($ui in $uo) {
+            $ua = if ([long]$ui -lt @($p.artifacts).Count) { @($p.artifacts)[[int]$ui] } else { $null }
+            if ($ua -and $ua.downloadUrl -and $ua.downloadUrl -eq $p.downloadUrl) { $errors += "$tag presentation.unofferedArtifacts lists artifact [$ui], which is the download this site offers" }
+          }
+        }
       }
     }
   }
@@ -290,9 +344,15 @@ foreach ($p in $manifest.products) {
       if ($_ -match '^(\d+\.\d+\.\d+)-') { $Matches[1] }
     }) | Where-Object { $_ }
     $declaredVersions = @($declaredVersions + $baseSemvers) | Select-Object -Unique
-    # Versions a PUBLIC_RELEASE artifact is allowed to advertise. A candidate-only
+    # Versions a PUBLIC_RELEASE artifact is allowed to advertise: only versions of
+    # PUBLIC channels. The shared projection sets release.publicVersion from the
+    # primary platform's PUBLIC channel and release.companionPublicVersion from
+    # the other platform's PUBLIC channel. companionVersion and currentLocalVersion
+    # are presentation lanes (releasePresentation.companionDisplayTrack and
+    # localVersionLane) that may name a BUILT or CANDIDATE build, so they count as
+    # declared above but are never admitted here. A candidate-only or built-only
     # version must never appear on something the public can download.
-    $publicVersions = @($p.release.publicVersion, $p.release.companionPublicVersion, $p.companionVersion) |
+    $publicVersions = @($p.release.publicVersion, $p.release.companionPublicVersion) |
       Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
     $aIndex = 0
     foreach ($a in $p.artifacts) {
@@ -553,6 +613,39 @@ foreach ($tpl in $templateFiles) {
   }
 }
 
+foreach ($k in $requiredStateWords) {
+  if (-not $manifest.labels -or -not $manifest.labels.PSObject.Properties[$k] -or [string]::IsNullOrWhiteSpace([string]$manifest.labels.$k)) { $errors += "[labels] site-manifest.json labels.$k is required (derived-state wording)" }
+}
+foreach ($c in @($evidenceClassStates.Keys)) {
+  if (-not $manifest.labels -or -not $manifest.labels.evidenceNotes -or [string]::IsNullOrWhiteSpace([string]$manifest.labels.evidenceNotes.$c)) { $errors += "[labels] site-manifest.json labels.evidenceNotes.$c is required" }
+}
+# A-13: website-authored dated notes beside custody-pinned limits
+# (site-manifest.json limitNotes). A note is presentation only: it never edits
+# the limit, and it must still annotate the limit it was written for. If an
+# upstream re-vendor rewords or reorders that limit, the anchor stops matching
+# and the build fails until the note is reviewed.
+if ($null -ne $manifest.PSObject.Properties['limitNotes']) {
+  $lnSeen = @{}
+  $lnPos = 0
+  foreach ($lnEntry in @($manifest.limitNotes)) {
+    $lnTag = "[limitNotes[$lnPos]]"
+    $lnIdx = $lnEntry.limitIndex
+    $lnProduct = @($manifest.products | Where-Object { [string]$_.id -ceq [string]$lnEntry.productId }) | Select-Object -First 1
+    if (-not $lnProduct) {
+      $errors += "$lnTag unknown productId '$($lnEntry.productId)'"
+    } elseif (($lnIdx -isnot [int] -and $lnIdx -isnot [long]) -or $lnIdx -lt 0 -or $lnIdx -ge @($lnProduct.limits).Count) {
+      $errors += "$lnTag limitIndex '$lnIdx' is not a limit of $($lnEntry.productId)"
+    } elseif ([string]::IsNullOrWhiteSpace([string]$lnEntry.anchor) -or -not ([string]@($lnProduct.limits)[$lnIdx]).Contains([string]$lnEntry.anchor)) {
+      $errors += "$lnTag anchor '$($lnEntry.anchor)' is not in $($lnEntry.productId) limit $lnIdx; review the note against the current custody limit"
+    }
+    if ([string]$lnEntry.asOf -notmatch '^\d{4}-\d{2}-\d{2}$') { $errors += "$lnTag malformed asOf '$($lnEntry.asOf)' (expected YYYY-MM-DD)" }
+    if ([string]::IsNullOrWhiteSpace([string]$lnEntry.note)) { $errors += "$lnTag note is empty" }
+    $lnKey = "$($lnEntry.productId)#$lnIdx"
+    if ($lnSeen.ContainsKey($lnKey)) { $errors += "$lnTag duplicates the note for $lnKey" } else { $lnSeen[$lnKey] = $true }
+    $lnPos++
+  }
+}
+
 if ($errors.Count -gt 0) {
   Write-Host "==> MANIFEST VALIDATION FAILED" -ForegroundColor Red
   $errors | ForEach-Object { Write-Host "   - $_" -ForegroundColor Red }
@@ -662,6 +755,16 @@ function StatusLine($p) {
 # Attribute-safe escaping (& < > " ') — also correct for text nodes: entities
 # decode to the literal characters in every HTML context.
 function Html-Attr($s) { return ($s -replace '&','&amp;' -replace '<','&lt;' -replace '>','&gt;' -replace '"','&quot;' -replace "'",'&#39;') }
+
+# An optional lossless delivery derivative never replaces the module's original
+# media identity. The PNG img remains the format fallback and link/alt source.
+function Build-PreviewWebpSource([string]$media) {
+  if ($media -cnotmatch '^/assets/[A-Za-z0-9_./-]+\.png$' -or $media -match '/\.{1,2}(?:/|$)') { return '' }
+  $webp = [IO.Path]::ChangeExtension($media, '.webp')
+  $file = Join-Path $root $webp.TrimStart('/')
+  if (-not [IO.File]::Exists($file)) { return '' }
+  return '<source type="image/webp" srcset="' + (Html-Attr $webp) + '"/>'
+}
 
 # Public-state URL policy: the only URL shapes allowed to cross into public
 # surfaces are site-relative paths and https:// absolute URLs on public hosts.
@@ -777,11 +880,11 @@ function CardDetailLine($p) {
       return ''
     }
     'PUBLIC_RELEASE' {
-      if ($cand -and (!$pub -or "v$cand" -ne $pub)) { return "Next build $cand in progress" }
+      if ($cand -and (!$pub -or "v$cand" -ne $pub)) { if (-not [string]::IsNullOrWhiteSpace([string]$p.candidateStatus)) { return [string]$p.candidateStatus }; return "Next build $cand in progress" }
       return ''
     }
     'FROZEN' {
-      if ($cand -and (!$pub -or "v$cand" -ne $pub)) { return "Next build $cand in progress" }
+      if ($cand -and (!$pub -or "v$cand" -ne $pub)) { if (-not [string]::IsNullOrWhiteSpace([string]$p.candidateStatus)) { return [string]$p.candidateStatus }; return "Next build $cand in progress" }
       return ''
     }
     'UNRELEASED' {
@@ -818,6 +921,29 @@ function IsFileDownload($url) {
   return $url -like '*.zip' -or $url -like '*.exe' -or $url -like '*.apk'
 }
 
+# Recorded artifacts this site does not offer: presentation names them by 0-based
+# artifacts[] index (presentation.unofferedArtifacts), never by filename or URL.
+# Lenient here (indexes outside the list are ignored); Build-ProofRegistry fails
+# the build on an index the record does not list, after every page has rendered.
+# Callers wrap the result in @().
+function Get-UnofferedArtifactIndexes($p) {
+  if (-not $p -or -not $p.presentation -or -not $p.presentation.PSObject.Properties['unofferedArtifacts']) { return @() }
+  $recorded = @($p.artifacts).Count
+  return @(@($p.presentation.unofferedArtifacts) | Where-Object { ($_ -is [int] -or $_ -is [long]) -and [long]$_ -ge 0 -and [long]$_ -lt $recorded } | ForEach-Object { [int]$_ } | Sort-Object -Unique)
+}
+
+# A record can name a public companion version without publishing a companion
+# file. Compact surfaces call the companion offered only when this site offers
+# an artifact for a platform other than the first (primary) artifact's.
+function Test-CompanionDownloadOffered($p) {
+  $arts = @($p.artifacts)
+  $withheld = @(Get-UnofferedArtifactIndexes $p)
+  for ($i = 1; $i -lt $arts.Count; $i++) {
+    if ($arts[$i].downloadUrl -and $withheld -notcontains $i -and [string]$arts[$i].platform -ne [string]$arts[0].platform) { return $true }
+  }
+  return $false
+}
+
 # Resolve computed blocks for a product from canonical data (release/artifacts/verification)
 function ProductTokens($p) {
   $tokens = @{}
@@ -836,6 +962,7 @@ function ProductTokens($p) {
   $tokens['withdrawnVersionLabel'] = if ($p.release -and $p.release.withdrawnVersion) { "v$($p.release.withdrawnVersion)" } else { '' }
   $tokens['withdrawalNotice']    = if ($p.release -and $p.release.releaseStatus -eq 'WITHDRAWN') { "<p class=`"availability-notice`"><strong>Withdrawn:</strong> v$(Html-Attr $p.release.withdrawnVersion) is not available for download. $(Html-Attr $p.presentation.downloadNotice)</p>" } else { '' }
   $tokens['candidateVersionLabel'] = CandidateVersionLabel $p
+  $tokens['candidateStatus']     = if (-not [string]::IsNullOrWhiteSpace([string]$p.candidateStatus)) { [string]$p.candidateStatus } else { '' }
   $tokens['currentVersionLabel'] = CurrentVersionLabel $p
   $tokens['companionLabel']      = CompanionLabel $p
   $tokens['companionPublicVersionLabel'] = CompanionPublicVersionLabel $p
@@ -880,6 +1007,8 @@ function ProductTokens($p) {
   $tokens['sha256']              = $p.sha256
   $tokens['sha256Url']           = $p.sha256Url
   $tokens['releaseNote']         = $p.releaseNote
+  # One authored presentation statement per product (Reality Gate: the dateless withdrawn story).
+  $tokens['statusStatement']     = if (-not [string]::IsNullOrWhiteSpace([string]$p.statusStatement)) { [string]$p.statusStatement } else { '' }
 
   # Canonical release / artifact / verification derived tokens
   $pubVer = if ($p.release -and $p.release.publicVersion) { $p.release.publicVersion } else { if ($p.version) { $p.version } else { '' } }
@@ -950,8 +1079,10 @@ function ProductTokens($p) {
   $ver = if ($tokens['versionLabel']) { Html-Attr $tokens['versionLabel'] } else { '&mdash;' }
   $pills += "<span class=`"proof-pill`"><strong>Version</strong> $ver</span>"
   if ($canVer -and $canVer -ne $pubVer) {
-    $candidateLabel = if ($p.release -and $p.release.releaseStatus -eq 'PUBLIC_RELEASE') { 'Next' } else { 'Candidate' }
-    $pills += "<span class=`"proof-pill`"><strong>$candidateLabel</strong> v$(Html-Attr $canVer)</span>"
+    # K5 rule 6: the product's single candidate wording (A-11), never "Next".
+    $candidateStatus = if (-not [string]::IsNullOrWhiteSpace([string]$p.candidateStatus)) { [string]$p.candidateStatus } elseif ($p.presentation -and -not [string]::IsNullOrWhiteSpace([string]$p.presentation.candidateStatus)) { [string]$p.presentation.candidateStatus } else { '' }
+    if ($candidateStatus) { $pills += "<span class=`"proof-pill`">$(Html-Attr $candidateStatus)</span>" }
+    else { $pills += "<span class=`"proof-pill`"><strong>$(Html-Attr (StateWord 'candidatePill'))</strong> v$(Html-Attr $canVer)</span>" }
   }
   $pills += "<span class=`"proof-pill`"><strong>Platform</strong> $(Html-Attr $tokens['platform'])</span>"
   if ($tokens['testStatus']) {
@@ -959,7 +1090,7 @@ function ProductTokens($p) {
   }
   $pills += "<span class=`"proof-pill`"><strong>Proof</strong> $(Html-Attr $tokens['proofStatus'])</span>"
   if ($tokens['lastVerified']) {
-    $pills += "<span class=`"proof-pill`"><strong>Verified</strong> $(Html-Attr $tokens['lastVerified'])</span>"
+    $pills += "<span class=`"proof-pill`"><strong>$(Html-Attr (StateWord 'releaseReportStamp'))</strong> $(Html-Attr $tokens['lastVerified'])</span>"
   }
   $tokens['proofStrip'] = "<div class=`"proof-strip`">" + ($pills -join "`n          ") + "</div>"
 
@@ -1067,6 +1198,8 @@ function Replace-ProductTokens($text, $tokens, [switch]$Strict) {
 # ─────────────────────────────────────────────────────────────────────────────
 function Build-NavLinks($activeId) {
   if ($activeId -eq 'software') { $activeId = 'products' }
+  if ($activeId -in @('proof','receipts')) { $activeId = 'proof-standard' }
+  if ($activeId -eq 'truth' -or $activeId -like 'truth-files-*') { $activeId = 'truth-files' }
   # Product pages map to the "products" nav item
   $productIds = @()
   foreach ($p in $allProductState) { $productIds += $p.id }
@@ -1112,7 +1245,7 @@ function Render-ProductCard($p, $cardTemplate, [bool]$catalogMode = $false) {
     $t['moduleJobs'] = (@($module.taxonomy.jobs) -join ', ')
     $t['moduleJobKeys'] = (@($module.taxonomy.jobs) -join '|')
   }
-  $card = $cardTemplate
+  $card = $cardTemplate.Replace('<!-- @card-preview-source -->', (Build-PreviewWebpSource $t['cardImage']))
   # cardVersionLabel is substituted before versionLabel would be, and the token
   # names are distinct, so ordering here is incidental rather than load-bearing.
   foreach ($key in @(
@@ -1136,6 +1269,12 @@ function Render-ProductCard($p, $cardTemplate, [bool]$catalogMode = $false) {
     $card = $card -replace '(?s)<!--\s*@if-version\s*-->.*?<!--\s*@end-version\s*-->', ''
   } else {
     $card = $card -replace '<!--\s*@if-version\s*-->', '' -replace '<!--\s*@end-version\s*-->', ''
+  }
+  # A withdrawn product is a record, not a choice: it gets no Compare control.
+  if ($p.release -and $p.release.releaseStatus -eq 'WITHDRAWN') {
+    $card = $card -replace '(?s)<!--\s*@if-compare\s*-->.*?<!--\s*@end-compare\s*-->', ''
+  } else {
+    $card = $card -replace '<!--\s*@if-compare\s*-->', '' -replace '<!--\s*@end-compare\s*-->', ''
   }
   if ($catalogMode -and $module.commerce) {
     $statusSlug = ([string]$module.commerce.status).ToLowerInvariant().Replace('_','-')
@@ -1455,16 +1594,21 @@ function Build-ProofRegistry {
       }
     }
 
+    # K5: derived inputs the inspector mirror needs to read states as /proof/ does.
+    $evidenceClassEntry = Get-EvidenceClassMap $p
+    $downloadUnavailableEntry = [bool]($p.presentation -and $p.presentation.downloadUnavailable)
     $verificationEntry = if ($p.verification) {
       [ordered]@{
-        status           = $p.verification.status
-        verifiedAt       = $p.verification.verifiedAt
-        verificationType = if ($p.verification.verificationType) { @($p.verification.verificationType) } else { @() }
-        receiptId        = $p.verification.receiptId
-        receiptUrl       = $p.verification.receiptUrl
+        status              = $p.verification.status
+        verifiedAt          = $p.verification.verifiedAt
+        verificationType    = if ($p.verification.verificationType) { @($p.verification.verificationType) } else { @() }
+        receiptId           = $p.verification.receiptId
+        receiptUrl          = $p.verification.receiptUrl
+        evidenceClass       = $evidenceClassEntry
+        downloadUnavailable = $downloadUnavailableEntry
       }
     } else {
-      [ordered]@{ status = 'PENDING'; verifiedAt = $null; verificationType = @(); receiptId = $null; receiptUrl = $null }
+      [ordered]@{ status = 'PENDING'; verifiedAt = $null; verificationType = @(); receiptId = $null; receiptUrl = $null; evidenceClass = $evidenceClassEntry; downloadUnavailable = $downloadUnavailableEntry }
     }
 
     $entry = [ordered]@{
@@ -1489,12 +1633,23 @@ function Build-ProofRegistry {
       limits        = if ($p.limits) { @($p.limits) } else { @() }
       summary       = $p.summary
     }
+    # Presentation may withhold recorded files (by index). The homepage inspector
+    # reads this list here; it cannot read presentation data any other way. An
+    # index the record does not list fails the build before any record is written.
+    if ($p.presentation -and $p.presentation.PSObject.Properties['unofferedArtifacts']) {
+      $recordedCount = @($p.artifacts).Count
+      if (@(@($p.presentation.unofferedArtifacts) | Where-Object { -not ($_ -is [int] -or $_ -is [long]) -or [long]$_ -lt 0 -or [long]$_ -ge $recordedCount }).Count -gt 0) {
+        throw "[$($p.id)] presentation.unofferedArtifacts names an artifact index the release record does not list (recorded: $recordedCount)"
+      }
+      $withheldIdx = @(Get-UnofferedArtifactIndexes $p)
+      if ($withheldIdx.Count -gt 0) { $entry['unofferedArtifacts'] = [int[]]$withheldIdx }
+    }
     $entries += $entry
   }
 
   return [ordered]@{
-    schemaVersion   = '1.0.0'
-    generatedAt     = (Get-Date -Format 'yyyy-MM-ddTHH:mm:ssZ')
+    schemaVersion   = if ($script:sharedReleaseTruth) { '1.1.0' } else { '1.0.0' }
+    generatedAt     = if ($script:sharedReleaseTruth) { (Get-SourceIdentity).committedAt } else { (Get-Date -Format 'yyyy-MM-ddTHH:mm:ssZ') }
     canonicalUrl    = $manifest.canonicalUrl
     registryPath    = $manifest.proofRegistryPath
     productCount    = $entries.Count
@@ -1691,16 +1846,25 @@ function Build-TruthFileCards {
     $statusLabel = if ($manifest.statusTaxonomy -and $manifest.statusTaxonomy.PSObject.Properties[$p.productStatus]) { $manifest.statusTaxonomy.($p.productStatus) } else { $p.productStatus }
     $ver = if ($p.release -and $p.release.publicVersion) { "v$($p.release.publicVersion)" } elseif ($p.release -and $p.release.withdrawnVersion) { "Withdrawn v$($p.release.withdrawnVersion)" } else { 'Unreleased' }
     $plats = if ($p.platforms) { ($p.platforms -join ' · ') } else { $p.platform }
+    $cardText = if (-not [string]::IsNullOrWhiteSpace([string]$p.statusStatement)) { [string]$p.statusStatement } else { [string]$p.cardSummary }
     $cards += @"
         <a class="tf-card" href="/truth-files/$(Html-Attr $p.id)/">
           <div class="tf-card-head">$($p.markSvg)<div><h2>$(Html-Attr $p.name)</h2><span class="tf-card-state">$(Html-Attr $stateLabel)</span></div></div>
-          <p>$(Html-Attr $p.cardSummary)</p>
+          <p>$(Html-Attr $cardText)</p>
           <div class="tf-card-facts"><span><b>$(Html-Attr $ver)</b> · $(Html-Attr $statusLabel)</span><span>$(Html-Attr $plats)</span></div>
           <span class="tf-open">Open the record →</span>
         </a>
 "@
   }
   return $cards
+}
+
+# A-13: one dated website note per annotated custody limit, rendered inside
+# that limit's own list item after its verbatim text. '' when none.
+function Get-LimitNoteHtml($productId, [int]$limitIndex) {
+  $lnMatch = @(@($manifest.limitNotes) | Where-Object { $_ -and [string]$_.productId -ceq [string]$productId -and [int]$_.limitIndex -eq $limitIndex }) | Select-Object -First 1
+  if (-not $lnMatch) { return '' }
+  return '<br><span class="limit-note"><strong>Website note (as of ' + (Html-Attr ([string]$lnMatch.asOf)) + ').</strong> ' + (Html-Attr ([string]$lnMatch.note)) + '</span>'
 }
 
 function Build-TruthFileShell($module, $source) {
@@ -1723,23 +1887,40 @@ function Build-TruthFileShell($module, $source) {
   $isPublicRelease = $p.release -and ($p.release.releaseStatus -in @('PUBLIC_RELEASE','FROZEN'))
   $artScope = if ($isPublicRelease) { 'public' } else { 'recorded' }
   $artLine = if ($artCount -gt 0) { "$artCount $artScope artifact$(if($artCount -ne 1){'s'})" } else { 'No public artifact' }
+  $withheld = @(Get-UnofferedArtifactIndexes $p)
+  if ($artCount -gt 0 -and $withheld.Count -gt 0) {
+    $dot = [char]0x00B7
+    $offeredCount = @(0..($artCount - 1) | Where-Object { $withheld -notcontains $_ -and @($p.artifacts)[$_].downloadUrl }).Count
+    $moreCount = $artCount - $offeredCount
+    $artLine += " $dot $offeredCount file$(if ($offeredCount -ne 1) { 's' }) offered here $dot $moreCount more recorded in the release record"
+  }
   $downloadLine = if ($p.downloadUrl) { 'Artifact available for download' } else { 'Not publicly downloadable' }
   $candBits = @()
-  if ($p.release -and $p.release.candidateVersion) { $candBits += "Candidate v$(Html-Attr $p.release.candidateVersion) in evaluation" }
+  if ($p.release -and $p.release.candidateVersion) { if (-not [string]::IsNullOrWhiteSpace([string]$p.candidateStatus)) { $candBits += (Html-Attr $p.candidateStatus) } else { $candBits += "Candidate v$(Html-Attr $p.release.candidateVersion) in evaluation" } }
   if ($p.release -and $p.release.companionCandidateVersion) { $candBits += "Companion candidate v$(Html-Attr $p.release.companionCandidateVersion)" }
   $candLine = if ($candBits.Count -gt 0) { '<span class="tf-sub">' + ($candBits -join ' · ') + '</span>' } else { '' }
-  $compLine = if ($p.release -and $p.release.companionPublicVersion) { "<span class=`"tf-sub`">Companion v$(Html-Attr $p.release.companionPublicVersion)</span>" } else { '' }
+  $compLine = if ($p.release -and $p.release.companionPublicVersion) { "<span class=`"tf-sub`">Companion v$(Html-Attr $p.release.companionPublicVersion)$(if (Test-CompanionDownloadOffered $p) { '' } else { ' ' + [char]0x00B7 + ' not offered here' })</span>" } else { '' }
   $pkgLine = if ($p.packageId) { "<span class=`"tf-sub`">$(Html-Attr $p.packageId)</span>" } else { '' }
   $pkgFact = if ($pkgLine) { '<div class="tf-fact"><dt>Package</dt><dd>' + $pkgLine + '</dd></div>' } else { '' }
+  # A withdrawn record states its recorded reason; no withdrawal date exists in the record or the v2 schema.
+  $withdrawalFact = ''
+  if ($p.release -and $p.release.releaseStatus -eq 'WITHDRAWN') {
+    $withdrawalReasonHtml = if (-not [string]::IsNullOrWhiteSpace([string]$p.release.withdrawalReason)) { Html-Attr $p.release.withdrawalReason } else { 'Reason not recorded' }
+    $withdrawalFact = '<div class="tf-fact"><dt>Withdrawal</dt><dd>' + $withdrawalReasonHtml + '<span class="tf-sub">Withdrawal date: not recorded</span></dd></div>'
+  }
 
   # ── VERIFIED AGAINST ───────────────────────────────────────────────────────
   $vRows = @()
   $verif = $p.verification
   if ($verif -and $verif.status) {
-    $vClass = if ($verif.status -eq 'VERIFIED') { 'verified' } else { 'pending' }
-    $when = if ($verif.verifiedAt) { "Verified $(Html-Attr $verif.verifiedAt)" } elseif ($verif.checkedAt) { "Checked $(Html-Attr $verif.checkedAt)" } else { '' }
+    # K5 rule 7: the chip is the first-party release report, in words; the raw
+    # record status stays machine-readable in data-report-status.
+    $tfWithdrawn = $p.release -and $p.release.releaseStatus -eq 'WITHDRAWN'
+    $chipText = if ($tfWithdrawn) { StateWord 'releaseReportWithdrawn' } elseif ($verif.status -eq 'VERIFIED') { StateWord 'releaseReportPassing' } else { [string]$verif.status }
+    $vClass = if ($verif.status -eq 'VERIFIED' -and -not $tfWithdrawn) { 'verified' } else { 'pending' }
+    $when = if ($verif.verifiedAt) { "$(Html-Attr (StateWord 'releaseReportStamp')) $(Html-Attr $verif.verifiedAt)" } elseif ($verif.checkedAt) { "Checked $(Html-Attr $verif.checkedAt)" } else { '' }
     $whenNote = if ($when) { '<span class="tf-v-note">' + $when + '</span>' } else { '' }
-    $vRows += "<li><span class=`"tf-v-label`">Qualification state</span><span class=`"tf-v-val`"><span class=`"tf-chip $vClass`">$(Html-Attr $verif.status)</span></span>$whenNote</li>"
+    $vRows += "<li><span class=`"tf-v-label`">$(Html-Attr (StateWord 'releaseReportChip'))</span><span class=`"tf-v-val`"><span class=`"tf-chip $vClass`" data-report-status=`"$(Html-Attr $verif.status)`">$(Html-Attr $chipText)</span></span>$whenNote</li>"
   }
   if ($p.release -and $p.release.publishedAt) {
     $vRows += "<li><span class=`"tf-v-label`">Publication state</span><span class=`"tf-v-val`">$(Html-Attr $relLabel)</span><span class=`"tf-v-note`">Published $(Html-Attr $p.release.publishedAt)</span></li>"
@@ -1749,12 +1930,15 @@ function Build-TruthFileShell($module, $source) {
   if ($p.release -and $p.release.sourceCommit) {
     $vRows += "<li><span class=`"tf-v-label`">Source identity</span><span class=`"tf-v-val`"><code class=`"inline`">$(Html-Attr ($p.release.sourceCommit.Substring(0,12)))</code></span><span class=`"tf-v-note`">Release source commit</span></li>"
   }
+  $artIndex = 0
   foreach ($a in @($p.artifacts)) {
     $sign = if ($a.signingStatus -eq 'PRODUCTION_SIGNED') { 'Production-signed' } elseif ($a.signingStatus -eq 'DEBUG_SIGNED') { 'Debug-signed' } else { 'Unsigned' }
     $artNote = 'SHA-256 ' + (Html-Attr $a.sha256.Substring(0,16)) + '… · ' + (Html-Attr $sign)
     if ($a.distType) { $artNote += ' · ' + (Html-Attr $a.distType) }
     if (-not $a.downloadUrl) { $artNote += ' · not public' }
+    if ($withheld.Count -gt 0) { $artNote += $(if ($a.downloadUrl -and $withheld -notcontains $artIndex) { ' · Offered here: yes' } else { ' · Offered here: no' }) }
     $vRows += "<li><span class=`"tf-v-label`">$artScope artifact</span><span class=`"tf-v-val`">$(Html-Attr $a.filename)</span><span class=`"tf-v-note`">$artNote</span></li>"
+    $artIndex++
   }
   if ($p.tests -and @($p.tests).Count -gt 0) {
     $testBits = (@($p.tests) | ForEach-Object { "$(Html-Attr $_.label) $(Html-Attr $_.result)" }) -join ' · '
@@ -1764,16 +1948,18 @@ function Build-TruthFileShell($module, $source) {
   # ── KNOWN LIMITS ───────────────────────────────────────────────────────────
   $limitsBlock = ''
   if ($p.limits -and @($p.limits).Count -gt 0) {
-    $items = (@($p.limits) | ForEach-Object { "<li>$(Html-Attr $_)</li>" }) -join "`n"
+    $limitList = @($p.limits)
+    $limitItems = for ($limitIdx = 0; $limitIdx -lt $limitList.Count; $limitIdx++) { "<li>$(Html-Attr $limitList[$limitIdx])$(Get-LimitNoteHtml $p.id $limitIdx)</li>" }
+    $items = @($limitItems) -join "`n"
     $limitsBlock = "<ul class=`"tf-limit-list`">`n$items`n</ul>"
   } else {
-    $limitsBlock = '<ul class="tf-limit-list"><li>No product-specific limits are recorded in the canonical manifest.</li></ul>'
+    $limitsBlock = '<ul class="tf-limit-list"><li>No product-specific limits are recorded in the release record.</li></ul>'
   }
 
   # ── RECORD ─────────────────────────────────────────────────────────────────
   $rRows = @()
   if ($p.release -and $p.release.publishedAt) { $rRows += "<li><span class=`"tf-rec-label`">Released</span><span>$(Html-Attr $p.release.publishedAt)</span></li>" }
-  if ($p.lastVerified) { $rRows += "<li><span class=`"tf-rec-label`">Last verified</span><span>$(Html-Attr $p.lastVerified)</span></li>" }
+  if ($p.lastVerified) { $rRows += "<li><span class=`"tf-rec-label`">$(Html-Attr (StateWord 'releaseReportDate'))</span><span>$(Html-Attr $p.lastVerified)</span></li>" }
   if ($verif -and $verif.receiptUrl) { $rRows += "<li><span class=`"tf-rec-label`">Verification</span><a href=`"$(Html-Attr $verif.receiptUrl)`">Receipt ↗</a></li>" }
   foreach ($e in @($p.evidence)) {
     $eUrl = if ($e -is [string]) { $e } else { $e.url }
@@ -1786,6 +1972,10 @@ function Build-TruthFileShell($module, $source) {
       $rRows += '<li><span class="tf-rec-label">Evidence</span><a href="' + $eUrlHtml + '">' + $eLabelHtml + ' ↗</a></li>'
     }
   }
+  # Evidence the authored source records without a public URL stays visible as text.
+  foreach ($u in @($p.unlinkedEvidence)) {
+    if (-not [string]::IsNullOrWhiteSpace([string]$u)) { $rRows += '<li><span class="tf-rec-label">Evidence</span><span>' + (Html-Attr $u) + '</span></li>' }
+  }
   foreach ($pl in @($p.proofLinks)) {
     $rRows += "<li><span class=`"tf-rec-label`">Proof</span><a href=`"$(Html-Attr $pl)`">$(Html-Attr (($pl -split '/')[-1])) ↗</a></li>"
   }
@@ -1795,7 +1985,18 @@ function Build-TruthFileShell($module, $source) {
   $srcLine = if ($source -and $source.commit) { "Generated from source commit <code class=`"inline`">$(Html-Attr $source.commit.Substring(0,12))</code> ($(Html-Attr ($source.committedAt -replace 'T.*',''))) — the same commit this site's public truth is bound to." } else { '' }
   $freshLine = if ($srcLine) { '<p class="tf-fresh" style="margin-top:18px;color:var(--muted);font-size:.82rem">' + $srcLine + '</p>' } else { '' }
 
-  $metaDesc = Html-Attr ("Truth File: current public record for " + $p.name + " — release " + $ver + ", verification state, known limits, and published proof from the canonical manifest.")
+  # A-07: name only records that are published. Shared-truth builds also write
+  # /truth/v2/ (scripts/build-truth-v2.cjs); fixture builds do not, so they name
+  # and link the v1 record only.
+  $tfId = Html-Attr $p.id
+  if ($script:sharedReleaseTruth) {
+    $machineText = "This page is the human-readable view of this product's published machine records. The canonical record is the v2 record; the v1 record is a derived compatibility view. Both are built from <code class=`"inline`">release-truth.json</code>, an authored build input kept in source custody and not published. Same facts, same build, deterministic bytes."
+    $machineV2Link = "`n        <a class=`"button button-secondary`" href=`"/truth/v2/products/$tfId.json`">View canonical v2 JSON →</a>"
+  } else {
+    $machineText = "This page is the human-readable view of this product's machine record. Same facts, same build, deterministic bytes."
+    $machineV2Link = ''
+  }
+  $metaDesc = Html-Attr ("Truth File: current public record for " + $p.name + " — release " + $ver + ", verification state, known limits, and published proof.")
   $summary = Html-Attr $p.summary
   $shell = @"
 <!doctype html>
@@ -1810,15 +2011,15 @@ function Build-TruthFileShell($module, $source) {
 <meta content="#0B0F14" name="theme-color"/>
 <link href="https://theprooffoundry.com/truth-files/$($p.id)/" rel="canonical"/>
 <link href="/truth/products/$($p.id).json" rel="alternate" title="Machine record" type="application/json"/>
-<link href="/assets/foundry-strike/proof-foundry-forged-artifact.png" rel="icon" type="image/png"/>
+<link href="/brand/PF_HEADER_MARK.svg" rel="icon" type="image/svg+xml"/>
 <meta content="Truth File — $name" property="og:title"/>
 <meta content="$metaDesc" property="og:description"/>
 <meta content="website" property="og:type"/>
 <meta content="https://theprooffoundry.com/truth-files/$($p.id)/" property="og:url"/>
 <meta content="The Proof Foundry" property="og:site_name"/>
-<meta content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" property="og:image"/>
+<meta content="https://theprooffoundry.com/brand/PF_SOCIAL_CARD.png" property="og:image"/>
 <meta content="summary_large_image" name="twitter:card"/>
-<meta content="https://theprooffoundry.com/brand/proof-foundry-social-card.png" name="twitter:image"/>
+<meta content="https://theprooffoundry.com/brand/PF_SOCIAL_CARD.png" name="twitter:image"/>
 <link href="/styles.css" rel="stylesheet"/>
 <link href="/studio.css" rel="stylesheet"/>
 <link href="/truth-files.css" rel="stylesheet"/>
@@ -1841,6 +2042,7 @@ function Build-TruthFileShell($module, $source) {
         <div class="tf-fact"><dt>Version</dt><dd>$(Html-Attr $ver)$compLine$candLine</dd></div>
         <div class="tf-fact"><dt>Platform</dt><dd>$(Html-Attr $plats)</dd></div>
         <div class="tf-fact"><dt>Release state</dt><dd>$(Html-Attr $relLabel)</dd></div>
+        $withdrawalFact
         <div class="tf-fact"><dt>Artifact</dt><dd>$downloadLine<span class="tf-sub">$(Html-Attr $artLine)</span></dd></div>
         $pkgFact
       </dl>
@@ -1870,8 +2072,8 @@ $($rRows -join "`n")
     <section class="tf-section" aria-labelledby="tf-machine">
       <h2 id="tf-machine">Machine record</h2>
       <div class="tf-machine">
-        <p>This page is the human face of the canonical machine record. Same facts, same build, deterministic bytes.</p>
-        <a class="button button-secondary" href="/truth/products/$(Html-Attr $p.id).json">View JSON →</a>
+        <p>$machineText</p>
+        <a class="button button-secondary" href="/truth/products/$(Html-Attr $p.id).json">View v1 JSON →</a>$machineV2Link
       </div>
     </section>
   </div>
@@ -1932,16 +2134,16 @@ function Get-VerificationStatus($dimension, $p) {
       $cssClass = if ($verified) { 'verified' } else { 'pending' }
     }
     'ARTIFACT_CUSTODY' {
-      $value = if ($hasType) { 'VERIFIED' } else { 'PENDING' }
-      $cssClass = if ($hasType) { 'verified' } else { 'pending' }
+      $value = if ($hasType) { $evidenceClassStates[(Get-EvidenceClass $dimension $p)] } else { 'PENDING' }
+      $cssClass = EvidenceStateCss $value
     }
     'RUNTIME_VALIDATION' {
-      $value = if ($hasType) { 'VERIFIED' } else { 'PENDING' }
-      $cssClass = if ($hasType) { 'verified' } else { 'pending' }
+      $value = if ($hasType) { $evidenceClassStates[(Get-EvidenceClass $dimension $p)] } else { 'PENDING' }
+      $cssClass = EvidenceStateCss $value
     }
     'REALITY_GATE' {
-      $value = if ($hasType) { 'VERIFIED' } else { 'PENDING' }
-      $cssClass = if ($hasType) { 'verified' } else { 'pending' }
+      $value = if ($hasType) { $evidenceClassStates[(Get-EvidenceClass $dimension $p)] } else { 'PENDING' }
+      $cssClass = EvidenceStateCss $value
     }
     'PUBLIC_DOWNLOAD' {
       if ($p.presentation -and $p.presentation.downloadUnavailable) {
@@ -1949,15 +2151,15 @@ function Get-VerificationStatus($dimension, $p) {
         $cssClass = 'not-published'
       } else {
         $hasDownload = ($p.artifacts -and ($p.artifacts | Where-Object { $_.downloadUrl }).Count -gt 0) -or $p.downloadUrl
-        $value = if ($hasDownload) { 'VERIFIED' } else { 'NOT_PUBLISHED' }
-        $cssClass = if ($hasDownload) { 'verified' } else { 'not-published' }
+        $value = if ($hasDownload) { 'PUBLISHED' } else { 'NOT_PUBLISHED' }
+        $cssClass = if ($hasDownload) { 'published' } else { 'not-published' }
       }
     }
     'CODE_SIGNING' {
       $signing = if ($p.artifacts -and $p.artifacts.Count -gt 0) { $p.artifacts[0].signingStatus } else { 'UNSIGNED' }
       if (-not $signing) { $signing = 'UNSIGNED' }
       $statusMap = @{ 'PRODUCTION_SIGNED' = 'SIGNED'; 'DEBUG_SIGNED' = 'DEBUG SIGNED'; 'UNSIGNED' = 'UNSIGNED' }
-      $value = $statusMap[$signing]
+      $value = if ($statusMap.ContainsKey($signing)) { $statusMap[$signing] } else { $signing }
       $cssClass = if ($signing -eq 'PRODUCTION_SIGNED') { 'verified' } elseif ($signing -eq 'DEBUG_SIGNED') { 'pending' } else { 'not-published' }
     }
     'RELEASE_AUTHORIZATION' {
@@ -1973,6 +2175,62 @@ function Get-VerificationStatus($dimension, $p) {
   }
 
   return @($label, $value, $cssClass)
+}
+
+function Get-EvidenceClass($dimension, $p) {
+  $ec = if ($p.presentation) { $p.presentation.evidenceClass } else { $null }
+  $c = if ($ec -and $ec.PSObject.Properties[$dimension]) { [string]$ec.$dimension } else { 'NONE' }
+  if (-not $evidenceClassStates.ContainsKey($c)) { return 'NONE' }
+  return $c
+}
+function Get-EvidenceClassMap($p) {
+  $map = [ordered]@{}
+  foreach ($d in $evidenceGatedDimensions) { $map[$d] = Get-EvidenceClass $d $p }
+  return $map
+}
+function EvidenceStateCss($value) {
+  if ($value -eq 'VERIFIED') { return 'verified' }
+  if ($value -eq 'NOT_PUBLISHED') { return 'not-published' }
+  return 'pending'
+}
+# The evidence a gated cell rests on, as a sibling <dd> (the status <dd> must
+# stay text-only: home-receipt-truth.check.mjs parses it for parity).
+function Get-EvidenceNote($dimension, $p) {
+  $listed = $p.verification -and $p.verification.verificationType -and ($p.verification.verificationType -contains $dimension)
+  $class = if ($listed) { Get-EvidenceClass $dimension $p } else { 'NONE' }
+  $text = [string]$manifest.labels.evidenceNotes.$class
+  $url = if ($class -notin @('NONE','ID_ONLY') -and $p.verification) { [string]$p.verification.receiptUrl } else { '' }
+  if ($url -like 'https://*') { return "<dd class=`"matrix-evidence`"><a href=`"$(Html-Attr $url)`" target=`"_blank`" rel=`"noopener`">$(Html-Attr $text)</a></dd>" }
+  return "<dd class=`"matrix-evidence`">$(Html-Attr $text)</dd>"
+}
+# One code-signing row, or one per (platform, status) when artifacts differ.
+function Get-CodeSigningRows($p) {
+  $arts = @($p.artifacts | Where-Object { $_ })
+  $sig = @($arts | ForEach-Object { if ($_.signingStatus) { [string]$_.signingStatus } else { 'UNSIGNED' } })
+  if ($arts.Count -lt 2 -or @($sig | Select-Object -Unique).Count -lt 2) {
+    $r = Get-VerificationStatus 'CODE_SIGNING' $p
+    return @([pscustomobject]@{ Label = $r[0]; Value = $r[1]; Css = $r[2] })
+  }
+  $label = if ($manifest.verificationLabels.CODE_SIGNING) { $manifest.verificationLabels.CODE_SIGNING } else { 'CODE_SIGNING' }
+  $statusMap = @{ 'PRODUCTION_SIGNED' = 'SIGNED'; 'DEBUG_SIGNED' = 'DEBUG SIGNED'; 'UNSIGNED' = 'UNSIGNED' }
+  $rows = @(); $seen = @{}
+  for ($i = 0; $i -lt $arts.Count; $i++) {
+    $s = $sig[$i]
+    $plat = if ($arts[$i].platform) { [string]$arts[$i].platform } else { [string]$arts[$i].filename }
+    $key = "$plat|$s"
+    if ($seen.ContainsKey($key)) { continue }
+    $seen[$key] = $true
+    $value = if ($statusMap.ContainsKey($s)) { $statusMap[$s] } else { $s }
+    $css = if ($s -eq 'PRODUCTION_SIGNED') { 'verified' } elseif ($s -eq 'DEBUG_SIGNED') { 'pending' } else { 'not-published' }
+    $rows += [pscustomobject]@{ Label = "$label ($plat)"; Value = $value; Css = $css }
+  }
+  return $rows
+}
+# The /proof/ date stamp names a check only when that check reads VERIFIED.
+function Get-VerificationStamp($p) {
+  if ((Get-VerificationStatus 'REALITY_GATE' $p)[1] -eq 'VERIFIED') { return "$($manifest.verificationLabels.REALITY_GATE) verified" }
+  if ((Get-VerificationStatus 'ARTIFACT_CUSTODY' $p)[1] -eq 'VERIFIED') { return (StateWord 'artifactVerifiedStamp') }
+  return (StateWord 'releaseReportStamp')
 }
 
 function Build-ReceiptCards {
@@ -1999,9 +2257,11 @@ function Build-ReceiptCards {
     if ($publicVer) {
       $verHtml = "<dd>v$(Html-Attr $publicVer)</dd>"
       if ($candidateVer -and $candidateVer -ne $publicVer) {
-        $candidateLabel = if ($p.release -and $p.release.releaseStatus -eq 'PUBLIC_RELEASE') { 'Next' } else { 'Candidate' }
-        $verHtml += "<dd class='candidate-version'>$candidateLabel v$(Html-Attr $candidateVer)</dd>"
+        $candidateStatus = if (-not [string]::IsNullOrWhiteSpace([string]$p.candidateStatus)) { [string]$p.candidateStatus } elseif ($p.presentation -and -not [string]::IsNullOrWhiteSpace([string]$p.presentation.candidateStatus)) { [string]$p.presentation.candidateStatus } else { "$(StateWord 'candidatePill') v$candidateVer" }
+        $verHtml += "<dd class='candidate-version'>$(Html-Attr $candidateStatus)</dd>"
       }
+    } elseif ($p.release -and $p.release.releaseStatus -eq 'WITHDRAWN' -and $p.release.withdrawnVersion) {
+      $verHtml = "<dd>$(Html-Attr (StateWord 'withdrawnVersionCell')) (v$(Html-Attr $p.release.withdrawnVersion))</dd>"
     } else {
       $verHtml = '<dd style="color:var(--muted);">Unreleased</dd>'
     }
@@ -2037,14 +2297,25 @@ function Build-ReceiptCards {
       $shaBlock = '<p style="color:var(--muted);">No public artifact hash.</p>'
     }
 
-    # typed verification matrix
-    $matrixDims = @('ARTIFACT_HASH_PUBLISHED','ARTIFACT_HASH_VERIFIED','ARTIFACT_CUSTODY','RUNTIME_VALIDATION','REALITY_GATE','PUBLIC_DOWNLOAD','CODE_SIGNING','RELEASE_AUTHORIZATION','PUBLICATION_STATUS')
-    $matrixRows = @()
-    foreach ($dim in $matrixDims) {
-      $r = Get-VerificationStatus $dim $p
-      $matrixRows += "<div><dt>$(Html-Attr $r[0])</dt><dd class=`"status-$($r[2])`">$(Html-Attr $r[1])</dd></div>"
+    # typed verification matrix (K5: evidence-gated, no release-authority row;
+    # a withdrawn product gets one historical line instead)
+    if ($p.release -and $p.release.releaseStatus -eq 'WITHDRAWN') {
+      $wv = if ($p.release.withdrawnVersion) { ' v' + (Html-Attr $p.release.withdrawnVersion) } else { '' }
+      $matrix = "<p class='verification-withdrawn'>$(Html-Attr (StateWord 'withdrawnVersionCell'))$wv $([char]0x2014) $(Html-Attr (StateWord 'withdrawnChecks'))</p>"
+    } else {
+      $matrixDims = @('ARTIFACT_HASH_PUBLISHED','ARTIFACT_HASH_VERIFIED','ARTIFACT_CUSTODY','RUNTIME_VALIDATION','REALITY_GATE','PUBLIC_DOWNLOAD','CODE_SIGNING','PUBLICATION_STATUS')
+      $matrixRows = @()
+      foreach ($dim in $matrixDims) {
+        if ($dim -eq 'CODE_SIGNING') {
+          foreach ($row in @(Get-CodeSigningRows $p)) { $matrixRows += "<div><dt>$(Html-Attr $row.Label)</dt><dd class=`"status-$($row.Css)`">$(Html-Attr $row.Value)</dd></div>" }
+          continue
+        }
+        $r = Get-VerificationStatus $dim $p
+        $note = if ($evidenceGatedDimensions -contains $dim) { Get-EvidenceNote $dim $p } else { '' }
+        $matrixRows += "<div><dt>$(Html-Attr $r[0])</dt><dd class=`"status-$($r[2])`">$(Html-Attr $r[1])</dd>$note</div>"
+      }
+      $matrix = "<dl class='receipt-fields verification-matrix'>" + ($matrixRows -join '') + "</dl>"
     }
-    $matrix = "<dl class='receipt-fields verification-matrix'>" + ($matrixRows -join '') + "</dl>"
 
     # evidence links from canonical evidence and legacy proofLinks
     $evidenceLinks = @()
@@ -2072,19 +2343,18 @@ function Build-ReceiptCards {
     $timestamps = @()
     $em = [char]0x2014
     if ($p.verification -and $p.verification.verifiedAt) {
-      if ($p.verification.verificationType -contains 'REALITY_GATE') { $timestamps += 'Reality Gate verified' }
-      else { $timestamps += 'Artifact verified' }
-      $timestamps[-1] += " $em $(Html-Attr $p.verification.verifiedAt)"
+      $timestamps += "$(Html-Attr (Get-VerificationStamp $p)) $em $(Html-Attr $p.verification.verifiedAt)"
     }
     if ($p.release -and $p.release.publishedAt) { $timestamps += "Published $em $(Html-Attr $p.release.publishedAt)" }
-    if ($p.lastVerified -and (-not $p.verification -or -not $p.verification.verifiedAt)) { $timestamps += "Last verified $em $(Html-Attr $p.lastVerified)" }
+    if ($p.lastVerified -and (-not $p.verification -or -not $p.verification.verifiedAt)) { $timestamps += "$(Html-Attr (StateWord 'releaseReportDate')) $em $(Html-Attr $p.lastVerified)" }
     $timestampHtml = if ($timestamps.Count -gt 0) { "<dd>$($timestamps -join '<br>')</dd>" } else { '<dd style="color:var(--muted);">N/A</dd>' }
 
-    # limits
+    # limits (custody text verbatim; A-13 website notes inside the item they qualify)
     $limitsHtml = ''
     if ($p.limits -and $p.limits.Count -gt 0) {
-      $limItems = $p.limits | ForEach-Object { "<li>$(Html-Attr $_)</li>" }
-      $limitsHtml = "<ul class='limits-list'>" + ($limItems -join '') + "</ul>"
+      $limitList = @($p.limits)
+      $limItems = for ($limitIdx = 0; $limitIdx -lt $limitList.Count; $limitIdx++) { "<li>$(Html-Attr $limitList[$limitIdx])$(Get-LimitNoteHtml $p.id $limitIdx)</li>" }
+      $limitsHtml = "<ul class='limits-list'>" + (@($limItems) -join '') + "</ul>"
     }
 
     # download action
@@ -2177,7 +2447,7 @@ $KnownStructuredRenderers = @('outcomes','features','how','onboard','guided-tour
 $KnownHeroVariants = @('split','centered','cinematic','console','device','immersive')
 $KnownLifecycles = @('draft','preview','public-eligible')
 $KnownAtmospheres = @('archive','night','control-room','weather','carbon','memory','clean','foundry','none')
-$ReservedRoutes = @('/','/software/','/truth/','/truth-files/','/proof/','/proof-standard/','/support/','/roadmap/','/api/','/assets/','/brand/','/reports/','/about/','/founders/','/404','/sitemap.xml','/robots.txt','/_redirects','/_headers')
+$ReservedRoutes = @('/','/software/','/truth/','/truth-files/','/proof/','/proof-standard/','/support/','/roadmap/','/api/','/assets/','/brand/','/reports/','/about/','/founders/','/404','/sitemap.xml','/robots.txt','/_redirects','/_headers','/.well-known/')
 
 function Get-ProductRegistry {
   # Discovers products/*/module.json; returns ordered, validated module list.
@@ -2442,8 +2712,19 @@ function Render-ModuleHero($module, $product) {
   $primary = if ($hero.primaryAction.label -and $hero.primaryAction.href) { "<a class=`"button button-primary`" href=`"$(Html-Attr $hero.primaryAction.href)`">$(Html-Text $hero.primaryAction.label)</a>" } else { '' }
   $secondary = if ($hero.secondaryAction.label -and $hero.secondaryAction.href) { "<a class=`"text-link`" href=`"$(Html-Attr $hero.secondaryAction.href)`">$(Html-Text $hero.secondaryAction.label)</a>" } else { '' }
   $lede = Html-Text $hero.lede
+  # A withdrawn release states its status in words directly under the headline.
+  $statusLine = ''
+  if ($product -and $product.release -and $product.release.releaseStatus -eq 'WITHDRAWN') {
+    $dot = [char]0x00B7
+    $statusParts = @()
+    $heroPlatform = PlatformLabel $product
+    if (-not [string]::IsNullOrWhiteSpace($heroPlatform)) { $statusParts += $heroPlatform }
+    if (-not [string]::IsNullOrWhiteSpace([string]$product.release.withdrawnVersion)) { $statusParts += ('v' + [string]$product.release.withdrawnVersion) }
+    $statusParts += 'no current download'
+    $statusLine = '<p class="pp-hero-status" data-release-status="withdrawn"><strong>WITHDRAWN</strong> ' + (Html-Text ($dot + ' ' + ($statusParts -join (' ' + $dot + ' ')))) + '</p>'
+  }
   $layoutClass = if ($variant -eq 'centered') { 'pp-hero-layout pp-hero-centered' } else { "pp-hero-layout pp-hero-$variant" }
-  return "<section class=`"product-hero pp-hero pp-module-hero`" id=`"overview`" data-hero-variant=`"$(Html-Attr $variant)`" data-scene-family=`"$(Html-Attr $hero.sceneFamily)`"><div class=`"product-identity`">$mark<span>$(Html-Text $brandName)</span><span class=`"identity-studio`">by The Proof Foundry</span></div><div class=`"$layoutClass`"><div class=`"product-copy`"><p class=`"kicker pp-kicker`">$(Html-Text $hero.kicker)</p><h1>$headline $emphasis</h1><p class=`"product-lede`">$lede</p><div class=`"studio-actions`">$primary$secondary</div></div><div class=`"hero-media`">$media</div></div></section>"
+  return "<section class=`"product-hero pp-hero pp-module-hero`" id=`"overview`" data-hero-variant=`"$(Html-Attr $variant)`" data-scene-family=`"$(Html-Attr $hero.sceneFamily)`"><div class=`"product-identity`">$mark<span>$(Html-Text $brandName)</span><span class=`"identity-studio`">by The Proof Foundry</span></div><div class=`"$layoutClass`"><div class=`"product-copy`"><p class=`"kicker pp-kicker`">$(Html-Text $hero.kicker)</p><h1>$headline $emphasis</h1>$statusLine<p class=`"product-lede`">$lede</p><div class=`"studio-actions`">$primary$secondary</div></div><div class=`"hero-media`">$media</div></div></section>"
 }
 
 function Render-ProductShell($module, [switch]$Template, [switch]$Preview) {
@@ -2454,7 +2735,7 @@ function Render-ProductShell($module, [switch]$Template, [switch]$Preview) {
   # never hand-maintained per product.
   $p = $productStateSource.Get($module.id)
   $name = Html-Attr $p.name
-  $crumb = "<nav class=`"product-breadcrumb`" aria-label=`"Breadcrumb`"><a href=`"/#products`">All software</a><span aria-hidden=`"true`">/</span><span>$name</span></nav>"
+  $crumb = "<nav class=`"product-breadcrumb`" aria-label=`"Breadcrumb`"><a href=`"/software/`">All software</a><span aria-hidden=`"true`">/</span><span>$name</span></nav>"
   $related = "<nav class=`"studio-related`" aria-label=`"More software`"><span>More from the foundry</span>" +
     (($productRegistry | Where-Object { $_.visibility -eq 'visible' -and $_.id -ne $module.id } | ForEach-Object {
       $rp = $productStateSource.Get($_.id); "<a href=`"$($_.route)`">$(Html-Attr $rp.name)</a>" }) -join '') + "</nav>"
@@ -2473,7 +2754,7 @@ function Render-ProductShell($module, [switch]$Template, [switch]$Preview) {
   $robots    = Html-Attr $(if ($Preview) { 'noindex, nofollow' } elseif ($module.meta.robots) { $module.meta.robots } else { 'index, follow' })
   $themeTag  = if ($module.meta.themeColor) { "`n<meta content=`"$(Html-Attr $module.meta.themeColor)`" name=`"theme-color`"/>" } else { '' }
   $ogType    = Html-Attr $(if ($module.meta.ogType) { $module.meta.ogType } else { 'product' })
-  $ogImage   = Html-Attr $(if ($module.meta.ogImage) { $module.meta.ogImage } else { 'https://theprooffoundry.com/brand/proof-foundry-social-card.png' })
+  $ogImage   = Html-Attr $(if ($module.meta.ogImage) { $module.meta.ogImage } else { 'https://theprooffoundry.com/brand/PF_SOCIAL_CARD.png' })
   $ogDescRaw = if ($module.meta.ogDescription) { $module.meta.ogDescription } else { $module.meta.description }
   $ogDesc    = Html-Attr ([System.Net.WebUtility]::HtmlDecode([string]$ogDescRaw))
   $twCard    = Html-Attr $(if ($module.meta.twitterCard) { $module.meta.twitterCard } else { 'summary_large_image' })
@@ -2489,7 +2770,7 @@ function Render-ProductShell($module, [switch]$Template, [switch]$Preview) {
   $inlineCssTag = ''
   $themeAttrs = ''
   if ($module.schemaVersion -eq 2) {
-    $themeMap = @{ accent='--product-accent'; accentSecondary='--product-accent-2'; background='--product-bg'; surface='--product-surface'; glow='--product-glow'; text='--product-text'; muted='--product-muted' }
+    $themeMap = [ordered]@{ accent='--product-accent'; background='--product-bg'; accentSecondary='--product-accent-2'; surface='--product-surface'; glow='--product-glow'; text='--product-text'; muted='--product-muted' }
     $vars = @(); foreach ($key in $themeMap.Keys) { if ($module.theme.$key) { $vars += "$($themeMap[$key]):$($module.theme.$key)" } }
     $themeAttrs = if ($vars.Count) { " style=`"$(Html-Attr ($vars -join ';'))`"" } else { '' }
   } elseif ($module.inlineCss) { $inlineCssTag = "`n<style>" + $module.inlineCss + "</style>" }
@@ -2523,7 +2804,7 @@ $canonicalTag
 <link rel="stylesheet" href="/studio.css">
 <link rel="stylesheet" href="/experience.css">
 <link rel="stylesheet" href="/product-page.css">
-<link href="/assets/foundry-strike/proof-foundry-forged-artifact.png" rel="icon" type="image/png"/>$jsonLdTag$inlineCssTag
+<link href="/brand/PF_HEADER_MARK.svg" rel="icon" type="image/svg+xml"/>$jsonLdTag$inlineCssTag
 </head>
 <body class="$bodyClass"$themeAttrs data-product-atmosphere="$(Html-Attr $module.theme.atmosphere)" data-acquisition-available="$acquisitionAttr">
 <!-- @include header -->
@@ -2558,6 +2839,23 @@ $canonicalTag
     $generatedSections = @($module.sections | Where-Object { $_ -isnot [string] } | ForEach-Object { Render-StructuredSection $_ }) -join "`n"
     $content = "<main id=`"main-content`"><div class=`"product-shell`">$crumb" + (Render-ModuleHero $module $product) + $generatedSections + "</div></main>" + $related
   }
+  # Ordinary links work without JavaScript. Only link to sections actually
+  # present in the rendered narrative; availability remains a record, never
+  # an implied installation permission.
+  $wayfinding = @()
+  $downloadLabel = if ($acquisitionAvailable) { 'Download' } else { 'Release status' }
+  foreach ($section in @(@('overview','Overview'), @('try-it','Try it'), @('download',$downloadLabel), @('proof','Evidence'))) {
+    if ($content -match ('\bid="' + [regex]::Escape($section[0]) + '"')) {
+      $enhancement = if ($section[0] -eq 'try-it') { ' data-enhance hidden' } else { '' }
+      $wayfinding += '<a href="#' + $section[0] + '" data-product-section="' + $section[0] + '"' + $enhancement + '>' + $section[1] + '</a>'
+    }
+  }
+  if (-not $Preview) {
+    $wayfinding += '<a href="/truth-files/' + (Html-Attr $module.id) + '/">Truth File</a>'
+    $wayfinding += '<a href="/support/?product=' + (Html-Attr $module.id) + '#report">Help</a>'
+  }
+  $navigation = '<nav class="pf-product-navigation" aria-label="' + $name + ' page navigation"><span class="pf-product-navigation-name">' + $name + '</span><div>' + ($wayfinding -join '') + '</div></nav>'
+  $content = $content.Replace($crumb, $crumb + $navigation)
   $shell = $shell -replace '<!--\s*@product-content\s*-->', $content
   return $shell
 }
@@ -2608,9 +2906,19 @@ function LedgerProductMark($module) {
 function LedgerPlatform($product) {
   $text = PlatformLabel $product
   if ($product.release.companionPublicVersion) {
+    # Name the companion version as offered only when this site offers a companion file.
     $text += ' · companion v' + [string]$product.release.companionPublicVersion
+    if (-not (Test-CompanionDownloadOffered $product)) { $text += ' not offered here' }
   }
   return $text
+}
+
+# Opens the homepage receipt inspector. The button carries only the product
+# ID: pf-home.js reads the receipt from the generated /truth/ and
+# /proof/index.json records when it is opened, so no release fact is copied
+# into the page for it. Hidden until the script is running.
+function LedgerReceiptButton($module) {
+  return '<button type="button" class="ledger-receipt-button" data-receipt-open="' + (Html-Attr $module.id) + '" aria-haspopup="dialog" aria-controls="pf-receipt-dialog" hidden><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 3h12v18l-2-1.4-2 1.4-2-1.4-2 1.4-2-1.4L6 21z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M9 8h6M9 12h6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>Inspect the receipt</button>'
 }
 
 function Build-LedgerFeatured {
@@ -2621,10 +2929,15 @@ function Build-LedgerFeatured {
     if ($m.id -notin @($selection.featured) -or $p.release.releaseStatus -ne 'PUBLIC_RELEASE') { continue }
     $name = if ($p.homeName) { [string]$p.homeName } else { [string]$p.name }
     $job = if ($m.card.tagline) { [string]$m.card.tagline } else { [string]$p.summary }
+    $titleId = 'feature-' + $m.id + '-title'
+    $version = VersionLabel $p
+    $summary = if ($m.card.summary) { '<p class="ledger-summary">' + (Html-Text $m.card.summary) + '</p>' } else { '' }
+    $caption = if ($m.homepage.mediaDisclosure) { '<figcaption>' + (Html-Text $m.homepage.mediaDisclosure) + '</figcaption>' } else { '' }
     $items += @"
-<article class="ledger-instrument" data-ledger-feature="$(Html-Attr $m.id)">
-  $(LedgerProductMark $m)<div><h3>$(Html-Text $name)</h3><p class="ledger-job">$(Html-Text $job)</p><div class="ledger-instrument-meta"><div><span class="ledger-version">$(Html-Text (VersionLabel $p))</span><span class="ledger-platform">$(Html-Text (LedgerPlatform $p))</span></div><a class="ledger-link" href="$(Html-Attr $m.route)" aria-label="View $(Html-Attr $name) details">View details $(LedgerArrowSvg)</a></div><span class="ledger-status">$(Html-Text ((VisitorAvailabilityLabel $p).Replace('_', ' ')))</span></div>
-</article>
+<article class="ledger-instrument" data-ledger-feature="$(Html-Attr $m.id)" aria-labelledby="$(Html-Attr $titleId)"><div class="ledger-instrument-in">
+  <figure class="ledger-feature-screen"><a class="ledger-feature-media" href="$(Html-Attr $m.route)"><span class="ledger-feature-glass"><picture class="pf-preview-picture">$(Build-PreviewWebpSource $m.card.media)<img src="$(Html-Attr $m.card.media)" alt="$(Html-Attr $m.card.mediaAlt)" width="640" height="366" loading="lazy" decoding="async"/></picture></span></a>$caption</figure>
+  <div class="ledger-instrument-body"><div class="ledger-instrument-title">$(LedgerProductMark $m)<h3 id="$(Html-Attr $titleId)">$(Html-Text $name)</h3><span class="ledger-version"><span class="ledger-sr">Public version </span>$(Html-Text $version)</span></div><p class="ledger-job">$(Html-Text $job)</p>$summary<p class="ledger-platform">$(Html-Text (LedgerPlatform $p)) &#183; $(Html-Text ((VisitorAvailabilityLabel $p).Replace('_', ' ')))</p><div class="ledger-instrument-actions"><a class="ledger-button ledger-button-small" href="$(Html-Attr $m.route)">Explore $(Html-Text $name) $(LedgerArrowSvg)</a>$(LedgerReceiptButton $m)<a class="ledger-link" href="/truth-files/$(Html-Attr $m.id)/">Read the Truth File $(LedgerArrowSvg)</a></div></div>
+</div></article>
 "@
   }
   return ($items -join "`n")
@@ -2637,13 +2950,20 @@ function Build-LedgerIndex {
     $name = if ($p.homeName) { [string]$p.homeName } else { [string]$p.name }
     $withdrawn = $p.release.releaseStatus -eq 'WITHDRAWN'
     $version = if ($withdrawn) { '' } else { VersionLabel $p }
-    $status = if ($withdrawn) { 'WITHDRAWN' } else { (VisitorAvailabilityLabel $p).Replace('_', ' ') }
+    $status = if ($withdrawn) { StateWord 'withdrawnHomeStatus' } else { (VisitorAvailabilityLabel $p).Replace('_', ' ') }
     $job = if ($withdrawn) { 'Full record available.' } elseif ($m.card.tagline) { [string]$m.card.tagline } else { [string]$p.summary }
     $rows += @"
 <tr data-ledger-product="$(Html-Attr $m.id)" data-release-status="$(Html-Attr $p.release.releaseStatus)"><th scope="row"><span class="ledger-index-name">$(LedgerProductMark $m)<span>$(Html-Text $name)</span></span></th><td><span class="ledger-version">$(Html-Text $version)</span><span class="ledger-status">$(Html-Text $status)</span></td><td>$(Html-Text (LedgerPlatform $p))</td><td>$(Html-Text $job)</td><td><a class="ledger-link" href="$(Html-Attr $m.route)" aria-label="View $(Html-Attr $name) record">View $(LedgerArrowSvg)</a></td></tr>
 "@
   }
   return ($rows -join "`n")
+}
+
+function Build-SupportProductOptions {
+  return (@($productRegistry | Where-Object { $_.visibility -eq 'visible' -and $_.lifecycle -eq 'public-eligible' } | ForEach-Object {
+    $p = $productStateSource.Get($_.id)
+    '<option value="' + (Html-Attr $_.id) + '" data-record="/truth-files/' + (Html-Attr $_.id) + '/">' + (Html-Text $p.name) + '</option>'
+  }) -join "`n")
 }
 
 function Build-LedgerSpecimen {
@@ -2658,16 +2978,17 @@ function Build-LedgerSpecimen {
   $limits = @($p.limits)
   $limit = if ($limits.Count) { [string]$limits[0] } else { 'Read the public record for the scope and limitations of this release.' }
   $limitItems = (@($limits | ForEach-Object { '<li>' + (Html-Text ([string]$_)) + '</li>' }) -join '')
+  $limitList = if ($limits.Count) { "<details><summary>All $($limits.Count) documented limitations</summary><ul>$limitItems</ul></details>" } else { '' }
   return @"
-<div class="ledger-record" data-ledger-specimen="$(Html-Attr $m.id)"><dl>
-  <dt>Product</dt><dd>$(Html-Text $p.name)</dd>
+<article class="ledger-record" data-ledger-specimen="$(Html-Attr $m.id)" aria-label="$(Html-Attr $p.name) release record specimen"><dl>
+  <dt>Product</dt><dd class="ledger-strong">$(Html-Text $p.name)</dd>
   <dt>Version</dt><dd class="ledger-current">$(Html-Text (VersionLabel $p))</dd>
   <dt>Platform</dt><dd>$(Html-Text $artifact.platform)</dd>
   <dt>Artifact</dt><dd>$(Html-Text $artifact.filename)</dd>
   <dt>SHA-256</dt><dd><code class="ledger-hash">$(Html-Text $artifact.sha256)</code></dd>
   <dt>Status</dt><dd class="ledger-current">$(Html-Text (VisitorAvailabilityLabel $p))</dd>
-  <dt>Known limit</dt><dd>$(Html-Text $limit)</dd>
-  </dl><details><summary>All $($limits.Count) documented limitations</summary><ul>$limitItems</ul></details><div class="ledger-actions"><a class="ledger-link" href="/proof/#receipt-$(Html-Attr $m.id)">Full release record $(LedgerArrowSvg)</a><a class="ledger-link" href="/truth-files/$(Html-Attr $m.id)/">View Truth File $(LedgerArrowSvg)</a></div></div>
+  <dt>Known limit</dt><dd class="ledger-prose">$(Html-Text $limit)</dd>
+  </dl>$limitList<div class="ledger-actions">$(LedgerReceiptButton $m)<a class="ledger-link" href="/proof/#receipt-$(Html-Attr $m.id)">Full release record $(LedgerArrowSvg)</a><a class="ledger-link" href="/truth-files/$(Html-Attr $m.id)/">View Truth File $(LedgerArrowSvg)</a></div></article>
 "@
 }
 
@@ -2680,7 +3001,7 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
 
   # Give shared presentation assets content-derived URLs. A cached stylesheet
   # or script must not leave visitors on a previous design after publication.
-  foreach ($assetName in @('styles.css', 'studio.css', 'experience.css', 'signature.css', 'product-page.css', 'truth-files.css', 'site.js', 'experience.js', 'h9-homepage.css', 'h9-software.css', 'h9-homepage.js', 'h9-software.js')) {
+  foreach ($assetName in @('styles.css', 'studio.css', 'experience.css', 'signature.css', 'product-page.css', 'truth-files.css', 'site.js', 'experience.js', 'h9-homepage.css', 'h9-software.css', 'h9-homepage.js', 'h9-software.js', 'pf-home.js')) {
     $assetPath = Join-Path $root $assetName
     $assetVersion = (Get-FileHash $assetPath -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
     $html = $html.Replace('"/' + $assetName + '"', '"/' + $assetName + '?v=' + $assetVersion + '"')
@@ -2690,9 +3011,15 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
     $worldVersion = (Get-FileHash $worldCssPath -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
     $worldLink = "<link href=`"/foundry-world.css?v=$worldVersion`" rel=`"stylesheet`"/>"
     $html = $html.Replace('</head>', "$worldLink`n</head>")
+    $ledgerSiteVersion = (Get-FileHash (Join-Path $root 'pf-site-ledger.css') -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
+    $ledgerSiteLink = "<link href=`"/pf-site-ledger.css?v=$ledgerSiteVersion`" rel=`"stylesheet`"/>"
+    $html = $html.Replace('</head>', "$ledgerSiteLink`n</head>")
   }
 
   # Extract @page id
+  $systemVersion = (Get-FileHash (Join-Path $root 'pf-foundry-system.css') -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
+  $html = $html.Replace('</head>', "<link href=`"/pf-foundry-system.css?v=$systemVersion`" rel=`"stylesheet`"/>`n</head>")
+
   if ($srcName -eq 'index.html' -and $html.Contains('<!-- @ledger-featured -->')) {
     $ledgerVersion = (Get-FileHash (Join-Path $root 'pf-home-ledger.css') -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
     $html = $html.Replace('"/pf-home-ledger.css"', '"/pf-home-ledger.css?v=' + $ledgerVersion + '"')
@@ -2700,6 +3027,7 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
     $html = $html.Replace('<!-- @ledger-index -->', (Build-LedgerIndex))
     $html = $html.Replace('<!-- @ledger-specimen -->', (Build-LedgerSpecimen))
   }
+  if ($srcName -eq 'support.html') { $html = $html.Replace('<!-- @support-product-options -->', (Build-SupportProductOptions)) }
   $pageId = ''
   if ($html -match '<!--\s*@page\s+(\S+)\s*-->') { $pageId = $Matches[1] }
   $html = $html -replace '<!--\s*@page\s+\S+\s*-->\s*\r?\n?', ''
@@ -2732,17 +3060,42 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
 
   # Resolve nav + cta
   $navLinks = Build-NavLinks $pageId
-  $navCta = "<a class=`"button button-primary nav-cta`" href=`"$(Html-Attr $manifest.navCta.href)`">$(Html-Attr $manifest.navCta.label)</a>"
+  $ctaCur = if ($pageId -eq 'support' -or $srcName -eq 'support.html') { ' aria-current="page"' } else { '' }
+  $navCta = "<a class=`"button button-primary nav-cta`" href=`"$(Html-Attr $manifest.navCta.href)`"$ctaCur>$(Html-Attr $manifest.navCta.label)</a>"
   $header = $headerPartial
   $header = $header -replace [regex]::Escape('{{nav-links}}'), $navLinks
   $header = $header -replace [regex]::Escape('{{nav-cta}}'),   $navCta
+  # V5 homepage (owner ruling, 2026-10-13): Home's header carries the PF Mark G
+  # header render. Forced colours keep the shared vector micro mark.
+  if ($srcName -eq 'index.html') {
+    $sharedMark = '<img class="brand-mark" src="/brand/PF_HEADER_MARK.svg" alt="" width="42" height="42" />'
+    if (-not $header.Contains($sharedMark)) { throw 'Home header: the shared header no longer carries the expected micro mark.' }
+    $header = $header.Replace($sharedMark, '<picture class="brand-mark-picture"><source media="(forced-colors: active)" srcset="/brand/PF_HEADER_MARK.svg"/><img class="brand-mark" src="/brand/emblem/PF_MARK_G_HEADER.webp" alt="" width="50" height="51"/></picture>')
+    # Forced colours (V5 refinement F5): Home's header and footer also carry an inline, same-document copy of the
+    # canonical micro mark, shown only in forced colours and drawn in system colours by pf-home-ledger.css. An SVG
+    # loaded through <img> evaluates its own forced-colours rules in a separate image document, which was observed to
+    # keep its normal colours on warm-cache and switched loads.
+    $microSvg = Read-File (Join-Path $root 'brand/PF_HEADER_MARK.svg')
+    $microStart = $microSvg.IndexOf('</style>') + '</style>'.Length
+    $microBody = ($microSvg.Substring($microStart, $microSvg.LastIndexOf('</svg>') - $microStart).Trim() -replace '>\s+<', '><')
+    if ($microStart -lt 8 -or $microBody -match '\sid="|<style|<title|<desc|<script') { throw 'Home forced-colours mark: PF_HEADER_MARK.svg no longer has the expected shape.' }
+    $homeFcMark = @{}
+    foreach ($kind in @('header', 'footer')) { $homeFcMark[$kind] = "<span class=`"pf-mark-fc pf-mark-fc--$kind`" hidden><svg viewBox=`"0 0 256 256`" aria-hidden=`"true`" focusable=`"false`">$microBody</svg></span>" }
+    if (([regex]::Matches($header, '</picture>')).Count -ne 1) { throw 'Home header: expected exactly one picture element.' }
+    $header = $header.Replace('</picture>', '</picture>' + $homeFcMark['header'])
+  }
 
   $footer = $footerPartial -replace [regex]::Escape('{{footer-products}}'), (Build-FooterProducts)
+  if ($srcName -eq 'index.html') {
+    $footerLogo = '<img class="footer-logo" src="/brand/PF_HEADER_MARK.svg" alt="" width="42" height="42"/>'
+    if (([regex]::Matches($footer, [regex]::Escape($footerLogo))).Count -ne 1) { throw 'Home footer: the shared footer no longer carries the expected logo.' }
+    $footer = $footer.Replace($footerLogo, $footerLogo + $homeFcMark['footer'])
+  }
 
   # Inject partials
   $html = $html -replace '<!--\s*@include header\s*-->', $header
   $html = $html -replace '<!--\s*@include footer\s*-->', $footer
-  $html = $html -replace '<!--\s*@include compact-footer\s*-->', $compactFooterPartial
+  $html = $html -replace '<!--\s*@include compact-footer\s*-->', $footer
 
   # The H9 catalog moved to its own route; preserve frozen page source markup.
   $html = $html.Replace('href="/#products"', 'href="/software/"')
@@ -2766,6 +3119,22 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
 
   # Public truth index cards (/truth/ page) — same manifest model as the JSON
   $html = $html -replace '<!--\s*@truth-products\s*-->', (Build-TruthIndexCards)
+  # A-07: the published canonical record. Only shared-truth builds write
+  # /truth/v2/ and /truth/schema-v2.json, so only they may link them (fixture
+  # builds would otherwise fail receipts T7 with dead links).
+  if ($html.Contains('<!-- @truth-v2-record -->')) {
+    $v2Record = ''
+    if ($script:sharedReleaseTruth) {
+      $v2Record = @"
+        <article class="detail-card">
+          <h3>Canonical record (v2)</h3>
+          <p>The published canonical record is <a class="text-link" href="/truth/v2/index.json">/truth/v2/index.json</a>, with one record per product under <code class="inline">/truth/v2/products/</code>. Its schema is <a class="text-link" href="/truth/schema-v2.json">schema-v2.json</a>, and it carries a SHA-256 digest of the authored release model (<code class="inline">modelSha256</code>).</p>
+          <p>That model is the build input <code class="inline">release-truth.json</code>, which is kept in source custody and is not published. <a class="text-link" href="/truth/index.json">/truth/index.json</a> (v1) and <a class="text-link" href="/site-manifest.json">/site-manifest.json</a> are derived compatibility views.</p>
+        </article>
+"@
+    }
+    $html = $html.Replace('<!-- @truth-v2-record -->', $v2Record)
+  }
 
   # Truth Files index cards (/truth-files/ page)
   $html = $html -replace '<!--\s*@truth-files\s*-->', (Build-TruthFileCards)
@@ -2775,35 +3144,47 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   $html = $html -replace [regex]::Escape('{{tagline}}'),     (Html-Attr $manifest.tagline)
   $html = $html -replace [regex]::Escape('{{positioning}}'), (Html-Attr $manifest.positioning)
 
-  # Latest site verification block
+  # A-08: the resolver reports a product event from the release facts; it is not
+  # a site verification. A-07: name only published records; fixture builds have
+  # no /truth/v2/ output, so they carry no provenance sentence.
   $em = [char]0x2014
+  $factsProvenance = if ($script:sharedReleaseTruth) { ' Release facts on this page are built from <code class="inline">release-truth.json</code>, an authored build input kept in source custody and not published; the published canonical record is <a class="text-link" href="/truth/v2/index.json">/truth/v2/index.json</a>.' } else { '' }
   if ($latestVerification.date) {
     $latestBlock = @"
-<p>Latest verification event: <strong>$(Html-Attr $latestVerification.product)</strong> $em $(Html-Attr $latestVerification.event) on <time datetime="$(Html-Attr $latestVerification.date)">$(Html-Attr $latestVerification.date)</time>. Every public surface on this page is generated from the canonical <code class="inline">site-manifest.json</code> release/evidence model.</p>
+<p>Most recent product release event: <strong>$(Html-Attr $latestVerification.product)</strong> $em $(Html-Attr $latestVerification.event) on <time datetime="$(Html-Attr $latestVerification.date)">$(Html-Attr $latestVerification.date)</time>.$factsProvenance</p>
 "@
   } else {
     $latestBlock = @"
-<p>No verified site verification event is recorded in the canonical <code class="inline">site-manifest.json</code> release/evidence model.</p>
+<p>No product release event is recorded.$factsProvenance</p>
 "@
   }
-  $html = $html -replace [regex]::Escape('{{latestVerification.block}}'), $latestBlock
+  $html = $html.Replace('{{latestVerification.block}}', $latestBlock)
 
   # Site verification receipt link, from canonical data. Previously the date was a
   # literal in proof.html, so the receipt could silently disagree with the receipt
   # actually shipped (and did: the template said 2026-08-20 while nothing tied that
   # to any manifest value).
-  if ($manifest.siteVerification -and $manifest.siteVerification.receiptPath) {
+  if ($html.Contains('{{siteVerification.receiptLink}}') -and $manifest.siteVerification -and $manifest.siteVerification.receiptPath) {
     $rd = $manifest.siteVerification.receiptDate
     # Non-breaking hyphens (U+2011) keep the date atomic at 320-390px, where the
     # label wraps and a normal hyphen would split it ("2026-08-" / "20"). A nowrap
     # span cannot be used here: .button is a flex container, so the span would
     # become a separate flex item and reorder the label.
     $rdDisplay = $rd -replace '-', ([char]0x2011)
-    $receiptLink = "<a class=`"button button-secondary`" href=`"$(Html-Attr $manifest.siteVerification.receiptPath)`" target=`"_blank`" rel=`"noopener`">View verification receipt ($(Html-Attr $rdDisplay))</a>"
+    # A-08: no published site receipt covers the current build, so the linked
+    # receipt is labelled historical with what it actually covers. The label
+    # belongs to one reviewed receipt; linking any other receipt fails the build
+    # until its scope is reviewed and added here (B-07/K27 replaces this).
+    $historicalReceiptScope = @{
+      '/reports/deploy-receipts/2026-08-20-proof-foundry-site.md' = 'route checks and ForgeCast v0.3.3; its site commit is not part of the current site source history'
+    }
+    $receiptScope = $historicalReceiptScope[[string]$manifest.siteVerification.receiptPath]
+    if (-not $receiptScope) { throw "No reviewed historical scope label for siteVerification receipt $($manifest.siteVerification.receiptPath) (A-08); describe what it covers before linking it." }
+    $receiptLink = "<a class=`"button button-secondary`" href=`"$(Html-Attr $manifest.siteVerification.receiptPath)`" target=`"_blank`" rel=`"noopener`">Historical site receipt ($(Html-Attr $rdDisplay) $([char]0x00B7) $(Html-Attr $receiptScope))</a>"
   } else {
     $receiptLink = ''
   }
-  $html = $html -replace [regex]::Escape('{{siteVerification.receiptLink}}'), $receiptLink
+  $html = $html.Replace('{{siteVerification.receiptLink}}', $receiptLink)
 
   # Named product tokens for pages discussing several products.
   foreach ($namedProduct in $allModuleState) {
@@ -2832,13 +3213,20 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   if (-not $head.Success) { throw "Missing HTML head in $srcName" }
   $iconLinks = @([regex]::Matches($head.Value, '(?is)<link\b[^>]*\brel\s*=\s*["'']([^"'']*)["'']') | Where-Object { ($_.Groups[1].Value -split '\s+') -contains 'icon' })
   if ($iconLinks.Count -eq 0) {
-    $defaultIcon = '<link href="/assets/foundry-strike/proof-foundry-forged-artifact.png" rel="icon" type="image/png"/>' + "`n"
+    $defaultIcon = '<link href="/brand/PF_HEADER_MARK.svg" rel="icon" type="image/svg+xml"/>' + "`n"
     $headWithIcon = [regex]::Replace($head.Value, '(?i)</head>', $defaultIcon + '</head>')
     $html = $html.Remove($head.Index, $head.Length).Insert($head.Index, $headWithIcon)
   }
+  # The touch tile derives from the same micro mark, on an opaque steel ground.
+  if ($html -notmatch '(?i)rel=["'']apple-touch-icon["'']') {
+    $html = $html.Replace('</head>', "<link href=`"/brand/PF_HEADER_TOUCH.png`" rel=`"apple-touch-icon`"/>`n</head>")
+  }
 
   # Generated-file warning (after doctype)
-  $warning = "<!-- GENERATED FILE - DO NOT EDIT. Source: $srcName + site-manifest.json. Run scripts/build-site.ps1 to rebuild. -->`r`n"
+  # Preserve existing page bytes: site-manifest names the immediate derived
+  # compatibility input. V2 provenance identifies the authored release model.
+  $factSourceLabel = ''
+  $warning = "<!-- GENERATED FILE - DO NOT EDIT. Source: $srcName + site-manifest.json$factSourceLabel. Run scripts/build-site.ps1 to rebuild. -->`r`n"
   $html = $html -replace '(<!doctype[^>]*>\s*\r?\n)', "`$1$warning"
 
   return $html
@@ -2930,6 +3318,7 @@ if ($previewModule) {
 $proofDir = Join-Path $publicDir 'proof'
 New-Item -ItemType Directory $proofDir -Force | Out-Null
 $registry = Build-ProofRegistry
+if ($script:sharedReleaseTruth) { $registry['releaseFactsSource'] = $script:sharedReleaseTruth.provenance }
 $registryJson = $registry | ConvertTo-Json -Depth 10
 $noBom = [System.Text.UTF8Encoding]::new($false)
 [System.IO.File]::WriteAllText((Join-Path $proofDir 'index.json'), $registryJson, $noBom)
@@ -2939,6 +3328,7 @@ Write-Host "==> Generated proof registry: /proof/index.json" -ForegroundColor Gr
 # Public truth surface (H11): deterministic, sanitized, versioned JSON contract.
 # ─────────────────────────────────────────────────────────────────────────────
 $truthSource = Get-SourceIdentity
+
 $truth = Build-PublicTruth $truthSource
 $truthDir = Join-Path $publicDir 'truth'
 $truthProductsDir = Join-Path $truthDir 'products'
@@ -2953,7 +3343,15 @@ foreach ($doc in $truth.products) {
   [System.IO.File]::WriteAllText((Join-Path $truthProductsDir "$($doc.id).json"), ($docJson + "`n"), $noBom)
 }
 Copy-Item (Join-Path $root 'schemas\public-truth-v1.schema.json') (Join-Path $truthDir 'schema-v1.json') -Force
-Write-Host "==> Generated public truth: /truth/index.json + $($truth.products.Count) product records + schema-v1.json" -ForegroundColor Green
+if ($script:sharedReleaseTruth) {
+  Copy-Item (Join-Path $root 'schemas\public-truth-v2.schema.json') (Join-Path $truthDir 'schema-v2.json') -Force
+}
+if ($script:sharedReleaseTruth) {
+  & node (Join-Path $root 'scripts/build-truth-v2.cjs') $publicDir
+  if ($LASTEXITCODE -ne 0) { throw 'Rich public truth generation failed.' }
+}
+$truthSchemaLabel = 'schema-v1.json compatibility + schema-v2.json rich channels'
+Write-Host "==> Generated public truth: /truth/index.json + $($truth.products.Count) product records + $truthSchemaLabel" -ForegroundColor Green
 
 # PF-TF1: per-product Truth Files — human pages bound to the same truth source.
 $truthFilesDir = Join-Path $publicDir 'truth-files'
@@ -2970,6 +3368,8 @@ Write-Host "==> Generated Truth Files: /truth-files/ + $(($productRegistry | Whe
 # ─────────────────────────────────────────────────────────────────────────────
 Copy-Item (Join-Path $root 'styles.css')     $publicDir -Force
 Copy-Item (Join-Path $root 'pf-home-ledger.css') $publicDir -Force
+Copy-Item (Join-Path $root 'pf-site-ledger.css') $publicDir -Force
+Copy-Item (Join-Path $root 'pf-foundry-system.css') $publicDir -Force
 Copy-Item (Join-Path $root 'studio.css')     $publicDir -Force
 Copy-Item (Join-Path $root 'experience.css') $publicDir -Force
 Copy-Item (Join-Path $root 'signature.css')  $publicDir -Force
@@ -2982,10 +3382,27 @@ if (Test-Path (Join-Path $root 'h9-homepage.js'))  { Copy-Item (Join-Path $root 
 if (Test-Path (Join-Path $root 'h9-software.js'))  { Copy-Item (Join-Path $root 'h9-software.js')  $publicDir -Force }
 if (Test-Path (Join-Path $root 'truth-files.css')) { Copy-Item (Join-Path $root 'truth-files.css') $publicDir -Force }
 if (Test-Path (Join-Path $root 'site.js'))   { Copy-Item (Join-Path $root 'site.js') $publicDir -Force }
+# Homepage inspector. pf-truth-receipt.js holds no release values; it validates
+# the published /truth/ records and reconciles them with /proof/index.json, in
+# the browser and in check-home-receipt-truth.ps1.
+Copy-Item (Join-Path $root 'pf-home.js') $publicDir -Force
+Copy-Item (Join-Path $root 'pf-truth-receipt.js') $publicDir -Force
 Copy-Item (Join-Path $root 'CNAME')          $publicDir -Force
 Copy-Item (Join-Path $root 'robots.txt')     $publicDir -Force
 Copy-Item (Join-Path $root 'sitemap.xml')    $publicDir -Force
-Copy-Item (Join-Path $root 'site-manifest.json') $publicDir -Force
+if (Test-Path (Join-Path $root '.well-known')) {
+  $wellKnownOut = Join-Path $publicDir '.well-known'
+  New-Item -ItemType Directory $wellKnownOut -Force | Out-Null
+  Copy-Item (Join-Path $root '.well-known\*') $wellKnownOut -Recurse -Force
+}
+# This is a derived compatibility transport, never an upstream authored input.
+# v1's immutable generatedFrom names this immediate materialized manifest.
+$compatDocument = $manifest | ConvertTo-Json -Depth 100 | ConvertFrom-Json -Depth 100
+$compatDocument | Add-Member -NotePropertyName documentRole -NotePropertyValue 'DERIVED_V1_COMPATIBILITY'
+$compatDocument | Add-Member -NotePropertyName generatedFrom -NotePropertyValue 'release-truth.json'
+$compatManifest = $compatDocument | ConvertTo-Json -Depth 100
+[IO.File]::WriteAllText((Join-Path $publicDir 'site-manifest.json'), ($compatManifest + "
+"), $noBom)
 Copy-Item (Join-Path $root 'brand')  $publicDir -Recurse -Force
 Copy-Item (Join-Path $root 'assets') $publicDir -Recurse -Force
 
@@ -3088,6 +3505,7 @@ $siteConfig = [ordered]@{
   navLinks            = $manifest.nav
   navCta              = $manifest.navCta
   siteVerification    = $manifest.siteVerification
+  labels              = $manifest.labels
 }
 [System.IO.File]::WriteAllText((Join-Path $h14Dir 'site-config.json'), ($siteConfig | ConvertTo-Json -Depth 20), (New-Object System.Text.UTF8Encoding $false))
 $staticState = [ordered]@{ products = @($allProductState) }
@@ -3142,6 +3560,10 @@ $($headerRoutes -join "`n")
   Cache-Control: no-cache, must-revalidate
 
 /truth-files/*
+  Cache-Control: no-cache, must-revalidate
+
+/.well-known/security.txt
+  Content-Type: text/plain; charset=utf-8
   Cache-Control: no-cache, must-revalidate
 
 /__h14/*

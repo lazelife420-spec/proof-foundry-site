@@ -49,3 +49,5 @@
 
 /truth-files      /truth-files/              301
 /truth-files.html /truth-files/              301
+
+/security.txt     /.well-known/security.txt  301

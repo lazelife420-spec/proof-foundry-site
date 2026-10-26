@@ -7,6 +7,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+. "$PSScriptRoot/release-qualification.ps1"
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 Set-Location $repoRoot
 $capsuleRoot = (Resolve-Path -LiteralPath $Path).Path
@@ -196,7 +197,7 @@ foreach ($dir in Get-ChildItem -LiteralPath $productsRoot -Directory -Force) {
   if ($other.id -eq $id -or ([string]$other.route).ToLowerInvariant() -eq "/$id/") { throw "Duplicate product id or route already exists in $($dir.Name)." }
 }
 
-$manifest = Get-Content -LiteralPath $manifestFile -Raw -Encoding UTF8 | ConvertFrom-Json
+$manifest = if ($ManifestPath) { Get-Content -LiteralPath $manifestFile -Raw -Encoding UTF8 | ConvertFrom-Json } else { Get-AuthoredReleaseManifest }
 $truth = @($manifest.products | Where-Object { $_.id -eq $id }) | Select-Object -First 1
 $requestedLifecycle = if ($capsule.lifecycle) { [string]$capsule.lifecycle } else { 'preview' }
 $gateReady = $truth -and $truth.route -eq "/$id/" -and $truth.visible -and $truth.release.releaseStatus -eq 'PUBLIC_RELEASE' -and $truth.verification.status -eq 'VERIFIED' -and -not [string]::IsNullOrWhiteSpace([string]$truth.release.publicVersion)

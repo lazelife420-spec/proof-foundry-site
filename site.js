@@ -1,9 +1,133 @@
 // site.js — interactive behavior only.
 // The site shell (header, footer, product cards, status strips) is generated
-// at build time from site-manifest.json. This file handles navigation, the real-image gallery and small affordances. Navigation works without it.
+// at build time from shared release truth and presentation modules. This file
+// handles navigation, the real-image gallery and small affordances. Navigation
+// works without it.
 
 (function () {
   "use strict";
+
+  // One motion policy for every page. Content never starts hidden, and the
+  // device's accessibility settings take precedence over a saved preference.
+  function initMotion() {
+    var root = document.documentElement;
+    var reduced = matchMedia("(prefers-reduced-motion: reduce)");
+    var forced = matchMedia("(forced-colors: active)");
+    var fine = matchMedia("(hover: hover) and (pointer: fine)");
+    var preference = "on", active = false, progressFrame = 0, tiltFrame = 0;
+    try { if (localStorage.getItem("pf-motion") === "off") preference = "off"; } catch (_) {}
+    var button = document.createElement("button");
+    button.type = "button";
+    button.className = "motion-toggle";
+    var progress = document.createElement("div");
+    progress.className = "pf-reading-progress";
+    progress.setAttribute("aria-hidden", "true");
+    var plate = document.querySelector(".ledger-plate");
+    var scene = document.querySelector(".ledger-plate-scene");
+    var running = new Set();
+
+    function resetPlate() {
+      cancelAnimationFrame(tiltFrame);
+      if (plate) {
+        plate.style.removeProperty("--pf-tilt-x");
+        plate.style.removeProperty("--pf-tilt-y");
+      }
+    }
+    function updateProgress() {
+      progressFrame = 0;
+      var distance = document.documentElement.scrollHeight - innerHeight;
+      var value = distance > 0 ? Math.min(1, Math.max(0, scrollY / distance)) : 0;
+      progress.style.transform = "scaleX(" + value + ")";
+    }
+    function scheduleProgress() {
+      if (active && !progressFrame) progressFrame = requestAnimationFrame(updateProgress);
+    }
+    function apply() {
+      active = !reduced.matches && !forced.matches && preference === "on";
+      root.dataset.motion = active ? "on" : "off";
+      button.textContent = reduced.matches ? "Reduced motion" : forced.matches ? "Motion off" : "Motion " + (active ? "on" : "off");
+      button.setAttribute("aria-pressed", String(active));
+      button.setAttribute("aria-label", button.textContent + (reduced.matches || forced.matches ? " — follows your device accessibility setting" : ""));
+      button.disabled = reduced.matches || forced.matches;
+      progress.hidden = !active;
+      if (!active) {
+        cancelAnimationFrame(progressFrame);
+        progressFrame = 0;
+        resetPlate();
+        running.forEach(animation => animation.cancel());
+        // Includes the existing product screen-change enhancement.
+        document.getAnimations?.().forEach(animation => animation.cancel());
+      } else scheduleProgress();
+    }
+    document.querySelector(".footer-bottom")?.append(button);
+    document.body.append(progress);
+    button.addEventListener("click", function () {
+      preference = preference === "on" ? "off" : "on";
+      try { localStorage.setItem("pf-motion", preference); } catch (_) {}
+      apply();
+    });
+    reduced.addEventListener("change", apply);
+    forced.addEventListener("change", apply);
+    fine.addEventListener("change", resetPlate);
+    addEventListener("storage", function (event) {
+      if (event.key === "pf-motion" || event.key === null) {
+        preference = event.newValue === "off" ? "off" : "on";
+        apply();
+      }
+    });
+    addEventListener("scroll", scheduleProgress, { passive: true });
+    addEventListener("resize", scheduleProgress, { passive: true });
+    if (window.ResizeObserver) new ResizeObserver(scheduleProgress).observe(document.body);
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) resetPlate();
+      else scheduleProgress();
+    });
+    apply();
+
+    if (scene && plate) {
+      scene.addEventListener("pointermove", function (event) {
+        if (!active || !fine.matches || event.pointerType !== "mouse") return;
+        var bounds = scene.getBoundingClientRect();
+        var x = Math.min(.5, Math.max(-.5, (event.clientX - bounds.left) / bounds.width - .5));
+        var y = Math.min(.5, Math.max(-.5, (event.clientY - bounds.top) / bounds.height - .5));
+        cancelAnimationFrame(tiltFrame);
+        tiltFrame = requestAnimationFrame(function () {
+          if (!active) return;
+          plate.style.setProperty("--pf-tilt-x", (-y * 4).toFixed(2) + "deg");
+          plate.style.setProperty("--pf-tilt-y", (x * 5).toFixed(2) + "deg");
+        });
+      });
+      scene.addEventListener("pointerleave", resetPlate);
+      scene.addEventListener("pointercancel", resetPlate);
+    }
+
+    // Animate only small headings and cards arriving below the first viewport.
+    // Never animate a whole release record, a focused control, or a hash target.
+    if (window.IntersectionObserver && Element.prototype.animate) {
+      var arrivals = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          arrivals.unobserve(entry.target);
+          if (!active || entry.target.contains(document.activeElement) || location.hash) return;
+          var animation = entry.target.animate([
+            { transform: "translateY(10px)", opacity: .88 },
+            { transform: "translateY(0)", opacity: 1 }
+          ], { duration: 420, easing: "cubic-bezier(.2,.7,.3,1)" });
+          running.add(animation);
+          animation.finished.then(() => running.delete(animation), () => running.delete(animation));
+        });
+      }, { threshold: .08 });
+      document.querySelectorAll(".ledger-section-label,.ledger-instrument,.section-heading,.section-head,.experience-heading,.product-card,.about-nav-card,.tf-section > h2").forEach(function (element) {
+        if (element.getBoundingClientRect().top >= innerHeight) arrivals.observe(element);
+      });
+      document.addEventListener("focusin", function (event) {
+        running.forEach(function (animation) {
+          if (animation.effect.target.contains(event.target)) animation.cancel();
+        });
+      });
+      addEventListener("hashchange", function () { running.forEach(animation => animation.cancel()); });
+    }
+  }
 
   function initScreenshots() {
     const links = [...document.querySelectorAll('[data-screenshot]')];
@@ -40,7 +164,7 @@
       links.forEach(a => {
         if (template && a.href !== href) return;
         const i = a.querySelector('img'); if (!i) return;
-        add({original:a.href,thumb:i.currentSrc || i.src,preview:i.src,width:i.width,height:i.height,title:i.alt,caption:a.closest('figure')?.querySelector('figcaption')?.textContent || 'Actual product screenshot.'});
+        add({original:a.href,thumb:i.currentSrc || i.src || i.dataset.src,preview:i.dataset.src || i.src,width:i.width,height:i.height,title:i.alt,caption:a.closest('figure')?.querySelector('figcaption')?.textContent || 'Actual product screenshot.'});
       });
       return items;
     }
@@ -88,14 +212,116 @@
     try { id = decodeURIComponent(location.hash.slice(1)); } catch (error) { return; }
     var target = document.getElementById(id);
     if (!target) return;
-    var details = target.closest("details");
-    if (!details && id === "proof") details = target.querySelector("details");
-    if (details && !details.open) {
-      details.open = true;
-      target.scrollIntoView({ block: "start" });
+    // Evidence can sit inside more than one disclosure. Open the full chain,
+    // including the proof section's own record, before scrolling to it.
+    var changed = false;
+    var parent = target;
+    while (parent) {
+      if (parent.tagName === "DETAILS" && !parent.open) { parent.open = true; changed = true; }
+      parent = parent.parentElement;
     }
+    var record = id === "proof" ? target.querySelector("details") : null;
+    if (record && !record.open) { record.open = true; changed = true; }
+    if (changed) target.scrollIntoView({ block: "start", behavior: "instant" });
   }
   window.addEventListener("hashchange", revealDeepLink);
+
+  function initProductWayfinding() {
+    var nav = document.querySelector(".pf-product-navigation");
+    if (!nav) return;
+    var links = Array.from(nav.querySelectorAll("[data-product-section]"));
+    var pending = false;
+    function indicate() {
+      pending = false;
+      var current = links[0];
+      links.forEach(function (link) {
+        var section = document.getElementById(link.dataset.productSection);
+        if (section && section.getClientRects().length && section.getBoundingClientRect().top <= nav.offsetHeight + 90) current = link;
+      });
+      links.forEach(function (link) {
+        if (link === current) link.setAttribute("aria-current", "location");
+        else link.removeAttribute("aria-current");
+      });
+    }
+    function schedule() { if (!pending) { pending = true; requestAnimationFrame(indicate); } }
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule, { passive: true });
+    document.addEventListener("toggle", schedule, true);
+    indicate();
+  }
+
+  function initWorkbench() {
+    var workbench = document.querySelector("[data-workbench]");
+    if (!workbench) return;
+    var panels = Array.from(workbench.querySelectorAll("[data-workbench-product]"));
+    var tabs = workbench.querySelector(".pf-workbench-tabs");
+    if (!panels.length || !tabs) return;
+    tabs.setAttribute("role", "tablist");
+    var buttons = panels.map(function (panel) {
+      var button = document.createElement("button");
+      button.type = "button";
+      button.id = "tab-" + panel.id;
+      button.setAttribute("role", "tab");
+      button.setAttribute("aria-controls", panel.id);
+      button.textContent = panel.dataset.workbenchName;
+      panel.setAttribute("role", "tabpanel");
+      panel.setAttribute("aria-labelledby", button.id);
+      panel.tabIndex = 0;
+      tabs.append(button);
+      return button;
+    });
+    function select(index, focus) {
+      // Dormant captures carry no fetchable source. Load only the selected
+      // panel; noscript retains all seven authentic captures as ordinary HTML.
+      var picture = panels[index].querySelector("[data-workbench-preview]");
+      if (picture && picture.hidden) {
+        picture.querySelectorAll("[data-srcset]").forEach(function (source) { source.srcset = source.dataset.srcset; });
+        var image = picture.querySelector("img");
+        image.src = image.dataset.src;
+        picture.hidden = false;
+      }
+      panels.forEach(function (panel, i) { panel.hidden = i !== index; });
+      buttons.forEach(function (button, i) { button.setAttribute("aria-selected", String(i === index)); button.tabIndex = i === index ? 0 : -1; });
+      if (focus) { buttons[index].focus({ preventScroll: true }); buttons[index].scrollIntoView({ block: "nearest", inline: "nearest", behavior: "instant" }); }
+    }
+    buttons.forEach(function (button, index) {
+      button.addEventListener("click", function () { select(index, false); });
+      button.addEventListener("keydown", function (event) {
+        var next = event.key === "ArrowRight" ? (index + 1) % buttons.length : event.key === "ArrowLeft" ? (index + buttons.length - 1) % buttons.length : event.key === "Home" ? 0 : event.key === "End" ? buttons.length - 1 : -1;
+        if (next !== -1) { event.preventDefault(); select(next, true); }
+      });
+    });
+    tabs.hidden = false;
+    select(0, false);
+  }
+
+  function initSupportDraft() {
+    var draft = document.querySelector("[data-support-draft]");
+    var output = document.getElementById("diagnostic-template");
+    if (!draft || !output) return;
+    var product = draft.querySelector('[name="product"]');
+    var record = draft.querySelector("[data-support-record]");
+    var fields = [["version","Version"],["os","Operating system / Android version"],["device","Device model (if relevant)"],["install","Install type"],["source","Where the file came from"],["hash","Did the published SHA-256 match?"],["happened","What happened"],["steps","Steps to reproduce"],["expected","Expected behavior"],["actual","Actual behavior"],["error","Exact sanitized error text"],["attachment","Optional screenshot/log"]];
+    function update() {
+      var option = product.options[product.selectedIndex];
+      var lines = ["Product: " + (product.value ? option.textContent : "")];
+      fields.forEach(function (field) { var value = draft.querySelector('[name="' + field[0] + '"]').value.trim(); lines.push(field[1] + ":" + (value.includes("\n") ? "\n" : " ") + value); });
+      output.value = lines.join("\n");
+      record.hidden = !product.value;
+      if (product.value) record.setAttribute("href", option.dataset.record);
+      else record.removeAttribute("href");
+    }
+    var requested = new URLSearchParams(location.search).get("product");
+    if (Array.from(product.options).some(function (option) { return option.value === requested; })) product.value = requested;
+    draft.addEventListener("input", update);
+    draft.addEventListener("change", update);
+    draft.querySelector("[data-support-reset]").addEventListener("click", function () {
+      draft.querySelectorAll("input,textarea,select").forEach(function (field) { field.value = ""; });
+      update(); product.focus();
+    });
+    draft.hidden = false;
+    update();
+  }
 
   function initNavToggle() {
     var header = document.querySelector(".site-header");
@@ -119,7 +345,10 @@
 
     // Close on Escape
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape" && header.classList.contains("nav-open")) {
+        setOpen(false);
+        toggle.focus();
+      }
     });
 
     // Close when the menu is open and a click lands outside the header
@@ -202,19 +431,49 @@
     });
   }
 
+  // A below-fold film must not compete with the release hero for bandwidth.
+  // Native controls and the direct film link remain usable without JavaScript.
+  function initFilmPosters() {
+    var videos = Array.from(document.querySelectorAll("video[data-poster]"));
+    if (!videos.length) return;
+    function reveal(video) {
+      if (!video.hasAttribute("poster")) video.setAttribute("poster", video.dataset.poster);
+    }
+    if (!window.IntersectionObserver) { videos.forEach(reveal); return; }
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) { reveal(entry.target); observer.unobserve(entry.target); }
+      });
+    }, { rootMargin: "300px 0px" });
+    videos.forEach(function (video) {
+      observer.observe(video);
+      video.addEventListener("play", function () { reveal(video); observer.unobserve(video); }, { once: true });
+    });
+  }
+
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", function () {
       initNavToggle();
       initSha256Copy();
       initTemplateCopy();
+      initWorkbench();
       initScreenshots();
+      initProductWayfinding();
+      initSupportDraft();
       revealDeepLink();
+      initMotion();
+      initFilmPosters();
     });
   } else {
     initNavToggle();
     initSha256Copy();
     initTemplateCopy();
+    initWorkbench();
     initScreenshots();
+    initProductWayfinding();
+    initSupportDraft();
     revealDeepLink();
+    initMotion();
+    initFilmPosters();
   }
 })();

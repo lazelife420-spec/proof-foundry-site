@@ -88,12 +88,20 @@ Assert-Condition ($cv -match 'public, release-signed v0\.3\.1 companion APK') "P
 Assert-Condition ($sup -match 'What to do with it') "P1: support template carries next-step guidance"
 Assert-Condition ($sup -match 'href="/roadmap/"') "P1: support guidance points to the roadmap for channel announcement"
 Assert-Condition ($sup -match 'Privacy Warning') "P1: support privacy warning preserved"
+# K12: closing support links name the self-service guide; no channel is published
+foreach ($pp in @(
+    @{ n = 'reality-gate'; h = $rg }, @{ n = 'cache-vault'; h = $cv }, @{ n = 'lights-out'; h = $lo },
+    @{ n = 'cleanroom'; h = $cl }, @{ n = 'ghostlayer'; h = $gl }, @{ n = 'forgecast'; h = $fc }, @{ n = 'proofshot'; h = $ps })) {
+  $finalCta = [regex]::Match($pp.h, '(?s)<section class="pp-final-cta">.*?</section>').Value
+  $supportLabels = @([regex]::Matches($finalCta, '(?s)<a\b[^>]*href="/support/[^"]*"[^>]*>(.*?)</a>') | ForEach-Object { $_.Groups[1].Value })
+  Assert-Condition ((-not [string]::IsNullOrWhiteSpace($finalCta)) -and $finalCta -notmatch 'Talk to support' -and $supportLabels.Count -ge 1 -and @($supportLabels | Where-Object { $_ -notmatch '^Support &amp; troubleshooting guide\b' }).Count -eq 0) "P1: $($pp.n) closing CTA names the support guide, not a conversation"
+}
 
 # ── P2: Reality Gate SHA-256 dedupe (one canonical verify block) ────────────
 $rgShaCount = ([regex]::Matches($rg, '58cc27d2')).Count
 Assert-Condition ($rgShaCount -le 2) "P2: Reality Gate hash rendered at most twice (was three) — found $rgShaCount"
 $rgDlCount = ([regex]::Matches($rg, 'Download v1\.1\.0 Developer Pilot')).Count
-Assert-Condition ($rgDlCount -eq 0 -and $rg -match 'Downloads currently unavailable') "P2: withdrawn Reality Gate has no download button — found $rgDlCount"
+Assert-Condition ($rgDlCount -eq 0 -and $rg -match 'No download is offered\.' -and $rg -notmatch 'aria-disabled="true"' -and $rg -notmatch 'href="https://downloads\.theprooffoundry\.com/reality-gate/') "P2: withdrawn Reality Gate has no download button and says so in plain text - found $rgDlCount"
 Assert-Condition ($rg -match 'href="#evidence-download"') "P2: Reality Gate defers to the canonical download block"
 
 # ── P2: final-public availability honesty ──────────────────────────────────
@@ -105,7 +113,7 @@ Assert-Condition (
   $cv -notmatch 'intentionally not linked'
 ) "P2: Cache Vault availability copy asserts public v0.3.1 (live URL + published digest) and omits RC-era candidate/404 copy"
 Assert-Condition ($lo -notmatch 'download again') "P2: Lights Out no longer instructs a download retry while no download exists"
-Assert-Condition ($lo -match '<a href="/support/#report">contact the project</a>') "P2: Lights Out support anchor preserved (P2-1 contract)"
+Assert-Condition ($lo -match '<a href="/support/#report">see the support guide</a>' -and $lo -notmatch 'contact the project') "P2: Lights Out support anchor preserved (P2-1 contract) and named as the support guide"
 
 # ── P2: discovery affordances ────────────────────────────────────────────────
 Assert-Condition ($catalogHtml -match 'class="finder-intents"' -and $catalogHtml -match 'data-compare=') "P2: functional filtering and comparison live on /software/"
@@ -121,9 +129,12 @@ Assert-Condition ($stylesCss -match '\.onboarding-list dt') "shared onboarding-l
 
 # ── H1/H2 preservation guards (this tranche touches shared files) ───────────
 # H9 keeps the forge-to-outside Home journey concise; product browsing is on Software.
-Assert-Condition ($homeHtml.IndexOf('class="studio-hero"') -lt $homeHtml.IndexOf('class="studio-proof"') -and $homeHtml -notmatch 'class="studio-portfolio"|data-presentation="feature"|studio-evidence') "H9: studio hero leads directly to proof without an embedded product preview"
-Assert-Condition ($homeHtml -match 'class="studio-hero"[\s\S]*?href="/software/"' -and ([regex]::Matches($catalogHtml, '<article class="product-card')).Count -eq 7) "H9: hero invitation reaches the complete functional catalog"
-Assert-Condition ($homeHtml -match '<h1 id="studio-title">[\s\S]*?Do the work\.[\s\S]*?Skip the detours\.') "H9: current brand-first studio-root hero headline is preserved"
+Assert-Condition ($homeHtml.IndexOf('class="ledger-hero"') -lt $homeHtml.IndexOf('class="ledger-featured"') -and $homeHtml.IndexOf('class="ledger-featured"') -lt $homeHtml.IndexOf('class="ledger-chain"') -and $homeHtml -match 'id="chain-title"' -and $homeHtml -notmatch 'class="studio-portfolio"|studio-evidence') "Proof Ledger: hero leads to the software, then the five-step proof chain"
+$heroHtml = [regex]::Match($homeHtml, '(?s)<section class="ledger-hero"[^>]*>.*?(?=<section class="ledger-featured")').Value
+Assert-Condition ($heroHtml -cmatch '<a class="ledger-button" href="/software/">Browse software ' -and ([regex]::Matches($catalogHtml, '<article class="product-card')).Count -eq 7) "Proof Ledger: hero invitation reaches the complete functional catalog"
+# V5 hero (owner ruling, 2026-10-13): checked inside the hero, not page-wide.
+$heroText = { param($h) (([regex]::Replace([regex]::Replace($h, '(?i)<br\s*/?>', ' '), '<[^>]+>', ' ')) -replace '\s+', ' ').Trim() }
+Assert-Condition ((& $heroText ([regex]::Match($heroHtml, '(?s)<h1 id="ledger-title">(.*?)</h1>').Groups[1].Value)) -ceq 'Real software leaves a record.' -and (& $heroText ([regex]::Match($heroHtml, '(?s)<p class="ledger-hero-subtitle">(.*?)</p>').Groups[1].Value)) -ceq 'Receipts over hype.' -and (& $heroText ([regex]::Match($heroHtml, '(?s)<p class="ledger-hero-description">(.*?)</p>').Groups[1].Value)) -ceq 'Independent software. Public records. Clear limits.' -and $heroHtml -notmatch '\b[0-9a-f]{64}\b') "Proof Ledger: approved V5 brand-first headline and record-scoped subtitle lead the hero, with no release digest"
 Assert-Condition ($homeHtml -notmatch 'Lights Out PC <span aria-hidden="true">') "H2 preserved: homepage short naming intact"
 Assert-Condition ($rg -match 'Your projects\.' -and $rg -match 'Your execution\.' -and $rg -match 'Your way back\.') "H1/H2 preserved: Reality Gate module hero copy remains intact"
 Assert-Condition ($gl -match '<strong>Status</strong> Public release' -and $gl -match '<strong>Version</strong> v0\.4\.0') "truth preserved: GhostLayer public release version remains intact"

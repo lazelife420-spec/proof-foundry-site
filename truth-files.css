@@ -69,7 +69,7 @@
 /* Record links and offset keyboard rings sit on Cleanroom's light surfaces.
    Keep the shared gold treatment on dark product pages and the dark chrome. */
 .tf-page.product-cleanroom .tf-record-list a,
-.tf-page.product-cleanroom .tf-record-list a:visited { color: #34544b; }
+.tf-page.product-cleanroom .tf-record-list a:visited { color: var(--teal); }
 .tf-page.product-cleanroom .tf-record-list a:hover,
 .tf-page.product-cleanroom .tf-record-list a:focus-visible { color: #183a30; }
 .tf-page.product-cleanroom main a:focus-visible,

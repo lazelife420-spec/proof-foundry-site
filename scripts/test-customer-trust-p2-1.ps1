@@ -45,8 +45,9 @@ foreach ($a in $requiredAnchors) {
     Assert-Condition ($supportHtml -match "id=`"$a`"") "/support/ contains anchor id='$a'"
 }
 
-# 5. Report Section — State A Self-Service Only Constraints
-Assert-Condition ($supportHtml -match 'Direct online support submission is not published yet') "/support/ contains explicit State A disclaimer"
+# 5. Report Section — Operational Support Intake
+Assert-Condition ($supportHtml -match 'href="mailto:support@theprooffoundry\.com"') "/support/ publishes verified support@theprooffoundry.com mailto link"
+Assert-Condition ($supportHtml -match 'href="mailto:security@theprooffoundry\.com"') "/support/ publishes verified security@theprooffoundry.com mailto link"
 Assert-Condition ($supportHtml -notmatch '<form\s+action') "/support/ does not contain form submission endpoint"
 Assert-Condition ($supportHtml -notmatch '<button[^>]*type=["'']submit["'']') "/support/ does not contain submit button"
 Assert-Condition ($supportHtml -notmatch '\[OWNER DECISION REQUIRED\]') "/support/ does not expose unrendered placeholder text"
@@ -58,17 +59,23 @@ $allHtmlFiles = Get-ChildItem -Path $publicDir -Recurse -Filter "*.html"
 $runAnywayFound = $false
 $provesAuthFound = $false
 $provesSafeFound = $false
+$supportPromiseFound = $false
+$channelPlaceholderFound = $false
 
 foreach ($f in $allHtmlFiles) {
     $content = Get-Content $f.FullName -Raw -Encoding UTF8
     if ($content -match 'when it is safe to click Run Anyway') { $runAnywayFound = $true }
     if ($content -match 'checksum proves the file is safe') { $provesSafeFound = $true }
     if ($content -match 'SHA-256 proves authenticity') { $provesAuthFound = $true }
+    if ($content -match 'Talk to support|contact the project') { $supportPromiseFound = $true; Write-Host "Forbidden support promise in $($f.Name)" -ForegroundColor Red }
+    if ($content -match '\[[^\]<>]{0,80}(channel|address|contact|e-?mail)[^\]<>]{0,80}\]') { $channelPlaceholderFound = $true; Write-Host "Forbidden channel placeholder in $($f.Name)" -ForegroundColor Red }
 }
 
 Assert-Condition (-not $runAnywayFound) "Deny 'when it is safe to click Run Anyway' across all generated HTML"
 Assert-Condition (-not $provesSafeFound) "Deny 'checksum proves the file is safe' across all generated HTML"
 Assert-Condition (-not $provesAuthFound) "Deny unqualified 'SHA-256 proves authenticity' across all generated HTML"
+Assert-Condition (-not $supportPromiseFound) "Deny 'Talk to support' and 'contact the project' across all generated HTML (no support channel is published)"
+Assert-Condition (-not $channelPlaceholderFound) "Deny bracketed support or security channel placeholders across all generated HTML"
 
 # 7. Checksum Vocabulary & Byte-Identity Standard
 Assert-Condition ($supportHtml -match 'SHA-256 match = byte-identity verification against the published digest') "/support/ defines SHA-256 match standard"
@@ -76,7 +83,7 @@ Assert-Condition ($supportHtml -match 'The 8-Field Checksum Identity Schema') "/
 
 # 8. Lights Out Dead-End Link Fix
 $loHtml = Get-Content (Join-Path $publicDir "lights-out\index.html") -Raw -Encoding UTF8
-Assert-Condition ($loHtml -match '<a href="/support/#report">contact the project</a>') "Lights Out dead-end link updated to point to /support/#report"
+Assert-Condition ($loHtml -match '<a href="/support/#report">see the support guide</a>' -and $loHtml -notmatch 'contact the project') "Lights Out mismatch link points to /support/#report and names the support guide, not a contact channel"
 
 # 9. P1 Regression Assertions
 $rgHtml = Get-Content (Join-Path $publicDir "reality-gate\index.html") -Raw -Encoding UTF8
@@ -104,6 +111,34 @@ Assert-Condition ($supportHtml -match 'GhostLayer[\s\S]*?v0\.4\.0') "Support rel
 Assert-Condition ($supportHtml -notmatch 'GhostLayer[\s\S]*?v1\.0\.0') "Support release truth: GhostLayer rejects incorrect v1.0.0"
 Assert-Condition ($supportHtml -match 'ForgeCast[\s\S]*?v0\.3\.5') "Support release truth: ForgeCast v0.3.5"
 Assert-Condition ($supportHtml -match 'ProofShot[\s\S]*?Public Windows v2\.0\.0' -and $supportHtml -notmatch 'no public release package') "Support release truth: ProofShot public Windows v2.0.0"
+
+# 10b. Help-and-safety copy (K13): verified email intake published, no unfulfilled promises, signing sentence bound to release record
+$helpSafety = [regex]::Match($supportHtml, '(?s)<section class="support-section" id="help-safety">.*?</section>').Value
+$windowsDownloads = @($registryJson.products | ForEach-Object { @($_.artifacts) } | Where-Object { $null -ne $_ -and [string]$_.platform -match 'Windows' -and -not [string]::IsNullOrWhiteSpace([string]$_.downloadUrl) })
+$windowsNotUnsigned = @($windowsDownloads | Where-Object { [string]$_.signingStatus -cne 'UNSIGNED' })
+Assert-Condition ((-not [string]::IsNullOrWhiteSpace($helpSafety)) -and $helpSafety -match 'Need help or found a security issue\?' -and $helpSafety -match 'support@theprooffoundry\.com' -and $helpSafety -match 'security@theprooffoundry\.com' -and $helpSafety -match 'do not offer live chat' -and $helpSafety -notmatch '24/7 support' -and $helpSafety -match 'Each Windows download offered on this site is not code-signed, according to its release record\.' -and $helpSafety -match 'it is not a guarantee of safety or an independent certification' -and $helpSafety -notmatch 'may lack an Authenticode' -and $windowsDownloads.Count -gt 0 -and $windowsNotUnsigned.Count -eq 0) "/support/ help-and-safety block publishes verified email intake without live promises, and its not-code-signed sentence matches every Windows artifact's UNSIGNED release record"
+
+# 10c. Security disclosure verification (RFC 9116)
+$securityTxtPath = Join-Path $publicDir ".well-known\security.txt"
+Assert-Condition (Test-Path $securityTxtPath) "Generated /.well-known/security.txt route exists"
+$secTxt = Get-Content $securityTxtPath -Raw -Encoding UTF8
+Assert-Condition ($secTxt -match '(?m)^Contact:\s*mailto:security@theprooffoundry\.com$') "security.txt contains valid Contact mailto: URI"
+$expiresMatch = [regex]::Match($secTxt, '(?m)^Expires:\s*(\S+)$')
+$expiresValid = $false
+if ($expiresMatch.Success) {
+    try {
+        $expDate = [DateTime]::Parse($expiresMatch.Groups[1].Value, [System.Globalization.CultureInfo]::InvariantCulture, [System.Globalization.DateTimeStyles]::AdjustToUniversal)
+        $now = [DateTime]::UtcNow
+        $expiresValid = ($expDate -gt $now) -and ($expDate -le $now.AddDays(366))
+    } catch { $expiresValid = $false }
+}
+Assert-Condition $expiresValid "security.txt contains valid future Expires timestamp within 1 year"
+$headersContent = Get-Content (Join-Path $publicDir "_headers") -Raw -Encoding UTF8
+Assert-Condition ($headersContent -match '(?m)^/\.well-known/security\.txt\s*\r?\n\s+Content-Type:\s*text/plain;\s*charset=utf-8') "_headers serves /.well-known/security.txt as UTF-8 text/plain"
+$redirectsContent = Get-Content (Join-Path $publicDir "_redirects") -Raw -Encoding UTF8
+Assert-Condition ($redirectsContent -match '(?m)^/security\.txt\s+/\.well-known/security\.txt\s+301') "_redirects maps /security.txt to /.well-known/security.txt"
+$androidSection = [regex]::Match($supportHtml, '(?s)<section class="[^"]*" id="android">.*?</section>').Value
+Assert-Condition ($androidSection -match 'Phone-native verification steps are not published yet' -and $supportHtml -notmatch 'being prepared on the support hub') "/support/ Android guidance says phone-native steps are not published instead of pointing back to itself"
 
 # 11. Hardened Global Navigation Parity Assertions across all generated surfaces
 $allRoutes = @('', 'software', 'reality-gate', 'cache-vault', 'lights-out', 'cleanroom', 'ghostlayer', 'forgecast', 'proofshot', 'proof', 'roadmap', 'founders', 'support', 'about', 'proof-standard')

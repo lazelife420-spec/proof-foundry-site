@@ -139,17 +139,111 @@ Assert-Condition ($loHtml -notmatch '<div class="evidence-content"\s+data-nosnip
 Assert-Condition ($loHtml -match 'id="evidence-release-status"\s+data-nosnippet') "Lights Out candidate release-status container HAS narrow data-nosnippet"
 
 # 9. Output Hygiene check
-$publicFiles = Get-ChildItem -Path $PublicDir -Recurse -File
+$publicFiles = @(Get-ChildItem -LiteralPath $PublicDir -Recurse -File -Force)
+$publicRoot = (Resolve-Path -LiteralPath $PublicDir).Path.TrimEnd('\', '/')
+function Get-PublicRelativePath([IO.FileInfo]$file) { return $file.FullName.Substring($publicRoot.Length).TrimStart('\', '/').Replace('\', '/') }
+$textExtensions = @('.html', '.js', '.css', '.json', '.xml', '.txt', '.md', '.svg', '')
 $leaks = @()
 foreach ($file in $publicFiles) {
-  if ($file.Extension -in @('.html','.js','.css','.json','.xml')) {
+  if ($file.Extension.ToLowerInvariant() -in $textExtensions) {
     $content = [IO.File]::ReadAllText($file.FullName)
-    if ($content -match 'file:///' -or $content -match 'C:\\Users\\') {
-      $leaks += $file.FullName
+    if ($content -match 'file:///' -or $content -match '(?i)[a-z]:(?:\\|/)+users(?:\\|/)') {
+      $leaks += (Get-PublicRelativePath $file)
     }
   }
 }
 Assert-Condition ($leaks.Count -eq 0) "Public output contains zero file:/// or C:\Users\ local path leaks"
+
+# K1 (C-01): 25 captures that showed a workstation identifier (a Windows
+# user-profile path or the machine name) were retired. None may be published
+# again, under its own path, its file name or its source stem, or as the same
+# bytes under another name, and no published text may reference one by path or
+# stem. 'cases' is too generic for a stem match, so cases.png is held by its
+# path, file name and digest. Every raster must be what its extension says.
+$retiredCaptures = [ordered]@{
+  'assets/proofshot/workbench-proof-cards.png'         = 'd18c63f872a56eb593d97cf523357cd73c41a2b26bd6d3839fa1ab91c9d8f3e6'
+  'assets/proofshot/workbench-proof-cards.webp'        = '80bd8137f7d8e9f301626f801d8b25afef581e40d27a4c4d5129b910360132f4'
+  'assets/studio/workbench-proof-cards-480.webp'       = '19f412a08bfcaea8cb491560d914fdca589924658c628d982eba92887c05a1dd'
+  'assets/studio/workbench-proof-cards-960.webp'       = '180a1ff1298d987ab6dda9e1bbd727af12b2ba7fe9c3bbe99a6e630c20b0d2d5'
+  'assets/studio/workbench-proof-cards-1440.webp'      = '071cc1b8a88dc1cb6ca7fba81180622a0b083a7e6f9ac07466d815f6fa638ddb'
+  'assets/proofshot/workbench-home.png'                = '33ca336d7eecc517a9a1e6caa7ac46f97da8b630342dc6b19477ca57d5baee80'
+  'assets/studio/workbench-home-480.webp'              = '3a4a86b881c3fc4a7c6cab9c1272b6684be665b31abd01c264186bfc74933b41'
+  'assets/studio/workbench-home-960.webp'              = '10503a6c027905089c1ba4d4c526de467aeafbe4b370000d511b70b5fef6eedd'
+  'assets/studio/workbench-home-1440.webp'             = 'ceeceea851270476cee28c54c490de87e358568ee228b0d0334956bfa7414e0f'
+  'assets/studio/workbench-home-card-960.png'          = 'fe390305617449c16347708617be38518a538c3bb601eb44ebf825b38e1bdbd3'
+  'assets/proofshot/export-complete.png'               = '151c663af9ad2b8d666b45b28492f401fd106869e7934c433c469ba9b307342e'
+  'assets/studio/export-complete-480.webp'             = '8afabf7808977f2eb13b61096da9d0d97c6e72c133dd4a6c0aa107e8f87b775e'
+  'assets/studio/export-complete-960.webp'             = '059513e3cfe9215d4cac34c80f6cd81b0d3f497fd006b12ac9a4836918b7b6bc'
+  'assets/studio/export-complete-1440.webp'            = '08fb0acbeff5f1cecf994d2a7164ebbc940c8427686ddbce3b8a8972d7600dbd'
+  'assets/proofshot/prove-again.png'                   = '1bfcf6038c60f01ee9cdade207944d75ddbfcf1af8983dd3cb810e64accf545e'
+  'assets/proofshot/cases.png'                         = '9ec331f1f3fdddc760955ccc718eefb4f133bea1f6855d413e30b355b541041d'
+  'assets/proofshot/tamper-trial.png'                  = '4dcbf5ad8ed936300b05640a9091a83120469b219bd5eb690e7544a0118c3899'
+  'assets/cleanroom/cleanroom-activity-ledger.png'     = '6fce31f77ed39496e679912bff260b451a9fcbffe96e68ff77a2ca5ceccad65e'
+  'assets/studio/cleanroom-activity-ledger-480.webp'   = '28380cdbde3e28e7f78f5fec4c70a2016170e5b2ff24492c4827aae40943dcab'
+  'assets/studio/cleanroom-activity-ledger-960.webp'   = '89c9ba91eba9bcf20b6b014d98a97cffcb3bef920a23a6d49c82e0419a592059'
+  'assets/studio/cleanroom-activity-ledger-1280.webp'  = 'ac400f06d757a6bc3d276fa1c8297bf97261d443149e08150cf7e78e2299bf04'
+  'assets/lights-out/companion-active.png'             = '121c248557713b48bd12e82cfb2eb2ce29092347d83647e773a18b027b2c9587'
+  'assets/studio/companion-active-390.webp'            = '2681e3e3e426cb1659ac59927e6a558b66f38e21066c9aea05e34290610d3f10'
+  'assets/lights-out/companion-reconnected.png'        = 'cd92ae548b4a369bb38619b1e816018b83a99518d569c0226e2f7f1fc8ed76cf'
+  'assets/lights-out/companion-snoozed.png'            = '925617342c0cce32494475545179380b8599da649c6fcfaef5fa03ef9bb8ea8d'
+}
+$retiredPaths = @($retiredCaptures.Keys)
+$retiredDigests = @($retiredCaptures.Values)
+Assert-Condition ($retiredPaths.Count -eq 25 -and @($retiredPaths | Sort-Object -Unique).Count -eq 25 -and @($retiredDigests | Where-Object { $_ -cmatch '^[0-9a-f]{64}$' } | Sort-Object -Unique).Count -eq 25) "Retired-capture denylist holds 25 distinct paths and 25 distinct SHA-256 values"
+$retiredNames = @($retiredPaths | ForEach-Object { ($_ -split '/')[-1] })
+$retiredStems = 'workbench-proof-cards|workbench-home|export-complete|prove-again|tamper-trial|cleanroom-activity-ledger|companion-active|companion-reconnected|companion-snoozed'
+$retiredStemFilePattern = '(?i)(?:^|/)(?:' + $retiredStems + ')[^/]*$'
+$retiredStemTextPattern = '(?i)(?:' + $retiredStems + ')[-.\w]*\.(?:png|webp|jpe?g|avif|gif)'
+$retiredByPath = @($publicFiles | ForEach-Object { Get-PublicRelativePath $_ } | Where-Object { ($retiredPaths -contains $_) -or ($retiredNames -contains (($_ -split '/')[-1])) -or ($_ -match $retiredStemFilePattern) })
+if ($retiredByPath.Count -gt 0) { $retiredByPath | ForEach-Object { Write-Host "  retired capture published: $_" } }
+Assert-Condition ($publicFiles.Count -gt 0 -and $retiredByPath.Count -eq 0) "Public output publishes none of the 25 retired captures by path, file name or stem"
+$retiredByBytes = @($publicFiles | Where-Object { $retiredDigests -contains (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant() } | ForEach-Object { Get-PublicRelativePath $_ })
+if ($retiredByBytes.Count -gt 0) { $retiredByBytes | ForEach-Object { Write-Host "  retired capture bytes published as: $_" } }
+Assert-Condition ($publicFiles.Count -gt 0 -and $retiredByBytes.Count -eq 0) "Public output publishes none of the 25 retired captures by SHA-256, under any name"
+$retiredReferences = @()
+foreach ($file in $publicFiles) {
+  if ($file.Extension.ToLowerInvariant() -in $textExtensions) {
+    $content = [IO.File]::ReadAllText($file.FullName)
+    foreach ($path in $retiredPaths) {
+      if ($content.IndexOf($path, [StringComparison]::OrdinalIgnoreCase) -ge 0) { $retiredReferences += ((Get-PublicRelativePath $file) + ' -> ' + $path) }
+    }
+    if ($content -match $retiredStemTextPattern) { $retiredReferences += ((Get-PublicRelativePath $file) + ' -> stem') }
+  }
+}
+if ($retiredReferences.Count -gt 0) { $retiredReferences | ForEach-Object { Write-Host "  retired capture referenced: $_" } }
+Assert-Condition ($retiredReferences.Count -eq 0) "No published text references a retired capture path or stem"
+
+function Get-AsciiAt([byte[]]$bytes, [int]$offset, [int]$length) {
+  if ($bytes.Length -lt $offset + $length) { return '' }
+  return [Text.Encoding]::ASCII.GetString($bytes, $offset, $length)
+}
+function Test-RasterSignature([string]$extension, [byte[]]$head) {
+  switch ($extension.ToLowerInvariant()) {
+    '.png'  { return ($head.Length -ge 8 -and $head[0] -eq 0x89 -and (Get-AsciiAt $head 1 3) -ceq 'PNG' -and $head[4] -eq 0x0D -and $head[5] -eq 0x0A -and $head[6] -eq 0x1A -and $head[7] -eq 0x0A) }
+    '.jpg'  { return ($head.Length -ge 3 -and $head[0] -eq 0xFF -and $head[1] -eq 0xD8 -and $head[2] -eq 0xFF) }
+    '.jpeg' { return ($head.Length -ge 3 -and $head[0] -eq 0xFF -and $head[1] -eq 0xD8 -and $head[2] -eq 0xFF) }
+    '.webp' { return ((Get-AsciiAt $head 0 4) -ceq 'RIFF' -and (Get-AsciiAt $head 8 4) -ceq 'WEBP') }
+    '.avif' { return ((Get-AsciiAt $head 4 4) -ceq 'ftyp' -and (Get-AsciiAt $head 8 4) -cin @('avif', 'avis')) }
+    '.gif'  { return ((Get-AsciiAt $head 0 6) -cin @('GIF87a', 'GIF89a')) }
+  }
+  return $false
+}
+$pngHead = [byte[]](0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, 0x00, 0x00, 0x0D)
+$jpegHead = [byte[]](0xFF, 0xD8, 0xFF, 0xE0, 0x00, 0x10, 0x4A, 0x46, 0x49, 0x46, 0x00, 0x01)
+$webpHead = [byte[]](0x52, 0x49, 0x46, 0x46, 0x00, 0x00, 0x00, 0x00, 0x57, 0x45, 0x42, 0x50)
+Assert-Condition ((Test-RasterSignature '.png' $pngHead) -and -not (Test-RasterSignature '.png' $jpegHead) -and (Test-RasterSignature '.jpg' $jpegHead) -and (Test-RasterSignature '.webp' $webpHead) -and -not (Test-RasterSignature '.webp' $pngHead) -and -not (Test-RasterSignature '.png' ([byte[]]::new(0)))) "Raster signature check accepts PNG, JPEG and WebP headers and rejects JPEG bytes named .png (self-test)"
+$rasterExtensions = @('.png', '.webp', '.jpg', '.jpeg', '.avif', '.gif')
+$rasters = @($publicFiles | Where-Object { $_.Extension.ToLowerInvariant() -in $rasterExtensions })
+$rasterMismatches = @()
+foreach ($file in $rasters) {
+  $bytes = [IO.File]::ReadAllBytes($file.FullName)
+  $head = [byte[]]::new([Math]::Min(12, $bytes.Length))
+  [Array]::Copy($bytes, $head, $head.Length)
+  if (-not (Test-RasterSignature $file.Extension $head)) { $rasterMismatches += (Get-PublicRelativePath $file) }
+}
+if ($rasterMismatches.Count -gt 0) { $rasterMismatches | ForEach-Object { Write-Host "  raster signature mismatch: $_" } }
+Write-Host "  rasters checked: $($rasters.Count)"
+Assert-Condition ($rasters.Count -gt 0 -and $rasterMismatches.Count -eq 0) "Every published raster's leading bytes match its extension"
 
 $fgColor = if ($script:failed -eq 0) { "Green" } else { "Red" }
 Write-Host "=== H8-B RESULT: $script:passed passed, $script:failed failed ===" -ForegroundColor $fgColor

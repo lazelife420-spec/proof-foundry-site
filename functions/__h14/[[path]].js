@@ -122,7 +122,7 @@ function cardDetailLine(p) {
       return cand ? `Candidate ${cand} on hold ${DOT} public download currently unavailable` : '';
     case 'ACTIVE_PROOF': return cand ? `${cand} candidate in proof` : '';
     case 'PUBLIC_RELEASE':
-    case 'FROZEN': return (cand && cand !== pub) ? `Next build ${cand} in progress` : '';
+    case 'FROZEN': return (cand && cand !== pub) ? (isBlank(p.candidateStatus) ? `Next build ${cand} in progress` : String(p.candidateStatus)) : '';
     case 'UNRELEASED': return cand ? `Engine ${cand} ${DOT} not yet packaged under this name` : 'No public release yet';
     default: return '';
   }
@@ -152,6 +152,7 @@ function productTokens(p, cfg, module) {
     ? `<p class="availability-notice"><strong>Withdrawn:</strong> v${esc(p.release.withdrawnVersion || '')} is not available for download. ${esc((p.presentation && p.presentation.downloadNotice) || '')}</p>`
     : '';
   t.candidateVersionLabel = candidateVersionLabel(p);
+  t.candidateStatus = isBlank(p.candidateStatus) ? '' : String(p.candidateStatus);
   t.currentVersionLabel = !isBlank(p.currentLocalVersion) ? `Local v${p.currentLocalVersion}` : '';
   t.companionLabel = companionLabel(p);
   t.companionPublicVersionLabel = companionPublicVersionLabel(p);
@@ -184,6 +185,7 @@ function productTokens(p, cfg, module) {
   t.lastVerified = (p.verification && p.verification.verifiedAt) || p.lastVerified;
   t.downloadUrl = p.downloadUrl; t.downloadLabel = p.downloadLabel;
   t.sha256 = p.sha256; t.sha256Url = p.sha256Url; t.releaseNote = p.releaseNote;
+  t.statusStatement = isBlank(p.statusStatement) ? '' : String(p.statusStatement);
   t.publicVersion = pub; t.candidateVersion = cand;
   t.releaseStatus = (p.release && p.release.releaseStatus) || '';
   t.publishedAt = (p.release && p.release.publishedAt) || '';
@@ -222,14 +224,15 @@ function productTokens(p, cfg, module) {
     `<span class="proof-pill"><strong>Status</strong> ${esc(t.statusLabel)}</span>`,
     `<span class="proof-pill"><strong>Version</strong> ${t.versionLabel ? esc(t.versionLabel) : '&mdash;'}</span>`,
   ];
+  const words = (cfg && cfg.labels) || {};
   if (cand && cand !== pub) {
-    const cl = (p.release && p.release.releaseStatus === 'PUBLIC_RELEASE') ? 'Next' : 'Candidate';
-    pills.push(`<span class="proof-pill"><strong>${cl}</strong> v${esc(cand)}</span>`);
+    const cs = !isBlank(p.candidateStatus) ? String(p.candidateStatus) : (p.presentation && !isBlank(p.presentation.candidateStatus) ? String(p.presentation.candidateStatus) : '');
+    pills.push(cs ? `<span class="proof-pill">${esc(cs)}</span>` : `<span class="proof-pill"><strong>${esc(words.candidatePill || 'Candidate')}</strong> v${esc(cand)}</span>`);
   }
   pills.push(`<span class="proof-pill"><strong>Platform</strong> ${esc(t.platform)}</span>`);
   if (t.testStatus) pills.push(`<span class="proof-pill"><strong>Tests</strong> ${esc(t.testStatus)}</span>`);
   pills.push(`<span class="proof-pill"><strong>Proof</strong> ${esc(p.proofStatus || '')}</span>`);
-  if (t.lastVerified) pills.push(`<span class="proof-pill"><strong>Verified</strong> ${esc(t.lastVerified)}</span>`);
+  if (t.lastVerified) pills.push(`<span class="proof-pill"><strong>${esc(words.releaseReportStamp || 'Release report')}</strong> ${esc(t.lastVerified)}</span>`);
   t.proofStrip = `<div class="proof-strip">${pills.join('\n          ')}</div>`;
   // downloadBlock
   const dlUrl = t.artifactDownloadUrl || p.downloadUrl;
@@ -326,6 +329,9 @@ function renderCard(template, p, module, cfg) {
     t.cardVersionLabel ? (m) => m.replace(/<!--\s*@\w+-?version\s*-->/g, '') : '');
   card = card.replace(/<!--\s*@if-detail\s*-->[\s\S]*?<!--\s*@end-detail\s*-->/g,
     t.cardDetailLine ? (m) => m.replace(/<!--\s*@\w+-?detail\s*-->/g, '') : '');
+  const withdrawnCard = !!(p.release && p.release.releaseStatus === 'WITHDRAWN');
+  card = card.replace(/<!--\s*@if-compare\s*-->[\s\S]*?<!--\s*@end-compare\s*-->/g,
+    withdrawnCard ? '' : (m) => m.replace(/<!--\s*@\w+-?compare\s*-->/g, ''));
   for (const k of ['homeName','name','route','state','statusLabel','summary','cardSummary','statusLine','id','meta','cta',
     'visitorStatusLabel','visitorStatusSlug','groupId','cardVersionLabel','cardDetailLine','cardCtaHref',
     'moduleSummary','moduleCategory','moduleJobs','moduleJobKeys','moduleCardTheme','moduleSceneFamily',

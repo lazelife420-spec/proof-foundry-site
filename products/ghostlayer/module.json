@@ -43,9 +43,9 @@
     "ogTitle": "GhostLayer — Choose what becomes permanent.",
     "ogDescription": "Stage files in a volatile RAM layer, open them for editing, and deliberately commit selected changes to disk. GhostLayer {{product.versionLabel}} for Windows.",
     "ogType": "product",
-    "ogImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png",
+    "ogImage": "https://theprooffoundry.com/brand/PF_SOCIAL_CARD.png",
     "twitterCard": "summary_large_image",
-    "twitterImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png"
+    "twitterImage": "https://theprooffoundry.com/brand/PF_SOCIAL_CARD.png"
   },
   "contentSource": "content.html",
   "schemaVersion": 2,

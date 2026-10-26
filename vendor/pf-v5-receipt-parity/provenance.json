@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "pf-v5-receipt-parity-vendor/v1",
+  "file": "vendor/pf-v5-receipt-parity/PF_V5_RECEIPT_PARITY_REGRESSIONS.mjs",
+  "sha256": "476bdd3bb6dae3190d7e696252da350d2e04a72ec6222fa3a6de7d4ce7d03771",
+  "sizeBytes": 3091,
+  "deliveredAs": {
+    "archive": "PF_V5_RECEIPT_PARITY_REGRESSIONS.zip",
+    "archiveSha256": "1e721bcbdf1a637f9660a0c5f9a1ccd7a9f9df320a04644a94e969962cc359c2",
+    "date": "2026-10-13"
+  },
+  "origin": "Independent external review of the V5 receipt resolver, returned to the owner and attributed in the review record to ChatGPT. The file carries no author or licence line.",
+  "integration": "Owner ruling of 2026-10-13: integrate the receipt-parity regressions into a recognized qualification suite. scripts/test-h9-binding.ps1 runs this file unchanged and pins its SHA-256.",
+  "behaviour": "Reads pf-truth-receipt.js and four generated records; no writes, child processes or network."
+}

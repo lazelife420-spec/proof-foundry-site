@@ -8,6 +8,7 @@
 [CmdletBinding()]
 param()
 
+. "$PSScriptRoot/release-qualification.ps1"
 $ErrorActionPreference = 'Stop'
 $root = (Resolve-Path "$PSScriptRoot/..").Path
 $publicDir = Join-Path $root 'public'
@@ -17,7 +18,7 @@ function Assert-Truth([bool]$cond, [string]$name) {
   else { $script:failed++; Write-Host "FAIL: $name" -ForegroundColor Red }
 }
 
-$manifest = Get-Content (Join-Path $root 'site-manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+$manifest = Get-AuthoredReleaseManifest
 $schema = Get-Content (Join-Path $root 'schemas/public-truth-v1.schema.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 $truthDir = Join-Path $publicDir 'truth'
 $truthIndex = Get-Content (Join-Path $truthDir 'index.json') -Raw -Encoding UTF8 | ConvertFrom-Json
@@ -83,7 +84,7 @@ foreach ($p in $visible) {
   Assert-Truth (($manTests.Count -eq $trTests.Count) -and (-not @(0..[Math]::Max(0,$manTests.Count-1) | Where-Object { $manTests[$_] -cne $trTests[$_] }).Count)) "$($p.id): tests match manifest"
   Assert-Truth ($t.source.commit -ceq $truthIndex.source.commit -and $t.source.tree -ceq $truthIndex.source.tree) "$($p.id): product source identity equals index identity"
   # Sanitization: presentation/internal fields must not leak into truth output
-  foreach ($bad in @('summary','cardSummary','description','releaseNote','limits','cta','presentation','markSvg','cardImage','displayName','homeName','nav','navCta','visible','featured','lastVerified','build','proofStatus','testStatus','testCount','limits','currentLocalVersion')) {
+  foreach ($bad in @('summary','cardSummary','description','releaseNote','limits','cta','presentation','markSvg','cardImage','displayName','homeName','nav','navCta','visible','featured','lastVerified','build','proofStatus','testStatus','testCount','limits','currentLocalVersion','candidateStatus')) {
     Assert-Truth (-not $t.PSObject.Properties[$bad]) "$($p.id): presentation/internal field '$bad' absent from truth"
   }
 }
@@ -106,6 +107,25 @@ foreach ($p in $visible) {
   Assert-Truth ($truthHtml.Contains("/truth/products/$($p.id).json")) "truth page links to $($p.id) record"
 }
 Assert-Truth (-not ($truthHtml -match '\{\{')) 'truth page contains no unresolved tokens'
+# ── A-07 (K6): name only published records ───────────────────────────────────
+Assert-Truth (Test-Path -LiteralPath (Join-Path $truthDir 'v2/index.json') -PathType Leaf) 'route /truth/v2/index.json resolves (published canonical record)'
+Assert-Truth (Test-Path -LiteralPath (Join-Path $truthDir 'schema-v2.json') -PathType Leaf) 'route /truth/schema-v2.json resolves'
+Assert-Truth ($truthHtml.Contains('href="/truth/v2/index.json"') -and $truthHtml.Contains('href="/truth/schema-v2.json"')) 'truth page links the canonical v2 index and its schema'
+Assert-Truth ($truthHtml -match 'The published canonical record is <a class="text-link" href="/truth/v2/index\.json">' -and $truthHtml -match 'release-truth\.json</code>, which is kept in source custody and is not published') 'truth page names /truth/v2/ the canonical record and release-truth.json an unpublished authored input'
+Assert-Truth (-not (Test-Path -LiteralPath (Join-Path $publicDir 'release-truth.json'))) 'no release-truth.json (real or placeholder) is published'
+$staleRecordWording = '(?i)canonical manifest|canonical machine record|canonical <code class="inline">(release-truth|site-manifest)\.json|verifiable by anyone who rebuilds'
+$staleHits = @(Get-ChildItem $publicDir -Recurse -File -Filter *.html | Where-Object { [IO.File]::ReadAllText($_.FullName) -match $staleRecordWording } | ForEach-Object { [IO.Path]::GetRelativePath($publicDir, $_.FullName) })
+Assert-Truth ($staleHits.Count -eq 0) "no page calls an unpublished file or a manifest canonical, or promises verification by rebuild ($($staleHits -join ', '))"
+$recordPages = @('truth', 'proof', 'proof-standard', 'truth-files') + @($visible | ForEach-Object { "truth-files/$($_.id)" })
+$deadRecordLinks = @()
+foreach ($pg in $recordPages) {
+  $pgHtml = [IO.File]::ReadAllText((Join-Path $publicDir "$pg/index.html"))
+  foreach ($m in [regex]::Matches($pgHtml, 'href="(/truth/[^"#?]*|/site-manifest\.json)"')) {
+    $target = Join-Path $publicDir ($m.Groups[1].Value.TrimStart('/') -replace '/', [IO.Path]::DirectorySeparatorChar)
+    if (-not (Test-Path -LiteralPath $target -PathType Leaf) -and -not (Test-Path -LiteralPath (Join-Path $target 'index.html') -PathType Leaf)) { $deadRecordLinks += "/$pg/ -> $($m.Groups[1].Value)" }
+  }
+}
+Assert-Truth ($deadRecordLinks.Count -eq 0) "every /truth/ and /site-manifest.json link on the record pages resolves to a built file ($($deadRecordLinks -join ', '))"
 
 # ── H11-R1: worktreeDirty removed from public v1 ──────────────────────────────
 $schemaRaw = [IO.File]::ReadAllText((Join-Path $root 'schemas/public-truth-v1.schema.json'))
@@ -130,17 +150,30 @@ foreach ($mm in [regex]::Matches($sitemap, '<loc>([^<]+)</loc>\s*<lastmod>([^<]+
 $headSitemap = (git -C $root show 'HEAD:sitemap.xml') -join "`n"
 $headLastmod = @{}
 foreach ($mm in [regex]::Matches($headSitemap, '<loc>([^<]+)</loc>\s*<lastmod>([^<]+)</lastmod>')) { $headLastmod[$mm.Groups[1].Value] = $mm.Groups[2].Value }
-Assert-Truth ($lastmodByLoc['https://theprooffoundry.com/truth/'] -eq '2026-09-20') 'sitemap: /truth/ carries H11 date (new route)'
-Assert-Truth ($lastmodByLoc['https://theprooffoundry.com/proof-standard/'] -eq '2026-09-20') 'sitemap: /proof-standard/ carries H11 date (H11 changed the page)'
-# These five existing content-date corrections close the owner-authorized
-# baseline debt. H4 independently derives each date from material Git inputs.
-# All other routes retain their HEAD dates; no blanket freshness bump.
+Assert-Truth ($lastmodByLoc['https://theprooffoundry.com/truth/'] -eq '2026-10-20') 'sitemap: /truth/ carries its record-wording material date (2026-10-20)'
+Assert-Truth ($lastmodByLoc['https://theprooffoundry.com/proof-standard/'] -eq '2026-10-20') 'sitemap: /proof-standard/ carries its record-wording material date (2026-10-20)'
+# Every route changed through the shared header/footer on 2026-10-05. These
+# exact assertions and HEAD equality retain the sitemap gate population; H4
+# independently checks material dates. Release dates are not website dates.
+# Cache Vault's film loading markup changed after the historical reconciliation.
+# Bind this exact expectation to its committed content input, independently of
+# the sitemap under test. H4 also checks the complete material-input signature.
+$cacheVaultMaterialDate = (& git -C $root log -1 --format=%cs -- 'products/cache-vault/content.html').Trim()
+Assert-Truth ($LASTEXITCODE -eq 0 -and $cacheVaultMaterialDate -match '^\d{4}-\d{2}-\d{2}$') 'sitemap: Cache Vault material date resolves from committed product content'
+# Home's template changed after the reconciliation too (V5 port). Bind it the
+# same way, to its committed template; H4 checks Home's full input signature.
+# Home's material inputs also include module card and hero fields; the literal is the last commit that moved its H4 signature.
+$homeMaterialDate = (& git -C $root log -1 --format=%cs -- 'index.html').Trim()
+Assert-Truth ($LASTEXITCODE -eq 0 -and $homeMaterialDate -match '^\d{4}-\d{2}-\d{2}$') 'sitemap: Home material date resolves from the committed homepage template'
+# T0 is not authorised: a commit that moves /proofshot/, /reality-gate/ or
+# /software/ edits its literal below in the same commit as its sitemap date.
 $reconciledLastmod = @{
-  'https://theprooffoundry.com/' = '2026-10-04'
-  'https://theprooffoundry.com/cache-vault/' = '2026-10-03'
-  'https://theprooffoundry.com/proofshot/' = '2026-09-30'
-  'https://theprooffoundry.com/reality-gate/' = '2026-09-30'
-  'https://theprooffoundry.com/software/' = '2026-10-03'
+  'https://theprooffoundry.com/' = (@($homeMaterialDate, '2026-10-20') | Sort-Object | Select-Object -Last 1)
+  'https://theprooffoundry.com/cache-vault/' = $cacheVaultMaterialDate
+  'https://theprooffoundry.com/proofshot/' = '2026-10-20'
+  'https://theprooffoundry.com/reality-gate/' = '2026-10-20'
+  'https://theprooffoundry.com/software/' = '2026-10-21'
+  'https://theprooffoundry.com/support/' = '2026-10-21'
 }
 foreach ($kv in $headLastmod.GetEnumerator()) {
   if ($kv.Key -eq 'https://theprooffoundry.com/proof-standard/') { continue }
@@ -155,9 +188,9 @@ foreach ($kv in $headLastmod.GetEnumerator()) {
 # ── Sanitization negative controls (Phase L) — disposable fixture builds ──────
 $tmp = Join-Path $env:TEMP ("pf-h11-" + [guid]::NewGuid().ToString('N').Substring(0,8))
 New-Item -ItemType Directory -Force -Path "$tmp\public" | Out-Null
-Copy-Item (Join-Path $root 'site-manifest.json') "$tmp\manifest.json"
+[IO.File]::WriteAllText("$tmp\manifest.json", ((Get-AuthoredReleaseManifest) | ConvertTo-Json -Depth 100), [Text.UTF8Encoding]::new($false))
 $tCommit = 'a' * 40; $tTree = 'b' * 40; $tAt = '2026-09-20T00:00:00+00:00'
-$buildScript = Join-Path $root 'scripts/build-site.ps1'
+$buildScript = Join-Path $root 'scripts/build-qualification-fixture.ps1'
 
 # Inject internal/private-shaped fields into a fixture manifest
 $fm = Get-Content "$tmp\manifest.json" -Raw -Encoding UTF8 | ConvertFrom-Json
@@ -233,44 +266,44 @@ try {
 }
 
 # ── H11-R1: deploy preflight — tracked-dirty can NEVER publish ────────────────
-# Disposable committed repo containing the candidate deploy.ps1. Assert that
-# tracked changes (staged AND unstaged) are blocked even with -AllowDirtyDeploy,
-# while untracked-only material passes the preflight under the flag. Wrangler is
-# never reached on the negative path; on the untracked path the guard is proven
-# by the warning line, then the script may fail later — that is out of scope.
+# Disposable committed repo containing the unchanged sealed-source deploy gate.
+# Tracked and untracked source changes must fail before artifact or auth access.
 $drepo = Join-Path $tmp 'deployrepo'
 New-Item -ItemType Directory -Force -Path $drepo | Out-Null
-foreach ($p in @('deploy.ps1','scripts\build-site.ps1','site-manifest.json','schemas')) {
+foreach ($p in @('deploy.ps1','scripts\authority-deployment.cjs','site-manifest.json','schemas')) {
   $dest = Join-Path $drepo $p
   if ((Get-Item (Join-Path $root $p)).PSIsContainer) { robocopy (Join-Path $root $p) $dest /E /NFL /NDL /NJH /NJS /NP | Out-Null }
   else { New-Item -ItemType Directory -Force -Path (Split-Path $dest) | Out-Null; Copy-Item (Join-Path $root $p) $dest }
 }
 Push-Location $drepo
 try {
+  $sealed = Join-Path $tmp 'sealed-unqualified'
+  New-Item -ItemType Directory -Path $sealed | Out-Null
+  $receipt = Join-Path $tmp 'unqualified.json'
+  [IO.File]::WriteAllText($receipt, '{}')
   git init -q 2>$null; git add -A 2>$null; git -c user.email=t@t -c user.name=t commit -qm base 2>$null | Out-Null
-  # Control A: tracked unstaged mutation — deploy must fail even with the flag
+  # Control A: tracked unstaged mutation blocks at source preflight.
   Add-Content 'site-manifest.json' "`n" -NoNewline
-  & pwsh -NoProfile -File '.\deploy.ps1' -AllowDirtyDeploy *> "$tmp\dep-a.log"
+  & pwsh -NoProfile -File '.\deploy.ps1' -Mode stage -Artifact $sealed -QualificationReceipt $receipt *> "$tmp\dep-a.log"
   $logA = Get-Content "$tmp\dep-a.log" -Raw
-  Assert-Truth ($LASTEXITCODE -eq 1 -and $logA -match 'tracked source is not clean') 'deploy guard: tracked unstaged change blocked even with -AllowDirtyDeploy'
+  Assert-Truth ($LASTEXITCODE -ne 0 -and $logA -match 'Dirty source cannot be deployed') 'deploy guard: tracked unstaged change blocked before artifact or authentication access'
   git checkout -- 'site-manifest.json' 2>$null
   # Control B: staged tracked mutation — same block
   Add-Content 'site-manifest.json' "`n" -NoNewline; git add 'site-manifest.json' 2>$null
-  & pwsh -NoProfile -File '.\deploy.ps1' -AllowDirtyDeploy *> "$tmp\dep-b.log"
+  & pwsh -NoProfile -File '.\deploy.ps1' -Mode stage -Artifact $sealed -QualificationReceipt $receipt *> "$tmp\dep-b.log"
   $logB = Get-Content "$tmp\dep-b.log" -Raw
-  Assert-Truth ($LASTEXITCODE -eq 1 -and $logB -match 'tracked source is not clean') 'deploy guard: staged tracked change blocked even with -AllowDirtyDeploy'
+  Assert-Truth ($LASTEXITCODE -ne 0 -and $logB -match 'Dirty source cannot be deployed') 'deploy guard: staged tracked change blocked before artifact or authentication access'
   git reset -q --hard 2>$null
-  # Control C: untracked-only — preflight passes under the flag (build proceeds;
-  # later wrangler step may fail for creds — irrelevant to the guard).
+  # Control C: untracked-only material also blocks at source preflight.
   # NB: absolute path — .NET file APIs ignore Push-Location.
   [IO.File]::WriteAllText((Join-Path $drepo 'review-note.tmp'), 'custody evidence')
-  & pwsh -NoProfile -File '.\deploy.ps1' -AllowDirtyDeploy *> "$tmp\dep-c.log"
+  & pwsh -NoProfile -File '.\deploy.ps1' -Mode stage -Artifact $sealed -QualificationReceipt $receipt *> "$tmp\dep-c.log"
   $logC = Get-Content "$tmp\dep-c.log" -Raw
-  Assert-Truth ($logC -match 'WARNING: -AllowDirtyDeploy set' -and $logC -match 'Building public/') 'deploy guard: untracked-only material passes preflight under -AllowDirtyDeploy'
-  # Control D: untracked-only without the flag still blocks (conservative default)
-  & pwsh -NoProfile -File '.\deploy.ps1' *> "$tmp\dep-d.log"
+  Assert-Truth ($LASTEXITCODE -ne 0 -and $logC -match 'Dirty source cannot be deployed' -and $logC -notmatch 'Uploading|Building public/') 'deploy guard: untracked-only material is also blocked by the sealed-source policy'
+  # Control D: the removed dirty-deploy flag cannot bypass source preflight.
+  & pwsh -NoProfile -File '.\deploy.ps1' -AllowDirtyDeploy *> "$tmp\dep-d.log"
   $logD = Get-Content "$tmp\dep-d.log" -Raw
-  Assert-Truth ($LASTEXITCODE -eq 1 -and $logD -match 'untracked files present') 'deploy guard: untracked-only still requires -AllowDirtyDeploy (conservative default)'
+  Assert-Truth ($LASTEXITCODE -ne 0 -and $logD -match 'AllowDirtyDeploy' -and $logD -notmatch 'Uploading|Building public/') 'deploy guard: removed AllowDirtyDeploy cannot bypass source custody'
 } finally {
   Pop-Location
 }

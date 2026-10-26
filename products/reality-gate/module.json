@@ -9,27 +9,27 @@
     {
       "type": "outcomes",
       "id": "features",
-      "kicker": "Reality Gate product capabilities",
-      "title": "Local control room for your software projects.",
-      "lede": "Bring an ordinary Git repository. Keep the tools and remotes you already use.",
+      "kicker": "Historical capabilities",
+      "title": "What {{product.withdrawnVersionLabel}} did (historical)",
+      "lede": "It worked with an ordinary Git repository and the tools and remotes already in use.",
       "items": [
         {
           "title": "Project Registry",
-          "body": "Bind canonical repository roots, working trees, and target identities to explicit validation maps before running checks."
+          "body": "Bound canonical repository roots, working trees and target identities to explicit validation maps before running checks."
         },
         {
           "title": "Isolated Runroom",
-          "body": "Build and test in bounded local checkouts with step-by-step log capture and execution cancellation.",
-          "note": "Runroom protects your main working tree; it is not an OS security sandbox."
+          "body": "Built and tested in bounded local checkouts, with step-by-step log capture and execution cancellation.",
+          "note": "Runroom protected the main working tree; it was not an OS security sandbox."
         },
         {
           "title": "Proof Ledger",
-          "body": "Save cryptographic, ECDSA P-256 signed run records binding source commit SHAs, test outcomes, and build digests.",
-          "note": "Local signatures verify payload integrity against local keys, not third-party issuer trust."
+          "body": "Saved cryptographic, ECDSA P-256 signed run records binding source commit SHAs, test outcomes and build digests.",
+          "note": "Local signatures verified payload integrity against local keys, not third-party issuer trust."
         },
         {
           "title": "Recovery Vault",
-          "body": "Prepare recovery bundles with explicitly recorded contents and rehearse restoration into a separate location."
+          "body": "Prepared recovery bundles with explicitly recorded contents and rehearsed restoration into a separate location."
         }
       ]
     },
@@ -50,9 +50,9 @@
     "ogTitle": "Reality Gate — Your projects. Your execution. Your way back.",
     "ogDescription": "Reality Gate is local-first software for Git project continuity, build records, and recovery. Its former release was withdrawn; no current public download is available.",
     "ogType": "product",
-    "ogImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png",
+    "ogImage": "https://theprooffoundry.com/brand/PF_SOCIAL_CARD.png",
     "twitterCard": "summary_large_image",
-    "twitterImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png"
+    "twitterImage": "https://theprooffoundry.com/brand/PF_SOCIAL_CARD.png"
   },
   "contentSource": "content.html",
   "inlineCss": " /* H3 readability correction (retained): the origin narrative beats carry light    copy that was authored against a dark paired surface. Keep that pairing so    the copy stays legible. No copy, layout, or hierarchy change. */ .product-reality-gate #origin {   background: #101418;   border: 1px solid rgba(255,255,255,0.08); } .product-reality-gate #origin .section-heading h2, .product-reality-gate #origin .section-heading p {   color: #f2f0eb; } ",
@@ -89,7 +89,7 @@
     "kicker": "Local developer continuity & execution",
     "headline": "Your projects.",
     "emphasis": "Your execution. Your way back.",
-    "lede": "Bring your Git projects into a local control room for builds, run records, and recovery. See the source behind a run, inspect its outcome, and keep a recovery path alongside the work.",
+    "lede": "{{product.statusStatement}}",
     "media": {
       "src": "/assets/reality-gate/08-ci-run-complete.50deeeef7e10fbe8.png",
       "alt": "Reality Gate sample Runroom displaying a completed CI run for Demo Widget Service.",
@@ -105,10 +105,10 @@
     }
   },
   "card": {
-    "tagline": "Your projects. Your execution. Your way back.",
+    "tagline": "Historical record: a local control room for Git builds, run records and recovery.",
     "media": "/assets/studio/08-ci-run-complete-card-960.png",
-    "summary": "Bring your Git projects into a local control room for builds, run records, and recovery. See the source behind a run, inspect its outcome, and keep a recovery path alongside the work.",
-    "mediaAlt": "Reality Gate sample Runroom displaying a completed CI run for Demo Widget Service"
+    "summary": "Reality Gate's withdrawn Windows release ran builds in isolated local clones, kept signed run records and prepared recovery bundles. That release was withdrawn after a security packaging defect.",
+    "mediaAlt": "Sample Reality Gate Runroom showing a completed demo CI run for Demo Widget Service; build not shown"
   },
   "lifecycle": "public-eligible",
   "commerce": { "status": "WITHDRAWN", "label": "Withdrawn · no public download" },
