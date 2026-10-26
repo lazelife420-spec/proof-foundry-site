@@ -401,8 +401,8 @@ $a12ExpLine = @(Get-Content (Join-Path $publicDir 'experience.js') -Encoding UTF
 $a12RgTour = @()
 if ($a12ExpLine) { $a12RgTour = @(($a12ExpLine.Substring($a12Prefix.Length).TrimEnd(';') | ConvertFrom-Json).'reality-gate'.tour) }
 Assert-Condition ($a12RgTour.Count -eq 4 -and $a12RgTour[0].description -ceq $rgTourCaption -and $a12RgTour[2].description -ceq $rgRecoveryCaption -and $a12RgTour[2].image.alt.Contains('AT RISK')) 'A-12: Reality Gate tour data mirrors the page captions for Orient and Recover'
-$a12HomeCard = [regex]::Match([IO.File]::ReadAllText((Join-Path $publicDir 'index.html')), '(?s)<article class="ledger-instrument" data-ledger-feature="lights-out".*?</article>').Value
-Assert-Condition ($a12HomeCard.Contains('src="/assets/lights-out/tonight-active-hero.png"') -and -not $a12HomeCard.Contains('tonight-active-hero-card-960')) 'A-12: Home Lights Out card shows the full-frame capture, not the crop that cut its build stamp'
+# The restored ledger homepage shows no product captures (compact instrument rows), so the
+# home A-12 variant is retired; the /software/ binding below keeps the full-frame guarantee.
 $a12SoftwareCard = [regex]::Match([IO.File]::ReadAllText((Join-Path $publicDir 'software\index.html')), '(?s)<article class="product-card[^>]*data-product="lights-out".*?</article>').Value
 Assert-Condition ($a12SoftwareCard.Contains('src="/assets/lights-out/tonight-active-hero.png"') -and -not $a12SoftwareCard.Contains('tonight-active-hero-card-960')) 'A-12: Software Lights Out card shows the full-frame capture, build stamp included'
 $a12Retired = @(
