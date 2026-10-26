@@ -3065,32 +3065,30 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   $header = $headerPartial
   $header = $header -replace [regex]::Escape('{{nav-links}}'), $navLinks
   $header = $header -replace [regex]::Escape('{{nav-cta}}'),   $navCta
-  # V5 homepage (owner ruling, 2026-10-13): Home's header carries the PF Mark G
-  # header render. Forced colours keep the shared vector micro mark.
-  if ($srcName -eq 'index.html') {
-    $sharedMark = '<img class="brand-mark" src="/brand/PF_HEADER_MARK.svg" alt="" width="42" height="42" />'
-    if (-not $header.Contains($sharedMark)) { throw 'Home header: the shared header no longer carries the expected micro mark.' }
-    $header = $header.Replace($sharedMark, '<picture class="brand-mark-picture"><source media="(forced-colors: active)" srcset="/brand/PF_HEADER_MARK.svg"/><img class="brand-mark" src="/brand/emblem/PF_MARK_G_HEADER.webp" alt="" width="50" height="51"/></picture>')
-    # Forced colours (V5 refinement F5): Home's header and footer also carry an inline, same-document copy of the
-    # canonical micro mark, shown only in forced colours and drawn in system colours by pf-home-ledger.css. An SVG
-    # loaded through <img> evaluates its own forced-colours rules in a separate image document, which was observed to
-    # keep its normal colours on warm-cache and switched loads.
-    $microSvg = Read-File (Join-Path $root 'brand/PF_HEADER_MARK.svg')
-    $microStart = $microSvg.IndexOf('</style>') + '</style>'.Length
-    $microBody = ($microSvg.Substring($microStart, $microSvg.LastIndexOf('</svg>') - $microStart).Trim() -replace '>\s+<', '><')
-    if ($microStart -lt 8 -or $microBody -match '\sid="|<style|<title|<desc|<script') { throw 'Home forced-colours mark: PF_HEADER_MARK.svg no longer has the expected shape.' }
-    $homeFcMark = @{}
-    foreach ($kind in @('header', 'footer')) { $homeFcMark[$kind] = "<span class=`"pf-mark-fc pf-mark-fc--$kind`" hidden><svg viewBox=`"0 0 256 256`" aria-hidden=`"true`" focusable=`"false`">$microBody</svg></span>" }
-    if (([regex]::Matches($header, '</picture>')).Count -ne 1) { throw 'Home header: expected exactly one picture element.' }
-    $header = $header.Replace('</picture>', '</picture>' + $homeFcMark['header'])
-  }
+  # V5 (owner ruling, 2026-10-13; studio-wide 2026-10-25): every route's header carries
+  # the PF Mark G header render so the studio has one brand mark. Forced colours keep
+  # the shared vector micro mark.
+  $sharedMark = '<img class="brand-mark" src="/brand/PF_HEADER_MARK.svg" alt="" width="42" height="42" />'
+  if (-not $header.Contains($sharedMark)) { throw 'Header: the shared header no longer carries the expected micro mark.' }
+  $header = $header.Replace($sharedMark, '<picture class="brand-mark-picture"><source media="(forced-colors: active)" srcset="/brand/PF_HEADER_MARK.svg"/><img class="brand-mark" src="/brand/emblem/PF_MARK_G_HEADER.webp" alt="" width="50" height="51"/></picture>')
+  # Forced colours (V5 refinement F5, studio-wide): every route's header and footer also carry an inline,
+  # same-document copy of the canonical micro mark, shown only in forced colours and drawn in system colours
+  # by pf-home-ledger.css on Home and pf-site-ledger.css on every other route. An SVG loaded through <img>
+  # evaluates its own forced-colours rules in a separate image document, which was observed to keep its
+  # normal colours on warm-cache and switched loads.
+  $microSvg = Read-File (Join-Path $root 'brand/PF_HEADER_MARK.svg')
+  $microStart = $microSvg.IndexOf('</style>') + '</style>'.Length
+  $microBody = ($microSvg.Substring($microStart, $microSvg.LastIndexOf('</svg>') - $microStart).Trim() -replace '>\s+<', '><')
+  if ($microStart -lt 8 -or $microBody -match '\sid="|<style|<title|<desc|<script') { throw 'Forced-colours mark: PF_HEADER_MARK.svg no longer has the expected shape.' }
+  $fcMark = @{}
+  foreach ($kind in @('header', 'footer')) { $fcMark[$kind] = "<span class=`"pf-mark-fc pf-mark-fc--$kind`" hidden><svg viewBox=`"0 0 256 256`" aria-hidden=`"true`" focusable=`"false`">$microBody</svg></span>" }
+  if (([regex]::Matches($header, '</picture>')).Count -ne 1) { throw 'Header: expected exactly one picture element.' }
+  $header = $header.Replace('</picture>', '</picture>' + $fcMark['header'])
 
   $footer = $footerPartial -replace [regex]::Escape('{{footer-products}}'), (Build-FooterProducts)
-  if ($srcName -eq 'index.html') {
-    $footerLogo = '<img class="footer-logo" src="/brand/PF_HEADER_MARK.svg" alt="" width="42" height="42"/>'
-    if (([regex]::Matches($footer, [regex]::Escape($footerLogo))).Count -ne 1) { throw 'Home footer: the shared footer no longer carries the expected logo.' }
-    $footer = $footer.Replace($footerLogo, $footerLogo + $homeFcMark['footer'])
-  }
+  $footerLogo = '<img class="footer-logo" src="/brand/PF_HEADER_MARK.svg" alt="" width="42" height="42"/>'
+  if (([regex]::Matches($footer, [regex]::Escape($footerLogo))).Count -ne 1) { throw 'Footer: the shared footer no longer carries the expected logo.' }
+  $footer = $footer.Replace($footerLogo, $footerLogo + $fcMark['footer'])
 
   # Inject partials
   $html = $html -replace '<!--\s*@include header\s*-->', $header
