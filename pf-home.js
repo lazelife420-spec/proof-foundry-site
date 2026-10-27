@@ -87,9 +87,9 @@ const CANON = {
 };
 const LETTERS = 'translate(26.16 30.72) scale(.76)';
 const NOTES = [
-  { title: 'The approved silver P', u: 73, v: 160, shape: 'P',
+  { title: 'The approved silver P', u: 73, v: 160, shape: 'P', loupe: [92, 132, 2.7],
     body: 'The P is drawn from the PF Mark G master contour, unaltered. It is rendered as satin-machined steel, brushed in one direction, with a crisp chamfer on every edge so the outline stays sharp at any size. P is for proof.' },
-  { title: 'The brass F', u: 186, v: 71, shape: 'F',
+  { title: 'The brass F', u: 186, v: 71, shape: 'F', loupe: [186, 126, 2.7],
     body: "The F is the second master component, finished as brushed brass with its grain running vertically. It sits over the P's bowl in the same paint order as the master artwork, so the silhouette matches the approved mark exactly. F is for foundry." },
   { title: 'The connecting bridge', u: 112, v: 97, shape: 'B', loupe: [150, 97, 3.0],
     body: "The master's bridge ties the two letters together. Here it is a steel key across the F stem with a thin brass inlay, fixed to the P by two short tack welds — the only welds on the mark, each with a small ring of temper colour. Proof and making, joined." },
@@ -619,6 +619,181 @@ document.addEventListener('error', (event) => { if (decorative(event.target)) ar
 // Failures that happened before this module ran.
 for (const img of document.images) if (decorative(img) && img.complete && img.currentSrc && img.naturalWidth === 0) artFailed(img);
 
+// ── The proof chain: an articulated, illustrative mechanism ───────────────────
+// The authored list remains the content and no-JS fallback. This local SVG
+// explains the sequence; movement never represents a live verification result.
+function initProofChain() {
+  const machine = document.querySelector('.ledger-chain-machine');
+  const stages = [...(machine?.querySelectorAll('.ledger-rail > li') || [])];
+  if (!machine || stages.length !== 5 || !window.ResizeObserver || !window.IntersectionObserver) return;
+  const ns = 'http://www.w3.org/2000/svg';
+  const svg = (tag, attrs = {}, parent) => {
+    const node = document.createElementNS(ns, tag);
+    for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, String(value));
+    parent?.append(node);
+    return node;
+  };
+  const scene = svg('svg', { class: 'pf-chain-drive', 'aria-hidden': 'true', focusable: 'false' });
+  scene.innerHTML = `<defs>
+    <linearGradient id="pf-drive-steel" x2="0" y2="1"><stop stop-color="#d4dde1"/><stop offset=".17" stop-color="#7e8d98"/><stop offset=".47" stop-color="#45535e"/><stop offset=".54" stop-color="#202d37"/><stop offset="1" stop-color="#65737c"/></linearGradient>
+    <linearGradient id="pf-drive-brass" x2="0" y2="1"><stop stop-color="#f2d691"/><stop offset=".35" stop-color="#b98c46"/><stop offset=".54" stop-color="#6b4b23"/><stop offset="1" stop-color="#d5b36c"/></linearGradient>
+    <linearGradient id="pf-drive-bed" x2="0" y2="1"><stop stop-color="#040a0f"/><stop offset=".55" stop-color="#14202a"/><stop offset="1" stop-color="#070d13"/></linearGradient>
+    <radialGradient id="pf-drive-bearing"><stop stop-color="#05090c"/><stop offset=".21" stop-color="#0b1218"/><stop offset=".23" stop-color="#a7b5bb"/><stop offset=".38" stop-color="#53626d"/><stop offset=".42" stop-color="#101b23"/><stop offset=".70" stop-color="#2d3c47"/><stop offset=".74" stop-color="#81929b"/><stop offset=".8" stop-color="#23313c"/><stop offset="1" stop-color="#080e14"/></radialGradient>
+    <pattern id="pf-drive-grain" width="4" height="4" patternUnits="userSpaceOnUse"><path d="M0 .5H4" stroke="#dde6eb" stroke-opacity=".055"/><path d="M0 2H4" stroke="#000" stroke-opacity=".3"/></pattern>
+    <g id="pf-drive-link"><path d="M-12-8C-18-8-20-4-20 0S-18 8-12 8H12C18 8 20 4 20 0S18-8 12-8Z" fill="#020609" transform="translate(0 2.5)"/><path d="M-12-8C-18-8-20-4-20 0S-18 8-12 8H12C18 8 20 4 20 0S18-8 12-8Z" fill="url(#pf-drive-steel)" stroke="#a0b0b9" stroke-width=".65"/><path d="M-11-5H11M-11 5H11" stroke="#0b151d" stroke-width=".8"/><circle cx="-12" r="4.2" fill="url(#pf-drive-bearing)" stroke="#070c11"/><circle cx="12" r="4.2" fill="url(#pf-drive-bearing)" stroke="#070c11"/></g>
+  </defs>`;
+  const bed = svg('rect', { rx: 9, fill: 'url(#pf-drive-bed)', stroke: '#05090d', 'stroke-width': 5 }, scene);
+  const grain = svg('rect', { rx: 7, fill: 'url(#pf-drive-grain)', stroke: '#647581', 'stroke-opacity': .5 }, scene);
+  const track = svg('path', { fill: 'none', stroke: '#020609', 'stroke-width': 29 }, scene);
+  const guide = svg('path', { fill: 'none', stroke: '#435460', 'stroke-width': 1, 'stroke-dasharray': '2 6' }, scene);
+  const gears = [], mounts = [];
+  for (let i = 0; i < 2; i++) {
+    const mount = svg('g', {}, scene);
+    svg('rect', { x: -42, y: -42, width: 84, height: 84, rx: 8, fill: '#1c2a34', stroke: '#060b0f', 'stroke-width': 3 }, mount);
+    for (const x of [-32, 32]) for (const y of [-32, 32]) {
+      svg('circle', { cx: x, cy: y, r: 4, fill: 'url(#pf-drive-bearing)' }, mount);
+    }
+    const rotor = svg('g', {}, mount);
+    const teeth = [];
+    for (let n = 0; n < 64; n++) {
+      const a = n / 64 * Math.PI * 2, r = n % 4 < 2 ? 35 : 40;
+      teeth.push(`${(Math.cos(a) * r).toFixed(2)},${(Math.sin(a) * r).toFixed(2)}`);
+    }
+    svg('polygon', { points: teeth.join(' '), fill: i ? 'url(#pf-drive-steel)' : 'url(#pf-drive-brass)', stroke: '#0a1117', 'stroke-width': 1.3 }, rotor);
+    svg('circle', { r: 27, fill: '#13212c', stroke: '#7e8b90', 'stroke-width': .6 }, rotor);
+    for (let n = 0; n < 5; n++) svg('ellipse', { cx: 17, cy: 0, rx: 7, ry: 4, fill: '#040b10', stroke: '#40505c', 'stroke-width': .6, transform: `rotate(${n * 72})` }, rotor);
+    svg('circle', { r: 11, fill: 'url(#pf-drive-bearing)', stroke: '#0a1117' }, rotor);
+    svg('path', { d: 'M-3-5H3L6 0 3 5H-3L-6 0Z', fill: '#050b10', stroke: '#71838e', 'stroke-width': .5 }, rotor);
+    mounts.push(mount); gears.push(rotor);
+  }
+  const pickups = Array.from({ length: 5 }, (_, i) => {
+    const group = svg('g', {}, scene);
+    const lead = svg('path', { fill: 'none', stroke: '#8b9da6', 'stroke-opacity': .5, 'stroke-width': 1.2 }, group);
+    svg('rect', { x: -23, y: -22, width: 46, height: 44, rx: 3, fill: 'url(#pf-drive-steel)', stroke: '#02070b', 'stroke-width': 2 }, group);
+    svg('rect', { x: -18, y: -17, width: 36, height: 34, rx: 2, fill: '#14232d', stroke: '#506673', 'stroke-width': .7 }, group);
+    svg('rect', { x: -7, y: -34, width: 14, height: 12, rx: 2, fill: 'url(#pf-drive-steel)', stroke: '#060c10' }, group);
+    const index = svg('rect', { x: -10, y: -10, width: 20, height: 3, rx: 1, fill: '#76878e' }, group);
+    const number = svg('text', { x: 0, y: 7, 'text-anchor': 'middle', fill: '#d5e0e4', 'font-family': 'IBM Plex Mono,monospace', 'font-size': 10, 'letter-spacing': 1 }, group);
+    number.textContent = `0${i + 1}`;
+    for (const x of [-15, 15]) svg('circle', { cx: x, cy: 13, r: 1.6, fill: '#03070a', stroke: '#73838c', 'stroke-width': .5 }, group);
+    return { group, lead, index };
+  });
+  const links = Array.from({ length: 96 }, (_, i) => svg('use', { href: '#pf-drive-link', opacity: i % 2 ? .67 : 1 }, scene));
+  const carrier = svg('g', { class: 'pf-chain-carrier' }, scene);
+  svg('rect', { x: -15, y: -11, width: 30, height: 22, rx: 4, fill: 'url(#pf-drive-brass)', stroke: '#f4d28b', 'stroke-width': .7 }, carrier);
+  svg('path', { d: 'M-6-4H4L8 0 4 4H-6Z', fill: '#19130c' }, carrier);
+  svg('circle', { cx: -10, r: 1.3, fill: '#272015' }, carrier);
+  const witness = svg('g', {}, scene);
+  svg('path', { d: 'M0-7 9 0 0 7Z', fill: '#bcd2d5', stroke: '#05090d', 'stroke-width': 2 }, witness);
+  const toolbar = el('div', 'pf-chain-toolbar');
+  const stamp = el('span', 'pf-chain-stamp', 'PF / EVIDENCE DRIVE');
+  const toggle = el('button', 'pf-chain-toggle', 'Pause mechanism');
+  toggle.type = 'button'; toggle.setAttribute('aria-pressed', 'false');
+  toolbar.append(stamp, toggle);
+  const detail = el('div', 'pf-chain-detail'); detail.id = 'pf-chain-detail';
+  const detailTitle = el('strong', null, 'Source');
+  const detailText = el('p');
+  detail.append(detailTitle, detailText);
+  const caption = el('p', 'pf-chain-caption', 'An illustration of the record, not a live verification.');
+  const explanations = [
+    'A specific source version gives a build an identifiable starting point.',
+    'Published build evidence describes how that source became an output, where that evidence exists.',
+    'A checksum binds a record to exact file bytes. A matching hash does not by itself prove safety.',
+    'Current availability, qualification and withdrawal belong to the published release record.',
+    'Known gaps stay visible. The record is incomplete without its limitations.'
+  ];
+  machine.prepend(scene, toolbar); machine.append(detail, caption);
+  let active = 0, phase = 0, raf = 0, last = 0, inView = false, paused = false, pathLength = 0, samples = [], vertical = false;
+  const forced = matchMedia('(forced-colors: active)');
+  const allowed = () => motionOn() && !forced.matches && !paused && inView && !document.hidden;
+  function choose(index) {
+    active = index;
+    stages.forEach((stage, i) => { stage.dataset.engaged = String(i === index); stage.querySelector('button').setAttribute('aria-pressed', String(i === index)); });
+    detailTitle.textContent = stages[index].querySelector('h3').textContent;
+    detailText.textContent = explanations[index];
+    positionWitness();
+  }
+  stages.forEach((stage, index) => {
+    const heading = stage.querySelector('h3');
+    const button = el('button', 'pf-chain-select', heading.textContent);
+    button.type = 'button'; button.setAttribute('aria-controls', detail.id);
+    heading.replaceChildren(button);
+    button.addEventListener('click', () => choose(index));
+    button.addEventListener('keydown', event => {
+      const keys = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
+      const next = event.key === 'Home' ? 0 : event.key === 'End' ? 4 : event.key in keys ? (index + keys[event.key] + 5) % 5 : -1;
+      if (next < 0) return;
+      event.preventDefault(); choose(next); stages[next].querySelector('button').focus({ preventScroll: true });
+    });
+  });
+  function positionWitness() {
+    if (!samples.length) return;
+    const railTop = machine.querySelector('.ledger-rail').getBoundingClientRect().top;
+    pickups.forEach((pickup, i) => {
+      const a = stages[i].getBoundingClientRect(), y = a.top - railTop + a.height / 2;
+      pickup.group.setAttribute('transform', vertical ? `translate(43 ${y}) scale(.64)` : `translate(${160 + i * 220} 125)`);
+      pickup.lead.setAttribute('d', vertical ? 'M23 0H55' : `M0 22V48L${-40 + i * 20} 90`);
+      pickup.index.setAttribute('fill', i === active ? '#e6c17d' : '#667c87');
+      if (i === active) witness.setAttribute('transform', vertical ? `translate(77 ${y})` : `translate(${120 + i * 240} 217) rotate(90)`);
+    });
+  }
+  function rebuild() {
+    vertical = machine.clientWidth < 760;
+    const height = vertical ? machine.querySelector('.ledger-rail').offsetHeight : 250;
+    const width = vertical ? 86 : 1200, top = vertical ? 55 : 125, bottom = height - 55;
+    scene.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    for (const node of [bed, grain]) for (const [attr, value] of Object.entries({ x: 3, y: 3, width: width - 6, height: height - 6 })) node.setAttribute(attr, String(value));
+    const d = vertical ? `M20 ${top} A23 23 0 0 1 66 ${top} V${bottom} A23 23 0 0 1 20 ${bottom}Z` : `M90 83H1110A42 42 0 0 1 1110 167H90A42 42 0 0 1 90 83Z`;
+    track.setAttribute('d', d); guide.setAttribute('d', d);
+    mounts.forEach((mount, i) => mount.setAttribute('transform', vertical ? `translate(43 ${i ? bottom : top}) scale(.55)` : `translate(${i ? 1110 : 90} 125) scale(1.04)`));
+    pathLength = track.getTotalLength();
+    // Cache geometry on resize; the animation frame updates transforms only.
+    samples = Array.from({ length: 1600 }, (_, i) => {
+      const p = track.getPointAtLength(i / 1600 * pathLength), q = track.getPointAtLength((i + 1) % 1600 / 1600 * pathLength);
+      return { x: p.x, y: p.y, angle: Math.atan2(q.y - p.y, q.x - p.x) * 180 / Math.PI };
+    });
+    const count = Math.min(96, Math.floor(pathLength / (vertical ? 22 : 25)));
+    links.forEach((link, i) => { link.hidden = i >= count; link.style.display = i >= count ? 'none' : ''; });
+    machine.dataset.driveOrientation = vertical ? 'vertical' : 'horizontal';
+    machine.dataset.driveLinks = String(count); machine.style.setProperty('--pf-drive-height', `${height}px`);
+    render(); positionWitness(); reconcile();
+  }
+  function transform(node, distance, scale = 1) {
+    const i = Math.floor(((distance % pathLength + pathLength) % pathLength) / pathLength * samples.length) % samples.length, p = samples[i];
+    node.setAttribute('transform', `translate(${p.x.toFixed(2)} ${p.y.toFixed(2)}) rotate(${p.angle.toFixed(2)}) scale(${scale})`);
+  }
+  function render() {
+    if (!samples.length) return;
+    const count = Number(machine.dataset.driveLinks);
+    for (let i = 0; i < count; i++) transform(links[i], i / count * pathLength + phase, vertical ? .65 : .90);
+    transform(carrier, phase, vertical ? .72 : 1);
+    gears.forEach(gear => gear.setAttribute('transform', `rotate(${(phase / (vertical ? 23 : 42) * 180 / Math.PI).toFixed(2)})`));
+  }
+  function frame(time) {
+    raf = 0;
+    if (!allowed()) { last = 0; return; }
+    if (last) phase = (phase + Math.min(time - last, 48) * (vertical ? .032 : .052)) % pathLength;
+    last = time; render(); raf = requestAnimationFrame(frame);
+  }
+  function reconcile() {
+    const policyOff = !motionOn() || forced.matches;
+    toggle.disabled = policyOff;
+    toggle.textContent = policyOff ? 'Motion off' : paused ? 'Run mechanism' : 'Pause mechanism';
+    toggle.setAttribute('aria-pressed', String(paused));
+    machine.dataset.driveRunning = String(allowed());
+    if (allowed()) { if (!raf) raf = requestAnimationFrame(frame); }
+    else { cancelAnimationFrame(raf); raf = 0; last = 0; }
+  }
+  toggle.addEventListener('click', () => { paused = !paused; reconcile(); });
+  new MutationObserver(reconcile).observe(root, { attributes: true, attributeFilter: ['data-motion'] });
+  forced.addEventListener('change', reconcile); document.addEventListener('visibilitychange', reconcile);
+  new IntersectionObserver(entries => { inView = entries[0].isIntersecting; reconcile(); }, { threshold: .05 }).observe(machine);
+  machine.dataset.driveReady = '';
+  choose(0); rebuild();
+  let resizeFrame = 0;
+  new ResizeObserver(() => { cancelAnimationFrame(resizeFrame); resizeFrame = requestAnimationFrame(rebuild); }).observe(machine.querySelector('.ledger-rail'));
+}
+
 // ── start ────────────────────────────────────────────────────────────────────
 for (const dialog of document.querySelectorAll('dialog.pf-dialog')) wireDialog(dialog);
 
@@ -637,3 +812,4 @@ if (receiptDialog && receiptTriggers.length) initReceipts(receiptDialog, receipt
 
 document.querySelectorAll('[data-living-metal]').forEach(initLivingMetal);
 document.querySelectorAll('.ledger-feature-media').forEach(initGlass);
+initProofChain();

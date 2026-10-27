@@ -101,3 +101,11 @@
 @media (max-width: 480px) {
   .tf-facts { grid-template-columns: 1fr; }
 }
+/* Technical records stay opaque; their stamped divisions share the mount. */
+body.studio:is(.tf-page,.tf-index) .tf-section>h2 { font-family:var(--pf-mono); }
+body.studio:is(.tf-page,.tf-index) :is(.tf-card,.tf-fact,.tf-verify-list li,.tf-limit-list li,.tf-record-list li,.tf-machine) { border-radius:var(--pf-radius); }
+@media screen and (forced-colors:none) {
+ body.studio:is(.tf-page,.tf-index) :is(.tf-card,.tf-fact,.tf-verify-list li,.tf-limit-list li,.tf-record-list li) { background:#fafcfc; border-color:#8b9aa64d; box-shadow:inset 0 1px 0 #fff,0 2px 2px #14242d0d; }
+ body.studio:is(.tf-page,.tf-index) .tf-section>h2 { border-bottom:2px solid #84939b6b; }
+ body.studio:is(.tf-page,.tf-index) .tf-machine { background:#e4ebee; border:1px solid #8a9ba4; box-shadow:inset 0 2px 4px #172a3614; }
+}
