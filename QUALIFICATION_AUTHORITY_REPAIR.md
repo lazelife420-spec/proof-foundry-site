@@ -1,5 +1,15 @@
 # Release-truth qualification repair
 
+## 2026-10-26 — legacy fixture regression repair
+
+Current P3–P5: **40 passed, 0 failed**. Current P6: **27 passed, 0 failed**. Their original test files and the existing public authorities are unchanged. Every qualification runs all eleven current authorities; new fixture boundary tests (9/9) and shared authority/deployment tests (39/39) pass.
+
+A canonical website snapshot now retains the authored shared release model and presentation. A separate temporary legacy snapshot contains its exact derived v1 transport. The two snapshots share identical code/tests, a common canonical parent, no remotes, and a verified transport digest/projection. Only the transport manifest and fixture binding record may differ. Canonical public refresh and current regression authorities run in the canonical snapshot; historical intake operations stay in the legacy snapshot.
+
+This repairs missing v2/provenance inputs without weakening receipt or public-truth assertions, changing production data, or enabling the legacy writer. All 280 generated website files remain byte-identical to the reviewed candidate. [Repair evidence](../../Context/ProofFoundry/review/legacy-fixture-repair-20261026/REPAIR_REPORT.md).
+
+## Historical authority migration record
+
 Base production source: `54ef94acab654306664b091a185f10ca779225cb`, tree
 `04ac5f39e91fd1682bfb61b1149f8636111dc542`. This is a qualification and intake
 successor, not a new public release, authority cutover, or deployment candidate.

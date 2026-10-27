@@ -1,4 +1,4 @@
-// Browser qualification of the restored forged-ledger homepage: Inspect the
+// Browser qualification of the V5 homepage: Inspect the Mark, Inspect the
 // Receipt and its same-origin truth binding, failure states, keyboard and
 // touch operation, layout width and the no-JavaScript fallback.
 // Build public/ first, then:
@@ -268,7 +268,7 @@ try {
       focusInDialog: d.contains(document.activeElement),
     };
   })()`);
-  const state = () => evaluate(`({ active: document.activeElement && (document.activeElement.id || document.activeElement.className), receipt: document.activeElement && document.activeElement.dataset.receiptOpen, y: Math.round(scrollY), receiptOpen: document.getElementById('pf-receipt-dialog').open })`);
+  const state = () => evaluate(`({ active: document.activeElement && (document.activeElement.id || document.activeElement.className), receipt: document.activeElement && document.activeElement.dataset.receiptOpen, y: Math.round(scrollY), markOpen: document.getElementById('pf-mark-dialog').open, receiptOpen: document.getElementById('pf-receipt-dialog').open })`);
   // Content past either viewport edge that no clipping ancestor inside the
   // viewport hides, plus the document's own scroll width.
   const overflow = () => evaluate(`(() => {
@@ -332,7 +332,7 @@ try {
     })()`);
     check(`${width}px without JavaScript: no inspect control or dialog is shown`, nojs.triggers === 0 && nojs.dialogsOpen === 0, nojs);
     check(`${width}px without JavaScript: the specimen keeps its full SHA-256, limitations and record links`, specimenDigests.includes(nojs.hash) && nojs.limitations && nojs.specimenLinks.includes(`/proof/#receipt-${specimenId}`) && nojs.specimenLinks.includes(`/truth-files/${specimenId}/`), nojs);
-    check(`${width}px without JavaScript: every featured product keeps its Truth File link, and the rows carry no captures, with no overflow`, nojs.featureLinks === 3 && nojs.captions.length === 0 && !nojs.overflow, nojs);
+    check(`${width}px without JavaScript: every featured product keeps its Truth File link and caption, with no overflow`, nojs.featureLinks === 3 && nojs.captions.length === 3 && nojs.captions.every((n) => n > 0) && !nojs.overflow, nojs);
     await shot(`no-js-${width}`);
     await send('Emulation.setScriptExecutionDisabled', { value: false });
   }
@@ -340,7 +340,22 @@ try {
   // ── Inspect the Mark, by keyboard ────────────────────────────────────────
   await viewport(1440);
   await go('/');
-  let before; let after;
+  const lights = await evaluate(`({ motion: document.documentElement.dataset.motion, light: getComputedStyle(document.querySelector('.pf-lm')).display })`);
+  check('desktop with motion on: the emblem highlights are available', lights.motion === 'on' && lights.light !== 'none', lights);
+  await focus('[data-mark-open]');
+  let before = await state();
+  await key('Enter');
+  await waitFor(`document.getElementById('pf-mark-dialog').open`);
+  const mark = await evaluate(`({ pins: document.querySelectorAll('.pf-pin').length, items: document.querySelectorAll('.pf-mk-list button').length, focusInside: document.getElementById('pf-mark-dialog').contains(document.activeElement), first: document.querySelector('[data-mark-count]').textContent })`);
+  check('Enter opens Inspect the Mark with ten points and focus inside', mark.pins === 10 && mark.items === 10 && mark.focusInside && mark.first === 'Point 1 of 10', mark);
+  await focus('.pf-mk-list li:nth-child(6) button');
+  await key(' ');
+  const point = await evaluate(`({ count: document.querySelector('[data-mark-count]').textContent, title: document.querySelector('[data-mark-title]').textContent, loupe: !document.querySelector('.pf-loupe').hidden, overlay: document.querySelector('.pf-mk-svg').children.length, pressed: [...document.querySelectorAll('.pf-mk-list button')].map((b) => b.getAttribute('aria-pressed')).indexOf('true') })`);
+  check('Space on a point updates the detail, loupe and outline', point.count === 'Point 6 of 10' && point.title.length > 0 && point.loupe && point.overlay > 0 && point.pressed === 5, point);
+  await shot('mark-1440');
+  await key('Escape');
+  let after = await state();
+  check('Escape closes Inspect the Mark and returns focus and scroll', !after.markOpen && /pf-inspect/.test(after.active) && after.y === before.y, { before, after });
 
   // ── Inspect the Receipt, by keyboard, with same-origin parity ────────────
   await evaluate(`(() => { window.__copied = []; navigator.clipboard.writeText = async (t) => { window.__copied.push(t); }; return true; })()`);
@@ -588,8 +603,8 @@ try {
   // ── Touch: taps open, use and close both dialogs; nothing needs hover ────
   await viewport(390, true);
   await go('/');
-  const touch = await evaluate(`({ hoverNone: matchMedia('(hover: none)').matches, coarse: matchMedia('(pointer: coarse)').matches })`);
-  check('390px touch: no hover and a coarse pointer', touch.hoverNone && touch.coarse, touch);
+  const touch = await evaluate(`({ hoverNone: matchMedia('(hover: none)').matches, coarse: matchMedia('(pointer: coarse)').matches, light: getComputedStyle(document.querySelector('.pf-lm')).display })`);
+  check('390px touch: no hover, coarse pointer, highlights off', touch.hoverNone && touch.coarse && touch.light === 'none', touch);
   await tap(`[data-ledger-feature="${featureIds[0]}"] [data-receipt-open]`);
   await waitFor(panelSettled);
   await waitFor(tabsBuilt(receiptIds.length));
@@ -604,6 +619,14 @@ try {
   await tap('#pf-receipt-dialog [data-dialog-close]');
   after = await state();
   check('390px touch: Close returns focus to the tapped trigger', !after.receiptOpen && after.receipt === featureIds[0], after);
+  await tap('[data-mark-open]');
+  await tap('.pf-mk-list li:nth-child(3) button');
+  const touchMark = await evaluate(`(() => { const sc = document.querySelector('#pf-mark-dialog .pf-dialog-scroll'); return { open: document.getElementById('pf-mark-dialog').open, count: document.querySelector('[data-mark-count]').textContent, sideways: sc.scrollWidth > sc.clientWidth }; })()`);
+  check('390px touch: Inspect the Mark opens and a tap selects a point', touchMark.open && touchMark.count === 'Point 3 of 10' && !touchMark.sideways, touchMark);
+  await shot('mark-390');
+  await tap('#pf-mark-dialog [data-dialog-close]');
+  after = await state();
+  check('390px touch: Close returns focus to Inspect the Mark', !after.markOpen && /pf-inspect/.test(after.active), after);
   check('390px touch: no script errors', errors.length === 0, errors);
 
   // ── Header mark: flush with the brand link; forced colours keep it visible ─
@@ -617,8 +640,8 @@ try {
   // button inside its panel, and a skip link that is hidden until focused.
   await viewport(1440);
   await go('/');
-  const face = await evaluate(`(() => { const s = getComputedStyle(document.querySelector('.ledger-hero-description')); return { size: s.fontSize, leading: s.lineHeight }; })()`);
-  check('hero description keeps the forged ledger type measure', face.size === '16px' && parseFloat(face.leading) >= 24, face);
+  const face = await evaluate(`getComputedStyle(document.querySelector('.ledger-hero-description')).fontFamily`);
+  check('hero description is set in Archivo, as in V5', /^"?Archivo\b/.test(face), face);
   await viewport(1920);
   await go('/');
   const skipHidden = await evaluate(`(() => { const r = document.querySelector('.skip-link').getBoundingClientRect(); return { top: r.top, bottom: r.bottom }; })()`);
@@ -632,14 +655,9 @@ try {
   check('390px: the open menu keeps its Support button inside the panel', menu.cta[0] >= menu.panel[0] - 0.5 && menu.cta[1] <= menu.panel[1] + 0.5 && menu.cta[1] <= menu.vw, menu);
 
   // Normal colours: no inline forced-colours fallback is drawn; the B emblem and the header and footer marks are.
-  const normalFc = await evaluate(`({ plate: document.querySelector('.ledger-plate').checkVisibility(), marks: [...document.querySelectorAll('.pf-mark-fc')].map((e) => e.checkVisibility()), header: document.querySelector('.site-header .brand-mark').checkVisibility(), footer: document.querySelector('.site-footer .footer-logo').checkVisibility() })`);
-  check('normal colours: the forged hero plate is drawn', normalFc.plate === true, normalFc);
+  const normalFc = await evaluate(`({ seal: document.querySelector('.pf-seal-fc').checkVisibility(), emblem: document.querySelector('.pf-emblem-image').checkVisibility(), marks: [...document.querySelectorAll('.pf-mark-fc')].map((e) => e.checkVisibility()), header: document.querySelector('.site-header .brand-mark').checkVisibility(), footer: document.querySelector('.site-footer .footer-logo').checkVisibility() })`);
+  check('normal colours: the inline forced-colours seal is not drawn and the hero emblem is', normalFc.seal === false && normalFc.emblem === true, normalFc);
   check('normal colours: the inline forced-colours micro marks are not drawn and the header and footer marks are', normalFc.marks.length === 2 && normalFc.marks.every((v) => v === false) && normalFc.header && normalFc.footer, normalFc);
-  // Forced-colours system colours must never leak into normal rendering (Canvas is white there).
-  const tone = await evaluate(`(() => { const rgb = (c) => c.match(/[\\d.]+/g).map(Number); const bgOf = (e) => { for (; e; e = e.parentElement) { const c = rgb(getComputedStyle(e).backgroundColor); if (c.length < 4 || c[3] > 0.5) return c.slice(0, 3); } return [255, 255, 255]; }; const lum = (c) => { const [r, g, b] = c.map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }); return 0.2126 * r + 0.7152 * g + 0.0722 * b; }; const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }; const out = {}; for (const [k, q] of [['h1', '.ledger-hero h1'], ['subtitle', '.ledger-hero-subtitle'], ['description', '.ledger-hero-description']]) { const e = document.querySelector(q); out[k] = +ratio(rgb(getComputedStyle(e).color).slice(0, 3), bgOf(e)).toFixed(2); } out.pageBg = bgOf(document.querySelector('main')); out.pageLum = +lum(out.pageBg).toFixed(3); const m = document.querySelector('.ledger-plate-mark'); out.markSvg = !!m && m.tagName.toLowerCase() === 'svg' && m.checkVisibility(); out.faces = [...document.querySelectorAll('.ledger-plate-mark .pfh-face use[fill]')].map((u) => u.getAttribute('fill')); return out; })()`);
-  check('normal colours: the page and hero are dark forged steel, not the forced-colours canvas', tone.pageLum < 0.05, tone);
-  check('normal colours: hero headline, subtitle and description meet 4.5:1 contrast', tone.h1 >= 4.5 && tone.subtitle >= 4.5 && tone.description >= 4.5, tone);
-  check('normal colours: the hero PF is the detailed inline mark (steel P, gold F)', tone.markSvg && tone.faces.includes('url(#pfh-steel)') && tone.faces.includes('url(#pfh-gold)'), tone);
 
   // Forced colours: every fallback (hero seal, header and footer micro marks) is an inline, same-document SVG drawn
   // in the user's palette, and the menu bars are CSS. Each palette is measured on ONE load, with no retry.
@@ -648,17 +666,15 @@ try {
     await send('Emulation.setEmulatedMedia', { features: [{ name: 'forced-colors', value: 'active' }, { name: 'prefers-color-scheme', value: scheme }] });
     await go('/');
     await pause(400);
-    const fc = await evaluate(`(() => { const rgb = (c) => c.match(/\\d+/g).slice(0, 3).map(Number); const h = document.querySelector('.site-header'), t = document.querySelector('.site-header .nav-toggle'); const vis = (q) => document.querySelector(q).checkVisibility(); const ids = [...document.querySelectorAll('[id]')].map((e) => e.id); const svgs = [...document.querySelectorAll('.pf-mark-fc svg')]; return { canvas: rgb(getComputedStyle(h).backgroundColor), text: rgb(getComputedStyle(h).color), button: rgb(getComputedStyle(t).color), plate: vis('.ledger-plate'), headerImg: vis('.site-header .brand-mark'), footerImg: vis('.site-footer .footer-logo'), headerFc: vis('.pf-mark-fc--header'), footerFc: vis('.pf-mark-fc--footer'), inert: svgs.length === 2 && svgs.every((e) => e.getAttribute('focusable') === 'false' && !!e.closest('[aria-hidden="true"]')), duplicateIds: ids.length - new Set(ids).size }; })()`);
+    const fc = await evaluate(`(() => { const rgb = (c) => c.match(/\\d+/g).slice(0, 3).map(Number); const h = document.querySelector('.site-header'), t = document.querySelector('.site-header .nav-toggle'); const vis = (q) => document.querySelector(q).checkVisibility(); const ids = [...document.querySelectorAll('[id]')].map((e) => e.id); const svgs = [...document.querySelectorAll('.pf-seal-inline,.pf-mark-fc svg')]; return { canvas: rgb(getComputedStyle(h).backgroundColor), text: rgb(getComputedStyle(h).color), button: rgb(getComputedStyle(t).color), sealInline: vis('.pf-seal-inline'), sealImg: vis('.pf-emblem-image'), watermark: vis('.ledger-receipt-watermark'), headerImg: vis('.site-header .brand-mark'), footerImg: vis('.site-footer .footer-logo'), headerFc: vis('.pf-mark-fc--header'), footerFc: vis('.pf-mark-fc--footer'), inert: svgs.length === 3 && svgs.every((e) => e.getAttribute('focusable') === 'false' && !!e.closest('[aria-hidden="true"]')), duplicateIds: ids.length - new Set(ids).size }; })()`);
+    fc.seal = fc.sealInline ? await paletteInk('.pf-seal-inline', fc.text, fc.canvas) : 0;
     fc.mark = fc.headerFc ? await paletteInk('.pf-mark-fc--header', fc.text, fc.canvas) : 0;
     fc.footer = fc.footerFc ? await paletteInk('.pf-mark-fc--footer', fc.text, fc.canvas) : 0;
     fc.bars = await paletteInk('.site-header .nav-toggle', fc.button, fc.canvas, 4);
     check(`forced colours (${scheme} palette): header and footer fall back to the vector micro mark, drawn in the palette's text colour`, fc.headerFc && fc.footerFc && !fc.headerImg && !fc.footerImg && fc.mark >= 100 && fc.footer >= 100, fc);
-    check(`forced colours (${scheme} palette): the forged plate stays visible and the micro marks stay inert`, fc.plate && fc.inert && fc.duplicateIds === 0, fc);
+    check(`forced colours (${scheme} palette): the hero falls back to the vector seal, drawn in the palette's text colour`, fc.sealInline && !fc.sealImg && fc.seal >= 500 && fc.inert && fc.duplicateIds === 0, fc);
+    check(`forced colours (${scheme} palette): the decorative doctrine watermark is not drawn`, fc.watermark === false, fc);
     check(`forced colours (${scheme} palette): the menu toggle shows its bars in the button text colour`, fc.bars >= 60, fc);
-    fc.markFace = await evaluate(`getComputedStyle(document.querySelector('.ledger-plate-mark .pfh-face use')).fill`);
-    fc.markDecor = await evaluate(`[...document.querySelectorAll('.ledger-plate-mark :is(.pfh-seat,.pfh-shadow,.pfh-chamfer)')].map((e) => e.getAttribute('class') + ':' + getComputedStyle(e).display).join(',')`);
-    check(`forced colours (${scheme} palette): the hero PF is drawn in the palette's text colour`, fc.markFace === `rgb(${fc.text.join(', ')})`, fc);
-    check(`forced colours (${scheme} palette): the hero PF drops its decorative shadows and chamfers`, !/:(?!none)/.test(fc.markDecor), fc);
     await shot(`forced-colors-${scheme}-390`);
   }
   await send('Emulation.setEmulatedMedia', { features: [] });
@@ -667,8 +683,8 @@ try {
   await viewport(1440);
   await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
   await go('/');
-  const calm = await evaluate(`({ motion: document.documentElement.dataset.motion })`);
-  check('reduced motion turns off site motion', calm.motion === 'off', calm);
+  const calm = await evaluate(`({ motion: document.documentElement.dataset.motion, light: getComputedStyle(document.querySelector('.pf-lm')).display })`);
+  check('reduced motion turns off site motion and the emblem highlights', calm.motion === 'off' && calm.light === 'none', calm);
   await send('Emulation.setEmulatedMedia', { features: [] });
 } catch (error) {
   check('browser qualification completed', false, String(error && error.stack || error));

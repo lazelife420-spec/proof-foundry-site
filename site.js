@@ -229,6 +229,15 @@
   function initProductWayfinding() {
     var nav = document.querySelector(".pf-product-navigation");
     if (!nav) return;
+    var rail = nav.querySelector("div");
+    nav.addEventListener("focusin", function (event) {
+      var link = event.target.closest("a");
+      if (!rail || !link || link.parentElement !== rail || !link.matches(":focus-visible")) return;
+      var box = link.getBoundingClientRect(), frame = rail.getBoundingClientRect();
+      var left = frame.left + rail.clientLeft, right = left + rail.clientWidth;
+      if (box.left < left) rail.scrollBy({ left: box.left - left - 3, behavior: "instant" });
+      else if (box.right > right) rail.scrollBy({ left: box.right - right + 3, behavior: "instant" });
+    });
     var links = Array.from(nav.querySelectorAll("[data-product-section]"));
     var pending = false;
     function indicate() {
@@ -363,6 +372,10 @@
     mql.addEventListener("change", function (e) {
       if (e.matches) setOpen(false);
     });
+
+    // Collapse mobile navigation only after its controls are usable. If this
+    // script is unavailable, the shared CSS keeps the links expanded.
+    header.classList.add("nav-ready");
   }
 
   function initSha256Copy() {

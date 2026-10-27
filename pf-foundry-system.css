@@ -15,6 +15,8 @@
   --pf-sans:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
   --pf-serif:var(--pf-sans);
   --pf-steel:url('/brand/PF_WELDED_STEEL_v1.webp');
+  --pf-brush:repeating-linear-gradient(0deg,#ffffff03 0 1px,#00000008 1px 2px,transparent 2px 3px);
+  --pf-gutter:clamp(16px,2.4vw,40px); --pf-joint:12px;
   --pf-rail:min(1280px,calc(100% - 2 * clamp(16px, 3.2vw, 56px)));
 }
 html { scroll-padding-top:24px }
@@ -24,7 +26,8 @@ body:is(.studio,.pf-ledger-page) :where(h1,h2,h3,p) { text-wrap:pretty }
 body:is(.studio,.pf-ledger-page) :where(h1,h2) { text-wrap:balance }
 body:is(.studio,.pf-ledger-page) :where(a,button,input,select,summary):focus-visible { outline:3px solid var(--teal,var(--pf-teal)); outline-offset:5px }
 body:is(.studio,.pf-ledger-page) :where(textarea,[role="tabpanel"]):focus-visible { outline:3px solid var(--pf-teal); outline-offset:5px }
-body:is(.studio,.pf-ledger-page) .skip-link { z-index:101; background:var(--pf-teal); color:var(--pf-black) }
+body:is(.studio,.pf-ledger-page) .skip-link { position:absolute; z-index:101; top:8px; left:16px; transform:translateY(-100vh); padding:10px 16px; border-radius:3px; background:var(--pf-teal); color:var(--pf-black); font-weight:700 }
+body:is(.studio,.pf-ledger-page) .skip-link:focus { transform:none }
 
 /* One source partial and one shared visual system: every route gets the forged-steel header. */
 body:is(.studio,.pf-ledger-page) .site-header {
@@ -35,7 +38,7 @@ body:is(.studio,.pf-ledger-page) .site-header {
   --text:var(--pf-paper); --muted:var(--pf-muted); --teal:var(--pf-teal);
 }
 body:is(.studio,.pf-ledger-page) .nav-row {
-  width:var(--pf-rail); max-width:none; min-height:0; margin-inline:auto;
+  width:100%; max-width:none; min-height:0; margin:0;
   padding:10px clamp(14px,2vw,30px); display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:0 24px;
   box-sizing:border-box;
 }
@@ -71,6 +74,9 @@ body:is(.studio,.pf-ledger-page) .top-nav a::after {
   background:var(--pf-teal); transform:scaleX(0); transform-origin:left; transition:transform .18s ease;
 }
 body:is(.studio,.pf-ledger-page) .top-nav a:hover { color:#fff }
+/* The current-page colour is shared chrome too: own it here so pf-site-ledger
+   and studio.css stop competing for the same state (same computed #fff). */
+body:is(.studio,.pf-ledger-page) .top-nav a[aria-current="page"] { color:#fff }
 body:is(.studio,.pf-ledger-page) .top-nav a:is(:hover,[aria-current="page"])::after { transform:scaleX(1) }
 body:is(.studio,.pf-ledger-page) .site-header .nav-panel .nav-cta {
   display:inline-flex; align-items:center; justify-content:center; min-height:42px; padding:0 18px;
@@ -87,27 +93,31 @@ body:is(.studio,.pf-ledger-page) .site-header .nav-panel .nav-cta:is([aria-curre
 body:is(.studio,.pf-ledger-page) .nav-toggle {
   display:none; flex-direction:column; align-items:center; justify-content:center; gap:5px;
   width:52px; height:44px; padding:0; border-radius:3px; border:1px solid #05070a; cursor:pointer;
+  font:600 16px/1 var(--pf-sans); /* was UA-default (Arial 13.33px) on routes without experience.css */
   color:#f4f7f8; background:linear-gradient(180deg,#38424c,#262e36);
   box-shadow:inset 1px 1px 0 rgba(255,255,255,.15),inset -1px -1px 0 rgba(0,0,0,.5),0 0 0 3px #0f1419;
 }
 body:is(.studio,.pf-ledger-page) .nav-toggle-bar {
-  display:block; width:22px; height:2px; margin:0; background:currentColor;
+  display:block; width:22px; height:2px; margin:0; background:currentColor; transform:none; opacity:1;
 }
+body:is(.studio,.pf-ledger-page) .nav-open .nav-toggle-bar:nth-child(1) { transform:translateY(7px) rotate(45deg) }
+body:is(.studio,.pf-ledger-page) .nav-open .nav-toggle-bar:nth-child(2) { opacity:0; transform:none }
+body:is(.studio,.pf-ledger-page) .nav-open .nav-toggle-bar:nth-child(3) { transform:translateY(-7px) rotate(-45deg) }
 @media (max-width:900px) {
   body:is(.studio,.pf-ledger-page) .site-header .nav-toggle { display:inline-flex; }
   body:is(.studio,.pf-ledger-page) .site-header .nav-panel {
     position:static; display:none; flex:1 1 100%; flex-direction:column; align-items:stretch; gap:0;
-    margin:8px calc(clamp(14px,2vw,30px) * -1) -10px; padding:0; border:0;
-    border-top:1px solid #05070a; box-shadow:inset 0 1px 0 rgba(255,255,255,.05); background:transparent;
+    margin:10px 0 2px; padding:8px; border:1px solid #070a0d;
+    box-shadow:inset 0 3px 7px #0009,0 1px 0 #ffffff12; background:var(--pf-black);
   }
   body:is(.studio,.pf-ledger-page) .site-header.nav-open .nav-panel { display:flex; }
   body:is(.studio,.pf-ledger-page) .site-header .top-nav { flex-direction:column; align-items:stretch; gap:0; }
   body:is(.studio,.pf-ledger-page) .site-header .top-nav a {
-    min-height:52px; padding:0 22px; border-bottom:1px solid #05070a; box-shadow:0 1px 0 rgba(255,255,255,.04); font-size:16px;
+    min-height:52px; padding:0 16px; margin-bottom:4px; border:1px solid #05070a; border-radius:2px; background:var(--pf-brush),linear-gradient(180deg,#29323a,#1b2229); box-shadow:inset 1px 1px 0 #ffffff0f,0 2px 2px #0006; font-size:16px;
   }
   body:is(.studio,.pf-ledger-page) .site-header .top-nav a::after { display:none; }
   body:is(.studio,.pf-ledger-page) .site-header .nav-panel .nav-cta {
-    align-self:stretch; width:auto; margin:12px 22px 14px; justify-content:center;
+    align-self:stretch; width:auto; margin:10px 4px 4px; justify-content:center;
   }
 }
 @media (max-width:640px) {
@@ -119,7 +129,7 @@ body:is(.studio,.pf-ledger-page) .nav-toggle-bar {
   body:is(.studio,.pf-ledger-page) .site-header .brand-mark { width:38px; height:auto; }
   body:is(.studio,.pf-ledger-page) .site-header .brand-name { font-size:15px; letter-spacing:.04em; }
   body:is(.studio,.pf-ledger-page) .site-header .brand-name small { display:none; }
-  body:is(.studio,.pf-ledger-page) .site-header .nav-panel { margin:8px -12px -8px; }
+  body:is(.studio,.pf-ledger-page) .site-header .nav-panel { margin:10px 0 2px; }
 }
 
 /* Standardized content rail across all page families. */
@@ -251,26 +261,46 @@ body.studio.tf-page .tf-section>h2 { padding-bottom:12px; border-bottom:1px soli
 .studio.product-support .support-hero { padding:60px 36px; border:1px solid var(--pf-rule) }
 .studio.product-support :is(.detail-card,.support-content-box) { padding:28px; background:#141b20 }
 .studio.product-support .detail-card h3 { font:700 24px/1.3 var(--pf-sans) }
-
-/* The shared colophon is the same on Home, product and record pages. */
-body:is(.studio,.pf-ledger-page) .site-footer {
-  background-image:linear-gradient(#0b0f14e6,#0b0f14f5),var(--pf-steel);
-  background-size:cover; background-position:center; background-color:var(--pf-black);
-  --text:var(--pf-paper); --muted:var(--pf-muted); --teal:var(--pf-teal); --line:var(--pf-rule);
-  color:var(--pf-paper); padding:58px 0 0; border-top:1px solid var(--pf-rule); color-scheme:dark;
+/* Support's steel plate and dark boxes sit inside a paper sheet, so they must
+   re-scope the colour tokens the sheet sets for its own dark-on-paper text. */
+.studio.product-support :is(.support-hero,.detail-card,.support-content-box) {
+  --text:var(--pf-paper); --muted:var(--pf-muted); --line:var(--pf-rule); --teal:var(--pf-teal); color:var(--pf-paper);
 }
-body:is(.studio,.pf-ledger-page) .footer-grid { display:grid; grid-template-columns:1.6fr 1fr 1fr; gap:65px; padding:0 0 45px; width:var(--pf-rail); max-width:none; margin-inline:auto }
-body:is(.studio,.pf-ledger-page) .footer-brand-lockup { display:inline-flex; align-items:center; gap:12px; min-height:44px; font:800 16px/1 var(--pf-sans); letter-spacing:.06em; color:var(--pf-paper); text-decoration:none; text-transform:uppercase }
-body:is(.studio,.pf-ledger-page) .footer-logo { width:44px; height:44px; padding:0; object-fit:contain; filter:drop-shadow(0 1px 1px rgba(0,0,0,.4)); clip-path:none }
-body:is(.studio,.pf-ledger-page) .footer-brand p { font:800 20px/1.25 var(--pf-sans); font-stretch:88%; color:var(--pf-paper); margin-top:18px; text-transform:uppercase; letter-spacing:-.01em }
-body:is(.studio,.pf-ledger-page) .footer-brand .footer-maker-note { font:500 12px/1.8 var(--pf-mono); letter-spacing:.14em; color:var(--pf-muted); max-width:28ch; text-transform:uppercase; margin-top:14px }
-body:is(.studio,.pf-ledger-page) .site-footer h2 { font:600 12.5px/1.4 var(--pf-mono); letter-spacing:.18em; color:var(--pf-muted); text-transform:uppercase; margin-bottom:18px }
-body:is(.studio,.pf-ledger-page) .site-footer ul { list-style:none; padding:0; margin:0 }
+.studio.product-support :is(.support-hero,.detail-card,.support-content-box) a:not([class*="button"]):not([class*="btn"]) { color:var(--pf-teal); max-width:100%; overflow-wrap:anywhere }
+.studio.product-support :is(.support-hero,.detail-card,.support-content-box) :is(h1,h2,h3,h4,p,li,strong,dt,dd,.eyebrow) { color:inherit }
+.studio.product-support .support-hero :is(p,.eyebrow) { color:#c4ced2 }
+.studio.product-support :is(.detail-card,.support-content-box) code.inline { color:var(--pf-black) }
+
+/* Every paper route is one mounted sheet inside the gunmetal frame: the same
+   rail and mounting as /proof/, rather than a full-bleed page of a second brand. */
+body.studio.secondary-page:not(.tf-page),
+body.studio.tf-page { background-color:#14212b }
+body.studio.secondary-page:not(.tf-page) main,
+body.studio.tf-page main {
+  width:min(1360px,calc(100% - 2 * clamp(8px,2.2vw,40px))); max-width:none; margin:0 auto clamp(24px,4vw,56px); box-sizing:border-box;
+  border:1px solid #05070a; border-top:0;
+  box-shadow:inset 0 -1px 0 #ffffffb0,0 0 0 9px #0b172329,0 18px 34px #00000073;
+}
+/* The same machined colophon terminates every route. */
+body:is(.studio,.pf-ledger-page) .site-footer {
+  margin:0; padding:0; border:0; border-radius:3px;
+  --text:var(--pf-paper); --muted:var(--pf-muted); --teal:var(--pf-teal); --line:var(--pf-rule);
+  color:var(--pf-paper); color-scheme:dark;
+  background:var(--pf-brush),linear-gradient(180deg,#1e252c,#161b21);
+  box-shadow:0 0 0 1px #000,inset 1px 1px 0 #ffffff13,inset -1px -1px 0 #0008,3px 5px 12px #0007;
+}
+body:is(.studio,.pf-ledger-page) .footer-grid { width:auto; max-width:none; margin:0; padding:clamp(20px,2.4vw,32px) clamp(16px,3vw,48px); display:grid; grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr); gap:24px 40px }
+body:is(.studio,.pf-ledger-page) .footer-brand-lockup { display:inline-flex; align-items:center; gap:12px; min-height:44px; font:800 17px/1 var(--pf-sans); font-stretch:86%; letter-spacing:.06em; text-transform:uppercase; color:#f4f7f8; text-decoration:none }
+body:is(.studio,.pf-ledger-page) .footer-logo { width:42px; height:42px; padding:0; object-fit:contain; filter:drop-shadow(0 1px 1px #0006); clip-path:none }
+body:is(.studio,.pf-ledger-page) .footer-brand p { margin:10px 0 0; font:900 22px/1.15 var(--pf-sans); font-stretch:90%; color:#e9edf0 }
+body:is(.studio,.pf-ledger-page) .footer-brand .footer-maker-note { margin-top:10px; font:500 12px/1.8 var(--pf-mono); letter-spacing:.14em; text-transform:uppercase; color:var(--pf-muted) }
+body:is(.studio,.pf-ledger-page) .site-footer h2 { margin:0 0 8px; font:600 12.5px/1.4 var(--pf-mono); letter-spacing:.18em; text-transform:uppercase; color:#a6b2b9; background:none; filter:none }
+body:is(.studio,.pf-ledger-page) .site-footer ul { margin:0; padding:0; list-style:none; display:grid }
 body:is(.studio,.pf-ledger-page) .site-footer li { margin:0 }
 body:is(.studio,.pf-ledger-page) .site-footer li a { display:inline-flex; align-items:center; min-height:36px; padding:0; font:500 15px/1.3 var(--pf-sans); color:#d7dfe2; text-decoration:none }
-body:is(.studio,.pf-ledger-page) .site-footer a:hover { color:var(--pf-teal); text-decoration:underline; text-underline-offset:5px }
-body:is(.studio,.pf-ledger-page) .footer-bottom { width:var(--pf-rail); max-width:none; margin-inline:auto; padding:22px 0; border-top:1px solid var(--pf-rule); display:flex; align-items:center; justify-content:space-between; gap:20px }
-body:is(.studio,.pf-ledger-page) .footer-bottom p { color:var(--pf-muted); font:11px/1.7 var(--pf-mono); margin:0 }
+body:is(.studio,.pf-ledger-page) .site-footer a:hover { color:var(--pf-teal); text-decoration:underline; text-underline-offset:4px }
+body:is(.studio,.pf-ledger-page) .footer-bottom { width:auto; max-width:none; margin:0; padding:14px clamp(16px,3vw,48px); border-top:1px solid #05070a; box-shadow:inset 0 1px 0 #ffffff0a; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 20px }
+body:is(.studio,.pf-ledger-page) .footer-bottom p { margin:0; font:500 13px/1.6 var(--pf-mono); color:var(--pf-muted) }
 .footer-registration { display:flex; align-items:center; gap:9px }
 .footer-registration i { display:block; width:5px; height:12px; background:var(--pf-gold) }
 .footer-registration i:nth-child(2) { height:18px }
@@ -301,9 +331,6 @@ html[data-motion="off"] :is(.ledger-instrument,.about-nav-card,.tf-card):is(:hov
 
 @media(max-width:1200px) {
   :root { --pf-rail:calc(100% - 64px) }
-  body:is(.studio,.pf-ledger-page) .nav-row { gap:24px }
-  body:is(.studio,.pf-ledger-page) .nav-panel { gap:24px }
-  body:is(.studio,.pf-ledger-page) .top-nav { gap:22px }
   .ledger-hero-grid { gap:24px; min-height:590px }
   .ledger-margin { display:none }
   .ledger-hero-grid { grid-template-columns:1.3fr 1fr }
@@ -313,13 +340,6 @@ html[data-motion="off"] :is(.ledger-instrument,.about-nav-card,.tf-card):is(:hov
   .studio .h9-software-hero-image { right:32px; width:220px }
 }
 @media(max-width:900px) {
-  body:is(.studio,.pf-ledger-page) .nav-row { min-height:80px; gap:15px }
-  body:is(.studio,.pf-ledger-page) .nav-toggle { display:flex }
-  body:is(.studio,.pf-ledger-page) .nav-panel { display:none; position:absolute; inset:100% 0 auto; margin:0; padding:18px 32px 24px; background:var(--pf-black); border-bottom:1px solid var(--pf-rule); flex-direction:column; align-items:stretch; gap:12px }
-  body:is(.studio,.pf-ledger-page) .site-header.nav-open .nav-panel { display:flex }
-  body:is(.studio,.pf-ledger-page) .nav-panel .top-nav { flex-direction:column; align-items:stretch; gap:0; width:100% }
-  body:is(.studio,.pf-ledger-page) .nav-panel .top-nav a { padding:14px 0; font-size:15px; border-bottom:1px solid var(--pf-rule); min-height:48px }
-  body:is(.studio,.pf-ledger-page) .nav-panel .nav-cta { width:100%; margin-top:8px }
   .ledger-hero-grid { min-height:0; padding-block:52px; gap:24px }
   .ledger-hero h1 { font-size:clamp(48px,6.9vw,62px) }
   .ledger-hero-subtitle { font-size:23px }
@@ -334,12 +354,6 @@ html[data-motion="off"] :is(.ledger-instrument,.about-nav-card,.tf-card):is(:hov
 }
 @media(max-width:640px) {
   :root { --pf-rail:calc(100% - 40px) }
-  body:is(.studio,.pf-ledger-page) .nav-row { min-height:76px }
-  body:is(.studio,.pf-ledger-page) .brand-mark { width:46px; height:48px; padding:4px }
-  body:is(.studio,.pf-ledger-page) .brand-lockup { gap:10px }
-  body:is(.studio,.pf-ledger-page) .brand-name { font-size:10px; letter-spacing:.09em }
-  body:is(.studio,.pf-ledger-page) .brand-name small { font-size:9px; letter-spacing:.025em }
-  body:is(.studio,.pf-ledger-page) .nav-panel { padding-inline:20px }
   .ledger-hero-grid { display:flex; flex-direction:column; align-items:stretch; gap:36px; padding-block:38px 44px }
   .ledger-hero h1 { font-size:clamp(43px,11.7vw,63px); margin-block:18px }
   .ledger-hero-subtitle { font-size:23px; max-width:23ch }
@@ -392,6 +406,7 @@ html[data-motion="off"] :is(.ledger-instrument,.about-nav-card,.tf-card):is(:hov
   .studio.secondary-page :is(.support-hero,.tf-hero,.proof-hero),.studio.tf-page .tf-product-head { padding-block:39px 30px }
   .studio.secondary-page :is(.support-hero h1,.tf-hero h1,.proof-hero h1),body.studio.tf-page .tf-product-head h1 { font-size:clamp(40px,10.8vw,58px) }
   .studio.secondary-page :is(.support-hero,.tf-hero,.proof-hero)::before,.studio.tf-page .tf-product-head::before { width:150px; height:150px; opacity:.05 }
+  body.studio.tf-page .tf-product-head>div { min-width:0 }
   .studio.secondary-page :is(.about-card,.about-nav-card,.standard-card,.standard-doctrine-card,.standard-boundary-card,.standard-route-card,.tf-card,.detail-card) { padding:23px }
   .studio.secondary-page .about-intro-box { padding:23px }
   .studio.product-support .support-hero { padding:30px 22px }
@@ -406,6 +421,22 @@ html[data-motion="off"] :is(.ledger-instrument,.about-nav-card,.tf-card):is(:hov
   body:is(.studio,.pf-ledger-page) .footer-bottom { gap:15px }
   body:is(.studio,.pf-ledger-page) .footer-bottom p { font-size:10px }
 }
+/* Progressive enhancement: without the menu handlers, expose the links and
+   hide the inert toggle. This also covers a failed site.js download. */
+@media(max-width:900px) {
+  body:is(.studio,.pf-ledger-page) .site-header:not(.nav-ready) .nav-row { flex-wrap:wrap }
+  body:is(.studio,.pf-ledger-page) .site-header:not(.nav-ready) .nav-toggle { display:none }
+  body:is(.studio,.pf-ledger-page) .site-header:not(.nav-ready) .nav-panel {
+    position:static; display:flex; flex:1 1 100%; width:100%; margin:8px 0 0; padding:0; border:0; box-shadow:none;
+  }
+}
+/* One-word product names (GhostLayer, ForgeCast) cannot wrap, so the Truth File
+   title steps down inside the narrower mounted sheet at the smallest widths. */
+@media(max-width:420px) {
+  body.studio.tf-page .tf-product-head { gap:12px }
+  body.studio.tf-page .tf-product-head .card-mark { width:40px; height:40px }
+  body.studio.tf-page .tf-product-head h1 { font-size:clamp(26px,8.4vw,40px) }
+}
 @media(prefers-reduced-motion:reduce) {
   body:is(.studio,.pf-ledger-page) *,body:is(.studio,.pf-ledger-page) *::before,body:is(.studio,.pf-ledger-page) *::after { animation:none!important; transition:none!important; scroll-behavior:auto!important }
   .ledger-instrument:hover,.ledger-instrument:focus-within { transform:none }
@@ -417,6 +448,7 @@ html[data-motion="off"] :is(.ledger-instrument,.about-nav-card,.tf-card):is(:hov
   body:is(.studio,.pf-ledger-page) :is(.brand-name,.brand-name small,.footer-brand-lockup,.footer-brand p,.footer-maker-note,.footer-bottom p,.site-footer h2) { color:CanvasText }
   body:is(.studio,.pf-ledger-page) :is(.top-nav a,.site-footer li a,.site-header .nav-cta) { color:LinkText }
   body:is(.studio,.pf-ledger-page) .site-header .nav-panel .nav-cta { border:1px solid ButtonText; background:ButtonFace; color:ButtonText }
+  body:is(.studio,.pf-ledger-page) .site-header .nav-toggle-bar { forced-color-adjust:none; background:ButtonText }
   .studio.secondary-page :is(.support-hero,.tf-hero,.proof-hero)::before,.studio.tf-page .tf-product-head::before,.footer-registration { display:none }
   .ledger-instrument:hover,.ledger-instrument:focus-within { transform:none }
 }
@@ -465,7 +497,7 @@ html[data-motion="off"] :is(.ledger-instrument,.about-nav-card,.tf-card):is(:hov
 body.studio.pp-system .pf-product-navigation { position:sticky; top:0; z-index:30; display:flex; align-items:center; justify-content:space-between; gap:22px; min-height:59px; padding:0 18px; border:1px solid var(--pf-rule); background:var(--pf-black); color:var(--pf-paper); margin-bottom:15px }
 .pf-product-navigation-name { font:11px/1.6 var(--pf-mono); white-space:nowrap; color:var(--pf-muted) }
 .pf-product-navigation>div { display:flex; align-items:center; overflow-x:auto; scrollbar-width:thin; scrollbar-color:#63727c var(--pf-black); min-width:0; gap:20px; padding:0 3px }
-.pf-product-navigation a { display:flex; align-items:center; white-space:nowrap; min-height:57px; color:var(--pf-muted); text-decoration:none; border-bottom:2px solid transparent; font:12px/1.5 var(--pf-sans) }
+.pf-product-navigation a { display:flex; flex:0 0 auto; align-items:center; white-space:nowrap; min-height:57px; color:var(--pf-muted); text-decoration:none; border-bottom:2px solid transparent; font:12px/1.5 var(--pf-sans) }
 .pf-product-navigation a:hover,.pf-product-navigation a[aria-current="location"] { color:var(--pf-teal); border-bottom-color:var(--pf-teal) }
 .pf-product-navigation a:focus-visible { outline-offset:-4px!important }
 /* A support worksheet with no account, submission, upload or persistence. */
@@ -585,11 +617,7 @@ body.studio.pp-system .pp-panel,
 .studio.product-support :is(.detail-card,.support-content-box) {
   background:linear-gradient(115deg,#1c2a34,#15222c); box-shadow:inset 0 1px 0 #aab7bc14;
 }
-body:is(.studio,.pf-ledger-page) .site-footer {
-  background-image:linear-gradient(110deg,#111f2adb,#0d1822e5),var(--pf-steel);
-  background-size:100% 100%,112% auto; background-position:center,left top;
-  box-shadow:inset 0 1px 0 #798b9540;
-}
+
 /* Paired document colors replace the legacy dark overlays on light paper. */
 .studio.secondary-page .receipt-card .status-indicator {
   background:#e2ece8; color:#164e43; border-color:#52746a80;
@@ -608,7 +636,6 @@ body:is(.studio,.pf-ledger-page) .site-footer {
   .pf-ledger-page .ledger-hero { background-size:100% 100%,100% 100%,220% auto }
   .ledger-plate-scene { margin:17px 10px 22px; }
   .ledger-plate-scene::before { inset:-11px -9px -17px; border-bottom:2px solid #7b858766 }
-  body:is(.studio,.pf-ledger-page) .nav-open .nav-panel { background:#111f29 }
 }
 @media(max-width:700px) {
   .ledger-plate-scene { width:calc(100% - 24px); max-width:360px; margin-inline:auto }
@@ -633,6 +660,183 @@ body:is(.studio,.pf-ledger-page) .site-footer {
   .studio.secondary-page .verification-ledger p { color:CanvasText }
   .ledger-plate { box-shadow:none; transform:none }
   .pf-workbench-media>a { background:Canvas; box-shadow:none }
-  body:is(.studio,.pf-ledger-page) .nav-open .nav-panel { background:Canvas }
   .ledger-hero::after,.ledger-plate-scene::before,.ledger-plate-scene::after { display:none }
+}
+
+/* The modular rooms share Home's physical chassis. The document body is the
+   inner-route backplate, so page partials need no hidden wrapper dependency. */
+html { background:#080b0e }
+body.studio,body.studio:is(.secondary-page,.product-page,.software-catalog-page):not(.tf-page),body.studio.tf-page {
+  position:relative; box-sizing:border-box;
+  width:min(1560px,calc(100% - 2 * var(--pf-gutter)));
+  min-height:calc(100vh - 2 * var(--pf-gutter));
+  margin:var(--pf-gutter) auto calc(var(--pf-gutter) * 1.6);
+  padding:var(--pf-joint); border:1px solid #05070a; border-radius:7px;
+  background:var(--pf-brush),linear-gradient(110deg,#242b31,#10151a 45%,#1c2329);
+  box-shadow:inset 1px 1px 0 #7a879047,inset -1px -1px 0 #000c,0 18px 45px #0009,0 2px 3px #000;
+}
+body.studio::before,body.studio::after {
+  content:""; position:absolute; pointer-events:none; top:9px; bottom:9px; width:2px;
+  background:linear-gradient(90deg,#040608,#65717a70,#070a0d); z-index:2;
+}
+body.studio::before { left:4px }
+body.studio::after { right:4px }
+body.studio > main {
+  width:100%; max-width:none; margin:var(--pf-joint) 0;
+  border:1px solid #05070a; border-radius:3px; box-sizing:border-box;
+  background:#11171c; box-shadow:inset 1px 1px 0 #ffffff0d,0 2px 6px #0007;
+}
+body.studio.secondary-page:not(.tf-page) main,body.studio.tf-page main {
+  width:100%; margin:var(--pf-joint) 0; border:1px solid #05070a;
+  box-shadow:inset 0 1px 0 #fff,0 2px 5px #0009;
+}
+body.studio .site-header { border-radius:3px }
+body:is(.studio,.pf-ledger-page) .site-header .top-nav a[aria-current="page"] { color:#fff }
+body:is(.studio,.pf-ledger-page) .motion-toggle {
+  border:1px solid #05070a; border-radius:3px;
+  background:linear-gradient(180deg,#2b323a,#1b2127);
+  box-shadow:inset 1px 1px 0 #ffffff0d,0 1px 2px #0005;
+}
+
+/* Studio / help desk / planning room: satin iron, with text on quiet fields.
+   The evidence rooms keep their paper and their dark-on-light record tokens. */
+body.studio.secondary-page:is(.pf-room-about,.pf-room-support,.pf-room-founders) main,body.studio.pf-room-roadmap main {
+  --text:#eef2f4; --muted:#b5c0c5; --line:#ffffff29; --teal:#00d1b2;
+  --gold:#d6a84f; --world-line:#ffffff29; --world-dim:#b5c0c5;
+  color:var(--text); color-scheme:dark;
+  background:linear-gradient(110deg,#1e272fe8,#11191fee 65%),var(--pf-steel);
+  background-size:100% 100%,112% auto; background-repeat:no-repeat;
+  box-shadow:inset 1px 1px 0 #ffffff12,0 2px 6px #0008;
+}
+body.studio:is(.pf-room-about,.pf-room-support) .support-hero {
+  position:relative; width:100%; margin:0; padding:clamp(30px,4.5vw,66px) 0;
+  border:0; border-bottom:1px solid var(--line); background:none;
+}
+.studio:is(.pf-room-about,.pf-room-support) .support-hero::before { display:none }
+.studio:is(.pf-room-about,.pf-room-support) .support-hero::after { display:none }
+.studio:is(.pf-room-about,.pf-room-support,.pf-room-roadmap,.pf-room-founders) main h1 {
+  color:#e8edf0; text-shadow:0 1px 0 #66717b,0 3px 3px #0008;
+  font-weight:850; font-stretch:90%; letter-spacing:-.045em;
+}
+.studio:is(.pf-room-about,.pf-room-support) .support-hero h1 { max-width:17ch; font-size:clamp(40px,5.3vw,76px); line-height:1.04 }
+.studio:is(.pf-room-about,.pf-room-support,.pf-room-roadmap,.pf-room-founders) :is(.detail-card,.support-content-box,.about-nav-card,.founders-boundary),
+.studio.pf-room-roadmap .roadmap-list article {
+  position:relative; padding:clamp(22px,2.7vw,36px); border:1px solid #05070a; border-radius:3px;
+  background:var(--pf-brush),linear-gradient(120deg,#263039,#1b242c 65%,#202a31);
+  box-shadow:inset 1px 1px 0 #ffffff13,inset -1px -1px 0 #0007,0 3px 5px #0005;
+}
+.studio.pf-room-about .about-intro-box { border-left:3px solid var(--pf-gold) }
+.studio:is(.pf-room-about,.pf-room-support) .support-section { margin-block:0; padding-block:clamp(20px,2.5vw,32px) }
+.studio:is(.pf-room-about,.pf-room-support) :is(.support-grid,.about-nav-grid) { gap:18px; margin-top:0 }
+.studio:is(.pf-room-about,.pf-room-support) :is(.detail-card,.about-nav-card) h3 { font-size:24px; line-height:1.25 }
+.studio:is(.pf-room-about,.pf-room-support) :is(.detail-card,.about-nav-card) p { line-height:1.8 }
+.studio:is(.pf-room-about,.pf-room-support) .section-heading { padding-bottom:0; margin-bottom:clamp(20px,2.4vw,32px) }
+.studio.pf-room-support :is(.support-command,.support-diagnostic-textarea) {
+  background:#0e151b; color:#e9eff2; border:1px solid #586771;
+  box-shadow:inset 0 2px 5px #0008; border-radius:2px;
+}
+.studio.pf-room-support :is(.support-command,.support-diagnostic-textarea):focus-visible { outline-color:var(--pf-teal) }
+.studio.pf-room-roadmap .roadmap-studio { padding-block:clamp(36px,5vw,72px) }
+.studio.pf-room-roadmap .roadmap-intro { max-width:66ch; margin-bottom:52px; color:var(--muted) }
+.studio.pf-room-roadmap .roadmap-list { gap:12px; border:0; margin-bottom:48px }
+.studio.pf-room-roadmap .roadmap-list article { border-left:3px solid #778b88 }
+.studio.pf-room-roadmap .roadmap-list h2 a { color:var(--text) }
+.studio.pf-room-roadmap .roadmap-list h2 a:hover { color:var(--pf-teal) }
+.studio.pf-room-founders .founders-boundary { padding:28px }
+.studio.pf-room-founders .founders-receipt {
+  --text:#121a20; --muted:#45525a; --line:#0b0f142e; --teal:#00685b;
+  color:var(--text); background:#eef1ef; border:1px solid #899292;
+  box-shadow:0 0 0 8px #0b111780,1px 2px 0 #c3cbcd,8px 14px 20px #0008;
+  transform:rotate(1deg);
+}
+.studio.pf-room-founders .founders-receipt :is(dt,dd,.chip) { color:var(--text) }
+.studio.pf-room-founders .button[aria-disabled="true"] { background:#151d24; color:var(--muted) }
+.studio.pf-room-founders .ledger-wrap { background:#111a21; box-shadow:inset 0 2px 6px #0007 }
+
+/* A paper record is clamped into the metal surround. Brass is used only at
+   that joint, away from hashes, limits and the reading column. */
+body.studio.secondary-page:not(.pf-room-about):not(.pf-room-support):not(.pf-room-founders) main,
+body.studio.tf-page main { position:relative; border-top:4px solid #a48950 }
+body.studio.secondary-page:not(.pf-room-about):not(.pf-room-support):not(.pf-room-founders) main::before,
+body.studio.tf-page main::before {
+  content:""; position:absolute; top:-7px; left:26px; right:26px; height:8px;
+  background:linear-gradient(180deg,#53606a,#151d23 40%,#0a0f14 55%,#53606a);
+  box-shadow:0 2px 3px #0006; pointer-events:none;
+}
+
+/* Product rooms use the authored theme variables and scene geometry. The
+   common metal lip surrounds real media; it never paints over the screenshot. */
+body.studio.pp-system .pp-module-hero[data-scene-family] {
+  --pf-room-tint:var(--product-glow,#ffffff10);
+  background:radial-gradient(ellipse at 78% 40%,var(--pf-room-tint),transparent 62%),linear-gradient(110deg,#101820ed,#11171de8 58%,#1c242bca),var(--pf-steel);
+  background-size:100% 100%,100% 100%,cover; background-position:center,center,85% top;
+  border:1px solid #05070a; border-top:2px solid var(--product-accent,#9da8ae); border-radius:3px;
+  box-shadow:inset 1px 1px 0 #ffffff0e,inset -1px -1px 0 #0009,0 5px 12px #0007;
+}
+body.studio.pp-system .pp-module-hero[data-scene-family="night-console"] { background-position:center,center,center; --pf-room-tint:#776f9b28 }
+body.studio.pp-system .pp-module-hero[data-scene-family="immersive-staging"] { --pf-room-tint:#b18b5830 }
+body.studio.pp-system .pp-module-hero[data-scene-family="glass-ledger"] { --pf-room-tint:#7da99e25 }
+body.studio.pp-system .pp-module-hero[data-scene-family="weather-instrument"] { --pf-room-tint:#6da3b329 }
+body.studio.pp-system .pp-module-hero .hero-product-shot {
+  padding:8px; border:1px solid #05070a; border-radius:4px;
+  background:var(--pf-brush),linear-gradient(145deg,#3b474f,#151d25 35%,#29343b);
+  box-shadow:inset 1px 1px 0 #bdc9ce55,inset -1px -1px 0 #000b,0 0 0 4px #0b101669,6px 14px 22px #0008;
+}
+body.studio.pp-system .pp-module-hero .hero-product-shot img {
+  display:block; border-radius:1px; background:#0a0e12; filter:none;
+  box-shadow:0 0 0 1px #06090c;
+}
+body.studio.pp-system .hero-product-shot figcaption {
+  padding:13px 12px 5px; background:none; color:#b5c0c5; font:12px/1.7 var(--pf-mono);
+}
+body.studio.pp-system .pp-panel {
+  background:var(--pf-brush),linear-gradient(115deg,#222c34,#18222a);
+  border:1px solid #05070a; box-shadow:inset 1px 1px 0 #ffffff0e,0 2px 4px #0005;
+}
+.studio .h9-software-hero { box-shadow:inset 0 -1px 0 #000,0 1px 0 #ffffff0a }
+.studio.software-catalog-page .product-card[data-scene-family] {
+  background:radial-gradient(ellipse at 100% 0,var(--product-glow,#ffffff08),transparent 65%),var(--pf-brush),linear-gradient(120deg,#242e36,#18222a);
+  box-shadow:inset 1px 1px 0 #ffffff0e,3px 5px 9px #0005; border-radius:3px;
+}
+
+@media(max-width:1180px) { :root { --pf-joint:10px } }
+@media(max-width:980px) {
+  body:is(.studio,.pf-ledger-page) .footer-grid { grid-template-columns:minmax(0,1fr) minmax(0,1fr) }
+  body:is(.studio,.pf-ledger-page) .footer-brand { grid-column:1 / -1 }
+}
+@media(max-width:900px) {
+  body:is(.studio,.pf-ledger-page) .site-header .nav-row { gap:0 16px }
+  body:is(.studio,.pf-ledger-page) .site-header .top-nav a[aria-current="page"] { border-left:3px solid var(--pf-teal); padding-left:14px }
+  body:is(.studio,.pf-ledger-page) .site-header .top-nav a:hover { background:#34424b }
+}
+@media(max-width:700px) {
+  :root { --pf-joint:6px }
+  body.studio { border-radius:4px }
+  body.studio::before,body.studio::after { display:none }
+  body:is(.studio,.pf-ledger-page) .footer-grid { grid-template-columns:minmax(0,1fr) }
+  .studio:is(.pf-room-about,.pf-room-support) :is(.detail-card,.support-content-box,.about-nav-card) { padding:22px }
+  .studio.pf-room-founders .founders-receipt { transform:none }
+  body.studio.pp-system .pp-module-hero .hero-product-shot { padding:5px }
+}
+@media(max-width:480px) {
+  body:is(.studio,.pf-ledger-page) .site-header .brand-mark { width:38px }
+  body:is(.studio,.pf-ledger-page) .site-header .brand-lockup { gap:8px; min-height:48px }
+  body:is(.studio,.pf-ledger-page) .site-header .brand-name { font-size:14px; font-stretch:80%; letter-spacing:.02em }
+  body:is(.studio,.pf-ledger-page) .site-header .nav-row { padding:8px 10px; gap:0 8px }
+  body:is(.studio,.pf-ledger-page) .site-header .nav-toggle { flex:0 0 44px; width:44px }
+  body:is(.studio,.pf-ledger-page) .footer-bottom .motion-toggle { margin-left:0 }
+}
+@media(forced-colors:active) {
+  html { background:Canvas }
+  body.studio,body.studio > main,
+  body.studio:is(.pf-room-about,.pf-room-support,.pf-room-roadmap,.pf-room-founders) main,
+  .studio:is(.pf-room-about,.pf-room-support,.pf-room-roadmap,.pf-room-founders) :is(.detail-card,.support-content-box,.about-nav-card,.founders-boundary,.roadmap-list article,.founders-receipt,.ledger-wrap),
+  body.studio.pp-system :is(.pp-panel,.pp-module-hero[data-scene-family],.hero-product-shot),
+  .studio.software-catalog-page .product-card[data-scene-family],
+  body:is(.studio,.pf-ledger-page) :is(.site-header .top-nav a,.motion-toggle) {
+    background:Canvas; color:CanvasText; border-color:CanvasText; box-shadow:none;
+  }
+  body.studio::before,body.studio::after,body.studio main::before { display:none }
+  body.studio main h1 { color:CanvasText!important; text-shadow:none!important }
+  body:is(.studio,.pf-ledger-page) .site-header .top-nav a[aria-current="page"] { color:LinkText }
 }

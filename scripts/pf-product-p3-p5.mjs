@@ -6,6 +6,7 @@ import crypto from "node:crypto";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import releaseInputs from "./release-inputs.cjs";
+import { getLegacyRegressionRoot } from "./legacy-intake-fixture.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CLI = path.join(ROOT, "scripts", "pf-product.mjs");
@@ -28,7 +29,7 @@ const PUBLISHER_SOURCE_PATHS = new Set([
   "P7_P9_PUBLICATION_ENGINE.md",
   "QUALIFICATION_AUTHORITY_REPAIR.md", "scripts/release-inputs.cjs",
   "scripts/release-qualification.ps1", "scripts/qualification-authority.cjs",
-  "scripts/build-qualification-fixture.ps1", "scripts/legacy-intake-fixture.mjs",
+  "scripts/build-qualification-fixture.ps1", "scripts/legacy-intake-fixture.mjs", "scripts/test-legacy-intake-fixture.mjs",
   "scripts/test-h3-trust-to-action.ps1", "scripts/test-h4-metadata-discovery.ps1",
   "scripts/test-h5-jsonld-truth.ps1", "scripts/test-h7a-design-pilot.ps1"
 ]);
@@ -823,11 +824,12 @@ function extractCounts(text) {
   return { passed: (String(text).match(/\bPASS:/g) || []).length, failed: (String(text).match(/\bFAIL:/g) || []).length };
 }
 async function runRegressionSuite(spec) {
-  const abs = path.join(ROOT, spec.file);
+  const regressionRoot = getLegacyRegressionRoot(ROOT);
+  const abs = path.join(regressionRoot, spec.file);
   if (!fs.existsSync(abs)) return { id: spec.id, script: spec.file, status: "FAIL", passed: 0, failed: 1 };
   const command = spec.kind === "node" ? process.execPath : "pwsh";
   const args = spec.kind === "node" ? [abs] : ["-NoProfile", "-File", abs];
-  const r = spawnSync(command, args, { cwd: ROOT, encoding: "utf8", timeout: 900000, maxBuffer: 64 * 1024 * 1024, windowsHide: true });
+  const r = spawnSync(command, args, { cwd: regressionRoot, encoding: "utf8", timeout: 900000, maxBuffer: 64 * 1024 * 1024, windowsHide: true });
   const counts = extractCounts((r.stdout || "") + "\n" + (r.stderr || ""));
   return { id: spec.id, script: spec.file, status: !r.error && r.status === 0 && counts.failed === 0 ? "PASS" : "FAIL",
     passed: counts.passed, failed: counts.failed };
@@ -860,8 +862,9 @@ async function buildCandidateSite(candidate) {
   }
 }
 async function refreshCanonicalPublic() {
-  const r = spawnSync("pwsh", ["-NoProfile", "-File", BUILD], {
-    cwd: ROOT, encoding: "utf8", timeout: 180000, maxBuffer: 16 * 1024 * 1024, windowsHide: true
+  const regressionRoot = getLegacyRegressionRoot(ROOT);
+  const r = spawnSync("pwsh", ["-NoProfile", "-File", path.join(regressionRoot, "scripts", "build-site.ps1")], {
+    cwd: regressionRoot, encoding: "utf8", timeout: 180000, maxBuffer: 16 * 1024 * 1024, windowsHide: true
   });
   return !r.error && r.status === 0;
 }

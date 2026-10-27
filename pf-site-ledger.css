@@ -19,7 +19,9 @@ body.studio.pp-system[data-product-atmosphere] {
   --pp-ink:var(--pf-black); --pp-panel:var(--pf-iron);
   --pp-warm:var(--pf-paper); --pp-muted:var(--pf-muted); --pp-line:var(--pf-rule);
   background:var(--pf-black); color:var(--pf-paper); color-scheme:dark;
-  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  /* Type is owned by pf-foundry-system.css (var(--pf-sans)); restating a
+     system-ui stack here overrode it on secondary/product routes and split
+     body copy from the Archivo headings on the same pages. */
 }
 body.studio main,
 body.studio:is(.secondary-page,.product-support,.product-roadmap,.tf-index):not(.tf-page) main { background:transparent }
@@ -42,32 +44,7 @@ body.studio:is(.secondary-page,.product-support,.product-roadmap,.tf-index):not(
 .studio :is(.text-link,.pp-link-row a):hover { color:#38dec6 }
 .studio .button[aria-disabled="true"] { color:var(--muted); border-color:var(--line); background:var(--pf-iron) }
 
-/* One navigation and colophon treatment across all page families. */
-body.studio .site-header { position:relative; backdrop-filter:none }
-body.studio .nav-row { width:var(--pf-rail); min-height:0; padding:10px clamp(14px,2vw,30px); gap:24px }
-body.studio .brand-lockup { gap:14px; color:var(--pf-paper) }
-body.studio .brand-mark { width:50px; height:auto; padding:0; object-fit:contain; clip-path:none; filter:drop-shadow(0 1px 1px rgba(0,0,0,.4)) }
-body.studio .brand-mark-picture { display:contents }
-body.studio .brand-mark-picture > source { display:none }
-body.studio .brand-name { color:#eef2f4; font:800 clamp(17px,1.3vw,22px)/1 var(--pf-sans); font-stretch:86%; letter-spacing:.06em; text-transform:uppercase }
-body.studio .brand-name small { color:#9fadb4; font:500 11.5px/1 var(--pf-mono); letter-spacing:.2em }
-body.studio .top-nav { gap:clamp(14px,2.4vw,40px) }
-body.studio .top-nav a { padding:0; min-height:44px; display:flex; align-items:center; font:600 15.5px/1 var(--pf-sans); font-stretch:84%; letter-spacing:.07em; text-transform:uppercase; color:#f4f7f8 }
-body.studio .top-nav a:hover,body.studio .top-nav a[aria-current="page"] { color:#fff }
-body.studio .site-header .nav-panel .nav-cta { display:inline-flex; align-items:center; justify-content:center; min-height:42px; padding:0 18px; border-radius:3px; border:1px solid #05070a; color:#f4f7f8; font:700 15.5px/1 var(--pf-sans); font-stretch:84%; letter-spacing:.11em; text-transform:uppercase; background:linear-gradient(180deg,#3a444e,#262e36); box-shadow:inset 1px 1px 0 rgba(255,255,255,.15),inset -1px -1px 0 rgba(0,0,0,.5),0 0 0 3px #0f1419,0 0 0 4px rgba(255,255,255,.05) }
-body.studio .site-header .nav-panel .nav-cta:hover,body.studio .site-header .nav-panel .nav-cta[aria-current="page"] { color:#fff; border-color:var(--pf-teal) }
-body.studio .nav-toggle { border-color:var(--pf-rule); background:transparent; border-radius:0 }
-body.studio .nav-toggle-bar { background:var(--pf-paper) }
-body.studio .site-footer,body.studio .studio-root-footer { background:var(--pf-black); border-color:var(--pf-rule); color:var(--pf-paper) }
-body.studio .footer-grid,body.studio .footer-bottom { width:min(1280px,calc(100% - 112px)) }
-body.studio .footer-brand-lockup { color:var(--pf-paper); font:600 12px/1.5 var(--pf-mono); letter-spacing:.13em; text-transform:uppercase }
-body.studio .footer-logo { width:49px; height:50px; padding:5px; object-fit:contain; filter:none; clip-path:none }
-body.studio .site-footer h2 { font:11px/1.7 var(--pf-mono); letter-spacing:.13em; color:var(--pf-muted); text-transform:uppercase }
-body.studio .site-footer :is(p,li),body.studio .studio-root-footer :is(p,small) { color:var(--pf-muted); font-size:12px }
-body.studio .site-footer a:hover,body.studio .studio-root-footer a:hover { color:var(--pf-teal) }
-body.studio .studio-root-footer { padding-inline:max(56px,calc((100% - 1280px)/2)) }
-body.studio .h9-footer-brand { color:var(--pf-paper) }
-body.studio .h9-footer-brand img { width:49px; height:50px; padding:5px; object-fit:contain; object-position:center; filter:none; clip-path:none }
+/* Shared chrome is owned by pf-foundry-system.css. */
 
 /* Catalog: the tools lead; the same pressed plate anchors its masthead. */
 .studio .h9-software-wrap { width:min(1280px,calc(100% - 112px)) }
@@ -189,11 +166,8 @@ body.studio.tf-page .site-footer { color:var(--pf-paper) }
 
 @media(max-width:1200px) {
   :root { --world-gutter:32px }
-  body.studio .nav-row,body.studio .footer-grid,body.studio .footer-bottom,.studio .h9-software-wrap,
+  .studio .h9-software-wrap,
   .studio.secondary-page :is(.founders-hero,.founders-cap,.founders-ledger,.founders-boundary) { width:calc(100% - 64px) }
-  body.studio .nav-row { gap:23px }
-  body.studio .top-nav { gap:19px }
-  body.studio .studio-root-footer { padding-inline:32px }
   .studio .h9-software-hero-image { right:32px; width:190px }
   .studio .h9-software-hero p:last-child { max-width:52ch }
 }
@@ -204,13 +178,8 @@ body.studio.tf-page .site-footer { color:var(--pf-paper) }
 }
 @media(max-width:760px) {
   :root { --world-gutter:20px }
-  body.studio .nav-row,body.studio .footer-grid,body.studio .footer-bottom,.studio .h9-software-wrap,
+  .studio .h9-software-wrap,
   .studio.secondary-page :is(.founders-hero,.founders-cap,.founders-ledger,.founders-boundary) { width:calc(100% - 40px) }
-  body.studio .nav-row { min-height:72px; gap:12px }
-  body.studio .brand-name { font-size:11px; letter-spacing:.08em }
-  body.studio .brand-name small { font-size:9px; letter-spacing:.025em }
-  body.studio .nav-panel { background:var(--pf-black); border-color:var(--pf-rule) }
-  body.studio .studio-root-footer { padding-inline:20px }
   .studio.secondary-page :is(.support-hero,.tf-hero,.proof-hero) { padding-block:34px 25px }
   .studio .h9-software-hero { min-height:285px; padding-block:34px }
   .studio .h9-software-hero-image { right:-62px; opacity:.1 }
@@ -221,7 +190,6 @@ body.studio.tf-page .site-footer { color:var(--pf-paper) }
   body.studio.pp-system .pp-module-hero .pp-hero-layout { min-height:0; gap:32px }
 }
 @media(max-width:480px) {
-  body.studio .site-header .brand-mark { width:38px; height:auto }
 }
 @media(forced-colors:active) {
   body.studio { --pf-black:Canvas; --pf-iron:Canvas; --pf-paper:CanvasText; --pf-rule:CanvasText; --pf-paper-rule:CanvasText; --pf-teal:LinkText; --pf-muted:CanvasText }

@@ -48,6 +48,7 @@
 .tf-page .tf-fresh code.inline { font-size: .75rem; }
 .tf-verify-list .tf-v-val { font-weight: 600; }
 .tf-verify-list .tf-v-note { display: block; color: var(--muted); font-size: .8rem; margin-top: 5px; }
+.tf-verify-list .tf-sha { overflow-wrap: anywhere; word-break: break-all; }
 
 .tf-record-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
 .tf-record-list li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; padding: 12px 16px; border: 1px solid var(--line); border-radius: 8px; font-size: .9rem; }

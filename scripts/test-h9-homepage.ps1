@@ -42,7 +42,7 @@ function Invoke-SubCheck([string]$label, [string]$exe, [string[]]$arguments, [st
 Write-Host '=== H9 HOMEPAGE-FIRST DESIGN AND TRUTH GUARD ===' -ForegroundColor Cyan
 
 $sections = @([regex]::Matches($homeHtml, '<section class="([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
-Assert-H9 'home preserves the exact shipped Proof Ledger section order' (($sections -join ',') -ceq 'ledger-hero,ledger-chain,ledger-paper ledger-doctrine,ledger-featured,ledger-specimen,ledger-paper ledger-index,ledger-position,ledger-close' -and $homeHtml -notmatch 'studio-threshold|studio-portfolio|data-home-products')
+Assert-H9 'home preserves the exact shipped Proof Ledger section order' (($sections -join ',') -ceq 'ledger-hero,ledger-featured,ledger-chain,ledger-paper ledger-doctrine,ledger-specimen,ledger-paper ledger-index,ledger-position,ledger-close' -and $homeHtml -notmatch 'studio-threshold|studio-portfolio|data-home-products')
 # V5 hero (owner ruling, 2026-10-13): the approved headline and copy, scoped to
 # the hero itself, replace the page-wide phrase match, which the meta tags also
 # satisfied.
@@ -62,9 +62,9 @@ $metaCopy = @([regex]::Matches($homeHead, '<meta (?:name|property)="(?:descripti
 $approvedDescription = 'Real software leaves a record. Independent tools, public release receipts, and clear limits.'
 Assert-H9 'Home search and social descriptions are the approved V5 copy, and the philosophy heading does not repeat the hero' ($homeHead -cmatch ('<meta name="description" content="' + [regex]::Escape($approvedDescription) + '"/>') -and $homeHead -cmatch ('<meta property="og:description" content="' + [regex]::Escape($approvedDescription) + '"/>') -and $homeHtml -cmatch '<h2 id="doctrine-title">Show the work\.</h2>' -and ([regex]::Matches($homeHtml, 'Receipts over hype\.')).Count -eq 1)
 Assert-H9 'Home title, search and social copy exist and make no certification, security, digest or version claim' ($homeHead -match '<meta name="description" content="[^"]{20,}"' -and $homeHead -match '<meta property="og:description" content="[^"]{20,}"' -and @($metaCopy | Where-Object { $_ -match $overclaim -or $_ -match '\b[0-9a-f]{64}\b' -or $_ -match '\bv\d+\.\d+' }).Count -eq 0)
-Assert-H9 'hero plate seal is decorative with a forced-colours fallback and carries the foundry serial' ($hero -match '<div class="ledger-plate-scene" aria-hidden="true">' -and $hero -match 'class="ledger-plate-mark"' -and $hero -match 'class="ledger-plate-serial">Source / Artifact / Record' -and $homeHtml -notmatch 'pf-inspect|pf-mark-dialog')
+Assert-H9 'hero emblem is decorative with a forced-colours vector seal, and its inspect control opens the mark dialog' ($hero -match '<div class="ledger-plate-scene" aria-hidden="true">' -and $hero -match '<source media="\(forced-colors: active\)" srcset="/brand/PF_MAKER_SEAL\.svg"/><img class="pf-emblem-image" src="/brand/emblem/PF_MARK_G_EMBLEM_R3\.webp" alt=""' -and $hero -match 'Source / Artifact / Record' -and $hero -match 'class="pf-inspect"[^>]*aria-haspopup="dialog"[^>]*aria-controls="pf-mark-dialog"' -and $homeHtml -match '<dialog [^>]*id="pf-mark-dialog"')
 $heroActions = [regex]::Match($hero, '(?s)<div class="ledger-actions">(.*?)</div>').Groups[1].Value
-Assert-H9 'hero sends visitors to dedicated Software and Proof Standard pages' ($heroActions -cmatch '^<a class="ledger-button" href="/software/">Browse Software <svg' -and $hero -cmatch '<a class="ledger-link" href="/proof-standard/">Read the Proof Standard <svg' -and $homeHtml -match 'href="/software/"' -and $homeHtml -match 'href="/proof-standard/"')
+Assert-H9 'hero sends visitors to dedicated Software and Proof Standard pages' ($heroActions -cmatch '^<a class="ledger-button" href="/software/">Browse software <svg' -and $hero -cmatch '<a class="ledger-link ledger-link-mono" href="/proof-standard/">Read the Proof Standard <svg' -and $homeHtml -match 'href="/software/"' -and $homeHtml -match 'href="/proof-standard/"')
 # Home's header differs from the shared header only by its brand mark: the V5
 # PF Mark G render, with the shared micro mark kept for forced colours.
 $homeMarkPicture = '<picture class="brand-mark-picture"><source media="(forced-colors: active)" srcset="/brand/PF_HEADER_MARK.svg"/><img class="brand-mark" src="/brand/emblem/PF_MARK_G_HEADER.webp" alt="" width="50" height="51"/></picture>'
@@ -100,7 +100,7 @@ $headerMarkFile = Join-Path $public 'brand/emblem/PF_MARK_G_HEADER.webp'
 $headerMarkSha = if (Test-Path -LiteralPath $headerMarkFile) { (Get-FileHash -LiteralPath $headerMarkFile -Algorithm SHA256).Hash.ToLowerInvariant() } else { 'missing' }
 Assert-H9 'Home header carries the approved PF Mark G render, with the vector micro mark for forced colours, inside a named home link' ($brandLink.Success -and $brandLink.Groups[1].Value.Contains($homeMarkPicture) -and ([regex]::Matches($homeHeader, '<img\b')).Count -eq 1 -and (Get-VisibleText $brandLink.Groups[1].Value) -match '^The Proof Foundry\b' -and $headerMarkRow.Success -and $headerMarkSha -ceq 'eda57d5d1abe27adcfd3d13de0b5ec0b4ffa2a2c3cb3c5d768bc7e2b843936f0' -and $headerMarkSha -ceq $headerMarkRow.Groups[1].Value)
 $homeFooter = [regex]::Match($homeHtml, '(?s)<footer class="site-footer".*?</footer>').Value
-Assert-H9 'shared PF micro mark stays in the footer and unified seal derivatives appear without glyph arrows' (([regex]::Matches($homeFooter, '<img[^>]*PF_HEADER_MARK\.svg')).Count -eq 1 -and ([regex]::Matches($homeHtml, '<img[^>]*PF_HEADER_MARK\.svg')).Count -eq 1 -and $homeHtml -notmatch 'PF_MARK_G_MONO_LIGHT\.svg' -and $homeHtml -match 'class="site-footer"' -and $homeHtml -notmatch '↗|→|←' -and $homeHtml -match 'class="ledger-arrow"')
+Assert-H9 'shared PF micro mark stays in the footer and unified seal derivatives appear without glyph arrows' (([regex]::Matches($homeFooter, '<img[^>]*PF_HEADER_MARK\.svg')).Count -eq 1 -and ([regex]::Matches($homeHtml, '<img[^>]*PF_HEADER_MARK\.svg')).Count -eq 1 -and $homeHtml -match 'PF_MAKER_SEAL\.svg' -and $homeHtml -match 'PF_RECEIPT_WATERMARK\.svg' -and $homeHtml -notmatch 'pf-stamp-top|PF_MARK_G_MONO_LIGHT\.svg' -and $homeHtml -match 'class="site-footer"' -and $homeHtml -notmatch '↗|→|←' -and $homeHtml -match 'class="ledger-arrow"')
 
 $catalogFailures = @()
 foreach ($p in @($manifest.products | Where-Object visible)) {
@@ -132,15 +132,10 @@ Assert-H9 'home uses active responsive and reduced-motion rules without a carous
 
 
 # ── V5 homepage in a real browser (owner ruling, 2026-10-13) ─────────────────
-# Layout at six widths, no-JS, keyboard and touch use of the receipt dialog,
-# exact receipt parity per product, every failure and refresh state, reduced
-# motion, forced colours. Runs against public/ over loopback; needs Chrome or
-# Edge (PF_H9_BROWSER).
-# Minimum 110 -> 113 with the forged-ledger restoration: the flattened design's
-# mark-inspector dialog (4 checks) is gone from the page; the receipt inspector
-# checks are unchanged; 7 checks added for normal-colour contrast/dark ground and
-# the detailed hero PF in normal and forced colours.
-Invoke-SubCheck 'V5 browser' 'node' @((Join-Path $PSScriptRoot 'test-home-v5-browser.mjs')) '^(PASS|FAIL): (.*)$' '^=== HOME V5 BROWSER RESULT: (\d+) passed, (\d+) failed ===$' 113
+# Layout at six widths, no-JS, keyboard and touch use of both dialogs, exact
+# receipt parity per product, every failure and refresh state, reduced motion.
+# Runs against public/ over loopback; needs Chrome or Edge (PF_H9_BROWSER).
+Invoke-SubCheck 'V5 browser' 'node' @((Join-Path $PSScriptRoot 'test-home-v5-browser.mjs')) '^(PASS|FAIL): (.*)$' '^=== HOME V5 BROWSER RESULT: (\d+) passed, (\d+) failed ===$' 110
 
 Write-Host "=== H9 RESULT: $pass passed, $fail failed ==="
 if ($fail -gt 0) { exit 1 }

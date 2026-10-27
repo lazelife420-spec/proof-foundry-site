@@ -1933,7 +1933,8 @@ function Build-TruthFileShell($module, $source) {
   $artIndex = 0
   foreach ($a in @($p.artifacts)) {
     $sign = if ($a.signingStatus -eq 'PRODUCTION_SIGNED') { 'Production-signed' } elseif ($a.signingStatus -eq 'DEBUG_SIGNED') { 'Debug-signed' } else { 'Unsigned' }
-    $artNote = 'SHA-256 ' + (Html-Attr $a.sha256.Substring(0,16)) + '… · ' + (Html-Attr $sign)
+    # Full 64-hex digest, wrapped (forged-continuity R1: record room shows complete, copyable hashes; the 16-char prefix remains a substring so test-truth-files.ps1:62 still matches)
+    $artNote = 'SHA-256 <code class="inline tf-sha">' + (Html-Attr $a.sha256) + '</code> · ' + (Html-Attr $sign)
     if ($a.distType) { $artNote += ' · ' + (Html-Attr $a.distType) }
     if (-not $a.downloadUrl) { $artNote += ' · not public' }
     if ($withheld.Count -gt 0) { $artNote += $(if ($a.downloadUrl -and $withheld -notcontains $artIndex) { ' · Offered here: yes' } else { ' · Offered here: no' }) }
@@ -2929,14 +2930,20 @@ function Build-LedgerFeatured {
     if ($m.id -notin @($selection.featured) -or $p.release.releaseStatus -ne 'PUBLIC_RELEASE') { continue }
     $name = if ($p.homeName) { [string]$p.homeName } else { [string]$p.name }
     $job = if ($m.card.tagline) { [string]$m.card.tagline } else { [string]$p.summary }
+    $titleId = 'feature-' + $m.id + '-title'
+    $version = VersionLabel $p
+    $summary = if ($m.card.summary) { '<p class="ledger-summary">' + (Html-Text $m.card.summary) + '</p>' } else { '' }
+    $caption = if ($m.homepage.mediaDisclosure) { '<figcaption>' + (Html-Text $m.homepage.mediaDisclosure) + '</figcaption>' } else { '' }
     $items += @"
-<article class="ledger-instrument" data-ledger-feature="$(Html-Attr $m.id)">
-  $(LedgerProductMark $m)<div><h3>$(Html-Text $name)</h3><p class="ledger-job">$(Html-Text $job)</p><div class="ledger-instrument-meta"><div><span class="ledger-version">$(Html-Text (VersionLabel $p))</span><span class="ledger-platform">$(Html-Text (LedgerPlatform $p))</span></div>$(LedgerReceiptButton $m)<a class="ledger-link" href="$(Html-Attr $m.route)" aria-label="View $(Html-Attr $name) details">View details $(LedgerArrowSvg)</a><a class="ledger-link" href="/truth-files/$(Html-Attr $m.id)/">Truth File $(LedgerArrowSvg)</a></div><span class="ledger-status">$(Html-Text ((VisitorAvailabilityLabel $p).Replace('_', ' ')))</span></div>
-</article>
+<article class="ledger-instrument" data-ledger-feature="$(Html-Attr $m.id)" aria-labelledby="$(Html-Attr $titleId)"><div class="ledger-instrument-in">
+  <figure class="ledger-feature-screen"><a class="ledger-feature-media" href="$(Html-Attr $m.route)"><span class="ledger-feature-glass"><picture class="pf-preview-picture">$(Build-PreviewWebpSource $m.card.media)<img src="$(Html-Attr $m.card.media)" alt="$(Html-Attr $m.card.mediaAlt)" width="640" height="366" loading="lazy" decoding="async"/></picture></span></a>$caption</figure>
+  <div class="ledger-instrument-body"><div class="ledger-instrument-title">$(LedgerProductMark $m)<h3 id="$(Html-Attr $titleId)">$(Html-Text $name)</h3><span class="ledger-version"><span class="ledger-sr">Public version </span>$(Html-Text $version)</span></div><p class="ledger-job">$(Html-Text $job)</p>$summary<p class="ledger-platform">$(Html-Text (LedgerPlatform $p)) &#183; $(Html-Text ((VisitorAvailabilityLabel $p).Replace('_', ' ')))</p><div class="ledger-instrument-actions"><a class="ledger-button ledger-button-small" href="$(Html-Attr $m.route)">Explore $(Html-Text $name) $(LedgerArrowSvg)</a>$(LedgerReceiptButton $m)<a class="ledger-link" href="/truth-files/$(Html-Attr $m.id)/">Read the Truth File $(LedgerArrowSvg)</a></div></div>
+</div></article>
 "@
   }
   return ($items -join "`n")
 }
+
 function Build-LedgerIndex {
   $rows = @()
   foreach ($entry in Get-LedgerEntries) {
@@ -2952,6 +2959,7 @@ function Build-LedgerIndex {
   }
   return ($rows -join "`n")
 }
+
 function Build-SupportProductOptions {
   return (@($productRegistry | Where-Object { $_.visibility -eq 'visible' -and $_.lifecycle -eq 'public-eligible' } | ForEach-Object {
     $p = $productStateSource.Get($_.id)
@@ -2971,18 +2979,20 @@ function Build-LedgerSpecimen {
   $limits = @($p.limits)
   $limit = if ($limits.Count) { [string]$limits[0] } else { 'Read the public record for the scope and limitations of this release.' }
   $limitItems = (@($limits | ForEach-Object { '<li>' + (Html-Text ([string]$_)) + '</li>' }) -join '')
+  $limitList = if ($limits.Count) { "<details><summary>All $($limits.Count) documented limitations</summary><ul>$limitItems</ul></details>" } else { '' }
   return @"
-<div class="ledger-record" data-ledger-specimen="$(Html-Attr $m.id)"><dl>
-  <dt>Product</dt><dd>$(Html-Text $p.name)</dd>
+<article class="ledger-record" data-ledger-specimen="$(Html-Attr $m.id)" aria-label="$(Html-Attr $p.name) release record specimen"><dl>
+  <dt>Product</dt><dd class="ledger-strong">$(Html-Text $p.name)</dd>
   <dt>Version</dt><dd class="ledger-current">$(Html-Text (VersionLabel $p))</dd>
   <dt>Platform</dt><dd>$(Html-Text $artifact.platform)</dd>
   <dt>Artifact</dt><dd>$(Html-Text $artifact.filename)</dd>
   <dt>SHA-256</dt><dd><code class="ledger-hash">$(Html-Text $artifact.sha256)</code></dd>
   <dt>Status</dt><dd class="ledger-current">$(Html-Text (VisitorAvailabilityLabel $p))</dd>
-  <dt>Known limit</dt><dd>$(Html-Text $limit)</dd>
-  </dl><details><summary>All $($limits.Count) documented limitations</summary><ul>$limitItems</ul></details><div class="ledger-actions">$(LedgerReceiptButton $m)<a class="ledger-link" href="/proof/#receipt-$(Html-Attr $m.id)">Full release record $(LedgerArrowSvg)</a><a class="ledger-link" href="/truth-files/$(Html-Attr $m.id)/">View Truth File $(LedgerArrowSvg)</a></div></div>
+  <dt>Known limit</dt><dd class="ledger-prose">$(Html-Text $limit)</dd>
+  </dl>$limitList<div class="ledger-actions">$(LedgerReceiptButton $m)<a class="ledger-link" href="/proof/#receipt-$(Html-Attr $m.id)">Full release record $(LedgerArrowSvg)</a><a class="ledger-link" href="/truth-files/$(Html-Attr $m.id)/">View Truth File $(LedgerArrowSvg)</a></div></article>
 "@
 }
+
 function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   # H13: when -OverrideHtml is supplied, render that generated markup instead of
   # reading $srcPath — lets Render-ProductShell feed module-built pages through
@@ -3008,9 +3018,6 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   }
 
   # Extract @page id
-  # The forged-ledger homepage keeps its own material system (pf-home-ledger.css);
-  # the foundry-system layer supplies the shared header/footer chrome integration
-  # and the focus / forced-colours behaviour it declares for body.pf-ledger-page.
   $systemVersion = (Get-FileHash (Join-Path $root 'pf-foundry-system.css') -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
   $html = $html.Replace('</head>', "<link href=`"/pf-foundry-system.css?v=$systemVersion`" rel=`"stylesheet`"/>`n</head>")
 

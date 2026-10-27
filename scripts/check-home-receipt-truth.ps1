@@ -172,10 +172,17 @@ foreach ($id in $receiptIds) {
 }
 
 # ── 5. Published capture captions, alt text and disclosures stay verbatim ────
-# The restored ledger homepage shows no product captures: featured releases are compact
-# instrument rows, so no homepage capture, caption or disclosure text exists to pin here.
-# Capture alt/caption truth stays pinned where captures ship: the /software/ catalog card
-# and the product-route figures (test-release-truth.ps1 A-12 bindings).
+$decoded = [System.Net.WebUtility]::HtmlDecode($homeHtml)
+$featured = @(((Read-Text (Join-Path $root 'homepage-ledger.json')) | ConvertFrom-Json).featured)
+foreach ($id in $featured) {
+  $module = (Read-Text (Join-Path $root "products/$id/module.json")) | ConvertFrom-Json
+  $article = [System.Net.WebUtility]::HtmlDecode([regex]::Match($homeHtml, '(?s)<article class="ledger-instrument" data-ledger-feature="' + [regex]::Escape($id) + '".*?</article>').Value)
+  Assert-Receipt "$id`: capture keeps its published alt text and caption" ($article -and $article.Contains('alt="' + [string]$module.card.mediaAlt + '"') -and $article.Contains('<figcaption>' + [string]$module.homepage.mediaDisclosure + '</figcaption>'))
+}
+$apostrophe = [string][char]0x2019
+foreach ($disclosure in @('Captures may show earlier builds or previous product names. Each preview states its context; the public record establishes current availability.', "Actual app previews or brand artwork. Some show earlier builds or previous product names. See each product$($apostrophe)s current release record.")) {
+  Assert-Receipt "published disclosure kept verbatim: $($disclosure.Substring(0, 36))" ($decoded.Contains($disclosure))
+}
 
 # ── 6. Canonical geometry and recorded emblem assets ─────────────────────────
 $master = Read-Text (Join-Path $root 'brand/PF_MARK_G_MASTER.svg')
@@ -200,7 +207,7 @@ foreach ($row in $rows) { $recordedSha['/' + $row.Groups[1].Value] = $row.Groups
 $builtHomeCss = Read-Text (Join-Path $PublicDir 'pf-home-ledger.css')
 $builtHomeJs = Read-Text (Join-Path $PublicDir 'pf-home.js')
 $activeEmblem = @([regex]::Matches($homeHtml + $builtHomeCss + $builtHomeJs, '/brand/emblem/[A-Za-z0-9_.-]+') | ForEach-Object Value | Sort-Object -Unique)
-Assert-Receipt 'every active emblem, header, light-mask and loupe reference in the built page is a provenance-recorded file' ($activeEmblem.Count -ge 1 -and @($activeEmblem | Where-Object { -not $recordedSha.ContainsKey($_) }).Count -eq 0)
+Assert-Receipt 'every active emblem, header, light-mask and loupe reference in the built page is a provenance-recorded file' ($activeEmblem.Count -ge 10 -and @($activeEmblem | Where-Object { -not $recordedSha.ContainsKey($_) }).Count -eq 0)
 foreach ($ref in $activeEmblem) {
   $sourceFile = Join-Path $root $ref.TrimStart('/')
   $builtFile = Join-Path $PublicDir $ref.TrimStart('/')
@@ -208,7 +215,7 @@ foreach ($ref in $activeEmblem) {
   $builtSha = if (Test-Path -LiteralPath $builtFile -PathType Leaf) { (Get-FileHash -LiteralPath $builtFile -Algorithm SHA256).Hash.ToLowerInvariant() } else { 'missing' }
   Assert-Receipt "active asset bytes, source = built = recorded: $ref" ($recordedSha.ContainsKey($ref) -and $sourceSha -ceq $recordedSha[$ref] -and $builtSha -ceq $recordedSha[$ref])
 }
-Assert-Receipt 'every emblem and font reference resolves in the build' ($refs.Count -ge 1 -and @($refs | Where-Object { -not (Test-Path (Join-Path $PublicDir $_.TrimStart('/'))) }).Count -eq 0)
+Assert-Receipt 'every emblem and font reference resolves in the build' ($refs.Count -ge 14 -and @($refs | Where-Object { -not (Test-Path (Join-Path $PublicDir $_.TrimStart('/'))) }).Count -eq 0)
 Assert-Receipt 'fonts ship with their licences' ((Test-Path (Join-Path $PublicDir 'assets/fonts/OFL-Archivo.txt')) -and (Test-Path (Join-Path $PublicDir 'assets/fonts/OFL-IBM-Plex-Mono.txt')))
 
 Write-Host "=== HOMEPAGE RECEIPT TRUTH RESULT: $pass passed, $fail failed ==="
