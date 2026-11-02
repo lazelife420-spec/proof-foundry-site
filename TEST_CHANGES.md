@@ -1266,3 +1266,11 @@ Assert ((Get-Content (Join-Path $withdrawn.OutDir 'truth-files\index.html') -Raw
 - `qualify-shared-visuals.mjs`: new independent fresh-profile headed evidence helper captures eleven routes at desktop/tablet/phone widths. Three cache-disabled 1320px Home loads must have successful CSS responses, populated CSSOM and actual rendered styles; missing-critical-CSS negative control must fail the guard. Geometry, nav/footer parity and sampled rendered contrast have explicit limitations.
 - Late real page fixes: active route station color darkened, narrow station padding avoids screw interference, Truth Files state/facts darkened against actual paper gradients. No release facts or shared reducer changed.
 - Decorative 404 numeral remains a low-contrast decorative background. The actual error heading and recovery links pass measured contrast; the decorative figure is not a content contrast pass.
+
+## `scripts/test-h11-public-truth.ps1` sitemap literals
+
+Old: `/cache-vault/`, `/proofshot/`, `/reality-gate/` = `2026-10-20`; `/lights-out/`, `/software/` = `2026-10-25`.
+
+Why obsolete: the 2026-11-01 main-site import materially changed each route's content/module inputs (`products/<id>/content.html`, `module.json`) and the editorial `software.html` directory. H11's own rule requires that a commit moving these routes edits the literal in the same commit as the sitemap date, and H4 independently requires the sitemap date to equal the newest material-input date (2026-11-01). Leaving the old literals makes H11 and H4 mutually unsatisfiable.
+
+Replacement: all five literals = `2026-11-01`. Every other route still has to keep its HEAD lastmod; `/truth/` and `/proof-standard/` stay pinned to 2026-10-20; the no-future-date and material-input checks are unchanged.

@@ -169,15 +169,18 @@ Assert-Truth ($LASTEXITCODE -eq 0 -and $homeMaterialDate -match '^\d{4}-\d{2}-\d
 # 2026-10-25 unified port: /, /about/, /lights-out/, /roadmap/, /support/ and
 # /software/ moved (Lights Out v11.2.0, studio-wide header mark, About rewrite);
 # each was bumped in the same commit as its content change.
+# 2026-11-01 main-site import: Cache Vault, Lights Out, ProofShot and Reality Gate
+# content/module inputs and the editorial /software/ directory changed; H4 derives
+# the same dates from their material-input history.
 $reconciledLastmod = @{
   'https://theprooffoundry.com/' = (@($homeMaterialDate, '2026-10-20') | Sort-Object | Select-Object -Last 1)
   'https://theprooffoundry.com/about/' = '2026-10-25'
-  'https://theprooffoundry.com/cache-vault/' = '2026-10-20'
-  'https://theprooffoundry.com/lights-out/' = '2026-10-25'
-  'https://theprooffoundry.com/proofshot/' = '2026-10-20'
-  'https://theprooffoundry.com/reality-gate/' = '2026-10-20'
+  'https://theprooffoundry.com/cache-vault/' = '2026-11-01'
+  'https://theprooffoundry.com/lights-out/' = '2026-11-01'
+  'https://theprooffoundry.com/proofshot/' = '2026-11-01'
+  'https://theprooffoundry.com/reality-gate/' = '2026-11-01'
   'https://theprooffoundry.com/roadmap/' = '2026-10-25'
-  'https://theprooffoundry.com/software/' = '2026-10-25'
+  'https://theprooffoundry.com/software/' = '2026-11-01'
   'https://theprooffoundry.com/support/' = '2026-10-25'
 }
 foreach ($kv in $headLastmod.GetEnumerator()) {
