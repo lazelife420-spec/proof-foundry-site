@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" class="joint-svg joint-svg--ghostlayer" aria-hidden="true" focusable="false" fill="none">
+<defs>
+  <linearGradient id="ghostlayer-satin" x1="34" y1="24" x2="180" y2="144" gradientUnits="userSpaceOnUse"><stop stop-color="#d1d6d4"/><stop offset=".23" stop-color="#889397"/><stop offset=".48" stop-color="#bac3c3"/><stop offset=".55" stop-color="#707d82"/><stop offset="1" stop-color="#414e55"/></linearGradient>
+  <linearGradient id="ghostlayer-graphite" x1="48" y1="20" x2="166" y2="143" gradientUnits="userSpaceOnUse"><stop stop-color="#414c50"/><stop offset=".22" stop-color="#232d32"/><stop offset=".73" stop-color="#111a20"/><stop offset="1" stop-color="#28353b"/></linearGradient>
+  <linearGradient id="ghostlayer-cut" x1="20" y1="18" x2="192" y2="141" gradientUnits="userSpaceOnUse"><stop stop-color="#ecede5"/><stop offset=".3" stop-color="#a9b4b3"/><stop offset=".62" stop-color="#596971"/><stop offset="1" stop-color="#152229"/></linearGradient>
+  <linearGradient id="ghostlayer-brass" x1="59" y1="35" x2="166" y2="115" gradientUnits="userSpaceOnUse"><stop stop-color="#e0c994"/><stop offset=".45" stop-color="#a88b54"/><stop offset=".6" stop-color="#c2a46c"/><stop offset="1" stop-color="#655236"/></linearGradient>
+  <linearGradient id="ghostlayer-ceramic" x1="60" y1="28" x2="168" y2="127" gradientUnits="userSpaceOnUse"><stop stop-color="#f4f4e9"/><stop offset=".48" stop-color="#ced8d3"/><stop offset="1" stop-color="#8b9e99"/></linearGradient>
+  <linearGradient id="ghostlayer-glass" x1="48" y1="27" x2="189" y2="133" gradientUnits="userSpaceOnUse"><stop stop-color="#d3e4dd" stop-opacity=".55"/><stop offset=".45" stop-color="#678b86" stop-opacity=".24"/><stop offset="1" stop-color="#bfd4cd" stop-opacity=".38"/></linearGradient>
+  <pattern id="ghostlayer-grain" width="3" height="3" patternUnits="userSpaceOnUse"><path d="M0 .5H3" stroke="#f4f4df" stroke-opacity=".055" stroke-width=".45"/></pattern>
+  <filter id="ghostlayer-shadow" x="-15%" y="-20%" width="140%" height="160%"><feDropShadow dx="1" dy="7" stdDeviation="4" flood-color="#02080b" flood-opacity=".5"/></filter>
+</defs>
+<!-- Three physically separated laminations are restrained by two mating clamps. -->
+<g class="joint-assembly" filter="url(#ghostlayer-shadow)">
+ <g class="joint-sheet joint-sheet--back"><path class="joint-body" d="m63 18 125 19-18 84-124-20z" fill="url(#ghostlayer-graphite)" stroke="#6b8589"/><path class="joint-highlight" d="m66 22 116 18" stroke="#b5ceca" stroke-opacity=".48"/></g>
+ <g class="joint-sheet joint-sheet--middle"><path class="joint-glass" d="m48 32 126 19-18 84-125-20z" fill="url(#ghostlayer-glass)" stroke="#9bbdb4" stroke-width="1.2"/><path class="joint-highlight" d="m52 37 114 17" stroke="#e0e9df" stroke-opacity=".55"/></g>
+ <g class="joint-sheet joint-sheet--front"><path class="joint-glass" d="m32 48 126 19-18 84-125-20z" fill="url(#ghostlayer-glass)" stroke="#c5d8cc" stroke-width="1.4"/><path class="joint-cut" d="m32 48 126 19-2 8L30 56z" fill="url(#ghostlayer-satin)"/><path class="joint-recess" d="m44 77 89 14-2 6-89-14zM40 94l63 10-2 6-63-10z" fill="#14272a" fill-opacity=".7"/></g>
+ <path class="joint-body" d="M5 67h34v22H23v17H5z" fill="url(#ghostlayer-graphite)" stroke="#94a7a8"/>
+ <path class="joint-lock joint-lock--layer" d="m170 58 38 6-5 22 30 5-4 20-47-8-3 16-24-4z" fill="url(#ghostlayer-graphite)" stroke="#9db4b4"/>
+ <path class="joint-cut" d="m174 62 28 4-4 15-26-4z" fill="url(#ghostlayer-satin)"/>
+ <path class="joint-inlay" d="m176 88 45 7" stroke="url(#ghostlayer-brass)" stroke-width="2"/>
+ <g class="joint-fasteners" fill="#0d1b20" stroke="#a9bcb7"><circle cx="19" cy="77" r="3"/><circle cx="196" cy="97" r="3"/><path d="m17 77h4m173 20h4"/></g>
+</g>
+</svg>

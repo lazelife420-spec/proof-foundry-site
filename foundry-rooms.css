@@ -1,0 +1,286 @@
+/* Non-product rooms. These compositions share the Foundry's type and controls;
+   they do not borrow any product's mechanism, paint or release authority. */
+.pf-room-about{--room-rule:#84918a60}
+.pf-room-about .support-hero{position:relative;grid-template-columns:1.25fr .75fr;min-height:0;padding:56px 0 50px;border-bottom:1px solid var(--room-rule);align-content:start}
+.pf-room-about .support-hero h1{font-size:clamp(46px,6.1vw,86px);font-weight:500;max-width:11ch;line-height:1.03}
+.pf-room-about .support-intro{max-width:12ch;font:400 clamp(29px,3.4vw,48px)/1.17 var(--pf-serif);letter-spacing:-.035em;align-self:end;padding-bottom:8px;color:#c9d0c7}
+.pf-room-about .about-intro-section{position:relative;max-width:none;margin:35px 0 45px;display:grid;grid-template-columns:1fr 1fr;gap:50px;padding:44px 40px;background:#e8e5d9;color:#243635;border:1px solid #b4b7a7;border-top:5px solid #86988b;box-shadow:0 8px 0 #050e12,inset 0 1px #fff8}
+.pf-room-about .about-intro-box{display:contents}
+.pf-room-about .about-intro-box h2{font:400 35px/1.2 var(--pf-serif);max-width:13ch;color:#243635}
+.pf-room-about .about-intro-box p{font-size:20px;line-height:1.7;max-width:46ch;color:#344c46}
+.pf-room-about .about-principles{display:grid;grid-template-columns:.75fr 1.25fr;gap:80px;padding:65px 0;border-top:1px solid var(--room-rule)}
+.pf-room-about .about-principles .section-heading h2{font:400 45px/1.1 var(--pf-serif);max-width:8ch}
+.pf-room-about .about-values-grid{display:grid;grid-template-columns:1fr 1fr;gap:55px 40px;counter-reset:principle}
+.pf-room-about .about-card{counter-increment:principle;border-top:1px solid var(--room-rule);padding:22px 0 0}
+.pf-room-about .about-card::before{content:"0" counter(principle);display:block;color:#b5bfae;font:12px var(--pf-mono);margin-bottom:30px}
+.pf-room-about .about-card h3{font-size:24px;max-width:14ch;line-height:1.15;margin-bottom:20px}
+.pf-room-about .about-card p{font-size:14px;line-height:1.85;color:var(--muted)}
+.pf-room-about .about-card:nth-child(even){margin-top:24px}
+.pf-room-about .about-nav-section{margin-top:55px;display:grid;grid-template-columns:.75fr 1.25fr;gap:80px;border-top:1px solid var(--room-rule)}
+.pf-room-about .about-nav-grid{display:block}
+.pf-room-about .about-nav-card{padding:0 0 25px;margin-bottom:25px;border-bottom:1px solid var(--room-rule);display:grid;grid-template-columns:1fr 1fr;gap:30px}
+.pf-room-about .about-nav-card h3{font-size:24px}
+.pf-room-about .about-nav-card p{font-size:13px;color:var(--muted)}
+
+/* The circle is a human promise and an honest, still-open ledger. */
+.pf-room-founders .founders-hero{display:grid;grid-template-columns:1.25fr .75fr;gap:70px;align-items:center;padding:60px 0 55px}
+.pf-room-founders .hero-copy .eyebrow{margin-bottom:28px}
+.pf-room-founders .hero-copy h1{font:500 clamp(48px,5.5vw,78px)/1.07 var(--pf-sans);max-width:15ch}
+.pf-room-founders .hero-copy h1 span{font-family:var(--pf-serif);font-weight:400;color:#c8c6b6}
+.pf-room-founders .hero-lede{font-size:17px;max-width:55ch;color:var(--muted);margin-top:27px}
+.pf-room-founders .founders-note{font:11px/1.7 var(--pf-mono);color:var(--muted);margin-top:18px}
+.pf-room-founders .founders-receipt{position:relative;background:#e8e5d9;color:#253234;padding:38px 33px;transform:rotate(2deg);box-shadow:15px 18px 0 #555d5330,0 35px 45px #0004;border-top:5px solid #a2a48d}
+.pf-room-founders .receipt-head{display:flex;justify-content:space-between;align-items:start;gap:25px;margin-bottom:55px}
+.pf-room-founders .receipt-seal{width:72px;opacity:.8}
+.pf-room-founders .chip{font:10px/1.6 var(--pf-mono);border-bottom:1px solid #8e998a;padding-bottom:4px}
+.pf-room-founders .receipt-fields>div{padding:17px 0;border-top:1px solid #81918b70;display:grid;grid-template-columns:.6fr 1fr;gap:15px}
+.pf-room-founders .receipt-fields dt{font:10px/1.7 var(--pf-mono);color:#52625c}
+.pf-room-founders .receipt-fields dd{margin:0;font-size:13px}
+.pf-room-founders .receipt-status{font:10px/1.7 var(--pf-mono);letter-spacing:.12em;margin-top:28px;color:#5b6250}
+.pf-room-founders .founders-cap{border-block:1px solid var(--line);padding:24px 0;font:11px/1.8 var(--pf-mono);color:#bbbda9}
+.pf-room-founders .founders-boundary{padding:55px 0 80px;display:grid;grid-template-columns:.8fr 1.2fr;gap:75px}
+.pf-room-founders .founders-boundary h2{font:400 35px/1.2 var(--pf-serif);max-width:16ch}
+.pf-room-founders .founders-boundary p{font-size:16px;color:var(--muted);max-width:66ch}
+.pf-room-founders .founders-ledger{padding-top:35px;border-top:1px solid var(--line)}
+.pf-room-founders .founders-ledger .section-head{display:grid;grid-template-columns:.8fr 1.2fr;gap:75px;max-width:none;margin-bottom:45px}
+.pf-room-founders .founders-ledger h2{font:400 43px/1.1 var(--pf-serif)}
+.pf-room-founders .founders-ledger .section-head p{font-size:14px;margin:0;max-width:48ch}
+.pf-room-founders .ledger-wrap{overflow-x:auto;border-top:2px solid #849286}
+.pf-room-founders .ledger-table th{font:11px/1.8 var(--pf-mono)}
+.pf-room-founders .ledger-table td{font-size:13px;padding-block:22px}
+.pf-room-founders .ledger-table thead{color:#a5b0ad}
+.pf-room-founders .ledger-holder{color:var(--muted)}
+.pf-room-founders .slot-state{font:11px/1.8 var(--pf-mono);color:#c8cdb6}
+.pf-room-founders .ledger-footer{margin-top:20px;font-size:12px;color:var(--muted)}
+
+/* A status timeline; dates remain the actual authored release dates. */
+.pf-room-roadmap .roadmap-studio{padding-top:80px}
+.pf-room-roadmap .roadmap-studio>h1{font:400 clamp(56px,7.5vw,104px)/1.02 var(--pf-serif);margin-top:27px}
+.pf-room-roadmap .roadmap-intro{margin:35px 0 80px 31%;max-width:56ch;font-size:19px;color:var(--muted)}
+.pf-room-roadmap .roadmap-studio>.kicker:not(:first-child){padding:20px 0;border-top:1px solid var(--line);margin-top:55px}
+.pf-room-roadmap .roadmap-list{margin-left:31%;border-left:1px solid #85908580;padding-left:42px}
+.pf-room-roadmap .roadmap-list article{position:relative;display:grid;grid-template-columns:.85fr 1.15fr;gap:40px;padding:25px 0 50px}
+.pf-room-roadmap .roadmap-list article::before{content:"";position:absolute;left:-47px;top:32px;width:9px;height:9px;background:#b3baa2;box-shadow:0 0 0 5px var(--bg);border:1px solid #d2d5c2}
+.pf-room-roadmap .roadmap-list h2{font-size:30px;margin-top:12px}
+.pf-room-roadmap .roadmap-list h2 a{text-decoration:none}
+.pf-room-roadmap .roadmap-list article>.kicker,.pf-room-roadmap .roadmap-list .kicker{font-size:9px;letter-spacing:.06em}
+.pf-room-roadmap .roadmap-list article>p{font-size:14px;color:var(--muted);line-height:1.85}
+.pf-room-roadmap .roadmap-unavailable article::before{background:var(--bg);border-color:#bc9f83}
+.pf-room-roadmap .roadmap-directions-details{margin-left:31%;border-bottom:1px solid var(--line)}
+.pf-room-roadmap .roadmap-directions-details summary{display:flex;justify-content:space-between;gap:25px;padding:25px 0;font-size:21px}
+.pf-room-roadmap .evidence-content{padding:10px 0 35px;max-width:80ch}
+.pf-room-roadmap .evidence-content h2{font-size:28px;margin:35px 0 20px}
+.pf-room-roadmap .evidence-content :is(p,li){font-size:14px;color:var(--muted)}
+.pf-room-roadmap .roadmap-studio>.note{margin:55px 0 0 31%;max-width:70ch}
+
+/* Support is a welcoming help desk, followed by a scannable field manual. */
+.pf-room-support .support-hero{max-width:none;display:grid;grid-template-columns:.9fr 1.1fr;gap:20px 80px;padding:56px 0 50px}
+.pf-room-support .support-hero>.kicker{grid-column:1/-1}
+.pf-room-support .support-hero h1{font:400 clamp(58px,6.6vw,92px)/1 var(--pf-serif)}
+.pf-room-support .support-hero .support-intro{font-size:22px;max-width:32ch;margin:0;align-self:end}
+.pf-room-support .support-task-links{grid-column:1/-1;display:flex;gap:15px 35px;flex-wrap:wrap;padding:30px 0 0;margin-top:25px;border-top:1px solid var(--line)}
+.pf-room-support .support-task-links a{font-size:13px;min-height:36px;display:inline-flex;align-items:center;text-underline-offset:7px}
+.pf-room-support .support-section{display:grid;grid-template-columns:.9fr 1.1fr;gap:80px;padding:55px 0;border-top:1px solid var(--line)}
+.pf-room-support .section-heading h2{font:400 36px/1.14 var(--pf-serif);max-width:15ch}
+.pf-room-support .section-heading>p:last-child{font-size:14px}
+.pf-room-support .support-content-box{font-size:15px;line-height:1.85;max-width:none;padding:0;background:none;border:0;box-shadow:none}
+.pf-room-support .support-content-box :is(p,li){font-size:14px}
+.pf-room-support .support-content-box :is(h3,label){margin-top:25px}
+.pf-room-support .support-content-box h3{font-size:24px;line-height:1.2;margin-bottom:15px}
+.pf-room-support .support-content-box a{overflow-wrap:anywhere}
+.pf-room-support #help-safety{display:block;padding-top:45px}
+.pf-room-support #help-safety .section-heading{margin-bottom:30px;max-width:none}
+.pf-room-support #help-safety .section-heading h2{max-width:23ch;font-size:42px}
+.pf-room-support #help-safety .support-content-box{padding:32px 34px;background:#e8e5d9;color:#273c37;border:1px solid #b4b7a7;border-top:5px solid #86988b;box-shadow:0 8px 0 #050e12}
+.pf-room-support #help-safety .support-content-box :is(p,li,strong,a){color:#273c37}
+.pf-room-support #help-safety .support-content-box>p:first-child{max-width:70ch;margin-bottom:25px}
+.pf-room-support #help-safety .support-list-styled{display:grid;grid-template-columns:1fr 1fr;gap:70px;list-style:none;padding:0;margin:0 0 35px}
+.pf-room-support #help-safety .support-list-styled li{font-size:15px;margin:0;padding-top:24px;border-top:2px solid #8b9b92}
+.pf-room-support #help-safety .support-list-styled strong{display:block;font-size:20px;line-height:1.3;margin-bottom:15px;font-weight:500;color:#273c37}
+.pf-room-support #help-safety .support-content-box>.note{max-width:100ch}
+.pf-room-support #help-safety .support-content-box>p:last-child{max-width:100ch}
+.pf-room-support #products{grid-template-columns:.65fr 1.35fr;gap:70px}
+.pf-room-support .support-products-grid{grid-template-columns:1fr;gap:0}
+.pf-room-support .support-products-grid .detail-card{display:grid;grid-template-columns:.65fr 1.35fr;gap:10px 35px;padding:25px 0;border-top:1px solid var(--line)}
+.pf-room-support .support-products-grid .detail-card h3{font-size:23px;grid-row:span 2;line-height:1.2}
+.pf-room-support .support-products-grid .detail-card p{font-size:13px;color:var(--muted);margin:0}
+.pf-room-support .support-products-grid .detail-card .note{font-size:12px}
+.pf-room-support .pf-support-draft{margin:35px 0;padding-top:25px;border-top:1px solid var(--line)}
+.pf-room-support .pf-support-draft-heading p{font-size:12px;color:var(--muted);margin-top:10px}
+.pf-room-support .pf-support-fields{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.pf-room-support .pf-support-fields label{display:block;margin:0!important;font:11px/1.8 var(--pf-mono);color:#c0c9c2}
+.pf-room-support .pf-support-fields :is(input,select,textarea){display:block;width:100%;margin-top:8px;font:13px/1.7 var(--pf-sans);padding:12px}
+.pf-room-support .pf-support-fields .pf-support-wide{grid-column:1/-1}
+.pf-room-support .pf-support-fields :is(input,textarea)::placeholder{color:#9aa9a9;opacity:1}
+.pf-room-support .pf-support-draft-actions{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin-top:25px}
+.pf-room-support .pf-support-draft-actions .text-link{font-size:13px}
+.pf-room-support .support-diagnostic-label{display:block;margin:35px 0 10px;font:11px/1.7 var(--pf-mono)}
+.pf-room-support .support-template-wrapper{margin:25px 0}
+.pf-room-support .support-template-label{display:block;font:11px var(--pf-mono);margin-bottom:10px;color:#bdc6be}
+.pf-room-support #diagnostic-template{min-height:280px;font:12px/1.8 var(--pf-mono);margin-bottom:20px;background:#192126}
+.pf-room-support .support-copy-row{margin-top:20px}
+.pf-room-support .support-privacy-callout{border-left:2px solid #baa27c;padding:0 0 0 20px;margin-bottom:25px}
+.pf-room-support .support-list-styled,.pf-room-support .support-list-muted,.pf-room-support .support-list-ordered{padding-left:20px}
+.pf-room-support .support-list-ordered li{padding:4px 0}
+
+/* A failed route is a cut edge in the route line, not another product portal. */
+.pf-room-error .error-station{min-height:660px;grid-template-columns:.9fr 1.1fr;gap:90px;padding:80px 0;position:relative}
+.pf-room-error .route-break{color:#91a297;text-shadow:0 -1px #dae0d64d,0 3px 0 #030b0e;position:relative;align-self:stretch;display:flex;align-items:center;font:500 clamp(130px,18vw,260px)/1 var(--pf-mono);letter-spacing:-.12em;color:#a9b5a64a;overflow:hidden}
+.pf-room-error .route-break::before,.pf-room-error .route-break::after{content:"";position:absolute;height:1px;background:#8b968170;left:0;width:100%;transform:rotate(-18deg)}
+.pf-room-error .route-break::after{width:60%;left:20%;transform:rotate(18deg)}
+.pf-room-error .error-notice{padding:25px 0 30px 35px;border-left:2px solid #ad9d7c}
+.pf-room-error .error-notice h1{font:400 clamp(38px,4.3vw,60px)/1.09 var(--pf-serif);max-width:13ch}
+.pf-room-error .error-notice p{font-size:17px;max-width:40ch}
+
+/* Three different reading rooms: doctrine, receipts, machine register. */
+:is(.pf-room-standard,.pf-room-proof,.pf-room-truth,.pf-room-truth-files) main{padding-top:20px}
+:is(.pf-room-standard,.pf-room-proof,.pf-room-truth) :is(.support-hero,.proof-hero){padding:65px 0 55px;max-width:none}
+:is(.pf-room-standard,.pf-room-proof,.pf-room-truth) :is(.support-hero,.proof-hero) h1{font:400 clamp(54px,6.5vw,88px)/1.04 var(--pf-serif);margin-top:25px;max-width:14ch}
+:is(.pf-room-standard,.pf-room-proof,.pf-room-truth) :is(.support-intro,.proof-hero>p:not(.eyebrow)){max-width:62ch;font-size:18px;line-height:1.75;color:var(--muted);margin-top:25px}
+.pf-room-standard .standard-brief{padding:45px 0 60px;border-top:1px solid var(--line)}
+.pf-room-standard .standard-brief-card{display:grid;grid-template-columns:.8fr 1.2fr;gap:15px 80px}
+.pf-room-standard .standard-brief-heading{font:400 34px/1.15 var(--pf-serif);max-width:12ch}
+.pf-room-standard .standard-brief-list{margin:0;list-style:none;padding:0}
+.pf-room-standard .standard-brief-list li{font-size:19px;padding:15px 0;border-bottom:1px solid var(--line);margin:0}
+.pf-room-standard .standard-brief-list strong{font-weight:550}
+.pf-room-standard .standard-brief-note{grid-column:2;font-size:13px!important;color:var(--muted)}
+.pf-room-standard .standard-doctrine-box{padding:70px 75px;background:#e8e8df;color:#273736;margin:30px 0 75px}
+.pf-room-standard .standard-doctrine-card{max-width:900px}
+.pf-room-standard .doctrine-heading{font:11px var(--pf-mono);text-transform:uppercase;letter-spacing:.1em;margin-bottom:35px}
+.pf-room-standard .doctrine-lead{font:400 clamp(36px,4.8vw,66px)/1.08 var(--pf-serif);letter-spacing:-.035em;color:#283b3a;max-width:18ch}
+.pf-room-standard .doctrine-standards{font-size:20px;margin-top:30px;color:#354b49}
+.pf-room-standard .doctrine-rule{font:13px var(--pf-mono);color:#5c6756}
+.pf-room-standard :is(.doctrine-body,.doctrine-platform-note){font-size:14px;color:#425650;margin-top:22px}
+.pf-room-standard .standard-principles-section{display:grid;grid-template-columns:.8fr 1.2fr;gap:80px;padding:35px 0 70px}
+.pf-room-standard .standard-principles-section .section-heading h2{font:400 40px/1.12 var(--pf-serif);max-width:11ch}
+.pf-room-standard .standard-principles-grid{display:block}
+.pf-room-standard .standard-card{padding:25px 0;border-top:1px solid var(--line)}
+.pf-room-standard .standard-card h3{font-size:23px;margin-bottom:15px}
+.pf-room-standard .standard-card p{font-size:14px;color:var(--muted)}
+.pf-room-standard .standard-boundary-section{display:grid;grid-template-columns:.8fr 1.2fr;gap:80px;border-top:1px solid var(--line)}
+.pf-room-standard .standard-boundary-section h2{font:400 35px/1.15 var(--pf-serif)}
+.pf-room-standard .standard-boundary-list{padding-left:20px;font-size:14px;line-height:1.85;color:var(--muted);margin:0}
+.pf-room-standard .standard-boundary-list li+li{margin-top:22px}
+.pf-room-standard .standard-boundary-list strong{color:var(--text)}
+:is(.pf-room-standard,.pf-room-truth) .standard-route-card{border-top:1px solid var(--line);padding:25px 0}
+:is(.pf-room-standard,.pf-room-truth) .standard-route-card h3{font-size:24px;margin-bottom:15px}
+:is(.pf-room-standard,.pf-room-truth) .standard-route-card p{font-size:14px;color:var(--muted)}
+
+/* Receipts are individually inspectable, dense enough to compare, with dark
+   ink and unrestricted filenames. No status is replaced by decorative proof. */
+.pf-room-proof .proof-hero{display:grid;grid-template-columns:1fr 1fr;gap:0 70px;border-bottom:1px solid var(--line);margin-bottom:45px}
+.pf-room-proof .proof-hero .eyebrow{grid-column:1/-1}
+.pf-room-proof .proof-hero h1{grid-row:span 2;max-width:10ch}
+.pf-room-proof .proof-hero>p:not(.eyebrow){font-size:17px;margin-top:25px;align-self:end}
+.pf-room-proof .receipts-title{font:400 36px var(--pf-serif);margin-bottom:25px}
+.pf-room-proof .receipts-note{font-size:13px;max-width:100ch;color:var(--muted);margin-bottom:35px;line-height:1.85}
+.pf-room-proof .receipts-grid{display:block;counter-reset:receipt}
+.pf-room-proof .receipt-card{--text:#243936;--muted:#4d655e;--line:#81958a70;--accent:#5e664a;--pf-action-bg:#33443b;--pf-action-ink:#f1f2e6;counter-increment:receipt;position:relative;padding:32px 35px;margin-bottom:22px;border:0;border-left:5px solid #8c9981;background:#e9eadf;color:var(--text);box-shadow:0 10px 25px #0002;display:grid;grid-template-columns:1.05fr 1.3fr .65fr;gap:20px 35px}
+.pf-room-proof .receipt-card::before{content:counter(receipt,decimal-leading-zero);position:absolute;right:30px;top:26px;font:10px var(--pf-mono);color:#67785e}
+.pf-room-proof .receipt-card-head{grid-column:1;display:flex;gap:16px;align-items:start}
+.pf-room-proof .receipt-card-head h3{font:400 31px/1.05 var(--pf-serif);letter-spacing:-.035em;margin-bottom:10px}
+.pf-room-proof .status-indicator{font:10px/1.7 var(--pf-mono);color:#52695d;max-width:15ch}
+.pf-room-proof .matrix-evidence{grid-column:2}
+.pf-room-proof .platform-badge{display:block;font:10px/1.7 var(--pf-mono);color:#52695f;margin-top:12px}
+.pf-room-proof .build-desc{font-size:13px;line-height:1.75;color:#4d655e;grid-column:1;grid-row:2}
+.pf-room-proof .receipt-release{grid-column:2;grid-row:1/span 2}
+.pf-room-proof .receipt-section-title{font:600 10px var(--pf-mono);text-transform:uppercase;letter-spacing:.08em;color:#5d6c54;margin:0 0 15px}
+.pf-room-proof .receipt-fields{margin:0}
+.pf-room-proof .receipt-fields>div{display:grid;grid-template-columns:.75fr 1.25fr;gap:18px;border-top:1px solid var(--line);padding:10px 0}
+.pf-room-proof .receipt-fields dt{font:10px/1.8 var(--pf-mono);color:#52695e}
+.pf-room-proof .receipt-fields dd{margin:0;overflow-wrap:anywhere;font-size:12px}
+.pf-room-proof .receipt-fields dd a{font-size:12px;display:inline;overflow-wrap:anywhere}
+.pf-room-proof .receipt-card-action{grid-column:3;grid-row:1/span 2;align-self:end;margin-top:20px}
+.pf-room-proof .receipt-card-action a{width:100%;min-width:0;text-align:center;padding:12px 13px;font-size:12px}
+.pf-room-proof .receipt-details{grid-column:1/-1;border-top:1px solid var(--line);margin-top:5px;padding-top:18px}
+.pf-room-proof .receipt-details summary{display:flex;justify-content:space-between;gap:20px;font:12px/1.8 var(--pf-mono);min-height:32px}
+.pf-room-proof .receipt-details summary span{font-size:18px}
+.pf-room-proof .receipt-details-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:30px;padding-top:25px}
+.pf-room-proof .receipt-card :is(p,li){font-size:13px;color:#425c51;overflow-wrap:anywhere}
+.pf-room-proof .receipt-card a{color:#2d5044}
+.pf-room-proof .receipt-card .button{color:var(--pf-action-ink)}
+.pf-room-proof .receipt-card .button-secondary{color:var(--text);border-color:#83978a}
+.pf-room-proof .receipt-card :is(code,pre,.code-block){background:#dce0d1;color:#294333;border-color:#83968b70}
+.pf-room-proof .sha256-copy{color:#294333;border-color:#83968b}
+.pf-room-proof .verification-ledger{margin-top:60px;border-top:1px solid var(--line);padding:40px 0 0;max-width:85ch}
+.pf-room-proof .verification-ledger h2{font:400 34px/1.2 var(--pf-serif);margin-bottom:25px}
+.pf-room-proof .verification-ledger p{font-size:14px;color:var(--muted)}
+.pf-room-proof .verification-ledger-actions{display:flex;flex-wrap:wrap;gap:15px;margin-top:25px}
+
+.pf-room-truth .support-hero{display:grid;grid-template-columns:1fr 1fr;gap:25px 80px}
+.pf-room-truth .support-hero>.kicker{grid-column:1/-1}
+.pf-room-truth .support-hero .support-intro{font-size:18px;margin:0;align-self:end}
+.pf-room-truth .support-section{border-top:1px solid var(--line);padding:50px 0}
+.pf-room-truth .section-heading h2{font:400 36px/1.15 var(--pf-serif)}
+.pf-room-truth .support-section:not(.truth-public-register){display:grid;grid-template-columns:.8fr 1.2fr;gap:70px}
+.pf-room-truth .support-section:not(.truth-public-register) .support-grid{display:block}
+.pf-room-truth .detail-card{padding:24px 0;border-top:1px solid var(--line)}
+.pf-room-truth .detail-card h3{font-size:23px;margin-bottom:15px;line-height:1.2}
+.pf-room-truth .detail-card p{font-size:14px;color:var(--muted);line-height:1.85}
+.pf-room-truth .truth-public-register .section-heading{max-width:none;display:grid;grid-template-columns:1fr 1fr;gap:15px 60px}
+.pf-room-truth .truth-public-register .section-heading>.kicker{grid-column:1/-1}
+.pf-room-truth .truth-public-register .section-heading>p:last-child{margin:0;font-size:14px;max-width:45ch}
+.pf-room-truth .truth-public-register .support-grid{display:block;background:#e6e8dd;color:#263d34;padding:12px 40px;counter-reset:register}
+.pf-room-truth .truth-public-register .detail-card{counter-increment:register;display:grid;grid-template-columns:.8fr 1.2fr;gap:9px 45px;padding:28px 0;border-color:#8d9a8c70;position:relative;padding-left:38px}
+.pf-room-truth .truth-public-register .detail-card:first-child{border-top:0}
+.pf-room-truth .truth-public-register .detail-card::before{content:counter(register,decimal-leading-zero);position:absolute;top:33px;left:0;font:10px var(--pf-mono);color:#667452}
+.pf-room-truth .truth-public-register .detail-card h3{grid-row:span 2;font:400 28px/1.1 var(--pf-serif);margin:0}
+.pf-room-truth .truth-public-register .detail-card p{color:#405d4f;font-size:12px;margin:0}
+.pf-room-truth .truth-public-register .detail-card .text-link{font-size:12px;color:#2f5342;display:inline}
+
+.pf-room-truth-files .tf-hero{max-width:none;display:grid;grid-template-columns:1fr 1fr;gap:25px 80px;padding:65px 0 55px}
+.pf-room-truth-files .tf-hero-kicker{grid-column:1/-1;margin:0}
+.pf-room-truth-files .tf-hero h1{grid-row:span 2;font:400 clamp(54px,6.5vw,88px)/1.04 var(--pf-serif);max-width:11ch}
+.pf-room-truth-files .tf-lede{color:var(--muted);font-size:17px;line-height:1.8;max-width:56ch}
+.pf-room-truth-files .tf-axiom{font:11px var(--pf-mono);color:#c0bd9e;margin:0;align-self:end}
+.pf-room-truth-files .tf-section{background:none;color:var(--text);padding:40px 0;max-width:none;border-top:1px solid var(--line);border-bottom:0}
+.pf-room-truth-files .tf-section>h2{font:400 35px/1.15 var(--pf-serif);margin-bottom:35px}
+.pf-room-truth-files .tf-grid{display:block;counter-reset:record}
+.pf-room-truth-files .tf-card{counter-increment:record;position:relative;background:#ecebe2;color:#263b35;display:grid;grid-template-columns:.9fr 1.1fr;gap:18px 70px;text-decoration:none;padding:30px 38px 28px 70px;border:0;border-bottom:1px solid #8c9a8970;box-shadow:none;margin:0;transition:background .2s}
+.pf-room-truth-files .tf-card:nth-child(even){background:#e4e6da}
+.pf-room-truth-files .tf-card::before{content:counter(record,decimal-leading-zero);position:absolute;top:38px;left:25px;font:10px var(--pf-mono);color:#657557}
+.pf-room-truth-files .tf-card:hover{background:#f6f4e9}
+.pf-room-truth-files .tf-card-head{display:flex;align-items:start;gap:19px;grid-row:span 2}
+.pf-room-truth-files .tf-card-head>svg{flex:none;width:33px;height:33px;margin-top:4px}
+.pf-room-truth-files .tf-card h2{font:400 31px/1.1 var(--pf-serif);margin:0 0 12px}
+.pf-room-truth-files .tf-card-state{font:10px var(--pf-mono);color:#596d55}
+.pf-room-truth-files .tf-card>p{font-size:13px;color:#455c4e;line-height:1.8}
+.pf-room-truth-files .tf-card-facts{grid-column:2;display:flex;flex-wrap:wrap;gap:6px 25px;font:10px/1.7 var(--pf-mono);color:#596d55}
+.pf-room-truth-files .tf-open{grid-column:2;font:12px var(--pf-mono);text-decoration:underline;text-underline-offset:4px}
+.pf-room-truth-files .tf-section:last-child{display:grid;grid-template-columns:.75fr 1.25fr;gap:70px;margin-top:35px}
+.pf-room-truth-files .tf-section:last-child .support-grid{grid-template-columns:1fr 1fr;gap:35px}
+.pf-room-truth-files .tf-section:last-child .detail-card{padding-top:20px;border-top:1px solid var(--line)}
+.pf-room-truth-files .tf-section:last-child h3{font-size:23px;margin:0 0 15px}
+.pf-room-truth-files .tf-section:last-child p{font-size:14px;color:var(--muted)}
+
+@media(max-width:1050px){
+  .pf-room-about .about-principles,.pf-room-about .about-nav-section{grid-template-columns:1fr 1.8fr;gap:40px}
+  .pf-room-founders .founders-hero{gap:40px}.pf-room-founders .founders-receipt{padding:30px 25px}
+  .pf-room-roadmap .roadmap-list,.pf-room-roadmap .roadmap-directions-details{margin-left:15%}.pf-room-roadmap .roadmap-intro,.pf-room-roadmap .roadmap-studio>.note{margin-left:15%}
+  .pf-room-support .support-section,.pf-room-support #products{grid-template-columns:.7fr 1.3fr;gap:40px}
+  .pf-room-proof .receipt-card{grid-template-columns:1fr 1.2fr;gap:20px 30px}.pf-room-proof .receipt-card-action{grid-column:1;grid-row:3;align-self:start;margin-top:0}.pf-room-proof .receipt-details{grid-row:4}
+  .pf-room-proof .receipt-details-grid{grid-template-columns:1fr 1fr}.pf-room-proof .receipt-details-grid>.receipt-section:last-child{grid-column:1/-1}
+  .pf-room-truth-files .tf-card{gap:16px 40px}
+}
+@media(max-width:700px){
+  .pf-room-about .support-hero{display:block;min-height:0;padding:45px 0 40px}.pf-room-about .support-hero h1{font-size:clamp(43px,12vw,66px);max-width:11ch}.pf-room-about .support-intro{font-size:29px;margin-top:32px;max-width:17ch}
+  .pf-room-about .about-intro-section{display:block;padding:30px 22px;margin:25px 0 35px}.pf-room-about .about-intro-box h2{font-size:29px;max-width:18ch;margin-bottom:22px}.pf-room-about .about-intro-box p{font-size:17px}
+  .pf-room-about .about-principles,.pf-room-about .about-nav-section{display:block;padding:35px 0}.pf-room-about .about-principles .section-heading h2{font-size:36px;max-width:none}.pf-room-about .about-values-grid{grid-template-columns:1fr;gap:30px}.pf-room-about .about-card:nth-child(even){margin-top:0}.pf-room-about .about-card::before{margin-bottom:16px}.pf-room-about .about-card h3{max-width:22ch;font-size:24px}.pf-room-about .about-nav-section{margin-top:0}.pf-room-about .about-nav-card{display:block}.pf-room-about .about-nav-card p{margin-top:15px}
+  .pf-room-founders .founders-hero{display:block;padding:40px 0 50px}.pf-room-founders .hero-copy h1{font-size:clamp(39px,10.8vw,58px)}.pf-room-founders .hero-lede{font-size:15px}.pf-room-founders .hero-actions{gap:14px;align-items:stretch;flex-direction:column}.pf-room-founders .hero-actions .button{font-size:12px;padding-inline:12px}.pf-room-founders .founders-receipt{transform:none;margin:45px 8px 0 0;padding:28px 22px;box-shadow:8px 9px 0 #555d5330,0 20px 35px #0003}.pf-room-founders .receipt-head{margin-bottom:35px}.pf-room-founders .receipt-seal{width:58px}.pf-room-founders .founders-boundary{display:block;padding:35px 0 45px}.pf-room-founders .founders-boundary h2{font-size:30px;max-width:17ch;margin-bottom:25px}.pf-room-founders .founders-boundary p{font-size:15px}.pf-room-founders .founders-ledger .section-head{display:block;margin-bottom:30px}.pf-room-founders .founders-ledger h2{font-size:33px;margin-bottom:20px}.pf-room-founders .ledger-table{min-width:580px}.pf-room-founders .ledger-wrap{padding-bottom:10px}.pf-room-founders .ledger-table th{font-size:10px}.pf-room-founders .ledger-table td{font-size:12px}
+  .pf-room-roadmap .roadmap-studio{padding-top:40px}.pf-room-roadmap .roadmap-studio>h1{font-size:58px;margin-top:22px}.pf-room-roadmap .roadmap-intro{margin:27px 0 40px;font-size:17px}.pf-room-roadmap .roadmap-studio>.kicker:not(:first-child){margin-top:30px}.pf-room-roadmap .roadmap-list{margin-left:5px;padding-left:23px}.pf-room-roadmap .roadmap-list article{display:block;padding:20px 0 35px}.pf-room-roadmap .roadmap-list article::before{left:-28px;top:27px}.pf-room-roadmap .roadmap-list h2{font-size:28px;margin-top:11px;margin-bottom:20px}.pf-room-roadmap .roadmap-list article>p{font-size:14px}.pf-room-roadmap .roadmap-directions-details,.pf-room-roadmap .roadmap-studio>.note{margin-left:0}.pf-room-roadmap .roadmap-directions-details summary{font-size:18px}.pf-room-roadmap .evidence-content h2{font-size:26px}
+  .pf-room-support .support-hero{display:block;padding:40px 0 35px}.pf-room-support .support-hero h1{font-size:68px;margin-bottom:25px}.pf-room-support .support-hero .support-intro{font-size:18px;max-width:32ch}.pf-room-support .support-task-links{gap:6px 23px;padding-top:20px;margin-top:25px}.pf-room-support .support-task-links a{min-height:44px;font-size:12px}.pf-room-support .support-section,.pf-room-support #products{display:block;padding:35px 0}.pf-room-support .section-heading{margin-bottom:25px}.pf-room-support .section-heading h2,.pf-room-support #help-safety .section-heading h2{font-size:31px;max-width:20ch}.pf-room-support #help-safety .support-content-box{padding:25px 20px}.pf-room-support #help-safety .support-list-styled{display:block;margin-bottom:25px}.pf-room-support #help-safety .support-list-styled li{padding-top:20px;margin-top:25px}.pf-room-support #help-safety .support-list-styled strong{font-size:19px}.pf-room-support .support-products-grid .detail-card{display:block;padding:23px 0}.pf-room-support .support-products-grid .detail-card h3{font-size:25px;margin-bottom:15px}.pf-room-support .support-products-grid .detail-card p+p{margin-top:12px}.pf-room-support .support-content-box :is(p,li){font-size:14px}.pf-room-support #diagnostic-template{font-size:11px;min-height:290px}.pf-room-support .support-template-wrapper .button{width:100%;font-size:12px}.pf-room-support .pf-support-fields{display:block}.pf-room-support .pf-support-fields label{margin-top:22px!important}.pf-room-support .pf-support-draft-actions{display:block}.pf-room-support .pf-support-draft-actions .button{margin-top:20px;width:100%}
+  .pf-room-error .error-station{display:block;min-height:0;padding:35px 0 55px}.pf-room-error .route-break{color:#91a297;text-shadow:0 -1px #dae0d64d,0 3px 0 #030b0e;height:135px;font-size:130px;margin-bottom:35px;max-width:260px}.pf-room-error .error-notice{padding:0 0 0 22px}.pf-room-error .error-notice h1{font-size:39px;max-width:12ch}.pf-room-error .error-notice p{font-size:15px}.pf-room-error .error-notice .hero-actions{margin-top:25px}
+  :is(.pf-room-standard,.pf-room-proof,.pf-room-truth,.pf-room-truth-files) main{padding-top:0}:is(.pf-room-standard,.pf-room-proof,.pf-room-truth) :is(.support-hero,.proof-hero){display:block;padding:40px 0 35px}:is(.pf-room-standard,.pf-room-proof,.pf-room-truth) :is(.support-hero,.proof-hero) h1{font-size:clamp(44px,12vw,62px);margin-top:23px}:is(.pf-room-standard,.pf-room-proof,.pf-room-truth) :is(.support-intro,.proof-hero>p:not(.eyebrow)){font-size:16px;margin-top:25px}
+  .pf-room-standard .standard-brief{padding:30px 0}.pf-room-standard .standard-brief-card{display:block}.pf-room-standard .standard-brief-heading{font-size:30px;max-width:none;margin-bottom:20px}.pf-room-standard .standard-brief-list li{font-size:17px}.pf-room-standard .standard-brief-note{margin-top:20px}.pf-room-standard .standard-doctrine-box{padding:32px 22px;margin:25px 0 40px}.pf-room-standard .doctrine-lead{font-size:39px}.pf-room-standard .doctrine-standards{font-size:18px}.pf-room-standard .standard-principles-section,.pf-room-standard .standard-boundary-section{display:block;padding:30px 0}.pf-room-standard .standard-principles-section .section-heading h2,.pf-room-standard .standard-boundary-section h2{font-size:32px;max-width:18ch}.pf-room-standard .standard-card h3{font-size:22px}.pf-room-standard .standard-routes-grid{display:block}
+  .pf-room-proof .proof-hero{margin-bottom:30px}.pf-room-proof .receipts-title{font-size:31px}.pf-room-proof .receipts-note{font-size:12px;margin-bottom:28px}.pf-room-proof .receipt-card{display:block;padding:28px 20px 22px;margin-bottom:20px}.pf-room-proof .receipt-card::before{top:20px;right:18px}.pf-room-proof .receipt-card-head{display:block;padding-right:15px}.pf-room-proof .status-indicator{display:block;max-width:none;margin-top:12px}.pf-room-proof .receipt-card-head h3{font-size:29px}.pf-room-proof .build-desc{margin:22px 0}.pf-room-proof .receipt-section-title{margin-top:25px}.pf-room-proof .receipt-fields>div{grid-template-columns:.7fr 1.3fr;gap:13px}.pf-room-proof .receipt-fields :is(dt,dd){font-size:10px}.pf-room-proof .receipt-fields dd a{font-size:11px}.pf-room-proof .receipt-card-action{margin:25px 0}.pf-room-proof .receipt-details{padding-top:17px}.pf-room-proof .receipt-details summary{font-size:10px}.pf-room-proof .receipt-details-grid{display:block;padding-top:0}.pf-room-proof .receipt-details .receipt-fields>div{display:block;padding:13px 0}.pf-room-proof .receipt-details .receipt-fields dt{font-size:11px}.pf-room-proof .receipt-details .receipt-fields dd{font-size:12px;margin-top:8px}.pf-room-proof .receipt-details .receipt-fields dd a{font-size:12px}.pf-room-proof .receipt-card :is(p,li){font-size:12px}.pf-room-proof .verification-ledger{margin-top:40px;padding-top:30px}.pf-room-proof .verification-ledger h2{font-size:30px}.pf-room-proof .verification-ledger-actions{flex-direction:column;align-items:stretch}.pf-room-proof .verification-ledger-actions .button{font-size:11px;padding:12px}
+  .pf-room-truth .support-section:not(.truth-public-register){display:block;padding:35px 0}.pf-room-truth .section-heading h2{font-size:31px}.pf-room-truth .support-hero .support-intro{font-size:16px;margin-top:25px}.pf-room-truth .truth-public-register .section-heading{display:block}.pf-room-truth .truth-public-register .section-heading>p:last-child{margin-top:20px}.pf-room-truth .truth-public-register .support-grid{padding:5px 20px}.pf-room-truth .truth-public-register .detail-card{display:block;padding:25px 0 25px 25px}.pf-room-truth .truth-public-register .detail-card::before{top:29px}.pf-room-truth .truth-public-register .detail-card h3{font-size:27px;margin-bottom:16px}.pf-room-truth .truth-public-register .detail-card p{font-size:12px}.pf-room-truth .truth-public-register .detail-card p+p{margin-top:15px}
+  .pf-room-truth-files .tf-hero{display:block;padding:40px 0 35px}.pf-room-truth-files .tf-hero h1{font-size:clamp(44px,12vw,62px);margin:25px 0}.pf-room-truth-files .tf-lede{font-size:16px}.pf-room-truth-files .tf-axiom{margin-top:25px;font-size:10px}.pf-room-truth-files .tf-section{padding:30px 0}.pf-room-truth-files .tf-section>h2{font-size:30px;margin-bottom:25px}.pf-room-truth-files .tf-card{display:block;padding:28px 21px 25px 39px;margin:0}.pf-room-truth-files .tf-card::before{left:12px;top:33px;font-size:9px}.pf-room-truth-files .tf-card-head{gap:12px}.pf-room-truth-files .tf-card-head>svg{width:27px;height:27px;max-width:27px;max-height:27px}.pf-room-truth-files .tf-card h2{font-size:28px}.pf-room-truth-files .tf-card>p{font-size:13px;margin-top:20px}.pf-room-truth-files .tf-card-facts{margin-top:18px;font-size:9px;display:block}.pf-room-truth-files .tf-card-facts>span{display:block;margin-top:7px}.pf-room-truth-files .tf-open{display:block;margin-top:22px;font-size:11px}.pf-room-truth-files .tf-section:last-child{display:block;margin-top:25px}.pf-room-truth-files .tf-section:last-child .support-grid{display:block}.pf-room-truth-files .tf-section:last-child .detail-card{margin-top:25px;padding-top:20px}
+}
+@media(forced-colors:active){
+  .pf-room-about .about-intro-section,.pf-room-support #help-safety .support-content-box,.pf-room-founders .founders-receipt,.pf-room-standard .standard-doctrine-box,.pf-room-proof .receipt-card,.pf-room-truth .truth-public-register .support-grid,.pf-room-truth-files .tf-card{background:Canvas;color:CanvasText;box-shadow:none;border:1px solid CanvasText}
+  :is(.pf-room-founders,.pf-room-standard,.pf-room-proof,.pf-room-truth,.pf-room-truth-files) main :is(p,li,dt,dd,h2,h3,h4,code,a,span){color:CanvasText}
+  .pf-room-error .route-break{color:#91a297;text-shadow:0 -1px #dae0d64d,0 3px 0 #030b0e;color:CanvasText}
+  .pf-room-proof .receipt-card .button{background:ButtonFace;color:ButtonText;border-color:ButtonText}
+  :is(.pf-room-about,.pf-room-support,.pf-room-roadmap) main :is(p,li,a),.pf-room-about .about-intro-box h2,.pf-room-about .about-intro-box p,.pf-room-support #help-safety .support-content-box :is(p,li,strong,a){color:CanvasText}
+  .pf-room-roadmap .roadmap-list article::before{background:CanvasText;border-color:CanvasText;box-shadow:none}
+}

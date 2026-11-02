@@ -19,11 +19,15 @@ if (finder) {
   // Bring exact existing platform/version nodes into view. Moving, rather than
   // copying, preserves the selectors read by the shared comparison controller.
   const entries = cards.map(card => {
-    const metadata = document.createElement('div');
-    metadata.className = 'h9-card-meta';
-    const fields = [...card.querySelectorAll('.card-platform, .card-version')];
-    metadata.append(...fields);
-    card.querySelector('.card-value').after(metadata);
+    // Current built cards already own one complete metadata group.
+    // Only enhance older markup that does not provide it.
+    if (!card.querySelector('.h9-card-meta')) {
+      const metadata = document.createElement('div');
+      metadata.className = 'h9-card-meta';
+      const fields = [...card.querySelectorAll('.card-platform, .card-version')];
+      metadata.append(...fields);
+      card.querySelector('.card-value').after(metadata);
+    }
     const details = card.querySelector('.card-more');
     if (details && !details.querySelector('.card-detail')) details.remove();
     const text = [...card.querySelectorAll('.card-name, .card-value, .card-platform, .card-version, .card-detail, .card-availability')].map(node => node.textContent).join(' ');

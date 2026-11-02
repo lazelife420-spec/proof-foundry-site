@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" class="joint-svg joint-svg--reality-gate" aria-hidden="true" focusable="false" fill="none">
+<defs>
+  <linearGradient id="reality-gate-satin" x1="34" y1="24" x2="180" y2="144" gradientUnits="userSpaceOnUse"><stop stop-color="#d1d6d4"/><stop offset=".23" stop-color="#889397"/><stop offset=".48" stop-color="#bac3c3"/><stop offset=".55" stop-color="#707d82"/><stop offset="1" stop-color="#414e55"/></linearGradient>
+  <linearGradient id="reality-gate-graphite" x1="48" y1="20" x2="166" y2="143" gradientUnits="userSpaceOnUse"><stop stop-color="#414c50"/><stop offset=".22" stop-color="#232d32"/><stop offset=".73" stop-color="#111a20"/><stop offset="1" stop-color="#28353b"/></linearGradient>
+  <linearGradient id="reality-gate-cut" x1="20" y1="18" x2="192" y2="141" gradientUnits="userSpaceOnUse"><stop stop-color="#ecede5"/><stop offset=".3" stop-color="#a9b4b3"/><stop offset=".62" stop-color="#596971"/><stop offset="1" stop-color="#152229"/></linearGradient>
+  <linearGradient id="reality-gate-brass" x1="59" y1="35" x2="166" y2="115" gradientUnits="userSpaceOnUse"><stop stop-color="#e0c994"/><stop offset=".45" stop-color="#a88b54"/><stop offset=".6" stop-color="#c2a46c"/><stop offset="1" stop-color="#655236"/></linearGradient>
+  <linearGradient id="reality-gate-ceramic" x1="60" y1="28" x2="168" y2="127" gradientUnits="userSpaceOnUse"><stop stop-color="#f4f4e9"/><stop offset=".48" stop-color="#ced8d3"/><stop offset="1" stop-color="#8b9e99"/></linearGradient>
+  <linearGradient id="reality-gate-glass" x1="48" y1="27" x2="189" y2="133" gradientUnits="userSpaceOnUse"><stop stop-color="#d3e4dd" stop-opacity=".55"/><stop offset=".45" stop-color="#678b86" stop-opacity=".24"/><stop offset="1" stop-color="#bfd4cd" stop-opacity=".38"/></linearGradient>
+  <pattern id="reality-gate-grain" width="3" height="3" patternUnits="userSpaceOnUse"><path d="M0 .5H3" stroke="#f4f4df" stroke-opacity=".055" stroke-width=".45"/></pattern>
+  <filter id="reality-gate-shadow" x="-15%" y="-20%" width="140%" height="160%"><feDropShadow dx="1" dy="7" stdDeviation="4" flood-color="#02080b" flood-opacity=".5"/></filter>
+</defs>
+<!-- A fractured archive gate remains physically locked; no motion implies availability. -->
+<g class="joint-assembly" filter="url(#reality-gate-shadow)">
+ <path class="joint-body" d="M4 68h35v28H4zm197 0h35v28h-35z" fill="url(#reality-gate-graphite)" stroke="#697e83"/>
+ <path class="joint-cut" d="M56 25h128l20 19v76l-20 17H56l-20-17V44z" fill="url(#reality-gate-satin)" stroke="#b0bdbc"/>
+ <path class="joint-body" d="M61 32h117l17 17v66l-17 15H61l-16-15V49z" fill="url(#reality-gate-graphite)" stroke="#0a151b" stroke-width="3"/>
+ <path class="joint-archive-door" d="M62 42h55l-7 17 13 17-16 18 11 17-8 10H62l-7-9V51z" fill="#1b2a30" stroke="#76878b"/>
+ <path class="joint-archive-door" d="M127 42h49l9 9v61l-9 9h-54l7-12-10-15 15-18-12-17z" fill="#121f27" stroke="#5f737b"/>
+ <path class="joint-fracture" d="m122 39-10 20 14 17-16 18 12 17-8 13" stroke="#a9a38a" stroke-width="1.5"/>
+ <g class="joint-seal-bar">
+  <path class="joint-body" d="M54 69h134v22H54z" fill="url(#reality-gate-graphite)" stroke="#9aabac"/>
+  <path class="joint-cut" d="M58 70h125v4H58z" fill="url(#reality-gate-satin)"/>
+  <path class="joint-lock" d="M109 63h24v33h-24z" fill="url(#reality-gate-brass)" stroke="#c6b784"/>
+  <path class="joint-recess" d="M117 74h8v12h-8z" fill="#18252b"/>
+ </g>
+ <g class="joint-fasteners" fill="#101e25" stroke="#97a6a6"><circle cx="56" cy="46" r="3"/><circle cx="183" cy="46" r="3"/><circle cx="56" cy="117" r="3"/><circle cx="183" cy="117" r="3"/><path d="m54 46h4m123 0h4M54 117h4m123 0h4"/></g>
+ <path class="joint-highlight" d="M62 35h111M47 51v58" stroke="#bdc7be" stroke-opacity=".35"/>
+</g>
+</svg>

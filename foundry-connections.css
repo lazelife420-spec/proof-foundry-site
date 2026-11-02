@@ -1,0 +1,164 @@
+/* Seven authored joining mechanisms. Presentation only; never a product-status source.
+   Inline the SVG, prefix its IDs per instance, and label the surrounding real link.
+   Wrappers set --joint-engage through hover, keyboard focus or data-engaged=true.
+   One light source: upper left. Satin cut faces; dark structural metal; small brass keys. */
+.foundry-connection,
+.foundry-joint {
+  --joint-engage: 0;
+  --joint-time: 380ms;
+  --joint-ease: cubic-bezier(.2,.72,.16,1);
+  position: relative;
+  isolation: isolate;
+}
+.foundry-connection .joint-svg,
+.foundry-joint .joint-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.foundry-connection:is(:hover,:focus-visible,.is-engaged,[data-engaged="true"]),
+.foundry-joint:is(:hover,:focus-visible,.is-engaged,[data-engaged="true"]) {
+  --joint-engage: 1;
+}
+.foundry-connection:focus-visible,
+.foundry-joint:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 7px;
+}
+.foundry-connection :is(.joint-carriage,.joint-iris,.joint-collar,.joint-counterweight,.joint-scan-bridge,.joint-sheet,.joint-lock--layer,.joint-diaphragm,.joint-seal-bar),
+.foundry-joint :is(.joint-carriage,.joint-iris,.joint-collar,.joint-counterweight,.joint-scan-bridge,.joint-sheet,.joint-lock--layer,.joint-diaphragm,.joint-seal-bar) {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform var(--joint-time) var(--joint-ease);
+}
+.foundry-connection .joint-carriage,
+.foundry-joint .joint-carriage { transform: translateX(calc(var(--joint-engage) * 10px)); }
+.foundry-connection .joint-iris,
+.foundry-joint .joint-iris { transform: rotate(calc(var(--joint-engage) * 9deg)) scale(calc(1 - var(--joint-engage) * .035)); }
+.foundry-connection .joint-collar,
+.foundry-joint .joint-collar { transform: rotate(calc(var(--joint-engage) * -5deg)); }
+.foundry-connection .joint-counterweight,
+.foundry-joint .joint-counterweight { transform: translate(calc(var(--joint-engage) * -3px),calc(var(--joint-engage) * 3px)); }
+.foundry-connection .joint-scan-bridge,
+.foundry-joint .joint-scan-bridge { transform: translateY(calc(var(--joint-engage) * 27px)); }
+.foundry-connection .joint-sheet--back,
+.foundry-joint .joint-sheet--back { transform: translate(calc(var(--joint-engage) * 5px),calc(var(--joint-engage) * -3px)); }
+.foundry-connection .joint-sheet--middle,
+.foundry-joint .joint-sheet--middle { transform: translate(calc(var(--joint-engage) * 1px),calc(var(--joint-engage) * -1px)); }
+.foundry-connection .joint-sheet--front,
+.foundry-joint .joint-sheet--front { transform: translate(calc(var(--joint-engage) * -4px),calc(var(--joint-engage) * 3px)); }
+.foundry-connection .joint-lock--layer,
+.foundry-joint .joint-lock--layer { transform: translateX(calc(var(--joint-engage) * -4px)); }
+.foundry-connection .joint-diaphragm,
+.foundry-joint .joint-diaphragm { transform: scale(calc(1 - var(--joint-engage) * .035),calc(1 + var(--joint-engage) * .04)); }
+/* The historical gate remains closed: its lock only takes up mechanical play. */
+.foundry-connection .joint-seal-bar,
+.foundry-joint .joint-seal-bar { transform: translateY(calc(var(--joint-engage) * .75px)); }
+@media (prefers-reduced-motion: reduce) {
+  .foundry-connection,
+  .foundry-joint { --joint-engage: 0 !important; --joint-time: 0ms; }
+  .foundry-connection *,
+  .foundry-joint * { transition: none !important; }
+}
+@media (forced-colors: active) {
+  .foundry-connection .joint-svg,
+  .foundry-joint .joint-svg { filter: none; }
+  .foundry-connection .joint-assembly,
+  .foundry-joint .joint-assembly { filter: none; }
+  .foundry-connection :is(path,rect,circle,ellipse,polygon),
+  .foundry-joint :is(path,rect,circle,ellipse,polygon) {
+    fill: Canvas;
+    stroke: CanvasText;
+    stroke-width: 1.25px;
+  }
+  .foundry-connection :is(.joint-recess,.joint-aperture),
+  .foundry-joint :is(.joint-recess,.joint-aperture) { fill: CanvasText; stroke: CanvasText; }
+  .foundry-connection :is(.joint-inlay,.joint-highlight),
+  .foundry-joint :is(.joint-inlay,.joint-highlight) { fill: none; stroke: Highlight; }
+  .foundry-connection:focus-visible,
+  .foundry-joint:focus-visible { outline-color: Highlight; }
+}
+
+/* Main-site chain: solid links pass through the mounting eyes of each navigation key. */
+.pf-route-chain{position:relative;margin-block:20px 10px;view-transition-name:pf-route-chain}
+.pf-route-chain ol{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:30px;list-style:none;margin:0;padding:0}
+.pf-route-chain li{position:relative;min-width:0}
+.pf-route-chain a{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:10px;min-height:55px;padding:12px 8px;border:1px solid #82938b;border-top:2px solid #abb8ad;border-bottom:4px solid #030b0f;border-radius:18px;background:repeating-linear-gradient(100deg,#ffffff05 0 1px,transparent 1px 4px),linear-gradient(180deg,#354646,#17282b 72%,#304043);box-shadow:inset 0 1px #f0f0de33,inset 3px 0 #071115,inset -3px 0 #071115,0 5px 5px #0008;color:#d3ded4;font:12px/1.3 var(--pf-mono);text-decoration:none;text-align:center;transition:transform 180ms,background 180ms}
+.pf-route-chain a::before,.pf-route-chain a::after{content:"";position:absolute;top:50%;width:5px;height:13px;transform:translateY(-50%);border:1px solid #a9b7a8;border-radius:50%;background:#030c10;box-shadow:inset 0 1px 2px #000}
+.pf-route-chain a::before{left:4px}.pf-route-chain a::after{right:4px}
+.pf-chain-station{font-size:9px;color:#b5a17b}
+.pf-route-chain a[aria-current=page]{background:repeating-linear-gradient(100deg,#ffffff08 0 1px,transparent 1px 4px),linear-gradient(#d2d8ca,#9aa99f 65%,#c0cab9);color:#10242b;border-color:#b9c9b5;border-bottom-color:#172526;box-shadow:inset 0 2px 4px #0005,0 2px 2px #0009}
+.pf-route-chain a[aria-current=page] .pf-chain-station{color:#344d45}
+.pf-route-chain a:hover,.pf-route-chain a:focus-visible{transform:translateY(-2px);color:#fff}
+.pf-route-chain a[aria-current=page]:hover,.pf-route-chain a[aria-current=page]:focus-visible{color:#10242b}
+.pf-route-chain a:focus-visible{outline:2px solid #f0d3a0;outline-offset:5px}
+.pf-route-chain a:active,.pf-route-chain a[data-engaged=true]{transform:translateY(2px)}
+.pf-route-coupler{position:absolute;z-index:3;left:calc(100% - 4px);top:20px;width:38px;height:16px;pointer-events:none;display:flex;align-items:center;filter:drop-shadow(0 3px 1px #000)}
+.pf-route-coupler i{display:block;position:absolute;width:22px;height:14px;border:3px solid #7f938d;border-top-color:#d1d9cc;border-bottom-color:#3a5054;border-radius:9px;background:transparent;box-shadow:inset 0 1px #030a0d,0 1px #01080b}
+.pf-route-coupler i:nth-child(2){left:11px;transform:scaleY(.42);z-index:2;border-color:#b2c0b3;border-bottom-color:#536966}
+.pf-route-coupler i:nth-child(3){left:21px}
+.pf-route-chain li:last-child .pf-route-coupler{display:none}
+::view-transition-group(pf-route-chain){animation-duration:550ms;z-index:90}
+::view-transition-old(pf-route-chain){display:none}
+::view-transition-new(pf-route-chain){animation:none}
+@media(max-width:1000px){.pf-route-chain ol{gap:20px}.pf-route-chain a{font-size:11px;gap:6px}.pf-route-coupler{width:30px;transform:scaleX(.78);transform-origin:left center}.pf-chain-station{display:none}}
+@media(max-width:800px){
+ .pf-route-chain{margin-block:16px 8px}.pf-route-chain ol{grid-template-columns:repeat(3,minmax(0,1fr));gap:24px 18px}
+ .pf-route-chain a{min-height:48px;padding:10px 8px;font-size:11px;border-radius:16px}
+ .pf-route-chain li:nth-child(4){grid-column:3;grid-row:2}.pf-route-chain li:nth-child(5){grid-column:2;grid-row:2}.pf-route-chain li:nth-child(6){grid-column:1;grid-row:2}
+ .pf-route-coupler{top:16px;transform:scaleX(.73)}
+ .pf-route-chain li:nth-child(3) .pf-route-coupler{top:calc(100% - 3px);left:calc(50% - 7px);transform:rotate(90deg) scaleX(.8);transform-origin:8px 8px}
+ .pf-route-chain li:nth-child(4) .pf-route-coupler,.pf-route-chain li:nth-child(5) .pf-route-coupler{left:auto;right:calc(100% - 4px);transform:rotate(180deg) scaleX(.73);transform-origin:center}
+}
+@media(prefers-reduced-motion:reduce){.pf-route-chain a{transition:none;transform:none!important}}
+@media(forced-colors:active){
+ .pf-route-chain a,.pf-route-chain a:hover{background:ButtonFace;color:ButtonText;border-color:ButtonText;box-shadow:none}
+ .pf-route-chain a[aria-current=page]{border:3px solid Highlight;background:ButtonFace;color:ButtonText}
+ .pf-route-coupler{filter:none}.pf-route-coupler i{border-color:CanvasText;box-shadow:none}
+ .pf-chain-station,.pf-route-chain a[aria-current=page] .pf-chain-station{color:ButtonText}
+ .pf-route-chain a::before,.pf-route-chain a::after{background:Canvas;border-color:CanvasText;box-shadow:none}
+}
+
+/* Shared five-stage evidence drive: Home and Proof Standard use one style owner. */
+.ledger-chain{padding-block:70px}
+.ledger-chain .home-section-head{display:grid;grid-template-columns:1fr 1fr;gap:18px 70px;align-items:end;margin-bottom:30px}.ledger-chain .home-section-head>.kicker{grid-column:1/-1}.ledger-chain .home-section-head h2{margin:0;max-width:20ch}
+.ledger-chain h2{font-size:clamp(32px,3.5vw,49px);letter-spacing:-.035em;line-height:1.15;margin:18px 0}
+.ledger-chain .home-section-head>p:last-child{color:#c0cbc5;font-size:16px;max-width:63ch;line-height:1.75}
+.ledger-chain-machine{position:relative;margin:30px 0 24px;padding:18px 20px 24px;border:1px solid #66746e;background:linear-gradient(130deg,#263334,#101b21 45%);box-shadow:inset 0 2px #c4ccc630,inset 0 -4px 12px #0008,0 10px 25px #0005}
+.pf-chain-toolbar{display:flex;align-items:center;justify-content:space-between;gap:20px;position:relative;z-index:1;margin-bottom:12px}
+.pf-chain-stamp{font:10px var(--pf-mono);letter-spacing:.1em;color:#c8d1c6}
+.pf-chain-toggle{background:#19282c;color:#e5d5b3;border:1px solid #718078;padding:10px 12px;font:11px var(--pf-mono);min-height:44px;cursor:pointer}
+.pf-chain-drive{display:block;width:100%;height:auto;order:1;margin-top:54px}
+.ledger-chain-machine>.pf-chain-toolbar{position:absolute;top:14px;left:20px;right:20px}
+.ledger-rail{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));list-style:none;gap:12px;padding:20px 0 12px;margin:0}
+.ledger-rail li{padding:12px 10px;border-top:2px solid #6d7e79;min-width:0}
+.ledger-rail li[data-engaged=true]{border-color:#d6b77d;background:linear-gradient(#d2bc8714,transparent)}
+.proof-step-number{font:10px var(--pf-mono);color:#b5c4c0}
+.ledger-rail h3{font-size:20px;line-height:1.25;margin:10px 0}
+.ledger-rail p{font-size:13px;color:#bdcac7;line-height:1.7}
+.pf-chain-select{background:transparent;color:#e7eae1;font:inherit;font-weight:600;border:0;padding:8px 0;text-align:left;cursor:pointer;min-height:44px}
+.pf-chain-select[aria-pressed=true]{color:#f0d5a3}
+.pf-chain-select:focus-visible,.pf-chain-toggle:focus-visible{outline:2px solid #edcf93;outline-offset:3px}
+.pf-chain-detail{border-top:1px solid #61746f;padding-top:18px;margin-top:12px;display:grid;grid-template-columns:130px 1fr;gap:24px}
+.pf-chain-detail strong{font:14px var(--pf-mono);color:#e8d2a8}
+.pf-chain-detail p{font-size:14px;line-height:1.7;color:#d1dbd4;max-width:76ch;margin:0}
+.pf-chain-caption{font:10px/1.6 var(--pf-mono);color:#aabbb5;margin-top:18px}
+@media(max-width:760px){
+ .ledger-chain .home-section-head{display:block}.ledger-chain .home-section-head h2{margin:18px 0}
+ .ledger-chain{padding-block:45px}.ledger-chain h2{font-size:34px}.ledger-chain .home-section-head>p:last-child{font-size:15px}
+ .ledger-chain-machine{padding:70px 14px 20px}
+ .pf-chain-drive{position:absolute;left:14px;top:70px;width:76px;height:var(--pf-drive-height);margin:0}
+ .ledger-chain-machine>.pf-chain-toolbar{left:14px;right:14px;top:12px;gap:10px}.pf-chain-stamp{font-size:8px}.pf-chain-toggle{font-size:10px;padding-inline:8px}
+ .ledger-rail{display:block;padding:0 0 0 88px}
+ .ledger-rail li{min-height:113px;padding:10px 0;border-top:0;border-bottom:1px solid #5c7166}
+ .ledger-rail h3{font-size:20px;margin:1px 0}.ledger-rail p{font-size:12px}
+ .proof-step-number{font-size:9px}.pf-chain-detail{display:block;margin-top:24px}.pf-chain-detail p{font-size:13px;margin-top:12px}
+}
+@media(max-width:360px){.pf-chain-stamp{max-width:10ch;line-height:1.6}}
+@media(forced-colors:active){
+ .ledger-chain-machine{background:Canvas;color:CanvasText;border-color:CanvasText;box-shadow:none}
+ .pf-chain-drive{display:none}.ledger-rail{padding-left:0}
+ .ledger-chain :is(h2,h3,p,strong,span){color:CanvasText;text-shadow:none}
+ .pf-chain-toggle,.pf-chain-select{background:ButtonFace;color:ButtonText;border:1px solid ButtonText}
+}

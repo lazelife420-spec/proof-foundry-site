@@ -53,12 +53,15 @@ param(
   # through New-FixtureApiProductStateSource instead of the manifest — the
   # adapter seam tests exercise, and the shape a real API source will take.
   [string]$StateSourcePath,
-  [switch]$SharedReleaseTruthPreview
+  [switch]$SharedReleaseTruthPreview,
+  # Explicit local review only; no release-fact or signed-catalog adoption.
+  [switch]$PortfolioReview
 )
 
 $ErrorActionPreference = 'Stop'
 Set-Location $PSScriptRoot
 $root = (Resolve-Path "$PSScriptRoot/..").Path
+. (Join-Path $PSScriptRoot 'foundry-presentation.ps1')
 # H13: module registry directory — overridable so fixtures can exercise
 # registry controls without mutating the canonical products/ tree.
 $script:productsDir = if ($ProductsDir) { (Resolve-Path $ProductsDir).Path } else { Join-Path $root 'products' }
@@ -67,6 +70,52 @@ Set-Location $root
 $manifestPath = if ($ManifestPath) { (Resolve-Path $ManifestPath).Path } else { Join-Path $root 'site-manifest.json' }
 $partialsDir  = Join-Path $root 'partials'
 $publicDir    = if ($OutDir) { $OutDir } else { Join-Path $root 'public' }
+
+$script:portfolioReviewSlots = $null
+if ($PortfolioReview) {
+  if (-not $OutDir -or $PSBoundParameters.ContainsKey('ManifestPath') -or $StateSourcePath -or $PreviewProductId -or $PSBoundParameters.ContainsKey('ProductsDir') -or $SharedReleaseTruthPreview -or $TruthCommit -or $TruthTree -or $TruthCommittedAt) {
+    throw 'Portfolio review requires an explicit new output directory and the unchanged canonical source inputs.'
+  }
+  $reviewOutput = [IO.Path]::GetFullPath($publicDir)
+  if (Test-Path -LiteralPath $reviewOutput) { throw 'Portfolio review output must not exist; no cleanup or replacement is permitted.' }
+  $reviewAncestor = [IO.DirectoryInfo]::new($reviewOutput).Parent
+  while ($null -ne $reviewAncestor) {
+    if (Test-Path -LiteralPath (Join-Path $reviewAncestor.FullName '.git')) { throw 'Portfolio review output must be outside Git repositories.' }
+    if ((Test-Path -LiteralPath $reviewAncestor.FullName) -and ((Get-Item -LiteralPath $reviewAncestor.FullName).Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+      throw 'Portfolio review output ancestry must not traverse a reparse point.'
+    }
+    $reviewAncestor = $reviewAncestor.Parent
+  }
+  $publicDir = $reviewOutput
+  $portfolioConsoleEncoding = [Console]::OutputEncoding
+  $portfolioOutputEncoding = $OutputEncoding
+  try {
+    [Console]::OutputEncoding = [Text.UTF8Encoding]::new($false)
+    $OutputEncoding = [Text.UTF8Encoding]::new($false)
+    $portfolioJson = & node (Join-Path $root 'scripts/portfolio-review.cjs')
+    $portfolioExit = $LASTEXITCODE
+  } finally {
+    [Console]::OutputEncoding = $portfolioConsoleEncoding
+    $OutputEncoding = $portfolioOutputEncoding
+  }
+  if ($portfolioExit -ne 0) { throw 'Review adapter refused input; no generated output was touched.' }
+  $script:portfolioReviewSlots = ($portfolioJson -join [Environment]::NewLine) | ConvertFrom-Json -Depth 100
+  if ($script:portfolioReviewSlots.schema -ne 'pf.portfolio-review-slots/v1') { throw 'Unknown review markup contract.' }
+}
+
+# The editorial directory is a source feature, independent of review-only robots headers.
+# It changes presentation only; release truth is validated by the existing adapter.
+if (-not $script:portfolioReviewSlots -and (Test-Path -LiteralPath (Join-Path $root 'site-editorial.json'))) {
+  $savedConsoleEncoding = [Console]::OutputEncoding
+  $savedOutputEncoding = $OutputEncoding
+  try {
+    [Console]::OutputEncoding = [Text.UTF8Encoding]::new($false)
+    $OutputEncoding = [Text.UTF8Encoding]::new($false)
+    $directoryJson = & node (Join-Path $root 'scripts/portfolio-review.cjs')
+    if ($LASTEXITCODE -ne 0) { throw 'Editorial directory inputs failed validation.' }
+    $script:portfolioReviewSlots = ($directoryJson -join [Environment]::NewLine) | ConvertFrom-Json -Depth 100
+  } finally { [Console]::OutputEncoding = $savedConsoleEncoding; $OutputEncoding = $savedOutputEncoding }
+}
 
 if (-not (Test-Path $manifestPath)) { throw "site-manifest.json not found at $manifestPath" }
 # -Encoding UTF8 is mandatory: site-manifest.json is UTF-8 and contains non-ASCII
@@ -1215,12 +1264,33 @@ function Build-NavLinks($activeId) {
 }
 
 function Build-FooterProducts {
-  $items = @()
+  $items = @(); $history = @()
   foreach ($p in $allProductState) {
     $footerName = if ($p.homeName) { $p.homeName } else { $p.name }
+    if ($PortfolioReview -and $p.id -in @($script:portfolioReviewSlots.unfeaturedIds)) {
+      $history += "<li><a href=`"$(Html-Attr $p.route)`">Historical record — $(Html-Attr $footerName)</a></li>"
+      continue
+    }
     $items += "<li><a href=`"$(Html-Attr $p.route)`">$(Html-Attr $footerName)</a></li>"
   }
+  if ($PortfolioReview) {
+    $items += '<li><a href="/software/#portfolio-hardline-zero">Hardline Zero</a></li>'
+    $items += '<li><a href="/software/#portfolio-crosspoint">CrossPoint</a></li>'
+    $items += '<li><a href="/software/#portfolio-proof-foundry-app">Proof Foundry App</a></li>'
+    $items += $history
+  }
   return ($items -join "`n          ")
+}
+
+function Build-ReviewDoors {
+  $items = @()
+  foreach ($m in ($productRegistry | Where-Object { $_.visibility -eq 'visible' } | Sort-Object { if ($_.homepage.order) { [int]$_.homepage.order } else { [int]$_.order } })) {
+    if ($m.id -in @($script:portfolioReviewSlots.unfeaturedIds)) { continue }
+    $joint = Get-FoundryJoint $m.id ('home-' + $m.id)
+    $purpose = if ($m.id -eq 'reality-gate') { 'Keep execution tied to the project.' } else { [string]$m.card.tagline }
+    $items += '<a class="foundry-door foundry-connection door-' + $m.id + '" href="' + (Html-Attr $m.route) + '" data-world-link="' + (Html-Attr $m.id) + '"><span class="door-mechanism" data-joint="' + $m.id + '">' + $joint + '</span><span class="door-name">' + (Html-Text $m.brand.name) + '</span><span class="door-purpose">' + (Html-Text $purpose) + '</span><span class="door-arrow" aria-hidden="true">↗</span></a>'
+  }
+  return ($items -join '')
 }
 
 function Render-ProductCard($p, $cardTemplate, [bool]$catalogMode = $false) {
@@ -1302,6 +1372,7 @@ function Build-ProductCards($groupId, [bool]$includeFeatured = $false, [bool]$ca
     } | Where-Object { $null -ne $_ })
   }
   foreach ($p in $cardProducts) {
+    if ($PortfolioReview -and ($p.id -in @($script:portfolioReviewSlots.unfeaturedIds) -or $p.id -in @($script:portfolioReviewSlots.systemIds))) { continue } # editorial placement is separate from release availability
     $module = @($productRegistry | Where-Object { $_.id -eq $p.id }) | Select-Object -First 1
     if ($module.placement -and $module.placement.catalog -eq $false) { continue }
     if ($groupId -and (ProductGroupId $p) -ne $groupId) { continue }
@@ -1313,6 +1384,7 @@ function Build-ProductCards($groupId, [bool]$includeFeatured = $false, [bool]$ca
 function Get-CatalogProductState {
   $result = @()
   foreach ($p in $allProductState) {
+    if ($PortfolioReview -and ($p.id -in @($script:portfolioReviewSlots.unfeaturedIds) -or $p.id -in @($script:portfolioReviewSlots.systemIds))) { continue }
     $module = @($productRegistry | Where-Object { $_.id -eq $p.id }) | Select-Object -First 1
     if (-not $module.placement -or $module.placement.catalog -ne $false) { $result += $p }
   }
@@ -2698,7 +2770,12 @@ function Render-ModuleHero($module, $product) {
   $headline = Html-Text $hero.headline
   $media = ''
   if ($hero.media.src) {
-    $heroImage = "<img src=`"$(Html-Attr $hero.media.src)`" alt=`"$(Html-Attr $hero.media.alt)`" loading=`"eager`" fetchpriority=`"high`" decoding=`"async`"/>"
+    $dimensions = if ($hero.media.mobileSrc) { '' } else { Get-FoundryHeroDimensions $hero.media.src }
+    $heroImage = "<img src=`"$(Html-Attr $hero.media.src)`" alt=`"$(Html-Attr $hero.media.alt)`"$dimensions loading=`"eager`" fetchpriority=`"high`" decoding=`"async`"/>"
+    if (-not $hero.media.mobileSrc) {
+      $responsiveHero = Get-FoundryHeroWebp $hero.media.src
+      if ($responsiveHero) { $heroImage = '<picture>' + $responsiveHero + $heroImage + '</picture>' }
+    }
     if ($hero.media.mobileSrc) {
       $heroImage = "<picture><source media=`"(max-width: 700px)`" srcset=`"$(Html-Attr $hero.media.mobileSrc)`"/>$heroImage</picture>"
     }
@@ -2724,8 +2801,10 @@ function Render-ModuleHero($module, $product) {
     $statusParts += 'no current download'
     $statusLine = '<p class="pp-hero-status" data-release-status="withdrawn"><strong>WITHDRAWN</strong> ' + (Html-Text ($dot + ' ' + ($statusParts -join (' ' + $dot + ' ')))) + '</p>'
   }
+  $jointSvg = Get-FoundryJoint $module.id ('hero-' + $module.id)
+  $joint = '<a class="hero-joint foundry-connection" href="/truth-files/' + $module.id + '/" data-world-link="' + $module.id + '"><span data-joint="' + $module.id + '">' + $jointSvg + '</span><span>Open Truth record ↗</span></a>'
   $layoutClass = if ($variant -eq 'centered') { 'pp-hero-layout pp-hero-centered' } else { "pp-hero-layout pp-hero-$variant" }
-  return "<section class=`"product-hero pp-hero pp-module-hero`" id=`"overview`" data-hero-variant=`"$(Html-Attr $variant)`" data-scene-family=`"$(Html-Attr $hero.sceneFamily)`"><div class=`"product-identity`">$mark<span>$(Html-Text $brandName)</span><span class=`"identity-studio`">by The Proof Foundry</span></div><div class=`"$layoutClass`"><div class=`"product-copy`"><p class=`"kicker pp-kicker`">$(Html-Text $hero.kicker)</p><h1>$headline $emphasis</h1>$statusLine<p class=`"product-lede`">$lede</p><div class=`"studio-actions`">$primary$secondary</div></div><div class=`"hero-media`">$media</div></div></section>"
+  return "<section class=`"product-hero pp-hero pp-module-hero`" id=`"overview`" data-hero-variant=`"$(Html-Attr $variant)`" data-scene-family=`"$(Html-Attr $hero.sceneFamily)`"><div class=`"product-identity`">$mark<span>$(Html-Text $brandName)</span><span class=`"identity-studio`">by The Proof Foundry</span></div><div class=`"$layoutClass`"><div class=`"product-copy`"><p class=`"kicker pp-kicker`">$(Html-Text $hero.kicker)</p><h1>$headline $emphasis</h1>$statusLine<p class=`"product-lede`">$lede</p><div class=`"studio-actions`">$primary$secondary</div></div><div class=`"hero-media`">$media$joint</div></div></section>"
 }
 
 function Render-ProductShell($module, [switch]$Template, [switch]$Preview) {
@@ -2856,7 +2935,8 @@ $canonicalTag
     $wayfinding += '<a href="/support/?product=' + (Html-Attr $module.id) + '#report">Help</a>'
   }
   $navigation = '<nav class="pf-product-navigation" aria-label="' + $name + ' page navigation"><span class="pf-product-navigation-name">' + $name + '</span><div>' + ($wayfinding -join '') + '</div></nav>'
-  $content = $content.Replace($crumb, $crumb + $navigation)
+  $content = $content.Replace($crumb, $crumb)
+  $content = $content.Replace('<!-- @product-wayfinding -->', $navigation)
   $shell = $shell -replace '<!--\s*@product-content\s*-->', $content
   return $shell
 }
@@ -2928,6 +3008,7 @@ function Build-LedgerFeatured {
   foreach ($entry in Get-LedgerEntries) {
     $m = $entry.Module; $p = $entry.Product
     if ($m.id -notin @($selection.featured) -or $p.release.releaseStatus -ne 'PUBLIC_RELEASE') { continue }
+    if ($PortfolioReview -and $m.id -in @($script:portfolioReviewSlots.unfeaturedIds)) { continue }
     $name = if ($p.homeName) { [string]$p.homeName } else { [string]$p.name }
     $job = if ($m.card.tagline) { [string]$m.card.tagline } else { [string]$p.summary }
     $titleId = 'feature-' + $m.id + '-title'
@@ -2948,11 +3029,13 @@ function Build-LedgerIndex {
   $rows = @()
   foreach ($entry in Get-LedgerEntries) {
     $m = $entry.Module; $p = $entry.Product
+    if ($PortfolioReview -and $m.id -in @($script:portfolioReviewSlots.unfeaturedIds)) { continue }
     $name = if ($p.homeName) { [string]$p.homeName } else { [string]$p.name }
     $withdrawn = $p.release.releaseStatus -eq 'WITHDRAWN'
     $version = if ($withdrawn) { '' } else { VersionLabel $p }
     $status = if ($withdrawn) { StateWord 'withdrawnHomeStatus' } else { (VisitorAvailabilityLabel $p).Replace('_', ' ') }
     $job = if ($withdrawn) { 'Full record available.' } elseif ($m.card.tagline) { [string]$m.card.tagline } else { [string]$p.summary }
+    if ($PortfolioReview -and $m.id -eq 'reality-gate') { $status = 'Public v1.1.0 withdrawn; internal work continues'; $job = 'Project execution, run evidence and recovery.' }
     $rows += @"
 <tr data-ledger-product="$(Html-Attr $m.id)" data-release-status="$(Html-Attr $p.release.releaseStatus)"><th scope="row"><span class="ledger-index-name">$(LedgerProductMark $m)<span>$(Html-Text $name)</span></span></th><td><span class="ledger-version">$(Html-Text $version)</span><span class="ledger-status">$(Html-Text $status)</span></td><td>$(Html-Text (LedgerPlatform $p))</td><td>$(Html-Text $job)</td><td><a class="ledger-link" href="$(Html-Attr $m.route)" aria-label="View $(Html-Attr $name) record">View $(LedgerArrowSvg)</a></td></tr>
 "@
@@ -2969,7 +3052,11 @@ function Build-SupportProductOptions {
 
 function Build-LedgerSpecimen {
   $selection = Get-Content (Join-Path $root 'homepage-ledger.json') -Raw -Encoding UTF8 | ConvertFrom-Json
-  $entry = @(Get-LedgerEntries | Where-Object { $_.Module.id -eq $selection.releaseSpecimen }) | Select-Object -First 1
+  $specimenId = $selection.releaseSpecimen
+  if ($PortfolioReview -and $specimenId -in @($script:portfolioReviewSlots.unfeaturedIds)) {
+    $specimenId = @($selection.featured | Where-Object { $_ -notin @($script:portfolioReviewSlots.unfeaturedIds) }) | Select-Object -First 1
+  }
+  $entry = @(Get-LedgerEntries | Where-Object { $_.Module.id -eq $specimenId }) | Select-Object -First 1
   if (-not $entry -or $entry.Product.release.releaseStatus -ne 'PUBLIC_RELEASE') {
     return '<div class="ledger-record"><p>No current public release is selected. <a href="/proof/">Read the release records.</a></p></div>'
   }
@@ -3000,6 +3087,36 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   # injection, icon, generated-file warning).
   $html = if ($PSBoundParameters.ContainsKey('OverrideHtml') -and $null -ne $OverrideHtml) { $OverrideHtml } else { Read-File $srcPath }
 
+  if ($PortfolioReview) {
+    # Review metadata is deliberately distinct; this is not a publication gate or an RG sandbox.
+    $html = [regex]::Replace($html, '(?is)<meta\b(?=[^>]*\bname=["'']robots["''])[^>]*>', '')
+    $html = $html.Replace('</head>', '<meta name="robots" content="noindex,nofollow"/>' + '</head>')
+    $html = $html.Replace('<body', '<body data-portfolio-review="v1"')
+    if ($srcName -in @('index.html', 'software.html')) {
+      $reviewCssHash = (Get-FileHash (Join-Path $root 'portfolio-review.css') -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
+      $html = $html.Replace('</head>', '<link rel="stylesheet" href="/portfolio-review.css?v=' + $reviewCssHash + '"/>' + '</head>')
+
+    }
+  }
+
+  if ($srcName -eq 'software.html' -and $script:portfolioReviewSlots) {
+    $directoryMarkup = [string]$script:portfolioReviewSlots.directory
+    # Editorial inclusion cannot publish a registry-hidden module or a missing route.
+    $visibleDirectoryModules = @($productRegistry | Where-Object { $_.visibility -eq 'visible' } | ForEach-Object { $_.id })
+    foreach ($hiddenModule in @(Get-ChildItem -LiteralPath $script:productsDir -Directory | Where-Object { $_.Name -notin $visibleDirectoryModules })) {
+      $hiddenEntry = '(?s)<article\b[^>]*data-directory-entry="' + [regex]::Escape($hiddenModule.Name) + '"[^>]*>.*?</article>'
+      $directoryMarkup = [regex]::Replace($directoryMarkup, $hiddenEntry, '')
+    }
+    $html = $html.Replace('<!-- @directory-entries -->', $directoryMarkup)
+    $html = $html.Replace('<!-- @directory-groups -->', [string]$script:portfolioReviewSlots.directoryGroups)
+    $html = $html.Replace('<!-- @directory-systems -->', [string]$script:portfolioReviewSlots.directorySystems)
+    $html = $html.Replace('<!-- @directory-records -->', [string]$script:portfolioReviewSlots.directoryRecords)
+    if (-not $PortfolioReview) {
+      $directoryCssHash = (Get-FileHash (Join-Path $root 'portfolio-review.css') -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
+      $html = $html.Replace('</head>', '<link rel="stylesheet" href="/portfolio-review.css?v=' + $directoryCssHash + '"/></head>')
+    }
+  }
+
   # Give shared presentation assets content-derived URLs. A cached stylesheet
   # or script must not leave visitors on a previous design after publication.
   foreach ($assetName in @('styles.css', 'studio.css', 'experience.css', 'signature.css', 'product-page.css', 'truth-files.css', 'site.js', 'experience.js', 'h9-homepage.css', 'h9-software.css', 'h9-homepage.js', 'h9-software.js', 'pf-home.js')) {
@@ -3021,7 +3138,7 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   $systemVersion = (Get-FileHash (Join-Path $root 'pf-foundry-system.css') -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
   $html = $html.Replace('</head>', "<link href=`"/pf-foundry-system.css?v=$systemVersion`" rel=`"stylesheet`"/>`n</head>")
 
-  if ($srcName -eq 'index.html' -and $html.Contains('<!-- @ledger-featured -->')) {
+  if ($srcName -eq 'index.html' -and $html.Contains('<!-- @ledger-specimen -->')) {
     $ledgerVersion = (Get-FileHash (Join-Path $root 'pf-home-ledger.css') -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
     $html = $html.Replace('"/pf-home-ledger.css"', '"/pf-home-ledger.css?v=' + $ledgerVersion + '"')
     $html = $html.Replace('<!-- @ledger-featured -->', (Build-LedgerFeatured))
@@ -3066,30 +3183,10 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   $header = $headerPartial
   $header = $header -replace [regex]::Escape('{{nav-links}}'), $navLinks
   $header = $header -replace [regex]::Escape('{{nav-cta}}'),   $navCta
-  # V5 (owner ruling, 2026-10-13; studio-wide 2026-10-25): every route's header carries
-  # the PF Mark G header render so the studio has one brand mark. Forced colours keep
-  # the shared vector micro mark.
-  $sharedMark = '<img class="brand-mark" src="/brand/PF_HEADER_MARK.svg" alt="" width="42" height="42" />'
-  if (-not $header.Contains($sharedMark)) { throw 'Header: the shared header no longer carries the expected micro mark.' }
-  $header = $header.Replace($sharedMark, '<picture class="brand-mark-picture"><source media="(forced-colors: active)" srcset="/brand/PF_HEADER_MARK.svg"/><img class="brand-mark" src="/brand/emblem/PF_MARK_G_HEADER.webp" alt="" width="50" height="51"/></picture>')
-  # Forced colours (V5 refinement F5, studio-wide): every route's header and footer also carry an inline,
-  # same-document copy of the canonical micro mark, shown only in forced colours and drawn in system colours
-  # by pf-home-ledger.css on Home and pf-site-ledger.css on every other route. An SVG loaded through <img>
-  # evaluates its own forced-colours rules in a separate image document, which was observed to keep its
-  # normal colours on warm-cache and switched loads.
-  $microSvg = Read-File (Join-Path $root 'brand/PF_HEADER_MARK.svg')
-  $microStart = $microSvg.IndexOf('</style>') + '</style>'.Length
-  $microBody = ($microSvg.Substring($microStart, $microSvg.LastIndexOf('</svg>') - $microStart).Trim() -replace '>\s+<', '><')
-  if ($microStart -lt 8 -or $microBody -match '\sid="|<style|<title|<desc|<script') { throw 'Forced-colours mark: PF_HEADER_MARK.svg no longer has the expected shape.' }
-  $fcMark = @{}
-  foreach ($kind in @('header', 'footer')) { $fcMark[$kind] = "<span class=`"pf-mark-fc pf-mark-fc--$kind`" hidden><svg viewBox=`"0 0 256 256`" aria-hidden=`"true`" focusable=`"false`">$microBody</svg></span>" }
-  if (([regex]::Matches($header, '</picture>')).Count -ne 1) { throw 'Header: expected exactly one picture element.' }
-  $header = $header.Replace('</picture>', '</picture>' + $fcMark['header'])
-
   $footer = $footerPartial -replace [regex]::Escape('{{footer-products}}'), (Build-FooterProducts)
-  $footerLogo = '<img class="footer-logo" src="/brand/PF_HEADER_MARK.svg" alt="" width="42" height="42"/>'
-  if (([regex]::Matches($footer, [regex]::Escape($footerLogo))).Count -ne 1) { throw 'Footer: the shared footer no longer carries the expected logo.' }
-  $footer = $footer.Replace($footerLogo, $footerLogo + $fcMark['footer'])
+  $chrome = Get-FoundryChrome $header $footer
+  $header = $chrome.Header
+  $footer = $chrome.Footer
 
   # Inject partials
   $html = $html -replace '<!--\s*@include header\s*-->', $header
@@ -3228,7 +3325,7 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   $warning = "<!-- GENERATED FILE - DO NOT EDIT. Source: $srcName + site-manifest.json$factSourceLabel. Run scripts/build-site.ps1 to rebuild. -->`r`n"
   $html = $html -replace '(<!doctype[^>]*>\s*\r?\n)', "`$1$warning"
 
-  return $html
+  return (Complete-FoundryPresentation $html $srcName $pageId $productSlug)
 }
 
 # Root files
@@ -3363,6 +3460,10 @@ foreach ($module in ($productRegistry | Where-Object { $_.visibility -eq 'visibl
 }
 Write-Host "==> Generated Truth Files: /truth-files/ + $(($productRegistry | Where-Object {$_.visibility -eq 'visible'}).Count) product records" -ForegroundColor Green
 
+# Copy authored V3 presentation assets
+foreach ($v3Asset in @('foundry-connections.css','foundry-navigation.js','product-worlds.css','foundry-rooms.css')) {
+  if (Test-Path (Join-Path $root $v3Asset)) { Copy-Item (Join-Path $root $v3Asset) $publicDir -Force }
+}
 # Copy static assets
 # ─────────────────────────────────────────────────────────────────────────────
 Copy-Item (Join-Path $root 'styles.css')     $publicDir -Force
@@ -3385,6 +3486,7 @@ if (Test-Path (Join-Path $root 'site.js'))   { Copy-Item (Join-Path $root 'site.
 # the published /truth/ records and reconciles them with /proof/index.json, in
 # the browser and in check-home-receipt-truth.ps1.
 Copy-Item (Join-Path $root 'pf-home.js') $publicDir -Force
+if ($script:portfolioReviewSlots) { Copy-Item -LiteralPath (Join-Path $root 'portfolio-review.css') -Destination $publicDir }
 Copy-Item (Join-Path $root 'pf-truth-receipt.js') $publicDir -Force
 Copy-Item (Join-Path $root 'CNAME')          $publicDir -Force
 Copy-Item (Join-Path $root 'robots.txt')     $publicDir -Force
@@ -3447,7 +3549,7 @@ foreach ($module in $moduleAssetRegistry) {
 # definitions and partials the static pipeline consumes — the runtime does not
 # get a second product model. Everything under __h14 is generated; never edit.
 $h14Dir = Join-Path $publicDir '__h14'
-foreach ($sub in @('shells','content','modules','partials','pages')) {
+foreach ($sub in @('shells','content','modules','partials','pages','joints')) {
   New-Item -ItemType Directory (Join-Path $h14Dir $sub) -Force | Out-Null
 }
 foreach ($module in $productRegistry) {
@@ -3459,6 +3561,16 @@ foreach ($module in $productRegistry) {
     $runtimeSections = @($module.sections | Where-Object { $_ -isnot [string] } | ForEach-Object { Render-StructuredSection $_ }) -join "`n"
     $runtimeContent = "<main id=`"main-content`"><div class=`"product-shell`">" + (Render-ModuleHero $module $runtimeProduct) + $runtimeSections + "</div></main>"
   }
+  # Presentation is authored once; unresolved release tokens remain runtime-owned.
+  if ($module.schemaVersion -eq 2 -and $module.hero) {
+    $runtimeHero = Render-ModuleHero $module $null
+    $runtimeHero = $runtimeHero.Replace('</h1>', '</h1><!-- @runtime-hero-status -->')
+    $runtimeContent = [regex]::Replace($runtimeContent, '<!--\s*@product-hero\s*-->', [System.Text.RegularExpressions.MatchEvaluator]{param($match) $runtimeHero})
+    $runtimeStructured = @($module.sections | Where-Object { $_ -isnot [string] -and $_.type -ne 'faq' } | ForEach-Object { Render-StructuredSection $_ }) -join "`n"
+    $runtimeFaq = @($module.sections | Where-Object { $_ -isnot [string] -and $_.type -eq 'faq' } | ForEach-Object { Render-StructuredSection $_ }) -join "`n"
+    $runtimeContent = $runtimeContent.Replace('<!-- @structured-sections -->', $runtimeStructured).Replace('<!-- @structured-faq -->', $runtimeFaq)
+  }
+  [System.IO.File]::WriteAllText((Join-Path $h14Dir "joints\$mid.html"), (Get-FoundryJoint $mid ('runtime-catalog-' + $mid)), (New-Object System.Text.UTF8Encoding $false))
   [System.IO.File]::WriteAllText((Join-Path $h14Dir "content\$mid.html"), $runtimeContent, (New-Object System.Text.UTF8Encoding $false))
   if ($module.visibility -eq 'visible') {
     # Shell with module meta resolved but runtime slots + product tokens intact:
@@ -3473,15 +3585,30 @@ foreach ($module in $productRegistry) {
         $shellTemplate = $shellTemplate.Replace('"/' + $assetName + '"', '"/' + $assetName + '?v=' + $av + '"')
       }
     }
+    $shellTemplate = Complete-FoundryPresentation $shellTemplate ('runtime/' + $mid) $mid $mid
     [System.IO.File]::WriteAllText((Join-Path $h14Dir "shells\$mid.html"), $shellTemplate, (New-Object System.Text.UTF8Encoding $false))
   }
 }
+$runtimeChrome = Get-FoundryChrome $headerPartial $footerPartial
 foreach ($pn in @('header.html','footer.html','product-card.html')) {
-  [System.IO.File]::WriteAllText((Join-Path $h14Dir "partials\$pn"), (Read-File (Join-Path $partialsDir $pn)), (New-Object System.Text.UTF8Encoding $false))
+  $partial = if ($pn -eq 'header.html') { $runtimeChrome.Header } elseif ($pn -eq 'footer.html') { $runtimeChrome.Footer } else { Read-File (Join-Path $partialsDir $pn) }
+  # Main-site chain/footer links must keep catalog visits inside the shadow lane.
+  $partial = $partial.Replace('href="/software/"', 'href="/__h14/software/"')
+  [System.IO.File]::WriteAllText((Join-Path $h14Dir "partials\$pn"), $partial, (New-Object System.Text.UTF8Encoding $false))
 }
 # Page shells keep their @-markers; the runtime fills them.
 foreach ($pg in @('software.html','truth.html')) {
   $pgHtml = Read-File (Join-Path $root $pg)
+  if ($pg -eq 'software.html') {
+    # The shadow runtime keeps its existing live-state card renderer. The public
+    # editorial directory does not replace or freeze this independent API lane.
+    $pgHtml = [regex]::Replace($pgHtml, '(?s)<form class="directory-finder".*?</form>', '')
+    $pgHtml = $pgHtml.Replace('class="pf-directory-grid" id="directory-results"', 'class="products-grid" id="products-grid"')
+    $pgHtml = $pgHtml.Replace('<!-- @directory-entries -->', '<!-- @all-products -->')
+    $pgHtml = [regex]::Replace($pgHtml, '(?s)<section class="directory-systems.*?</section>', '')
+    $pgHtml = [regex]::Replace($pgHtml, '(?s)<p data-directory-empty.*?</p>', '')
+    $pgHtml = $pgHtml.Replace('<!-- @directory-records -->', '').Replace("<script>document.documentElement.classList.add('h9-software-js')</script>", '')
+  }
   foreach ($assetName in @('styles.css','studio.css','experience.css','signature.css','product-page.css','site.js','experience.js','h9-homepage.css','h9-software.css','h9-homepage.js','h9-software.js')) {
     $assetPath = Join-Path $root $assetName
     if (Test-Path $assetPath) {
@@ -3489,6 +3616,8 @@ foreach ($pg in @('software.html','truth.html')) {
       $pgHtml = $pgHtml.Replace('"/' + $assetName + '"', '"/' + $assetName + '?v=' + $av + '"')
     }
   }
+  $pgId = [IO.Path]::GetFileNameWithoutExtension($pg)
+  $pgHtml = Complete-FoundryPresentation $pgHtml $pg $pgId ''
   [System.IO.File]::WriteAllText((Join-Path $h14Dir "pages\$pg"), $pgHtml, (New-Object System.Text.UTF8Encoding $false))
 }
 # Sanitized site config the runtime needs to derive identical labels/taxonomy.
@@ -3579,10 +3708,21 @@ $($headerRoutes -join "`n")
 # utf8NoBOM explicitly: a BOM at the start of _headers would be read as part of the
 # first rule and silently void it. PowerShell 7's -Encoding UTF8 is already BOM-less,
 # but 5.1's is not, so state it rather than depend on the host version.
+
+if ($PortfolioReview) {
+  $headersContent += [Environment]::NewLine + '/*' + [Environment]::NewLine + '  X-Robots-Tag: noindex, nofollow' + [Environment]::NewLine
+  $reviewMarker = '{"schema":"pf.local-review-artifact/v1","assignment":"CP-0175","releaseAuthority":"UNCHANGED","publicationAuthorized":false}'
+  [IO.File]::WriteAllText((Join-Path $publicDir 'PORTFOLIO_REVIEW_ONLY.json'), $reviewMarker, [Text.UTF8Encoding]::new($false))
+}
 [System.IO.File]::WriteAllText((Join-Path $publicDir '_headers'), $headersContent, (New-Object System.Text.UTF8Encoding $false))
 
 # Copy _redirects from root
 Copy-Item (Join-Path $root '_redirects') $publicDir -Force
+
+if ($script:portfolioReviewSlots) {
+  & node (Join-Path $root 'scripts/portfolio-review.cjs') --verify-generated $publicDir
+  if ($LASTEXITCODE -ne 0) { throw 'Generated editorial directory validation failed.' }
+}
 
 $productCount = $allProductState.Count
 Write-Host "==> Build complete: public/ regenerated. $productCount visible products, $($dirRoutes.Count) directory routes." -ForegroundColor Green

@@ -22,7 +22,7 @@
 <link href="/styles.css" rel="stylesheet"/>
 <link href="/studio.css" rel="stylesheet"/>
 </head>
-<body class="studio secondary-page product-page">
+<body class="studio secondary-page product-page pf-room-standard">
 <!-- @include header -->
 
 <main id="main-content">
@@ -32,6 +32,20 @@
       <h1 id="standard-title">The Proof Standard</h1>
       <p class="support-intro">Proof over rented trust. Verification standards and release principles for software forged at The Proof Foundry.</p>
     </section>
+
+<section class="ledger-chain" aria-labelledby="chain-title">
+ <div class="home-section-head"><p class="kicker">The proof method / Five connected stages</p><h2 id="chain-title">A record, all the way through.</h2><p>Follow the work from its source to its stated limits. Select a stage to inspect what it contributes.</p></div>
+ <div class="ledger-chain-machine">
+  <ol class="ledger-rail">
+   <li><span class="proof-step-number">01</span><h3>Source</h3><p>Identify what was built.</p></li>
+   <li><span class="proof-step-number">02</span><h3>Build</h3><p>Record how it was made.</p></li>
+   <li><span class="proof-step-number">03</span><h3>Artifact</h3><p>Inspect the exact files.</p></li>
+   <li><span class="proof-step-number">04</span><h3>Release</h3><p>State what is available.</p></li>
+   <li><span class="proof-step-number">05</span><h3>Limits</h3><p>Keep the qualifications visible.</p></li>
+  </ol>
+ </div>
+ <a class="text-link" href="/proof/">Inspect published release records ↗</a>
+</section>
 
     <!-- THE STANDARD, IN BRIEF -->
     <section class="support-section standard-brief" aria-labelledby="brief-title">
@@ -150,5 +164,6 @@
 
 <!-- @include footer -->
 <script src="/site.js" defer></script>
+<script type="module" src="/pf-home.js"></script>
 </body>
 </html>

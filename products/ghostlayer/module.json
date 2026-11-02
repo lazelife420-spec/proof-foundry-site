@@ -80,19 +80,19 @@
     "sceneFamily": "immersive-staging",
     "kicker": "Volatile file staging",
     "headline": "Choose what becomes permanent.",
-    "lede": "A temporary working layer for your files. Stage them in RAM, review your changes, and commit only what you choose to keep.",
+    "lede": "Stage files in a temporary RAM-backed workspace. Review the changes, select what you want to keep, and commit only that subset.",
     "media": {
       "src": "/assets/ghostlayer/gl-staged-files.png",
       "alt": "GhostLayer staged files interface",
-      "caption": "Staged files · changes remain reviewable"
+      "caption": "GhostLayer staging two example files. Exact capture build is not attested; the image does not independently prove v0.4.0."
     },
     "primaryAction": {
-      "label": "Explore product",
+      "label": "Get GhostLayer for Windows",
       "href": "#download"
     },
     "secondaryAction": {
-      "label": "Explore the details",
-      "href": "#features"
+      "label": "Try the staging preview",
+      "href": "#try-it"
     }
   },
   "card": {

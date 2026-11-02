@@ -1,0 +1,104 @@
+{
+  "schema": "pf.site-editorial/v1",
+  "entries": [
+    {
+      "id": "cache-vault",
+      "visible": true,
+      "order": 10,
+      "group": "Everyday software",
+      "shortDescription": "Find the clip. Get back to work.",
+      "artwork": "/assets/studio/cv-quick-paste-card-960.png",
+      "destination": "/cache-vault/"
+    },
+    {
+      "id": "lights-out",
+      "visible": true,
+      "order": 20,
+      "group": "Everyday software",
+      "shortDescription": "Give the end of the day a little less friction.",
+      "artwork": "/assets/lights-out/tonight-active-hero.png",
+      "destination": "/lights-out/"
+    },
+    {
+      "id": "cleanroom",
+      "visible": true,
+      "order": 30,
+      "group": "Everyday software",
+      "shortDescription": "Review a cleanup before it changes your files.",
+      "artwork": "/assets/studio/cleanroom-review-card-960.png",
+      "destination": "/cleanroom/"
+    },
+    {
+      "id": "ghostlayer",
+      "visible": true,
+      "order": 40,
+      "group": "Everyday software",
+      "shortDescription": "Stage temporary work before deciding what stays.",
+      "artwork": "/assets/studio/gl-staged-files-card-960.png",
+      "destination": "/ghostlayer/"
+    },
+    {
+      "id": "forgecast",
+      "visible": true,
+      "order": 50,
+      "group": "Everyday software",
+      "shortDescription": "Weather guidance for the day you are planning.",
+      "artwork": "/assets/studio/v030-today-card-960.png",
+      "destination": "/forgecast/"
+    },
+    {
+      "id": "hardline-zero",
+      "visible": true,
+      "order": 60,
+      "group": "Foundry systems",
+      "shortDescription": "Keep the work contract visible across tools and agents.",
+      "artwork": null,
+      "destination": "/software/#portfolio-hardline-zero"
+    },
+    {
+      "id": "crosspoint",
+      "visible": true,
+      "order": 70,
+      "group": "Foundry systems",
+      "shortDescription": "Give every handoff a recipient, a state and a record.",
+      "artwork": null,
+      "destination": "/software/#portfolio-crosspoint"
+    },
+    {
+      "id": "reality-gate",
+      "visible": true,
+      "order": 80,
+      "group": "Foundry systems",
+      "shortDescription": "Connect a project, permitted execution and its evidence.",
+      "artwork": "/assets/studio/08-ci-run-complete-card-960.png",
+      "destination": "/software/#portfolio-reality-gate"
+    },
+    {
+      "id": "proof-foundry-app",
+      "visible": true,
+      "order": 90,
+      "group": "Foundry systems",
+      "shortDescription": "A software library with the record attached.",
+      "artwork": null,
+      "destination": "/software/#portfolio-proof-foundry-app"
+    },
+    {
+      "id": "proofshot",
+      "visible": false,
+      "order": 100,
+      "group": "History",
+      "shortDescription": "Capture history and release evidence.",
+      "artwork": "/assets/proofshot/og-image.png",
+      "destination": "/proofshot/"
+    },
+    {
+      "id": "sound-assist",
+      "visible": false,
+      "order": 110,
+      "group": "History",
+      "shortDescription": "Historical identity; current availability is unresolved.",
+      "artwork": null,
+      "destination": null
+    }
+  ]
+}

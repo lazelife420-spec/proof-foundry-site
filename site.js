@@ -7,6 +7,23 @@
 (function () {
   "use strict";
 
+  // Native details owns expansion and focus. These small action cues describe
+  // its current state without replacing the summary or intercepting input.
+  function initDisclosureCues() {
+    document.querySelectorAll("details.pp-record, details.proof-details").forEach(function (detail) {
+      var label = detail.querySelector(":scope > summary .expand-label");
+      if (!label || !label.firstChild || label.firstChild.nodeType !== 3) return;
+      var record = detail.classList.contains("pp-record");
+      var icon = label.querySelector("[aria-hidden='true']");
+      function sync() {
+        label.firstChild.nodeValue = record ? (detail.open ? "Close record " : "Open record ") : (detail.open ? "Collapse " : "Expand ");
+        if (icon) icon.textContent = detail.open ? "−" : "+";
+      }
+      sync();
+      detail.addEventListener("toggle", sync);
+    });
+  }
+
   // One motion policy for every page. Content never starts hidden, and the
   // device's accessibility settings take precedence over a saved preference.
   function initMotion() {
@@ -103,7 +120,7 @@
 
     // Animate only small headings and cards arriving below the first viewport.
     // Never animate a whole release record, a focused control, or a hash target.
-    if (window.IntersectionObserver && Element.prototype.animate) {
+    if (!document.body.hasAttribute('data-foundry-world') && window.IntersectionObserver && Element.prototype.animate) {
       var arrivals = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
           if (!entry.isIntersecting) return;
@@ -474,6 +491,7 @@
       initProductWayfinding();
       initSupportDraft();
       revealDeepLink();
+      initDisclosureCues();
       initMotion();
       initFilmPosters();
     });
@@ -486,6 +504,7 @@
     initProductWayfinding();
     initSupportDraft();
     revealDeepLink();
+    initDisclosureCues();
     initMotion();
     initFilmPosters();
   }

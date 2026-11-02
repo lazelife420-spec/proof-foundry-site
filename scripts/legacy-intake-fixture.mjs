@@ -65,6 +65,8 @@ export function createLegacyIntakeFixture(){
   try{
     execFileSync('git',['clone','--quiet','--no-checkout','--no-hardlinks',ROOT,canonical],{windowsHide:true,stdio:'pipe'});
     git(canonical,'remote','remove','origin');git(canonical,'config','core.autocrlf','false');
+    // Preserve HEAD's tracked ignored files when staging the copied snapshot.
+    git(canonical,'read-tree','HEAD');
     const paths=git(ROOT,'ls-files','-z').split('\0').filter(Boolean);
     for(const helper of ['scripts/legacy-intake-fixture.mjs','scripts/test-legacy-intake-fixture.mjs','scripts/release-inputs.cjs','scripts/qualification-authority.cjs','scripts/release-qualification.ps1','scripts/build-qualification-fixture.ps1'])if(!paths.includes(helper))paths.push(helper);
     for(const rel of paths){

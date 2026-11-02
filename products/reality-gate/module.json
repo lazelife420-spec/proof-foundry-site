@@ -89,11 +89,11 @@
     "kicker": "Local developer continuity & execution",
     "headline": "Your projects.",
     "emphasis": "Your execution. Your way back.",
-    "lede": "{{product.statusStatement}}",
+    "lede": "Reality Gate ties project inspection, permitted execution and run evidence together. Internal work continues separately from the withdrawn public v1.1.0 package; no current public download is offered.",
     "media": {
       "src": "/assets/reality-gate/08-ci-run-complete.50deeeef7e10fbe8.png",
       "alt": "Reality Gate sample Runroom displaying a completed CI run for Demo Widget Service.",
-      "caption": "Sample Runroom · Demo Widget Service"
+      "caption": "Historical sample Runroom for Demo Widget Service. Exact capture build is not attested; this is not proof of a currently available release."
     },
     "primaryAction": {
       "label": "Review release status",

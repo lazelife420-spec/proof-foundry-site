@@ -89,19 +89,19 @@
     "sceneFamily": "weather-instrument",
     "kicker": "Weather for what you do",
     "headline": "Know what to wear now. What to bring later.",
-    "lede": "ForgeCast turns changing weather into practical decisions — when to head out, what makes sense to wear now, what you may want later, and why.",
+    "lede": "Choose when to head outside, what to wear now and what to bring later—with the forecast conditions behind each recommendation.",
     "media": {
       "src": "/assets/forgecast/v030-today.png",
       "alt": "ForgeCast Today interface",
-      "caption": "Today · practical weather decisions"
+      "caption": "Historical Android Today screen with earlier clothing guidance. Exact capture build is not attested; the filename alone does not prove v0.3.0, and this does not show the v0.3.5 Ask interface."
     },
     "primaryAction": {
-      "label": "Explore product",
+      "label": "Get ForgeCast for Android",
       "href": "#download"
     },
     "secondaryAction": {
-      "label": "Explore the details",
-      "href": "#features"
+      "label": "Explore a sample day",
+      "href": "#try-it"
     }
   },
   "card": {

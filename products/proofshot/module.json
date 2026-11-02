@@ -97,18 +97,18 @@
     "sceneFamily": "capture-studio",
     "kicker": "Capture & evidence workbench",
     "headline": "Keep the context. Build the evidence.",
-    "lede": "A local workbench for capturing page resources, organizing a case and exporting a bundle you can verify later.",
+    "lede": "Inspect page resources, organize them into a case and export a record with file hashes. This historical product remains unfeatured while licensing and current-media findings are unresolved.",
     "media": {
-      "src": "/assets/proofshot/og-image.png",
-      "alt": "ProofShot wordmark and its capture, receipt, export and verify workflow",
-      "caption": "ProofShot approved brand artwork · no product interface pictured"
+      "src": "/assets/proofshot/candidates-plan.png",
+      "alt": "Historical HyperSnatch v1.6.18 Candidates screen with its welcome panel covering the workspace.",
+      "caption": "Historical HyperSnatch v1.6.18 Candidates view, with its welcome panel covering the workspace. No current ProofShot v2.0.0 runtime capture is claimed."
     },
     "primaryAction": {
-      "label": "Explore product",
+      "label": "Get ProofShot for Windows",
       "href": "#download"
     },
     "secondaryAction": {
-      "label": "Explore the details",
+      "label": "See the capture workflow",
       "href": "#features"
     }
   },
@@ -119,7 +119,10 @@
     "mediaAlt": "ProofShot brand card; no product interface pictured."
   },
   "lifecycle": "public-eligible",
-  "commerce": { "status": "FREE", "label": "Free download" },
+  "commerce": {
+    "status": "FREE",
+    "label": "Free download"
+  },
   "placement": {
     "catalog": true
   },
@@ -127,7 +130,7 @@
     "sceneFamily": "capture-studio",
     "role": "studioPortfolio",
     "order": 60,
-      "tier": "secondary",
+    "tier": "secondary",
     "presentation": "compact",
     "visibility": "visible",
     "mediaDisclosure": "ProofShot brand card · no product interface pictured.",

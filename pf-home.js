@@ -87,16 +87,16 @@ const CANON = {
 };
 const LETTERS = 'translate(26.16 30.72) scale(.76)';
 const NOTES = [
-  { title: 'The approved silver P', u: 73, v: 160, shape: 'P', loupe: [92, 132, 2.7],
-    body: 'The P is drawn from the PF Mark G master contour, unaltered. It is rendered as satin-machined steel, brushed in one direction, with a crisp chamfer on every edge so the outline stays sharp at any size. P is for proof.' },
-  { title: 'The brass F', u: 186, v: 71, shape: 'F', loupe: [186, 126, 2.7],
-    body: "The F is the second master component, finished as brushed brass with its grain running vertically. It sits over the P's bowl in the same paint order as the master artwork, so the silhouette matches the approved mark exactly. F is for foundry." },
+  { title: 'The original P', u: 73, v: 160, shape: 'P', loupe: [92, 132, 2.7],
+    body: 'The P retains the PF Mark G master contour, unaltered. Its brushed silver face, edge highlights and recessed surround remain visible in the original rendering. P is for proof.' },
+  { title: 'The original F', u: 186, v: 71, shape: 'F', loupe: [186, 126, 2.7],
+    body: "The F keeps the second master contour and its exact relationship to the P. The brass face contrasts with the silver P; the original outlines, proportions and machining details stay fixed. F is for foundry." },
   { title: 'The connecting bridge', u: 112, v: 97, shape: 'B', loupe: [150, 97, 3.0],
-    body: "The master's bridge ties the two letters together. Here it is a steel key across the F stem with a thin brass inlay, fixed to the P by two short tack welds — the only welds on the mark, each with a small ring of temper colour. Proof and making, joined." },
-  { title: 'Machined edges and thickness', u: 104, v: 214, shape: 'edge', loupe: [92, 196, 3.2],
-    body: 'Every component carries a 45° chamfer cut inside its outline, so the letters read as substantial parts rather than flat artwork. A broad key light from the upper left, balanced by restrained fill, sets the highlights, edges and contact shadows, so depth reads consistently across the whole assembly.' },
+    body: "The master's bridge ties the two letters together. Its original contour remains part of the inscription, with the same registration across the F stem and the P's bowl. Proof and making, joined." },
+  { title: 'The cut edge', u: 104, v: 214, shape: 'edge', loupe: [92, 196, 3.2],
+    body: 'The original beveled face catches light above its dark side wall. The magnifier crops the same unaltered image, so every inspection point stays registered.' },
   { title: "The maker's seal", u: 46, v: 197, shape: 'seal', loupe: [52, 186, 2.4],
-    body: 'A blackened steel plate with a lathe-faced recess, held to the outer chassis by four countersunk screws. The ring, the recessed field and the chassis each carry a different finish, so the layers read as separate, assembled parts.' },
+    body: 'The original ring, chassis and four countersunk fasteners remain. The engraved ring, brushed face and darker mount keep the plate seated in the homepage assembly.' },
   { title: 'Binary engraving', u: 70, v: 0.5, shape: 'bin', loupe: [128, 1.5, 3.6],
     body: '01010000 01000110 is ASCII for P (0x50) and F (0x46), laser-marked along the upper rim of the chassis. Easy to miss at a glance; exact when you check it.' },
   { title: 'Upper inscription', u: 57, v: 49, shape: 'top', loupe: [128, 23, 2.7],
@@ -104,7 +104,7 @@ const NOTES = [
   { title: 'Lower inscription', u: 204, v: 204, shape: 'bot', loupe: [128, 233, 2.7],
     body: 'BUILD IT. PROVE IT. SHIP IT. — the working method, engraved into the lower arc of the seal ring.' },
   { title: 'Registration and finish', u: 256, v: 100, shape: 'ticks', loupe: [226, 128, 3.0],
-    body: 'Radial ticks index the ring every 3°, with longer ticks every 15°. Brass inlays mark the four cardinal points. Fly-cut arcs on the plate, concentric tool paths in the recess and directional grain on the letters keep every surface distinct.' },
+    body: 'The radial ticks and four cardinal indices keep their original positions. Directional grain, machining traces and silver-and-brass faces distinguish the mark from its darker surround. This is a digital material study of the original mark, not a photograph of fabricated hardware.' },
   { title: 'Identification plates', u: 8, v: 277, shape: 'plates', loupe: [128, 280, 2.2],
     body: 'SOURCE / ARTIFACT / RECORD names what every release should carry. The companion plate reads RECEIPTS OVER HYPE., and the rim below them reads IF IT MATTERS, KEEP THE RECEIPT.' },
 ];
@@ -135,6 +135,11 @@ function initMark(dialog) {
   const title = detail.querySelector('[data-mark-title]');
   const body = detail.querySelector('[data-mark-body]');
   const loupe = detail.querySelector('.pf-loupe');
+  const loupeImage = document.createElement('img');
+  loupeImage.src = figure.querySelector('img').getAttribute('src');
+  loupeImage.alt = '';
+  loupeImage.setAttribute('aria-hidden', 'true');
+  loupe.append(loupeImage);
   const pins = [];
   const items = [];
 
@@ -149,10 +154,11 @@ function initMark(dialog) {
     if (note.loupe) {
       const [u, v, zoom] = note.loupe;
       const fx = (u - FRAME.ox) / FRAME.w, fy = (v - FRAME.oy) / FRAME.h, ar = 6.4 / 16;
-      const px = ((0.5 - fx * zoom) / (1 - zoom)) * 100;
-      const py = ((0.5 * ar - fy * zoom * FRAME.ar) / (ar - zoom * FRAME.ar)) * 100;
-      loupe.style.backgroundSize = `${(zoom * 100).toFixed(1)}% auto`;
-      loupe.style.backgroundPosition = `${px.toFixed(2)}% ${py.toFixed(2)}%`;
+      // Filter the complete original before cropping, so its finish mask stays
+      // registered to the same master coordinates at every magnification.
+      loupeImage.style.width = `${(zoom * 100).toFixed(1)}%`;
+      loupeImage.style.left = `${((.5 - fx * zoom) * 100).toFixed(2)}%`;
+      loupeImage.style.top = `${((.5 - fy * zoom * FRAME.ar / ar) * 100).toFixed(2)}%`;
       loupe.setAttribute('aria-label', `Magnified detail: ${note.title}`);
       loupe.hidden = false;
     } else loupe.hidden = true;
@@ -498,7 +504,9 @@ function initReceipts(dialog, triggers) {
   const tabsHost = dialog.querySelector('[data-receipt-tabs]');
   const title = dialog.querySelector('#pf-receipt-title');
   const status = dialog.querySelector('[data-receipt-status]');
-  const ids = [...new Set(triggers.map((t) => t.dataset.receiptOpen))];
+  // Receipt tabs are independent of homepage promotion. The existing snapshot
+  // validation still resolves every requested identity before any record is shown.
+  const ids = [...new Set([...(dialog.dataset.receiptProducts || '').split(/\s+/).filter(Boolean), ...triggers.map((t) => t.dataset.receiptOpen)])];
   let tabs = [];
   let current = null;
   let generation = 0;

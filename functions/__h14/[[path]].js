@@ -295,7 +295,7 @@ function replaceNamedTokens(html, statesById, cfg) {
 }
 
 // ── Card renderer (ports Render-ProductCard) ──────────────────────────────────
-function renderCard(template, p, module, cfg) {
+function renderCard(template, p, module, cfg, joint = '') {
   const t = productTokens(p, cfg, module);
   t.route = `/__h14/${module.id}/`;
   if (module.card) {
@@ -343,6 +343,10 @@ function renderCard(template, p, module, cfg) {
     ? `<p class="card-commerce" data-commerce="${esc(String(module.commerce.status || '').toLowerCase().replace(/_/g, '-'))}">${esc(module.commerce.label || '')}</p>`
     : '';
   card = card.replace('<!-- @commerce-badge -->', commerceBadge);
+  if (joint) {
+    const jointLink = `<a class="catalog-joint foundry-connection" href="/__h14/${esc(module.id)}/" data-world-link="${esc(module.id)}" aria-label="Enter ${esc((module.brand && module.brand.name) || p.name)}"><span data-joint="${esc(module.id)}">${joint}</span></a>`;
+    card = card.replace('<div class="card-body">', `<div class="card-body">${jointLink}`);
+  }
   return card;
 }
 
@@ -567,6 +571,40 @@ const provenance = (mode, revision) => `\n<!-- h14-state: ${mode} revision=${esc
 function shadowCatalogHref(href) {
   return href === '/software/' ? '/__h14/software/' : href;
 }
+function shadowProductLinks(html, registry) {
+  const routes = [{ route: '/software/', id: 'software' }, ...registry];
+  return html.replace(/(\bhref\s*=\s*)(["'])(\/[^"']*)\2/g, (match, prefix, quote, href) => {
+    const entry = routes.find(m => href === m.route || href.startsWith(m.route + '#') || href.startsWith(m.route + '?'));
+    return entry ? `${prefix}${quote}/__h14/${esc(entry.id)}/${href.slice(entry.route.length)}${quote}` : match;
+  });
+}
+function acquisitionAvailable(p) {
+  return !!(p.release && p.release.releaseStatus === 'PUBLIC_RELEASE'
+    && !isBlank(p.release.publicVersion) && p.verification && p.verification.status === 'VERIFIED'
+    && !(p.presentation && p.presentation.downloadUnavailable) && !isBlank(p.downloadUrl));
+}
+function renderHeroStatus(p) {
+  if (!p.release || p.release.releaseStatus !== 'WITHDRAWN') return '';
+  const parts = [];
+  const platform = platformLabel(p);
+  if (!isBlank(platform)) parts.push(platform);
+  if (!isBlank(p.release.withdrawnVersion)) parts.push(`v${p.release.withdrawnVersion}`);
+  parts.push('no current download');
+  return `<p class="pp-hero-status" data-release-status="withdrawn"><strong>WITHDRAWN</strong> ${esc(DOT + ' ' + parts.join(' ' + DOT + ' '))}</p>`;
+}
+function buildProductWayfinding(content, p, id) {
+  const links = [];
+  const sections = [['overview', 'Overview'], ['try-it', 'Try it'],
+    ['download', acquisitionAvailable(p) ? 'Download' : 'Release status'], ['proof', 'Evidence']];
+  for (const [anchor, label] of sections) {
+    if (!new RegExp(`\\bid=["']${anchor}["']`).test(content)) continue;
+    const enhancement = anchor === 'try-it' ? ' data-enhance hidden' : '';
+    links.push(`<a href="#${anchor}" data-product-section="${anchor}"${enhancement}>${label}</a>`);
+  }
+  links.push(`<a href="/truth-files/${esc(id)}/">Truth File</a>`);
+  links.push(`<a href="/support/?product=${esc(id)}#report">Help</a>`);
+  return `<nav class="pf-product-navigation" aria-label="${esc(p.name)} page navigation"><span class="pf-product-navigation-name">${esc(p.name)}</span><div>${links.join('')}</div></nav>`;
+}
 function buildNavLinks(cfg, activeId) {
   const items = (cfg.navLinks || []);
   return items.map(i => `<a href="${esc(shadowCatalogHref(i.href))}"${i.id === activeId ? ' aria-current="page"' : ''}>${esc(i.label)}</a>`).join('\n            ');
@@ -696,17 +734,21 @@ ${provenance(mode, fetched.revision)}</body></html>`, { mode, revision: fetched.
     const header = buildHeader(await loadText(env, '/__h14/partials/header.html'), cfg, 'products');
     const footer = buildFooter(await loadText(env, '/__h14/partials/footer.html'), orderedState, cfg);
     const cardT = await loadText(env, '/__h14/partials/product-card.html');
-    const modules = await Promise.all(visible.map(m => loadModule(env, m.id)));
+    const [modules, joints] = await Promise.all([
+      Promise.all(visible.map(m => loadModule(env, m.id))),
+      Promise.all(visible.map(m => loadText(env, `/__h14/joints/${m.id}.html`))),
+    ]);
     if (modules.some(m => !m)) return respond('Shadow module missing', { type: 'text/plain', mode, revision: fetched.revision });
-    const catalog = visible.map((entry, i) => ({ module: modules[i], state: byId[entry.id] }))
+    const catalog = visible.map((entry, i) => ({ module: modules[i], state: byId[entry.id], joint: joints[i] }))
       .filter(({ module, state }) => state && (!module.placement || module.placement.catalog !== false));
-    const cards = catalog.map(({ module, state }) => renderCard(cardT, state, module, cfg)
+    const cards = catalog.map(({ module, state, joint }) => renderCard(cardT, state, module, cfg, joint)
       .replace('<h4 class="card-name">', '<h3 class="card-name">').replace('</h4>', '</h3>')).join('\n');
     let html = tmpl
       .replace(/<!--\s*@all-products\s*-->/, cards)
       .replace(/<!--\s*@products\s*-->/, cards)
       .replace(/<!--\s*@include header\s*-->/, header)
       .replace(/<!--\s*@include footer\s*-->/, footer)
+      .replace(/<!--\s*@include compact-footer\s*-->/, footer)
       .replace(/\{\{publicProductCount\}\}/g, String(catalog.length));
     html = replaceNamedTokens(html, byId, cfg);
     // H12 reciprocal discovery — runtime catalog advertises the runtime index.
@@ -745,10 +787,14 @@ ${provenance(mode, fetched.revision)}</body></html>`, { mode, revision: fetched.
     let c = content
       .replace(/<!--\s*@product-breadcrumb\s*-->/, crumb)
       .replace(/<!--\s*@product-related\s*-->/, related)
-      .replace(/<!--\s*@include footer\s*-->/, buildFooter(footerP, orderedState, cfg));
+      .replace(/<!--\s*@runtime-hero-status\s*-->/, renderHeroStatus(p))
+      .replace(/<!--\s*@include (?:compact-)?footer\s*-->/g, buildFooter(footerP, orderedState, cfg));
+    c = c.replace(/<!--\s*@product-wayfinding\s*-->/, buildProductWayfinding(c, p, id));
     page = page.replace(/<!--\s*@product-content\s*-->/, c);
+    page = page.replace(/\bdata-acquisition-available=["'][^"']*["']/, `data-acquisition-available="${acquisitionAvailable(p)}"`);
     page = replaceTokens(page, t);
     page = replaceNamedTokens(page, byId, cfg);
+    page = shadowProductLinks(page, visible);
     // H12 reciprocal discovery — the runtime page advertises its runtime truth.
     page = page.replace('</head>',
       `<link href="/__h14/truth/products/${esc(id)}.json" rel="alternate" title="Public Truth" type="application/json"/>\n</head>`);

@@ -81,19 +81,19 @@
     "sceneFamily": "glass-ledger",
     "kicker": "Precise, reversible Windows cleanup",
     "headline": "Less clutter. A way back.",
-    "lede": "Inspect what you want to clear. Archive the files you choose. Restore them to their original paths when you need them again.",
+    "lede": "Inspect cleanup candidates and archive the files you choose. Restore them to their original paths while the retained archive is still available.",
     "media": {
       "src": "/assets/cleanroom/cleanroom-review.png",
       "alt": "Cleanroom v1.0.6 Home after a completed scan: no cleanup candidates found, 0 items to review and 0.00B reclaimable, with the Scan Again, Archive & Clean and Proof Ledger controls",
-      "caption": "Home review · scan complete, no cleanup candidates found · Interface capture from v1.0.6 · current public release v1.0.7"
+      "caption": "Cleanroom v1.0.6, visible in the image: a completed scan with no candidates and no restore history. This does not demonstrate a populated archive or v1.0.10."
     },
     "primaryAction": {
-      "label": "Explore product",
+      "label": "Get Cleanroom for Windows",
       "href": "#download"
     },
     "secondaryAction": {
-      "label": "Explore the details",
-      "href": "#features"
+      "label": "Try the cleanup preview",
+      "href": "#try-it"
     }
   },
   "card": {

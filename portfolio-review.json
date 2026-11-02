@@ -1,0 +1,432 @@
+{
+  "schema": "pf.portfolio-discovery-review/v1",
+  "reviewOnly": true,
+  "activation": "NOT_AUTHORIZED",
+  "registerSha256": "29efa3120b7c2ea04b5ec21098f71a2e91c4a8dbb91605fa150421c75a6d7b85",
+  "websiteReleaseTruthSha256": "737ededa475ee63757009f87cde14a06351fd4e1ca798aafa7891a4c9e11320b",
+  "appReferenceCommit": "1982486667749ebc6310e77738a0626e960e2690",
+  "evidenceIds": [
+    "PF-INDEX-20261101",
+    "PF-CACHE-VAULT-20261101",
+    "PF-GHOSTLAYER-20261101",
+    "PF-LIGHTS-OUT-20261101",
+    "PF-CLEANROOM-20261101",
+    "PF-PROOFSHOT-20261101",
+    "PF-FORGECAST-20261101",
+    "PF-REALITY-GATE-20261101",
+    "GH-CACHE-031",
+    "GH-LIGHTS-1120",
+    "GH-CLEAN-1010",
+    "GH-FORGE-035",
+    "GH-PROOF-200",
+    "GH-GHOST-EMPTY",
+    "RG-PROJECTS-LIVE",
+    "CP-0173",
+    "CP-0172",
+    "HL-TRUTH-LIVE",
+    "HIST-LO-STANDALONE",
+    "HIST-SOUND",
+    "PF-PROOFSHOT-LIMITATION-RECHECK-20261101",
+    "PF-HOME-PROOFSHOT-RECHECK-20261101",
+    "PF-SOFTWARE-PROOFSHOT-RECHECK-20261101",
+    "PF-PROOFSHOT-PAGE-RECHECK-20261101",
+    "PF-CLEANROOM-RECHECK-20261101",
+    "GH-CLEANROOM-RECHECK-20261101",
+    "OWNER-SUBSTANTIVE-REVIEW-20261101"
+  ],
+  "products": [
+    {
+      "id": "cache-vault",
+      "name": "Cache Vault",
+      "role": "Clipboard and file capture",
+      "group": "software",
+      "featured": "UNDECIDED",
+      "holds": [],
+      "channels": [
+        {
+          "id": "windows-public",
+          "platform": "Windows",
+          "version": "0.3.1",
+          "availability": "PUBLISHED_METADATA_ONLY_NO_BINARY_FETCH",
+          "observedAt": "2026-11-01T03:00:43.646Z",
+          "evidenceIds": [
+            "PF-CACHE-VAULT-20261101",
+            "GH-CACHE-031"
+          ],
+          "artifacts": [
+            {
+              "filename": "CacheVault-v0.3.1-windows.zip",
+              "sha256": "d0c59c440b1d5787c9319e1bdf8829f117ccaa2d64d3424dd6955a84fb975d45",
+              "hashProvenance": "PUBLISHED_DIGEST_NOT_INDEPENDENTLY_REHASHED"
+            }
+          ]
+        },
+        {
+          "id": "android-public",
+          "platform": "Android",
+          "version": "0.3.1",
+          "availability": "PUBLISHED_METADATA_ONLY_NO_BINARY_FETCH",
+          "observedAt": "2026-11-01T03:00:43.646Z",
+          "evidenceIds": [
+            "PF-CACHE-VAULT-20261101",
+            "GH-CACHE-031"
+          ],
+          "artifacts": [
+            {
+              "filename": "CacheVault-Mobile-v0.3.1-android.apk",
+              "sha256": "863f8a5846083cb0372e1046ac1e9363e6203b4880cc2c6a7ca0da8b1b451988",
+              "hashProvenance": "PUBLISHED_DIGEST_NOT_INDEPENDENTLY_REHASHED"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ghostlayer",
+      "name": "GhostLayer",
+      "role": "Desktop overlay utility",
+      "group": "software",
+      "featured": "UNDECIDED",
+      "holds": [],
+      "channels": [
+        {
+          "id": "windows-public",
+          "platform": "Windows",
+          "version": "0.4.0",
+          "availability": "FIRST_PARTY_SITE_CLAIM_NO_INDEPENDENT_RELEASE_ASSET_CONFIRMATION",
+          "observedAt": "2026-11-01T03:00:43.519Z",
+          "evidenceIds": [
+            "PF-GHOSTLAYER-20261101",
+            "GH-GHOST-EMPTY"
+          ],
+          "artifacts": [
+            {
+              "filename": "GhostLayer-Setup-0.4.0.exe",
+              "sha256": "5c0f00fb7e6e58526f400e25a0f05e9f948c503479c82d6be4eb7d0aa9f06251",
+              "hashProvenance": "PUBLISHED_DIGEST_NOT_INDEPENDENTLY_REHASHED"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lights-out",
+      "name": "Lights Out",
+      "role": "Bedtime software",
+      "group": "software",
+      "featured": "UNDECIDED",
+      "holds": [
+        "APP_VERSION_DIVERGENCE",
+        "STANDALONE_NOT_COMPANION"
+      ],
+      "channels": [
+        {
+          "id": "windows-public",
+          "platform": "Windows",
+          "version": "11.2.0",
+          "availability": "PUBLISHED_METADATA_ONLY_NO_BINARY_FETCH",
+          "observedAt": "2026-11-01T03:00:43.709Z",
+          "evidenceIds": [
+            "PF-LIGHTS-OUT-20261101",
+            "GH-LIGHTS-1120"
+          ],
+          "artifacts": [
+            {
+              "filename": "Lights-Out-Portable-v11.2.0-win-x64.zip",
+              "sha256": "7e855475c3f7a3e65a4921bc7d9237a1a69480514943de597f65ad3cfb273b39",
+              "hashProvenance": "PUBLISHED_DIGEST_NOT_INDEPENDENTLY_REHASHED"
+            },
+            {
+              "filename": "Lights-Out-Setup-v11.2.0.exe",
+              "sha256": "83c590c3de54b16b26bfeb4961858e44a225dd59c7501e77d72248a5882a37c0",
+              "hashProvenance": "PUBLISHED_DIGEST_NOT_INDEPENDENTLY_REHASHED"
+            }
+          ]
+        },
+        {
+          "id": "android-companion-public",
+          "platform": "Android",
+          "version": "11.1.1",
+          "availability": "FIRST_PARTY_PUBLIC_VERSION_CLAIM_NO_ARTIFACT_HASH",
+          "observedAt": "2026-11-01T03:00:43.709Z",
+          "evidenceIds": [
+            "PF-LIGHTS-OUT-20261101"
+          ],
+          "artifacts": []
+        },
+        {
+          "id": "android-standalone-internal",
+          "platform": "Android standalone",
+          "version": null,
+          "availability": "INTERNAL_ONLY_NOT_PUBLIC",
+          "observedAt": "2026-11-01T03:00:43.709Z",
+          "evidenceIds": [
+            "PF-LIGHTS-OUT-20261101",
+            "HIST-LO-STANDALONE"
+          ],
+          "artifacts": []
+        }
+      ]
+    },
+    {
+      "id": "cleanroom",
+      "name": "Cleanroom",
+      "role": "Desktop cleanup utility",
+      "group": "software",
+      "featured": "UNDECIDED",
+      "holds": [
+        "CLEANROOM_VERSION_CONFLICT"
+      ],
+      "channels": [
+        {
+          "id": "website-windows-public",
+          "platform": "Windows",
+          "version": "1.0.7",
+          "availability": "FIRST_PARTY_SITE_PUBLIC_CLAIM",
+          "observedAt": "2026-11-01T03:00:43.439Z",
+          "evidenceIds": [
+            "PF-CLEANROOM-20261101",
+            "PF-CLEANROOM-RECHECK-20261101"
+          ],
+          "artifacts": [
+            {
+              "filename": "Cleanroom-Setup-1.0.7.exe",
+              "sha256": "2cd6953015ce0b8e429c869564be11ad10504332aded10b442a58ea2b990a76e",
+              "hashProvenance": "PUBLISHED_DIGEST_NOT_INDEPENDENTLY_REHASHED"
+            }
+          ]
+        },
+        {
+          "id": "github-released-unreconciled",
+          "platform": "Windows",
+          "version": "1.0.10",
+          "availability": "GITHUB_PUBLIC_RELEASE_CONFLICTS_WITH_SITE_CHANNEL",
+          "observedAt": "2026-11-01",
+          "evidenceIds": [
+            "GH-CLEAN-1010",
+            "PF-CLEANROOM-20261101",
+            "GH-CLEANROOM-RECHECK-20261101"
+          ],
+          "artifacts": [
+            {
+              "filename": "Cleanroom-Setup-1.0.10.exe",
+              "sha256": "bfeed9a31164b76dc0d18e90b6b083b0f7ea9afc3a59a789c401304373bd65e1",
+              "hashProvenance": "PUBLISHED_DIGEST_NOT_INDEPENDENTLY_REHASHED"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "forgecast",
+      "name": "ForgeCast Weather",
+      "role": "Android weather software",
+      "group": "software",
+      "featured": "UNDECIDED",
+      "holds": [],
+      "channels": [
+        {
+          "id": "android-public",
+          "platform": "Android",
+          "version": "0.3.5",
+          "availability": "PUBLISHED_METADATA_ONLY_NO_BINARY_FETCH",
+          "observedAt": "2026-11-01T03:00:44.088Z",
+          "evidenceIds": [
+            "PF-FORGECAST-20261101",
+            "GH-FORGE-035"
+          ],
+          "artifacts": [
+            {
+              "filename": "ForgeCast-Weather-v0.3.5-android-release.apk",
+              "sha256": "a28db27cd16b3e45f3e75cc0d7c7a4b101646573de9954ec40dbf03e5439bea1",
+              "hashProvenance": "PUBLISHED_DIGEST_NOT_INDEPENDENTLY_REHASHED"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proofshot",
+      "name": "ProofShot",
+      "role": "Proof capture software",
+      "group": "software",
+      "featured": false,
+      "holds": [
+        "LICENSING_AUTHORITY_HOLD",
+        "A27_MEDIA_HOLD",
+        "UNFEATURED_POLICY_ONLY"
+      ],
+      "channels": [
+        {
+          "id": "windows-public-historical-unfeatured",
+          "platform": "Windows",
+          "version": "2.0.0",
+          "availability": "PUBLISHED_METADATA_ONLY_NOT_FIELD_QUALIFIED",
+          "observedAt": "2026-11-01T03:00:43.848Z",
+          "evidenceIds": [
+            "PF-PROOFSHOT-20261101",
+            "GH-PROOF-200",
+            "CP-0172",
+            "PF-PROOFSHOT-LIMITATION-RECHECK-20261101"
+          ],
+          "artifacts": [
+            {
+              "filename": "ProofShot-Setup-2.0.0.exe",
+              "sha256": "fa20dc7e44440f0ed96fa08db67a77339d595f8eb27090e24120104ea6744701",
+              "hashProvenance": "PUBLISHED_DIGEST_NOT_INDEPENDENTLY_REHASHED"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reality-gate",
+      "name": "Reality Gate",
+      "role": "Governed execution",
+      "group": "infrastructure",
+      "featured": "UNDECIDED",
+      "holds": [
+        "PUBLIC_RELEASE_WITHDRAWN",
+        "INSTALLED_PROVIDER_UNKNOWN",
+        "INTERNAL_NOT_PUBLIC"
+      ],
+      "channels": [
+        {
+          "id": "public-withdrawn",
+          "platform": "Windows",
+          "version": "1.1.0",
+          "availability": "WITHDRAWN_DO_NOT_DISTRIBUTE",
+          "observedAt": "2026-11-01T03:00:44.152Z",
+          "evidenceIds": [
+            "PF-REALITY-GATE-20261101"
+          ],
+          "artifacts": [
+            {
+              "filename": "Reality-Gate-1.1.0-Developer-Pilot.zip",
+              "sha256": "58cc27d22bdee8157ee4598e116e17ff42d0efc95630c97bee4b2bc6be6ce756",
+              "hashProvenance": "PUBLISHED_DIGEST_NOT_INDEPENDENTLY_REHASHED"
+            }
+          ]
+        },
+        {
+          "id": "internal-provider",
+          "platform": "Windows",
+          "version": null,
+          "availability": "INTERNAL_ONLY_NOT_PUBLIC",
+          "observedAt": "2026-11-01",
+          "evidenceIds": [
+            "RG-PROJECTS-LIVE",
+            "CP-0173"
+          ],
+          "artifacts": []
+        }
+      ]
+    },
+    {
+      "id": "hardline-zero",
+      "name": "Hardline Zero",
+      "role": "Work governance",
+      "group": "infrastructure",
+      "featured": "UNDECIDED",
+      "holds": [
+        "INTERNAL_NOT_PUBLIC"
+      ],
+      "channels": [
+        {
+          "id": "owner-internal",
+          "platform": "Windows / connected service",
+          "version": null,
+          "availability": "INTERNAL_ONLY_NOT_PUBLIC",
+          "observedAt": "2026-11-01",
+          "evidenceIds": [
+            "HL-TRUTH-LIVE",
+            "CP-0173"
+          ],
+          "artifacts": []
+        }
+      ]
+    },
+    {
+      "id": "crosspoint",
+      "name": "CrossPoint / XrossPoint",
+      "role": "Agent coordination",
+      "group": "infrastructure",
+      "featured": "UNDECIDED",
+      "holds": [
+        "INTERNAL_NOT_PUBLIC"
+      ],
+      "channels": [
+        {
+          "id": "owner-internal",
+          "platform": "Connected-agent coordination",
+          "version": null,
+          "availability": "INTERNAL_ONLY_NOT_PUBLIC",
+          "observedAt": "2026-11-01T01:45:07.361Z",
+          "evidenceIds": [
+            "CP-0173",
+            "CP-0172"
+          ],
+          "artifacts": []
+        }
+      ]
+    },
+    {
+      "id": "proof-foundry-app",
+      "name": "Proof Foundry App",
+      "role": "Distribution and library",
+      "group": "infrastructure",
+      "featured": "UNDECIDED",
+      "holds": [
+        "INTERNAL_NOT_PUBLIC",
+        "SOURCE_REFERENCE_NOT_INSTALLER"
+      ],
+      "channels": [
+        {
+          "id": "engineering-reference",
+          "platform": "Windows / Android engineering source",
+          "version": null,
+          "availability": "INTERNAL_ONLY_NOT_PUBLIC",
+          "observedAt": "2026-11-01T01:45:07.361Z",
+          "evidenceIds": [
+            "CP-0173"
+          ],
+          "artifacts": []
+        },
+        {
+          "id": "older-desktop-checkout",
+          "platform": "Windows / Android engineering source",
+          "version": null,
+          "availability": "LOCAL_DIRTY_NONCANONICAL",
+          "observedAt": "2026-11-01T01:45:07.361Z",
+          "evidenceIds": [
+            "CP-0173"
+          ],
+          "artifacts": []
+        }
+      ]
+    },
+    {
+      "id": "sound-assist",
+      "name": "Sound Assist",
+      "role": "Historical audio utility identity",
+      "group": "history",
+      "featured": "UNDECIDED",
+      "holds": [
+        "HISTORICAL_IDENTITY_UNVERIFIED"
+      ],
+      "channels": [
+        {
+          "id": "historical-unverified",
+          "platform": "Android (historical, unverified)",
+          "version": null,
+          "availability": "UNVERIFIED",
+          "observedAt": null,
+          "evidenceIds": [
+            "HIST-SOUND"
+          ],
+          "artifacts": []
+        }
+      ]
+    }
+  ]
+}

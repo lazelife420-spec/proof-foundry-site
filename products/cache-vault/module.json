@@ -114,12 +114,12 @@
     "sceneFamily": "archive-workbench",
     "kicker": "Local clipboard workspace",
     "headline": "Find the clip. Get back to work.",
-    "lede": "Cache Vault keeps copied text and images in searchable history. Open Quick Paste from any app to bring a saved clip back without losing your place.",
+    "lede": "Keep copied text and images searchable. Find a saved clip with Quick Paste, bring it back to your clipboard, and keep useful work together.",
     "media": {
       "src": "/assets/cache-vault/cv-quick-paste.png",
       "mobileSrc": "/assets/cache-vault/cv-quick-paste-mobile.png",
       "alt": "Quick Paste search showing a saved command clip ready to reuse.",
-      "caption": "Quick Paste · find a saved clip and return it to the clipboard.",
+      "caption": "Historical Quick Paste interface, with saved clips ready to copy. Exact capture build is not attested; this is not the new Electron desktop.",
       "anchorId": "quick-paste"
     },
     "primaryAction": {

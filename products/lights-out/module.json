@@ -134,11 +134,11 @@
     "sceneFamily": "night-console",
     "kicker": "Your nightly shutdown ritual",
     "headline": "Call it a night.",
-    "lede": "Set the countdown. Let the PC wind down. Pause, snooze or cancel from bed with the Android companion.",
+    "lede": "Set a visible countdown for the end of your evening. Start when you are ready, then pause, snooze or cancel if your plans change.",
     "media": {
       "src": "/assets/lights-out/tonight-active-hero.png",
       "alt": "Lights Out desktop with an active countdown and session controls.",
-      "caption": "Tonight · Windows interface · CAPTURED · Lights Out v11.1.2 dry run"
+      "caption": "Lights Out v11.1.2, visible in the image, running a dry-run countdown. Historical interface image; public Windows release is v11.2.0."
     },
     "primaryAction": {
       "label": "View release options",
