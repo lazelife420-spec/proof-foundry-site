@@ -1274,3 +1274,11 @@ Old: `/cache-vault/`, `/proofshot/`, `/reality-gate/` = `2026-10-20`; `/lights-o
 Why obsolete: the 2026-11-01 main-site import materially changed each route's content/module inputs (`products/<id>/content.html`, `module.json`) and the editorial `software.html` directory. H11's own rule requires that a commit moving these routes edits the literal in the same commit as the sitemap date, and H4 independently requires the sitemap date to equal the newest material-input date (2026-11-01). Leaving the old literals makes H11 and H4 mutually unsatisfiable.
 
 Replacement: all five literals = `2026-11-01`. Every other route still has to keep its HEAD lastmod; `/truth/` and `/proof-standard/` stay pinned to 2026-10-20; the no-future-date and material-input checks are unchanged.
+
+## `scripts/test-h13-modular-products.ps1` product-page acquisition state (correction of the late successor above)
+
+Old (late successor, this branch): every product page must contain `data-commerce="<slug>"…>` followed by the exact module `commerce.label`.
+
+Why obsolete: the original assertion bound the module label to the retired catalog card. Moving it to the product page conflicted with the older, still-valid H7C contract that a WITHDRAWN product page shows the explicit state badge `UNAVAILABLE · WITHDRAWN` and no public acquisition action. Making the page show the module label instead broke H7C, escaped the badge markup and changed the page's material content date. The renderer's WITHDRAWN state label is the established visitor contract.
+
+Replacement: the module projection must still carry the exact module status and label (unchanged). Every product page must render the exact badge `<span class="product-commerce-label" data-commerce="<slug>">…</span>` with the module label, the explicit PAID price, or, for WITHDRAWN, `UNAVAILABLE · WITHDRAWN`; a WITHDRAWN page must also have no public primary download link. This is stricter on markup shape (exact span and closing tag) than before. The build still rejects a WITHDRAWN module whose label does not state withdrawal and no public download.

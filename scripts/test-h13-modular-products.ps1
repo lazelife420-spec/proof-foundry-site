@@ -181,7 +181,9 @@ foreach ($m in $reg) {
   Assert ($truthProduct.schemaVersion -eq 1 -and $null -eq $truthProduct.PSObject.Properties['commerce']) "$($m.id): public Truth v1 shape remains unchanged by module presentation commerce"
   $proj = Get-ModuleProjection $publicDir $m.id
   $productHtml = [System.Net.WebUtility]::HtmlDecode((Get-Content (Join-Path $publicDir "$($m.id)\index.html") -Raw -Encoding UTF8))
-  Assert ($proj -and $proj.commerce.status -ceq $m.commerce.status -and $proj.commerce.label -ceq $m.commerce.label -and $productHtml -match ('data-commerce="' + [regex]::Escape($m.commerce.status.ToLowerInvariant().Replace('_','-')) + '"[^>]*>' + [regex]::Escape($m.commerce.label))) "$($m.id): product page and module projection expose its generic acquisition label"
+  # Product pages render the acquisition state badge; WITHDRAWN keeps its established visible state label (H7C).
+  $expectedBadge = if ($m.commerce.status -eq 'WITHDRAWN') { 'UNAVAILABLE ' + [char]0x00B7 + ' WITHDRAWN' } elseif ($m.commerce.status -eq 'PAID' -and $m.commerce.price) { [string]$m.commerce.price } else { [string]$m.commerce.label }
+  Assert ($proj -and $proj.commerce.status -ceq $m.commerce.status -and $proj.commerce.label -ceq $m.commerce.label -and $productHtml -match ('<span class="product-commerce-label" data-commerce="' + [regex]::Escape($m.commerce.status.ToLowerInvariant().Replace('_','-')) + '">' + [regex]::Escape($expectedBadge) + '</span>') -and ($m.commerce.status -ne 'WITHDRAWN' -or $productHtml -notmatch 'class="button button-primary" href="https?://')) "$($m.id): module projection carries its generic acquisition label and the product page renders its acquisition state"
 }
 foreach ($id in @('cache-vault','lights-out')) {
   $module = Get-Content (Join-Path $srcProducts "$id\module.json") -Raw | ConvertFrom-Json

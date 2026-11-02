@@ -3035,7 +3035,6 @@ function Build-LedgerIndex {
     $version = if ($withdrawn) { '' } else { VersionLabel $p }
     $status = if ($withdrawn) { StateWord 'withdrawnHomeStatus' } else { (VisitorAvailabilityLabel $p).Replace('_', ' ') }
     $job = if ($withdrawn) { 'Full record available.' } elseif ($m.card.tagline) { [string]$m.card.tagline } else { [string]$p.summary }
-    if ($PortfolioReview -and $m.id -eq 'reality-gate') { $status = 'Public v1.1.0 withdrawn; internal work continues'; $job = 'Project execution, run evidence and recovery.' }
     $rows += @"
 <tr data-ledger-product="$(Html-Attr $m.id)" data-release-status="$(Html-Attr $p.release.releaseStatus)"><th scope="row"><span class="ledger-index-name">$(LedgerProductMark $m)<span>$(Html-Text $name)</span></span></th><td><span class="ledger-version">$(Html-Text $version)</span><span class="ledger-status">$(Html-Text $status)</span></td><td>$(Html-Text (LedgerPlatform $p))</td><td>$(Html-Text $job)</td><td><a class="ledger-link" href="$(Html-Attr $m.route)" aria-label="View $(Html-Attr $name) record">View $(LedgerArrowSvg)</a></td></tr>
 "@
