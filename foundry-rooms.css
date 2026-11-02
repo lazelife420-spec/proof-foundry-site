@@ -243,9 +243,9 @@
 .pf-room-truth-files .tf-card-head{display:flex;align-items:start;gap:19px;grid-row:span 2}
 .pf-room-truth-files .tf-card-head>svg{flex:none;width:33px;height:33px;margin-top:4px}
 .pf-room-truth-files .tf-card h2{font:400 31px/1.1 var(--pf-serif);margin:0 0 12px}
-.pf-room-truth-files .tf-card-state{font:10px var(--pf-mono);color:#596d55}
+.pf-room-truth-files .tf-card-state{font:10px var(--pf-mono);color:#4d6049}
 .pf-room-truth-files .tf-card>p{font-size:13px;color:#455c4e;line-height:1.8}
-.pf-room-truth-files .tf-card-facts{grid-column:2;display:flex;flex-wrap:wrap;gap:6px 25px;font:10px/1.7 var(--pf-mono);color:#596d55}
+.pf-room-truth-files .tf-card-facts{grid-column:2;display:flex;flex-wrap:wrap;gap:6px 25px;font:10px/1.7 var(--pf-mono);color:#4d6049}
 .pf-room-truth-files .tf-open{grid-column:2;font:12px var(--pf-mono);text-decoration:underline;text-underline-offset:4px}
 .pf-room-truth-files .tf-section:last-child{display:grid;grid-template-columns:.75fr 1.25fr;gap:70px;margin-top:35px}
 .pf-room-truth-files .tf-section:last-child .support-grid{grid-template-columns:1fr 1fr;gap:35px}

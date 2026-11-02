@@ -22,6 +22,18 @@ function Assert([bool]$cond, [string]$name) {
   if ($cond) { $script:passed++; Write-Host "PASS: $name" }
   else { $script:failed++; Write-Host "FAIL: $name" -ForegroundColor Red }
 }
+# The public /software/ page is the curated editorial directory (site-editorial.json); the generic,
+# module-driven catalog data now ships as the __h14 module projection that the runtime catalog renders.
+function Get-DirectoryEntry([string]$Html, [string]$Id) {
+  return [regex]::Match($Html, ('(?s)<article\b[^>]*\bdata-directory-entry="' + [regex]::Escape($Id) + '"[^>]*>.*?</article>')).Value
+}
+function Get-DirectoryOrder([string]$Html) { @([regex]::Matches($Html, 'data-directory-entry="([a-z0-9-]+)"') | ForEach-Object { $_.Groups[1].Value }) }
+function Get-ModuleProjection([string]$OutDir, [string]$Id) {
+  $path = Join-Path $OutDir "__h14\modules\$Id.json"
+  if (Test-Path -LiteralPath $path) { Get-Content -LiteralPath $path -Raw -Encoding UTF8 | ConvertFrom-Json } else { $null }
+}
+function Get-ProjectionOrder([string]$OutDir) { @((Get-Content (Join-Path $OutDir '__h14\registry.json') -Raw -Encoding UTF8 | ConvertFrom-Json) | ForEach-Object id) }
+$editorialOrder = @((Get-Content (Join-Path $root 'site-editorial.json') -Raw | ConvertFrom-Json).entries | Where-Object visible | Sort-Object order, id | ForEach-Object id)
 function Get-CatalogCard([string]$Html, [string]$Id) {
   return [regex]::Match($Html, ('(?s)<article\b[^>]*\bdata-product="' + [regex]::Escape($Id) + '"[^>]*>.*?</article>')).Value
 }
@@ -161,12 +173,15 @@ if ($canonicalFixture.Exit -ne 0) { throw 'Unmodified authored fixture transport
 $canonicalHome = Get-Content (Join-Path $canonicalFixture.OutDir 'index.html') -Raw -Encoding UTF8
 $homeProductSlots = 'class="studio-product-card"|data-home-tab=|class="studio-withdrawn"|class="studio-evidence"'
 $catalogOrder = @([regex]::Matches($softwareHtml, 'data-product="([a-z0-9-]+)"') | ForEach-Object { $_.Groups[1].Value })
-Assert ($catalogOrder.Count -eq $reg.Count -and $catalogOrder[0] -eq 'cache-vault' -and $catalogOrder[-1] -eq 'reality-gate') 'catalog role order puts Cache Vault first and withdrawn products last using module metadata'
+$catalogOrder = @(Get-ProjectionOrder $publicDir)
+Assert ($catalogOrder.Count -eq $reg.Count -and ($catalogOrder -join ',') -ceq (@($reg | Sort-Object { [int]$_.order } | ForEach-Object id) -join ',') -and $catalogOrder[0] -eq 'cache-vault' -and $catalogOrder[-1] -eq 'reality-gate' -and ((Get-DirectoryOrder $softwareHtml) -join ',') -ceq ($editorialOrder -join ',')) 'module projection order follows module metadata (Cache Vault first, withdrawn last) while the public directory follows site-editorial.json exactly'
 $truthRoot = Join-Path $publicDir 'truth\products'
 foreach ($m in $reg) {
   $truthProduct = Get-Content (Join-Path $truthRoot ($m.id + '.json')) -Raw -Encoding UTF8 | ConvertFrom-Json
   Assert ($truthProduct.schemaVersion -eq 1 -and $null -eq $truthProduct.PSObject.Properties['commerce']) "$($m.id): public Truth v1 shape remains unchanged by module presentation commerce"
-  Assert ($softwareHtmlDecoded -match ('data-product="' + [regex]::Escape($m.id) + '"') -and $softwareHtmlDecoded -match ('data-commerce="' + [regex]::Escape($m.commerce.status.ToLowerInvariant().Replace('_','-')) + '"[^>]*>' + [regex]::Escape($m.commerce.label))) "$($m.id): software catalog exposes its generic acquisition label"
+  $proj = Get-ModuleProjection $publicDir $m.id
+  $productHtml = [System.Net.WebUtility]::HtmlDecode((Get-Content (Join-Path $publicDir "$($m.id)\index.html") -Raw -Encoding UTF8))
+  Assert ($proj -and $proj.commerce.status -ceq $m.commerce.status -and $proj.commerce.label -ceq $m.commerce.label -and $productHtml -match ('data-commerce="' + [regex]::Escape($m.commerce.status.ToLowerInvariant().Replace('_','-')) + '"[^>]*>' + [regex]::Escape($m.commerce.label))) "$($m.id): product page and module projection expose its generic acquisition label"
 }
 foreach ($id in @('cache-vault','lights-out')) {
   $module = Get-Content (Join-Path $srcProducts "$id\module.json") -Raw | ConvertFrom-Json
@@ -201,11 +216,11 @@ $t3HomeFixture = Invoke-ModuleFixture 'fake-home-facts' {
 } -RealOut
 $t3Home = Get-Content (Join-Path $t3HomeFixture.OutDir 'index.html') -Raw -Encoding UTF8
 $t3Software = Get-Content (Join-Path $t3HomeFixture.OutDir 'software\index.html') -Raw -Encoding UTF8
-$t3Card = Get-CatalogCard $t3Software 'cache-vault'
+$t3Card = Get-DirectoryEntry $t3Software 'cache-vault'
 $t3Product = Get-Content (Join-Path $t3HomeFixture.OutDir 'cache-vault\index.html') -Raw -Encoding UTF8
 $t3Truth = Get-Content (Join-Path $t3HomeFixture.OutDir 'truth\products\cache-vault.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 $cvState = @($manifestObj.products | Where-Object id -eq 'cache-vault')[0]
-Assert ($t3HomeFixture.Exit -eq 0 -and $t3Card -match ('class="card-version">v' + [regex]::Escape($cvPublicVersion) + '<') -and $t3Card -match 'data-availability="public-release"' -and $t3Card -match 'href="/cache-vault/"' -and $t3Product -match [regex]::Escape($cvState.downloadUrl) -and $t3Truth.version -eq $cvPublicVersion -and $t3Truth.download.url -eq $cvState.downloadUrl -and $t3Truth.download.sha256 -eq $cvState.sha256 -and ($t3Software + $t3Product + ($t3Truth | ConvertTo-Json -Depth 20) + $t3Home) -notmatch '99\.99\.99|evil\.example' -and $t3Home -ceq $canonicalHome -and $t3Home -notmatch $homeProductSlots) 'catalog/product/truth facts remain canonical while the frozen Ledger content remains identical'
+Assert ($t3HomeFixture.Exit -eq 0 -and $t3Card.Contains('v' + $cvPublicVersion) -and $t3Card -match 'href="/cache-vault/"' -and (Get-ModuleProjection $t3HomeFixture.OutDir 'cache-vault').card.tagline -ceq (Get-ModuleProjection $canonicalFixture.OutDir 'cache-vault').card.tagline -and $t3Product -match [regex]::Escape($cvState.downloadUrl) -and $t3Truth.version -eq $cvPublicVersion -and $t3Truth.download.url -eq $cvState.downloadUrl -and $t3Truth.download.sha256 -eq $cvState.sha256 -and ($t3Software + $t3Product + ($t3Truth | ConvertTo-Json -Depth 20) + $t3Home) -notmatch '99\.99\.99|evil\.example' -and $t3Home -ceq $canonicalHome -and $t3Home -notmatch $homeProductSlots) 'catalog/product/truth facts remain canonical while the frozen Ledger content remains identical'
 Write-Host ""
 
 # ── TEST 4: eighth-product modularity control ─────────────────────────────────
@@ -238,16 +253,18 @@ $t4 = Invoke-ModuleFixture 'eighth-product' {
 Assert ($t4.Exit -eq 0) "eighth-product fixture build succeeds (exit=$($t4.Exit))"
 Assert (Test-Path (Join-Path $t4.OutDir 'fixture-product\index.html')) 'fixture-product routed without touching renderer/routes'
 $t4soft = Get-Content (Join-Path $t4.OutDir 'software\index.html') -Raw -Encoding UTF8
-Assert ($t4soft -match 'data-product="fixture-product"') 'fixture-product appears in software catalog automatically'
-Assert ($t4soft -match 'data-commerce="free"[^>]*>Free download') 'new module commerce label renders without product-specific catalog logic'
+$t4reg = @(Get-ProjectionOrder $t4.OutDir)
+Assert ($t4reg -contains 'fixture-product' -and (Get-ModuleProjection $t4.OutDir 'fixture-product') -and $t4soft -notmatch 'data-directory-entry="fixture-product"') 'fixture-product enters the generic module projection automatically; the curated directory admits it only through site-editorial.json'
+$t4proj = Get-ModuleProjection $t4.OutDir 'fixture-product'
+Assert ($t4proj.commerce.status -ceq 'FREE' -and $t4proj.commerce.label -ceq 'Free download') 'new module commerce label reaches the generic catalog projection without product-specific logic'
 Assert (Test-Path (Join-Path $t4.OutDir 'truth\products\fixture-product.json')) 'fixture-product truth record generated automatically'
 $t4idx = Get-Content (Join-Path $t4.OutDir 'truth\index.json') -Raw -Encoding UTF8
 Assert ($t4idx -match 'fixture-product') 'fixture-product listed in truth index automatically'
 $t4home = Get-Content (Join-Path $t4.OutDir 'index.html') -Raw -Encoding UTF8
 $t4Card = Get-CatalogCard $t4soft 'fixture-product'
 $t4Order = @([regex]::Matches($t4soft, 'data-product="([a-z0-9-]+)"') | ForEach-Object { $_.Groups[1].Value })
-Assert ($t4Card -match '<article class="product-card\b' -and $t4Card -match 'A new module, rendered generically\.' -and $t4Card -match 'href="/fixture-product/"' -and $t4Order[0] -eq 'fixture-product' -and $t4home -match '<tr data-ledger-product="fixture-product"' -and $t4home -match 'href="/fixture-product/"') 'unknown module receives generic catalog and Home index copy, route and module order'
-Assert ($t4Card -match '--product-accent:#38BDF8(?:;|\")' -and $t4Card -match '--product-accent-2:#2486B9(?:;|\")' -and $t4Card -match 'data-product="fixture-product"') 'unknown module catalog accent and identity come from module data'
+Assert ($t4proj.card.tagline -ceq 'A new module, rendered generically.' -and $t4proj.route -eq '/fixture-product/' -and $t4reg[0] -eq 'fixture-product' -and $t4home -ceq $canonicalHome) 'unknown module receives generic catalog copy, route and module order, and cannot change the brand-owned Home'
+Assert ($t4proj.theme.accent -ceq '#38BDF8' -and $t4proj.theme.accentSecondary -ceq '#2486B9' -and $t4proj.id -eq 'fixture-product') 'unknown module catalog accent and identity come from module data'
 Assert ((Get-FileHash (Join-Path $root 'scripts/build-site.ps1') -Algorithm SHA256).Hash -eq $rendererBefore -and (Get-FileHash (Join-Path $root 'index.html') -Algorithm SHA256).Hash -eq $indexBefore) 'unknown module requires no renderer or homepage template edits'
 $t4pg = Get-Content (Join-Path $t4.OutDir 'fixture-product\index.html') -Raw -Encoding UTF8
 Assert ($t4pg -match '<picture><source media="\(max-width: 700px\)" srcset="/assets/cache-vault/cv-quick-paste-mobile\.png"/><img src="/assets/cache-vault/cv-quick-paste\.png"' -and $t4pg -match 'alt="Fixture capture"') 'generic hero renderer selects optional mobile asset and preserves desktop fallback/alt'
@@ -289,7 +306,8 @@ function Normalize-HomeFooterProductOrder([string]$html) {
 }
 $t4bFooterList = [regex]::Match($t4bHome, $footerProductsPattern).Groups[2].Value
 $t4bFooterOrder = @([regex]::Matches($t4bFooterList, '<a href="/([a-z0-9-]+)/"') | ForEach-Object { $_.Groups[1].Value })
-Assert ($controlId -ne $catalogOrder[0] -and $t4bOrder.Count -eq $catalogOrder.Count -and $t4bOrder[0] -eq $controlId -and (Get-CatalogCard $t4bSoftware $controlId) -match ('href="/' + [regex]::Escape($controlId) + '/"') -and $t4bFooterOrder.Count -eq $catalogOrder.Count -and $t4bFooterOrder[0] -eq $controlId -and (Normalize-HomeFooterProductOrder $t4bHome) -ceq (Normalize-HomeFooterProductOrder $canonicalHome) -and (Normalize-HomeFooterProductOrder ($t4bHome.Replace('href="/support/"', 'href="/broken-support/"'))) -cne (Normalize-HomeFooterProductOrder $canonicalHome) -and (Normalize-HomeFooterProductOrder ($t4bHome.Replace('<a href="/' + $controlId + '/">', '<a href="/broken-footer-product/">'))) -cne (Normalize-HomeFooterProductOrder $canonicalHome) -and $t4bHome -notmatch $homeProductSlots) 'changed module order moves catalog and shared footer products first; only footer item order changes, all labels/links and other Home bytes remain exact'
+$t4bReg = @(Get-ProjectionOrder $t4b.OutDir)
+Assert ($controlId -ne $catalogOrder[0] -and $t4bReg.Count -eq $catalogOrder.Count -and $t4bReg[0] -eq $controlId -and ((Get-DirectoryOrder $t4bSoftware) -join ',') -ceq ((Get-DirectoryOrder $softwareHtml) -join ',') -and $t4bHome -ceq $canonicalHome -and $t4bHome -notmatch $homeProductSlots) 'changed module order moves the module projection first, leaves the editorial directory order and every Home byte unchanged'
 
 $t4hiddenHome = Invoke-ModuleFixture 'homepage-hidden' {
   param($modDir)
@@ -300,7 +318,7 @@ $t4hiddenHome = Invoke-ModuleFixture 'homepage-hidden' {
 Assert ($t4hiddenHome.Exit -eq 0 -and (Test-Path (Join-Path $t4hiddenHome.OutDir "$controlId\index.html"))) 'homepage-hidden product retains its public route'
 $t4hiddenHtml = Get-Content (Join-Path $t4hiddenHome.OutDir 'index.html') -Raw -Encoding UTF8
 $t4hiddenCatalog = Get-Content (Join-Path $t4hiddenHome.OutDir 'software\index.html') -Raw -Encoding UTF8
-Assert ($t4hiddenHtml -notmatch ('data-module="' + [regex]::Escape($controlId) + '"') -and $t4hiddenCatalog -match ('data-product="' + [regex]::Escape($controlId) + '"') -and (Test-Path (Join-Path $t4hiddenHome.OutDir "truth\products\$controlId.json"))) 'homepage exclusion leaves catalog, route and truth record intact'
+Assert ($t4hiddenHtml -ceq $canonicalHome -and ($controlId -notin $editorialOrder -or $t4hiddenCatalog -match ('data-directory-entry="' + [regex]::Escape($controlId) + '"')) -and (Get-ModuleProjection $t4hiddenHome.OutDir $controlId) -and (Test-Path (Join-Path $t4hiddenHome.OutDir "truth\products\$controlId.json"))) 'homepage exclusion leaves directory, projection, route and truth record intact'
 
 $t4badPresentation = Invoke-ModuleFixture 'homepage-bad-presentation' {
   param($modDir)
@@ -329,10 +347,11 @@ $evidenceControl = Invoke-ModuleFixture 'withdrawn-evidence-priority' {
 Assert ($evidenceControl.Exit -eq 0) 'withdrawn-evidence priority control builds'
 $evidenceControlHome = Get-Content (Join-Path $evidenceControl.OutDir 'index.html') -Raw -Encoding UTF8
 $evidenceControlSoftware = Get-Content (Join-Path $evidenceControl.OutDir 'software\index.html') -Raw -Encoding UTF8
-$evidenceControlCard = Get-CatalogCard $evidenceControlSoftware 'reality-gate'
+$evidenceControlCard = Get-DirectoryEntry $evidenceControlSoftware 'reality-gate'
+$evidenceControlPage = Get-Content (Join-Path $evidenceControl.OutDir 'reality-gate\index.html') -Raw -Encoding UTF8
 $evidenceControlTruth = Get-Content (Join-Path $evidenceControl.OutDir 'truth\products\reality-gate.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 $withdrawnHomeRow = [regex]::Match($evidenceControlHome, '(?s)<tr data-ledger-product="reality-gate".*?</tr>').Value
-Assert ($evidenceControlHome -ceq $canonicalHome -and $evidenceControlHome -notmatch $homeProductSlots -and $withdrawnHomeRow -match 'data-release-status="WITHDRAWN"' -and $withdrawnHomeRow -match 'Full record available\.' -and $withdrawnHomeRow -notmatch 'v1\.1\.0|>\s*Download' -and $evidenceControlCard -match 'data-availability="withdrawn-unavailable"' -and $evidenceControlCard -match 'data-commerce="withdrawn"' -and $evidenceControlCard -match 'href="/reality-gate/"' -and $evidenceControlTruth.release.releaseStatus -eq 'WITHDRAWN' -and $null -eq $evidenceControlTruth.version -and $evidenceControlTruth.download.available -eq $false -and $null -eq $evidenceControlTruth.download.url) 'highest evidence priority cannot restore withdrawn availability in Home, catalog or truth'
+Assert ($evidenceControlHome -ceq $canonicalHome -and $evidenceControlHome -notmatch $homeProductSlots -and $evidenceControlCard -match 'public v1\.1\.0 withdrawn' -and $evidenceControlCard -notmatch '>\s*Download' -and $evidenceControlPage -match 'data-commerce="withdrawn"' -and $evidenceControlPage -notmatch '<a[^>]+>\s*Download' -and $evidenceControlTruth.release.releaseStatus -eq 'WITHDRAWN' -and $null -eq $evidenceControlTruth.version -and $evidenceControlTruth.download.available -eq $false -and $null -eq $evidenceControlTruth.download.url) 'highest evidence priority cannot restore withdrawn availability in Home, directory, product page or truth'
 Write-Host ""
 
 # ── TEST 5: hidden product control ───────────────────────────────────────────
@@ -449,12 +468,12 @@ Assert ($t9.Exit -eq 0) "fixture-api state source builds (exit=$($t9.Exit))"
 $t9html = Get-Content (Join-Path $t9.OutDir 'cleanroom\index.html') -Raw -Encoding UTF8
 Assert ($t9html -match 'SWAPPED-STATE-MARKER') 'rendered page consumed foreign source state, not manifest'
 $t9soft = Get-Content (Join-Path $t9.OutDir 'software\index.html') -Raw -Encoding UTF8
-Assert ($t9soft -match 'data-product="cleanroom"') 'catalog rendered under foreign source'
+Assert ($t9soft -match 'data-directory-entry="cleanroom"' -and (Get-ModuleProjection $t9.OutDir 'cleanroom')) 'directory and module projection rendered under foreign source'
 $t9truth = Get-Content (Join-Path $t9.OutDir 'truth\products\cleanroom.json') -Raw -Encoding UTF8
 Assert ($t9truth -match 'SWAPPED-STATE-MARKER') 'truth JSON consumed foreign source state'
 $t9home = Get-Content (Join-Path $t9.OutDir 'index.html') -Raw -Encoding UTF8
 $t9footer = [regex]::Match($t9html, '(?s)<footer\b.*?</footer>').Value
-Assert ($t9footer -match 'SWAPPED-HOME-NAME' -and $t9home -match 'SWAPPED-HOME-NAME' -and $t9home -match '<tr data-ledger-product="cleanroom"' -and $t9home -notmatch $homeProductSlots) 'product footer and Home index presentation name consume foreign source state'
+Assert ($t9home -ceq $canonicalHome -and $t9home -notmatch 'SWAPPED-' -and $t9footer -notmatch 'SWAPPED-' -and $t9footer -match 'href="/software/"') 'foreign product state cannot alter the brand-owned Home or the shared footer, which no longer list products'
 Write-Host ""
 
 # Homepage markup must stay generic: IDs are data, never renderer branches.
@@ -513,11 +532,14 @@ Assert ($r1page -notmatch '<img src=x') 'product page: no raw img payload'
 Assert ($r1page -match '&lt;script&gt;|&quot;&gt;&lt;') 'product page: name emitted as entities'
 $r1soft = Get-Content (Join-Path $r1.OutDir 'software\index.html') -Raw -Encoding UTF8
 Assert ($r1soft -notmatch '<script>alert|<img src=x|<svg onload') 'catalog: no executable markup from name/summary/valueLine'
-$r1Card = Get-CatalogCard $r1soft 'cleanroom'
-Assert ($r1Card.Contains('MODULE&quot;&gt;&lt;script&gt;alert(4)&lt;/script&gt;') -and $r1Card.Contains('&lt;img src=x onerror=alert(5)&gt;') -and $r1Card.Contains('&quot;&gt;&lt;svg onload=alert(6)&gt;')) 'catalog: actual module brand/summary/tagline payloads each emitted as exact entities'
+$r1proj = Get-ModuleProjection $r1.OutDir 'cleanroom'
+$r1identity = [regex]::Match($r1page, '(?s)<div class="product-identity">.*?</div>').Value
+$r1html = (Get-ChildItem $r1.OutDir -Recurse -Filter '*.html' | ForEach-Object { Get-Content $_.FullName -Raw -Encoding UTF8 }) -join "`n"
+Assert ($r1identity.Contains('MODULE&quot;&gt;&lt;script&gt;alert(4)&lt;/script&gt;') -and $r1proj.brand.name -ceq 'MODULE"><script>alert(4)</script>' -and $r1proj.card.summary -ceq '<img src=x onerror=alert(5)>' -and $r1proj.card.tagline -ceq '"><svg onload=alert(6)>' -and $r1html -notmatch '<script>alert\(4\)|<img src=x onerror=alert\(5\)|<svg onload=alert\(6\)') 'module brand is emitted as exact entities, card payloads stay exact JSON literals, and no generated page carries their raw markup'
 $r1footer = ([regex]::Match($r1page, '(?s)<footer.*?</footer>')).Value
 Assert ($r1footer -notmatch '<script>alert') 'footer: no executable markup'
-Assert ($r1footer -match '&lt;script&gt;|&quot;&gt;') 'footer: name emitted as entities'
+$r1crumb = [regex]::Match($r1page, '(?s)<nav class="product-breadcrumb".*?</nav>').Value
+Assert ($r1footer -notmatch 'Cleanroom"|alert\(1\)' -and $r1crumb.Contains('Cleanroom&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;')) 'footer carries no product name; breadcrumb emits the hostile name as exact entities'
 $r1truth = Get-Content (Join-Path $r1.OutDir 'truth\products\cleanroom.json') -Raw -Encoding UTF8
 Assert ($r1truth -match 'Cleanroom\\"><script>alert') 'truth JSON carries safely JSON-encoded literal name'
 Assert ((($r1truth | ConvertFrom-Json).name) -ceq 'Cleanroom"><script>alert(1)</script>') 'truth JSON parses hostile input as the exact literal string'
@@ -609,7 +631,8 @@ Assert ($v2Page -match 'Reusable outcomes' -and $v2Page -match 'First declarativ
 Assert (Test-Path (Join-Path $v2.OutDir 'assets\products\fixture-product\brand\logo.svg')) 'module logo packaged into standard asset route'
 Assert (Test-Path (Join-Path $v2.OutDir 'assets\products\fixture-product\media\hero.png')) 'module media packaged into standard asset route'
 $v2Catalog = Get-Content (Join-Path $v2.OutDir 'software\index.html') -Raw -Encoding UTF8
-Assert ($v2Catalog -match 'A card from module metadata\.' -and $v2Catalog -match '/assets/products/fixture-product/media/hero.png') 'catalog card presentation discovered from v2 module'
+$v2proj = Get-ModuleProjection $v2.OutDir 'fixture-product'
+Assert ($v2proj.card.tagline -ceq 'A card from module metadata.' -and $v2proj.card.summary -ceq 'Structured module media and copy.' -and $v2proj.card.media -eq '/assets/products/fixture-product/media/hero.png' -and (Test-Path (Join-Path $v2.OutDir ($v2proj.card.media.TrimStart('/'))))) 'catalog card presentation discovered from v2 module, with its packaged media resolving'
 $badTheme = Invoke-ModuleFixture 'module-v2-bad-theme' { param($modDir)
   Copy-Item (Join-Path $root 'scripts/fixtures/product-module-v2') (Join-Path $modDir 'fixture-product') -Recurse -Force
   $dir = Join-Path $modDir 'fixture-product'
@@ -655,7 +678,7 @@ $withdrawnPage = Get-Content (Join-Path $withdrawn.OutDir 'fixture-product\index
 $withdrawnTruth = Get-Content (Join-Path $withdrawn.OutDir 'truth\products\fixture-product.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 Assert ((Test-Path (Join-Path $withdrawn.OutDir 'fixture-product\index.html')) -and $withdrawnPage -match '<p class="availability-notice"><strong>Withdrawn:</strong> v1\.0\.7 is not available for download' -and $withdrawnPage -match 'Downloads currently unavailable' -and $withdrawnPage -notmatch '&lt;p class=&quot;availability-notice' -and $withdrawnPage -notmatch '<a[^>]+>\s*Download') 'withdrawn state retains its route, renders its notice as HTML, and suppresses the product download CTA'
 Assert ($withdrawnTruth.release.releaseStatus -eq 'WITHDRAWN' -and $withdrawnTruth.release.withdrawnVersion -eq '1.0.7' -and $withdrawnTruth.version -eq $null -and $withdrawnTruth.download.available -eq $false -and $withdrawnTruth.artifacts[0].sha256) 'withdrawn machine truth preserves history without current availability'
-Assert ((Get-Content (Join-Path $withdrawn.OutDir 'software\index.html') -Raw -Encoding UTF8) -match 'fixture-product' -and (Get-Content (Join-Path $withdrawn.OutDir 'truth-files\fixture-product\index.html') -Raw -Encoding UTF8) -match 'Withdrawn v1\.0\.7') 'withdrawn product remains discoverable with matching human truth'
+Assert ((Get-Content (Join-Path $withdrawn.OutDir 'truth-files\index.html') -Raw -Encoding UTF8) -match 'href="/truth-files/fixture-product/"' -and (Get-Content (Join-Path $withdrawn.OutDir 'truth\index.json') -Raw -Encoding UTF8) -match '"fixture-product"' -and (Get-Content (Join-Path $withdrawn.OutDir 'truth-files\fixture-product\index.html') -Raw -Encoding UTF8) -match 'Withdrawn v1\.0\.7') 'withdrawn product remains discoverable through Truth Files and machine truth with matching human truth'
 Write-Host ""
 
 Write-Host "=== RESULT: $passed passed, $failed failed ==="

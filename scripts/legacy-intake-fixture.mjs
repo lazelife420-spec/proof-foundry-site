@@ -76,7 +76,7 @@ export function createLegacyIntakeFixture(){
       fs.mkdirSync(path.dirname(dest),{recursive:true});fs.copyFileSync(source,dest);
     }
     git(canonical,'add','--all');
-    git(canonical,'commit','--quiet','-m','Disposable canonical website snapshot; never production authority\n\nCo-authored-by: factory-droid[bot] <138933559+factory-droid[bot]@users.noreply.github.com>');
+    git(canonical,'commit','--quiet','--allow-empty','-m','Disposable canonical website snapshot; never production authority\n\nCo-authored-by: factory-droid[bot] <138933559+factory-droid[bot]@users.noreply.github.com>');
     const canonicalCommit=git(canonical,'rev-parse','HEAD').trim(),canonicalTree=git(canonical,'rev-parse','HEAD^{tree}').trim();
     execFileSync('git',['clone','--quiet','--no-hardlinks',canonical,site],{windowsHide:true,stdio:'pipe'});
     git(site,'remote','remove','origin');git(site,'config','core.autocrlf','false');

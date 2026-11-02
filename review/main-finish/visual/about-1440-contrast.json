@@ -1,0 +1,2343 @@
+[
+  {
+    "text": "Skip to content",
+    "selector": "a.skip-link",
+    "color": "rgb(27, 40, 44)",
+    "rgb": [
+      27,
+      40,
+      44
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 34,
+    "y": -84,
+    "w": 105.9375,
+    "h": 17.599998474121094,
+    "minimum": 100,
+    "bgAt": null,
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "The Proof Foundry",
+    "selector": "span.brand-name",
+    "color": "rgb(242, 240, 232)",
+    "rgb": [
+      242,
+      240,
+      232
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 143.8000030517578,
+    "y": 28.200000762939453,
+    "w": 152.68751525878906,
+    "h": 18.400001525878906,
+    "minimum": 14.177833198408837,
+    "bgAt": [
+      25,
+      34,
+      38
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Build it. Prove it. Ship it.",
+    "selector": "small.",
+    "color": "rgb(192, 181, 160)",
+    "rgb": [
+      192,
+      181,
+      160
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 143.8000030517578,
+    "y": 54,
+    "w": 181.4499969482422,
+    "h": 12,
+    "minimum": 8.51354555935369,
+    "bgAt": [
+      20,
+      28,
+      32
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Products",
+    "selector": "a.",
+    "color": "rgb(215, 222, 220)",
+    "rgb": [
+      215,
+      222,
+      220
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 967.5250244140625,
+    "y": 39.79999923706055,
+    "w": 52.71246337890625,
+    "h": 12.800003051757812,
+    "minimum": 5.832779962541649,
+    "bgAt": [
+      70,
+      83,
+      87
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Proof",
+    "selector": "a.",
+    "color": "rgb(215, 222, 220)",
+    "rgb": [
+      215,
+      222,
+      220
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 1050.8375244140625,
+    "y": 39.79999923706055,
+    "w": 31.6875,
+    "h": 12.800003051757812,
+    "minimum": 5.924978452851734,
+    "bgAt": [
+      69,
+      82,
+      86
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Truth Files",
+    "selector": "a.",
+    "color": "rgb(215, 222, 220)",
+    "rgb": [
+      215,
+      222,
+      220
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 1113.125,
+    "y": 39.79999923706055,
+    "w": 60.75,
+    "h": 12.800003051757812,
+    "minimum": 5.832779962541649,
+    "bgAt": [
+      70,
+      83,
+      87
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "About",
+    "selector": "a.",
+    "color": "rgb(243, 243, 236)",
+    "rgb": [
+      243,
+      243,
+      236
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 1204.4749755859375,
+    "y": 40.79999923706055,
+    "w": 35.0250244140625,
+    "h": 12.800003051757812,
+    "minimum": 13.374134180720363,
+    "bgAt": [
+      29,
+      41,
+      46
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Support",
+    "selector": "a.button.button-primary.nav-cta",
+    "color": "rgb(215, 222, 220)",
+    "rgb": [
+      215,
+      222,
+      220
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 1286.0999755859375,
+    "y": 39.900001525878906,
+    "w": 46.5,
+    "h": 12.799999237060547,
+    "minimum": 5.917572547764968,
+    "bgAt": [
+      69,
+      82,
+      87
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "01",
+    "selector": "span.pf-chain-station",
+    "color": "rgb(181, 161, 123)",
+    "rgb": [
+      181,
+      161,
+      123
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 132.6999969482422,
+    "y": 133.4499969482422,
+    "w": 10.800003051757812,
+    "h": 12,
+    "minimum": 4.660391657353597,
+    "bgAt": [
+      42,
+      59,
+      61
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Home",
+    "selector": "span.",
+    "color": "rgb(211, 222, 212)",
+    "rgb": [
+      211,
+      222,
+      212
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 153.5,
+    "y": 132.3000030517578,
+    "w": 28.800003051757812,
+    "h": 15.199996948242188,
+    "minimum": 8.467581221675252,
+    "bgAt": [
+      42,
+      59,
+      61
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "02",
+    "selector": "span.pf-chain-station",
+    "color": "rgb(181, 161, 123)",
+    "rgb": [
+      181,
+      161,
+      123
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 343.3000183105469,
+    "y": 139.0500030517578,
+    "w": 10.79998779296875,
+    "h": 12,
+    "minimum": 4.665953825564154,
+    "bgAt": [
+      42,
+      59,
+      60
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Products",
+    "selector": "span.",
+    "color": "rgb(211, 222, 212)",
+    "rgb": [
+      211,
+      222,
+      212
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 364.1000061035156,
+    "y": 137.90000915527344,
+    "w": 57.600006103515625,
+    "h": 15.199996948242188,
+    "minimum": 8.340920658555959,
+    "bgAt": [
+      43,
+      60,
+      62
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "03",
+    "selector": "span.pf-chain-station",
+    "color": "rgb(181, 161, 123)",
+    "rgb": [
+      181,
+      161,
+      123
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 579.1000366210938,
+    "y": 139.0500030517578,
+    "w": 10.79998779296875,
+    "h": 12,
+    "minimum": 4.790709821767852,
+    "bgAt": [
+      41,
+      57,
+      59
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Proof",
+    "selector": "span.",
+    "color": "rgb(211, 222, 212)",
+    "rgb": [
+      211,
+      222,
+      212
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 599.9000244140625,
+    "y": 137.90000915527344,
+    "w": 36,
+    "h": 15.199996948242188,
+    "minimum": 8.35091136909241,
+    "bgAt": [
+      43,
+      60,
+      61
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "04",
+    "selector": "span.pf-chain-station",
+    "color": "rgb(181, 161, 123)",
+    "rgb": [
+      181,
+      161,
+      123
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 782.5,
+    "y": 139.0500030517578,
+    "w": 10.79998779296875,
+    "h": 12,
+    "minimum": 4.730805576376875,
+    "bgAt": [
+      41,
+      58,
+      60
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Truth Files",
+    "selector": "span.",
+    "color": "rgb(211, 222, 212)",
+    "rgb": [
+      211,
+      222,
+      212
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 803.2999877929688,
+    "y": 137.90000915527344,
+    "w": 79.20001220703125,
+    "h": 15.199996948242188,
+    "minimum": 8.340920658555959,
+    "bgAt": [
+      43,
+      60,
+      62
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "05",
+    "selector": "span.pf-chain-station",
+    "color": "rgb(32, 56, 46)",
+    "rgb": [
+      32,
+      56,
+      46
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 1029.0999755859375,
+    "y": 139.0500030517578,
+    "w": 10.800048828125,
+    "h": 12,
+    "minimum": 5.264468218383135,
+    "bgAt": [
+      157,
+      171,
+      161
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "About",
+    "selector": "span.",
+    "color": "rgb(16, 36, 43)",
+    "rgb": [
+      16,
+      36,
+      43
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 1049.9000244140625,
+    "y": 137.90000915527344,
+    "w": 36,
+    "h": 15.199996948242188,
+    "minimum": 6.545301180744037,
+    "bgAt": [
+      155,
+      169,
+      159
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "06",
+    "selector": "span.pf-chain-station",
+    "color": "rgb(181, 161, 123)",
+    "rgb": [
+      181,
+      161,
+      123
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 1246.9000244140625,
+    "y": 139.0500030517578,
+    "w": 10.800048828125,
+    "h": 12,
+    "minimum": 4.665953825564154,
+    "bgAt": [
+      42,
+      59,
+      60
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Support",
+    "selector": "span.",
+    "color": "rgb(211, 222, 212)",
+    "rgb": [
+      211,
+      222,
+      212
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 1267.7000732421875,
+    "y": 137.90000915527344,
+    "w": 50.39990234375,
+    "h": 15.199996948242188,
+    "minimum": 8.340920658555959,
+    "bgAt": [
+      43,
+      60,
+      62
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Independent Software Studio",
+    "selector": "p.kicker",
+    "color": "rgb(201, 176, 131)",
+    "rgb": [
+      201,
+      176,
+      131
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 241.1999969482422,
+    "w": 216.8125,
+    "h": 14.400009155273438,
+    "minimum": 8.6943143522117,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "About The Proof Foundry",
+    "selector": "h1#about-title",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 302.70001220703125,
+    "w": 367.4875183105469,
+    "h": 93.60000610351562,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "About The Proof Foundry",
+    "selector": "h1#about-title",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 391.2749938964844,
+    "w": 501.76251220703125,
+    "h": 93.60000610351562,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Useful software. Receipts included.",
+    "selector": "p.support-intro",
+    "color": "rgb(201, 208, 199)",
+    "rgb": [
+      201,
+      208,
+      199
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 911.25,
+    "y": 331.70001220703125,
+    "w": 316.0875244140625,
+    "h": 54.399993896484375,
+    "minimum": 11.56528486167524,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Useful software. Receipts included.",
+    "selector": "p.support-intro",
+    "color": "rgb(201, 208, 199)",
+    "rgb": [
+      201,
+      208,
+      199
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 911.25,
+    "y": 387.8500061035156,
+    "w": 167.25,
+    "h": 54.399993896484375,
+    "minimum": 11.56528486167524,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Useful software. Receipts included.",
+    "selector": "p.support-intro",
+    "color": "rgb(201, 208, 199)",
+    "rgb": [
+      201,
+      208,
+      199
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 911.25,
+    "y": 444,
+    "w": 181.7125244140625,
+    "h": 54.399993896484375,
+    "minimum": 11.56528486167524,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "What is The Proof Foundry?",
+    "selector": "h2.",
+    "color": "rgb(36, 54, 53)",
+    "rgb": [
+      36,
+      54,
+      53
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 100.80000305175781,
+    "y": 642.75,
+    "w": 251.91249084472656,
+    "h": 40,
+    "minimum": 10.060426337884431,
+    "bgAt": [
+      232,
+      229,
+      217
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "What is The Proof Foundry?",
+    "selector": "h2.",
+    "color": "rgb(36, 54, 53)",
+    "rgb": [
+      36,
+      54,
+      53
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 100.80000305175781,
+    "y": 684.75,
+    "w": 136.46249389648438,
+    "h": 40,
+    "minimum": 10.060426337884431,
+    "bgAt": [
+      232,
+      229,
+      217
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "The Proof Foundry is an independent software studio making focused utilities for Windows and Android",
+    "selector": "p.",
+    "color": "rgb(52, 76, 70)",
+    "rgb": [
+      52,
+      76,
+      70
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 745,
+    "y": 647.5499877929688,
+    "w": 463.75,
+    "h": 21.60003662109375,
+    "minimum": 7.33648961296482,
+    "bgAt": [
+      232,
+      229,
+      217
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "The Proof Foundry is an independent software studio making focused utilities for Windows and Android",
+    "selector": "p.",
+    "color": "rgb(52, 76, 70)",
+    "rgb": [
+      52,
+      76,
+      70
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 745,
+    "y": 681.5499877929688,
+    "w": 492.6875,
+    "h": 21.60003662109375,
+    "minimum": 7.33648961296482,
+    "bgAt": [
+      232,
+      229,
+      217
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "The Proof Foundry is an independent software studio making focused utilities for Windows and Android",
+    "selector": "p.",
+    "color": "rgb(52, 76, 70)",
+    "rgb": [
+      52,
+      76,
+      70
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 745,
+    "y": 715.5499877929688,
+    "w": 510.375,
+    "h": 21.60003662109375,
+    "minimum": 7.33648961296482,
+    "bgAt": [
+      232,
+      229,
+      217
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "The Proof Foundry is an independent software studio making focused utilities for Windows and Android",
+    "selector": "p.",
+    "color": "rgb(52, 76, 70)",
+    "rgb": [
+      52,
+      76,
+      70
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 745,
+    "y": 749.5499877929688,
+    "w": 415.0250244140625,
+    "h": 21.60003662109375,
+    "minimum": 7.33648961296482,
+    "bgAt": [
+      232,
+      229,
+      217
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Principles",
+    "selector": "p.kicker",
+    "color": "rgb(201, 176, 131)",
+    "rgb": [
+      201,
+      176,
+      131
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 934.3500366210938,
+    "w": 80.30000305175781,
+    "h": 14.39996337890625,
+    "minimum": 8.6943143522117,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "How we build",
+    "selector": "h2.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 962.4500122070312,
+    "w": 147.75,
+    "h": 51.20001220703125,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "How we build",
+    "selector": "h2.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 1011.9500122070312,
+    "w": 92.86250305175781,
+    "h": 51.20001220703125,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Four rules every product and every release follows.",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 1085.050048828125,
+    "w": 355.6625061035156,
+    "h": 17.5999755859375,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Independent Products, Shared Standard",
+    "selector": "h3.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 605,
+    "y": 1002.3500366210938,
+    "w": 126.07501220703125,
+    "h": 25.60003662109375,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Independent Products, Shared Standard",
+    "selector": "h3.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 605,
+    "y": 1029.9500732421875,
+    "w": 173.0250244140625,
+    "h": 25.5999755859375,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Independent Products, Shared Standard",
+    "selector": "h3.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 605,
+    "y": 1057.550048828125,
+    "w": 91.5875244140625,
+    "h": 25.5999755859375,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Each product installs and runs on its own. They share a release standard (published hashes, scoped c",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 605,
+    "y": 1109.1500244140625,
+    "w": 337.22503662109375,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Each product installs and runs on its own. They share a release standard (published hashes, scoped c",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 605,
+    "y": 1135.050048828125,
+    "w": 361.5875244140625,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Each product installs and runs on its own. They share a release standard (published hashes, scoped c",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 605,
+    "y": 1160.9500732421875,
+    "w": 288.6875,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Local-First Principles",
+    "selector": "h3.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 1012.5,
+    "y": 1026.3499755859375,
+    "w": 105.0750732421875,
+    "h": 25.60009765625,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Local-First Principles",
+    "selector": "h3.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 1012.5,
+    "y": 1053.9500732421875,
+    "w": 98.4124755859375,
+    "h": 25.5999755859375,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Local-first where product function permits. No account and no background tracking by default. Networ",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 1012.5,
+    "y": 1105.550048828125,
+    "w": 359.737548828125,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Local-first where product function permits. No account and no background tracking by default. Networ",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 1012.5,
+    "y": 1131.4500732421875,
+    "w": 337.9000244140625,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Local-first where product function permits. No account and no background tracking by default. Networ",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 1012.5,
+    "y": 1157.3499755859375,
+    "w": 346.5374755859375,
+    "h": 15.2000732421875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Local-first where product function permits. No account and no background tracking by default. Networ",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 1012.5,
+    "y": 1183.25,
+    "w": 359.7125244140625,
+    "h": 15.2000732421875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Local-first where product function permits. No account and no background tracking by default. Networ",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 1012.5,
+    "y": 1209.1500244140625,
+    "w": 172.0625,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Reality Gate's Role",
+    "selector": "h3.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 605,
+    "y": 1354.050048828125,
+    "w": 186.42498779296875,
+    "h": 25.5999755859375,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Reality Gate is the studio's developer tool for building and checking releases. It runs builds in is",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 605,
+    "y": 1405.6500244140625,
+    "w": 351.1875,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Reality Gate is the studio's developer tool for building and checking releases. It runs builds in is",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 605,
+    "y": 1431.550048828125,
+    "w": 294.6875,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Reality Gate is the studio's developer tool for building and checking releases. It runs builds in is",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 605,
+    "y": 1457.4500732421875,
+    "w": 353.25,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Reality Gate is the studio's developer tool for building and checking releases. It runs builds in is",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 605,
+    "y": 1483.3499755859375,
+    "w": 345.7750244140625,
+    "h": 15.2000732421875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Reality Gate is the studio's developer tool for building and checking releases. It runs builds in is",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 605,
+    "y": 1509.25,
+    "w": 344.32501220703125,
+    "h": 15.2000732421875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Reality Gate is the studio's developer tool for building and checking releases. It runs builds in is",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 605,
+    "y": 1535.1500244140625,
+    "w": 366.91253662109375,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Reality Gate is the studio's developer tool for building and checking releases. It runs builds in is",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 605,
+    "y": 1561.050048828125,
+    "w": 354.61248779296875,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Reality Gate is the studio's developer tool for building and checking releases. It runs builds in is",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 605,
+    "y": 1586.9500732421875,
+    "w": 345.23748779296875,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Reality Gate is the studio's developer tool for building and checking releases. It runs builds in is",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 605,
+    "y": 1612.8499755859375,
+    "w": 360.28753662109375,
+    "h": 15.2000732421875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Reality Gate is the studio's developer tool for building and checking releases. It runs builds in is",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 605,
+    "y": 1638.75,
+    "w": 319.4000244140625,
+    "h": 15.2000732421875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Reality Gate is the studio's developer tool for building and checking releases. It runs builds in is",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 605,
+    "y": 1664.6500244140625,
+    "w": 348.20001220703125,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Reality Gate is the studio's developer tool for building and checking releases. It runs builds in is",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 605,
+    "y": 1690.550048828125,
+    "w": 200.4375,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Records You Can Check",
+    "selector": "h3.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 1012.5,
+    "y": 1378.050048828125,
+    "w": 171.1875,
+    "h": 25.5999755859375,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Records You Can Check",
+    "selector": "h3.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 1012.5,
+    "y": 1405.6500244140625,
+    "w": 64.9749755859375,
+    "h": 25.5999755859375,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Each public release has a Truth File listing its version, SHA-256 hash and known limits. Where a cla",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 1012.5,
+    "y": 1457.25,
+    "w": 363.300048828125,
+    "h": 15.2000732421875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Each public release has a Truth File listing its version, SHA-256 hash and known limits. Where a cla",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 1012.5,
+    "y": 1483.1500244140625,
+    "w": 365.5875244140625,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Each public release has a Truth File listing its version, SHA-256 hash and known limits. Where a cla",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 1012.5,
+    "y": 1509.050048828125,
+    "w": 308.0750732421875,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Explore The Foundry",
+    "selector": "p.kicker",
+    "color": "rgb(201, 176, 131)",
+    "rgb": [
+      201,
+      176,
+      131
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 1883.25,
+    "w": 152.5749969482422,
+    "h": 14.4000244140625,
+    "minimum": 8.6943143522117,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Learn More",
+    "selector": "h2.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 1912.9500732421875,
+    "w": 243.1875,
+    "h": 56.7999267578125,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Proof Standard",
+    "selector": "a.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 605,
+    "y": 1882.4500732421875,
+    "w": 153.5625,
+    "h": 25.5999755859375,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Read our doctrine on verification, SHA-256 integrity, and evidence custody.",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 1007.5,
+    "y": 1885.6500244140625,
+    "w": 321.0875244140625,
+    "h": 13.5999755859375,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Read our doctrine on verification, SHA-256 integrity, and evidence custody.",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 1007.5,
+    "y": 1907.0999755859375,
+    "w": 102.925048828125,
+    "h": 13.60009765625,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Founders Circle",
+    "selector": "a.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 605,
+    "y": 1976.1500244140625,
+    "w": 160.63751220703125,
+    "h": 25.5999755859375,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Reserved founding receipts for early supporters backing Proof Foundry products.",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 1007.5,
+    "y": 1979.3499755859375,
+    "w": 352.9749755859375,
+    "h": 13.60009765625,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Reserved founding receipts for early supporters backing Proof Foundry products.",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 1007.5,
+    "y": 2000.800048828125,
+    "w": 105.0999755859375,
+    "h": 13.5999755859375,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Roadmap",
+    "selector": "a.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 605,
+    "y": 2069.85009765625,
+    "w": 102.70001220703125,
+    "h": 25.599853515625,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "See current public releases, candidate builds, and platform directions taking shape.",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 1007.5,
+    "y": 2073.050048828125,
+    "w": 334.4749755859375,
+    "h": 13.60009765625,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "See current public releases, candidate builds, and platform directions taking shape.",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 1007.5,
+    "y": 2094.5,
+    "w": 136.1624755859375,
+    "h": 13.60009765625,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "The Proof Foundry",
+    "selector": "span.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 107,
+    "y": 2380.75,
+    "w": 136.2624969482422,
+    "h": 17.60009765625,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Build it. Prove it. Ship it.",
+    "selector": "p.",
+    "color": "rgb(165, 177, 182)",
+    "rgb": [
+      165,
+      177,
+      182
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 2434.150146484375,
+    "w": 134.5124969482422,
+    "h": 13.599853515625,
+    "minimum": 8.581884017980935,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Independent software.",
+    "selector": "p.footer-maker-note",
+    "color": "rgb(165, 177, 182)",
+    "rgb": [
+      165,
+      177,
+      182
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 2471.60009765625,
+    "w": 118.4375,
+    "h": 12.800048828125,
+    "minimum": 8.581884017980935,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Public records. Clear limits.",
+    "selector": "p.footer-maker-note",
+    "color": "rgb(165, 177, 182)",
+    "rgb": [
+      165,
+      177,
+      182
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 2491.400146484375,
+    "w": 144.02500915527344,
+    "h": 12.7998046875,
+    "minimum": 8.581884017980935,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Explore",
+    "selector": "h2.",
+    "color": "rgb(186, 164, 127)",
+    "rgb": [
+      186,
+      164,
+      127
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 592.7250366210938,
+    "y": 2374.75,
+    "w": 56.21246337890625,
+    "h": 14.400146484375,
+    "minimum": 7.81044882130314,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Products directory",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 592.7250366210938,
+    "y": 2421.75,
+    "w": 97.262451171875,
+    "h": 12.800048828125,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Proof Standard",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 592.7250366210938,
+    "y": 2466.75,
+    "w": 80.3499755859375,
+    "h": 12.800048828125,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Release records",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 784.5499877929688,
+    "y": 2421.75,
+    "w": 86.5,
+    "h": 12.800048828125,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Truth Files",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 784.5499877929688,
+    "y": 2466.75,
+    "w": 55.4375,
+    "h": 12.800048828125,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Company",
+    "selector": "h2.",
+    "color": "rgb(186, 164, 127)",
+    "rgb": [
+      186,
+      164,
+      127
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 1016.3624877929688,
+    "y": 2374.75,
+    "w": 56.21258544921875,
+    "h": 14.400146484375,
+    "minimum": 7.81044882130314,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "About",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 1016.3624877929688,
+    "y": 2421.75,
+    "w": 32.13751220703125,
+    "h": 12.800048828125,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Founders Circle",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 1016.3624877929688,
+    "y": 2466.75,
+    "w": 84.18756103515625,
+    "h": 12.800048828125,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Roadmap",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 1208.1875,
+    "y": 2421.75,
+    "w": 52.4625244140625,
+    "h": 12.800048828125,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Support",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 1208.1875,
+    "y": 2466.75,
+    "w": 42.8250732421875,
+    "h": 12.800048828125,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "© 2026 Proof Foundry. All rights reserved.",
+    "selector": "p.",
+    "color": "rgb(143, 157, 164)",
+    "rgb": [
+      143,
+      157,
+      164
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 2554.449951171875,
+    "w": 183.0124969482422,
+    "h": 11.2001953125,
+    "minimum": 6.753723849196874,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Reduced motion",
+    "selector": "button.motion-toggle",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [
+      "BUTTON.motion-toggle"
+    ],
+    "x": 1296,
+    "y": 2553.60009765625,
+    "w": 84,
+    "h": 12.800048828125,
+    "status": "unmeasured effects"
+  }
+]

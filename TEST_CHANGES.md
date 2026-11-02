@@ -1007,3 +1007,262 @@ Replacement:
 ```
 $homeHtml -match 'class="button button-primary" href="/software/"' -and $manifest.navCta
 ```
+
+
+# Late H13 successor contracts
+
+The following old/replacement pairs preserve module, withdrawal, hostile-input and source-isolation controls while distinguishing the editorial directory from the generic runtime projection.
+
+## `scripts/test-h13-modular-products.ps1`
+
+### Add helpers for the current surfaces: curated directory entries and the __h14 module projection (generic module catalog data).
+
+Old:
+```
+function Get-CatalogCard([string]$Html, [string]$Id) {
+```
+Replacement:
+```
+# The public /software/ page is the curated editorial directory (site-editorial.json); the generic,
+# module-driven catalog data now ships as the __h14 module projection that the runtime catalog renders.
+function Get-DirectoryEntry([string]$Html, [string]$Id) {
+  return [regex]::Match($Html, ('(?s)<article\b[^>]*\bdata-directory-entry="' + [regex]::Escape($Id) + '"[^>]*>.*?</article>')).Value
+}
+function Get-DirectoryOrder([string]$Html) { @([regex]::Matches($Html, 'data-directory-entry="([a-z0-9-]+)"') | ForEach-Object { $_.Groups[1].Value }) }
+function Get-ModuleProjection([string]$OutDir, [string]$Id) {
+  $path = Join-Path $OutDir "__h14\modules\$Id.json"
+  if (Test-Path -LiteralPath $path) { Get-Content -LiteralPath $path -Raw -Encoding UTF8 | ConvertFrom-Json } else { $null }
+}
+function Get-ProjectionOrder([string]$OutDir) { @((Get-Content (Join-Path $OutDir '__h14\registry.json') -Raw -Encoding UTF8 | ConvertFrom-Json) | ForEach-Object id) }
+$editorialOrder = @((Get-Content (Join-Path $root 'site-editorial.json') -Raw | ConvertFrom-Json).entries | Where-Object visible | Sort-Object order, id | ForEach-Object id)
+function Get-CatalogCard([string]$Html, [string]$Id) {
+```
+
+### Directory order is editorial; module ordering is asserted on the generated module projection.
+
+Old:
+```
+Assert ($catalogOrder.Count -eq $reg.Count -and $catalogOrder[0] -eq 'cache-vault' -and $catalogOrder[-1] -eq 'reality-gate') 'catalog role order puts Cache Vault first and withdrawn products last using module metadata'
+```
+Replacement:
+```
+$catalogOrder = @(Get-ProjectionOrder $publicDir)
+Assert ($catalogOrder.Count -eq $reg.Count -and ($catalogOrder -join ',') -ceq (@($reg | Sort-Object { [int]$_.order } | ForEach-Object id) -join ',') -and $catalogOrder[0] -eq 'cache-vault' -and $catalogOrder[-1] -eq 'reality-gate' -and ((Get-DirectoryOrder $softwareHtml) -join ',') -ceq ($editorialOrder -join ',')) 'module projection order follows module metadata (Cache Vault first, withdrawn last) while the public directory follows site-editorial.json exactly'
+```
+
+### The static directory carries no commerce chip; the generic label renders on each product page and in the module projection.
+
+Old:
+```
+  Assert ($softwareHtmlDecoded -match ('data-product="' + [regex]::Escape($m.id) + '"') -and $softwareHtmlDecoded -match ('data-commerce="' + [regex]::Escape($m.commerce.status.ToLowerInvariant().Replace('_','-')) + '"[^>]*>' + [regex]::Escape($m.commerce.label))) "$($m.id): software catalog exposes its generic acquisition label"
+```
+Replacement:
+```
+  $proj = Get-ModuleProjection $publicDir $m.id
+  $productHtml = [System.Net.WebUtility]::HtmlDecode((Get-Content (Join-Path $publicDir "$($m.id)\index.html") -Raw -Encoding UTF8))
+  Assert ($proj -and $proj.commerce.status -ceq $m.commerce.status -and $proj.commerce.label -ceq $m.commerce.label -and $productHtml -match ('data-commerce="' + [regex]::Escape($m.commerce.status.ToLowerInvariant().Replace('_','-')) + '"[^>]*>' + [regex]::Escape($m.commerce.label))) "$($m.id): product page and module projection expose its generic acquisition label"
+```
+
+### Fake-fact control reads the directory entry.
+
+Old:
+```
+$t3Card = Get-CatalogCard $t3Software 'cache-vault'
+```
+Replacement:
+```
+$t3Card = Get-DirectoryEntry $t3Software 'cache-vault'
+```
+
+### Directory shows the canonical public version and route; module card data unchanged.
+
+Old:
+```
+$t3Card -match ('class="card-version">v' + [regex]::Escape($cvPublicVersion) + '<') -and $t3Card -match 'data-availability="public-release"' -and $t3Card -match 'href="/cache-vault/"'
+```
+Replacement:
+```
+$t3Card.Contains('v' + $cvPublicVersion) -and $t3Card -match 'href="/cache-vault/"' -and (Get-ModuleProjection $t3HomeFixture.OutDir 'cache-vault').card.tagline -ceq (Get-ModuleProjection $canonicalFixture.OutDir 'cache-vault').card.tagline
+```
+
+### Curated directory intentionally does not auto-list modules; the generic projection must.
+
+Old:
+```
+Assert ($t4soft -match 'data-product="fixture-product"') 'fixture-product appears in software catalog automatically'
+```
+Replacement:
+```
+$t4reg = @(Get-ProjectionOrder $t4.OutDir)
+Assert ($t4reg -contains 'fixture-product' -and (Get-ModuleProjection $t4.OutDir 'fixture-product') -and $t4soft -notmatch 'data-directory-entry="fixture-product"') 'fixture-product enters the generic module projection automatically; the curated directory admits it only through site-editorial.json'
+```
+
+### Commerce label carried by the projection.
+
+Old:
+```
+Assert ($t4soft -match 'data-commerce="free"[^>]*>Free download') 'new module commerce label renders without product-specific catalog logic'
+```
+Replacement:
+```
+$t4proj = Get-ModuleProjection $t4.OutDir 'fixture-product'
+Assert ($t4proj.commerce.status -ceq 'FREE' -and $t4proj.commerce.label -ceq 'Free download') 'new module commerce label reaches the generic catalog projection without product-specific logic'
+```
+
+### Home no longer has a product index; stronger: Home must be byte-identical.
+
+Old:
+```
+Assert ($t4Card -match '<article class="product-card\b' -and $t4Card -match 'A new module, rendered generically\.' -and $t4Card -match 'href="/fixture-product/"' -and $t4Order[0] -eq 'fixture-product' -and $t4home -match '<tr data-ledger-product="fixture-product"' -and $t4home -match 'href="/fixture-product/"') 'unknown module receives generic catalog and Home index copy, route and module order'
+```
+Replacement:
+```
+Assert ($t4proj.card.tagline -ceq 'A new module, rendered generically.' -and $t4proj.route -eq '/fixture-product/' -and $t4reg[0] -eq 'fixture-product' -and $t4home -ceq $canonicalHome) 'unknown module receives generic catalog copy, route and module order, and cannot change the brand-owned Home'
+```
+
+### Accent read from the projection.
+
+Old:
+```
+Assert ($t4Card -match '--product-accent:#38BDF8(?:;|\")' -and $t4Card -match '--product-accent-2:#2486B9(?:;|\")' -and $t4Card -match 'data-product="fixture-product"') 'unknown module catalog accent and identity come from module data'
+```
+Replacement:
+```
+Assert ($t4proj.theme.accent -ceq '#38BDF8' -and $t4proj.theme.accentSecondary -ceq '#2486B9' -and $t4proj.id -eq 'fixture-product') 'unknown module catalog accent and identity come from module data'
+```
+
+### Footer has no product list; module order now governs the projection only.
+
+Old:
+```
+Assert ($controlId -ne $catalogOrder[0] -and $t4bOrder.Count -eq $catalogOrder.Count -and $t4bOrder[0] -eq $controlId -and (Get-CatalogCard $t4bSoftware $controlId) -match ('href="/' + [regex]::Escape($controlId) + '/"') -and $t4bFooterOrder.Count -eq $catalogOrder.Count -and $t4bFooterOrder[0] -eq $controlId -and (Normalize-HomeFooterProductOrder $t4bHome) -ceq (Normalize-HomeFooterProductOrder $canonicalHome) -and (Normalize-HomeFooterProductOrder ($t4bHome.Replace('href="/support/"', 'href="/broken-support/"'))) -cne (Normalize-HomeFooterProductOrder $canonicalHome) -and (Normalize-HomeFooterProductOrder ($t4bHome.Replace('<a href="/' + $controlId + '/">', '<a href="/broken-footer-product/">'))) -cne (Normalize-HomeFooterProductOrder $canonicalHome) -and $t4bHome -notmatch $homeProductSlots) 'changed module order moves catalog and shared footer products first; only footer item order changes, all labels/links and other Home bytes remain exact'
+```
+Replacement:
+```
+$t4bReg = @(Get-ProjectionOrder $t4b.OutDir)
+Assert ($controlId -ne $catalogOrder[0] -and $t4bReg.Count -eq $catalogOrder.Count -and $t4bReg[0] -eq $controlId -and ((Get-DirectoryOrder $t4bSoftware) -join ',') -ceq ((Get-DirectoryOrder $softwareHtml) -join ',') -and $t4bHome -ceq $canonicalHome -and $t4bHome -notmatch $homeProductSlots) 'changed module order moves the module projection first, leaves the editorial directory order and every Home byte unchanged'
+```
+
+### Directory membership is editorial, unaffected by homepage.visibility.
+
+Old:
+```
+Assert ($t4hiddenHtml -notmatch ('data-module="' + [regex]::Escape($controlId) + '"') -and $t4hiddenCatalog -match ('data-product="' + [regex]::Escape($controlId) + '"') -and (Test-Path (Join-Path $t4hiddenHome.OutDir "truth\products\$controlId.json"))) 'homepage exclusion leaves catalog, route and truth record intact'
+```
+Replacement:
+```
+Assert ($t4hiddenHtml -ceq $canonicalHome -and ($controlId -notin $editorialOrder -or $t4hiddenCatalog -match ('data-directory-entry="' + [regex]::Escape($controlId) + '"')) -and (Get-ModuleProjection $t4hiddenHome.OutDir $controlId) -and (Test-Path (Join-Path $t4hiddenHome.OutDir "truth\products\$controlId.json"))) 'homepage exclusion leaves directory, projection, route and truth record intact'
+```
+
+### Withdrawn control reads directory entry and product page.
+
+Old:
+```
+$evidenceControlCard = Get-CatalogCard $evidenceControlSoftware 'reality-gate'
+```
+Replacement:
+```
+$evidenceControlCard = Get-DirectoryEntry $evidenceControlSoftware 'reality-gate'
+$evidenceControlPage = Get-Content (Join-Path $evidenceControl.OutDir 'reality-gate\index.html') -Raw -Encoding UTF8
+```
+
+### Home ledger row removed; check directory, product page and truth.
+
+Old:
+```
+Assert ($evidenceControlHome -ceq $canonicalHome -and $evidenceControlHome -notmatch $homeProductSlots -and $withdrawnHomeRow -match 'data-release-status="WITHDRAWN"' -and $withdrawnHomeRow -match 'Full record available\.' -and $withdrawnHomeRow -notmatch 'v1\.1\.0|>\s*Download' -and $evidenceControlCard -match 'data-availability="withdrawn-unavailable"' -and $evidenceControlCard -match 'data-commerce="withdrawn"' -and $evidenceControlCard -match 'href="/reality-gate/"' -and $evidenceControlTruth.release.releaseStatus -eq 'WITHDRAWN' -and $null -eq $evidenceControlTruth.version -and $evidenceControlTruth.download.available -eq $false -and $null -eq $evidenceControlTruth.download.url) 'highest evidence priority cannot restore withdrawn availability in Home, catalog or truth'
+```
+Replacement:
+```
+Assert ($evidenceControlHome -ceq $canonicalHome -and $evidenceControlHome -notmatch $homeProductSlots -and $evidenceControlCard -match 'public v1\.1\.0 withdrawn' -and $evidenceControlCard -notmatch '>\s*Download' -and $evidenceControlPage -match 'data-commerce="withdrawn"' -and $evidenceControlPage -notmatch '<a[^>]+>\s*Download' -and $evidenceControlTruth.release.releaseStatus -eq 'WITHDRAWN' -and $null -eq $evidenceControlTruth.version -and $evidenceControlTruth.download.available -eq $false -and $null -eq $evidenceControlTruth.download.url) 'highest evidence priority cannot restore withdrawn availability in Home, directory, product page or truth'
+```
+
+### Directory entry replaces card.
+
+Old:
+```
+Assert ($t9soft -match 'data-product="cleanroom"') 'catalog rendered under foreign source'
+```
+Replacement:
+```
+Assert ($t9soft -match 'data-directory-entry="cleanroom"' -and (Get-ModuleProjection $t9.OutDir 'cleanroom')) 'directory and module projection rendered under foreign source'
+```
+
+### Footer and Home no longer list products; homeName has no static consumer. Assert foreign state cannot leak into either.
+
+Old:
+```
+Assert ($t9footer -match 'SWAPPED-HOME-NAME' -and $t9home -match 'SWAPPED-HOME-NAME' -and $t9home -match '<tr data-ledger-product="cleanroom"' -and $t9home -notmatch $homeProductSlots) 'product footer and Home index presentation name consume foreign source state'
+```
+Replacement:
+```
+Assert ($t9home -ceq $canonicalHome -and $t9home -notmatch 'SWAPPED-' -and $t9footer -notmatch 'SWAPPED-' -and $t9footer -match 'href="/software/"') 'foreign product state cannot alter the brand-owned Home or the shared footer, which no longer list products'
+```
+
+### Module card payloads: projection literals, product identity escaping, and a whole-output raw-markup scan.
+
+Old:
+```
+$r1Card = Get-CatalogCard $r1soft 'cleanroom'
+```
+Replacement:
+```
+$r1proj = Get-ModuleProjection $r1.OutDir 'cleanroom'
+$r1identity = [regex]::Match($r1page, '(?s)<div class="product-identity">.*?</div>').Value
+$r1html = (Get-ChildItem $r1.OutDir -Recurse -Filter '*.html' | ForEach-Object { Get-Content $_.FullName -Raw -Encoding UTF8 }) -join "`n"
+```
+
+### Card fields no longer render in static HTML.
+
+Old:
+```
+Assert ($r1Card.Contains('MODULE&quot;&gt;&lt;script&gt;alert(4)&lt;/script&gt;') -and $r1Card.Contains('&lt;img src=x onerror=alert(5)&gt;') -and $r1Card.Contains('&quot;&gt;&lt;svg onload=alert(6)&gt;')) 'catalog: actual module brand/summary/tagline payloads each emitted as exact entities'
+```
+Replacement:
+```
+Assert ($r1identity.Contains('MODULE&quot;&gt;&lt;script&gt;alert(4)&lt;/script&gt;') -and $r1proj.brand.name -ceq 'MODULE"><script>alert(4)</script>' -and $r1proj.card.summary -ceq '<img src=x onerror=alert(5)>' -and $r1proj.card.tagline -ceq '"><svg onload=alert(6)>' -and $r1html -notmatch '<script>alert\(4\)|<img src=x onerror=alert\(5\)|<svg onload=alert\(6\)') 'module brand is emitted as exact entities, card payloads stay exact JSON literals, and no generated page carries their raw markup'
+```
+
+### Footer no longer lists products; escaping is asserted on the breadcrumb, which does.
+
+Old:
+```
+Assert ($r1footer -match '&lt;script&gt;|&quot;&gt;') 'footer: name emitted as entities'
+```
+Replacement:
+```
+$r1crumb = [regex]::Match($r1page, '(?s)<nav class="product-breadcrumb".*?</nav>').Value
+Assert ($r1footer -notmatch 'Cleanroom"|alert\(1\)' -and $r1crumb.Contains('Cleanroom&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;')) 'footer carries no product name; breadcrumb emits the hostile name as exact entities'
+```
+
+### Card presentation read from projection; media must resolve.
+
+Old:
+```
+Assert ($v2Catalog -match 'A card from module metadata\.' -and $v2Catalog -match '/assets/products/fixture-product/media/hero.png') 'catalog card presentation discovered from v2 module'
+```
+Replacement:
+```
+$v2proj = Get-ModuleProjection $v2.OutDir 'fixture-product'
+Assert ($v2proj.card.tagline -ceq 'A card from module metadata.' -and $v2proj.card.summary -ceq 'Structured module media and copy.' -and $v2proj.card.media -eq '/assets/products/fixture-product/media/hero.png' -and (Test-Path (Join-Path $v2.OutDir ($v2proj.card.media.TrimStart('/'))))) 'catalog card presentation discovered from v2 module, with its packaged media resolving'
+```
+
+### Curated directory does not auto-list; Truth Files index is the generic discovery surface.
+
+Old:
+```
+Assert ((Get-Content (Join-Path $withdrawn.OutDir 'software\index.html') -Raw -Encoding UTF8) -match 'fixture-product' -and (Get-Content (Join-Path $withdrawn.OutDir 'truth-files\fixture-product\index.html') -Raw -Encoding UTF8) -match 'Withdrawn v1\.0\.7') 'withdrawn product remains discoverable with matching human truth'
+```
+Replacement:
+```
+Assert ((Get-Content (Join-Path $withdrawn.OutDir 'truth-files\index.html') -Raw -Encoding UTF8) -match 'href="/truth-files/fixture-product/"' -and (Get-Content (Join-Path $withdrawn.OutDir 'truth\index.json') -Raw -Encoding UTF8) -match '"fixture-product"' -and (Get-Content (Join-Path $withdrawn.OutDir 'truth-files\fixture-product\index.html') -Raw -Encoding UTF8) -match 'Withdrawn v1\.0\.7') 'withdrawn product remains discoverable through Truth Files and machine truth with matching human truth'
+```
+
+
+## Final qualification helper changes
+
+- `legacy-intake-fixture.mjs`: old canonical fixture commit required staged differences. A clean final source clone has identical bytes, so Git correctly refused the commit. `--allow-empty` now permits the snapshot identity commit. Remote-free lanes, exact tree/code binding, one transport-only successor commit and every substitution negative control remain unchanged.
+- `capture-main-site-zoom.mjs`: the two-page hardcoded preview/browser target becomes configurable loopback-only origin/port, covering all eleven non-product routes. Native Chrome 200% is still set and read back; exit status now enforces no horizontal overflow, six visible station numbers and exact real Tab-key order.
+- `qualify-shared-visuals.mjs`: new independent fresh-profile headed evidence helper captures eleven routes at desktop/tablet/phone widths. Three cache-disabled 1320px Home loads must have successful CSS responses, populated CSSOM and actual rendered styles; missing-critical-CSS negative control must fail the guard. Geometry, nav/footer parity and sampled rendered contrast have explicit limitations.
+- Late real page fixes: active route station color darkened, narrow station padding avoids screw interference, Truth Files state/facts darkened against actual paper gradients. No release facts or shared reducer changed.
+- Decorative 404 numeral remains a low-contrast decorative background. The actual error heading and recovery links pass measured contrast; the decorative figure is not a content contrast pass.

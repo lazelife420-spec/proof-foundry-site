@@ -1,0 +1,5043 @@
+[
+  {
+    "text": "Skip to content",
+    "selector": "a.skip-link",
+    "color": "rgb(27, 40, 44)",
+    "rgb": [
+      27,
+      40,
+      44
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 34,
+    "y": -84,
+    "w": 105.9375,
+    "h": 17.599998474121094,
+    "minimum": 100,
+    "bgAt": null,
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "The Proof Foundry",
+    "selector": "span.brand-name",
+    "color": "rgb(242, 240, 232)",
+    "rgb": [
+      242,
+      240,
+      232
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 76.80000305175781,
+    "y": 14.300000190734863,
+    "w": 112.33749389648438,
+    "h": 13.59999942779541,
+    "minimum": 13.532347378428558,
+    "bgAt": [
+      28,
+      38,
+      42
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Build it. Prove it. Ship it.",
+    "selector": "small.",
+    "color": "rgb(192, 181, 160)",
+    "rgb": [
+      192,
+      181,
+      160
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 76.80000305175781,
+    "y": 33.29999923706055,
+    "w": 133.28750610351562,
+    "h": 8.800003051757812,
+    "minimum": 8.348922006439578,
+    "bgAt": [
+      21,
+      30,
+      34
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "01",
+    "selector": "span.pf-chain-station",
+    "color": "rgb(181, 161, 123)",
+    "rgb": [
+      181,
+      161,
+      123
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 49.462501525878906,
+    "y": 102.95000457763672,
+    "w": 10.799999237060547,
+    "h": 12,
+    "minimum": 4.596178844578926,
+    "bgAt": [
+      43,
+      60,
+      61
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Home",
+    "selector": "span.",
+    "color": "rgb(211, 222, 212)",
+    "rgb": [
+      211,
+      222,
+      212
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 66.26250457763672,
+    "y": 101.6500015258789,
+    "w": 26.399993896484375,
+    "h": 14.400001525878906,
+    "minimum": 8.340920658555959,
+    "bgAt": [
+      43,
+      60,
+      62
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "02",
+    "selector": "span.pf-chain-station",
+    "color": "rgb(181, 161, 123)",
+    "rgb": [
+      181,
+      161,
+      123
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 160.3874969482422,
+    "y": 108.55000305175781,
+    "w": 10.800003051757812,
+    "h": 12,
+    "minimum": 4.665953825564154,
+    "bgAt": [
+      42,
+      59,
+      60
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Products",
+    "selector": "span.",
+    "color": "rgb(211, 222, 212)",
+    "rgb": [
+      211,
+      222,
+      212
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 177.1875,
+    "y": 107.25,
+    "w": 52.80000305175781,
+    "h": 14.400001525878906,
+    "minimum": 8.340920658555959,
+    "bgAt": [
+      43,
+      60,
+      62
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "03",
+    "selector": "span.pf-chain-station",
+    "color": "rgb(181, 161, 123)",
+    "rgb": [
+      181,
+      161,
+      123
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 294.4250183105469,
+    "y": 108.55000305175781,
+    "w": 10.79998779296875,
+    "h": 12,
+    "minimum": 4.590680152235009,
+    "bgAt": [
+      43,
+      60,
+      62
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Proof",
+    "selector": "span.",
+    "color": "rgb(211, 222, 212)",
+    "rgb": [
+      211,
+      222,
+      212
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 311.2250061035156,
+    "y": 107.25,
+    "w": 33,
+    "h": 14.400001525878906,
+    "minimum": 8.225450035722682,
+    "bgAt": [
+      44,
+      61,
+      62
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "04",
+    "selector": "span.pf-chain-station",
+    "color": "rgb(181, 161, 123)",
+    "rgb": [
+      181,
+      161,
+      123
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 281.0625,
+    "y": 189.25,
+    "w": 10.800018310546875,
+    "h": 12,
+    "minimum": 4.719667338336738,
+    "bgAt": [
+      42,
+      58,
+      60
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Truth Files",
+    "selector": "span.",
+    "color": "rgb(211, 222, 212)",
+    "rgb": [
+      211,
+      222,
+      212
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 311.2250061035156,
+    "y": 180.8000030517578,
+    "w": 33,
+    "h": 14.399993896484375,
+    "minimum": 7.619046490793567,
+    "bgAt": [
+      49,
+      66,
+      67
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Truth Files",
+    "selector": "span.",
+    "color": "rgb(211, 222, 212)",
+    "rgb": [
+      211,
+      222,
+      212
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 311.2250061035156,
+    "y": 195.10000610351562,
+    "w": 33,
+    "h": 14.399993896484375,
+    "minimum": 9.119073435390431,
+    "bgAt": [
+      37,
+      54,
+      56
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "05",
+    "selector": "span.pf-chain-station",
+    "color": "rgb(181, 161, 123)",
+    "rgb": [
+      181,
+      161,
+      123
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 170.28750610351562,
+    "y": 186.15000915527344,
+    "w": 10.800003051757812,
+    "h": 12,
+    "minimum": 4.665953825564154,
+    "bgAt": [
+      42,
+      59,
+      60
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "About",
+    "selector": "span.",
+    "color": "rgb(211, 222, 212)",
+    "rgb": [
+      211,
+      222,
+      212
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 187.08750915527344,
+    "y": 184.85000610351562,
+    "w": 33,
+    "h": 14.399993896484375,
+    "minimum": 8.225450035722682,
+    "bgAt": [
+      44,
+      61,
+      62
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "06",
+    "selector": "span.pf-chain-station",
+    "color": "rgb(181, 161, 123)",
+    "rgb": [
+      181,
+      161,
+      123
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 39.5625,
+    "y": 186.15000915527344,
+    "w": 10.799999237060547,
+    "h": 12,
+    "minimum": 4.665953825564154,
+    "bgAt": [
+      42,
+      59,
+      60
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Support",
+    "selector": "span.",
+    "color": "rgb(211, 222, 212)",
+    "rgb": [
+      211,
+      222,
+      212
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 56.36249923706055,
+    "y": 184.85000610351562,
+    "w": 46.20000076293945,
+    "h": 14.399993896484375,
+    "minimum": 8.225450035722682,
+    "bgAt": [
+      44,
+      61,
+      62
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Public receipts",
+    "selector": "p.eyebrow",
+    "color": "rgb(201, 176, 131)",
+    "rgb": [
+      201,
+      176,
+      131
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 273,
+    "w": 120.44999694824219,
+    "h": 14.399993896484375,
+    "minimum": 8.6943143522117,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Proof Foundry",
+    "selector": "h1#proof-title",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 308.5,
+    "w": 274.5,
+    "h": 53.600006103515625,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Receipts",
+    "selector": "span.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 357.2124938964844,
+    "w": 159.4875030517578,
+    "h": 53.600006103515625,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Public proof for what we ship: routes, releases, checksums, receipts, and verification status.",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 438.9250183105469,
+    "w": 325.8625183105469,
+    "h": 17.5999755859375,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Public proof for what we ship: routes, releases, checksums, receipts, and verification status.",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 466.9250183105469,
+    "w": 312.2124938964844,
+    "h": 17.5999755859375,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Each product's current public record, in plain language, is in",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 519.9249877929688,
+    "w": 312.4375,
+    "h": 17.60003662109375,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Each product's current public record, in plain language, is in",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 547.9249877929688,
+    "w": 104.4375,
+    "h": 17.60003662109375,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "the Truth Files",
+    "selector": "a.text-link",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 122.4375,
+    "y": 547.9249877929688,
+    "w": 102.47500610351562,
+    "h": 17.60003662109375,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": ".",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 224.91250610351562,
+    "y": 547.9249877929688,
+    "w": 4.4375,
+    "h": 17.60003662109375,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Product receipts",
+    "selector": "h2#receipts-title",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 636.9249877929688,
+    "w": 201.52500915527344,
+    "h": 35.20001220703125,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Verification state guide:",
+    "selector": "strong.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 701.125,
+    "w": 134.875,
+    "h": 12.79998779296875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "VERIFIED",
+    "selector": "span.state-verified-text",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 155.3874969482422,
+    "y": 701.125,
+    "w": 54.90000915527344,
+    "h": 12.79998779296875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": ", PUBLISHED, NOT_PUBLISHED and",
+    "selector": "p.receipts-note",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 210.28750610351562,
+    "y": 701.125,
+    "w": 77.35000610351562,
+    "h": 12.79998779296875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": ", PUBLISHED, NOT_PUBLISHED and",
+    "selector": "p.receipts-note",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 723.3250122070312,
+    "w": 124.83750915527344,
+    "h": 12.79998779296875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "PENDING",
+    "selector": "span.state-pending-text",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 142.83750915527344,
+    "y": 723.3250122070312,
+    "w": 55.337493896484375,
+    "h": 12.79998779296875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "describe what Proof Foundry's authored release record lists for each dimension; they are not indepen",
+    "selector": "p.receipts-note",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 198.1750030517578,
+    "y": 723.3250122070312,
+    "w": 163.08750915527344,
+    "h": 12.79998779296875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "describe what Proof Foundry's authored release record lists for each dimension; they are not indepen",
+    "selector": "p.receipts-note",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 745.5250244140625,
+    "w": 320.7875061035156,
+    "h": 12.79998779296875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "describe what Proof Foundry's authored release record lists for each dimension; they are not indepen",
+    "selector": "p.receipts-note",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 767.7250366210938,
+    "w": 351.5249938964844,
+    "h": 12.79998779296875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "describe what Proof Foundry's authored release record lists for each dimension; they are not indepen",
+    "selector": "p.receipts-note",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 789.9249877929688,
+    "w": 338.3374938964844,
+    "h": 12.800048828125,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "describe what Proof Foundry's authored release record lists for each dimension; they are not indepen",
+    "selector": "p.receipts-note",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 812.125,
+    "w": 34.03750228881836,
+    "h": 12.79998779296875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Cache Vault",
+    "selector": "h3.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 884.7250366210938,
+    "w": 142.0625,
+    "h": 32.79998779296875,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Windows + Android companion",
+    "selector": "span.platform-badge",
+    "color": "rgb(82, 105, 95)",
+    "rgb": [
+      82,
+      105,
+      95
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 930.375,
+    "w": 162,
+    "h": 12.79998779296875,
+    "minimum": 4.880435175383062,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Public release",
+    "selector": "span.status-indicator.public_release",
+    "color": "rgb(82, 105, 93)",
+    "rgb": [
+      82,
+      105,
+      93
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 959.375,
+    "w": 84,
+    "h": 12.79998779296875,
+    "minimum": 4.890343734506048,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Windows installer delivered inside a ZIP archive, served from Proof Foundry downloads. The release g",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 1000.7750244140625,
+    "w": 290.9750061035156,
+    "h": 12.79998779296875,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Windows installer delivered inside a ZIP archive, served from Proof Foundry downloads. The release g",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 1021.7750244140625,
+    "w": 299.9250183105469,
+    "h": 12.800048828125,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Windows installer delivered inside a ZIP archive, served from Proof Foundry downloads. The release g",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 1042.7750244140625,
+    "w": 303.57501220703125,
+    "h": 12.800048828125,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Windows installer delivered inside a ZIP archive, served from Proof Foundry downloads. The release g",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 1063.7750244140625,
+    "w": 299.1250305175781,
+    "h": 12.800048828125,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Windows installer delivered inside a ZIP archive, served from Proof Foundry downloads. The release g",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 1084.7750244140625,
+    "w": 296.13751220703125,
+    "h": 12.800048828125,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Windows installer delivered inside a ZIP archive, served from Proof Foundry downloads. The release g",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 1105.7750244140625,
+    "w": 304.38751220703125,
+    "h": 12.800048828125,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Windows installer delivered inside a ZIP archive, served from Proof Foundry downloads. The release g",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 1126.7750244140625,
+    "w": 278.70001220703125,
+    "h": 12.800048828125,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Windows installer delivered inside a ZIP archive, served from Proof Foundry downloads. The release g",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 1147.7750244140625,
+    "w": 269.0500183105469,
+    "h": 12.800048828125,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Windows installer delivered inside a ZIP archive, served from Proof Foundry downloads. The release g",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 1168.7750244140625,
+    "w": 273.76251220703125,
+    "h": 12.800048828125,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Windows installer delivered inside a ZIP archive, served from Proof Foundry downloads. The release g",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 1189.7750244140625,
+    "w": 207.6374969482422,
+    "h": 12.800048828125,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Release",
+    "selector": "h4.receipt-section-title",
+    "color": "rgb(93, 108, 84)",
+    "rgb": [
+      93,
+      108,
+      84
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 1231.7750244140625,
+    "w": 47.60000228881836,
+    "h": 12.800048828125,
+    "minimum": 4.62739461970895,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Route",
+    "selector": "dt.",
+    "color": "rgb(82, 105, 94)",
+    "rgb": [
+      82,
+      105,
+      94
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 1272.7750244140625,
+    "w": 30.000003814697266,
+    "h": 12.800048828125,
+    "minimum": 4.8854165343094405,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "/cache-vault/",
+    "selector": "a.",
+    "color": "rgb(45, 80, 68)",
+    "rgb": [
+      45,
+      80,
+      68
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 159.60000610351562,
+    "y": 1272.7750244140625,
+    "w": 63.125,
+    "h": 12,
+    "minimum": 7.3849739534968615,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Public version",
+    "selector": "dt.",
+    "color": "rgb(82, 105, 94)",
+    "rgb": [
+      82,
+      105,
+      94
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 1311.7249755859375,
+    "w": 84,
+    "h": 12.800048828125,
+    "minimum": 4.8854165343094405,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "v0.3.1",
+    "selector": "dd.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 159.60000610351562,
+    "y": 1311.7249755859375,
+    "w": 27.25,
+    "h": 11.2000732421875,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Release state",
+    "selector": "dt.",
+    "color": "rgb(82, 105, 94)",
+    "rgb": [
+      82,
+      105,
+      94
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 1350.5250244140625,
+    "w": 78,
+    "h": 12.800048828125,
+    "minimum": 4.8854165343094405,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "PUBLIC_RELEASE",
+    "selector": "dd.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 159.60000610351562,
+    "y": 1350.5250244140625,
+    "w": 87.59999084472656,
+    "h": 11.199951171875,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Download v0.3.1 (Windows)",
+    "selector": "a.button.button-primary",
+    "color": "rgb(241, 242, 230)",
+    "rgb": [
+      241,
+      242,
+      230
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 118.5999984741211,
+    "y": 1416.3250732421875,
+    "w": 157.98748779296875,
+    "h": 12.7999267578125,
+    "minimum": 9.151060127604733,
+    "bgAt": [
+      51,
+      68,
+      59
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Verification, artifact & evidence",
+    "selector": "summary.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 1494.3250732421875,
+    "w": 198,
+    "h": 12.7999267578125,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "+",
+    "selector": "span.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 341.6000061035156,
+    "y": 1495.925048828125,
+    "w": 10.79998779296875,
+    "h": 23.199951171875,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "GhostLayer",
+    "selector": "h3.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 1592.7249755859375,
+    "w": 138.22500610351562,
+    "h": 32.800048828125,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Windows",
+    "selector": "span.platform-badge",
+    "color": "rgb(82, 105, 95)",
+    "rgb": [
+      82,
+      105,
+      95
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 1638.375,
+    "w": 42.000003814697266,
+    "h": 12.800048828125,
+    "minimum": 4.880435175383062,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Public release",
+    "selector": "span.status-indicator.public_release",
+    "color": "rgb(82, 105, 93)",
+    "rgb": [
+      82,
+      105,
+      93
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 1667.375,
+    "w": 84,
+    "h": 12.800048828125,
+    "minimum": 4.890343734506048,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Electron v0.4.0 · NSIS installer · receipt-backed",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 1708.7750244140625,
+    "w": 249.4250030517578,
+    "h": 12.800048828125,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Release",
+    "selector": "h4.receipt-section-title",
+    "color": "rgb(93, 108, 84)",
+    "rgb": [
+      93,
+      108,
+      84
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 1750.7750244140625,
+    "w": 47.60000228881836,
+    "h": 12.800048828125,
+    "minimum": 4.62739461970895,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Route",
+    "selector": "dt.",
+    "color": "rgb(82, 105, 94)",
+    "rgb": [
+      82,
+      105,
+      94
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 1791.7750244140625,
+    "w": 30.000003814697266,
+    "h": 12.800048828125,
+    "minimum": 4.8854165343094405,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "/ghostlayer/",
+    "selector": "a.",
+    "color": "rgb(45, 80, 68)",
+    "rgb": [
+      45,
+      80,
+      68
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 159.60000610351562,
+    "y": 1791.7750244140625,
+    "w": 57.57499694824219,
+    "h": 12,
+    "minimum": 7.3849739534968615,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Public version",
+    "selector": "dt.",
+    "color": "rgb(82, 105, 94)",
+    "rgb": [
+      82,
+      105,
+      94
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 1830.7249755859375,
+    "w": 84,
+    "h": 12.800048828125,
+    "minimum": 4.8854165343094405,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "v0.4.0",
+    "selector": "dd.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 159.60000610351562,
+    "y": 1830.7249755859375,
+    "w": 27.599990844726562,
+    "h": 11.2000732421875,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Release state",
+    "selector": "dt.",
+    "color": "rgb(82, 105, 94)",
+    "rgb": [
+      82,
+      105,
+      94
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 1869.5250244140625,
+    "w": 78,
+    "h": 12.800048828125,
+    "minimum": 4.8854165343094405,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "PUBLIC_RELEASE",
+    "selector": "dd.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 159.60000610351562,
+    "y": 1869.5250244140625,
+    "w": 87.59999084472656,
+    "h": 11.199951171875,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Download v0.4.0",
+    "selector": "a.button.button-primary",
+    "color": "rgb(241, 242, 230)",
+    "rgb": [
+      241,
+      242,
+      230
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 150.3625030517578,
+    "y": 1935.3250732421875,
+    "w": 94.47500610351562,
+    "h": 12.7999267578125,
+    "minimum": 9.151060127604733,
+    "bgAt": [
+      51,
+      68,
+      59
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Verification, artifact & evidence",
+    "selector": "summary.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 2013.3250732421875,
+    "w": 198,
+    "h": 12.7999267578125,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "+",
+    "selector": "span.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 341.6000061035156,
+    "y": 2014.925048828125,
+    "w": 10.79998779296875,
+    "h": 23.199951171875,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Lights Out PC",
+    "selector": "h3.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 2111.72509765625,
+    "w": 165.5749969482422,
+    "h": 32.800048828125,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Windows + Android",
+    "selector": "span.platform-badge",
+    "color": "rgb(82, 105, 95)",
+    "rgb": [
+      82,
+      105,
+      95
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 2157.375,
+    "w": 102,
+    "h": 12.800048828125,
+    "minimum": 4.880435175383062,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Public release",
+    "selector": "span.status-indicator.public_release",
+    "color": "rgb(82, 105, 93)",
+    "rgb": [
+      82,
+      105,
+      93
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 2186.375,
+    "w": 84,
+    "h": 12.800048828125,
+    "minimum": 4.890343734506048,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Electron v11.2.0 · This site offers no Android companion download.",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 2227.775146484375,
+    "w": 294.6750183105469,
+    "h": 12.7998046875,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Electron v11.2.0 · This site offers no Android companion download.",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 2248.775146484375,
+    "w": 55.23749923706055,
+    "h": 12.7998046875,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Release",
+    "selector": "h4.receipt-section-title",
+    "color": "rgb(93, 108, 84)",
+    "rgb": [
+      93,
+      108,
+      84
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 2290.775146484375,
+    "w": 47.60000228881836,
+    "h": 12.7998046875,
+    "minimum": 4.62739461970895,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Route",
+    "selector": "dt.",
+    "color": "rgb(82, 105, 94)",
+    "rgb": [
+      82,
+      105,
+      94
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 2331.775146484375,
+    "w": 30.000003814697266,
+    "h": 12.7998046875,
+    "minimum": 4.8854165343094405,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "/lights-out/",
+    "selector": "a.",
+    "color": "rgb(45, 80, 68)",
+    "rgb": [
+      45,
+      80,
+      68
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 159.60000610351562,
+    "y": 2331.775146484375,
+    "w": 51.98750305175781,
+    "h": 12,
+    "minimum": 7.3849739534968615,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Public version",
+    "selector": "dt.",
+    "color": "rgb(82, 105, 94)",
+    "rgb": [
+      82,
+      105,
+      94
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 2370.72509765625,
+    "w": 84,
+    "h": 12.800048828125,
+    "minimum": 4.8854165343094405,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "v11.2.0",
+    "selector": "dd.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 159.60000610351562,
+    "y": 2370.72509765625,
+    "w": 32.399993896484375,
+    "h": 11.199951171875,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Release state",
+    "selector": "dt.",
+    "color": "rgb(82, 105, 94)",
+    "rgb": [
+      82,
+      105,
+      94
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 2409.525146484375,
+    "w": 78,
+    "h": 12.7998046875,
+    "minimum": 4.8854165343094405,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "PUBLIC_RELEASE",
+    "selector": "dd.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 159.60000610351562,
+    "y": 2409.525146484375,
+    "w": 87.59999084472656,
+    "h": 11.199951171875,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Download Lights Out v11.2.0",
+    "selector": "a.button.button-primary",
+    "color": "rgb(241, 242, 230)",
+    "rgb": [
+      241,
+      242,
+      230
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 116.5999984741211,
+    "y": 2475.324951171875,
+    "w": 162,
+    "h": 12.800048828125,
+    "minimum": 9.151060127604733,
+    "bgAt": [
+      51,
+      68,
+      59
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Verification, artifact & evidence",
+    "selector": "summary.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 2553.324951171875,
+    "w": 198,
+    "h": 12.800048828125,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "+",
+    "selector": "span.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 341.6000061035156,
+    "y": 2554.925048828125,
+    "w": 10.79998779296875,
+    "h": 23.199951171875,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Cleanroom",
+    "selector": "h3.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 2651.72509765625,
+    "w": 132.25,
+    "h": 32.800048828125,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Windows",
+    "selector": "span.platform-badge",
+    "color": "rgb(82, 105, 95)",
+    "rgb": [
+      82,
+      105,
+      95
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 2697.375,
+    "w": 42.000003814697266,
+    "h": 12.800048828125,
+    "minimum": 4.880435175383062,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Public release",
+    "selector": "span.status-indicator.public_release",
+    "color": "rgb(82, 105, 93)",
+    "rgb": [
+      82,
+      105,
+      93
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 2726.375,
+    "w": 84,
+    "h": 12.800048828125,
+    "minimum": 4.890343734506048,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "CI-built Windows installer (PyInstaller + Inno Setup).",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 2767.775146484375,
+    "w": 274.4250183105469,
+    "h": 12.7998046875,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Release",
+    "selector": "h4.receipt-section-title",
+    "color": "rgb(93, 108, 84)",
+    "rgb": [
+      93,
+      108,
+      84
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 2809.775146484375,
+    "w": 47.60000228881836,
+    "h": 12.7998046875,
+    "minimum": 4.62739461970895,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Route",
+    "selector": "dt.",
+    "color": "rgb(82, 105, 94)",
+    "rgb": [
+      82,
+      105,
+      94
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 2850.775146484375,
+    "w": 30.000003814697266,
+    "h": 12.7998046875,
+    "minimum": 4.8854165343094405,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "/cleanroom/",
+    "selector": "a.",
+    "color": "rgb(45, 80, 68)",
+    "rgb": [
+      45,
+      80,
+      68
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 159.60000610351562,
+    "y": 2850.775146484375,
+    "w": 58.41249084472656,
+    "h": 12,
+    "minimum": 7.3849739534968615,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Public version",
+    "selector": "dt.",
+    "color": "rgb(82, 105, 94)",
+    "rgb": [
+      82,
+      105,
+      94
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 2889.72509765625,
+    "w": 84,
+    "h": 12.800048828125,
+    "minimum": 4.8854165343094405,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "v1.0.7",
+    "selector": "dd.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 159.60000610351562,
+    "y": 2889.72509765625,
+    "w": 27.050003051757812,
+    "h": 11.199951171875,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Candidate v1.0.10 is on hold and is not an authorized public release.",
+    "selector": "dd.candidate-version",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 2920.72509765625,
+    "w": 103.26249694824219,
+    "h": 11.199951171875,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Candidate v1.0.10 is on hold and is not an authorized public release.",
+    "selector": "dd.candidate-version",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 2937.22509765625,
+    "w": 77.10000610351562,
+    "h": 11.199951171875,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Candidate v1.0.10 is on hold and is not an authorized public release.",
+    "selector": "dd.candidate-version",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 2953.72509765625,
+    "w": 75.61250305175781,
+    "h": 11.199951171875,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Candidate v1.0.10 is on hold and is not an authorized public release.",
+    "selector": "dd.candidate-version",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 2970.22509765625,
+    "w": 35.23749923706055,
+    "h": 11.199951171875,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Release state",
+    "selector": "dt.",
+    "color": "rgb(82, 105, 94)",
+    "rgb": [
+      82,
+      105,
+      94
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 3007.525146484375,
+    "w": 78,
+    "h": 12.7998046875,
+    "minimum": 4.8854165343094405,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "PUBLIC_RELEASE",
+    "selector": "dd.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 159.60000610351562,
+    "y": 3007.525146484375,
+    "w": 87.59999084472656,
+    "h": 11.199951171875,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Download v1.0.7",
+    "selector": "a.button.button-primary",
+    "color": "rgb(241, 242, 230)",
+    "rgb": [
+      241,
+      242,
+      230
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 150.3625030517578,
+    "y": 3073.324951171875,
+    "w": 94.47500610351562,
+    "h": 12.800048828125,
+    "minimum": 9.151060127604733,
+    "bgAt": [
+      51,
+      68,
+      59
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Verification, artifact & evidence",
+    "selector": "summary.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 3151.324951171875,
+    "w": 198,
+    "h": 12.800048828125,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "+",
+    "selector": "span.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 341.6000061035156,
+    "y": 3152.925048828125,
+    "w": 10.79998779296875,
+    "h": 23.199951171875,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "ProofShot",
+    "selector": "h3.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 3249.72509765625,
+    "w": 119.92500305175781,
+    "h": 32.800048828125,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Windows",
+    "selector": "span.platform-badge",
+    "color": "rgb(82, 105, 95)",
+    "rgb": [
+      82,
+      105,
+      95
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 3295.375,
+    "w": 42.000003814697266,
+    "h": 12.800048828125,
+    "minimum": 4.880435175383062,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Public release",
+    "selector": "span.status-indicator.public_release",
+    "color": "rgb(82, 105, 93)",
+    "rgb": [
+      82,
+      105,
+      93
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 3324.375,
+    "w": 84,
+    "h": 12.800048828125,
+    "minimum": 4.890343734506048,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Electron desktop application: SmartDecode extraction pipeline, proof-bundle export (SHA-256 manifest",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 3365.775146484375,
+    "w": 286.3625183105469,
+    "h": 12.7998046875,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Electron desktop application: SmartDecode extraction pipeline, proof-bundle export (SHA-256 manifest",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 3386.775146484375,
+    "w": 297.9125061035156,
+    "h": 12.7998046875,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Electron desktop application: SmartDecode extraction pipeline, proof-bundle export (SHA-256 manifest",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 3407.775146484375,
+    "w": 294.3000183105469,
+    "h": 12.7998046875,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Electron desktop application: SmartDecode extraction pipeline, proof-bundle export (SHA-256 manifest",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 3428.775146484375,
+    "w": 249.9875030517578,
+    "h": 12.7998046875,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Electron desktop application: SmartDecode extraction pipeline, proof-bundle export (SHA-256 manifest",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 3449.775146484375,
+    "w": 305.7250061035156,
+    "h": 12.7998046875,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Electron desktop application: SmartDecode extraction pipeline, proof-bundle export (SHA-256 manifest",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 3470.775146484375,
+    "w": 297.3375244140625,
+    "h": 12.7998046875,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Electron desktop application: SmartDecode extraction pipeline, proof-bundle export (SHA-256 manifest",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 3491.775146484375,
+    "w": 299.63751220703125,
+    "h": 12.7998046875,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Electron desktop application: SmartDecode extraction pipeline, proof-bundle export (SHA-256 manifest",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 3512.775146484375,
+    "w": 306.3000183105469,
+    "h": 12.7998046875,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Electron desktop application: SmartDecode extraction pipeline, proof-bundle export (SHA-256 manifest",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 3533.775146484375,
+    "w": 297.32501220703125,
+    "h": 12.7998046875,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Electron desktop application: SmartDecode extraction pipeline, proof-bundle export (SHA-256 manifest",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 3554.775146484375,
+    "w": 32.90000534057617,
+    "h": 12.7998046875,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Release",
+    "selector": "h4.receipt-section-title",
+    "color": "rgb(93, 108, 84)",
+    "rgb": [
+      93,
+      108,
+      84
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 3596.775146484375,
+    "w": 47.60000228881836,
+    "h": 12.7998046875,
+    "minimum": 4.62739461970895,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Route",
+    "selector": "dt.",
+    "color": "rgb(82, 105, 94)",
+    "rgb": [
+      82,
+      105,
+      94
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 3637.775146484375,
+    "w": 30.000003814697266,
+    "h": 12.7998046875,
+    "minimum": 4.8854165343094405,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "/proofshot/",
+    "selector": "a.",
+    "color": "rgb(45, 80, 68)",
+    "rgb": [
+      45,
+      80,
+      68
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 159.60000610351562,
+    "y": 3637.775146484375,
+    "w": 53.212493896484375,
+    "h": 12,
+    "minimum": 7.3849739534968615,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Public version",
+    "selector": "dt.",
+    "color": "rgb(82, 105, 94)",
+    "rgb": [
+      82,
+      105,
+      94
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 3676.72509765625,
+    "w": 84,
+    "h": 12.800048828125,
+    "minimum": 4.8854165343094405,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "v2.0.0",
+    "selector": "dd.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 159.60000610351562,
+    "y": 3676.72509765625,
+    "w": 27.712493896484375,
+    "h": 11.199951171875,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Release state",
+    "selector": "dt.",
+    "color": "rgb(82, 105, 94)",
+    "rgb": [
+      82,
+      105,
+      94
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 3715.525146484375,
+    "w": 78,
+    "h": 12.7998046875,
+    "minimum": 4.8854165343094405,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "PUBLIC_RELEASE",
+    "selector": "dd.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 159.60000610351562,
+    "y": 3715.525146484375,
+    "w": 87.59999084472656,
+    "h": 11.199951171875,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Download v2.0.0 (Windows)",
+    "selector": "a.button.button-primary",
+    "color": "rgb(241, 242, 230)",
+    "rgb": [
+      241,
+      242,
+      230
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 118.61250305175781,
+    "y": 3781.324951171875,
+    "w": 157.97499084472656,
+    "h": 12.800048828125,
+    "minimum": 9.151060127604733,
+    "bgAt": [
+      51,
+      68,
+      59
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Verification, artifact & evidence",
+    "selector": "summary.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 3859.324951171875,
+    "w": 198,
+    "h": 12.800048828125,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "+",
+    "selector": "span.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 341.6000061035156,
+    "y": 3860.925048828125,
+    "w": 10.79998779296875,
+    "h": 23.199951171875,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "ForgeCast Weather",
+    "selector": "h3.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 3957.72509765625,
+    "w": 228.91249084472656,
+    "h": 32.800048828125,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Android",
+    "selector": "span.platform-badge",
+    "color": "rgb(82, 105, 95)",
+    "rgb": [
+      82,
+      105,
+      95
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 4003.375,
+    "w": 42.000003814697266,
+    "h": 12.800048828125,
+    "minimum": 4.880435175383062,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Public release",
+    "selector": "span.status-indicator.public_release",
+    "color": "rgb(82, 105, 93)",
+    "rgb": [
+      82,
+      105,
+      93
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 4032.375,
+    "w": 84,
+    "h": 12.800048828125,
+    "minimum": 4.890343734506048,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Android APK (v0.3.5 release build, private ForgeCast signing identity)",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 4073.775146484375,
+    "w": 278.4375305175781,
+    "h": 12.7998046875,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Android APK (v0.3.5 release build, private ForgeCast signing identity)",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 4094.775146484375,
+    "w": 83.86250305175781,
+    "h": 12.800048828125,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Release",
+    "selector": "h4.receipt-section-title",
+    "color": "rgb(93, 108, 84)",
+    "rgb": [
+      93,
+      108,
+      84
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 4136.77490234375,
+    "w": 47.60000228881836,
+    "h": 12.80029296875,
+    "minimum": 4.62739461970895,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Route",
+    "selector": "dt.",
+    "color": "rgb(82, 105, 94)",
+    "rgb": [
+      82,
+      105,
+      94
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 4177.77490234375,
+    "w": 30.000003814697266,
+    "h": 12.80029296875,
+    "minimum": 4.8854165343094405,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "/forgecast/",
+    "selector": "a.",
+    "color": "rgb(45, 80, 68)",
+    "rgb": [
+      45,
+      80,
+      68
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 159.60000610351562,
+    "y": 4177.77490234375,
+    "w": 52.149993896484375,
+    "h": 12,
+    "minimum": 7.3849739534968615,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Public version",
+    "selector": "dt.",
+    "color": "rgb(82, 105, 94)",
+    "rgb": [
+      82,
+      105,
+      94
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 4216.72509765625,
+    "w": 84,
+    "h": 12.7998046875,
+    "minimum": 4.8854165343094405,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "v0.3.5",
+    "selector": "dd.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 159.60000610351562,
+    "y": 4216.72509765625,
+    "w": 27.75,
+    "h": 11.2001953125,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Release state",
+    "selector": "dt.",
+    "color": "rgb(82, 105, 94)",
+    "rgb": [
+      82,
+      105,
+      94
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 4255.52490234375,
+    "w": 78,
+    "h": 12.80029296875,
+    "minimum": 4.8854165343094405,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "PUBLIC_RELEASE",
+    "selector": "dd.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 159.60000610351562,
+    "y": 4255.52490234375,
+    "w": 87.59999084472656,
+    "h": 11.2001953125,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Download v0.3.5 (APK)",
+    "selector": "a.button.button-primary",
+    "color": "rgb(241, 242, 230)",
+    "rgb": [
+      241,
+      242,
+      230
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 132.0749969482422,
+    "y": 4321.3251953125,
+    "w": 131.0375213623047,
+    "h": 12.7998046875,
+    "minimum": 9.151060127604733,
+    "bgAt": [
+      51,
+      68,
+      59
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Verification, artifact & evidence",
+    "selector": "summary.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 4399.3251953125,
+    "w": 198,
+    "h": 12.7998046875,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "+",
+    "selector": "span.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 341.6000061035156,
+    "y": 4400.92529296875,
+    "w": 10.79998779296875,
+    "h": 23.19970703125,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Reality Gate",
+    "selector": "h3.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 4497.72509765625,
+    "w": 144.5500030517578,
+    "h": 32.7998046875,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Windows",
+    "selector": "span.platform-badge",
+    "color": "rgb(82, 105, 95)",
+    "rgb": [
+      82,
+      105,
+      95
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 4543.375,
+    "w": 42.000003814697266,
+    "h": 12.80029296875,
+    "minimum": 4.880435175383062,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Withdrawn · no public download",
+    "selector": "span.status-indicator.withdrawn",
+    "color": "rgb(82, 105, 93)",
+    "rgb": [
+      82,
+      105,
+      93
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 4572.375,
+    "w": 180,
+    "h": 12.80029296875,
+    "minimum": 4.890343734506048,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "The release record lists the security disposition as unresolved. A later v1.1.1 Developer Pilot has ",
+    "selector": "strong.",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 4613.77490234375,
+    "w": 283.7250061035156,
+    "h": 12.80029296875,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "The release record lists the security disposition as unresolved. A later v1.1.1 Developer Pilot has ",
+    "selector": "strong.",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 4634.77490234375,
+    "w": 256.9875183105469,
+    "h": 12.80029296875,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "The release record lists the security disposition as unresolved. A later v1.1.1 Developer Pilot has ",
+    "selector": "strong.",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 4655.77490234375,
+    "w": 300.5625305175781,
+    "h": 12.80029296875,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "The release record lists the security disposition as unresolved. A later v1.1.1 Developer Pilot has ",
+    "selector": "strong.",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 4676.77490234375,
+    "w": 292.9250183105469,
+    "h": 12.80029296875,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Historical release record: Historical Windows installer ZIP record for v1.1.0. The package was withd",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 4697.77490234375,
+    "w": 300.7375183105469,
+    "h": 12.80029296875,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Historical release record: Historical Windows installer ZIP record for v1.1.0. The package was withd",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 4718.77490234375,
+    "w": 275.2750244140625,
+    "h": 12.80029296875,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Historical release record: Historical Windows installer ZIP record for v1.1.0. The package was withd",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 4739.77490234375,
+    "w": 254.37501525878906,
+    "h": 12.80029296875,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Historical release record: Historical Windows installer ZIP record for v1.1.0. The package was withd",
+    "selector": "p.build-desc",
+    "color": "rgb(66, 92, 81)",
+    "rgb": [
+      66,
+      92,
+      81
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 4760.77490234375,
+    "w": 55.23749923706055,
+    "h": 12.80029296875,
+    "minimum": 6.003973418379853,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Release",
+    "selector": "h4.receipt-section-title",
+    "color": "rgb(93, 108, 84)",
+    "rgb": [
+      93,
+      108,
+      84
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 4802.77490234375,
+    "w": 47.60000228881836,
+    "h": 12.80029296875,
+    "minimum": 4.62739461970895,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Route",
+    "selector": "dt.",
+    "color": "rgb(82, 105, 94)",
+    "rgb": [
+      82,
+      105,
+      94
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 4843.77490234375,
+    "w": 30.000003814697266,
+    "h": 12.80029296875,
+    "minimum": 4.8854165343094405,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "/reality-gate/",
+    "selector": "a.",
+    "color": "rgb(45, 80, 68)",
+    "rgb": [
+      45,
+      80,
+      68
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 159.60000610351562,
+    "y": 4843.77490234375,
+    "w": 60.875,
+    "h": 12,
+    "minimum": 7.3849739534968615,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Public version",
+    "selector": "dt.",
+    "color": "rgb(82, 105, 94)",
+    "rgb": [
+      82,
+      105,
+      94
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 4882.72509765625,
+    "w": 84,
+    "h": 12.7998046875,
+    "minimum": 4.8854165343094405,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Withdrawn (v1.1.0)",
+    "selector": "dd.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 159.60000610351562,
+    "y": 4882.72509765625,
+    "w": 83.21249389648438,
+    "h": 11.2001953125,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Release state",
+    "selector": "dt.",
+    "color": "rgb(82, 105, 94)",
+    "rgb": [
+      82,
+      105,
+      94
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 4921.52490234375,
+    "w": 78,
+    "h": 12.80029296875,
+    "minimum": 4.8854165343094405,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "WITHDRAWN",
+    "selector": "dd.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 159.60000610351562,
+    "y": 4921.52490234375,
+    "w": 63.087493896484375,
+    "h": 11.2001953125,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Downloads currently unavailable",
+    "selector": "span.button.button-muted",
+    "color": "rgb(241, 242, 230)",
+    "rgb": [
+      241,
+      242,
+      230
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 98.3499984741211,
+    "y": 4987.3251953125,
+    "w": 198.5,
+    "h": 13.60009765625,
+    "minimum": 9.151060127604733,
+    "bgAt": [
+      51,
+      68,
+      59
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Verification, artifact & evidence",
+    "selector": "summary.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 42.79999923706055,
+    "y": 5065.3251953125,
+    "w": 198,
+    "h": 12.7998046875,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "+",
+    "selector": "span.",
+    "color": "rgb(36, 57, 54)",
+    "rgb": [
+      36,
+      57,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 341.6000061035156,
+    "y": 5066.92529296875,
+    "w": 10.79998779296875,
+    "h": 23.19970703125,
+    "minimum": 10.095748584005015,
+    "bgAt": [
+      233,
+      234,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Site verification receipts (historical)",
+    "selector": "h2.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 5188.92529296875,
+    "w": 284.82501220703125,
+    "h": 33.599609375,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Site verification receipts (historical)",
+    "selector": "h2.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 5224.92529296875,
+    "w": 130.4499969482422,
+    "h": 33.599609375,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "No site verification receipt has been published for the current build yet.",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 5288.3251953125,
+    "w": 324.20001220703125,
+    "h": 15.19970703125,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "No site verification receipt has been published for the current build yet.",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 5311.42529296875,
+    "w": 102.5999984741211,
+    "h": 15.19970703125,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Most recent product release event:",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 5348.52490234375,
+    "w": 216.5500030517578,
+    "h": 15.2001953125,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Lights Out PC",
+    "selector": "strong.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 234.5500030517578,
+    "y": 5348.52490234375,
+    "w": 91.09999084472656,
+    "h": 15.2001953125,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "— artifact verified on",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 325.6499938964844,
+    "y": 5348.52490234375,
+    "w": 16.9375,
+    "h": 15.2001953125,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "— artifact verified on",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 5371.625,
+    "w": 112.28750610351562,
+    "h": 15.2001953125,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "2026-10-16",
+    "selector": "time.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 130.28750610351562,
+    "y": 5371.625,
+    "w": 73.83749389648438,
+    "h": 15.2001953125,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": ". Release facts on this page are built from",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 204.125,
+    "y": 5371.625,
+    "w": 134.80001831054688,
+    "h": 15.2001953125,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": ". Release facts on this page are built from",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 5394.72509765625,
+    "w": 117.25,
+    "h": 15.2001953125,
+    "minimum": 8.59600773000485,
+    "bgAt": [
+      26,
+      32,
+      34
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "release-truth.json",
+    "selector": "code.inline",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 140.25,
+    "y": 5394.72509765625,
+    "w": 130.03750610351562,
+    "h": 15.2001953125,
+    "minimum": 8.397961775331805,
+    "bgAt": [
+      28,
+      34,
+      36
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": ", an authored build input kept in source custody and not published; the published canonical record i",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 275.2875061035156,
+    "y": 5394.72509765625,
+    "w": 80.88751220703125,
+    "h": 15.2001953125,
+    "minimum": 9.324120973586504,
+    "bgAt": [
+      19,
+      24,
+      27
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": ", an authored build input kept in source custody and not published; the published canonical record i",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 5417.8251953125,
+    "w": 344.76251220703125,
+    "h": 15.19970703125,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": ", an authored build input kept in source custody and not published; the published canonical record i",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 5440.92529296875,
+    "w": 182.3874969482422,
+    "h": 15.19970703125,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "/truth/v2/index.json",
+    "selector": "a.text-link",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 200.3874969482422,
+    "y": 5440.92529296875,
+    "w": 123.93751525878906,
+    "h": 15.19970703125,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": ".",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 324.32501220703125,
+    "y": 5440.92529296875,
+    "w": 3.887481689453125,
+    "h": 15.19970703125,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Historical site receipt (2026‑08‑20 · route checks and ForgeCast v0.3.3; its site commit is not part",
+    "selector": "a.button.button-secondary",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 30.80000114440918,
+    "y": 5500.22509765625,
+    "w": 326.8125305175781,
+    "h": 12,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Historical site receipt (2026‑08‑20 · route checks and ForgeCast v0.3.3; its site commit is not part",
+    "selector": "a.button.button-secondary",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 30.80000114440918,
+    "y": 5516.72509765625,
+    "w": 295.3500061035156,
+    "h": 12,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Historical site receipt (2026‑08‑20 · route checks and ForgeCast v0.3.3; its site commit is not part",
+    "selector": "a.button.button-secondary",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 30.80000114440918,
+    "y": 5533.22509765625,
+    "w": 39.787498474121094,
+    "h": 12,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Machine-readable registry (JSON)",
+    "selector": "a.button.button-secondary",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 107.2750015258789,
+    "y": 5593.27490234375,
+    "w": 175.8375244140625,
+    "h": 12,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "The Proof Foundry",
+    "selector": "span.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 65,
+    "y": 5734.125,
+    "w": 136.2624969482422,
+    "h": 17.60009765625,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Build it. Prove it. Ship it.",
+    "selector": "p.",
+    "color": "rgb(165, 177, 182)",
+    "rgb": [
+      165,
+      177,
+      182
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 5781.52490234375,
+    "w": 134.5124969482422,
+    "h": 13.60009765625,
+    "minimum": 8.581884017980935,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Independent software.",
+    "selector": "p.footer-maker-note",
+    "color": "rgb(165, 177, 182)",
+    "rgb": [
+      165,
+      177,
+      182
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 5812.97509765625,
+    "w": 118.4375,
+    "h": 12.7998046875,
+    "minimum": 8.581884017980935,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Public records. Clear limits.",
+    "selector": "p.footer-maker-note",
+    "color": "rgb(165, 177, 182)",
+    "rgb": [
+      165,
+      177,
+      182
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 136.4375,
+    "y": 5812.97509765625,
+    "w": 144.02499389648438,
+    "h": 12.7998046875,
+    "minimum": 8.581884017980935,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Explore",
+    "selector": "h2.",
+    "color": "rgb(186, 164, 127)",
+    "rgb": [
+      186,
+      164,
+      127
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 5862.375,
+    "w": 56.212501525878906,
+    "h": 14.39990234375,
+    "minimum": 7.81044882130314,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Products directory",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 5907.375,
+    "w": 97.26250457763672,
+    "h": 12.80029296875,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Proof Standard",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 5947.375,
+    "w": 80.3499984741211,
+    "h": 12.80029296875,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Release records",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 5987.375,
+    "w": 86.5,
+    "h": 12.80029296875,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Truth Files",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 6027.375,
+    "w": 55.4375,
+    "h": 12.80029296875,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Company",
+    "selector": "h2.",
+    "color": "rgb(186, 164, 127)",
+    "rgb": [
+      186,
+      164,
+      127
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 208.1999969482422,
+    "y": 5862.375,
+    "w": 56.21250915527344,
+    "h": 14.39990234375,
+    "minimum": 7.81044882130314,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "About",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 208.1999969482422,
+    "y": 5907.375,
+    "w": 32.13751220703125,
+    "h": 12.80029296875,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Founders Circle",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 208.1999969482422,
+    "y": 5947.375,
+    "w": 84.18751525878906,
+    "h": 12.80029296875,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Roadmap",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 208.1999969482422,
+    "y": 5987.375,
+    "w": 52.46250915527344,
+    "h": 12.80029296875,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Support",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 208.1999969482422,
+    "y": 6027.375,
+    "w": 42.82501220703125,
+    "h": 12.80029296875,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "© 2026 Proof Foundry. All rights reserved.",
+    "selector": "p.",
+    "color": "rgb(143, 157, 164)",
+    "rgb": [
+      143,
+      157,
+      164
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 6094.27490234375,
+    "w": 164.71250915527344,
+    "h": 9.60009765625,
+    "minimum": 6.753723849196874,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Reduced motion",
+    "selector": "button.motion-toggle",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [
+      "BUTTON.motion-toggle"
+    ],
+    "x": 288.3999938964844,
+    "y": 6097.67529296875,
+    "w": 84,
+    "h": 12.7998046875,
+    "status": "unmeasured effects"
+  }
+]

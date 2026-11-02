@@ -1,0 +1,3563 @@
+[
+  {
+    "text": "Skip to content",
+    "selector": "a.skip-link",
+    "color": "rgb(27, 40, 44)",
+    "rgb": [
+      27,
+      40,
+      44
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 34,
+    "y": -84,
+    "w": 105.9375,
+    "h": 17.599998474121094,
+    "minimum": 100,
+    "bgAt": null,
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "The Proof Foundry",
+    "selector": "span.brand-name",
+    "color": "rgb(242, 240, 232)",
+    "rgb": [
+      242,
+      240,
+      232
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 143.8000030517578,
+    "y": 28.200000762939453,
+    "w": 152.68751525878906,
+    "h": 18.400001525878906,
+    "minimum": 14.177833198408837,
+    "bgAt": [
+      25,
+      34,
+      38
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Build it. Prove it. Ship it.",
+    "selector": "small.",
+    "color": "rgb(192, 181, 160)",
+    "rgb": [
+      192,
+      181,
+      160
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 143.8000030517578,
+    "y": 54,
+    "w": 181.4499969482422,
+    "h": 12,
+    "minimum": 8.51354555935369,
+    "bgAt": [
+      20,
+      28,
+      32
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Products",
+    "selector": "a.",
+    "color": "rgb(215, 222, 220)",
+    "rgb": [
+      215,
+      222,
+      220
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 967.5250244140625,
+    "y": 39.79999923706055,
+    "w": 52.71246337890625,
+    "h": 12.800003051757812,
+    "minimum": 5.832779962541649,
+    "bgAt": [
+      70,
+      83,
+      87
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Proof",
+    "selector": "a.",
+    "color": "rgb(243, 243, 236)",
+    "rgb": [
+      243,
+      243,
+      236
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 1050.8375244140625,
+    "y": 40.79999923706055,
+    "w": 31.6875,
+    "h": 12.800003051757812,
+    "minimum": 13.374134180720363,
+    "bgAt": [
+      29,
+      41,
+      46
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Truth Files",
+    "selector": "a.",
+    "color": "rgb(215, 222, 220)",
+    "rgb": [
+      215,
+      222,
+      220
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 1113.125,
+    "y": 39.79999923706055,
+    "w": 60.75,
+    "h": 12.800003051757812,
+    "minimum": 5.832779962541649,
+    "bgAt": [
+      70,
+      83,
+      87
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "About",
+    "selector": "a.",
+    "color": "rgb(215, 222, 220)",
+    "rgb": [
+      215,
+      222,
+      220
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 1204.4749755859375,
+    "y": 39.79999923706055,
+    "w": 35.0250244140625,
+    "h": 12.800003051757812,
+    "minimum": 5.924978452851734,
+    "bgAt": [
+      69,
+      82,
+      86
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Support",
+    "selector": "a.button.button-primary.nav-cta",
+    "color": "rgb(215, 222, 220)",
+    "rgb": [
+      215,
+      222,
+      220
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 1286.0999755859375,
+    "y": 39.900001525878906,
+    "w": 46.5,
+    "h": 12.799999237060547,
+    "minimum": 5.917572547764968,
+    "bgAt": [
+      69,
+      82,
+      87
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "01",
+    "selector": "span.pf-chain-station",
+    "color": "rgb(181, 161, 123)",
+    "rgb": [
+      181,
+      161,
+      123
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 132.6999969482422,
+    "y": 133.4499969482422,
+    "w": 10.800003051757812,
+    "h": 12,
+    "minimum": 4.660391657353597,
+    "bgAt": [
+      42,
+      59,
+      61
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Home",
+    "selector": "span.",
+    "color": "rgb(211, 222, 212)",
+    "rgb": [
+      211,
+      222,
+      212
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 153.5,
+    "y": 132.3000030517578,
+    "w": 28.800003051757812,
+    "h": 15.199996948242188,
+    "minimum": 8.467581221675252,
+    "bgAt": [
+      42,
+      59,
+      61
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "02",
+    "selector": "span.pf-chain-station",
+    "color": "rgb(181, 161, 123)",
+    "rgb": [
+      181,
+      161,
+      123
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 343.3000183105469,
+    "y": 139.0500030517578,
+    "w": 10.79998779296875,
+    "h": 12,
+    "minimum": 4.665953825564154,
+    "bgAt": [
+      42,
+      59,
+      60
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Products",
+    "selector": "span.",
+    "color": "rgb(211, 222, 212)",
+    "rgb": [
+      211,
+      222,
+      212
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 364.1000061035156,
+    "y": 137.90000915527344,
+    "w": 57.600006103515625,
+    "h": 15.199996948242188,
+    "minimum": 8.340920658555959,
+    "bgAt": [
+      43,
+      60,
+      62
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "03",
+    "selector": "span.pf-chain-station",
+    "color": "rgb(32, 56, 46)",
+    "rgb": [
+      32,
+      56,
+      46
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 579.1000366210938,
+    "y": 139.0500030517578,
+    "w": 10.79998779296875,
+    "h": 12,
+    "minimum": 5.260250646892568,
+    "bgAt": [
+      157,
+      171,
+      160
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Proof",
+    "selector": "span.",
+    "color": "rgb(16, 36, 43)",
+    "rgb": [
+      16,
+      36,
+      43
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 599.9000244140625,
+    "y": 137.90000915527344,
+    "w": 36,
+    "h": 15.199996948242188,
+    "minimum": 6.545301180744037,
+    "bgAt": [
+      155,
+      169,
+      159
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "04",
+    "selector": "span.pf-chain-station",
+    "color": "rgb(181, 161, 123)",
+    "rgb": [
+      181,
+      161,
+      123
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 782.5,
+    "y": 139.0500030517578,
+    "w": 10.79998779296875,
+    "h": 12,
+    "minimum": 4.730805576376875,
+    "bgAt": [
+      41,
+      58,
+      60
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Truth Files",
+    "selector": "span.",
+    "color": "rgb(211, 222, 212)",
+    "rgb": [
+      211,
+      222,
+      212
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 803.2999877929688,
+    "y": 137.90000915527344,
+    "w": 79.20001220703125,
+    "h": 15.199996948242188,
+    "minimum": 8.340920658555959,
+    "bgAt": [
+      43,
+      60,
+      62
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "05",
+    "selector": "span.pf-chain-station",
+    "color": "rgb(181, 161, 123)",
+    "rgb": [
+      181,
+      161,
+      123
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 1029.0999755859375,
+    "y": 139.0500030517578,
+    "w": 10.800048828125,
+    "h": 12,
+    "minimum": 4.665953825564154,
+    "bgAt": [
+      42,
+      59,
+      60
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "About",
+    "selector": "span.",
+    "color": "rgb(211, 222, 212)",
+    "rgb": [
+      211,
+      222,
+      212
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 1049.9000244140625,
+    "y": 137.90000915527344,
+    "w": 36,
+    "h": 15.199996948242188,
+    "minimum": 8.340920658555959,
+    "bgAt": [
+      43,
+      60,
+      62
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "06",
+    "selector": "span.pf-chain-station",
+    "color": "rgb(181, 161, 123)",
+    "rgb": [
+      181,
+      161,
+      123
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 1246.9000244140625,
+    "y": 139.0500030517578,
+    "w": 10.800048828125,
+    "h": 12,
+    "minimum": 4.665953825564154,
+    "bgAt": [
+      42,
+      59,
+      60
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Support",
+    "selector": "span.",
+    "color": "rgb(211, 222, 212)",
+    "rgb": [
+      211,
+      222,
+      212
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 1267.7000732421875,
+    "y": 137.90000915527344,
+    "w": 50.39990234375,
+    "h": 15.199996948242188,
+    "minimum": 8.340920658555959,
+    "bgAt": [
+      43,
+      60,
+      62
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Doctrine & Verification Philosophy",
+    "selector": "p.kicker",
+    "color": "rgb(201, 176, 131)",
+    "rgb": [
+      201,
+      176,
+      131
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 270.20001220703125,
+    "w": 273.0249938964844,
+    "h": 14.399993896484375,
+    "minimum": 8.6943143522117,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "The Proof Standard",
+    "selector": "h1#standard-title",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 306.1000061035156,
+    "w": 690.1375122070312,
+    "h": 100,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Proof over rented trust. Verification standards and release principles for software forged at The Pr",
+    "selector": "p.support-intro",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 433.01251220703125,
+    "w": 630.8125,
+    "h": 20,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Proof over rented trust. Verification standards and release principles for software forged at The Pr",
+    "selector": "p.support-intro",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 464.51251220703125,
+    "w": 224.85000610351562,
+    "h": 20,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "The proof method / Five connected stages",
+    "selector": "p.kicker",
+    "color": "rgb(201, 176, 131)",
+    "rgb": [
+      201,
+      176,
+      131
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 616.2125244140625,
+    "w": 321.20001220703125,
+    "h": 14.39996337890625,
+    "minimum": 8.6943143522117,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "A record, all the way through.",
+    "selector": "h2#chain-title",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 650.7125244140625,
+    "w": 408.3625183105469,
+    "h": 53.5999755859375,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "A record, all the way through.",
+    "selector": "h2#chain-title",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 707.0625,
+    "w": 175.1374969482422,
+    "h": 53.60003662109375,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Follow the work from its source to its stated limits. Select a stage to inspect what it contributes.",
+    "selector": "p.",
+    "color": "rgb(192, 203, 197)",
+    "rgb": [
+      192,
+      203,
+      197
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 755,
+    "y": 711.4125366210938,
+    "w": 570.9000244140625,
+    "h": 17.5999755859375,
+    "minimum": 10.922718789740966,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Follow the work from its source to its stated limits. Select a stage to inspect what it contributes.",
+    "selector": "p.",
+    "color": "rgb(192, 203, 197)",
+    "rgb": [
+      192,
+      203,
+      197
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 755,
+    "y": 739.4125366210938,
+    "w": 84.2750244140625,
+    "h": 17.5999755859375,
+    "minimum": 10.922718789740966,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "PF / EVIDENCE DRIVE",
+    "selector": "span.pf-chain-stamp",
+    "color": "rgb(200, 209, 198)",
+    "rgb": [
+      200,
+      209,
+      198
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 80.80000305175781,
+    "y": 823.0125122070312,
+    "w": 133,
+    "h": 12.79998779296875,
+    "minimum": 8.46113683049907,
+    "bgAt": [
+      37,
+      50,
+      51
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Motion off",
+    "selector": "button.pf-chain-toggle",
+    "color": "rgb(229, 213, 179)",
+    "rgb": [
+      229,
+      213,
+      179
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [
+      "BUTTON.pf-chain-toggle"
+    ],
+    "x": 1280.4000244140625,
+    "y": 822.2125244140625,
+    "w": 66,
+    "h": 14.39996337890625,
+    "status": "unmeasured effects"
+  },
+  {
+    "text": "01",
+    "selector": "span.proof-step-number",
+    "color": "rgb(181, 196, 192)",
+    "rgb": [
+      181,
+      196,
+      192
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 90.80000305175781,
+    "y": 1173.3375244140625,
+    "w": 12,
+    "h": 12.800048828125,
+    "minimum": 7.1827033931699935,
+    "bgAt": [
+      42,
+      51,
+      50
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Source",
+    "selector": "button.pf-chain-select",
+    "color": "rgb(240, 213, 163)",
+    "rgb": [
+      240,
+      213,
+      163
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 90.80000305175781,
+    "y": 1212.8375244140625,
+    "w": 66.16250610351562,
+    "h": 21.5999755859375,
+    "minimum": 9.643982948025192,
+    "bgAt": [
+      37,
+      47,
+      49
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Identify what was built.",
+    "selector": "p.",
+    "color": "rgb(189, 202, 199)",
+    "rgb": [
+      189,
+      202,
+      199
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 90.80000305175781,
+    "y": 1259.737548828125,
+    "w": 129.0625,
+    "h": 13.5999755859375,
+    "minimum": 8.713190519884305,
+    "bgAt": [
+      31,
+      42,
+      45
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "02",
+    "selector": "span.proof-step-number",
+    "color": "rgb(181, 196, 192)",
+    "rgb": [
+      181,
+      196,
+      192
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 348.875,
+    "y": 1178.9375,
+    "w": 12,
+    "h": 12.800048828125,
+    "minimum": 9.002829930722895,
+    "bgAt": [
+      22,
+      34,
+      38
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Build",
+    "selector": "button.pf-chain-select",
+    "color": "rgb(231, 234, 225)",
+    "rgb": [
+      231,
+      234,
+      225
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 348.875,
+    "y": 1218.4375,
+    "w": 47.70001220703125,
+    "h": 21.5999755859375,
+    "minimum": 13.507074186258226,
+    "bgAt": [
+      21,
+      33,
+      38
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Record how it was made.",
+    "selector": "p.",
+    "color": "rgb(189, 202, 199)",
+    "rgb": [
+      189,
+      202,
+      199
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 348.875,
+    "y": 1265.3375244140625,
+    "w": 143.23751831054688,
+    "h": 13.5999755859375,
+    "minimum": 9.846440126718441,
+    "bgAt": [
+      20,
+      32,
+      37
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "03",
+    "selector": "span.proof-step-number",
+    "color": "rgb(181, 196, 192)",
+    "rgb": [
+      181,
+      196,
+      192
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 606.9500122070312,
+    "y": 1178.9375,
+    "w": 12,
+    "h": 12.800048828125,
+    "minimum": 9.67871831362388,
+    "bgAt": [
+      16,
+      27,
+      33
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Artifact",
+    "selector": "button.pf-chain-select",
+    "color": "rgb(231, 234, 225)",
+    "rgb": [
+      231,
+      234,
+      225
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 606.9500122070312,
+    "y": 1218.4375,
+    "w": 67.125,
+    "h": 21.5999755859375,
+    "minimum": 14.369293902446465,
+    "bgAt": [
+      16,
+      27,
+      33
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Inspect the exact files.",
+    "selector": "p.",
+    "color": "rgb(189, 202, 199)",
+    "rgb": [
+      189,
+      202,
+      199
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 606.9500122070312,
+    "y": 1265.3375244140625,
+    "w": 127.0250244140625,
+    "h": 13.5999755859375,
+    "minimum": 10.35728744299006,
+    "bgAt": [
+      16,
+      27,
+      33
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "04",
+    "selector": "span.proof-step-number",
+    "color": "rgb(181, 196, 192)",
+    "rgb": [
+      181,
+      196,
+      192
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 865.0375366210938,
+    "y": 1178.9375,
+    "w": 12,
+    "h": 12.800048828125,
+    "minimum": 9.67871831362388,
+    "bgAt": [
+      16,
+      27,
+      33
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Release",
+    "selector": "button.pf-chain-select",
+    "color": "rgb(231, 234, 225)",
+    "rgb": [
+      231,
+      234,
+      225
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 865.0375366210938,
+    "y": 1218.4375,
+    "w": 74.7874755859375,
+    "h": 21.5999755859375,
+    "minimum": 14.369293902446465,
+    "bgAt": [
+      16,
+      27,
+      33
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "State what is available.",
+    "selector": "p.",
+    "color": "rgb(189, 202, 199)",
+    "rgb": [
+      189,
+      202,
+      199
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 865.0375366210938,
+    "y": 1265.3375244140625,
+    "w": 130.61248779296875,
+    "h": 13.5999755859375,
+    "minimum": 10.35728744299006,
+    "bgAt": [
+      16,
+      27,
+      33
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "05",
+    "selector": "span.proof-step-number",
+    "color": "rgb(181, 196, 192)",
+    "rgb": [
+      181,
+      196,
+      192
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 1123.112548828125,
+    "y": 1178.9375,
+    "w": 12,
+    "h": 12.800048828125,
+    "minimum": 9.67871831362388,
+    "bgAt": [
+      16,
+      27,
+      33
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Limits",
+    "selector": "button.pf-chain-select",
+    "color": "rgb(231, 234, 225)",
+    "rgb": [
+      231,
+      234,
+      225
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 1123.112548828125,
+    "y": 1218.4375,
+    "w": 55.7999267578125,
+    "h": 21.5999755859375,
+    "minimum": 14.369293902446465,
+    "bgAt": [
+      16,
+      27,
+      33
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Keep the qualifications visible.",
+    "selector": "p.",
+    "color": "rgb(189, 202, 199)",
+    "rgb": [
+      189,
+      202,
+      199
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 1123.112548828125,
+    "y": 1265.3375244140625,
+    "w": 172.625,
+    "h": 13.5999755859375,
+    "minimum": 10.35728744299006,
+    "bgAt": [
+      16,
+      27,
+      33
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Source",
+    "selector": "strong.",
+    "color": "rgb(232, 210, 168)",
+    "rgb": [
+      232,
+      210,
+      168
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 80.80000305175781,
+    "y": 1338.237548828125,
+    "w": 50.399993896484375,
+    "h": 18.4000244140625,
+    "minimum": 10.505001343039904,
+    "bgAt": [
+      26,
+      38,
+      41
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "A specific source version gives a build an identifiable starting point.",
+    "selector": "p.",
+    "color": "rgb(209, 219, 212)",
+    "rgb": [
+      209,
+      219,
+      212
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 234.8000030517578,
+    "y": 1342.237548828125,
+    "w": 409.112548828125,
+    "h": 15.199951171875,
+    "minimum": 11.561298965088374,
+    "bgAt": [
+      22,
+      33,
+      38
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "An illustration of the record, not a live verification.",
+    "selector": "p.pf-chain-caption",
+    "color": "rgb(170, 187, 181)",
+    "rgb": [
+      170,
+      187,
+      181
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 80.80000305175781,
+    "y": 1381.6375732421875,
+    "w": 330,
+    "h": 12.7999267578125,
+    "minimum": 7.836119802604539,
+    "bgAt": [
+      25,
+      37,
+      41
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Inspect published release records ↗",
+    "selector": "a.text-link",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 1448.8375244140625,
+    "w": 259.9875183105469,
+    "h": 17.5999755859375,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "The standard, in brief",
+    "selector": "h2#brief-title",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 1587.0374755859375,
+    "w": 222.16250610351562,
+    "h": 38.4000244140625,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "The standard, in brief",
+    "selector": "h2#brief-title",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 1626.1375732421875,
+    "w": 62.775001525878906,
+    "h": 38.39990234375,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Every public download",
+    "selector": "strong.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 636,
+    "y": 1606.8375244140625,
+    "w": 195.35003662109375,
+    "h": 20.800048828125,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "ships with a published SHA-256 checksum.",
+    "selector": "li.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 831.3500366210938,
+    "y": 1606.8375244140625,
+    "w": 367.51251220703125,
+    "h": 20.800048828125,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Every release claim",
+    "selector": "strong.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 636,
+    "y": 1668.987548828125,
+    "w": 167.5875244140625,
+    "h": 20.7999267578125,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "is tied to a recorded qualification result.",
+    "selector": "li.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 803.5875244140625,
+    "y": 1668.987548828125,
+    "w": 328.699951171875,
+    "h": 20.7999267578125,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Every boundary is stated",
+    "selector": "strong.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 636,
+    "y": 1731.1375732421875,
+    "w": 212.875,
+    "h": 20.7999267578125,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "— including what a checksum does not prove.",
+    "selector": "li.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 848.875,
+    "y": 1731.1375732421875,
+    "w": 386.237548828125,
+    "h": 20.7999267578125,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "What follows is the doctrine behind those three lines.",
+    "selector": "p.standard-brief-note",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 636,
+    "y": 1791.6875,
+    "w": 299.07501220703125,
+    "h": 13.5999755859375,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Core Trust Philosophy",
+    "selector": "h2.doctrine-heading",
+    "color": "rgb(39, 55, 54)",
+    "rgb": [
+      39,
+      55,
+      54
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 135,
+    "y": 1969.9375,
+    "w": 161.70001220703125,
+    "h": 14.4000244140625,
+    "minimum": 10.106311335416203,
+    "bgAt": [
+      232,
+      232,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "\"Proof over rented trust.\"",
+    "selector": "p.doctrine-lead",
+    "color": "rgb(40, 59, 58)",
+    "rgb": [
+      40,
+      59,
+      58
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 135,
+    "y": 2016.9375,
+    "w": 676.6500244140625,
+    "h": 75.199951171875,
+    "minimum": 9.589331885488525,
+    "bgAt": [
+      232,
+      232,
+      223
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "No fake claims. No missing receipts. Ship with proof.",
+    "selector": "p.doctrine-standards",
+    "color": "rgb(53, 75, 73)",
+    "rgb": [
+      53,
+      75,
+      73
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 135,
+    "y": 2126.212646484375,
+    "w": 458.7750244140625,
+    "h": 21.599853515625,
+    "minimum": 7.559552746219113,
+    "bgAt": [
+      232,
+      232,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "If it matters, keep the receipt.",
+    "selector": "p.doctrine-rule",
+    "color": "rgb(92, 103, 86)",
+    "rgb": [
+      92,
+      103,
+      86
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 135,
+    "y": 2166.612548828125,
+    "w": 249.60000610351562,
+    "h": 16.800048828125,
+    "minimum": 4.827642086815353,
+    "bgAt": [
+      232,
+      232,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "The Proof Standard is our studio engineering commitment: software claims are backed by measured empi",
+    "selector": "p.doctrine-body",
+    "color": "rgb(66, 86, 80)",
+    "rgb": [
+      66,
+      86,
+      80
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 135,
+    "y": 2208.612548828125,
+    "w": 547.7374877929688,
+    "h": 15.199951171875,
+    "minimum": 6.361281972237512,
+    "bgAt": [
+      232,
+      232,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "The Proof Standard is our studio engineering commitment: software claims are backed by measured empi",
+    "selector": "p.doctrine-body",
+    "color": "rgb(66, 86, 80)",
+    "rgb": [
+      66,
+      86,
+      80
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 135,
+    "y": 2231.712646484375,
+    "w": 595.3624877929688,
+    "h": 15.199951171875,
+    "minimum": 6.361281972237512,
+    "bgAt": [
+      232,
+      232,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "The Proof Standard is our studio engineering commitment: software claims are backed by measured empi",
+    "selector": "p.doctrine-body",
+    "color": "rgb(66, 86, 80)",
+    "rgb": [
+      66,
+      86,
+      80
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 135,
+    "y": 2254.8125,
+    "w": 125.28750610351562,
+    "h": 15.199951171875,
+    "minimum": 6.361281972237512,
+    "bgAt": [
+      232,
+      232,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Windows distribution note:",
+    "selector": "em.",
+    "color": "rgb(66, 86, 80)",
+    "rgb": [
+      66,
+      86,
+      80
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 135,
+    "y": 2299.91259765625,
+    "w": 163.9375,
+    "h": 15.199951171875,
+    "minimum": 6.361281972237512,
+    "bgAt": [
+      232,
+      232,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Unsigned by Windows. Receipt-backed by Proof Foundry.",
+    "selector": "p.doctrine-platform-note",
+    "color": "rgb(66, 86, 80)",
+    "rgb": [
+      66,
+      86,
+      80
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 298.9375,
+    "y": 2299.91259765625,
+    "w": 356.2750244140625,
+    "h": 15.199951171875,
+    "minimum": 6.361281972237512,
+    "bgAt": [
+      232,
+      232,
+      223
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Verification Principles",
+    "selector": "p.kicker",
+    "color": "rgb(201, 176, 131)",
+    "rgb": [
+      201,
+      176,
+      131
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 2500.612548828125,
+    "w": 184.6999969482422,
+    "h": 14.39990234375,
+    "minimum": 8.6943143522117,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "The Seven Principles of Proof",
+    "selector": "h2.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 2529.512451171875,
+    "w": 165.4250030517578,
+    "h": 45.60009765625,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "The Seven Principles of Proof",
+    "selector": "h2.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 2574.3125,
+    "w": 197.76251220703125,
+    "h": 45.60009765625,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "The Seven Principles of Proof",
+    "selector": "h2.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 2619.112548828125,
+    "w": 87.92500305175781,
+    "h": 45.60009765625,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "How we measure, document, and publish software release evidence.",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 2686.712646484375,
+    "w": 481.9625244140625,
+    "h": 17.599853515625,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "1. Claim only what was measured",
+    "selector": "h3.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 636,
+    "y": 2525.612548828125,
+    "w": 313.26251220703125,
+    "h": 24.800048828125,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Release claims are tied strictly to named execution gates and empirical test passes. We do not use v",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 636,
+    "y": 2569.112548828125,
+    "w": 707.5999755859375,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Release claims are tied strictly to named execution gates and empirical test passes. We do not use v",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 636,
+    "y": 2592.212646484375,
+    "w": 250.0625,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "2. Identify the exact artifact",
+    "selector": "h3.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 636,
+    "y": 2662.91259765625,
+    "w": 247.7750244140625,
+    "h": 24.800048828125,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Every downloadable binary asset is bound to its canonical filename and its 64-character hex SHA-256 ",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 636,
+    "y": 2706.41259765625,
+    "w": 711.8250732421875,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Every downloadable binary asset is bound to its canonical filename and its 64-character hex SHA-256 ",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 636,
+    "y": 2729.512451171875,
+    "w": 41.72503662109375,
+    "h": 15.2001953125,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "3. Publish checksums where artifacts exist",
+    "selector": "h3.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 636,
+    "y": 2800.212646484375,
+    "w": 397.9500732421875,
+    "h": 24.7998046875,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "When a file is offered for public download, its SHA-256 checksum is published alongside it so builde",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 636,
+    "y": 2843.712646484375,
+    "w": 716.8250732421875,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "When a file is offered for public download, its SHA-256 checksum is published alongside it so builde",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 636,
+    "y": 2866.8125,
+    "w": 185.0875244140625,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "4. Separate trust dimensions",
+    "selector": "h3.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 636,
+    "y": 2937.512451171875,
+    "w": 269.75,
+    "h": 24.800048828125,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "We explicitly distinguish artifact identity, evidence custody, publisher signing, platform reputatio",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 636,
+    "y": 2981.012451171875,
+    "w": 737.5750732421875,
+    "h": 15.2001953125,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "We explicitly distinguish artifact identity, evidence custody, publisher signing, platform reputatio",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 636,
+    "y": 3004.112548828125,
+    "w": 204.1500244140625,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "5. Candidate proof != release authority",
+    "selector": "h3.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 636,
+    "y": 3074.8125,
+    "w": 357.125,
+    "h": 24.800048828125,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "A successful build candidate or internal test pass does not create public release authority. Candida",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 636,
+    "y": 3118.3125,
+    "w": 714.6875,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "A successful build candidate or internal test pass does not create public release authority. Candida",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 636,
+    "y": 3141.41259765625,
+    "w": 182.28753662109375,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "6. Record known limitations",
+    "selector": "h3.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 636,
+    "y": 3212.112548828125,
+    "w": 260.5625,
+    "h": 24.800048828125,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Every product publishes its known boundaries and operational constraints so users understand exact c",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 636,
+    "y": 3255.612548828125,
+    "w": 735.1875,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Every product publishes its known boundaries and operational constraints so users understand exact c",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 636,
+    "y": 3278.712646484375,
+    "w": 70.95001220703125,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "7. Keep reproducible evidence for independent verification",
+    "selector": "h3.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 636,
+    "y": 3349.41259765625,
+    "w": 541.9000244140625,
+    "h": 24.800048828125,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Where verification records, test counts, manifests, or release receipts are published, use open/read",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 636,
+    "y": 3392.91259765625,
+    "w": 708.9375,
+    "h": 15.199951171875,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Where verification records, test counts, manifests, or release receipts are published, use open/read",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 636,
+    "y": 3416.012451171875,
+    "w": 530.7000732421875,
+    "h": 15.2001953125,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Honest Boundaries",
+    "selector": "p.kicker",
+    "color": "rgb(201, 176, 131)",
+    "rgb": [
+      201,
+      176,
+      131
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 3582.512451171875,
+    "w": 136.5124969482422,
+    "h": 14.400146484375,
+    "minimum": 8.6943143522117,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "What a Checksum Proves (and What it Does Not)",
+    "selector": "h2.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 3612.212646484375,
+    "w": 429.125,
+    "h": 40,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "What a Checksum Proves (and What it Does Not)",
+    "selector": "h2.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 3652.462646484375,
+    "w": 253.17501831054688,
+    "h": 40,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "SHA-256 match = byte-identity verification.",
+    "selector": "strong.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 656,
+    "y": 3587.3125,
+    "w": 305.35003662109375,
+    "h": 16,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "It proves your local download is byte-for-byte identical to our published build artifact.",
+    "selector": "li.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 961.3500366210938,
+    "y": 3587.3125,
+    "w": 296.96246337890625,
+    "h": 16,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "It proves your local download is byte-for-byte identical to our published build artifact.",
+    "selector": "li.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 656,
+    "y": 3615.0625,
+    "w": 252.9375,
+    "h": 16,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Checksum match is NOT malware certification.",
+    "selector": "strong.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 656,
+    "y": 3664.8125,
+    "w": 331.78753662109375,
+    "h": 16,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Digest matching confirms integrity against our published manifest, not a third-party security audit.",
+    "selector": "li.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 987.7875366210938,
+    "y": 3664.8125,
+    "w": 280.37493896484375,
+    "h": 16,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Digest matching confirms integrity against our published manifest, not a third-party security audit.",
+    "selector": "li.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 656,
+    "y": 3692.5625,
+    "w": 357.57501220703125,
+    "h": 16,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Unsigned status & Windows SmartScreen:",
+    "selector": "strong.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 656,
+    "y": 3742.3125,
+    "w": 301.60003662109375,
+    "h": 16,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Some Proof Foundry Windows builds are distributed unsigned. SmartScreen may warn when a downloaded f",
+    "selector": "li.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 957.6000366210938,
+    "y": 3742.3125,
+    "w": 272.17498779296875,
+    "h": 16,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Some Proof Foundry Windows builds are distributed unsigned. SmartScreen may warn when a downloaded f",
+    "selector": "li.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 656,
+    "y": 3770.0625,
+    "w": 619.800048828125,
+    "h": 16,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Some Proof Foundry Windows builds are distributed unsigned. SmartScreen may warn when a downloaded f",
+    "selector": "li.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 656,
+    "y": 3797.8125,
+    "w": 609.0750732421875,
+    "h": 16,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Some Proof Foundry Windows builds are distributed unsigned. SmartScreen may warn when a downloaded f",
+    "selector": "li.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 656,
+    "y": 3825.5625,
+    "w": 612.9625244140625,
+    "h": 16,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Some Proof Foundry Windows builds are distributed unsigned. SmartScreen may warn when a downloaded f",
+    "selector": "li.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 656,
+    "y": 3853.3125,
+    "w": 317.17498779296875,
+    "h": 16,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "SmartScreen reputation & receipts:",
+    "selector": "strong.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 656,
+    "y": 3903.0625,
+    "w": 251.16253662109375,
+    "h": 16,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Microsoft SmartScreen uses its own reputation signals, including file/hash reputation and publisher/",
+    "selector": "li.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 907.1625366210938,
+    "y": 3903.0625,
+    "w": 366.06243896484375,
+    "h": 16,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Microsoft SmartScreen uses its own reputation signals, including file/hash reputation and publisher/",
+    "selector": "li.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 656,
+    "y": 3930.8125,
+    "w": 599.5750732421875,
+    "h": 16,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Microsoft SmartScreen uses its own reputation signals, including file/hash reputation and publisher/",
+    "selector": "li.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 656,
+    "y": 3958.5625,
+    "w": 388.2000732421875,
+    "h": 16,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Information Architecture",
+    "selector": "p.kicker",
+    "color": "rgb(201, 176, 131)",
+    "rgb": [
+      201,
+      176,
+      131
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 4081.512451171875,
+    "w": 192.72500610351562,
+    "h": 14.400146484375,
+    "minimum": 8.6943143522117,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Navigating Proof & Support",
+    "selector": "h2.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 4111.21240234375,
+    "w": 581.7000122070312,
+    "h": 56.80029296875,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Proof Standard",
+    "selector": "a.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 4230.02490234375,
+    "w": 153.5625,
+    "h": 25.60009765625,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "The doctrine and verification philosophy governing how we build, test, and publish software.",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 4274.625,
+    "w": 560.6875,
+    "h": 15.2001953125,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Release Records",
+    "selector": "a.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 740,
+    "y": 4230.02490234375,
+    "w": 174.10003662109375,
+    "h": 25.60009765625,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Release records, checksums, test gate counts, and cryptographic evidence receipts for every product.",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 740,
+    "y": 4274.625,
+    "w": 624.8250732421875,
+    "h": 15.2001953125,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Public Truth",
+    "selector": "a.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 4385.3251953125,
+    "w": 121.08750915527344,
+    "h": 25.60009765625,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Machine-readable public truth — deterministic JSON records generated from the same release facts. Th",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 4429.92529296875,
+    "w": 617.8250122070312,
+    "h": 15.19970703125,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Machine-readable public truth — deterministic JSON records generated from the same release facts. Th",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 4453.02490234375,
+    "w": 185.47500610351562,
+    "h": 15.2001953125,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "the Truth Files",
+    "selector": "a.text-link",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 245.47500610351562,
+    "y": 4453.02490234375,
+    "w": 89.66250610351562,
+    "h": 15.2001953125,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": ".",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 335.13751220703125,
+    "y": 4453.02490234375,
+    "w": 3.887481689453125,
+    "h": 15.2001953125,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Support Hub",
+    "selector": "a.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 740,
+    "y": 4385.3251953125,
+    "w": 130.32501220703125,
+    "h": 25.60009765625,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Practical installation, SmartScreen handling, APK verification commands, and problem reporting templ",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 740,
+    "y": 4429.92529296875,
+    "w": 590.2625732421875,
+    "h": 15.19970703125,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Practical installation, SmartScreen handling, APK verification commands, and problem reporting templ",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 740,
+    "y": 4453.02490234375,
+    "w": 65.4375,
+    "h": 15.2001953125,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "The Proof Foundry",
+    "selector": "span.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 107,
+    "y": 4715.125,
+    "w": 136.2624969482422,
+    "h": 17.60009765625,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Build it. Prove it. Ship it.",
+    "selector": "p.",
+    "color": "rgb(165, 177, 182)",
+    "rgb": [
+      165,
+      177,
+      182
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 4768.52490234375,
+    "w": 134.5124969482422,
+    "h": 13.60009765625,
+    "minimum": 8.581884017980935,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Independent software.",
+    "selector": "p.footer-maker-note",
+    "color": "rgb(165, 177, 182)",
+    "rgb": [
+      165,
+      177,
+      182
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 4805.97509765625,
+    "w": 118.4375,
+    "h": 12.7998046875,
+    "minimum": 8.581884017980935,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Public records. Clear limits.",
+    "selector": "p.footer-maker-note",
+    "color": "rgb(165, 177, 182)",
+    "rgb": [
+      165,
+      177,
+      182
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 4825.77490234375,
+    "w": 144.02500915527344,
+    "h": 12.80029296875,
+    "minimum": 8.581884017980935,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Explore",
+    "selector": "h2.",
+    "color": "rgb(186, 164, 127)",
+    "rgb": [
+      186,
+      164,
+      127
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 592.7250366210938,
+    "y": 4709.125,
+    "w": 56.21246337890625,
+    "h": 14.39990234375,
+    "minimum": 7.81044882130314,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Products directory",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 592.7250366210938,
+    "y": 4756.125,
+    "w": 97.262451171875,
+    "h": 12.80029296875,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Proof Standard",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 592.7250366210938,
+    "y": 4801.125,
+    "w": 80.3499755859375,
+    "h": 12.80029296875,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Release records",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 784.5499877929688,
+    "y": 4756.125,
+    "w": 86.5,
+    "h": 12.80029296875,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Truth Files",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 784.5499877929688,
+    "y": 4801.125,
+    "w": 55.4375,
+    "h": 12.80029296875,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Company",
+    "selector": "h2.",
+    "color": "rgb(186, 164, 127)",
+    "rgb": [
+      186,
+      164,
+      127
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 1016.3624877929688,
+    "y": 4709.125,
+    "w": 56.21258544921875,
+    "h": 14.39990234375,
+    "minimum": 7.81044882130314,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "About",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 1016.3624877929688,
+    "y": 4756.125,
+    "w": 32.13751220703125,
+    "h": 12.80029296875,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Founders Circle",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 1016.3624877929688,
+    "y": 4801.125,
+    "w": 84.18756103515625,
+    "h": 12.80029296875,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Roadmap",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 1208.1875,
+    "y": 4756.125,
+    "w": 52.4625244140625,
+    "h": 12.80029296875,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Support",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 1208.1875,
+    "y": 4801.125,
+    "w": 42.8250732421875,
+    "h": 12.80029296875,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "© 2026 Proof Foundry. All rights reserved.",
+    "selector": "p.",
+    "color": "rgb(143, 157, 164)",
+    "rgb": [
+      143,
+      157,
+      164
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 60,
+    "y": 4888.8251953125,
+    "w": 183.0124969482422,
+    "h": 11.19970703125,
+    "minimum": 6.753723849196874,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Reduced motion",
+    "selector": "button.motion-toggle",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [
+      "BUTTON.motion-toggle"
+    ],
+    "x": 1296,
+    "y": 4887.97509765625,
+    "w": 84,
+    "h": 12.7998046875,
+    "status": "unmeasured effects"
+  }
+]

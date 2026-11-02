@@ -1,0 +1,5050 @@
+{
+  "origin": "http://127.0.0.1:5180",
+  "headed": true,
+  "freshProfile": true,
+  "cold": [
+    {
+      "run": 1,
+      "sheets": [
+        {
+          "url": "http://127.0.0.1:5180/styles.css?v=0aae2c1a91b5",
+          "loaded": true,
+          "rules": 57,
+          "network": {
+            "status": 200,
+            "mime": "text/css",
+            "cache": false
+          }
+        },
+        {
+          "url": "http://127.0.0.1:5180/pf-foundry-system.css?v=8e1201a9a9ad",
+          "loaded": true,
+          "rules": 107,
+          "network": {
+            "status": 200,
+            "mime": "text/css",
+            "cache": false
+          }
+        },
+        {
+          "url": "http://127.0.0.1:5180/foundry-connections.css?v=4c0b42121374",
+          "loaded": true,
+          "rules": 69,
+          "network": {
+            "status": 200,
+            "mime": "text/css",
+            "cache": false
+          }
+        },
+        {
+          "url": "http://127.0.0.1:5180/foundry-world.css?v=0ab0817927c5",
+          "loaded": true,
+          "rules": 52,
+          "network": {
+            "status": 200,
+            "mime": "text/css",
+            "cache": false
+          }
+        },
+        {
+          "url": "http://127.0.0.1:5180/pf-home-ledger.css?v=ab884637a892",
+          "loaded": true,
+          "rules": 192,
+          "network": {
+            "status": 200,
+            "mime": "text/css",
+            "cache": false
+          }
+        }
+      ],
+      "font": "Archivo, Arial, sans-serif",
+      "bg": "rgb(17, 22, 25)",
+      "h1": "75.24px",
+      "opening": "grid",
+      "pass": true
+    },
+    {
+      "run": 2,
+      "sheets": [
+        {
+          "url": "http://127.0.0.1:5180/styles.css?v=0aae2c1a91b5",
+          "loaded": true,
+          "rules": 57,
+          "network": {
+            "status": 200,
+            "mime": "text/css",
+            "cache": false
+          }
+        },
+        {
+          "url": "http://127.0.0.1:5180/pf-foundry-system.css?v=8e1201a9a9ad",
+          "loaded": true,
+          "rules": 107,
+          "network": {
+            "status": 200,
+            "mime": "text/css",
+            "cache": false
+          }
+        },
+        {
+          "url": "http://127.0.0.1:5180/foundry-connections.css?v=4c0b42121374",
+          "loaded": true,
+          "rules": 69,
+          "network": {
+            "status": 200,
+            "mime": "text/css",
+            "cache": false
+          }
+        },
+        {
+          "url": "http://127.0.0.1:5180/foundry-world.css?v=0ab0817927c5",
+          "loaded": true,
+          "rules": 52,
+          "network": {
+            "status": 200,
+            "mime": "text/css",
+            "cache": false
+          }
+        },
+        {
+          "url": "http://127.0.0.1:5180/pf-home-ledger.css?v=ab884637a892",
+          "loaded": true,
+          "rules": 192,
+          "network": {
+            "status": 200,
+            "mime": "text/css",
+            "cache": false
+          }
+        }
+      ],
+      "font": "Archivo, Arial, sans-serif",
+      "bg": "rgb(17, 22, 25)",
+      "h1": "75.24px",
+      "opening": "grid",
+      "pass": true
+    },
+    {
+      "run": 3,
+      "sheets": [
+        {
+          "url": "http://127.0.0.1:5180/styles.css?v=0aae2c1a91b5",
+          "loaded": true,
+          "rules": 57,
+          "network": {
+            "status": 200,
+            "mime": "text/css",
+            "cache": false
+          }
+        },
+        {
+          "url": "http://127.0.0.1:5180/pf-foundry-system.css?v=8e1201a9a9ad",
+          "loaded": true,
+          "rules": 107,
+          "network": {
+            "status": 200,
+            "mime": "text/css",
+            "cache": false
+          }
+        },
+        {
+          "url": "http://127.0.0.1:5180/foundry-connections.css?v=4c0b42121374",
+          "loaded": true,
+          "rules": 69,
+          "network": {
+            "status": 200,
+            "mime": "text/css",
+            "cache": false
+          }
+        },
+        {
+          "url": "http://127.0.0.1:5180/foundry-world.css?v=0ab0817927c5",
+          "loaded": true,
+          "rules": 52,
+          "network": {
+            "status": 200,
+            "mime": "text/css",
+            "cache": false
+          }
+        },
+        {
+          "url": "http://127.0.0.1:5180/pf-home-ledger.css?v=ab884637a892",
+          "loaded": true,
+          "rules": 192,
+          "network": {
+            "status": 200,
+            "mime": "text/css",
+            "cache": false
+          }
+        }
+      ],
+      "font": "Archivo, Arial, sans-serif",
+      "bg": "rgb(17, 22, 25)",
+      "h1": "75.24px",
+      "opening": "grid",
+      "pass": true
+    }
+  ],
+  "pages": [
+    {
+      "name": "home",
+      "route": "/",
+      "width": 1440,
+      "shot": "home-1440.jpg",
+      "layout": {
+        "title": "The Proof Foundry — Real software leaves a record.",
+        "width": 1440,
+        "scrollWidth": 1425,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 125.0999984741211,
+            "right": 135.89999866485596
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 335.70001220703125,
+            "right": 346.5000123977661
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 571.5,
+            "right": 582.3000001907349
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 774.9000244140625,
+            "right": 785.7000246047974
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 1021.5,
+            "right": 1032.3000001907349
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 1239.300048828125,
+            "right": 1250.1000490188599
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": null,
+      "contrast": {
+        "total": 108,
+        "pass": 106,
+        "review": 0,
+        "unmeasured": 2,
+        "solid": 50,
+        "gradientOrImage": 58
+      }
+    },
+    {
+      "name": "products",
+      "route": "/software/",
+      "width": 1440,
+      "shot": "products-1440.jpg",
+      "layout": {
+        "title": "Products — The Proof Foundry",
+        "width": 1440,
+        "scrollWidth": 1425,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 125.0999984741211,
+            "right": 135.89999866485596
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 335.70001220703125,
+            "right": 346.5000123977661
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 571.5,
+            "right": 582.3000001907349
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 774.9000244140625,
+            "right": 785.7000246047974
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 1021.5,
+            "right": 1032.3000001907349
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 1239.300048828125,
+            "right": 1250.1000490188599
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": null,
+      "contrast": {
+        "total": 136,
+        "pass": 135,
+        "review": 0,
+        "unmeasured": 1,
+        "solid": 43,
+        "gradientOrImage": 93
+      }
+    },
+    {
+      "name": "proof-standard",
+      "route": "/proof-standard/",
+      "width": 1440,
+      "shot": "proof-standard-1440.jpg",
+      "layout": {
+        "title": "The Proof Standard — Proof over rented trust | The Proof Foundry",
+        "width": 1440,
+        "scrollWidth": 1425,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 125.0999984741211,
+            "right": 135.89999866485596
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 335.70001220703125,
+            "right": 346.5000123977661
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 571.5,
+            "right": 582.3000001907349
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 774.9000244140625,
+            "right": 785.7000246047974
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 1021.5,
+            "right": 1032.3000001907349
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 1239.300048828125,
+            "right": 1250.1000490188599
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": null,
+      "contrast": {
+        "total": 143,
+        "pass": 141,
+        "review": 0,
+        "unmeasured": 2,
+        "solid": 104,
+        "gradientOrImage": 39
+      }
+    },
+    {
+      "name": "proof",
+      "route": "/proof/",
+      "width": 1440,
+      "shot": "proof-1440.jpg",
+      "layout": {
+        "title": "Proof Foundry Receipts — Proof-first software forged for builders",
+        "width": 1440,
+        "scrollWidth": 1425,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 125.0999984741211,
+            "right": 135.89999866485596
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 335.70001220703125,
+            "right": 346.5000123977661
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 571.5,
+            "right": 582.3000001907349
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 774.9000244140625,
+            "right": 785.7000246047974
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 1021.5,
+            "right": 1032.3000001907349
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 1239.300048828125,
+            "right": 1250.1000490188599
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": null,
+      "contrast": {
+        "total": 187,
+        "pass": 186,
+        "review": 0,
+        "unmeasured": 1,
+        "solid": 168,
+        "gradientOrImage": 19
+      }
+    },
+    {
+      "name": "truth-files",
+      "route": "/truth-files/",
+      "width": 1440,
+      "shot": "truth-files-1440.jpg",
+      "layout": {
+        "title": "The Truth Files — current public record for every product | The Proof Foundry",
+        "width": 1440,
+        "scrollWidth": 1425,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 125.0999984741211,
+            "right": 135.89999866485596
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 335.70001220703125,
+            "right": 346.5000123977661
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 571.5,
+            "right": 582.3000001907349
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 774.9000244140625,
+            "right": 785.7000246047974
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 1021.5,
+            "right": 1032.3000001907349
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 1239.300048828125,
+            "right": 1250.1000490188599
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": null,
+      "contrast": {
+        "total": 114,
+        "pass": 113,
+        "review": 0,
+        "unmeasured": 1,
+        "solid": 95,
+        "gradientOrImage": 19
+      }
+    },
+    {
+      "name": "about",
+      "route": "/about/",
+      "width": 1440,
+      "shot": "about-1440.jpg",
+      "layout": {
+        "title": "About the Foundry — Independent software built with intent | The Proof Foundry",
+        "width": 1440,
+        "scrollWidth": 1425,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 125.0999984741211,
+            "right": 135.89999866485596
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 335.70001220703125,
+            "right": 346.5000123977661
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 571.5,
+            "right": 582.3000001907349
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 774.9000244140625,
+            "right": 785.7000246047974
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 1021.5,
+            "right": 1032.3000001907349
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 1239.300048828125,
+            "right": 1250.1000490188599
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": null,
+      "contrast": {
+        "total": 94,
+        "pass": 93,
+        "review": 0,
+        "unmeasured": 1,
+        "solid": 75,
+        "gradientOrImage": 19
+      }
+    },
+    {
+      "name": "support",
+      "route": "/support/",
+      "width": 1440,
+      "shot": "support-1440.jpg",
+      "layout": {
+        "title": "Support & Troubleshooting | The Proof Foundry",
+        "width": 1440,
+        "scrollWidth": 1425,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 125.0999984741211,
+            "right": 135.89999866485596
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 335.70001220703125,
+            "right": 346.5000123977661
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 571.5,
+            "right": 582.3000001907349
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 774.9000244140625,
+            "right": 785.7000246047974
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 1021.5,
+            "right": 1032.3000001907349
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 1239.300048828125,
+            "right": 1250.1000490188599
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": null,
+      "contrast": {
+        "total": 246,
+        "pass": 245,
+        "review": 0,
+        "unmeasured": 1,
+        "solid": 227,
+        "gradientOrImage": 19
+      }
+    },
+    {
+      "name": "roadmap",
+      "route": "/roadmap/",
+      "width": 1440,
+      "shot": "roadmap-1440.jpg",
+      "layout": {
+        "title": "What’s next | The Proof Foundry",
+        "width": 1440,
+        "scrollWidth": 1425,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 125.0999984741211,
+            "right": 135.89999866485596
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 335.70001220703125,
+            "right": 346.5000123977661
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 571.5,
+            "right": 582.3000001907349
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 774.9000244140625,
+            "right": 785.7000246047974
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 1021.5,
+            "right": 1032.3000001907349
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 1239.300048828125,
+            "right": 1250.1000490188599
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": null,
+      "contrast": {
+        "total": 86,
+        "pass": 85,
+        "review": 0,
+        "unmeasured": 1,
+        "solid": 67,
+        "gradientOrImage": 19
+      }
+    },
+    {
+      "name": "founders",
+      "route": "/founders/",
+      "width": 1440,
+      "shot": "founders-1440.jpg",
+      "layout": {
+        "title": "Founders Circle — The Proof Foundry™",
+        "width": 1440,
+        "scrollWidth": 1425,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 125.0999984741211,
+            "right": 135.89999866485596
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 335.70001220703125,
+            "right": 346.5000123977661
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 571.5,
+            "right": 582.3000001907349
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 774.9000244140625,
+            "right": 785.7000246047974
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 1021.5,
+            "right": 1032.3000001907349
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 1239.300048828125,
+            "right": 1250.1000490188599
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": null,
+      "contrast": {
+        "total": 100,
+        "pass": 99,
+        "review": 0,
+        "unmeasured": 1,
+        "solid": 81,
+        "gradientOrImage": 19
+      }
+    },
+    {
+      "name": "404",
+      "route": "/404.html",
+      "width": 1440,
+      "shot": "404-1440.jpg",
+      "layout": {
+        "title": "Page Not Found — The Proof Foundry",
+        "width": 1440,
+        "scrollWidth": 1425,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 125.0999984741211,
+            "right": 135.89999866485596
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 335.70001220703125,
+            "right": 346.5000123977661
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 571.5,
+            "right": 582.3000001907349
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 774.9000244140625,
+            "right": 785.7000246047974
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 1021.5,
+            "right": 1032.3000001907349
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 1239.300048828125,
+            "right": 1250.1000490188599
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": null,
+      "contrast": {
+        "total": 44,
+        "pass": 42,
+        "review": 1,
+        "unmeasured": 1,
+        "solid": 25,
+        "gradientOrImage": 19
+      }
+    },
+    {
+      "name": "truth",
+      "route": "/truth/",
+      "width": 1440,
+      "shot": "truth-1440.jpg",
+      "layout": {
+        "title": "Public Truth — machine-readable product state | The Proof Foundry",
+        "width": 1440,
+        "scrollWidth": 1425,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 125.0999984741211,
+            "right": 135.89999866485596
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 335.70001220703125,
+            "right": 346.5000123977661
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 571.5,
+            "right": 582.3000001907349
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 774.9000244140625,
+            "right": 785.7000246047974
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 1021.5,
+            "right": 1032.3000001907349
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 1239.300048828125,
+            "right": 1250.1000490188599
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": null,
+      "contrast": {
+        "total": 138,
+        "pass": 137,
+        "review": 0,
+        "unmeasured": 1,
+        "solid": 119,
+        "gradientOrImage": 19
+      }
+    },
+    {
+      "name": "home",
+      "route": "/",
+      "width": 768,
+      "shot": "home-768.jpg",
+      "layout": {
+        "title": "The Proof Foundry — Real software leaves a record.",
+        "width": 768,
+        "scrollWidth": 753,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 119.20000457763672,
+            "right": 130.00000476837158
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 341.6000061035156,
+            "right": 352.4000062942505
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 587.1000366210938,
+            "right": 597.9000368118286
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 567.2999877929688,
+            "right": 578.0999879837036
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 351.5,
+            "right": 362.30000019073486
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 109.30000305175781,
+            "right": 120.10000324249268
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": null
+    },
+    {
+      "name": "products",
+      "route": "/software/",
+      "width": 768,
+      "shot": "products-768.jpg",
+      "layout": {
+        "title": "Products — The Proof Foundry",
+        "width": 768,
+        "scrollWidth": 753,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 119.20000457763672,
+            "right": 130.00000476837158
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 341.6000061035156,
+            "right": 352.4000062942505
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 587.1000366210938,
+            "right": 597.9000368118286
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 567.2999877929688,
+            "right": 578.0999879837036
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 351.5,
+            "right": 362.30000019073486
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 109.30000305175781,
+            "right": 120.10000324249268
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": null
+    },
+    {
+      "name": "proof-standard",
+      "route": "/proof-standard/",
+      "width": 768,
+      "shot": "proof-standard-768.jpg",
+      "layout": {
+        "title": "The Proof Standard — Proof over rented trust | The Proof Foundry",
+        "width": 768,
+        "scrollWidth": 753,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 119.20000457763672,
+            "right": 130.00000476837158
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 341.6000061035156,
+            "right": 352.4000062942505
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 587.1000366210938,
+            "right": 597.9000368118286
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 567.2999877929688,
+            "right": 578.0999879837036
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 351.5,
+            "right": 362.30000019073486
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 109.30000305175781,
+            "right": 120.10000324249268
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": null
+    },
+    {
+      "name": "proof",
+      "route": "/proof/",
+      "width": 768,
+      "shot": "proof-768.jpg",
+      "layout": {
+        "title": "Proof Foundry Receipts — Proof-first software forged for builders",
+        "width": 768,
+        "scrollWidth": 753,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 119.20000457763672,
+            "right": 130.00000476837158
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 341.6000061035156,
+            "right": 352.4000062942505
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 587.1000366210938,
+            "right": 597.9000368118286
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 567.2999877929688,
+            "right": 578.0999879837036
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 351.5,
+            "right": 362.30000019073486
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 109.30000305175781,
+            "right": 120.10000324249268
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": null
+    },
+    {
+      "name": "truth-files",
+      "route": "/truth-files/",
+      "width": 768,
+      "shot": "truth-files-768.jpg",
+      "layout": {
+        "title": "The Truth Files — current public record for every product | The Proof Foundry",
+        "width": 768,
+        "scrollWidth": 753,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 119.20000457763672,
+            "right": 130.00000476837158
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 341.6000061035156,
+            "right": 352.4000062942505
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 587.1000366210938,
+            "right": 597.9000368118286
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 567.2999877929688,
+            "right": 578.0999879837036
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 351.5,
+            "right": 362.30000019073486
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 109.30000305175781,
+            "right": 120.10000324249268
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": null
+    },
+    {
+      "name": "about",
+      "route": "/about/",
+      "width": 768,
+      "shot": "about-768.jpg",
+      "layout": {
+        "title": "About the Foundry — Independent software built with intent | The Proof Foundry",
+        "width": 768,
+        "scrollWidth": 753,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 119.20000457763672,
+            "right": 130.00000476837158
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 341.6000061035156,
+            "right": 352.4000062942505
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 587.1000366210938,
+            "right": 597.9000368118286
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 567.2999877929688,
+            "right": 578.0999879837036
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 351.5,
+            "right": 362.30000019073486
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 109.30000305175781,
+            "right": 120.10000324249268
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": null
+    },
+    {
+      "name": "support",
+      "route": "/support/",
+      "width": 768,
+      "shot": "support-768.jpg",
+      "layout": {
+        "title": "Support & Troubleshooting | The Proof Foundry",
+        "width": 768,
+        "scrollWidth": 753,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 119.20000457763672,
+            "right": 130.00000476837158
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 341.6000061035156,
+            "right": 352.4000062942505
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 587.1000366210938,
+            "right": 597.9000368118286
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 567.2999877929688,
+            "right": 578.0999879837036
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 351.5,
+            "right": 362.30000019073486
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 109.30000305175781,
+            "right": 120.10000324249268
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": null
+    },
+    {
+      "name": "roadmap",
+      "route": "/roadmap/",
+      "width": 768,
+      "shot": "roadmap-768.jpg",
+      "layout": {
+        "title": "What’s next | The Proof Foundry",
+        "width": 768,
+        "scrollWidth": 753,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 119.20000457763672,
+            "right": 130.00000476837158
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 341.6000061035156,
+            "right": 352.4000062942505
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 587.1000366210938,
+            "right": 597.9000368118286
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 567.2999877929688,
+            "right": 578.0999879837036
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 351.5,
+            "right": 362.30000019073486
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 109.30000305175781,
+            "right": 120.10000324249268
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": null
+    },
+    {
+      "name": "founders",
+      "route": "/founders/",
+      "width": 768,
+      "shot": "founders-768.jpg",
+      "layout": {
+        "title": "Founders Circle — The Proof Foundry™",
+        "width": 768,
+        "scrollWidth": 753,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 119.20000457763672,
+            "right": 130.00000476837158
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 341.6000061035156,
+            "right": 352.4000062942505
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 587.1000366210938,
+            "right": 597.9000368118286
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 567.2999877929688,
+            "right": 578.0999879837036
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 351.5,
+            "right": 362.30000019073486
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 109.30000305175781,
+            "right": 120.10000324249268
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": null
+    },
+    {
+      "name": "404",
+      "route": "/404.html",
+      "width": 768,
+      "shot": "404-768.jpg",
+      "layout": {
+        "title": "Page Not Found — The Proof Foundry",
+        "width": 768,
+        "scrollWidth": 753,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 119.20000457763672,
+            "right": 130.00000476837158
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 341.6000061035156,
+            "right": 352.4000062942505
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 587.1000366210938,
+            "right": 597.9000368118286
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 567.2999877929688,
+            "right": 578.0999879837036
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 351.5,
+            "right": 362.30000019073486
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 109.30000305175781,
+            "right": 120.10000324249268
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": null
+    },
+    {
+      "name": "truth",
+      "route": "/truth/",
+      "width": 768,
+      "shot": "truth-768.jpg",
+      "layout": {
+        "title": "Public Truth — machine-readable product state | The Proof Foundry",
+        "width": 768,
+        "scrollWidth": 753,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 119.20000457763672,
+            "right": 130.00000476837158
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 341.6000061035156,
+            "right": 352.4000062942505
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 587.1000366210938,
+            "right": 597.9000368118286
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 567.2999877929688,
+            "right": 578.0999879837036
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 351.5,
+            "right": 362.30000019073486
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 109.30000305175781,
+            "right": 120.10000324249268
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": null
+    },
+    {
+      "name": "home",
+      "route": "/",
+      "width": 390,
+      "shot": "home-390.jpg",
+      "layout": {
+        "title": "The Proof Foundry — Real software leaves a record.",
+        "width": 390,
+        "scrollWidth": 390,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 49.462501525878906,
+            "right": 60.26250171661377
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 160.3874969482422,
+            "right": 171.18749713897705
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 294.4250183105469,
+            "right": 305.22501850128174
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 281.0625,
+            "right": 291.86250019073486
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 170.28750610351562,
+            "right": 181.0875062942505
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 39.5625,
+            "right": 50.36250019073486
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": {
+        "expanded": "true",
+        "visible": true,
+        "within": true
+      },
+      "contrast": {
+        "total": 109,
+        "pass": 107,
+        "review": 0,
+        "unmeasured": 2,
+        "solid": 53,
+        "gradientOrImage": 56
+      }
+    },
+    {
+      "name": "products",
+      "route": "/software/",
+      "width": 390,
+      "shot": "products-390.jpg",
+      "layout": {
+        "title": "Products — The Proof Foundry",
+        "width": 390,
+        "scrollWidth": 390,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 49.462501525878906,
+            "right": 60.26250171661377
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 160.3874969482422,
+            "right": 171.18749713897705
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 294.4250183105469,
+            "right": 305.22501850128174
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 281.0625,
+            "right": 291.86250019073486
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 170.28750610351562,
+            "right": 181.0875062942505
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 39.5625,
+            "right": 50.36250019073486
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": {
+        "expanded": "true",
+        "visible": true,
+        "within": true
+      },
+      "contrast": {
+        "total": 139,
+        "pass": 138,
+        "review": 0,
+        "unmeasured": 1,
+        "solid": 43,
+        "gradientOrImage": 96
+      }
+    },
+    {
+      "name": "proof-standard",
+      "route": "/proof-standard/",
+      "width": 390,
+      "shot": "proof-standard-390.jpg",
+      "layout": {
+        "title": "The Proof Standard — Proof over rented trust | The Proof Foundry",
+        "width": 390,
+        "scrollWidth": 390,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 49.462501525878906,
+            "right": 60.26250171661377
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 160.3874969482422,
+            "right": 171.18749713897705
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 294.4250183105469,
+            "right": 305.22501850128174
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 281.0625,
+            "right": 291.86250019073486
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 170.28750610351562,
+            "right": 181.0875062942505
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 39.5625,
+            "right": 50.36250019073486
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": {
+        "expanded": "true",
+        "visible": true,
+        "within": true
+      },
+      "contrast": {
+        "total": 170,
+        "pass": 168,
+        "review": 0,
+        "unmeasured": 2,
+        "solid": 133,
+        "gradientOrImage": 37
+      }
+    },
+    {
+      "name": "proof",
+      "route": "/proof/",
+      "width": 390,
+      "shot": "proof-390.jpg",
+      "layout": {
+        "title": "Proof Foundry Receipts — Proof-first software forged for builders",
+        "width": 390,
+        "scrollWidth": 390,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 49.462501525878906,
+            "right": 60.26250171661377
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 160.3874969482422,
+            "right": 171.18749713897705
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 294.4250183105469,
+            "right": 305.22501850128174
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 281.0625,
+            "right": 291.86250019073486
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 170.28750610351562,
+            "right": 181.0875062942505
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 39.5625,
+            "right": 50.36250019073486
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": {
+        "expanded": "true",
+        "visible": true,
+        "within": true
+      },
+      "contrast": {
+        "total": 202,
+        "pass": 201,
+        "review": 0,
+        "unmeasured": 1,
+        "solid": 187,
+        "gradientOrImage": 15
+      }
+    },
+    {
+      "name": "truth-files",
+      "route": "/truth-files/",
+      "width": 390,
+      "shot": "truth-files-390.jpg",
+      "layout": {
+        "title": "The Truth Files — current public record for every product | The Proof Foundry",
+        "width": 390,
+        "scrollWidth": 390,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 49.462501525878906,
+            "right": 60.26250171661377
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 160.3874969482422,
+            "right": 171.18749713897705
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 294.4250183105469,
+            "right": 305.22501850128174
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 281.0625,
+            "right": 291.86250019073486
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 170.28750610351562,
+            "right": 181.0875062942505
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 39.5625,
+            "right": 50.36250019073486
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": {
+        "expanded": "true",
+        "visible": true,
+        "within": true
+      },
+      "contrast": {
+        "total": 122,
+        "pass": 121,
+        "review": 0,
+        "unmeasured": 1,
+        "solid": 107,
+        "gradientOrImage": 15
+      }
+    },
+    {
+      "name": "about",
+      "route": "/about/",
+      "width": 390,
+      "shot": "about-390.jpg",
+      "layout": {
+        "title": "About the Foundry — Independent software built with intent | The Proof Foundry",
+        "width": 390,
+        "scrollWidth": 390,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 49.462501525878906,
+            "right": 60.26250171661377
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 160.3874969482422,
+            "right": 171.18749713897705
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 294.4250183105469,
+            "right": 305.22501850128174
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 281.0625,
+            "right": 291.86250019073486
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 170.28750610351562,
+            "right": 181.0875062942505
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 39.5625,
+            "right": 50.36250019073486
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": {
+        "expanded": "true",
+        "visible": true,
+        "within": true
+      },
+      "contrast": {
+        "total": 89,
+        "pass": 88,
+        "review": 0,
+        "unmeasured": 1,
+        "solid": 74,
+        "gradientOrImage": 15
+      }
+    },
+    {
+      "name": "support",
+      "route": "/support/",
+      "width": 390,
+      "shot": "support-390.jpg",
+      "layout": {
+        "title": "Support & Troubleshooting | The Proof Foundry",
+        "width": 390,
+        "scrollWidth": 390,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 49.462501525878906,
+            "right": 60.26250171661377
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 160.3874969482422,
+            "right": 171.18749713897705
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 294.4250183105469,
+            "right": 305.22501850128174
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 281.0625,
+            "right": 291.86250019073486
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 170.28750610351562,
+            "right": 181.0875062942505
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 39.5625,
+            "right": 50.36250019073486
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": {
+        "expanded": "true",
+        "visible": true,
+        "within": true
+      },
+      "contrast": {
+        "total": 291,
+        "pass": 290,
+        "review": 0,
+        "unmeasured": 1,
+        "solid": 276,
+        "gradientOrImage": 15
+      }
+    },
+    {
+      "name": "roadmap",
+      "route": "/roadmap/",
+      "width": 390,
+      "shot": "roadmap-390.jpg",
+      "layout": {
+        "title": "What’s next | The Proof Foundry",
+        "width": 390,
+        "scrollWidth": 390,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 49.462501525878906,
+            "right": 60.26250171661377
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 160.3874969482422,
+            "right": 171.18749713897705
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 294.4250183105469,
+            "right": 305.22501850128174
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 281.0625,
+            "right": 291.86250019073486
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 170.28750610351562,
+            "right": 181.0875062942505
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 39.5625,
+            "right": 50.36250019073486
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": {
+        "expanded": "true",
+        "visible": true,
+        "within": true
+      },
+      "contrast": {
+        "total": 90,
+        "pass": 89,
+        "review": 0,
+        "unmeasured": 1,
+        "solid": 75,
+        "gradientOrImage": 15
+      }
+    },
+    {
+      "name": "founders",
+      "route": "/founders/",
+      "width": 390,
+      "shot": "founders-390.jpg",
+      "layout": {
+        "title": "Founders Circle — The Proof Foundry™",
+        "width": 390,
+        "scrollWidth": 390,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 49.462501525878906,
+            "right": 60.26250171661377
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 160.3874969482422,
+            "right": 171.18749713897705
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 294.4250183105469,
+            "right": 305.22501850128174
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 281.0625,
+            "right": 291.86250019073486
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 170.28750610351562,
+            "right": 181.0875062942505
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 39.5625,
+            "right": 50.36250019073486
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": [
+          {
+            "tag": "TABLE",
+            "class": "ledger-table",
+            "right": 598
+          },
+          {
+            "tag": "THEAD",
+            "class": "",
+            "right": 598
+          },
+          {
+            "tag": "TR",
+            "class": "",
+            "right": 598
+          },
+          {
+            "tag": "TH",
+            "class": "",
+            "right": 468.96251678466797
+          },
+          {
+            "tag": "TH",
+            "class": "",
+            "right": 598
+          },
+          {
+            "tag": "TBODY",
+            "class": "",
+            "right": 598
+          },
+          {
+            "tag": "TR",
+            "class": "",
+            "right": 598
+          },
+          {
+            "tag": "TD",
+            "class": "ledger-holder",
+            "right": 468.96251678466797
+          },
+          {
+            "tag": "TD",
+            "class": "",
+            "right": 598
+          },
+          {
+            "tag": "SPAN",
+            "class": "button button-secondary button-sm",
+            "right": 554.8999938964844
+          },
+          {
+            "tag": "TR",
+            "class": "",
+            "right": 598
+          },
+          {
+            "tag": "TD",
+            "class": "ledger-holder",
+            "right": 468.96251678466797
+          }
+        ]
+      },
+      "menu": {
+        "expanded": "true",
+        "visible": true,
+        "within": true
+      },
+      "contrast": {
+        "total": 90,
+        "pass": 89,
+        "review": 0,
+        "unmeasured": 1,
+        "solid": 75,
+        "gradientOrImage": 15
+      }
+    },
+    {
+      "name": "404",
+      "route": "/404.html",
+      "width": 390,
+      "shot": "404-390.jpg",
+      "layout": {
+        "title": "Page Not Found — The Proof Foundry",
+        "width": 390,
+        "scrollWidth": 390,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 49.462501525878906,
+            "right": 60.26250171661377
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 160.3874969482422,
+            "right": 171.18749713897705
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 294.4250183105469,
+            "right": 305.22501850128174
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 281.0625,
+            "right": 291.86250019073486
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 170.28750610351562,
+            "right": 181.0875062942505
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 39.5625,
+            "right": 50.36250019073486
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": {
+        "expanded": "true",
+        "visible": true,
+        "within": true
+      },
+      "contrast": {
+        "total": 40,
+        "pass": 39,
+        "review": 0,
+        "unmeasured": 1,
+        "solid": 25,
+        "gradientOrImage": 15
+      }
+    },
+    {
+      "name": "truth",
+      "route": "/truth/",
+      "width": 390,
+      "shot": "truth-390.jpg",
+      "layout": {
+        "title": "Public Truth — machine-readable product state | The Proof Foundry",
+        "width": 390,
+        "scrollWidth": 390,
+        "overflow": false,
+        "header": true,
+        "footer": true,
+        "nav": [
+          {
+            "text": "Products",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          }
+        ],
+        "footerLinks": [
+          {
+            "text": "The Proof Foundry",
+            "href": "/"
+          },
+          {
+            "text": "Products directory",
+            "href": "/software/"
+          },
+          {
+            "text": "Proof Standard",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "Release records",
+            "href": "/proof/"
+          },
+          {
+            "text": "Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "About",
+            "href": "/about/"
+          },
+          {
+            "text": "Founders Circle",
+            "href": "/founders/"
+          },
+          {
+            "text": "Roadmap",
+            "href": "/roadmap/"
+          },
+          {
+            "text": "Support",
+            "href": "/support/"
+          }
+        ],
+        "stations": [
+          {
+            "text": "01",
+            "visible": true,
+            "x": 49.462501525878906,
+            "right": 60.26250171661377
+          },
+          {
+            "text": "02",
+            "visible": true,
+            "x": 160.3874969482422,
+            "right": 171.18749713897705
+          },
+          {
+            "text": "03",
+            "visible": true,
+            "x": 294.4250183105469,
+            "right": 305.22501850128174
+          },
+          {
+            "text": "04",
+            "visible": true,
+            "x": 281.0625,
+            "right": 291.86250019073486
+          },
+          {
+            "text": "05",
+            "visible": true,
+            "x": 170.28750610351562,
+            "right": 181.0875062942505
+          },
+          {
+            "text": "06",
+            "visible": true,
+            "x": 39.5625,
+            "right": 50.36250019073486
+          }
+        ],
+        "chain": [
+          {
+            "text": "01Home",
+            "href": "/"
+          },
+          {
+            "text": "02Products",
+            "href": "/software/"
+          },
+          {
+            "text": "03Proof",
+            "href": "/proof-standard/"
+          },
+          {
+            "text": "04Truth Files",
+            "href": "/truth-files/"
+          },
+          {
+            "text": "05About",
+            "href": "/about/"
+          },
+          {
+            "text": "06Support",
+            "href": "/support/"
+          }
+        ],
+        "badHashLinks": [],
+        "offenders": []
+      },
+      "menu": {
+        "expanded": "true",
+        "visible": true,
+        "within": true
+      },
+      "contrast": {
+        "total": 162,
+        "pass": 161,
+        "review": 0,
+        "unmeasured": 1,
+        "solid": 147,
+        "gradientOrImage": 15
+      }
+    }
+  ],
+  "negative": {
+    "expected": "critical homepage CSS missing must fail",
+    "pass": true,
+    "guard": {
+      "sheets": [
+        {
+          "url": "http://127.0.0.1:5180/styles.css?v=0aae2c1a91b5",
+          "loaded": true,
+          "rules": 57,
+          "network": {
+            "status": 200,
+            "mime": "text/css",
+            "cache": false
+          }
+        },
+        {
+          "url": "http://127.0.0.1:5180/pf-foundry-system.css?v=8e1201a9a9ad",
+          "loaded": true,
+          "rules": 107,
+          "network": {
+            "status": 200,
+            "mime": "text/css",
+            "cache": false
+          }
+        },
+        {
+          "url": "http://127.0.0.1:5180/foundry-connections.css?v=4c0b42121374",
+          "loaded": true,
+          "rules": 69,
+          "network": {
+            "status": 200,
+            "mime": "text/css",
+            "cache": false
+          }
+        },
+        {
+          "url": "http://127.0.0.1:5180/foundry-world.css?v=0ab0817927c5",
+          "loaded": true,
+          "rules": 52,
+          "network": {
+            "status": 200,
+            "mime": "text/css",
+            "cache": false
+          }
+        },
+        {
+          "url": "http://127.0.0.1:5180/pf-home-ledger.css?v=ab884637a892",
+          "loaded": true,
+          "rules": 0,
+          "network": null
+        }
+      ],
+      "font": "Archivo, Arial, sans-serif",
+      "bg": "rgb(17, 22, 25)",
+      "h1": "79.2px",
+      "opening": "block",
+      "pass": false
+    }
+  }
+}

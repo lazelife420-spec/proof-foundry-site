@@ -3,9 +3,12 @@
 import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
 const label = process.argv[2] || 'after';
+const origin = process.argv[3] || 'http://127.0.0.1:5180';
+const port = process.argv[4] || '9331';
+if (new URL(origin).hostname !== '127.0.0.1' || !/^\d+$/.test(port)) throw new Error('Isolated loopback browser and preview required');
 if (!/^[a-z0-9-]+$/.test(label)) throw new Error('Invalid evidence label');
 const root = path.resolve(import.meta.dirname, '..');
-const target = (await fetch('http://127.0.0.1:9331/json/list').then(r => r.json())).find(t => t.type === 'page');
+const target = (await fetch(`http://127.0.0.1:${port}/json/list`).then(r => r.json())).find(t => t.type === 'page');
 const ws = new WebSocket(target.webSocketDebuggerUrl);
 await new Promise((resolve, reject) => { ws.onopen = resolve; ws.onerror = reject; });
 let id = 0; const pending = new Map();
@@ -28,8 +31,8 @@ try {
   await evaluate('chrome.settingsPrivate.setDefaultZoom(2)');
   const zoom = await evaluate('new Promise(r => chrome.settingsPrivate.getDefaultZoom(r))');
   if (zoom !== 2) throw Error('Native 200% zoom not established');
-  for (const [slug, route] of [['home', '/'], ['software', '/software/']]) {
-    await navigate('http://127.0.0.1:5180' + route);
+  for (const [slug, route] of [['home', '/'], ['software', '/software/'], ['proof-standard','/proof-standard/'], ['proof','/proof/'], ['truth-files','/truth-files/'], ['about','/about/'], ['support','/support/'], ['roadmap','/roadmap/'], ['founders','/founders/'], ['404','/404.html'], ['truth','/truth/']]) {
+    await navigate(origin + route);
     await evaluate('document.fonts.ready');
     const data = await evaluate(`(() => {
       const chain = document.querySelector('.pf-route-chain');
@@ -58,3 +61,4 @@ try {
 }
 await writeFile(path.join(root, `review/main-finish/${label}-native-zoom-200.json`), JSON.stringify(results, null, 2) + '\n');
 console.log(JSON.stringify(results, null, 2));
+if (results.some(r => r.overflow > 1 || r.links.length !== 6 || r.links.some(l => l.station === 'none') || JSON.stringify(r.keyboardOrder) !== JSON.stringify(['/', '/software/', '/proof-standard/', '/truth-files/', '/about/', '/support/']))) process.exitCode = 1;

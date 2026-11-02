@@ -1,0 +1,3468 @@
+[
+  {
+    "text": "Skip to content",
+    "selector": "a.skip-link",
+    "color": "rgb(27, 40, 44)",
+    "rgb": [
+      27,
+      40,
+      44
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 34,
+    "y": -84,
+    "w": 105.9375,
+    "h": 17.599998474121094,
+    "minimum": 100,
+    "bgAt": null,
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "The Proof Foundry",
+    "selector": "span.brand-name",
+    "color": "rgb(242, 240, 232)",
+    "rgb": [
+      242,
+      240,
+      232
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 76.80000305175781,
+    "y": 14.300000190734863,
+    "w": 112.33749389648438,
+    "h": 13.59999942779541,
+    "minimum": 13.532347378428558,
+    "bgAt": [
+      28,
+      38,
+      42
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Build it. Prove it. Ship it.",
+    "selector": "small.",
+    "color": "rgb(192, 181, 160)",
+    "rgb": [
+      192,
+      181,
+      160
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 76.80000305175781,
+    "y": 33.29999923706055,
+    "w": 133.28750610351562,
+    "h": 8.800003051757812,
+    "minimum": 8.348922006439578,
+    "bgAt": [
+      21,
+      30,
+      34
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "01",
+    "selector": "span.pf-chain-station",
+    "color": "rgb(181, 161, 123)",
+    "rgb": [
+      181,
+      161,
+      123
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 49.462501525878906,
+    "y": 102.95000457763672,
+    "w": 10.799999237060547,
+    "h": 12,
+    "minimum": 4.596178844578926,
+    "bgAt": [
+      43,
+      60,
+      61
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Home",
+    "selector": "span.",
+    "color": "rgb(211, 222, 212)",
+    "rgb": [
+      211,
+      222,
+      212
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 66.26250457763672,
+    "y": 101.6500015258789,
+    "w": 26.399993896484375,
+    "h": 14.400001525878906,
+    "minimum": 8.340920658555959,
+    "bgAt": [
+      43,
+      60,
+      62
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "02",
+    "selector": "span.pf-chain-station",
+    "color": "rgb(32, 56, 46)",
+    "rgb": [
+      32,
+      56,
+      46
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 160.3874969482422,
+    "y": 108.55000305175781,
+    "w": 10.800003051757812,
+    "h": 12,
+    "minimum": 5.264468218383135,
+    "bgAt": [
+      157,
+      171,
+      161
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Products",
+    "selector": "span.",
+    "color": "rgb(16, 36, 43)",
+    "rgb": [
+      16,
+      36,
+      43
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 177.1875,
+    "y": 107.25,
+    "w": 52.80000305175781,
+    "h": 14.400001525878906,
+    "minimum": 6.607684044128114,
+    "bgAt": [
+      155,
+      170,
+      160
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "03",
+    "selector": "span.pf-chain-station",
+    "color": "rgb(181, 161, 123)",
+    "rgb": [
+      181,
+      161,
+      123
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 294.4250183105469,
+    "y": 108.55000305175781,
+    "w": 10.79998779296875,
+    "h": 12,
+    "minimum": 4.590680152235009,
+    "bgAt": [
+      43,
+      60,
+      62
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Proof",
+    "selector": "span.",
+    "color": "rgb(211, 222, 212)",
+    "rgb": [
+      211,
+      222,
+      212
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 311.2250061035156,
+    "y": 107.25,
+    "w": 33,
+    "h": 14.400001525878906,
+    "minimum": 8.225450035722682,
+    "bgAt": [
+      44,
+      61,
+      62
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "04",
+    "selector": "span.pf-chain-station",
+    "color": "rgb(181, 161, 123)",
+    "rgb": [
+      181,
+      161,
+      123
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 281.0625,
+    "y": 189.25,
+    "w": 10.800018310546875,
+    "h": 12,
+    "minimum": 4.719667338336738,
+    "bgAt": [
+      42,
+      58,
+      60
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Truth Files",
+    "selector": "span.",
+    "color": "rgb(211, 222, 212)",
+    "rgb": [
+      211,
+      222,
+      212
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 311.2250061035156,
+    "y": 180.8000030517578,
+    "w": 33,
+    "h": 14.399993896484375,
+    "minimum": 7.619046490793567,
+    "bgAt": [
+      49,
+      66,
+      67
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Truth Files",
+    "selector": "span.",
+    "color": "rgb(211, 222, 212)",
+    "rgb": [
+      211,
+      222,
+      212
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 311.2250061035156,
+    "y": 195.10000610351562,
+    "w": 33,
+    "h": 14.399993896484375,
+    "minimum": 9.119073435390431,
+    "bgAt": [
+      37,
+      54,
+      56
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "05",
+    "selector": "span.pf-chain-station",
+    "color": "rgb(181, 161, 123)",
+    "rgb": [
+      181,
+      161,
+      123
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 170.28750610351562,
+    "y": 186.15000915527344,
+    "w": 10.800003051757812,
+    "h": 12,
+    "minimum": 4.665953825564154,
+    "bgAt": [
+      42,
+      59,
+      60
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "About",
+    "selector": "span.",
+    "color": "rgb(211, 222, 212)",
+    "rgb": [
+      211,
+      222,
+      212
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 187.08750915527344,
+    "y": 184.85000610351562,
+    "w": 33,
+    "h": 14.399993896484375,
+    "minimum": 8.225450035722682,
+    "bgAt": [
+      44,
+      61,
+      62
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "06",
+    "selector": "span.pf-chain-station",
+    "color": "rgb(181, 161, 123)",
+    "rgb": [
+      181,
+      161,
+      123
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 39.5625,
+    "y": 186.15000915527344,
+    "w": 10.799999237060547,
+    "h": 12,
+    "minimum": 4.665953825564154,
+    "bgAt": [
+      42,
+      59,
+      60
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Support",
+    "selector": "span.",
+    "color": "rgb(211, 222, 212)",
+    "rgb": [
+      211,
+      222,
+      212
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 56.36249923706055,
+    "y": 184.85000610351562,
+    "w": 46.20000076293945,
+    "h": 14.399993896484375,
+    "minimum": 8.225450035722682,
+    "bgAt": [
+      44,
+      61,
+      62
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "The Proof Foundry / Products",
+    "selector": "p.h9-software-kicker",
+    "color": "rgb(201, 176, 131)",
+    "rgb": [
+      201,
+      176,
+      131
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 18,
+    "y": 252.1999969482422,
+    "w": 189,
+    "h": 12.000015258789062,
+    "minimum": 8.452826256183222,
+    "bgAt": [
+      20,
+      25,
+      28
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Tools for the work.",
+    "selector": "h1.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 18,
+    "y": 275.3999938964844,
+    "w": 299.76251220703125,
+    "h": 42.4000244140625,
+    "minimum": 13.816602076285342,
+    "bgAt": [
+      24,
+      30,
+      32
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Worlds of their own.",
+    "selector": "h1.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 18,
+    "y": 317.51251220703125,
+    "w": 323.4750061035156,
+    "h": 42.399993896484375,
+    "minimum": 13.550081480142214,
+    "bgAt": [
+      25,
+      32,
+      33
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Explore everyday software and the systems behind accountable work. Choose a product to understand it",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 18,
+    "y": 386.4250183105469,
+    "w": 335.3999938964844,
+    "h": 16,
+    "minimum": 9.412096069142189,
+    "bgAt": [
+      18,
+      23,
+      26
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Explore everyday software and the systems behind accountable work. Choose a product to understand it",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 18,
+    "y": 411.1750183105469,
+    "w": 337.2749938964844,
+    "h": 16,
+    "minimum": 8.956824587835829,
+    "bgAt": [
+      23,
+      28,
+      31
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Explore everyday software and the systems behind accountable work. Choose a product to understand it",
+    "selector": "p.",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 18,
+    "y": 435.9250183105469,
+    "w": 237.35000610351562,
+    "h": 16,
+    "minimum": 9.498318351871681,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Find your way in.",
+    "selector": "h2#directory-title",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 506.2749938964844,
+    "w": 193.2375030517578,
+    "h": 29.600006103515625,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Distinct tools. A shared standard.",
+    "selector": "p.",
+    "color": "rgb(191, 204, 198)",
+    "rgb": [
+      191,
+      204,
+      198
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 551.1749877929688,
+    "w": 189.6125030517578,
+    "h": 13.60003662109375,
+    "minimum": 10.990347663813974,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Find a product",
+    "selector": "label.",
+    "color": "rgb(213, 223, 210)",
+    "rgb": [
+      213,
+      223,
+      210
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 36.79999923706055,
+    "y": 613.8250122070312,
+    "w": 92.39999389648438,
+    "h": 14.4000244140625,
+    "minimum": 11.455562620783189,
+    "bgAt": [
+      24,
+      37,
+      42
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Explore",
+    "selector": "label.",
+    "color": "rgb(213, 223, 210)",
+    "rgb": [
+      213,
+      223,
+      210
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 36.79999923706055,
+    "y": 698.4249877929688,
+    "w": 46.20000076293945,
+    "h": 14.4000244140625,
+    "minimum": 11.455562620783189,
+    "bgAt": [
+      24,
+      37,
+      42
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Clear",
+    "selector": "button.button.button-secondary",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 309.2749938964844,
+    "y": 735.7750244140625,
+    "w": 27.5250244140625,
+    "h": 12,
+    "minimum": 12.871024187002561,
+    "bgAt": [
+      24,
+      37,
+      42
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "9 products",
+    "selector": "p.",
+    "color": "rgb(190, 203, 193)",
+    "rgb": [
+      190,
+      203,
+      193
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 36.79999923706055,
+    "y": 781.4249877929688,
+    "w": 66,
+    "h": 14.4000244140625,
+    "minimum": 9.351386236845256,
+    "bgAt": [
+      24,
+      37,
+      42
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Everyday software",
+    "selector": "p.kicker",
+    "color": "rgb(201, 179, 140)",
+    "rgb": [
+      201,
+      179,
+      140
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 870.0250244140625,
+    "w": 104.05000305175781,
+    "h": 12,
+    "minimum": 7.452107661664255,
+    "bgAt": [
+      28,
+      40,
+      40
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Cache Vault",
+    "selector": "h3.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 897.7250366210938,
+    "w": 148.6125030517578,
+    "h": 32,
+    "minimum": 12.583459974188386,
+    "bgAt": [
+      27,
+      39,
+      40
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Find the clip. Get back to work.",
+    "selector": "p.directory-purpose",
+    "color": "rgb(199, 212, 204)",
+    "rgb": [
+      199,
+      212,
+      204
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 949.4249877929688,
+    "w": 202.08749389648438,
+    "h": 16,
+    "minimum": 10.157796832030957,
+    "bgAt": [
+      26,
+      38,
+      39
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Existing capture or artwork. Version context is retained in the product record.",
+    "selector": "figcaption.",
+    "color": "rgb(180, 196, 188)",
+    "rgb": [
+      180,
+      196,
+      188
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 45.60000228881836,
+    "y": 1205.0750732421875,
+    "w": 253.79998779296875,
+    "h": 12,
+    "minimum": 10.44382470511923,
+    "bgAt": [
+      7,
+      18,
+      22
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Existing capture or artwork. Version context is retained in the product record.",
+    "selector": "figcaption.",
+    "color": "rgb(180, 196, 188)",
+    "rgb": [
+      180,
+      196,
+      188
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 45.60000228881836,
+    "y": 1220.375,
+    "w": 167.39999389648438,
+    "h": 12,
+    "minimum": 10.44382470511923,
+    "bgAt": [
+      7,
+      18,
+      22
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Windows · v0.3.1 / Android · v0.3.1",
+    "selector": "p.directory-state",
+    "color": "rgb(193, 207, 194)",
+    "rgb": [
+      193,
+      207,
+      194
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 1269.875,
+    "w": 210,
+    "h": 12.800048828125,
+    "minimum": 10.410750230104513,
+    "bgAt": [
+      18,
+      31,
+      35
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Explore Cache Vault",
+    "selector": "a.button.button-secondary",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 126.98750305175781,
+    "y": 1321.875,
+    "w": 113.5,
+    "h": 12.800048828125,
+    "minimum": 13.959652213240252,
+    "bgAt": [
+      17,
+      30,
+      34
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "↗",
+    "selector": "span.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 254.4875030517578,
+    "y": 1321.875,
+    "w": 8.912490844726562,
+    "h": 12.800048828125,
+    "minimum": 13.959652213240252,
+    "bgAt": [
+      17,
+      30,
+      34
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Everyday software",
+    "selector": "p.kicker",
+    "color": "rgb(201, 179, 140)",
+    "rgb": [
+      201,
+      179,
+      140
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 1427.675048828125,
+    "w": 104.05000305175781,
+    "h": 12,
+    "minimum": 8.109610505576029,
+    "bgAt": [
+      22,
+      32,
+      40
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Lights Out",
+    "selector": "h3.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 1455.375,
+    "w": 127.11250305175781,
+    "h": 32,
+    "minimum": 13.225337448932873,
+    "bgAt": [
+      24,
+      34,
+      42
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Give the end of the day a little less friction.",
+    "selector": "p.directory-purpose",
+    "color": "rgb(199, 212, 204)",
+    "rgb": [
+      199,
+      212,
+      204
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 1507.0750732421875,
+    "w": 275.2875061035156,
+    "h": 16,
+    "minimum": 10.29363859170123,
+    "bgAt": [
+      26,
+      36,
+      44
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Existing capture or artwork. Version context is retained in the product record.",
+    "selector": "figcaption.",
+    "color": "rgb(180, 196, 188)",
+    "rgb": [
+      180,
+      196,
+      188
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 45.60000228881836,
+    "y": 1762.7249755859375,
+    "w": 253.79998779296875,
+    "h": 12,
+    "minimum": 10.44382470511923,
+    "bgAt": [
+      7,
+      18,
+      22
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Existing capture or artwork. Version context is retained in the product record.",
+    "selector": "figcaption.",
+    "color": "rgb(180, 196, 188)",
+    "rgb": [
+      180,
+      196,
+      188
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 45.60000228881836,
+    "y": 1778.0250244140625,
+    "w": 167.39999389648438,
+    "h": 12,
+    "minimum": 10.44382470511923,
+    "bgAt": [
+      7,
+      18,
+      22
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Windows · v11.2.0 / Android · v11.1.1 · not offered here",
+    "selector": "p.directory-state",
+    "color": "rgb(193, 207, 194)",
+    "rgb": [
+      193,
+      207,
+      194
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 1827.5250244140625,
+    "w": 306.0000305175781,
+    "h": 12.800048828125,
+    "minimum": 10.533849178538322,
+    "bgAt": [
+      19,
+      29,
+      38
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Windows · v11.2.0 / Android · v11.1.1 · not offered here",
+    "selector": "p.directory-state",
+    "color": "rgb(193, 207, 194)",
+    "rgb": [
+      193,
+      207,
+      194
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 1845.5250244140625,
+    "w": 24.000003814697266,
+    "h": 12.800048828125,
+    "minimum": 10.970012652278307,
+    "bgAt": [
+      15,
+      25,
+      34
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Explore Lights Out",
+    "selector": "a.button.button-secondary",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 131.6374969482422,
+    "y": 1897.5250244140625,
+    "w": 104.21250915527344,
+    "h": 12.800048828125,
+    "minimum": 14.267065089093277,
+    "bgAt": [
+      17,
+      27,
+      36
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "↗",
+    "selector": "span.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 249.85000610351562,
+    "y": 1897.5250244140625,
+    "w": 8.912506103515625,
+    "h": 12.800048828125,
+    "minimum": 14.410718486706495,
+    "bgAt": [
+      16,
+      26,
+      35
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Everyday software",
+    "selector": "p.kicker",
+    "color": "rgb(201, 179, 140)",
+    "rgb": [
+      201,
+      179,
+      140
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 2003.3250732421875,
+    "w": 104.05000305175781,
+    "h": 12,
+    "minimum": 6.7044734213853125,
+    "bgAt": [
+      37,
+      48,
+      44
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Cleanroom",
+    "selector": "h3.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 2031.0250244140625,
+    "w": 138.3625030517578,
+    "h": 32.0001220703125,
+    "minimum": 11.189427125513783,
+    "bgAt": [
+      37,
+      48,
+      44
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Review a cleanup before it changes your files.",
+    "selector": "p.directory-purpose",
+    "color": "rgb(199, 212, 204)",
+    "rgb": [
+      199,
+      212,
+      204
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 2082.72509765625,
+    "w": 299.51251220703125,
+    "h": 16,
+    "minimum": 9.045640066941745,
+    "bgAt": [
+      36,
+      47,
+      43
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Existing capture or artwork. Version context is retained in the product record.",
+    "selector": "figcaption.",
+    "color": "rgb(180, 196, 188)",
+    "rgb": [
+      180,
+      196,
+      188
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 45.60000228881836,
+    "y": 2338.375,
+    "w": 253.79998779296875,
+    "h": 12,
+    "minimum": 10.44382470511923,
+    "bgAt": [
+      7,
+      18,
+      22
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Existing capture or artwork. Version context is retained in the product record.",
+    "selector": "figcaption.",
+    "color": "rgb(180, 196, 188)",
+    "rgb": [
+      180,
+      196,
+      188
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 45.60000228881836,
+    "y": 2353.675048828125,
+    "w": 167.39999389648438,
+    "h": 12,
+    "minimum": 10.44382470511923,
+    "bgAt": [
+      7,
+      18,
+      22
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Windows · v1.0.7 · newer GitHub version unreconciled",
+    "selector": "p.directory-state",
+    "color": "rgb(193, 207, 194)",
+    "rgb": [
+      193,
+      207,
+      194
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 2403.175048828125,
+    "w": 234.00001525878906,
+    "h": 12.800048828125,
+    "minimum": 9.081019210720958,
+    "bgAt": [
+      29,
+      43,
+      40
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Windows · v1.0.7 · newer GitHub version unreconciled",
+    "selector": "p.directory-state",
+    "color": "rgb(193, 207, 194)",
+    "rgb": [
+      193,
+      207,
+      194
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 2421.175048828125,
+    "w": 72,
+    "h": 12.800048828125,
+    "minimum": 9.081019210720958,
+    "bgAt": [
+      29,
+      43,
+      40
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Explore Cleanroom",
+    "selector": "a.button.button-secondary",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 129.58750915527344,
+    "y": 2473.175048828125,
+    "w": 108.3125,
+    "h": 12.800048828125,
+    "minimum": 12.22901073207356,
+    "bgAt": [
+      27,
+      42,
+      39
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "↗",
+    "selector": "span.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 251.90000915527344,
+    "y": 2473.175048828125,
+    "w": 8.912490844726562,
+    "h": 12.800048828125,
+    "minimum": 12.398885546999185,
+    "bgAt": [
+      25,
+      41,
+      39
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Everyday software",
+    "selector": "p.kicker",
+    "color": "rgb(201, 179, 140)",
+    "rgb": [
+      201,
+      179,
+      140
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 2578.97509765625,
+    "w": 104.05000305175781,
+    "h": 12,
+    "minimum": 7.452107661664255,
+    "bgAt": [
+      28,
+      40,
+      40
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "GhostLayer",
+    "selector": "h3.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 2606.675048828125,
+    "w": 146.47500610351562,
+    "h": 32,
+    "minimum": 12.55799458513693,
+    "bgAt": [
+      28,
+      39,
+      40
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Stage temporary work before deciding what stays.",
+    "selector": "p.directory-purpose",
+    "color": "rgb(199, 212, 204)",
+    "rgb": [
+      199,
+      212,
+      204
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 2658.375,
+    "w": 285.5625305175781,
+    "h": 16,
+    "minimum": 10.157796832030957,
+    "bgAt": [
+      26,
+      38,
+      39
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Stage temporary work before deciding what stays.",
+    "selector": "p.directory-purpose",
+    "color": "rgb(199, 212, 204)",
+    "rgb": [
+      199,
+      212,
+      204
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 2683.875,
+    "w": 39.65000534057617,
+    "h": 16,
+    "minimum": 10.253601957507511,
+    "bgAt": [
+      26,
+      37,
+      39
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Existing capture or artwork. Version context is retained in the product record.",
+    "selector": "figcaption.",
+    "color": "rgb(180, 196, 188)",
+    "rgb": [
+      180,
+      196,
+      188
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 45.60000228881836,
+    "y": 2939.525146484375,
+    "w": 253.79998779296875,
+    "h": 12,
+    "minimum": 10.44382470511923,
+    "bgAt": [
+      7,
+      18,
+      22
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Existing capture or artwork. Version context is retained in the product record.",
+    "selector": "figcaption.",
+    "color": "rgb(180, 196, 188)",
+    "rgb": [
+      180,
+      196,
+      188
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 45.60000228881836,
+    "y": 2954.824951171875,
+    "w": 167.39999389648438,
+    "h": 12,
+    "minimum": 10.44382470511923,
+    "bgAt": [
+      7,
+      18,
+      22
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Windows · v0.4.0",
+    "selector": "p.directory-state",
+    "color": "rgb(193, 207, 194)",
+    "rgb": [
+      193,
+      207,
+      194
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 3004.324951171875,
+    "w": 96,
+    "h": 12.800048828125,
+    "minimum": 10.523435340454546,
+    "bgAt": [
+      17,
+      30,
+      34
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Explore GhostLayer",
+    "selector": "a.button.button-secondary",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 127.5625,
+    "y": 3056.324951171875,
+    "w": 112.35000610351562,
+    "h": 12.800048828125,
+    "minimum": 13.959652213240252,
+    "bgAt": [
+      17,
+      30,
+      34
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "↗",
+    "selector": "span.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 253.91250610351562,
+    "y": 3056.324951171875,
+    "w": 8.912506103515625,
+    "h": 12.800048828125,
+    "minimum": 13.959652213240252,
+    "bgAt": [
+      17,
+      30,
+      34
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Everyday software",
+    "selector": "p.kicker",
+    "color": "rgb(201, 179, 140)",
+    "rgb": [
+      201,
+      179,
+      140
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 3162.125,
+    "w": 104.05000305175781,
+    "h": 12,
+    "minimum": 7.524490751628652,
+    "bgAt": [
+      28,
+      39,
+      40
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "ForgeCast Weather",
+    "selector": "h3.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 3189.824951171875,
+    "w": 240.16249084472656,
+    "h": 32,
+    "minimum": 12.55799458513693,
+    "bgAt": [
+      28,
+      39,
+      40
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Weather guidance for the day you are planning.",
+    "selector": "p.directory-purpose",
+    "color": "rgb(199, 212, 204)",
+    "rgb": [
+      199,
+      212,
+      204
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 3241.525146484375,
+    "w": 308.2750244140625,
+    "h": 16,
+    "minimum": 10.157796832030957,
+    "bgAt": [
+      26,
+      38,
+      39
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Existing capture or artwork. Version context is retained in the product record.",
+    "selector": "figcaption.",
+    "color": "rgb(180, 196, 188)",
+    "rgb": [
+      180,
+      196,
+      188
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 45.60000228881836,
+    "y": 3497.175048828125,
+    "w": 253.79998779296875,
+    "h": 12,
+    "minimum": 10.44382470511923,
+    "bgAt": [
+      7,
+      18,
+      22
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Existing capture or artwork. Version context is retained in the product record.",
+    "selector": "figcaption.",
+    "color": "rgb(180, 196, 188)",
+    "rgb": [
+      180,
+      196,
+      188
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 45.60000228881836,
+    "y": 3512.47509765625,
+    "w": 167.39999389648438,
+    "h": 12,
+    "minimum": 10.44382470511923,
+    "bgAt": [
+      7,
+      18,
+      22
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Android · v0.3.5",
+    "selector": "p.directory-state",
+    "color": "rgb(193, 207, 194)",
+    "rgb": [
+      193,
+      207,
+      194
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 3561.97509765625,
+    "w": 96,
+    "h": 12.800048828125,
+    "minimum": 10.410750230104513,
+    "bgAt": [
+      18,
+      31,
+      35
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Explore ForgeCast Weather",
+    "selector": "a.button.button-secondary",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 106.4124984741211,
+    "y": 3613.97509765625,
+    "w": 154.66250610351562,
+    "h": 12.800048828125,
+    "minimum": 13.959652213240252,
+    "bgAt": [
+      17,
+      30,
+      34
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "↗",
+    "selector": "span.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 275.07501220703125,
+    "y": 3613.97509765625,
+    "w": 8.912506103515625,
+    "h": 12.800048828125,
+    "minimum": 13.959652213240252,
+    "bgAt": [
+      17,
+      30,
+      34
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Foundry systems",
+    "selector": "p.kicker",
+    "color": "rgb(201, 179, 140)",
+    "rgb": [
+      201,
+      179,
+      140
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 3719.775146484375,
+    "w": 91.80000305175781,
+    "h": 12,
+    "minimum": 7.524490751628652,
+    "bgAt": [
+      28,
+      39,
+      40
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Hardline Zero",
+    "selector": "h3.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 3747.47509765625,
+    "w": 167.53750610351562,
+    "h": 32,
+    "minimum": 12.583459974188386,
+    "bgAt": [
+      27,
+      39,
+      40
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Keep the work contract visible across tools and agents.",
+    "selector": "p.directory-purpose",
+    "color": "rgb(199, 212, 204)",
+    "rgb": [
+      199,
+      212,
+      204
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 3799.175048828125,
+    "w": 308.0000305175781,
+    "h": 16,
+    "minimum": 10.157796832030957,
+    "bgAt": [
+      26,
+      38,
+      39
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Keep the work contract visible across tools and agents.",
+    "selector": "p.directory-purpose",
+    "color": "rgb(199, 212, 204)",
+    "rgb": [
+      199,
+      212,
+      204
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 3824.675048828125,
+    "w": 49.45000076293945,
+    "h": 16,
+    "minimum": 10.273473903459925,
+    "bgAt": [
+      25,
+      37,
+      39
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "HLZ",
+    "selector": "span.",
+    "color": "rgb(184, 200, 186)",
+    "rgb": [
+      184,
+      200,
+      186
+    ],
+    "large": true,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 157.40000915527344,
+    "y": 3929.97509765625,
+    "w": 75.59999084472656,
+    "h": 46.39990234375,
+    "minimum": 7.655717320114713,
+    "bgAt": [
+      34,
+      50,
+      49
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Internal product · no public installer",
+    "selector": "p.directory-state",
+    "color": "rgb(193, 207, 194)",
+    "rgb": [
+      193,
+      207,
+      194
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 4064.574951171875,
+    "w": 228.00001525878906,
+    "h": 12.800048828125,
+    "minimum": 10.410750230104513,
+    "bgAt": [
+      18,
+      31,
+      35
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Explore Hardline Zero",
+    "selector": "a.button.button-secondary",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 122.48750305175781,
+    "y": 4116.5751953125,
+    "w": 122.51249694824219,
+    "h": 12.7998046875,
+    "minimum": 13.959652213240252,
+    "bgAt": [
+      17,
+      30,
+      34
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "↗",
+    "selector": "span.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 259,
+    "y": 4116.5751953125,
+    "w": 8.912506103515625,
+    "h": 12.7998046875,
+    "minimum": 13.959652213240252,
+    "bgAt": [
+      17,
+      30,
+      34
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Foundry systems",
+    "selector": "p.kicker",
+    "color": "rgb(201, 179, 140)",
+    "rgb": [
+      201,
+      179,
+      140
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 4222.375,
+    "w": 91.80000305175781,
+    "h": 12,
+    "minimum": 7.524490751628652,
+    "bgAt": [
+      28,
+      39,
+      40
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "CrossPoint",
+    "selector": "h3.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 4250.0751953125,
+    "w": 139.35000610351562,
+    "h": 32,
+    "minimum": 12.583459974188386,
+    "bgAt": [
+      27,
+      39,
+      40
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Give every handoff a recipient, a state and a record.",
+    "selector": "p.directory-purpose",
+    "color": "rgb(199, 212, 204)",
+    "rgb": [
+      199,
+      212,
+      204
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 4301.77490234375,
+    "w": 286.7750244140625,
+    "h": 16,
+    "minimum": 10.157796832030957,
+    "bgAt": [
+      26,
+      38,
+      39
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Give every handoff a recipient, a state and a record.",
+    "selector": "p.directory-purpose",
+    "color": "rgb(199, 212, 204)",
+    "rgb": [
+      199,
+      212,
+      204
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 4327.27490234375,
+    "w": 46.875003814697266,
+    "h": 16,
+    "minimum": 10.273473903459925,
+    "bgAt": [
+      25,
+      37,
+      39
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "CP",
+    "selector": "span.",
+    "color": "rgb(184, 200, 186)",
+    "rgb": [
+      184,
+      200,
+      186
+    ],
+    "large": true,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 170,
+    "y": 4432.5751953125,
+    "w": 50.40000915527344,
+    "h": 46.39990234375,
+    "minimum": 7.747515026384402,
+    "bgAt": [
+      34,
+      49,
+      48
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Internal product · no public installer",
+    "selector": "p.directory-state",
+    "color": "rgb(193, 207, 194)",
+    "rgb": [
+      193,
+      207,
+      194
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 4567.17529296875,
+    "w": 228.00001525878906,
+    "h": 12.7998046875,
+    "minimum": 10.410750230104513,
+    "bgAt": [
+      18,
+      31,
+      35
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Explore CrossPoint",
+    "selector": "a.button.button-secondary",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 129.0500030517578,
+    "y": 4619.17529296875,
+    "w": 109.375,
+    "h": 12.7998046875,
+    "minimum": 13.959652213240252,
+    "bgAt": [
+      17,
+      30,
+      34
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "↗",
+    "selector": "span.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 252.4250030517578,
+    "y": 4619.17529296875,
+    "w": 8.912490844726562,
+    "h": 12.7998046875,
+    "minimum": 13.959652213240252,
+    "bgAt": [
+      17,
+      30,
+      34
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Foundry systems",
+    "selector": "p.kicker",
+    "color": "rgb(201, 179, 140)",
+    "rgb": [
+      201,
+      179,
+      140
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 4724.97509765625,
+    "w": 91.80000305175781,
+    "h": 12,
+    "minimum": 7.524490751628652,
+    "bgAt": [
+      28,
+      39,
+      40
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Reality Gate",
+    "selector": "h3.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 4752.67529296875,
+    "w": 150.75,
+    "h": 32,
+    "minimum": 12.55799458513693,
+    "bgAt": [
+      28,
+      39,
+      40
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Connect a project, permitted execution and its evidence.",
+    "selector": "p.directory-purpose",
+    "color": "rgb(199, 212, 204)",
+    "rgb": [
+      199,
+      212,
+      204
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 4804.375,
+    "w": 302.70001220703125,
+    "h": 16,
+    "minimum": 10.157796832030957,
+    "bgAt": [
+      26,
+      38,
+      39
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Connect a project, permitted execution and its evidence.",
+    "selector": "p.directory-purpose",
+    "color": "rgb(199, 212, 204)",
+    "rgb": [
+      199,
+      212,
+      204
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 4829.875,
+    "w": 64.48750305175781,
+    "h": 16,
+    "minimum": 10.253601957507511,
+    "bgAt": [
+      26,
+      37,
+      39
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Existing capture or artwork. Version context is retained in the product record.",
+    "selector": "figcaption.",
+    "color": "rgb(180, 196, 188)",
+    "rgb": [
+      180,
+      196,
+      188
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 45.60000228881836,
+    "y": 5085.52490234375,
+    "w": 253.79998779296875,
+    "h": 12,
+    "minimum": 10.44382470511923,
+    "bgAt": [
+      7,
+      18,
+      22
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Existing capture or artwork. Version context is retained in the product record.",
+    "selector": "figcaption.",
+    "color": "rgb(180, 196, 188)",
+    "rgb": [
+      180,
+      196,
+      188
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 45.60000228881836,
+    "y": 5100.8251953125,
+    "w": 167.39999389648438,
+    "h": 12,
+    "minimum": 10.44382470511923,
+    "bgAt": [
+      7,
+      18,
+      22
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Internal development · public v1.1.0 withdrawn",
+    "selector": "p.directory-state",
+    "color": "rgb(193, 207, 194)",
+    "rgb": [
+      193,
+      207,
+      194
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 5150.3251953125,
+    "w": 276.0000305175781,
+    "h": 12.7998046875,
+    "minimum": 10.523435340454546,
+    "bgAt": [
+      17,
+      30,
+      34
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Explore Reality Gate",
+    "selector": "a.button.button-secondary",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 126.32500457763672,
+    "y": 5202.3251953125,
+    "w": 114.8375015258789,
+    "h": 12.7998046875,
+    "minimum": 13.959652213240252,
+    "bgAt": [
+      17,
+      30,
+      34
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "↗",
+    "selector": "span.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 255.16250610351562,
+    "y": 5202.3251953125,
+    "w": 8.912506103515625,
+    "h": 12.7998046875,
+    "minimum": 13.959652213240252,
+    "bgAt": [
+      17,
+      30,
+      34
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Foundry systems",
+    "selector": "p.kicker",
+    "color": "rgb(201, 179, 140)",
+    "rgb": [
+      201,
+      179,
+      140
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 5308.125,
+    "w": 91.80000305175781,
+    "h": 12,
+    "minimum": 7.524490751628652,
+    "bgAt": [
+      28,
+      39,
+      40
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Proof Foundry App",
+    "selector": "h3.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 5335.8251953125,
+    "w": 233.37501525878906,
+    "h": 32,
+    "minimum": 12.583459974188386,
+    "bgAt": [
+      27,
+      39,
+      40
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "A software library with the record attached.",
+    "selector": "p.directory-purpose",
+    "color": "rgb(199, 212, 204)",
+    "rgb": [
+      199,
+      212,
+      204
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 5387.52490234375,
+    "w": 279.9625244140625,
+    "h": 16,
+    "minimum": 10.253601957507511,
+    "bgAt": [
+      26,
+      37,
+      39
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "PF",
+    "selector": "span.",
+    "color": "rgb(184, 200, 186)",
+    "rgb": [
+      184,
+      200,
+      186
+    ],
+    "large": true,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 170,
+    "y": 5492.8251953125,
+    "w": 50.40000915527344,
+    "h": 46.39990234375,
+    "minimum": 7.638922471457872,
+    "bgAt": [
+      35,
+      50,
+      49
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Internal product · no public installer",
+    "selector": "p.directory-state",
+    "color": "rgb(193, 207, 194)",
+    "rgb": [
+      193,
+      207,
+      194
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 40.79999923706055,
+    "y": 5627.42529296875,
+    "w": 228.00001525878906,
+    "h": 12.7998046875,
+    "minimum": 10.306690085145918,
+    "bgAt": [
+      19,
+      32,
+      35
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Explore Proof Foundry App",
+    "selector": "a.button.button-secondary",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 107.7249984741211,
+    "y": 5679.42529296875,
+    "w": 152.02499389648438,
+    "h": 12.7998046875,
+    "minimum": 13.959652213240252,
+    "bgAt": [
+      17,
+      30,
+      34
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "↗",
+    "selector": "span.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "gradient / screenshot sampled",
+    "complex": [],
+    "x": 273.75,
+    "y": 5679.42529296875,
+    "w": 8.912506103515625,
+    "h": 12.7998046875,
+    "minimum": 13.959652213240252,
+    "bgAt": [
+      17,
+      30,
+      34
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Inside the Foundry systems.",
+    "selector": "h2#directory-systems-title",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 5797.625,
+    "w": 326.25,
+    "h": 29.60009765625,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "Different responsibilities. Connected work.",
+    "selector": "p.",
+    "color": "rgb(191, 204, 198)",
+    "rgb": [
+      191,
+      204,
+      198
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 5842.52490234375,
+    "w": 242.16250610351562,
+    "h": 13.60009765625,
+    "minimum": 10.990347663813974,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Hardline Zero",
+    "selector": "summary.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 22,
+    "y": 5911.97509765625,
+    "w": 138.35000610351562,
+    "h": 24.7998046875,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Purpose, workflow & record",
+    "selector": "span.",
+    "color": "rgb(190, 206, 194)",
+    "rgb": [
+      190,
+      206,
+      194
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 22,
+    "y": 5955.52490234375,
+    "w": 156,
+    "h": 12.80029296875,
+    "minimum": 11.102350233875864,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "CrossPoint",
+    "selector": "summary.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 22,
+    "y": 6015.52490234375,
+    "w": 113.85000610351562,
+    "h": 24.80029296875,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Purpose, workflow & record",
+    "selector": "span.",
+    "color": "rgb(190, 206, 194)",
+    "rgb": [
+      190,
+      206,
+      194
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 22,
+    "y": 6059.0751953125,
+    "w": 156,
+    "h": 12.7998046875,
+    "minimum": 11.102350233875864,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Reality Gate",
+    "selector": "summary.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 22,
+    "y": 6119.0751953125,
+    "w": 125.5,
+    "h": 24.7998046875,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Purpose, workflow & record",
+    "selector": "span.",
+    "color": "rgb(190, 206, 194)",
+    "rgb": [
+      190,
+      206,
+      194
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 22,
+    "y": 6162.625,
+    "w": 156,
+    "h": 12.80029296875,
+    "minimum": 11.102350233875864,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Proof Foundry App",
+    "selector": "summary.",
+    "color": "rgb(231, 233, 231)",
+    "rgb": [
+      231,
+      233,
+      231
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 22,
+    "y": 6222.625,
+    "w": 191.5,
+    "h": 24.80029296875,
+    "minimum": 14.92861994936341,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Purpose, workflow & record",
+    "selector": "span.",
+    "color": "rgb(190, 206, 194)",
+    "rgb": [
+      190,
+      206,
+      194
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 22,
+    "y": 6266.17529296875,
+    "w": 156,
+    "h": 12.7998046875,
+    "minimum": 11.102350233875864,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Release context",
+    "selector": "h2#portfolio-records-title",
+    "color": "rgb(228, 232, 223)",
+    "rgb": [
+      228,
+      232,
+      223
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 6358.97509765625,
+    "w": 159.7375030517578,
+    "h": 25.60009765625,
+    "minimum": 14.668111907984335,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "These dated records describe availability; they do not select the website’s final product lineup.",
+    "selector": "p.",
+    "color": "rgb(228, 232, 223)",
+    "rgb": [
+      228,
+      232,
+      223
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 6388.64990234375,
+    "w": 346.9624938964844,
+    "h": 17.60009765625,
+    "minimum": 14.668111907984335,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "These dated records describe availability; they do not select the website’s final product lineup.",
+    "selector": "p.",
+    "color": "rgb(228, 232, 223)",
+    "rgb": [
+      228,
+      232,
+      223
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 6415.05029296875,
+    "w": 304.82501220703125,
+    "h": 17.599609375,
+    "minimum": 14.668111907984335,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Cache Vault",
+    "selector": "summary.",
+    "color": "rgb(228, 232, 223)",
+    "rgb": [
+      228,
+      232,
+      223
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 6463.05029296875,
+    "w": 85.5,
+    "h": 17.599609375,
+    "minimum": 14.668111907984335,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "GhostLayer",
+    "selector": "summary.",
+    "color": "rgb(228, 232, 223)",
+    "rgb": [
+      228,
+      232,
+      223
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 6531.05029296875,
+    "w": 83.1500015258789,
+    "h": 17.599609375,
+    "minimum": 14.668111907984335,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Lights Out",
+    "selector": "summary.",
+    "color": "rgb(228, 232, 223)",
+    "rgb": [
+      228,
+      232,
+      223
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 6599.05029296875,
+    "w": 72.70000457763672,
+    "h": 17.599609375,
+    "minimum": 14.668111907984335,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Cleanroom",
+    "selector": "summary.",
+    "color": "rgb(228, 232, 223)",
+    "rgb": [
+      228,
+      232,
+      223
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 6667.05029296875,
+    "w": 78.9000015258789,
+    "h": 17.599609375,
+    "minimum": 14.668111907984335,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "ForgeCast Weather",
+    "selector": "summary.",
+    "color": "rgb(228, 232, 223)",
+    "rgb": [
+      228,
+      232,
+      223
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 6735.05029296875,
+    "w": 137.5,
+    "h": 17.599609375,
+    "minimum": 14.668111907984335,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Preserved product history",
+    "selector": "h2#portfolio-history-title",
+    "color": "rgb(228, 232, 223)",
+    "rgb": [
+      228,
+      232,
+      223
+    ],
+    "large": true,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 6817.4501953125,
+    "w": 254.86251831054688,
+    "h": 25.60009765625,
+    "minimum": 6.764447908449166,
+    "bgAt": [
+      69,
+      80,
+      74
+    ],
+    "threshold": 3,
+    "status": "pass"
+  },
+  {
+    "text": "ProofShot · historical record",
+    "selector": "summary.",
+    "color": "rgb(228, 232, 223)",
+    "rgb": [
+      228,
+      232,
+      223
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 6867.92529296875,
+    "w": 177.53750610351562,
+    "h": 16,
+    "minimum": 14.668111907984335,
+    "bgAt": [
+      17,
+      22,
+      25
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "The Proof Foundry",
+    "selector": "span.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 65,
+    "y": 7020.52490234375,
+    "w": 136.2624969482422,
+    "h": 17.60009765625,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Build it. Prove it. Ship it.",
+    "selector": "p.",
+    "color": "rgb(165, 177, 182)",
+    "rgb": [
+      165,
+      177,
+      182
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 7067.92529296875,
+    "w": 134.5124969482422,
+    "h": 13.599609375,
+    "minimum": 8.581884017980935,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Independent software.",
+    "selector": "p.footer-maker-note",
+    "color": "rgb(165, 177, 182)",
+    "rgb": [
+      165,
+      177,
+      182
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 7099.375,
+    "w": 118.4375,
+    "h": 12.80029296875,
+    "minimum": 8.581884017980935,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Public records. Clear limits.",
+    "selector": "p.footer-maker-note",
+    "color": "rgb(165, 177, 182)",
+    "rgb": [
+      165,
+      177,
+      182
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 136.4375,
+    "y": 7099.375,
+    "w": 144.02499389648438,
+    "h": 12.80029296875,
+    "minimum": 8.581884017980935,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Explore",
+    "selector": "h2.",
+    "color": "rgb(186, 164, 127)",
+    "rgb": [
+      186,
+      164,
+      127
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 7148.77490234375,
+    "w": 56.212501525878906,
+    "h": 14.400390625,
+    "minimum": 7.81044882130314,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Products directory",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 7193.77490234375,
+    "w": 97.26250457763672,
+    "h": 12.80029296875,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Proof Standard",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 7233.77490234375,
+    "w": 80.3499984741211,
+    "h": 12.80029296875,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Release records",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 7273.77490234375,
+    "w": 86.5,
+    "h": 12.80029296875,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Truth Files",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 7313.77490234375,
+    "w": 55.4375,
+    "h": 12.80029296875,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Company",
+    "selector": "h2.",
+    "color": "rgb(186, 164, 127)",
+    "rgb": [
+      186,
+      164,
+      127
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 208.1999969482422,
+    "y": 7148.77490234375,
+    "w": 56.21250915527344,
+    "h": 14.400390625,
+    "minimum": 7.81044882130314,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "About",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 208.1999969482422,
+    "y": 7193.77490234375,
+    "w": 32.13751220703125,
+    "h": 12.80029296875,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Founders Circle",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 208.1999969482422,
+    "y": 7233.77490234375,
+    "w": 84.18751525878906,
+    "h": 12.80029296875,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Roadmap",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 208.1999969482422,
+    "y": 7273.77490234375,
+    "w": 52.46250915527344,
+    "h": 12.80029296875,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Support",
+    "selector": "a.",
+    "color": "rgb(196, 204, 205)",
+    "rgb": [
+      196,
+      204,
+      205
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 208.1999969482422,
+    "y": 7313.77490234375,
+    "w": 42.82501220703125,
+    "h": 12.80029296875,
+    "minimum": 11.544430285298807,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "© 2026 Proof Foundry. All rights reserved.",
+    "selector": "p.",
+    "color": "rgb(143, 157, 164)",
+    "rgb": [
+      143,
+      157,
+      164
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [],
+    "x": 18,
+    "y": 7380.67529296875,
+    "w": 164.71250915527344,
+    "h": 9.599609375,
+    "minimum": 6.753723849196874,
+    "bgAt": [
+      13,
+      18,
+      21
+    ],
+    "threshold": 4.5,
+    "status": "pass"
+  },
+  {
+    "text": "Reduced motion",
+    "selector": "button.motion-toggle",
+    "color": "rgb(179, 189, 191)",
+    "rgb": [
+      179,
+      189,
+      191
+    ],
+    "large": false,
+    "surface": "solid",
+    "complex": [
+      "BUTTON.motion-toggle"
+    ],
+    "x": 288.3999938964844,
+    "y": 7384.0751953125,
+    "w": 84,
+    "h": 12.7998046875,
+    "status": "unmeasured effects"
+  }
+]
