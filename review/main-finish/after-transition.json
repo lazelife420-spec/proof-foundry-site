@@ -1,0 +1,15 @@
+{
+  "route": "/about/",
+  "captured": true,
+  "headerName": "none",
+  "incomingClip": "none",
+  "incomingTransform": "none",
+  "animations": [
+    {
+      "name": "foundry-arrive",
+      "pseudo": "::view-transition-new(root)",
+      "time": 120,
+      "state": "paused"
+    }
+  ]
+}

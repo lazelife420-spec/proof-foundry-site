@@ -1,0 +1,320 @@
+{
+  "results": [
+    {
+      "journey": "/ -> /about/",
+      "frames": [
+        {
+          "at": 0,
+          "end": 360,
+          "oldRoot": 1,
+          "newRoot": 0,
+          "animations": [
+            {
+              "name": "foundry-arrive",
+              "pseudo": "::view-transition-new(root)"
+            },
+            {
+              "name": "foundry-depart",
+              "pseudo": "::view-transition-old(root)"
+            }
+          ],
+          "route": "/about/",
+          "fraction": 0,
+          "doubleExposure": false,
+          "file": "review\\main-finish\\transition-frames\\after-home-to-about-000.png"
+        },
+        {
+          "at": 90,
+          "end": 360,
+          "oldRoot": 0.375,
+          "newRoot": 0,
+          "animations": [
+            {
+              "name": "foundry-arrive",
+              "pseudo": "::view-transition-new(root)"
+            },
+            {
+              "name": "foundry-depart",
+              "pseudo": "::view-transition-old(root)"
+            }
+          ],
+          "route": "/about/",
+          "fraction": 0.25,
+          "doubleExposure": false,
+          "file": "review\\main-finish\\transition-frames\\after-home-to-about-025.png"
+        },
+        {
+          "at": 180,
+          "end": 360,
+          "oldRoot": 0,
+          "newRoot": 0,
+          "animations": [
+            {
+              "name": "foundry-arrive",
+              "pseudo": "::view-transition-new(root)"
+            },
+            {
+              "name": "foundry-depart",
+              "pseudo": "::view-transition-old(root)"
+            }
+          ],
+          "route": "/about/",
+          "fraction": 0.5,
+          "doubleExposure": false,
+          "file": "review\\main-finish\\transition-frames\\after-home-to-about-050.png"
+        },
+        {
+          "at": 270,
+          "end": 360,
+          "oldRoot": 0,
+          "newRoot": 0.444444,
+          "animations": [
+            {
+              "name": "foundry-arrive",
+              "pseudo": "::view-transition-new(root)"
+            },
+            {
+              "name": "foundry-depart",
+              "pseudo": "::view-transition-old(root)"
+            }
+          ],
+          "route": "/about/",
+          "fraction": 0.75,
+          "doubleExposure": false,
+          "file": "review\\main-finish\\transition-frames\\after-home-to-about-075.png"
+        },
+        {
+          "at": 359,
+          "end": 360,
+          "oldRoot": 0,
+          "newRoot": 0.993827,
+          "animations": [
+            {
+              "name": "foundry-arrive",
+              "pseudo": "::view-transition-new(root)"
+            },
+            {
+              "name": "foundry-depart",
+              "pseudo": "::view-transition-old(root)"
+            }
+          ],
+          "route": "/about/",
+          "fraction": 1,
+          "doubleExposure": false,
+          "file": "review\\main-finish\\transition-frames\\after-home-to-about-100.png"
+        }
+      ]
+    },
+    {
+      "journey": "/about/ -> /support/",
+      "frames": [
+        {
+          "at": 0,
+          "end": 360,
+          "oldRoot": 1,
+          "newRoot": 0,
+          "animations": [
+            {
+              "name": "foundry-arrive",
+              "pseudo": "::view-transition-new(root)"
+            },
+            {
+              "name": "foundry-depart",
+              "pseudo": "::view-transition-old(root)"
+            }
+          ],
+          "route": "/support/",
+          "fraction": 0,
+          "doubleExposure": false,
+          "file": "review\\main-finish\\transition-frames\\after-about-to-support-000.png"
+        },
+        {
+          "at": 90,
+          "end": 360,
+          "oldRoot": 0.375,
+          "newRoot": 0,
+          "animations": [
+            {
+              "name": "foundry-arrive",
+              "pseudo": "::view-transition-new(root)"
+            },
+            {
+              "name": "foundry-depart",
+              "pseudo": "::view-transition-old(root)"
+            }
+          ],
+          "route": "/support/",
+          "fraction": 0.25,
+          "doubleExposure": false,
+          "file": "review\\main-finish\\transition-frames\\after-about-to-support-025.png"
+        },
+        {
+          "at": 180,
+          "end": 360,
+          "oldRoot": 0,
+          "newRoot": 0,
+          "animations": [
+            {
+              "name": "foundry-arrive",
+              "pseudo": "::view-transition-new(root)"
+            },
+            {
+              "name": "foundry-depart",
+              "pseudo": "::view-transition-old(root)"
+            }
+          ],
+          "route": "/support/",
+          "fraction": 0.5,
+          "doubleExposure": false,
+          "file": "review\\main-finish\\transition-frames\\after-about-to-support-050.png"
+        },
+        {
+          "at": 270,
+          "end": 360,
+          "oldRoot": 0,
+          "newRoot": 0.444444,
+          "animations": [
+            {
+              "name": "foundry-arrive",
+              "pseudo": "::view-transition-new(root)"
+            },
+            {
+              "name": "foundry-depart",
+              "pseudo": "::view-transition-old(root)"
+            }
+          ],
+          "route": "/support/",
+          "fraction": 0.75,
+          "doubleExposure": false,
+          "file": "review\\main-finish\\transition-frames\\after-about-to-support-075.png"
+        },
+        {
+          "at": 359,
+          "end": 360,
+          "oldRoot": 0,
+          "newRoot": 0.993827,
+          "animations": [
+            {
+              "name": "foundry-arrive",
+              "pseudo": "::view-transition-new(root)"
+            },
+            {
+              "name": "foundry-depart",
+              "pseudo": "::view-transition-old(root)"
+            }
+          ],
+          "route": "/support/",
+          "fraction": 1,
+          "doubleExposure": false,
+          "file": "review\\main-finish\\transition-frames\\after-about-to-support-100.png"
+        }
+      ]
+    },
+    {
+      "journey": "/ -> /software/",
+      "frames": [
+        {
+          "at": 0,
+          "end": 360,
+          "oldRoot": 1,
+          "newRoot": 0,
+          "animations": [
+            {
+              "name": "foundry-arrive",
+              "pseudo": "::view-transition-new(root)"
+            },
+            {
+              "name": "foundry-depart",
+              "pseudo": "::view-transition-old(root)"
+            }
+          ],
+          "route": "/software/",
+          "fraction": 0,
+          "doubleExposure": false,
+          "file": "review\\main-finish\\transition-frames\\after-home-to-software-000.png"
+        },
+        {
+          "at": 90,
+          "end": 360,
+          "oldRoot": 0.375,
+          "newRoot": 0,
+          "animations": [
+            {
+              "name": "foundry-arrive",
+              "pseudo": "::view-transition-new(root)"
+            },
+            {
+              "name": "foundry-depart",
+              "pseudo": "::view-transition-old(root)"
+            }
+          ],
+          "route": "/software/",
+          "fraction": 0.25,
+          "doubleExposure": false,
+          "file": "review\\main-finish\\transition-frames\\after-home-to-software-025.png"
+        },
+        {
+          "at": 180,
+          "end": 360,
+          "oldRoot": 0,
+          "newRoot": 0,
+          "animations": [
+            {
+              "name": "foundry-arrive",
+              "pseudo": "::view-transition-new(root)"
+            },
+            {
+              "name": "foundry-depart",
+              "pseudo": "::view-transition-old(root)"
+            }
+          ],
+          "route": "/software/",
+          "fraction": 0.5,
+          "doubleExposure": false,
+          "file": "review\\main-finish\\transition-frames\\after-home-to-software-050.png"
+        },
+        {
+          "at": 270,
+          "end": 360,
+          "oldRoot": 0,
+          "newRoot": 0.444444,
+          "animations": [
+            {
+              "name": "foundry-arrive",
+              "pseudo": "::view-transition-new(root)"
+            },
+            {
+              "name": "foundry-depart",
+              "pseudo": "::view-transition-old(root)"
+            }
+          ],
+          "route": "/software/",
+          "fraction": 0.75,
+          "doubleExposure": false,
+          "file": "review\\main-finish\\transition-frames\\after-home-to-software-075.png"
+        },
+        {
+          "at": 359,
+          "end": 360,
+          "oldRoot": 0,
+          "newRoot": 0.993827,
+          "animations": [
+            {
+              "name": "foundry-arrive",
+              "pseudo": "::view-transition-new(root)"
+            },
+            {
+              "name": "foundry-depart",
+              "pseudo": "::view-transition-old(root)"
+            }
+          ],
+          "route": "/software/",
+          "fraction": 1,
+          "doubleExposure": false,
+          "file": "review\\main-finish\\transition-frames\\after-home-to-software-100.png"
+        }
+      ]
+    }
+  ],
+  "failures": 0
+}

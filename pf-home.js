@@ -746,7 +746,9 @@ function initProofChain() {
     });
   }
   function rebuild() {
-    vertical = machine.clientWidth < 760;
+    // This must match the shared layout breakpoint. Comparing the container
+    // width to a viewport breakpoint produced a giant upright SVG at tablets.
+    vertical = matchMedia('(max-width:900px)').matches;
     const height = vertical ? machine.querySelector('.ledger-rail').offsetHeight : 250;
     const width = vertical ? 86 : 1200, top = vertical ? 55 : 125, bottom = height - 55;
     scene.setAttribute('viewBox', `0 0 ${width} ${height}`);

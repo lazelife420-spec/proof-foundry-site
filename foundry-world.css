@@ -2,96 +2,48 @@
 @view-transition {
   navigation:auto
 }
+/* Sequential, never simultaneous: the departing page clears to the page
+   surface before the arriving page appears, so no frame shows text from both
+   documents. Whole-page snapshots are never clipped by a moving edge. */
+html[data-travel=on]::view-transition {
+  background:#0b0f14
+}
 html[data-travel=on]::view-transition-group(root) {
-  animation-duration:760ms;
-  perspective:1600px
+  animation:none
 }
 html[data-travel=on]::view-transition-old(root) {
-  animation:junction-withdraw 760ms cubic-bezier(.2,.7,.15,1) both;
-  transform-origin:10% 55%;
+  animation:foundry-depart 360ms linear both;
   mix-blend-mode:normal
 }
 html[data-travel=on]::view-transition-new(root) {
-  animation:junction-enter 760ms cubic-bezier(.2,.7,.15,1) both;
-  transform-origin:90% 50%;
+  animation:foundry-arrive 360ms linear both;
   mix-blend-mode:normal
 }
-/* At junctions the arriving room covers the withdrawing plane. The outgoing
-   document stays opaque until covered, so ordinary links/history have a real
-   content-bearing surface throughout rather than an empty dark interval. */
-@keyframes junction-withdraw {
-  from {transform:none;filter:brightness(1)}
-  to {transform:perspective(1600px) translateZ(-45px) rotateY(1.5deg);filter:brightness(.78)}
+@keyframes foundry-depart {
+  0% {opacity:1}
+  40%,100% {opacity:0}
 }
-@keyframes junction-enter {
-  from {clip-path:inset(0 0 0 100%);transform:perspective(1600px) rotateY(-2deg)}
-  to {clip-path:inset(0);transform:none}
+@keyframes foundry-arrive {
+  0%,55% {opacity:0}
+  100% {opacity:1}
 }
-html[data-travel-direction=back]::view-transition-new(root) {
-  animation-name:junction-return;
-  transform-origin:10% 50%
-}
-@keyframes junction-return {
-  from {clip-path:inset(0 100% 0 0);transform:perspective(1600px) rotateY(2deg)}
-  to {clip-path:inset(0);transform:none}
-}
-html[data-travel=on][data-travel-kind=joint]::view-transition-group(root) {
-  animation-duration:950ms
-}
-html[data-travel=on][data-travel-kind=joint]::view-transition-old(root) {
-  /* Keep the complete departing room behind the opening until it is covered.
-     Fading it independently left both room snapshots transparent mid-journey. */
-  animation:none;
-  opacity:1
-}
-html[data-travel=on][data-travel-kind=joint]::view-transition-new(root) {
-  animation:foundry-enter 950ms cubic-bezier(.4,0,.2,1) both
-}
+/* Shared chrome is identical on every page: show the destination copy at
+   once and hold it in place for the whole journey. */
 .site-header {
   view-transition-name:foundry-header
 }
-::view-transition-group(foundry-header) {
-  animation:none!important
+.pf-route-chain {
+  view-transition-name:pf-route-chain
 }
-::view-transition-old(foundry-header) {
+::view-transition-group(foundry-header),::view-transition-group(pf-route-chain) {
+  animation:none;
+  z-index:10
+}
+::view-transition-old(foundry-header),::view-transition-old(pf-route-chain) {
   display:none
 }
-::view-transition-new(foundry-header) {
-  animation:none!important
-}
-::view-transition-image-pair(foundry-joint) {
-  /* Native mount-to-mount geometry stays aligned with the scene opening. */
-  isolation:isolate
-}
-::view-transition-group(foundry-joint) {
-  animation-duration:950ms;
-  animation-timing-function:cubic-bezier(.4,0,.2,1);
-  z-index:10;
-  filter:drop-shadow(0 25px 25px #0008)
-}
-::view-transition-old(foundry-joint) {
-  animation:joint-old 950ms linear both;
-  mix-blend-mode:normal
-}
-::view-transition-new(foundry-joint) {
-  animation:joint-new 950ms linear both;
-  mix-blend-mode:normal
-}
-@keyframes foundry-enter {
-  from {
-    clip-path:circle(0 at var(--travel-from-x,50vw) var(--travel-from-y,50vh))
-  }
-  to {
-    clip-path:circle(var(--travel-radius,150vmax) at var(--travel-to-x,50vw) var(--travel-to-y,50vh))
-  }
-}
-@keyframes joint-old {
-  from {opacity:1}
-  to {opacity:0}
-}
-@keyframes joint-new {
-  from {opacity:0}
-  to {opacity:1}
+::view-transition-new(foundry-header),::view-transition-new(pf-route-chain) {
+  animation:none
 }
 .support-hero {
   padding:75px 0 65px
@@ -316,26 +268,3 @@ html[data-travel=off]::view-transition-group(*),html[data-travel=off]::view-tran
     border-color:CanvasText
   }
 }
-
-
-/* PF-V3-R2: REVIEW-ONLY — no release or runtime authority. */
-
-/* The native document snapshot is always content-bearing. A sectional steel
-   hinge replaces the old circular/fantasy portal. This does not intercept URLs. */
-html[data-travel=on]::view-transition-group(root){animation-duration:880ms;perspective:1800px}
-html[data-travel=on]::view-transition-old(root){animation:pf-structural-withdraw 880ms cubic-bezier(.28,.66,.18,1) both;transform-origin:8% 50%;z-index:1;mix-blend-mode:normal}
-html[data-travel=on]::view-transition-new(root){animation:pf-structural-arrive 880ms cubic-bezier(.28,.66,.18,1) both;transform-origin:100% 50%;z-index:2;mix-blend-mode:normal}
-@keyframes pf-structural-withdraw { 0%{transform:none;opacity:1;filter:brightness(1)} 52%{transform:perspective(1800px) rotateY(1.7deg) translateX(-12px);opacity:1;filter:brightness(.92)} 100%{transform:perspective(1800px) rotateY(3.5deg) translateX(-34px);opacity:1;filter:brightness(.82)} }
-@keyframes pf-structural-arrive { 0%{clip-path:polygon(100% 0,100% 0,100% 100%,100% 100%);transform:perspective(1800px) rotateY(-5deg)} 24%{clip-path:polygon(92% 0,100% 0,100% 100%,95% 100%);transform:perspective(1800px) rotateY(-3deg)} 62%{clip-path:polygon(31% 0,100% 0,100% 100%,38% 100%);transform:perspective(1800px) rotateY(-.8deg)} 100%{clip-path:polygon(0 0,100% 0,100% 100%,0 100%);transform:none} }
-html[data-travel=on][data-travel-kind=joint]::view-transition-group(root){animation-duration:980ms}
-html[data-travel=on][data-travel-kind=joint]::view-transition-old(root){animation:pf-structural-withdraw 980ms cubic-bezier(.28,.66,.18,1) both;opacity:1}
-html[data-travel=on][data-travel-kind=joint]::view-transition-new(root){animation:pf-structural-arrive 980ms cubic-bezier(.28,.66,.18,1) both}
-/* The fixed guide remains seated below the header while its carriage travels. */
-::view-transition-group(pf-route-rail){animation:none!important;z-index:98}
-::view-transition-old(pf-route-rail){display:none}
-::view-transition-new(pf-route-rail){animation:none!important}
-::view-transition-group(pf-traveler){animation-duration:880ms;animation-timing-function:cubic-bezier(.2,.79,.21,1);z-index:99;filter:drop-shadow(0 1px 1px #0008)}
-::view-transition-old(pf-traveler),::view-transition-new(pf-traveler){mix-blend-mode:normal}
-@media(prefers-reduced-motion:reduce){html[data-travel=on]::view-transition-group(root),html[data-travel=on]::view-transition-old(root),html[data-travel=on]::view-transition-new(root),::view-transition-group(pf-traveler){animation:none!important}}
-html[data-travel="off"]::view-transition-group(pf-traveler),html[data-travel="off"]::view-transition-old(pf-traveler),html[data-travel="off"]::view-transition-new(pf-traveler){animation:none!important}
-@media(forced-colors:active){::view-transition-group(pf-traveler){animation:none!important}}

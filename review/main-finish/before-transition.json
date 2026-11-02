@@ -1,0 +1,33 @@
+{
+  "route": "/about/",
+  "captured": true,
+  "headerName": "foundry-header",
+  "incomingClip": "polygon(32.4451% 0px, 100% 0px, 100% 100%, 39.3503% 100%)",
+  "incomingTransform": "matrix3d(0.999889, 0, 0.0148717, -8.26206e-06, 0, 1, 0, 0, -0.0148717, 0, 0.999889, -0.000555494, 0, 0, 0, 1)",
+  "animations": [
+    {
+      "name": "-ua-view-transition-group-anim-root",
+      "pseudo": "::view-transition-group(root)",
+      "time": 440,
+      "state": "paused"
+    },
+    {
+      "name": "-ua-view-transition-group-anim-pf-route-chain",
+      "pseudo": "::view-transition-group(pf-route-chain)",
+      "time": 440,
+      "state": "paused"
+    },
+    {
+      "name": "pf-structural-arrive",
+      "pseudo": "::view-transition-new(root)",
+      "time": 440,
+      "state": "paused"
+    },
+    {
+      "name": "pf-structural-withdraw",
+      "pseudo": "::view-transition-old(root)",
+      "time": 440,
+      "state": "paused"
+    }
+  ]
+}

@@ -81,7 +81,7 @@
 }
 
 /* Main-site chain: solid links pass through the mounting eyes of each navigation key. */
-.pf-route-chain{position:relative;margin-block:20px 10px;view-transition-name:pf-route-chain}
+.pf-route-chain{position:relative;margin-block:20px 10px}
 .pf-route-chain ol{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:30px;list-style:none;margin:0;padding:0}
 .pf-route-chain li{position:relative;min-width:0}
 .pf-route-chain a{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:10px;min-height:55px;padding:12px 8px;border:1px solid #82938b;border-top:2px solid #abb8ad;border-bottom:4px solid #030b0f;border-radius:18px;background:repeating-linear-gradient(100deg,#ffffff05 0 1px,transparent 1px 4px),linear-gradient(180deg,#354646,#17282b 72%,#304043);box-shadow:inset 0 1px #f0f0de33,inset 3px 0 #071115,inset -3px 0 #071115,0 5px 5px #0008;color:#d3ded4;font:12px/1.3 var(--pf-mono);text-decoration:none;text-align:center;transition:transform 180ms,background 180ms}
@@ -99,9 +99,6 @@
 .pf-route-coupler i:nth-child(2){left:11px;transform:scaleY(.42);z-index:2;border-color:#b2c0b3;border-bottom-color:#536966}
 .pf-route-coupler i:nth-child(3){left:21px}
 .pf-route-chain li:last-child .pf-route-coupler{display:none}
-::view-transition-group(pf-route-chain){animation-duration:550ms;z-index:90}
-::view-transition-old(pf-route-chain){display:none}
-::view-transition-new(pf-route-chain){animation:none}
 @media(max-width:1000px){.pf-route-chain ol{gap:20px}.pf-route-chain a{font-size:11px;gap:6px}.pf-route-coupler{width:30px;transform:scaleX(.78);transform-origin:left center}.pf-chain-station{display:none}}
 @media(max-width:800px){
  .pf-route-chain{margin-block:16px 8px}.pf-route-chain ol{grid-template-columns:repeat(3,minmax(0,1fr));gap:24px 18px}
@@ -144,7 +141,7 @@
 .pf-chain-detail strong{font:14px var(--pf-mono);color:#e8d2a8}
 .pf-chain-detail p{font-size:14px;line-height:1.7;color:#d1dbd4;max-width:76ch;margin:0}
 .pf-chain-caption{font:10px/1.6 var(--pf-mono);color:#aabbb5;margin-top:18px}
-@media(max-width:760px){
+@media(max-width:900px){
  .ledger-chain .home-section-head{display:block}.ledger-chain .home-section-head h2{margin:18px 0}
  .ledger-chain{padding-block:45px}.ledger-chain h2{font-size:34px}.ledger-chain .home-section-head>p:last-child{font-size:15px}
  .ledger-chain-machine{padding:70px 14px 20px}

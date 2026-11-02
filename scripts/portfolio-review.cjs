@@ -34,7 +34,9 @@ const context={identities:model.products.map(p=>p.id),assets,routes};
 const directory=renderDirectory(editorial,model,releaseTruth,manifest,context);
 if (verifyOnly) {
  const out=path.resolve(process.argv[3]);
- if (out===root || out.startsWith(root+path.sep)) throw new Error('Generated verification must be outside source');
+ // Normal builds use public/. Fixtures may use an external output, but no
+ // other authored-source directory is a valid generated artifact.
+ if (out!==path.join(root,'public') && (out===root || out.startsWith(root+path.sep))) throw new Error('Generated verification requires public/ or an external output');
  const registryText=fs.readFileSync(path.join(out,'__h14/registry.json'),'utf8').trim();
  // The preserved PowerShell emitter writes no JSON tokens for an empty pipeline
  // and a single object for one item. Accept those shapes only with explicit

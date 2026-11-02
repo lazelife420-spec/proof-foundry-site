@@ -424,7 +424,8 @@ function renderDirectory(input, model, releaseTruth, manifest, context) {
     const name=entry.id==='crosspoint'?'CrossPoint':identity.name;
     const channels=release?.channels.filter(c=>c.track==='PUBLIC')||[];
     const released=channels.filter(c=>c.publicationState==='PUBLIC_RELEASE');
-    let state=released.length?released.map(c=>c.platform[0].toUpperCase()+c.platform.slice(1)+' · v'+c.version).join(' / '):'Internal product · no public installer';
+    let state=released.length?released.map(c=>c.platform[0].toUpperCase()+c.platform.slice(1)+' · v'+c.version+
+      (c.artifacts.some(a=>a.downloadUrl)?'':' · not offered here')).join(' / '):'Internal product · no public installer';
     if (entry.id==='reality-gate') state='Internal development · public v1.1.0 withdrawn';
     if (entry.id==='cleanroom') state+=' · newer GitHub version unreconciled';
     const media=entry.artwork?'<figure class="directory-art"><img src="'+esc(entry.artwork)+'" alt="'+esc(product?.presentation?.cardImageAlt||name+' artwork')+'" loading="lazy" width="960" height="540"/><figcaption>Existing capture or artwork. Version context is retained in the product record.</figcaption></figure>':'<div class="directory-no-art" aria-hidden="true"><span>'+esc(entry.id==='hardline-zero'?'HLZ':entry.id==='crosspoint'?'CP':'PF')+'</span><i></i><i></i><i></i></div>';

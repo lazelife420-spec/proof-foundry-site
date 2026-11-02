@@ -19,7 +19,9 @@
   matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', updatePreference);
   matchMedia('(forced-colors: active)').addEventListener('change', updatePreference);
   let selected = null;
-  const name = el => { if (el) { el.style.viewTransitionName = 'foundry-joint'; selected = el; } };
+  // Keep connected artwork inside the complete document snapshot. Extracting a
+  // small coupling into its own snapshot can clip the surrounding maker detail.
+  const name = el => { selected = el; };
   const clear = keep => {
     if (selected) selected.style.viewTransitionName = '';
     selected = null;
