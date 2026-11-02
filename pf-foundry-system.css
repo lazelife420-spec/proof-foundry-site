@@ -8,6 +8,21 @@
   color:var(--pf-ink);
   padding:12px 18px
 }
+
+/* One primary navigation: the physical keys below the maker rail.
+   No duplicate header menu or hidden duplicate focus targets. */
+.header-maker-note{margin-left:auto;color:#c5cec8;text-align:right;font:14px/1.55 var(--pf-sans)}
+.brand-name small{font-size:11px;line-height:1.5}
+.footer-brand>p,.footer-maker-note{font-size:14px!important;line-height:1.7}
+.footer-maker-note{color:#c6ced2}
+.footer-grid h2{font-size:13px}
+.footer-grid li,.footer-bottom{font-size:14px}
+.motion-toggle{font-size:13px}
+@media(max-width:700px){
+ .header-maker-note{display:none}
+ .brand-name small{font-size:10px}
+ .footer-bottom{font-size:12px;flex-wrap:wrap}
+}
 .skip-link:focus {
   top:12px
 }
@@ -822,6 +837,68 @@ summary::-webkit-details-marker {
   .top-nav a[aria-current="page"],.nav-panel .nav-cta[aria-current="page"] {border:2px solid Highlight}
   .nav-toggle {background:ButtonFace;color:ButtonText;border:1px solid ButtonText;box-shadow:none}
 }
-
-
-
+/* Material construction. One light source, upper left. Rolled mill steel carries the
+   load; brushed stainless marks surfaces people handle; archival paper carries records.
+   A weld appears only where two permanent members meet: the chassis and the footer base.
+   Movable keys and chain links hang on pins and clevises, never welds. Assets and
+   transforms: MATERIAL_PROVENANCE.md. */
+:root{
+ --pf-mat-steel:url("/brand/material/PF_MILL_STEEL_GROUND_v1.webp");
+ --pf-mat-stainless:url("/brand/material/PF_STAINLESS_BRUSHED_v1.webp");
+ --pf-mat-paper:url("/brand/material/PF_PAPER_ARCHIVAL_v1.webp");
+ --pf-mat-weld:url("/brand/material/PF_BUTT_WELD_SEAM_v1.webp");
+ /* The central chassis plate: the 1150px weld-free source columns at 1.2x, wider than the 1320px rail
+    so its joints with the side plates fall outside the reading column. */
+ --pf-plate:1380px;
+ --pf-plate-shade:rgba(10,14,16,.5);
+ /* Button-head cap screw seen under the upper-left light: socket, lit crown, shadowed skirt. */
+ --pf-bolt:radial-gradient(circle at 44% 40%,#0a0d0e 0 1.2px,#a3aca9 1.7px,#6b7573 3px,#353d3d 4.3px,#0d1112 5.1px,rgba(0,0,0,.5) 5.9px,transparent 6.6px);
+}
+body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-room-truth-files,.pf-room-truth,.pf-room-proof,.pf-room-founders,.pf-room-roadmap,.pf-room-error,.pf-directory-page){
+ background-color:#1b1f21;
+ background-image:
+  linear-gradient(90deg,transparent calc(50% - var(--pf-plate)/2 - 2px),#050708 calc(50% - var(--pf-plate)/2 - 2px) calc(50% - var(--pf-plate)/2),rgba(205,214,210,.08) calc(50% - var(--pf-plate)/2) calc(50% - var(--pf-plate)/2 + 1px),transparent calc(50% - var(--pf-plate)/2 + 1px) calc(50% + var(--pf-plate)/2 - 1px),rgba(205,214,210,.05) calc(50% + var(--pf-plate)/2 - 1px) calc(50% + var(--pf-plate)/2),#050708 calc(50% + var(--pf-plate)/2) calc(50% + var(--pf-plate)/2 + 2px),transparent calc(50% + var(--pf-plate)/2 + 2px)),
+  radial-gradient(120% 60% at 0 0,rgba(214,224,220,.05),transparent 62%),
+  linear-gradient(var(--pf-plate-shade),var(--pf-plate-shade)),
+  var(--pf-mat-steel);
+ background-size:100% 100%,100% 2600px,100% 100%,var(--pf-plate) auto;
+ background-repeat:no-repeat,no-repeat,no-repeat,repeat;
+ background-position:0 0,0 0,0 0,center top;
+}
+/* Home carries the heaviest structure: the plate is shaded least. About is a cleaner,
+   newer stainless room with no mill scale. */
+body.pf-ledger-page{--pf-plate-shade:rgba(10,14,16,.32)}
+body.pf-room-about{
+ background-color:#262b2e;
+ background-image:
+  linear-gradient(90deg,transparent calc(50% - var(--pf-plate)/2 - 1px),#07090a calc(50% - var(--pf-plate)/2 - 1px) calc(50% - var(--pf-plate)/2 + 1px),transparent calc(50% - var(--pf-plate)/2 + 1px) calc(50% + var(--pf-plate)/2 - 1px),#07090a calc(50% + var(--pf-plate)/2 - 1px) calc(50% + var(--pf-plate)/2 + 1px),transparent calc(50% + var(--pf-plate)/2 + 1px)),
+  /* Cladding sheets are 920px tall (the source sheet at plate width); their butt joints are recessed. */
+  repeating-linear-gradient(180deg,transparent 0 917px,#07090a 917px 919px,rgba(226,232,230,.07) 919px 920px),
+  radial-gradient(120% 60% at 0 0,rgba(226,232,232,.06),transparent 62%),
+  linear-gradient(rgba(16,21,24,.8),rgba(16,21,24,.8)),
+  var(--pf-mat-stainless);
+ background-size:100% 100%,100% 100%,100% 2600px,100% 100%,var(--pf-plate) auto;
+ background-repeat:no-repeat,no-repeat,no-repeat,no-repeat,repeat;
+ background-position:0 0,0 0,0 0,0 0,center top;
+}
+body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-room-truth-files,.pf-room-truth,.pf-room-proof,.pf-room-founders,.pf-room-roadmap,.pf-room-error,.pf-directory-page) .site-header{
+ background:
+  linear-gradient(180deg,rgba(245,247,236,.07),transparent 8px),
+  linear-gradient(180deg,rgba(40,48,52,.6),rgba(22,30,34,.66) 14%,rgba(13,19,22,.78) 84%,rgba(7,11,13,.94)),
+  var(--pf-mat-steel) center 37%/var(--pf-plate) auto,#14191c;
+}
+/* Footer base: a heavier member, butt-welded to the chassis along its top edge. */
+body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-room-truth-files,.pf-room-truth,.pf-room-proof,.pf-room-founders,.pf-room-roadmap,.pf-room-error,.pf-directory-page) .site-footer{
+ position:relative;border-top:0;
+ background:linear-gradient(180deg,rgba(7,10,12,.5),rgba(7,10,12,.74)),var(--pf-mat-steel) center 18%/var(--pf-plate) auto,#121618;
+ box-shadow:inset 0 22px 18px -16px #0009;
+}
+body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-room-truth-files,.pf-room-truth,.pf-room-proof,.pf-room-founders,.pf-room-roadmap,.pf-room-error,.pf-directory-page) .site-footer::before{
+ content:"";position:absolute;left:0;right:0;top:-21px;height:42px;pointer-events:none;
+ background:linear-gradient(rgba(12,15,17,.34),rgba(12,15,17,.34)),var(--pf-mat-weld) 137px 50%/499px 42px repeat-x;
+ -webkit-mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent);mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent);
+}
+@media(forced-colors:active){
+ body{background-image:none!important}
+ .site-footer::before{display:none}
+}

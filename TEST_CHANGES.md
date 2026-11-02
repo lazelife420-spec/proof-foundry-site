@@ -1282,3 +1282,39 @@ Old (late successor, this branch): every product page must contain `data-commerc
 Why obsolete: the original assertion bound the module label to the retired catalog card. Moving it to the product page conflicted with the older, still-valid H7C contract that a WITHDRAWN product page shows the explicit state badge `UNAVAILABLE · WITHDRAWN` and no public acquisition action. Making the page show the module label instead broke H7C, escaped the badge markup and changed the page's material content date. The renderer's WITHDRAWN state label is the established visitor contract.
 
 Replacement: the module projection must still carry the exact module status and label (unchanged). Every product page must render the exact badge `<span class="product-commerce-label" data-commerce="<slug>">…</span>` with the module label, the explicit PAID price, or, for WITHDRAWN, `UNAVAILABLE · WITHDRAWN`; a WITHDRAWN page must also have no public primary download link. This is stricter on markup shape (exact span and closing tag) than before. The build still rejects a WITHDRAWN module whose label does not state withdrawal and no public download.
+
+## Option A main-site finish (2026-11-02): one physical-key navigation, stationary chain, materials
+
+### `scripts/test-h3-trust-to-action.ps1`
+
+Old: "active navigation system opens the mobile panel containing the Support CTA" (`.nav-panel` open rule plus `nav-cta` Support button); the five-stage journey counted `proof-step-number`.
+
+Why obsolete: the owner-selected Option A removes the duplicate header menu (toggle, panel and CTA). Navigation is the single always-visible physical-key chain, and the Home proof chain is the stationary Option A assembly with `.pfa-num` / `.stage-btn` stages.
+
+Replacement: exactly one `nav[aria-label="Primary navigation"]`, six real anchors including `/support/`, and no `top-nav` / `nav-panel` / `nav-toggle` markup anywhere on Home. The journey requires five `.pfa-num` and five `.stage-btn` stages in the same ordered sections.
+
+### `scripts/test-h9-homepage.ps1`
+
+Old: header parity required `class="button button-primary nav-cta" href="/support/">Support</a>` inside the header.
+
+Why obsolete: same duplicate-menu removal. The primary navigation now follows the header element.
+
+Replacement: the compared shell is the header plus the following `pf-route-chain` nav; it must contain Software, Proof Standard, Truth Files, About and Support anchors, exactly one primary navigation, and no duplicate menu markup. Byte parity across the three page families is still required.
+
+### `scripts/test-home-v5-browser.mjs`
+
+Old: 390px opened `.nav-toggle` and required the Support button inside the open panel; forced colours required the toggle's menu bars (≥ 60 palette pixels inside a 4px inset).
+
+Why obsolete: there is no toggle or panel.
+
+Replacement: 390px requires one primary navigation, zero duplicate-menu elements and six visible anchors (Support included) inside the viewport. Forced colours measure each of the six keys: the five non-current keys ≥ 60 pixels in the exact button-text palette colour; the current key ≥ 20 text pixels plus a computed 3px border in a different system colour at ≥ 3:1 against the canvas. This is per key rather than one glyph group.
+
+### `scripts/qualify-shared-visuals.mjs`
+
+Old: navigation links were read from `.top-nav a` and the open mobile menu was checked.
+
+Replacement: links come from `#primary-nav a`; every page must have exactly one primary navigation, six links and no duplicate menu elements. An optional second argument writes evidence to another directory (default unchanged).
+
+### `sitemap.xml` Home lastmod
+
+Home content (index.html) changes in this commit, so H4's material-input derivation moves `/` to the commit date (2026-11-02). H11 derives `/` from the same material date; no literal changed.

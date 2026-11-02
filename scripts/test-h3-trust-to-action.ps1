@@ -121,7 +121,8 @@ Assert-Condition ($catalogHtml -match 'data-directory-empty[^>]*>No matching pro
 # Mobile CTA parity: studio.css no longer hides the nav CTA
 $studioCss = Get-Content (Join-Path $root 'studio.css') -Raw -Encoding UTF8
 Assert-Condition ($studioCss -notmatch '\.studio \.nav-cta\{display:none\}') "P2: mobile nav CTA no longer hidden at <=900px"
-Assert-Condition ($homeHtml -match 'href="/pf-foundry-system\.css[?"]' -and (Get-Content (Join-Path $publicDir 'pf-foundry-system.css') -Raw -Encoding UTF8) -match '\.site-header\.nav-ready\.nav-open \.nav-panel\s*\{\s*display:flex' -and $homeHtml -match '<a class="button button-primary nav-cta" href="/support/">Support</a>') "P2: active navigation system opens the mobile panel containing the Support CTA"
+$primaryNav = [regex]::Match($homeHtml, '(?s)<nav class="pf-route-chain[^>]*aria-label="Primary navigation".*?</nav>').Value
+Assert-Condition (([regex]::Matches($homeHtml, '<nav[^>]*aria-label="Primary navigation"')).Count -eq 1 -and ([regex]::Matches($primaryNav, '<a ')).Count -eq 6 -and $primaryNav -match 'href="/support/"' -and $homeHtml -notmatch 'class="top-nav"|class="nav-panel"|class="nav-toggle"') "P2: one physical-key primary navigation exposes six routes including Support without duplicate menus"
 
 # ── Shared-component presence ────────────────────────────────────────────────
 $stylesCss = Get-Content (Join-Path $root 'styles.css') -Raw -Encoding UTF8
@@ -133,7 +134,7 @@ $journey = @('ledger-hero', 'home-orientation', 'ledger-chain', 'ledger-doctrine
 $positions = @($journey | ForEach-Object { [regex]::Match($homeHtml, '<section\b[^>]*class="[^"]*\b' + $_ + '\b[^"]*"').Index })
 $ordered = @($positions | Where-Object { $_ -le 0 }).Count -eq 0
 for ($i = 1; $i -lt $positions.Count; $i++) { if ($positions[$i] -le $positions[$i - 1]) { $ordered = $false } }
-Assert-Condition ($ordered -and ([regex]::Matches($homeHtml, 'class="proof-step-number"')).Count -eq 5 -and $homeHtml -match 'id="chain-title"' -and $homeHtml -notmatch 'class="studio-portfolio"|studio-evidence') "Proof Ledger: hero, orientation, five-stage proof chain, principle, records and support form the main-site journey"
+Assert-Condition ($ordered -and ([regex]::Matches($homeHtml, 'class="pfa-num"')).Count -eq 5 -and ([regex]::Matches($homeHtml, 'class="stage-btn"')).Count -eq 5 -and $homeHtml -match 'id="chain-title"' -and $homeHtml -notmatch 'class="studio-portfolio"|studio-evidence') "Proof Ledger: hero, orientation, five-stage proof chain, principle, records and support form the main-site journey"
 $heroHtml = [regex]::Match($homeHtml, '(?s)<section class="ledger-hero"[^>]*>.*?</section>').Value
 $directoryIds = @([regex]::Matches($catalogHtml, '<article\b[^>]*data-directory-entry="([^"]+)"') | ForEach-Object { $_.Groups[1].Value } | Sort-Object)
 $expectedIds = @('cache-vault','lights-out','cleanroom','ghostlayer','forgecast','hardline-zero','crosspoint','reality-gate','proof-foundry-app') | Sort-Object

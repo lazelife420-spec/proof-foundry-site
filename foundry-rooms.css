@@ -284,3 +284,36 @@
   :is(.pf-room-about,.pf-room-support,.pf-room-roadmap) main :is(p,li,a),.pf-room-about .about-intro-box h2,.pf-room-about .about-intro-box p,.pf-room-support #help-safety .support-content-box :is(p,li,strong,a){color:CanvasText}
   .pf-room-roadmap .roadmap-list article::before{background:CanvasText;border-color:CanvasText;box-shadow:none}
 }
+/* Room materials (tokens in pf-foundry-system.css). Proof Standard: an exposed, bolted
+   inspection frame. Support: a removable stainless service panel held by four screws.
+   Truth Files, Proof and Founders: archival paper; the Truth Files register hangs from a
+   stainless clamp bar. About's stainless ground is set by the shared owner. */
+.pf-room-standard .ledger-chain-machine{border:1px solid #0a0e10;background:
+ var(--pf-bolt) 4px 4px/14px 14px no-repeat,var(--pf-bolt) calc(100% - 4px) 4px/14px 14px no-repeat,
+ var(--pf-bolt) 4px calc(100% - 4px)/14px 14px no-repeat,var(--pf-bolt) calc(100% - 4px) calc(100% - 4px)/14px 14px no-repeat,
+ linear-gradient(130deg,rgba(36,46,48,.86),rgba(14,22,26,.9) 45%),var(--pf-mat-stainless) 0 0/cover no-repeat,#141c20;
+ box-shadow:inset 0 1px rgba(220,226,224,.16),inset 0 -1px #000,0 0 0 1px #050708,0 10px 25px #0006}
+body.studio.pf-room-support .support-hero{position:relative;isolation:isolate}
+body.studio.pf-room-support .support-hero::after{content:"";display:block;position:absolute;z-index:-1;inset:0 -28px;pointer-events:none;border:1px solid #06090a;
+ background:
+  var(--pf-bolt) 6px 6px/14px 14px no-repeat,var(--pf-bolt) calc(100% - 6px) 6px/14px 14px no-repeat,
+  var(--pf-bolt) 6px calc(100% - 6px)/14px 14px no-repeat,var(--pf-bolt) calc(100% - 6px) calc(100% - 6px)/14px 14px no-repeat,
+  radial-gradient(90% 70% at 0 0,rgba(226,232,232,.07),transparent 70%),
+  linear-gradient(rgba(16,22,25,.86),rgba(16,22,25,.88)),var(--pf-mat-stainless) 20% 30%/cover no-repeat,#22282b;
+ box-shadow:inset 0 1px rgba(226,232,230,.14),inset 0 -1px #000,0 0 0 2px #0b0f11,0 12px 22px #0006}
+.pf-room-support .support-section{border-top:1px solid #050708;box-shadow:inset 0 1px rgba(205,214,210,.06)}
+.pf-room-about .about-intro-section,.pf-room-founders .founders-receipt{background-image:linear-gradient(rgba(226,222,208,.42),rgba(226,222,208,.42)),var(--pf-mat-paper);background-size:auto,1024px auto}
+.pf-room-proof .receipt-section-title{color:#4b5943}
+.pf-room-proof .receipt-card{background:linear-gradient(rgba(233,234,223,.6),rgba(233,234,223,.6)),var(--pf-mat-paper) 0 0/1024px auto,#e9eadf}
+.pf-room-truth-files .tf-card{background:linear-gradient(rgba(236,235,226,.56),rgba(236,235,226,.56)),var(--pf-mat-paper) 0 calc(var(--rec,0) * -137px)/1024px auto,#ecebe2}
+.pf-room-truth-files .tf-card:nth-child(2n){--rec:1}.pf-room-truth-files .tf-card:nth-child(3n){--rec:2}
+.pf-room-truth-files .tf-grid{box-shadow:0 0 0 1px #070a0b,0 14px 30px #0006}
+.pf-room-truth-files .tf-grid::before{content:"";display:block;height:18px;
+ background:var(--pf-bolt) 16px 50%/14px 14px no-repeat,var(--pf-bolt) calc(100% - 16px) 50%/14px 14px no-repeat,
+  linear-gradient(180deg,rgba(222,227,230,.5),rgba(150,156,160,.55)),var(--pf-mat-stainless) 0 40%/100% auto no-repeat,#a8adb1;
+ box-shadow:inset 0 1px #fff6,inset 0 -1px #0008,0 2px 3px #0009}
+@media(max-width:700px){body.studio.pf-room-support .support-hero::after{inset:0 -12px}}
+@media(forced-colors:active){
+ .pf-room-standard .ledger-chain-machine,.pf-room-proof .receipt-card,.pf-room-truth-files .tf-card{background:Canvas}
+ body.studio.pf-room-support .support-hero::after,.pf-room-truth-files .tf-grid::before{display:none}
+}

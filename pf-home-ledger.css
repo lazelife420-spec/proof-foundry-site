@@ -9,6 +9,158 @@
   border-top:1px solid var(--line);
   padding:42px 0 30px
 }
+.pfa .stage-btn[aria-pressed=true]{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px}
+.pfa:not([data-ready]) :is(.pfa-record,.pfa-run-status){display:none}
+.pfa[data-ready] .pfa-fallback{display:none}
+.pfa-fallback{padding:24px 24px 24px 48px;background:var(--pf-paper);color:var(--pf-ink)}
+.pfa-fallback li{margin-block:16px}.pfa-fallback h4{font-size:18px;margin:0 0 8px}.pfa-fallback p{font-size:16px;line-height:1.75}
+.pfa-rail .stage-btn:focus-visible{outline:3px solid #00685e;outline-offset:2px}
+@media(forced-colors:active){.pfa-record :is(h4,p,span),.pfa-fallback{color:CanvasText;background:Canvas}.pfa-rail .stage-btn:focus-visible{outline-color:Highlight}}
+
+
+/* Option A integration: readable operating copy; engraving stays secondary. */
+.pfa [hidden]{display:none!important}
+.pfa-run-status{font:400 15px/1.6 var(--pf-sans);color:#c8d3cd;margin-top:18px}
+.pfa .pf-chain-toggle{font:600 14px/1.4 var(--pf-sans);padding:12px 16px}
+.pfa .stage-btn:disabled{cursor:default;opacity:1}
+.pfa:not([data-ready]) .pfa-sled{display:none}
+.pfa .pfa-rail p{font-size:16px;line-height:1.5}
+.pfa[data-motion=off] .pfa-sled{transition:none}
+@media(max-width:699px){
+ .pfa-toolbar{flex-wrap:wrap}
+ .pfa-rail p{font-size:16px;line-height:1.35}
+}
+@media(max-width:360px){
+ .pfa-rail h3{letter-spacing:.02em}
+ .pfa-rail p{font-size:15px}
+}
+@media(prefers-reduced-motion:reduce){.pfa-sled,.pfa-rail li::after{transition:none!important}}
+/* Option A: the previously approved nine-link render (assets/proof-chain, unmodified)
+   carried into the current homepage section. Alignment values come from the V5
+   render's alignment data: horizontal values are px in the 1400 x 431 frame / 14
+   (1cqw = 1/100 of the assembly width); vertical phone values are px in the
+   160 x 635 frame, times --s. */
+.pfa{position:relative;margin:30px 0 24px}
+.pfa-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
+.pfa-stamp{display:inline-flex;align-items:center;gap:10px;font:600 11px var(--pf-mono);letter-spacing:.12em;text-transform:uppercase;color:#c8d1c6}
+.pfa-stamp-mark{width:20px;height:20px;flex:none}
+.pfa-machine{position:relative;isolation:isolate;container-type:inline-size}
+.pfa-assembly{position:relative;z-index:1;display:block;pointer-events:none}
+.pfa-assembly img{display:block;width:100%;height:100%}
+.pfa-rail{position:relative;list-style:none;margin:0;padding:0;color:#c9d2d7}
+.pfa-rail li{margin:0;cursor:pointer}
+.pfa-rail :is(h3,p,.pfa-num){margin:0}
+.pfa-num{font:700 13px/1 var(--pf-mono);letter-spacing:.2em;color:#1a2026}
+.pfa-rail h3{font:700 16px/1 var(--pf-mono);letter-spacing:.12em;text-transform:uppercase;color:#151b21}
+.pfa .stage-btn{all:unset;box-sizing:border-box;display:block;width:100%;cursor:pointer;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;text-align:inherit}
+.pfa .stage-btn:focus-visible{outline:3px solid #00d1b2;outline-offset:5px;border-radius:2px}
+/* Laser-etched marks: a dark cut with a bright lip on its lower edge. */
+.pfa-rail :is(h3,.pfa-num){text-shadow:0 1px 0 rgba(255,255,255,.42),0 -1px 0 rgba(0,0,0,.14)}
+/* Inspection light: the selected stage's link sits in a soft, cool pool of light. Nothing on the chain moves. */
+.pfa-rail li::after{content:"";position:absolute;z-index:2;opacity:0;pointer-events:none;background:radial-gradient(closest-side,rgba(214,228,242,.24),rgba(206,222,238,.09) 60%,rgba(206,222,238,0));transition:opacity .22s ease-out}
+.pfa-rail li[data-engaged=true]::after{opacity:1}
+@media (hover:hover){.pfa-rail li:hover::after{opacity:.7}.pfa-rail li[data-engaged=true]:hover::after{opacity:1}}
+.pfa-rail li[data-engaged=true] p{color:#f1f5f7}
+/* The inspection sled: a satin steel index block that runs in the slot under the plates. */
+.pfa-sled{position:absolute;z-index:3;pointer-events:none;border-radius:1px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.06) 0 1px,transparent 1px 3px),linear-gradient(180deg,#d3d8dc,#9aa1a7 45%,#6e767d 55%,#a5acb2);box-shadow:0 0 0 1px #05070a,inset 0 1px 0 rgba(255,255,255,.7),0 2px 3px rgba(0,0,0,.6)}
+.pfa-sled::after{content:"";position:absolute;background:#0b0e11;box-shadow:1px 0 0 rgba(255,255,255,.35)}
+.pfa[data-motion=on] .pfa-sled{transition:transform .7s cubic-bezier(.45,0,.2,1)}
+.pfa-record{margin-top:22px;display:grid;grid-template-columns:minmax(150px,.22fr) minmax(0,1fr);gap:6px 28px;align-items:baseline;padding:20px 26px 22px;background:linear-gradient(180deg,#f4f3ee,#ebe9e1);color:#1b282c;border-radius:2px;box-shadow:0 0 0 1px #0a0d10,inset 0 1px 0 #fff,0 10px 22px rgba(0,0,0,.45)}
+.pfa-record-label{grid-row:1/3;margin:0;font:600 11px/1.6 var(--pf-mono);letter-spacing:.12em;text-transform:uppercase;color:#3e5054}
+.pfa-record-label span{display:block;font-size:26px;letter-spacing:.08em;color:#1b282c;margin-top:4px}
+.pfa-record h4{margin:0;font:600 20px/1.2 var(--pf-sans);letter-spacing:-.01em;color:#11191b}
+.pfa-record [data-detail-text]{margin:0;font-size:15px;line-height:1.65;color:#26363a;max-width:72ch}
+.pfa-caption{margin:16px 0 0}
+
+@media (min-width:1000px){
+ .pfa-assembly{aspect-ratio:1400/431}
+ .pfa-rail{position:static;display:grid;grid-template-columns:14.9314cqw 14.9561cqw 14.9807cqw 14.9557cqw 14.9307cqw;margin:-.7839cqw .7743cqw 0;padding:22px 14.2596cqw 18px 9.4371cqw;
+  background:
+   radial-gradient(circle at calc(2.66cqw - .16cqw) calc(50% - .2cqw),rgba(255,255,255,.2),transparent .32cqw),
+   radial-gradient(circle at 2.66cqw 50%,#06080a 0 .2cqw,#22282d .26cqw,#3d454c .36cqw,#2a3036 .5cqw,#15191d .57cqw,#020304 .63cqw,transparent .69cqw),
+   radial-gradient(circle at calc(100% - 2.66cqw - .16cqw) calc(50% - .2cqw),rgba(255,255,255,.2),transparent .32cqw),
+   radial-gradient(circle at calc(100% - 2.66cqw) 50%,#06080a 0 .2cqw,#22282d .26cqw,#3d454c .36cqw,#2a3036 .5cqw,#15191d .57cqw,#020304 .63cqw,transparent .69cqw),
+   linear-gradient(180deg,transparent 7px,#05070a 7px 8px,#0c0f12 8px 12px,rgba(255,255,255,.07) 12px 13px,transparent 13px) 9.4371cqw 0/calc(100% - 9.4371cqw - 14.2596cqw) 100% no-repeat,
+   repeating-linear-gradient(180deg,rgba(255,255,255,.016) 0 1px,transparent 1px 3px),
+   linear-gradient(180deg,#0d1014 0,#1c2228 3px,#1a2026 60%,#151a1f);
+  background-color:#1a2026;
+  box-shadow:0 0 0 1px #05070a,inset 0 1px 0 rgba(0,0,0,.6),inset 0 -2px 0 rgba(0,0,0,.45),inset 0 -3px 0 rgba(255,255,255,.07),inset 1px 0 0 rgba(255,255,255,.05),inset -1px 0 0 rgba(255,255,255,.05),0 12px 20px rgba(0,0,0,.42)}
+ .pfa-rail li{position:static;padding:0 12px}
+ .pfa-rail p{position:relative;padding-top:14px;font:400 16px/1.45 var(--pf-sans);text-align:center;text-wrap:balance;color:#c9d2d7}
+ .pfa-rail p::before{content:"";position:absolute;top:0;left:50%;width:1px;height:9px;background:#05070a;box-shadow:1px 0 0 rgba(255,255,255,.08)}
+ .pfa-rail li:nth-child(1){--px:12.0671cqw;--lx:10.5707cqw;--lw:14.2057cqw;--ly:6.495cqw;--lh:9.1614cqw}
+ .pfa-rail li:nth-child(2){--px:26.9979cqw;--lx:25.4907cqw;--lw:14.2307cqw;--ly:7.9386cqw;--lh:8.8786cqw}
+ .pfa-rail li:nth-child(3){--px:41.9786cqw;--lx:40.4657cqw;--lw:14.2464cqw;--ly:8.3914cqw;--lh:8.755cqw}
+ .pfa-rail li:nth-child(4){--px:56.9593cqw;--lx:55.455cqw;--lw:14.2293cqw;--ly:7.915cqw;--lh:8.9271cqw}
+ .pfa-rail li:nth-child(5){--px:71.89cqw;--lx:70.4043cqw;--lw:14.2cqw;--ly:6.5086cqw;--lh:9.1336cqw}
+ .pfa-num{position:absolute;z-index:2;left:var(--px);width:11.2207cqw;text-align:center;white-space:nowrap;pointer-events:none}
+ .pfa-rail li::before{content:"";position:absolute;z-index:0;left:var(--px);top:22.6529cqw;width:11.2207cqw;height:5.7229cqw;border-radius:3px;background-color:#a9aeb3;box-shadow:inset 0 0 0 1px rgba(0,0,0,.35)}
+ .pfa-rail li::after{left:calc(var(--lx) - 1.2cqw);top:calc(var(--ly) - 1.2cqw);width:calc(var(--lw) + 2.4cqw);height:calc(var(--lh) + 2.4cqw)}
+ /* Sled slot: 7-13px below the strip's top edge, between the end screws. */
+ .pfa-sled{top:calc(30.786cqw - .7839cqw + 7px);height:6px;width:6cqw;left:14.67cqw;transform:translateX(var(--travel,0cqw))}
+ .pfa-sled::after{left:50%;top:-1px;width:1px;height:8px}
+ .pfa[data-active="0"] .pfa-sled{--travel:0cqw}.pfa[data-active="1"] .pfa-sled{--travel:14.94cqw}.pfa[data-active="2"] .pfa-sled{--travel:29.92cqw}.pfa[data-active="3"] .pfa-sled{--travel:44.9cqw}.pfa[data-active="4"] .pfa-sled{--travel:59.83cqw}
+}
+@media (min-width:1181px){
+ .pfa-rail h3{position:absolute;z-index:2;left:var(--px);top:calc(25.5143cqw + 1px);width:11.2207cqw;text-align:center;white-space:nowrap}
+ .pfa-rail h3 .stage-btn{margin-top:-24px;padding:24px 0 12px;text-align:center}
+ .pfa-num{top:calc(25.5143cqw - 18px)}
+}
+@media (min-width:1181px) and (max-width:1359px){.pfa-rail h3{font-size:15px;letter-spacing:.05em}.pfa-num{font-size:12.5px}}
+@media (min-width:1000px) and (max-width:1180px){
+ .pfa-num{top:calc(25.5143cqw - 7px);font-size:15px;letter-spacing:.16em;text-indent:.16em}
+ .pfa-rail li{padding:0 6px}
+ .pfa-rail h3{position:relative;padding-top:14px;font-size:15px;line-height:1.2;letter-spacing:.1em;text-align:center;color:#dfe6ea;text-shadow:0 -1px 0 rgba(0,0,0,.7)}
+ .pfa-rail p{padding-top:6px;font-size:15px;line-height:1.4}.pfa-rail p::before{display:none}
+}
+/* Below 1000px the same nine links hang vertically in the guide channel; each
+   plate is mounted beside its link on a carrier bolted to the housing. */
+@media (max-width:999px){
+ .pfa-machine{--s:1.1;--pw:320px;width:min(100%,calc(120.57px * var(--s) + var(--pw) + 8px));margin-inline:auto}
+ .pfa-assembly{position:absolute;left:0;top:0;width:calc(160px * var(--s));aspect-ratio:160/635}
+ .pfa-rail{--pitch:calc(95.08px * var(--s));--ph:92px;--pg:calc(var(--pitch) - var(--ph));display:flex;flex-direction:column;gap:var(--pg);box-sizing:border-box;min-height:calc(635px * var(--s));margin:0 0 0 calc(120.57px * var(--s));padding:calc(300.46px * var(--s) - 2 * var(--pitch) - var(--ph) / 2) 8px 26px 0}
+ .pfa-rail::before{content:"";position:absolute;z-index:0;left:calc(29.43px * var(--s));right:0;top:calc(4.6px * var(--s));bottom:calc(4.8px * var(--s));
+  background:
+   radial-gradient(circle at calc(100% - 17px) 18px,#06080a 0 1.7px,#22282d 2.2px,#3d454c 3px,#2a3036 4.2px,#15191d 4.8px,#020304 5.3px,transparent 5.8px),
+   radial-gradient(circle at calc(100% - 17px) calc(100% - 18px),#06080a 0 1.7px,#22282d 2.2px,#3d454c 3px,#2a3036 4.2px,#15191d 4.8px,#020304 5.3px,transparent 5.8px),
+   radial-gradient(circle at 50% 18px,#06080a 0 1.7px,#22282d 2.2px,#3d454c 3px,#2a3036 4.2px,#15191d 4.8px,#020304 5.3px,transparent 5.8px),
+   radial-gradient(circle at 50% calc(100% - 18px),#06080a 0 1.7px,#22282d 2.2px,#3d454c 3px,#2a3036 4.2px,#15191d 4.8px,#020304 5.3px,transparent 5.8px),
+   linear-gradient(90deg,rgba(0,0,0,.55) 0 2px,transparent 7px),
+   repeating-linear-gradient(90deg,rgba(255,255,255,.018) 0 1px,transparent 1px 3px),
+   linear-gradient(180deg,#2c3238,#20252a 6%,#1d2126 94%,#15181c);
+  background-color:#1e2227;box-shadow:0 0 0 1px #05070a,inset 0 1px 0 rgba(255,255,255,.08),inset 0 2px 0 rgba(0,0,0,.4),inset -1px 0 0 rgba(255,255,255,.06),inset -2px 0 0 rgba(0,0,0,.6),inset 0 -2px 0 rgba(0,0,0,.45),3px 6px 14px rgba(0,0,0,.45)}
+ .pfa-rail li{position:relative;z-index:2;box-sizing:border-box;min-height:var(--ph);display:grid;grid-template-columns:auto minmax(0,1fr);align-items:baseline;align-content:center;gap:3px 9px;padding:6px 22px 7px 11px;
+  background:
+   radial-gradient(circle at calc(100% - 10px) 11px,#1d2328 0 1px,#d2d7db 1.5px,#8f979d 2.6px,#4a5258 3.2px,rgba(0,0,0,.5) 3.7px,transparent 4.2px),
+   radial-gradient(circle at calc(100% - 10px) calc(100% - 11px),#1d2328 0 1px,#d2d7db 1.5px,#8f979d 2.6px,#4a5258 3.2px,rgba(0,0,0,.5) 3.7px,transparent 4.2px),
+   repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,rgba(0,0,0,.025) 1px 3px),linear-gradient(180deg,#bcc1c6,#a3a8ae 55%,#979ca2);
+  background-color:#a6abb0;box-shadow:0 0 0 1px #0a0d10,inset 0 1px 0 rgba(255,255,255,.6),inset 0 -1px 0 rgba(0,0,0,.25),2px 3px 6px rgba(0,0,0,.5)}
+ .pfa-rail li::before{content:"";position:absolute;inset:3px;border-radius:1px;border:1px solid rgba(0,0,0,.26);box-shadow:0 1px 0 rgba(255,255,255,.35),inset 0 1px 0 rgba(255,255,255,.35);pointer-events:none}
+ .pfa-rail li[data-engaged=true]{box-shadow:0 0 0 1px #0a0d10,0 0 0 3px rgba(214,228,242,.28),inset 0 1px 0 rgba(255,255,255,.6),inset 0 -1px 0 rgba(0,0,0,.25),2px 3px 6px rgba(0,0,0,.5)}
+ .pfa-rail li:nth-child(1){--k:-2}.pfa-rail li:nth-child(2){--k:-1}.pfa-rail li:nth-child(3){--k:0}.pfa-rail li:nth-child(4){--k:1}.pfa-rail li:nth-child(5){--k:2}
+ .pfa-num{font-size:12.5px;letter-spacing:.14em}
+ .pfa-rail h3{font-size:15px;letter-spacing:.12em}
+ .pfa-rail p{grid-column:1/-1;font:400 16px/1.35 var(--pf-sans);color:#192026;text-wrap:pretty}
+ .pfa-rail li[data-engaged=true] p{color:#0d1316}
+ .pfa-rail li::after{left:calc(-46.43px * var(--s) - 42px * var(--s));top:calc(var(--ph) / 2 - 58px * var(--s));width:calc(84px * var(--s));height:calc(116px * var(--s))}
+ /* Sled: runs in a vertical slot on the carrier, beside the pointers. */
+ .pfa-sled{left:calc(120.57px * var(--s) - 12px);width:6px;height:calc(30px * var(--s));top:calc(95.3px * var(--s));transform:translateY(calc(var(--active,0) * 95.08px * var(--s)))}
+ .pfa-sled::after{top:50%;left:-1px;height:1px;width:8px}
+ .pfa-record{grid-template-columns:1fr;padding:18px 18px 20px}
+ .pfa-record-label{grid-row:auto}
+ .pfa-record-label span{display:inline;font-size:inherit;margin:0 0 0 6px}
+}
+@media (max-width:699px){.pfa-machine{--s:1;width:auto}.pfa-rail p{font-size:15px;line-height:1.3}.pfa-toolbar{align-items:flex-start}.pfa-stamp{font-size:9.5px;letter-spacing:.08em}}
+@media (max-width:360px){.pfa-machine{margin-inline:-6px}.pfa-rail{padding-right:2px}.pfa-rail li{padding:5px 17px 6px 9px}.pfa-rail h3{font-size:14.5px;letter-spacing:.06em}}
+@media (forced-colors:active){
+ .pfa-assembly,.pfa-sled,.pfa-rail li::after,.pfa-rail li::before,.pfa-rail::before{display:none}
+ .pfa-rail,.pfa-rail li{background:Canvas;color:CanvasText;forced-color-adjust:auto}
+ .pfa-machine{width:auto}.pfa-rail{display:block;margin:0;padding:0;min-height:0}
+ .pfa-rail li{display:block;border:1px solid CanvasText;margin-bottom:8px;padding:10px}
+ .pfa-rail :is(h3,p,.pfa-num){position:static;color:CanvasText;text-shadow:none;width:auto;text-align:left}
+ .pfa-record{background:Canvas;color:CanvasText;border:1px solid CanvasText}
+}
+
 .home-specimen h2 {
   font-size:clamp(28px,3vw,44px);
   margin-top:17px;
@@ -583,3 +735,34 @@ html[data-motion=off] .pf-lm{display:none}
  .pf-emblem>img{display:none}.pf-emblem .pf-seal-fc{display:block!important;position:absolute;inset:0}
  .home-statement h1,.home-intro,.home-maker-line,.home-maker figcaption,.pf-inspect,.home-orientation p:not(.kicker),.home-records p:not(.kicker),.home-contact p:not(.kicker),.home-records-links>a>span{color:CanvasText;text-shadow:none}
 }
+/* Materials (tokens in pf-foundry-system.css). The hero plate is blackened carbon steel held
+   by its existing corner fasteners; light oxidation only where its lower corners sit on the
+   chassis ledge and hold moisture. People press the stage plates, so they are brushed
+   stainless, each cut from a different part of the sheet. Records are archival paper. */
+.home-opening{background:
+ radial-gradient(74px 20px at 0 100%,rgba(124,68,34,.17),transparent 72%),
+ radial-gradient(96px 18px at 100% 100%,rgba(112,62,32,.13),transparent 72%),
+ linear-gradient(120deg,rgba(35,49,53,.46),rgba(14,22,25,.84) 60%),
+ var(--pf-mat-steel) 70% 12%/var(--pf-plate) auto,#141c1f}
+.ledger-paper{background:linear-gradient(rgba(230,231,223,.5),rgba(230,231,223,.5)),var(--pf-mat-paper) 0 0/1024px auto,#e6e7df}
+.pfa-record{background:linear-gradient(180deg,rgba(244,243,238,.42),rgba(232,230,222,.5)),var(--pf-mat-paper) 37% 0/1024px auto,#f0efe9}
+.pfa-fallback{background:linear-gradient(rgba(240,239,233,.46),rgba(240,239,233,.46)),var(--pf-mat-paper) 61% 0/1024px auto,var(--pf-paper)}
+@media (min-width:1000px){
+ .pfa-rail li::before{background:linear-gradient(180deg,rgba(214,219,223,.56),rgba(160,166,171,.5)),var(--pf-mat-stainless) var(--sx,0) -120px/1100px auto no-repeat,#a9aeb3}
+ .pfa-rail li:nth-child(2){--sx:-187px}.pfa-rail li:nth-child(3){--sx:-371px}.pfa-rail li:nth-child(4){--sx:-559px}.pfa-rail li:nth-child(5){--sx:-742px}
+}
+@media (max-width:999px){
+ .pfa-rail li{background:
+   radial-gradient(circle at calc(100% - 10px) 11px,#1d2328 0 1px,#d2d7db 1.5px,#8f979d 2.6px,#4a5258 3.2px,rgba(0,0,0,.5) 3.7px,transparent 4.2px),
+   radial-gradient(circle at calc(100% - 10px) calc(100% - 11px),#1d2328 0 1px,#d2d7db 1.5px,#8f979d 2.6px,#4a5258 3.2px,rgba(0,0,0,.5) 3.7px,transparent 4.2px),
+   linear-gradient(180deg,rgba(214,219,223,.58),rgba(168,174,179,.5)),
+   var(--pf-mat-stainless) calc(-300px + var(--k,0) * 113px) calc(-250px + var(--k,0) * 47px)/900px auto no-repeat,#a6abb0}
+}
+@media(forced-colors:active){.home-opening,.ledger-paper,.pfa-record,.pfa-fallback,.pfa-rail li,.pfa-rail li::before{background:Canvas}}
+/* Operating copy must win over the integrated prototype's engraving-scale type. */
+.pfa-stamp{font-size:12px;line-height:1.6;letter-spacing:.055em}
+.pfa-caption{font:400 15px/1.75 var(--pf-sans);color:#c4cdc9;max-width:90ch}
+.pfa-record [data-detail-text]{font-size:17px;line-height:1.7}
+.pfa-record-label{font-size:12px}
+@media(max-width:999px){.pfa-record [data-detail-text]{font-size:16px}}
+@media(max-width:699px){.pfa-stamp{max-width:30ch}}

@@ -40,6 +40,8 @@ Defined once at `pf-foundry-system.css:10-19`:
 | `--pf-rule`, `--pf-paper-rule` | `#ffffff29` / `#0b0f142e` | hairline rules on dark / on paper |
 | `--pf-sans` / `--pf-mono` | Archivo / IBM Plex Mono | the two typefaces (self-hosted, latin subsets) |
 | `--pf-steel` | `url('/brand/PF_WELDED_STEEL_v1.webp')` | the welded steel world material |
+| `--pf-mat-steel` / `--pf-mat-stainless` / `--pf-mat-paper` / `--pf-mat-weld` | `brand/material/*.webp` | 2026-11-02 material layers for Home and shared non-product rooms: mill-steel ground, brushed stainless for handled surfaces, archival paper for records, one butt weld at the footer/chassis join. Provenance, sizes and placement logic: `MATERIAL_PROVENANCE.md` |
+| `--pf-plate` / `--pf-bolt` | `1380px` / radial gradient | chassis plate width (joints fall outside the 1320px rail) and the cap-screw drawing used only at real mounting points |
 | `--pf-rail` | `min(1280px, …)` | content rail width (narrows at 1200px and 640px breakpoints) |
 
 Per-product accent comes from `products/<id>/module.json` (`theme`/`brand` data), never from a new stylesheet. The approved PF artwork (`brand/PF_MARK_G_MASTER.svg` and derived marks) is never modified by CSS geometry changes.

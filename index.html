@@ -45,15 +45,38 @@
 </section>
 <section class="ledger-chain container" aria-labelledby="chain-title">
  <div class="home-section-head"><p class="kicker">The proof method / Five connected stages</p><h2 id="chain-title">A record, all the way through.</h2><p>Follow the work from its source to its stated limits. Select a stage to inspect what it contributes.</p></div>
- <div class="ledger-chain-machine">
-  <ol class="ledger-rail">
-   <li><span class="proof-step-number">01</span><h3>Source</h3><p>Identify what was built.</p></li>
-   <li><span class="proof-step-number">02</span><h3>Build</h3><p>Record how it was made.</p></li>
-   <li><span class="proof-step-number">03</span><h3>Artifact</h3><p>Inspect the exact files.</p></li>
-   <li><span class="proof-step-number">04</span><h3>Release</h3><p>State what is available.</p></li>
-   <li><span class="proof-step-number">05</span><h3>Limits</h3><p>Keep the qualifications visible.</p></li>
+ <div class="pfa" data-mech="a">
+  <div class="pfa-toolbar">
+   <span class="pfa-stamp"><svg class="pfa-stamp-mark" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M42 34H116C157 34 181 56 181 91C181 126 157 148 116 148H82V222H42V34ZM82 70V112H115C132 112 141 104 141 91C141 78 132 70 115 70H82Z" fill="#F4F0E8"/><path d="M146 34H226V72H186V106H218V143H186V222H146V34Z" fill="#D6A84F"/><path d="M138 70H186V106H138Z" fill="#F4F0E8" opacity=".96"/></svg>PF / Proof chain · nine links, two anchors</span>
+   <button hidden class="pf-chain-toggle" type="button" aria-pressed="false" data-mech-toggle data-idle="Run inspection" data-running="Pause inspection" data-paused="Resume inspection">Run inspection</button>
+  </div>
+  <div class="pfa-machine">
+   <picture class="pfa-assembly" aria-hidden="true"><source media="(min-width: 1000px)" srcset="/assets/proof-chain/proof-chain-desktop-1400.webp 1400w, /assets/proof-chain/proof-chain-desktop-2800.webp 2800w" sizes="(min-width: 1181px) 88vw, 93vw" width="1400" height="431"/><img src="/assets/proof-chain/proof-chain-mobile-320.webp" alt="" width="160" height="635" loading="eager"/></picture>
+   <span class="pfa-sled" aria-hidden="true"></span>
+   <ol class="pfa-rail">
+    <li data-stage="0"><span class="pfa-num" aria-hidden="true">01</span><h3><button class="stage-btn" disabled type="button" aria-pressed="true" aria-controls="pfa-record">Source</button></h3><p>Identify what was built.</p></li>
+    <li data-stage="1"><span class="pfa-num" aria-hidden="true">02</span><h3><button class="stage-btn" disabled type="button" aria-pressed="false" aria-controls="pfa-record">Build</button></h3><p>Record how it was made.</p></li>
+    <li data-stage="2"><span class="pfa-num" aria-hidden="true">03</span><h3><button class="stage-btn" disabled type="button" aria-pressed="false" aria-controls="pfa-record">Artifact</button></h3><p>Inspect the exact files.</p></li>
+    <li data-stage="3"><span class="pfa-num" aria-hidden="true">04</span><h3><button class="stage-btn" disabled type="button" aria-pressed="false" aria-controls="pfa-record">Release</button></h3><p>State what is available.</p></li>
+    <li data-stage="4"><span class="pfa-num" aria-hidden="true">05</span><h3><button class="stage-btn" disabled type="button" aria-pressed="false" aria-controls="pfa-record">Limits</button></h3><p>Keep the qualifications visible.</p></li>
+   </ol>
+  </div>
+  <ol class="pfa-fallback">
+   <li><h4>Source</h4><p>A specific source version gives a build an identifiable starting point.</p></li>
+   <li><h4>Build</h4><p>Published build evidence describes how that source became an output, where that evidence exists.</p></li>
+   <li><h4>Artifact</h4><p>A checksum binds a record to exact file bytes. A matching hash does not by itself prove safety.</p></li>
+   <li><h4>Release</h4><p>Current availability, qualification and withdrawal belong to the published release record.</p></li>
+   <li><h4>Limits</h4><p>Known gaps stay visible. The record is incomplete without its limitations.</p></li>
   </ol>
+  <div class="pfa-record" id="pfa-record" aria-live="polite">
+   <p class="pfa-record-label">Inspection record <span data-detail-num>01</span></p>
+   <h4 data-detail-title>Source</h4>
+   <p data-detail-text>A specific source version gives a build an identifiable starting point.</p>
+  </div>
+  <p class="pfa-run-status" data-run-status>Select a stage to inspect its record. This illustration is not a live verification.</p>
+  <p class="pfa-caption">How it is held: the chain hangs between two clevis anchors pinned to the housing's end blocks, which take the load. Each stage pointer is bolted to the housing and points at its link; it never carries the chain. The inspection sled runs in the slot under the plates. An illustration of the record, not a live verification.</p>
  </div>
+
  <a class="text-link" href="/proof-standard/">Read the proof standard ↗</a>
 </section>
 <section class="ledger-paper ledger-doctrine"><div class="container doctrine-layout">
