@@ -247,7 +247,14 @@ $t7 = Invoke-FixtureBuild 'links' { param($o) $o }
 Assert 'build succeeds' ($t7.Exit -eq 0) $t7.Output
 if ($t7.Exit -eq 0) {
   $brokenLinks = @()
-  foreach ($f in (Get-ChildItem $t7.OutDir -Recurse -Filter *.html)) {
+  # __h14 HTML files are renderer assets (partials, content and shells), not
+  # published static documents. Their Function destinations are exercised by
+  # test-h14-runtime-state.ps1 against the actual Pages renderer.
+  $staticPages = @(Get-ChildItem $t7.OutDir -Recurse -Filter *.html | Where-Object {
+    $_.FullName -notmatch '[\\/]__h14[\\/]'
+  })
+  Assert 'static link scan includes generated public documents' ($staticPages.Count -ge 25)
+  foreach ($f in $staticPages) {
     $c = [IO.File]::ReadAllText($f.FullName)
     foreach ($m in [regex]::Matches($c, 'href="(/[^"#?]*)"')) {
       $href = $m.Groups[1].Value

@@ -5,17 +5,17 @@
 #   P1  "What changed" path on all 7 products; onboarding blocks on released
 #       products with uninstall + leftover-data answers; support next-step guidance
 #   P2  Reality Gate SHA-256 dedupe; Cache Vault stale-reference correction;
-#       Lights Out no-download-honesty; mobile CTA parity; compare hint visible
+#       Lights Out availability honesty; mobile CTA parity; directory discovery
 #   H1/H2 preservation guards re-asserted where this tranche touches shared files
 #
 # Runs against built public/ output. No network.
 
 [CmdletBinding()]
-param()
+param([string]$PublicDir = '')
 
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
-$publicDir = Join-Path $root 'public'
+if (-not $PublicDir) { $PublicDir = Join-Path $root 'public' }
 
 $script:passed = 0
 $script:failed = 0
@@ -44,8 +44,8 @@ $homeHtml = Read-Page ''
 $catalogHtml = Read-Page 'software'
 
 # ── P0: Reality Gate origin readability ─────────────────────────────────────
-Assert-Condition ($rg -match '<section class="pp-origin" id="origin">') "P0: Reality Gate origin section remains semantically identified"
-Assert-Condition ((Get-Content (Join-Path $root 'product-page.css') -Raw -Encoding UTF8) -match '\.pp-origin\s*\{') "P0: shared product-page stylesheet owns the origin section surface"
+Assert-Condition ($rg -match '<section\b(?=[^>]*\bclass="[^"]*\bpp-origin\b)(?=[^>]*\bid="origin")[^>]*>') "P0: Reality Gate origin section remains semantically identified"
+Assert-Condition ($rg -match 'href="/product-worlds\.css[?"]' -and (Get-Content (Join-Path $publicDir 'product-worlds.css') -Raw -Encoding UTF8) -match '\.product-reality-gate \.archive-origin-ledger\s*\{') "P0: loaded product-world stylesheet owns the origin section surface"
 Assert-Condition ($rg -notmatch 'id="origin" style="background:\s*rgba\(255,255,255,0\.02\)') "P0: old translucent origin background pairing removed"
 Assert-Condition ($rg -match '01.*Dependency Became Real') "P0: origin copy preserved (beat 01)"
 Assert-Condition ($rg -match 'Case Study Evidence: Lights Out Repository Reconstruction') "P0: origin case-study copy preserved"
@@ -116,12 +116,12 @@ Assert-Condition ($lo -notmatch 'download again') "P2: Lights Out no longer inst
 Assert-Condition ($lo -match '<a href="/support/#report">see the support guide</a>' -and $lo -notmatch 'contact the project') "P2: Lights Out support anchor preserved (P2-1 contract) and named as the support guide"
 
 # ── P2: discovery affordances ────────────────────────────────────────────────
-Assert-Condition ($catalogHtml -match 'class="finder-intents"' -and $catalogHtml -match 'data-compare=') "P2: functional filtering and comparison live on /software/"
-Assert-Condition ($catalogHtml -match 'Choose up to three tools to compare\.') "P2: software catalog explains the comparison limit"
+Assert-Condition ($catalogHtml -match '<form\b[^>]*data-directory-finder[^>]*role="search"' -and $catalogHtml -match 'type="search" name="query"' -and $catalogHtml -match '<select name="group"' -and $catalogHtml -match 'data-directory-count role="status" aria-live="polite"') "P2: directory search, group filtering and accessible result count live on /software/"
+Assert-Condition ($catalogHtml -match 'data-directory-empty[^>]*>No matching products\.' -and $catalogHtml -match 'type="reset">Clear</button>' -and $catalogHtml -notmatch 'data-compare=|Choose up to three tools to compare') "P2: directory offers empty-result recovery without obsolete comparison promises"
 # Mobile CTA parity: studio.css no longer hides the nav CTA
 $studioCss = Get-Content (Join-Path $root 'studio.css') -Raw -Encoding UTF8
 Assert-Condition ($studioCss -notmatch '\.studio \.nav-cta\{display:none\}') "P2: mobile nav CTA no longer hidden at <=900px"
-Assert-Condition ((Get-Content (Join-Path $root 'styles.css') -Raw -Encoding UTF8) -match '\.nav-cta \{\s*margin-top: 0\.9rem') "P2: styles.css mobile nav-cta panel rule intact"
+Assert-Condition ($homeHtml -match 'href="/pf-foundry-system\.css[?"]' -and (Get-Content (Join-Path $publicDir 'pf-foundry-system.css') -Raw -Encoding UTF8) -match '\.site-header\.nav-ready\.nav-open \.nav-panel\s*\{\s*display:flex' -and $homeHtml -match '<a class="button button-primary nav-cta" href="/support/">Support</a>') "P2: active navigation system opens the mobile panel containing the Support CTA"
 
 # ── Shared-component presence ────────────────────────────────────────────────
 $stylesCss = Get-Content (Join-Path $root 'styles.css') -Raw -Encoding UTF8
@@ -129,12 +129,18 @@ Assert-Condition ($stylesCss -match '\.onboarding-list dt') "shared onboarding-l
 
 # ── H1/H2 preservation guards (this tranche touches shared files) ───────────
 # H9 keeps the forge-to-outside Home journey concise; product browsing is on Software.
-Assert-Condition ($homeHtml.IndexOf('class="ledger-hero"') -lt $homeHtml.IndexOf('class="ledger-featured"') -and $homeHtml.IndexOf('class="ledger-featured"') -lt $homeHtml.IndexOf('class="ledger-chain"') -and $homeHtml -match 'id="chain-title"' -and $homeHtml -notmatch 'class="studio-portfolio"|studio-evidence') "Proof Ledger: hero leads to the software, then the five-step proof chain"
-$heroHtml = [regex]::Match($homeHtml, '(?s)<section class="ledger-hero"[^>]*>.*?(?=<section class="ledger-featured")').Value
-Assert-Condition ($heroHtml -cmatch '<a class="ledger-button" href="/software/">Browse software ' -and ([regex]::Matches($catalogHtml, '<article class="product-card')).Count -eq 7) "Proof Ledger: hero invitation reaches the complete functional catalog"
-# V5 hero (owner ruling, 2026-10-13): checked inside the hero, not page-wide.
+$journey = @('ledger-hero', 'home-orientation', 'ledger-chain', 'ledger-doctrine', 'home-records', 'home-contact')
+$positions = @($journey | ForEach-Object { [regex]::Match($homeHtml, '<section\b[^>]*class="[^"]*\b' + $_ + '\b[^"]*"').Index })
+$ordered = @($positions | Where-Object { $_ -le 0 }).Count -eq 0
+for ($i = 1; $i -lt $positions.Count; $i++) { if ($positions[$i] -le $positions[$i - 1]) { $ordered = $false } }
+Assert-Condition ($ordered -and ([regex]::Matches($homeHtml, 'class="proof-step-number"')).Count -eq 5 -and $homeHtml -match 'id="chain-title"' -and $homeHtml -notmatch 'class="studio-portfolio"|studio-evidence') "Proof Ledger: hero, orientation, five-stage proof chain, principle, records and support form the main-site journey"
+$heroHtml = [regex]::Match($homeHtml, '(?s)<section class="ledger-hero"[^>]*>.*?</section>').Value
+$directoryIds = @([regex]::Matches($catalogHtml, '<article\b[^>]*data-directory-entry="([^"]+)"') | ForEach-Object { $_.Groups[1].Value } | Sort-Object)
+$expectedIds = @('cache-vault','lights-out','cleanroom','ghostlayer','forgecast','hardline-zero','crosspoint','reality-gate','proof-foundry-app') | Sort-Object
+Assert-Condition ($heroHtml -cmatch '<a class="button button-primary" href="/software/">Browse Products ' -and ($directoryIds -join ',') -ceq ($expectedIds -join ',') -and $catalogHtml -match 'id="portfolio-proofshot"' -and $catalogHtml -match 'ProofShot · historical record') "Proof Ledger: hero reaches the nine-entry Products directory with ProofShot retained as history, not featured"
+# Main-site hero is scoped to its opening section; release facts stay in records.
 $heroText = { param($h) (([regex]::Replace([regex]::Replace($h, '(?i)<br\s*/?>', ' '), '<[^>]+>', ' ')) -replace '\s+', ' ').Trim() }
-Assert-Condition ((& $heroText ([regex]::Match($heroHtml, '(?s)<h1 id="ledger-title">(.*?)</h1>').Groups[1].Value)) -ceq 'Real software leaves a record.' -and (& $heroText ([regex]::Match($heroHtml, '(?s)<p class="ledger-hero-subtitle">(.*?)</p>').Groups[1].Value)) -ceq 'Receipts over hype.' -and (& $heroText ([regex]::Match($heroHtml, '(?s)<p class="ledger-hero-description">(.*?)</p>').Groups[1].Value)) -ceq 'Independent software. Public records. Clear limits.' -and $heroHtml -notmatch '\b[0-9a-f]{64}\b') "Proof Ledger: approved V5 brand-first headline and record-scoped subtitle lead the hero, with no release digest"
+Assert-Condition ((& $heroText ([regex]::Match($heroHtml, '(?s)<h1\b[^>]*>(.*?)</h1>').Groups[1].Value)) -ceq 'Real software leaves a record.' -and (& $heroText ([regex]::Match($heroHtml, '(?s)<p class="home-intro">(.*?)</p>').Groups[1].Value)) -ceq 'Useful tools. Deliberately made. Public releases you can inspect.' -and $heroHtml -match 'href="/proof-standard/"' -and $heroHtml -notmatch '\b[0-9a-f]{64}\b') "Proof Ledger: current brand-first headline, useful-software introduction and proof path lead the hero without a release digest"
 Assert-Condition ($homeHtml -notmatch 'Lights Out PC <span aria-hidden="true">') "H2 preserved: homepage short naming intact"
 Assert-Condition ($rg -match 'Your projects\.' -and $rg -match 'Your execution\.' -and $rg -match 'Your way back\.') "H1/H2 preserved: Reality Gate module hero copy remains intact"
 Assert-Condition ($gl -match '<strong>Status</strong> Public release' -and $gl -match '<strong>Version</strong> v0\.4\.0') "truth preserved: GhostLayer public release version remains intact"

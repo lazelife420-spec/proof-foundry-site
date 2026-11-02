@@ -286,7 +286,11 @@ try {
   New-Item -ItemType Directory -Path $sealed | Out-Null
   $receipt = Join-Path $tmp 'unqualified.json'
   [IO.File]::WriteAllText($receipt, '{}')
-  git init -q 2>$null; git add -A 2>$null; git -c user.email=t@t -c user.name=t commit -qm base 2>$null | Out-Null
+  git init -q 2>$null
+  if ($LASTEXITCODE -ne 0) { throw 'Cannot initialize disposable deploy fixture' }
+  git add -A 2>$null
+  git commit -qm base -m 'Co-authored-by: factory-droid[bot] <138933559+factory-droid[bot]@users.noreply.github.com>' 2>$null | Out-Null
+  if ($LASTEXITCODE -ne 0) { throw 'Cannot commit disposable deploy fixture with configured Git identity' }
   # Control A: tracked unstaged mutation blocks at source preflight.
   Add-Content 'site-manifest.json' "`n" -NoNewline
   & pwsh -NoProfile -File '.\deploy.ps1' -Mode stage -Artifact $sealed -QualificationReceipt $receipt *> "$tmp\dep-a.log"

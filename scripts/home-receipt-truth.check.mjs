@@ -74,8 +74,8 @@ assert('inspector labels are the site verification vocabulary', JSON.stringify(V
 
 // ── 4. Receipts for every homepage inspector product ───────────────────────
 const home = fs.readFileSync(path.join(publicDir, 'index.html'), 'utf8');
-const receiptIds = [...new Set([...home.matchAll(/data-receipt-open="([a-z0-9-]+)"/g)].map((m) => m[1]))];
-assert('homepage offers receipts for the three featured releases', receiptIds.length === 3, receiptIds);
+const receiptIds = (home.match(/data-receipt-products="([^"]+)"/) || [])[1]?.split(/\s+/) || [];
+assert('homepage explicitly configures three distinct receipt products', receiptIds.length === 3 && new Set(receiptIds).size === 3, receiptIds);
 const proofHtml = fs.readFileSync(path.join(publicDir, 'proof/index.html'), 'utf8');
 const proofCard = (id) => (proofHtml.match(new RegExp(`<article class="receipt-card" id="receipt-${id}"[\\s\\S]*?</article>`)) || [''])[0];
 const proofMatrix = (id) => {

@@ -1,0 +1,220 @@
+[
+  {
+    "slug": "home",
+    "nativeZoom": 2,
+    "viewportCaveat": "CDP base viewport 1440x900; native Chrome zoom 200%",
+    "width": 720,
+    "height": 450,
+    "dpr": 2.0000000298023224,
+    "overflow": -8,
+    "chain": {
+      "x": 32,
+      "y": 109.80000305175781,
+      "width": 648.4000244140625,
+      "height": 131.1999969482422,
+      "bottom": 241
+    },
+    "links": [
+      {
+        "route": "/",
+        "tabIndex": 0,
+        "station": "none",
+        "rect": {
+          "x": 32,
+          "y": 109.80000305175781,
+          "width": 204.13125610351562,
+          "height": 48,
+          "bottom": 157.8000030517578
+        }
+      },
+      {
+        "route": "/software/",
+        "tabIndex": 0,
+        "station": "none",
+        "rect": {
+          "x": 254.13125610351562,
+          "y": 115.4000015258789,
+          "width": 204.13125610351562,
+          "height": 48,
+          "bottom": 163.4000015258789
+        }
+      },
+      {
+        "route": "/proof-standard/",
+        "tabIndex": 0,
+        "station": "none",
+        "rect": {
+          "x": 476.26251220703125,
+          "y": 115.4000015258789,
+          "width": 204.1374969482422,
+          "height": 48,
+          "bottom": 163.4000015258789
+        }
+      },
+      {
+        "route": "/truth-files/",
+        "tabIndex": 0,
+        "station": "none",
+        "rect": {
+          "x": 476.26251220703125,
+          "y": 193,
+          "width": 204.1374969482422,
+          "height": 48,
+          "bottom": 241
+        }
+      },
+      {
+        "route": "/about/",
+        "tabIndex": 0,
+        "station": "none",
+        "rect": {
+          "x": 254.13125610351562,
+          "y": 193,
+          "width": 204.13125610351562,
+          "height": 48,
+          "bottom": 241
+        }
+      },
+      {
+        "route": "/support/",
+        "tabIndex": 0,
+        "station": "none",
+        "rect": {
+          "x": 32,
+          "y": 193,
+          "width": 204.13125610351562,
+          "height": 48,
+          "bottom": 241
+        }
+      }
+    ],
+    "kicker": null,
+    "heading": {
+      "x": 54.79999923706055,
+      "y": 340,
+      "width": 590.2374877929688,
+      "height": 131.4375,
+      "bottom": 471.4375
+    },
+    "keyboardOrder": [
+      "/",
+      "/software/",
+      "/proof-standard/",
+      "/truth-files/",
+      "/about/",
+      "/support/"
+    ]
+  },
+  {
+    "slug": "software",
+    "nativeZoom": 2,
+    "viewportCaveat": "CDP base viewport 1440x900; native Chrome zoom 200%",
+    "width": 720,
+    "height": 450,
+    "dpr": 2.0000000298023224,
+    "overflow": -8,
+    "chain": {
+      "x": 32,
+      "y": 109.80000305175781,
+      "width": 648.4000244140625,
+      "height": 131.1999969482422,
+      "bottom": 241
+    },
+    "links": [
+      {
+        "route": "/",
+        "tabIndex": 0,
+        "station": "none",
+        "rect": {
+          "x": 32,
+          "y": 109.80000305175781,
+          "width": 204.13125610351562,
+          "height": 48,
+          "bottom": 157.8000030517578
+        }
+      },
+      {
+        "route": "/software/",
+        "tabIndex": 0,
+        "station": "none",
+        "rect": {
+          "x": 254.13125610351562,
+          "y": 115.4000015258789,
+          "width": 204.13125610351562,
+          "height": 48,
+          "bottom": 163.4000015258789
+        }
+      },
+      {
+        "route": "/proof-standard/",
+        "tabIndex": 0,
+        "station": "none",
+        "rect": {
+          "x": 476.26251220703125,
+          "y": 115.4000015258789,
+          "width": 204.1374969482422,
+          "height": 48,
+          "bottom": 163.4000015258789
+        }
+      },
+      {
+        "route": "/truth-files/",
+        "tabIndex": 0,
+        "station": "none",
+        "rect": {
+          "x": 476.26251220703125,
+          "y": 193,
+          "width": 204.1374969482422,
+          "height": 48,
+          "bottom": 241
+        }
+      },
+      {
+        "route": "/about/",
+        "tabIndex": 0,
+        "station": "none",
+        "rect": {
+          "x": 254.13125610351562,
+          "y": 193,
+          "width": 204.13125610351562,
+          "height": 48,
+          "bottom": 241
+        }
+      },
+      {
+        "route": "/support/",
+        "tabIndex": 0,
+        "station": "none",
+        "rect": {
+          "x": 32,
+          "y": 193,
+          "width": 204.13125610351562,
+          "height": 48,
+          "bottom": 241
+        }
+      }
+    ],
+    "kicker": {
+      "x": 32,
+      "y": 336,
+      "width": 648.4000244140625,
+      "height": 14.40000057220459,
+      "bottom": 350.4000005722046
+    },
+    "heading": {
+      "x": 32,
+      "y": 445.6875,
+      "width": 359.0375061035156,
+      "height": 90.7125015258789,
+      "bottom": 536.4000015258789
+    },
+    "keyboardOrder": [
+      "/",
+      "/software/",
+      "/proof-standard/",
+      "/truth-files/",
+      "/about/",
+      "/support/"
+    ]
+  }
+]

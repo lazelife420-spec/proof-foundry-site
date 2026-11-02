@@ -186,12 +186,15 @@ try {
     await send('Emulation.setDeviceMetricsOverride', { width, height: mobile ? 844 : 900, deviceScaleFactor: 1, mobile });
     await send('Emulation.setTouchEmulationEnabled', { enabled: mobile, maxTouchPoints: mobile ? 5 : 1 });
   }
+  let scriptsEnabled = true;
   async function go(route = '/') {
     errors.length = 0;
     const loaded = next('Page.loadEventFired');
     await send('Page.navigate', { url: origin + route });
     await loaded;
     await evaluate('document.fonts.ready.then(() => true)');
+    // Module scripts may finish after load; wait for their observable init instead of a fixed delay.
+    if (scriptsEnabled) await waitFor(`!!document.documentElement.dataset.motion && [...document.querySelectorAll('[data-mark-open]')].every((b) => !b.hidden)`, 10000);
     await pause(250);
   }
   const KEYS = { Enter: [13, '\r'], ' ': [32, ' '], Escape: [27], ArrowRight: [39], ArrowLeft: [37], Home: [36], End: [35], Tab: [9] };
@@ -287,12 +290,23 @@ try {
   const index = await local('/truth/index.json');
   const registry = await local('/proof/index.json');
   const home = await readFile(path.join(publicDir, 'index.html'), 'utf8');
-  const receiptIds = [...new Set([...home.matchAll(/data-receipt-open="([a-z0-9-]+)"/g)].map((m) => m[1]))];
-  const featureIds = [...home.matchAll(/data-ledger-feature="([a-z0-9-]+)"/g)].map((m) => m[1]);
-  const specimenId = (home.match(/data-ledger-specimen="([a-z0-9-]+)"/) || [])[1];
+  const triggerIds = [...new Set([...home.matchAll(/data-receipt-open="([a-z0-9-]+)"/g)].map((m) => m[1]))];
+  const receiptIds = (home.match(/data-receipt-products="([^"]+)"/) || [])[1]?.split(/\s+/) || [];
+  const specimenId = triggerIds[0]; // primary record entrance, not a static specimen
+  const featureIds = receiptIds.filter((id) => id !== specimenId);
+  if (!specimenId || receiptIds.length < 3 || !receiptIds.includes(specimenId)) throw new Error('Missing primary receipt entrance or configured receipt products.');
+  const receiptTrigger = `[data-receipt-open="${specimenId}"]`;
+  const openReceipt = async (id) => {
+    await evaluate(`document.querySelector(${JSON.stringify(receiptTrigger)}).click()`);
+    await waitFor(panelSettled);
+    if (id !== specimenId && await evaluate(`!!document.getElementById('pf-receipt-tab-${id}')`)) {
+      await evaluate(`document.getElementById('pf-receipt-tab-${id}').click()`);
+      await waitFor(panelSettled);
+    }
+  };
   const records = Object.fromEntries(await Promise.all(receiptIds.map(async (id) => [id, await local(`/truth/products/${id}.json`)])));
   const expected = Object.fromEntries(receiptIds.map((id) => [id, buildReceipt({ id, schema, index, record: records[id], registry })]));
-  check('the homepage offers receipts for its specimen and featured products', specimenId && featureIds.length === 3 && receiptIds.includes(specimenId) && featureIds.every((id) => receiptIds.includes(id)), { specimenId, featureIds, receiptIds });
+  check('Home offers one record entrance and at least three explicitly configured receipt tabs, without a portfolio', triggerIds.length === 1 && receiptIds.length >= 3 && new Set(receiptIds).size === receiptIds.length && featureIds.length >= 2 && !/data-ledger-feature=|data-ledger-specimen=/.test(home), { triggerIds, receiptIds });
 
   // ── Layout: no horizontal overflow, no script errors ─────────────────────
   for (const width of [360, 390, 768, 1024, 1440, 1920]) {
@@ -307,22 +321,23 @@ try {
   // ── Before anything opens: one product digest, no outside evidence ───────
   const page = await evaluate(`({ digests: document.body.innerText.match(/[0-9a-f]{64}/g) || [], external: [...document.querySelectorAll('body a[href^="http"]')].map((a) => a.href) })`);
   const specimenDigests = records[specimenId].artifacts.map((a) => a.sha256).filter(Boolean);
-  check('the page shows one product digest, the specimen\'s, until a receipt is opened', page.digests.length === 1 && specimenDigests.includes(page.digests[0]), page.digests);
+  check('Home exposes no artifact digest until a validated receipt is opened', page.digests.length === 0, page.digests);
   check('the page links no outside evidence of its own', page.external.length === 0, page.external);
 
   // ── No JavaScript: the essential record stays readable, no dead controls ─
   for (const width of [390, 1440]) {
     await viewport(width);
-    await send('Emulation.setScriptExecutionDisabled', { value: true });
+    await send('Emulation.setScriptExecutionDisabled', { value: true }); scriptsEnabled = false;
     await go('/');
     const nojs = await evaluate(`(() => {
       const visible = (e) => !!e && e.getClientRects().length > 0 && getComputedStyle(e).visibility !== 'hidden';
-      const spec = document.querySelector('[data-ledger-specimen]');
+      const spec = document.querySelector('.home-records');
       const hash = spec && spec.querySelector('code.ledger-hash');
       return {
         triggers: [...document.querySelectorAll('[data-receipt-open], [data-mark-open]')].filter(visible).length,
         dialogsOpen: [...document.querySelectorAll('dialog')].filter((d) => d.open || visible(d)).length,
         hash: hash && visible(hash) ? hash.textContent : null,
+        scope: spec?.textContent.includes('does not establish custody or safety'),
         limitations: !!(spec && spec.querySelector('details summary')),
         specimenLinks: spec ? [...spec.querySelectorAll('a')].map((a) => a.getAttribute('href')) : [],
         featureLinks: [...document.querySelectorAll('[data-ledger-feature] a[href^="/truth-files/"]')].filter(visible).length,
@@ -331,10 +346,10 @@ try {
       };
     })()`);
     check(`${width}px without JavaScript: no inspect control or dialog is shown`, nojs.triggers === 0 && nojs.dialogsOpen === 0, nojs);
-    check(`${width}px without JavaScript: the specimen keeps its full SHA-256, limitations and record links`, specimenDigests.includes(nojs.hash) && nojs.limitations && nojs.specimenLinks.includes(`/proof/#receipt-${specimenId}`) && nojs.specimenLinks.includes(`/truth-files/${specimenId}/`), nojs);
-    check(`${width}px without JavaScript: every featured product keeps its Truth File link and caption, with no overflow`, nojs.featureLinks === 3 && nojs.captions.length === 3 && nojs.captions.every((n) => n > 0) && !nojs.overflow, nojs);
+    check(`${width}px without JavaScript: human truth and published records stay reachable with honest hash scope`, nojs.hash === null && nojs.scope && nojs.specimenLinks.includes('/proof/') && nojs.specimenLinks.includes('/truth-files/'), nojs);
+    check(`${width}px without JavaScript: Home has no featured cards and no overflow`, nojs.featureLinks === 0 && nojs.captions.length === 0 && !nojs.overflow, nojs);
     await shot(`no-js-${width}`);
-    await send('Emulation.setScriptExecutionDisabled', { value: false });
+    await send('Emulation.setScriptExecutionDisabled', { value: false }); scriptsEnabled = true;
   }
 
   // ── Inspect the Mark, by keyboard ────────────────────────────────────────
@@ -359,7 +374,7 @@ try {
 
   // ── Inspect the Receipt, by keyboard, with same-origin parity ────────────
   await evaluate(`(() => { window.__copied = []; navigator.clipboard.writeText = async (t) => { window.__copied.push(t); }; return true; })()`);
-  await focus(`[data-ledger-specimen] [data-receipt-open]`);
+  await focus(`[data-receipt-open]`);
   before = await state();
   await key('Enter');
   await waitFor(panelSettled);
@@ -411,16 +426,16 @@ try {
   await key('Escape');
   after = await state();
   check('Escape closes the receipt and returns focus and scroll to its trigger', !after.receiptOpen && after.receipt === specimenId && after.y === before.y, { before, after });
-  await focus(`[data-ledger-feature="${featureIds[0]}"] [data-receipt-open]`);
+  await focus(receiptTrigger);
   await key(' ');
   await waitFor(panelSettled);
   s = await panelState();
-  check('Space on a featured product opens its receipt', s.open && s.tabs.find((t) => t.selected === 'true')?.id === `pf-receipt-tab-${featureIds[0]}`, s.tabs);
+  check('Space on the record entrance opens its receipt', s.open && s.tabs.find((t) => t.selected === 'true')?.id === `pf-receipt-tab-${specimenId}`, s.tabs);
   await key('Escape');
   check('no script errors while inspecting', errors.length === 0, errors);
 
   // ── Missing, stale, conflicting, invalid and withdrawn records ───────────
-  const featured = featureIds.find((id) => id !== specimenId && expected[id].ok && records[id].artifacts.some((a) => a.sha256));
+  const featured = [specimenId, ...featureIds].find((id) => expected[id].ok && records[id].artifacts.some((a) => a.sha256));
   const record = records[featured];
   const recordPath = `/truth/products/${featured}.json`;
   const unverified = `${record.name}: the public record could not be verified here.`;
@@ -471,7 +486,7 @@ try {
     await viewport(1440);
     await setFaults(scenario.faults);
     await go('/');
-    await evaluate(`document.querySelector('[data-ledger-feature="${featured}"] [data-receipt-open]').click()`);
+    await openReceipt(featured);
     await waitFor(panelSettled);
     s = await panelState();
     check(`${scenario.name}: shown as such, never as a valid receipt`, scenario.expect(s), { title: s.title, chip: s.chip, conflicts: s.conflicts, digests: s.artifactDigests, text: s.text.slice(0, 400) });
@@ -503,7 +518,7 @@ try {
   const build2 = { commit: 'a'.repeat(40), tree: 'b'.repeat(40), committedAt: '2026-10-20T09:00:00-07:00' };
   const build3 = { commit: 'c'.repeat(40), tree: 'd'.repeat(40), committedAt: '2026-10-21T09:00:00-07:00' };
   const otherId = receiptIds.find((id) => id !== specimenId && expected[id].ok);
-  const openSpecimen = () => evaluate(`document.querySelector('[data-ledger-specimen] [data-receipt-open]').click()`);
+  const openSpecimen = () => evaluate(`document.querySelector('[data-receipt-open]').click()`);
   await viewport(1440);
   await setFaults({});
   await go('/');
@@ -605,20 +620,20 @@ try {
   await go('/');
   const touch = await evaluate(`({ hoverNone: matchMedia('(hover: none)').matches, coarse: matchMedia('(pointer: coarse)').matches, light: getComputedStyle(document.querySelector('.pf-lm')).display })`);
   check('390px touch: no hover, coarse pointer, highlights off', touch.hoverNone && touch.coarse && touch.light === 'none', touch);
-  await tap(`[data-ledger-feature="${featureIds[0]}"] [data-receipt-open]`);
+  await tap(receiptTrigger);
   await waitFor(panelSettled);
   await waitFor(tabsBuilt(receiptIds.length));
   s = await panelState();
   const sheet = await evaluate(`(() => { const f = document.querySelector('#pf-receipt-dialog .pf-dialog-frame').getBoundingClientRect(), sc = document.querySelector('#pf-receipt-dialog .pf-dialog-scroll'); return { w: Math.round(f.width), h: Math.round(f.height), vw: innerWidth, vh: innerHeight, sideways: sc.scrollWidth > sc.clientWidth }; })()`);
   check('390px touch: a tap opens the receipt as a full-screen sheet', s.open && sheet.w === sheet.vw && sheet.h === sheet.vh && !sheet.sideways, sheet);
   await shot('receipt-390');
-  const other = receiptIds.find((id) => id !== featureIds[0]);
+  const other = receiptIds.find((id) => id !== specimenId);
   await tap(`#pf-receipt-tab-${other}`);
   await waitFor(`document.getElementById('pf-receipt-tab-${other}').getAttribute('aria-selected') === 'true' && ${panelSettled}`);
   check('390px touch: tapping a tab switches the record', (await panelState()).tabs.find((t) => t.selected === 'true')?.id === `pf-receipt-tab-${other}`);
   await tap('#pf-receipt-dialog [data-dialog-close]');
   after = await state();
-  check('390px touch: Close returns focus to the tapped trigger', !after.receiptOpen && after.receipt === featureIds[0], after);
+  check('390px touch: Close returns focus to the tapped trigger', !after.receiptOpen && after.receipt === specimenId, after);
   await tap('[data-mark-open]');
   await tap('.pf-mk-list li:nth-child(3) button');
   const touchMark = await evaluate(`(() => { const sc = document.querySelector('#pf-mark-dialog .pf-dialog-scroll'); return { open: document.getElementById('pf-mark-dialog').open, count: document.querySelector('[data-mark-count]').textContent, sideways: sc.scrollWidth > sc.clientWidth }; })()`);
@@ -640,7 +655,7 @@ try {
   // button inside its panel, and a skip link that is hidden until focused.
   await viewport(1440);
   await go('/');
-  const face = await evaluate(`getComputedStyle(document.querySelector('.ledger-hero-description')).fontFamily`);
+  const face = await evaluate(`getComputedStyle(document.querySelector('.home-intro')).fontFamily`);
   check('hero description is set in Archivo, as in V5', /^"?Archivo\b/.test(face), face);
   await viewport(1920);
   await go('/');
@@ -666,7 +681,7 @@ try {
     await send('Emulation.setEmulatedMedia', { features: [{ name: 'forced-colors', value: 'active' }, { name: 'prefers-color-scheme', value: scheme }] });
     await go('/');
     await pause(400);
-    const fc = await evaluate(`(() => { const rgb = (c) => c.match(/\\d+/g).slice(0, 3).map(Number); const h = document.querySelector('.site-header'), t = document.querySelector('.site-header .nav-toggle'); const vis = (q) => document.querySelector(q).checkVisibility(); const ids = [...document.querySelectorAll('[id]')].map((e) => e.id); const svgs = [...document.querySelectorAll('.pf-seal-inline,.pf-mark-fc svg')]; return { canvas: rgb(getComputedStyle(h).backgroundColor), text: rgb(getComputedStyle(h).color), button: rgb(getComputedStyle(t).color), sealInline: vis('.pf-seal-inline'), sealImg: vis('.pf-emblem-image'), watermark: vis('.ledger-receipt-watermark'), headerImg: vis('.site-header .brand-mark'), footerImg: vis('.site-footer .footer-logo'), headerFc: vis('.pf-mark-fc--header'), footerFc: vis('.pf-mark-fc--footer'), inert: svgs.length === 3 && svgs.every((e) => e.getAttribute('focusable') === 'false' && !!e.closest('[aria-hidden="true"]')), duplicateIds: ids.length - new Set(ids).size }; })()`);
+    const fc = await evaluate(`(() => { const rgb = (c) => c.match(/\\d+/g).slice(0, 3).map(Number); const h = document.querySelector('.site-header'), t = document.querySelector('.site-header .nav-toggle'); const vis = (q) => document.querySelector(q).checkVisibility(); const ids = [...document.querySelectorAll('[id]')].map((e) => e.id); const svgs = [...document.querySelectorAll('.pf-seal-inline,.pf-mark-fc svg')]; return { canvas: rgb(getComputedStyle(h).backgroundColor), text: rgb(getComputedStyle(h).color), button: rgb(getComputedStyle(t).color), sealInline: vis('.pf-seal-inline'), sealImg: vis('.pf-emblem-image'), watermark: document.querySelector('.ledger-receipt-watermark') ? vis('.ledger-receipt-watermark') : false, headerImg: vis('.site-header .brand-mark'), footerImg: vis('.site-footer .footer-logo'), headerFc: vis('.pf-mark-fc--header'), footerFc: vis('.pf-mark-fc--footer'), inert: svgs.length === 3 && svgs.every((e) => e.getAttribute('focusable') === 'false' && !!e.closest('[aria-hidden="true"]')), duplicateIds: ids.length - new Set(ids).size }; })()`);
     fc.seal = fc.sealInline ? await paletteInk('.pf-seal-inline', fc.text, fc.canvas) : 0;
     fc.mark = fc.headerFc ? await paletteInk('.pf-mark-fc--header', fc.text, fc.canvas) : 0;
     fc.footer = fc.footerFc ? await paletteInk('.pf-mark-fc--footer', fc.text, fc.canvas) : 0;

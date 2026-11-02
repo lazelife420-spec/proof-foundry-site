@@ -1,3 +1,4 @@
+param([string]$PublicDir = (Join-Path $PSScriptRoot '..\public'))
 . "$PSScriptRoot/release-qualification.ps1"
 # PF-TF1 — Truth Files qualification: human layer must agree byte-for-byte with
 # the manifest facts that also generate /truth/*.json, and must never leak
@@ -5,7 +6,7 @@
 $ErrorActionPreference = 'Stop'
 
 $root   = (Resolve-Path "$PSScriptRoot/..").Path
-$public = Join-Path $root 'public'
+$public = [IO.Path]::GetFullPath($PublicDir)
 $manifest = Get-AuthoredReleaseManifest
 
 $indexPath = Join-Path $public 'truth-files/index.html'

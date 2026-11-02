@@ -1,3 +1,4 @@
+param([string]$PublicDir = (Join-Path $PSScriptRoot '..\public'))
 . "$PSScriptRoot/release-qualification.ps1"
 # PowerShell script for testing P1 Release Truth Invariants
 Set-StrictMode -Version Latest
@@ -5,7 +6,7 @@ $ErrorActionPreference = 'Stop'
 
 Write-Host "=== P1 RELEASE TRUTH INVARIANTS TEST SUITE ===" -ForegroundColor Cyan
 
-$publicDir = Join-Path $PSScriptRoot "..\public"
+$publicDir = [IO.Path]::GetFullPath($PublicDir)
 $manifestPath = Join-Path $PSScriptRoot "..\site-manifest.json"
 $manifest = Get-AuthoredReleaseManifest
 
@@ -124,7 +125,8 @@ Assert-Condition ($supportPage -notmatch '\{\{products\.' -and $rgSupport -notma
 $rgProof = Get-Content (Join-Path $publicDir 'proof\index.html') -Raw -Encoding UTF8
 Assert-Condition ($rgProof -match 'Historical release record: Historical Windows installer ZIP record for v1\.1\.0' -and $rgProof -match 'Downloads currently unavailable') 'release receipt keeps historical evidence and suppresses the download CTA'
 $softwarePage = Get-Content (Join-Path $publicDir 'software\index.html') -Raw -Encoding UTF8
-Assert-Condition ($softwarePage -match 'Withdrawn · unavailable' -and $softwarePage -match 'v1\.1\.0 withdrawn · no current public download' -and $softwarePage -notmatch 'Reality Gate is a Developer Pilot') 'software catalog exposes withdrawn state and no stale pilot claim'
+$rgDirectory = [regex]::Match($softwarePage, '(?s)<article\b[^>]*data-directory-entry="reality-gate"[^>]*>.*?</article>').Value
+Assert-Condition ($rgDirectory -match 'public v1\.1\.0 withdrawn' -and $softwarePage -match 'Public v1\.1\.0 is withdrawn; no public successor is established' -and $softwarePage -notmatch 'Reality Gate is a Developer Pilot') 'software directory distinguishes withdrawn public v1.1.0 from internal development, with no public successor'
 $roadmapPage = Get-Content (Join-Path $publicDir 'roadmap\index.html') -Raw -Encoding UTF8
 Assert-Condition ($roadmapPage -match 'WITHDRAWN' -and $roadmapPage -match 'former v1\.1\.0 release is withdrawn and no public download is available' -and $roadmapPage -notmatch 'public Windows pilot remains available|current pilot download') 'roadmap derives Reality Gate availability from canonical withdrawn state'
 
@@ -170,8 +172,7 @@ $routeFiles = @(Get-ChildItem $publicDir -Recurse -Filter 'index.html' -File | W
 Assert-Condition ($routeFiles.Count -eq 25) "Reality Gate sweep covers all 25 public routes (found $($routeFiles.Count))"
 $k2Forbidden = @(
     'Keep GitHub, GitLab, or Forgejo',
-    'Local-first developer continuity for the Git workflow you already use',
-    'Explore Reality Gate'
+    'Local-first developer continuity for the Git workflow you already use'
 )
 $k2Hits = @()
 foreach ($f in $routeFiles) {
@@ -191,14 +192,14 @@ Assert-Condition ($rgPage -notmatch 'not proven deployed' -and $rgPage -match 'n
 Assert-Condition ($rgPage -match 'lists the security disposition as unresolved') 'Reality Gate page keeps the unresolved security disposition visible'
 $rgHero = [regex]::Match($rgPage, '(?s)<section class="product-hero\b.*?</section>').Value
 $rgHeroText = Get-K2Text $rgHero
-Assert-Condition ($rgHeroText.Contains($rgStatement) -and $rgHeroText.Contains('WITHDRAWN · Windows · v1.1.0 · no current download') -and $rgHero -match '</h1><p class="pp-hero-status"') 'Reality Gate hero states WITHDRAWN in words and the statement directly under the headline'
+Assert-Condition ($rgHeroText.Contains('WITHDRAWN · Windows · v1.1.0 · no current download') -and $rgHeroText.Contains('Internal work continues separately from the withdrawn public v1.1.0 package; no current public download is offered.') -and $rgHero -match '</h1><p class="pp-hero-status"[^>]*>') 'Reality Gate hero directly labels the withdrawn public release and distinguishes internal work from download availability'
 $k2Missing = @(@('about', 'support', 'roadmap', 'truth-files') | Where-Object { -not (Get-K2Text ([IO.File]::ReadAllText((Join-Path $publicDir "$_\index.html")))).Contains($rgStatement) })
 Assert-Condition ($k2Missing.Count -eq 0) "About, Support, Roadmap and the Truth Files index carry the one Reality Gate statement ($($k2Missing -join ', '))"
 Assert-Condition (([regex]::Matches($rgPage, 'class="availability-notice"')).Count -eq 1) 'Reality Gate page renders exactly one withdrawal notice'
 Assert-Condition ($rgPage -notmatch 'aria-disabled="true"' -and $rgPage -match 'No download is offered\.') 'Reality Gate states that no download is offered, without a disabled download button'
 $rgFinal = [regex]::Match($rgPage, '(?s)<section class="pp-final-cta">.*?</section>').Value
 Assert-Condition ($rgFinal -match 'Historical record' -and $rgFinal -match 'href="/truth-files/reality-gate/"' -and $rgFinal -notmatch 'href="#download"') 'Reality Gate closing block points to the withdrawal record'
-$rgFilm = [regex]::Match($rgPage, '(?s)<section class="film-section" id="film">.*?</section>').Value
+$rgFilm = [regex]::Match($rgPage, '(?s)<section\b[^>]*\bid="film"[^>]*>.*?</section>').Value
 Assert-Condition ($rgFilm -match 'edited demo run' -and $rgFilm -match 'It does not show a completed recovery drill\.' -and $rgFilm -notmatch 'start to finish|proving bundle integrity|drilling recovery') 'Reality Gate film copy describes only what the recording shows'
 Assert-Condition ($rgPage -notmatch 'Every node in this architecture' -and $rgPage -notmatch 'inside that sandbox' -and $rgPage -notmatch 'rg-schematic-wrap' -and $rgPage -match 'inside that isolated clone') 'Reality Gate architecture copy no longer contradicts the Runroom note'
 $rgPrivacy = [regex]::Match($rgPage, '(?s)<section\b[^>]*\bid="privacy-data-flow"[^>]*>.*?</section>').Value
@@ -206,8 +207,8 @@ $rgScope = [regex]::Match($rgPage, '(?s)<details class="pp-sub" id="development-
 Assert-Condition ($rgPrivacy -and $rgPrivacy -notmatch 'MCP|8765' -and $rgScope -match '127\.0\.0\.1:8765') 'Reality Gate lists the MCP adapter under development scope, not the v1.1.0 privacy list'
 Assert-Condition ($rgPage -match 'Illustrative sample receipt: the hash values are placeholders, not from a real run\.' -and $rgPage -match 'artifactHashes entry is a placeholder') 'Reality Gate sample receipt is labelled as illustrative with placeholder hashes'
 Assert-Condition ($rgPage -match '<h2>What v1\.1\.0 did \(historical\)</h2>') 'Reality Gate capability section is historical and past tense'
-$rgCard = [regex]::Match($softwarePage, '(?s)<article class="product-card[^>]*data-product="reality-gate".*?</article>').Value
-Assert-Condition ($rgCard -match 'Read the withdrawal record' -and $rgCard -notmatch 'compare-choice|data-compare=' -and ([regex]::Matches($softwarePage, 'class="compare-choice"')).Count -eq (([regex]::Matches($softwarePage, '<article class="product-card')).Count - 1)) 'Software card for withdrawn Reality Gate offers its record, not Compare'
+$rgSystem = [regex]::Match($softwarePage, '(?s)<article\b[^>]*data-preserved-system="portfolio-reality-gate"[^>]*>.*?</article>').Value
+Assert-Condition ($rgDirectory -match 'href="/software/#portfolio-reality-gate"' -and $rgDirectory -notmatch 'compare-choice|data-compare=|href="https://downloads\.' -and $rgSystem -match 'Withdrawn; do not distribute' -and $rgSystem -match 'no public successor is established' -and $rgSystem -match 'href="/reality-gate/"') 'Software Reality Gate entry opens its scoped internal/historical record, not acquisition or Compare'
 $rgSource = @((Get-Content $manifestPath -Raw -Encoding UTF8 | ConvertFrom-Json).products | Where-Object { $_.id -eq 'reality-gate' })[0]
 Assert-Condition ($null -eq $rgSource.PSObject.Properties['featured'] -and $rgSource.proofStatus -eq 'withdrawn · historical record' -and $rgPage -match '<strong>Proof</strong> withdrawn · historical record' -and $rgPage -notmatch '<strong>Proof</strong> verified') 'Reality Gate carries no inert featured flag and no "Proof verified" pill'
 $rgProofDesc = [regex]::Match($rgProof, '(?s)<article class="receipt-card" id="receipt-reality-gate".*?<p class="build-desc">(.*?)</p>').Groups[1].Value
@@ -258,7 +259,10 @@ Assert-Condition ($entriesWithKey.Count -eq 1 -and $entriesWithKey[0].id -eq 'li
 $homePage = Get-Content (Join-Path $publicDir 'index.html') -Raw -Encoding UTF8
 $loTf = Get-Content (Join-Path $publicDir 'truth-files\lights-out\index.html') -Raw -Encoding UTF8
 $cvCompanionPlain = 'companion ' + [regex]::Escape('v' + [string]$cvSource.release.companionPublicVersion)
-Assert-Condition ($homePage -match "companion $loCompanion not offered here" -and $loTf -match "Companion $loCompanion · not offered here" -and $homePage -match $cvCompanionPlain -and $homePage -notmatch "$cvCompanionPlain not offered here") 'homepage and Truth File call the Lights Out companion version not offered here; the offered Cache Vault companion version stays plain'
+$homeMain = [regex]::Match($homePage, '(?s)<main\b.*?</main>').Value
+$loDirectory = [regex]::Match($softwarePage, '(?s)<article\b[^>]*data-directory-entry="lights-out"[^>]*>.*?</article>').Value
+$cvDirectory = [regex]::Match($softwarePage, '(?s)<article\b[^>]*data-directory-entry="cache-vault"[^>]*>.*?</article>').Value
+Assert-Condition ($homeMain -notmatch '(?i)Android|companion' -and $loTf -match "Companion $loCompanion · not offered here" -and $loDirectory -match "Android.*?$loCompanion.*?(not offered here|no companion download)" -and $cvDirectory -match "Android.*?$cvCompanionVersion" -and $cvDirectory -notmatch 'not offered here') 'Home makes no companion claim; directory and Truth File distinguish the unoffered Lights Out companion from available Cache Vault Android'
 
 # K4 (A-05, A-11): authored verification words are scoped to their evidence.
 $dot = [char]0x00B7
@@ -290,16 +294,16 @@ Assert-Condition ($crProp -and [string]$crProp.Value -ceq $crExpected -and $crCh
 # R4 the string reaches every candidate surface
 $crPage = Get-Content (Join-Path $publicDir 'cleanroom\index.html') -Raw -Encoding UTF8
 $crTf = [System.Net.WebUtility]::HtmlDecode((Get-Content (Join-Path $publicDir 'truth-files\cleanroom\index.html') -Raw -Encoding UTF8))
-$crCard = [regex]::Match($softwarePage, '(?s)<article class="product-card card-cleanroom"[^>]*>.*?</article>').Value
+$crCard = [regex]::Match($softwarePage, '(?s)<article\b[^>]*data-directory-entry="cleanroom"[^>]*>.*?</article>').Value
 $crSupport = [regex]::Match($supportPage, '(?s)<article class="detail-card">\s*<h3><a href="/cleanroom/">.*?</article>').Value
 $crRoadmap = [regex]::Match($roadmapPage, '(?s)<article>\s*<div>\s*<p class="kicker">[^<]*</p>\s*<h2><a href="/cleanroom/">.*?</article>').Value
 $crMissing = @()
 if (([regex]::Matches($crPage, [regex]::Escape($crExpected))).Count -lt 6) { $crMissing += '/cleanroom/' }   # meta, og, download, update, established, release note
-if (-not $crCard.Contains('<p class="card-detail">' + $crExpected + '</p>')) { $crMissing += '/software/' }
+if (-not ($crCard -match 'Windows · v1\.0\.7 · newer GitHub version unreconciled' -and $crCard -match 'href="/cleanroom/"' -and $softwarePage -match 'Website v1\.0\.7 and published GitHub v1\.0\.10 remain unreconciled\. No promotion is proposed\.')) { $crMissing += '/software/' }
 if (-not $crSupport.Contains($crExpected)) { $crMissing += '/support/' }
 if (-not $crRoadmap.Contains($crExpected) -or $crRoadmap -match '\bNext\b') { $crMissing += '/roadmap/' }
 if (-not $crTf.Contains('<span class="tf-sub">' + $crExpected + '</span>')) { $crMissing += '/truth-files/cleanroom/' }
-Assert-Condition ($crMissing.Count -eq 0) "K4: the Cleanroom candidate string is what every candidate surface says ($($crMissing -join ', '))"
+Assert-Condition ($crMissing.Count -eq 0) "K4: Cleanroom candidate surfaces retain the exact on-hold status; directory keeps v1.0.7 current and marks the newer GitHub version unreconciled ($($crMissing -join ', '))"
 # R5 no second candidate wording anywhere
 $k4Second = @(Get-ChildItem -LiteralPath $publicDir -Recurse -Filter '*.html' | Where-Object { (Get-Content $_.FullName -Raw -Encoding UTF8) -match '(?i)next build|in evaluation|newer verified release|v1\.0\.10\)? (?:is )?in progress|work on v1\.0\.10' } | ForEach-Object { $_.Name })
 Assert-Condition ($k4Second.Count -eq 0) "K4: no second Cleanroom candidate wording (next build, in progress, in evaluation, newer verified release) remains ($($k4Second -join ', '))"
@@ -347,8 +351,8 @@ foreach ($k5p in @($manifest.products | Where-Object { $_.visible })) {
     $k5Line = [regex]::Escape("$($k5Words.withdrawnVersionCell) v$($k5p.release.withdrawnVersion) $k5Em $($k5Words.withdrawnChecks)")
     $k5Cell = [regex]::Escape("<dd>$($k5Words.withdrawnVersionCell) (v$($k5p.release.withdrawnVersion))</dd>")
     Assert-Condition ($k5Card -cnotmatch 'verification-matrix' -and $k5Card -cmatch $k5Line -and $k5Card -cmatch $k5Cell -and $k5Card -cnotmatch '>Unreleased<') "$($k5p.id): withdrawn release has one historical line and a withdrawn version cell, no matrix"
-    $k5Row = [regex]::Match($k5Home, '(?s)<tr data-ledger-product="' + [regex]::Escape($k5p.id) + '".*?</tr>').Value
-    Assert-Condition ($k5Row -cmatch ('<span class="ledger-status">' + [regex]::Escape([System.Net.WebUtility]::HtmlEncode($k5Words.withdrawnHomeStatus)) + '</span>') -and $k5Row -cnotmatch '>WITHDRAWN<') "$($k5p.id): Home index row says withdrawn, record only, in words"
+    $k5Main = [regex]::Match($k5Home, '(?s)<main\b.*?</main>').Value
+    Assert-Condition ($k5Main -notmatch ('data-ledger-product="' + [regex]::Escape($k5p.id) + '"|href="' + [regex]::Escape($k5p.route) + '"') -and $k5Main -match 'href="/software/"' -and $rgDirectory -match 'public v1\.1\.0 withdrawn') "$($k5p.id): Home does not promote the withdrawn product; its reachable directory entry states withdrawal"
     continue
   }
   $k5Classes = if ($k5p.presentation.PSObject.Properties['evidenceClass']) { $k5p.presentation.evidenceClass } else { $null }
@@ -372,13 +376,13 @@ function Get-A12Figure([string]$html, [string]$marker) {
     return [regex]::Match($html, '(?s)<figure\b(?:(?!</figure>).)*?' + [regex]::Escape($marker) + '.*?</figure>').Value
 }
 $a12Bindings = @(
-    @{ Route = 'lights-out'; Marker = 'hero-product-shot'; Src = '/assets/lights-out/tonight-active-hero.png'; Need = @("CAPTURED $a12Dot Lights Out v11.1.2 dry run") },
+    @{ Route = 'lights-out'; Marker = 'hero-product-shot'; Src = '/assets/lights-out/tonight-active-hero.png'; Need = @('Lights Out v11.1.2', 'dry-run countdown', 'Historical interface image', 'public Windows release is v11.2.0') },
     @{ Route = 'lights-out'; Marker = 'aria-labelledby="shot-firstlight-cap"'; Src = '/assets/lights-out/settings-first-light-automations.png'; Need = @('both switched off', "CAPTURED $a12Dot Lights Out v11.1.2") },
     @{ Route = 'lights-out'; Marker = 'aria-labelledby="shot-devices-cap"'; Src = '/assets/lights-out/devices-panel.png'; Need = @('nothing connected yet', "CAPTURED $a12Dot Lights Out v11.1.2 dry run") },
     @{ Route = 'lights-out'; Marker = 'aria-labelledby="shot-lights-cap"'; Src = '/assets/lights-out/settings-smart-lights.png'; Need = @('not yet configured', "CAPTURED $a12Dot Lights Out v11.1.2") },
     @{ Route = 'lights-out'; Marker = 'aria-labelledby="shot-wifi-cap"'; Src = '/assets/lights-out/settings-wifi-guard.png'; Need = @('switched off', 'provider choices are not shown', "CAPTURED $a12Dot Lights Out v11.1.2") },
     @{ Route = 'lights-out'; Marker = 'aria-labelledby="shot-proof-cap"'; Src = '/assets/lights-out/proof-morning-visible.png'; Need = @('not Morning Proof results', "CAPTURED $a12Dot Lights Out v11.1.2") },
-    @{ Route = 'cleanroom'; Marker = 'hero-product-shot'; Src = '/assets/cleanroom/cleanroom-review.png'; Need = @('no cleanup candidates found', 'Interface capture from v1.0.6') },
+    @{ Route = 'cleanroom'; Marker = 'hero-product-shot'; Src = '/assets/cleanroom/cleanroom-review.png'; Need = @('Cleanroom v1.0.6', 'completed scan with no candidates', 'no restore history', 'does not demonstrate a populated archive or v1.0.10') },
     @{ Route = 'forgecast'; Marker = 'href="/assets/forgecast/v030-widgets.png"'; Src = '/assets/forgecast/v030-widgets.png'; Need = @('not the Android home screen', 'build not shown') },
     @{ Route = 'proofshot'; Marker = 'aria-labelledby="shot-decode-cap"'; Src = '/assets/proofshot/decode-complete.png'; Need = @('HyperSnatch', 'welcome panel covers the workspace') },
     @{ Route = 'proofshot'; Marker = 'aria-labelledby="shot-plan-cap"'; Src = '/assets/proofshot/candidates-plan.png'; Need = @('HyperSnatch', 'no candidate rows or plan are visible') },
@@ -401,9 +405,9 @@ $a12ExpLine = @(Get-Content (Join-Path $publicDir 'experience.js') -Encoding UTF
 $a12RgTour = @()
 if ($a12ExpLine) { $a12RgTour = @(($a12ExpLine.Substring($a12Prefix.Length).TrimEnd(';') | ConvertFrom-Json).'reality-gate'.tour) }
 Assert-Condition ($a12RgTour.Count -eq 4 -and $a12RgTour[0].description -ceq $rgTourCaption -and $a12RgTour[2].description -ceq $rgRecoveryCaption -and $a12RgTour[2].image.alt.Contains('AT RISK')) 'A-12: Reality Gate tour data mirrors the page captions for Orient and Recover'
-$a12HomeCard = [regex]::Match([IO.File]::ReadAllText((Join-Path $publicDir 'index.html')), '(?s)<article class="ledger-instrument" data-ledger-feature="lights-out".*?</article>').Value
-Assert-Condition ($a12HomeCard.Contains('src="/assets/lights-out/tonight-active-hero.png"') -and -not $a12HomeCard.Contains('tonight-active-hero-card-960')) 'A-12: Home Lights Out card shows the full-frame capture, not the crop that cut its build stamp'
-$a12SoftwareCard = [regex]::Match([IO.File]::ReadAllText((Join-Path $publicDir 'software\index.html')), '(?s)<article class="product-card[^>]*data-product="lights-out".*?</article>').Value
+$a12HomeMain = [regex]::Match($homePage, '(?s)<main\b.*?</main>').Value
+Assert-Condition ($a12HomeMain -notmatch 'tonight-active-hero|data-ledger-feature="lights-out"' -and $a12HomeMain -match 'href="/software/"') 'A-12: Home has no Lights Out capture or cropped build stamp and reaches the product directory'
+$a12SoftwareCard = $loDirectory
 Assert-Condition ($a12SoftwareCard.Contains('src="/assets/lights-out/tonight-active-hero.png"') -and -not $a12SoftwareCard.Contains('tonight-active-hero-card-960')) 'A-12: Software Lights Out card shows the full-frame capture, build stamp included'
 $a12Retired = @(
     'Morning Proof on the desktop', 'showing Morning Proof results', 'The Automations settings category',

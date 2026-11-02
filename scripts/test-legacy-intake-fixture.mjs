@@ -18,7 +18,7 @@ test('legacy regression snapshot binding rejects substituted authorities',async 
   const originalContext=fs.readFileSync(marker);
   const amend=()=>{
     git(fixture.site,'add','--all');
-    git(fixture.site,'-c','user.name=Qualification Fixture','-c','user.email=qualification@example.invalid','-c','commit.gpgsign=false','commit','--quiet','--amend','--no-edit');
+    git(fixture.site,'commit','--quiet','--amend','--no-edit');
   };
   async function mutate(files,action,expected){
     const originals=files.map(f=>[f,fs.readFileSync(f)]);

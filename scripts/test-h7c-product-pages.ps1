@@ -1,5 +1,5 @@
-# H7C — Shared product-page system & catalog geometry guard
-# Targets: Lights Out, Cleanroom, GhostLayer, ForgeCast, ProofShot + Homepage Catalog
+# H7C — Existing product-page preservation & Products directory guard.
+# No new product pages or product-page redesign is required by this suite.
 [CmdletBinding()]
 param(
   [string]$PublicDir = '',
@@ -19,23 +19,24 @@ function Assert-Condition([bool]$condition, [string]$msg) {
   else { Write-Host "FAIL: $msg" -ForegroundColor Red; $script:failed++ }
 }
 
-$ppCssPath = Join-Path $Root 'product-page.css'
+$ppCssPath = Join-Path $PublicDir 'product-worlds.css'
 $ppCss = if (Test-Path $ppCssPath) { [IO.File]::ReadAllText($ppCssPath) } else { '' }
 # H9 moved the functional catalog to /software/; product-page guards stay here.
 $catalogPath = Join-Path $PublicDir 'software/index.html'
 $catalogHtml = if (Test-Path $catalogPath) { [IO.File]::ReadAllText($catalogPath) } else { '' }
 
-# 1. Product-specific thematic identity tokens in product-page.css
+# 1. Product-specific thematic identity in the active product-world owner.
 $themes = @(
-  'body.pp-system.product-lights-out',
-  'body.pp-system.product-cleanroom',
-  'body.pp-system.product-ghostlayer',
-  'body.pp-system.product-forgecast',
-  'body.pp-system.product-proofshot'
+  '.product-lights-out',
+  '.product-cleanroom',
+  '.product-ghostlayer',
+  '.product-forgecast'
 )
 foreach ($t in $themes) {
-  Assert-Condition ($ppCss -match [regex]::Escape($t)) "product-page.css defines theme selector: $t"
+  Assert-Condition ($ppCss -match ([regex]::Escape($t) + '\s*\{')) "product-worlds.css defines theme selector: $t"
 }
+$historicalCss = [IO.File]::ReadAllText((Join-Path $PublicDir 'product-page.css'))
+Assert-Condition ($historicalCss -match '\.product-proofshot\s*\{') 'product-page.css retains the historical ProofShot theme selector'
 
 # 2. Canonical section hierarchy helper
 function Test-Order([string]$html, [string[]]$needles, [string]$label) {
@@ -71,12 +72,20 @@ foreach ($p in $h7cProducts) {
   $html = [IO.File]::ReadAllText($file)
   Assert-Condition ($html -match 'class="[^"]*pp-system[^"]*"') "$name - body carries pp-system"
   Assert-Condition ($html -match "product-$slug") "$name - body carries product-$slug identity class"
+  Assert-Condition ($html -match 'href="/product-worlds\.css[?"]') "$name - generated page loads its product-world stylesheet"
+  if ($slug -eq 'proofshot') {
+    Assert-Condition ($html -match 'href="/product-page\.css[?"]') "$name - generated page loads its historical theme owner"
+  }
 
   # Hierarchy check
   if ($slug -eq 'proofshot') {
     Test-Order $html @('id="overview"', 'id="features"', 'id="try-it"', 'pp-story', 'id="download"', 'id="identity"', 'id="proof"', 'id="privacy-data-flow"', 'pp-final-cta') "$name hierarchy"
   } elseif ($slug -eq 'ghostlayer') {
-    Test-Order $html @('id="overview"', 'id="features"', 'layer-boundary', 'id="try-it"', 'id="download"', 'id="onboarding"', 'id="proof"', 'id="privacy-data-flow"') "$name hierarchy"
+    Test-Order $html @('id="overview"', 'id="try-it"', 'layer-boundary', 'id="features"', 'id="download"', 'id="onboarding"', 'id="proof"', 'id="privacy-data-flow"') "$name hierarchy"
+    $preview = [regex]::Match($html, '(?s)<section\b[^>]*id="try-it"[^>]*>.*?</section>').Value
+    Assert-Condition ($preview -match 'layer-boundary' -and $preview -match 'temporary disk copy' -and $preview -match 'interrupted edits can leave recoverable copies') "$name - staging preview carries the disk-boundary warning before features"
+  } elseif ($slug -eq 'forgecast') {
+    Test-Order $html @('id="overview"', 'id="try-it"', 'pp-story', 'id="features"', 'id="download"', 'id="onboarding"', 'id="proof"', 'id="privacy-data-flow"') "$name hierarchy"
   } else {
     Test-Order $html @('id="overview"', 'id="features"', 'id="try-it"', 'pp-story', 'id="download"', 'id="onboarding"', 'id="proof"', 'id="privacy-data-flow"') "$name hierarchy"
   }
@@ -89,10 +98,10 @@ foreach ($p in $h7cProducts) {
   # Current production keeps the identity/migration tier while shipping v2.0.0.
   if ($slug -eq 'proofshot') {
     Assert-Condition ($html -match 'HyperSnatch' -and $html -match 'Screenshots predate the rebrand') "$name - legacy engine imagery is explicitly disclosed"
-    # VR1-R2 visual truth: the hero may not carry a known HyperSnatch-era
-    # engine capture; it must use a verified ProofShot-branded asset.
+    # Historical media is permitted only with explicit lineage/build limits;
+    # it must not be passed off as a current ProofShot runtime capture.
     $hero = [regex]::Match($html, '(?s)hero-product-shot.*?</figure>').Value
-    Assert-Condition ($hero -notmatch 'workbench-home|workbench-proof-cards|hypersnatch|v1\.6\.18|web-hero\.png' -and $hero -match 'og-image\.png') "$name - hero carries approved ProofShot brand artwork without illustrative bundle data or HyperSnatch-era UI"
+    Assert-Condition ($hero -match 'src="/assets/proofshot/candidates-plan\.png"' -and $hero -match 'alt="Historical HyperSnatch v1\.6\.18 Candidates screen' -and $hero -match '<figcaption>Historical HyperSnatch v1\.6\.18 Candidates view' -and $hero -match 'No current ProofShot v2\.0\.0 runtime capture is claimed\.' -and $hero -notmatch 'workbench-home|workbench-proof-cards|web-hero\.png' -and $html -match 'historical product remains unfeatured while licensing and current-media findings are unresolved') "$name - historical hero states lineage and build, denies current-runtime qualification, and retains the unresolved hold"
     Assert-Condition ($html -match 'Download ProofShot v2\.0\.0') "$name - real public download CTA present"
     Assert-Condition ($html -match 'ProofShot-Setup-2\.0\.0\.exe' -and $html -notmatch 'Follow development|no public ProofShot release') "$name - current public installer supersedes development-only CTA"
   }
@@ -125,20 +134,18 @@ foreach ($module in $commerceModules) {
   }
 }
 
-# 4. The functional catalog's geometry & card consistency checks moved with it.
-Assert-Condition ($catalogHtml -match 'class="products-grid"') "Software catalog contains products-grid container"
-Assert-Condition ($catalogHtml -match 'data-product="cache-vault"') "Software catalog card present for Cache Vault"
-Assert-Condition ($catalogHtml -match 'data-product="lights-out"') "Software catalog card present for Lights Out"
-Assert-Condition ($catalogHtml -match 'data-product="cleanroom"') "Software catalog card present for Cleanroom"
-Assert-Condition ($catalogHtml -match 'data-product="ghostlayer"') "Software catalog card present for GhostLayer"
-Assert-Condition ($catalogHtml -match 'data-product="forgecast"') "Software catalog card present for ForgeCast"
-Assert-Condition ($catalogHtml -match 'data-product="proofshot"') "Software catalog card present for ProofShot"
+# 4. Main-site Products directory and preserved historical navigation.
+Assert-Condition ($catalogHtml -match 'class="pf-directory-grid" id="directory-results"') "Products directory contains its filter-results grid"
+foreach ($slug in @('cache-vault', 'lights-out', 'cleanroom', 'ghostlayer', 'forgecast', 'hardline-zero', 'crosspoint', 'reality-gate', 'proof-foundry-app')) {
+  $entry = [regex]::Match($catalogHtml, '(?s)<article\b[^>]*data-directory-entry="' + [regex]::Escape($slug) + '"[^>]*>.*?</article>').Value
+  Assert-Condition ($entry -match '<h3>[^<]+</h3>' -and $entry -match 'class="directory-purpose">[^<]+' -and $entry -match 'class="directory-state">[^<]+' -and $entry -match '<a class="button button-secondary" href="[^"]+">') "$slug - directory entry has identity, purpose, availability and an exploration path"
+}
+Assert-Condition ($catalogHtml -notmatch 'data-directory-entry="proofshot"' -and $catalogHtml -match 'id="portfolio-proofshot"' -and $catalogHtml -match 'href="/proofshot/">Read ProofShot' -and $catalogHtml -match 'href="/truth-files/proofshot/">Historical Truth File') "ProofShot is unfeatured but retains its historical product and Truth File paths"
 
-# Unbiased card geometry: ForgeCast & ProofShot do not force 2-column grid span in studio.css
-$studioCss = [IO.File]::ReadAllText((Join-Path $PublicDir 'studio.css'))
-Assert-Condition ($studioCss -notmatch '\.card-forgecast\{[^}]*grid-column:\s*1\s*/\s*-1') "studio.css does not force full-width grid-column span on ForgeCast card"
-Assert-Condition ($studioCss -notmatch '\.card-proofshot\{[^}]*grid-column:\s*1\s*/\s*-1') "studio.css does not force full-width grid-column span on ProofShot card"
-Assert-Condition ($studioCss -notmatch 'rotate\(6deg\)') "studio.css does not force tilted 6deg transform on ForgeCast card"
+# Equal directory geometry belongs to h9-software.css, not unloaded studio.css.
+$directoryCss = [IO.File]::ReadAllText((Join-Path $PublicDir 'h9-software.css'))
+Assert-Condition ($catalogHtml -match 'href="/h9-software\.css[?"]' -and $directoryCss -match '\.pf-directory-grid\s*\{[^}]*grid-template-columns:repeat\(3,minmax\(0,1fr\)\)') "active directory stylesheet gives entries equal three-column tracks"
+Assert-Condition ($directoryCss -notmatch '\.directory-entry--forgecast\s*\{[^}]*(?:grid-column:\s*1\s*/\s*-1|rotate\(6deg\))') "active directory stylesheet does not privilege or tilt ForgeCast"
 
 $color = if ($script:failed -eq 0) { 'Green' } else { 'Red' }
 Write-Host "=== H7C RESULT: $script:passed passed, $script:failed failed ===" -ForegroundColor $color

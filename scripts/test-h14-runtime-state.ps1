@@ -134,16 +134,18 @@ $stateDoc = [ordered]@{ revisions = [ordered]@{ A = $revA; B = $revB; C = $revC;
 Write-Host "=== H14 RUNTIME PRODUCT STATE ===" 
 Write-Host "=== fixture workspace: $work ==="
 Write-Host "--- building site ---"
-$buildOut = pwsh -NoProfile -File (Join-Path $root 'scripts\build-site.ps1') 2>&1 | Out-String
+$builtPublic = Join-Path $work 'built-public'
+$buildOut = pwsh -NoProfile -File (Join-Path $root 'scripts\build-site.ps1') -OutDir $builtPublic 2>&1 | Out-String
+Assert ($LASTEXITCODE -eq 0) 'isolated site build exits successfully'
 Assert ($buildOut -match 'Emitted H14 shadow assets') 'build emits __h14 shadow assets'
-Assert (Test-Path (Join-Path $root 'public\__h14\shells\cleanroom.html')) 'shadow shell emitted'
-Assert (Test-Path (Join-Path $root 'public\__h14\registry.json')) 'registry index emitted'
+Assert (Test-Path (Join-Path $builtPublic '__h14\shells\cleanroom.html')) 'shadow shell emitted'
+Assert (Test-Path (Join-Path $builtPublic '__h14\registry.json')) 'registry index emitted'
 
 # Keep the Pages runtime completely outside the source checkout. Copy only the
 # built static output and Functions tree; provide the synthetic API URL with a
 # local Wrangler binding instead of creating any .dev.vars file.
 New-Item -ItemType Directory -Force -Path $fixturePublic, $fixtureFunctions | Out-Null
-Get-ChildItem -LiteralPath (Join-Path $root 'public') -Force | Copy-Item -Destination $fixturePublic -Recurse -Force
+Get-ChildItem -LiteralPath $builtPublic -Force | Copy-Item -Destination $fixturePublic -Recurse -Force
 Get-ChildItem -LiteralPath (Join-Path $root 'functions') -Force | Copy-Item -Destination $fixtureFunctions -Recurse -Force
 $registryPath = Join-Path $fixturePublic '__h14\registry.json'
 $fixtureRegistry = @(Get-Content -LiteralPath $registryPath -Raw | ConvertFrom-Json)
@@ -201,6 +203,28 @@ function Rev($r) { if ($r -and $r.Headers) { return ($r.Headers['X-PF-State-Revi
   Assert ($rg.Content -notmatch '\{\{[^}]+\}\}' -and $rg.Content -match 'v1\.1\.0' -and $rg.Content -match 'Withdrawn:') 'withdrawn product tokens resolve in shadow page'
   Assert ($rg.Content -match 'href="/__h14/software/"' -and $rg.Content -match 'href="/__h14/cleanroom/"' -and $rg.Content -notmatch 'href="/#products"') 'product navigation and breadcrumb stay in shadow namespace'
   Assert ($rg.Content -match '<meta name="robots" content="noindex, nofollow"' -and $rg.Headers['X-Robots-Tag'] -match 'noindex, nofollow') 'product page is noindex and nofollow'
+
+  # Follow actual rendered Function links, including the shared header/footer.
+  # A filesystem placeholder or static 200 response cannot satisfy revision,
+  # provenance and destination-content checks.
+  $navigationPages = @($sw, $rg, $r)
+  $shadowLinks = @($navigationPages | ForEach-Object {
+    foreach ($link in [regex]::Matches($_.Content, 'href="(/__h14/[^"#?]*)"')) { $link.Groups[1].Value }
+  } | Sort-Object -Unique)
+  Assert ($shadowLinks -contains '/__h14/software/' -and $shadowLinks -contains '/__h14/cleanroom/') 'rendered navigation exposes catalog and product Function destinations'
+  foreach ($href in $shadowLinks) {
+    $destination = Get-Shadow ($href.Substring('/__h14'.Length))
+    $valid = $destination.StatusCode -eq 200 -and (Rev $destination) -eq 'A' -and (Src $destination) -in @('live','cache')
+    if ($href.EndsWith('.json')) {
+      $record = $destination.Content | ConvertFrom-Json
+      $valid = $valid -and $record.source.revision -eq 'A' -and $record.schemaVersion -eq 1
+    } else {
+      $valid = $valid -and $destination.Content -match '<main\b' -and $destination.Content -notmatch '\{\{|^Not found$'
+      if ($href -eq '/__h14/software/') { $valid = $valid -and $destination.Content -match 'data-product="cleanroom"' }
+      elseif ($href -match '^/__h14/([^/]+)/$') { $valid = $valid -and $destination.Content -match ('/truth/products/' + [regex]::Escape($Matches[1]) + '\.json') }
+    }
+    Assert $valid "rendered Function link resolves with revision A and real destination content: $href"
+  }
 
   # ── TEST 3: ETag / 304 ────────────────────────────────────────────────────
   Write-Host "--- TEST 3: ETag cache ---"
@@ -274,7 +298,9 @@ function Rev($r) { if ($r -and $r.Headers) { return ($r.Headers['X-PF-State-Revi
   foreach ($case in @(@('G','missing seq','9.9.0'), @('H','string seq','9.9.1'), @('I','float seq','9.9.2'), @('J','negative seq','9.9.3'), @('K','null seq','9.9.4'))) {
     Set-Rev $case[0]; Start-Sleep 1
     $rn = Get-Shadow '/proofshot/'
-    Assert ((Src $rn) -in @('cache','cache-stale-rejected','cache-inconsistent-rejected','static-fallback') -and $rn.Content -notmatch $case[2]) "reject $($case[1]) revision ($($case[0])) → serves last-good/static"
+    $versionPattern = '(?<![\d.])v?' + [regex]::Escape([string]$case[2]) + '(?![\d.])'
+    $visibleText = [Net.WebUtility]::HtmlDecode([regex]::Replace($rn.Content, '<[^>]+>', ' '))
+    Assert ((Src $rn) -in @('cache','cache-stale-rejected','cache-inconsistent-rejected','static-fallback') -and (Rev $rn) -ne $case[0] -and $visibleText -notmatch $versionPattern) "reject $($case[1]) revision ($($case[0])) → serves last-good/static"
   }
   Set-Rev 'L'; Start-Sleep 1
   $rl = Get-Shadow '/proofshot/'

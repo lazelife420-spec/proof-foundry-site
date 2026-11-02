@@ -118,10 +118,10 @@ $manifest = (Read-Text (Join-Path $PublicDir 'site-manifest.json')) | ConvertFro
 $specimenId = [regex]::Match($homeHtml, 'data-ledger-specimen="([a-z0-9-]+)"').Groups[1].Value
 $specimen = @($manifest.products | Where-Object id -eq $specimenId)[0]
 $digests = @([regex]::Matches($homeHtml, '(?<![0-9a-f])[0-9a-f]{64}(?![0-9a-f])') | ForEach-Object Value | Sort-Object -Unique)
-Assert-Receipt 'homepage HTML carries no digest except the specimen artifact' ($specimen -and $digests.Count -eq 1 -and $digests[0] -ceq [string]$specimen.sha256)
-Assert-Receipt 'receipt panel ships empty; content comes from /truth/ at open time' ($homeHtml -match '<div class="pf-rc-doc" id="pf-receipt-panel" data-receipt-panel></div>' -and $homeHtml -match '<dialog class="pf-dialog pf-receipt-dialog" id="pf-receipt-dialog" aria-labelledby="pf-receipt-title">')
+Assert-Receipt 'homepage HTML carries no static release digest or specimen' ($digests.Count -eq 0 -and $homeHtml -notmatch 'data-ledger-specimen=')
+Assert-Receipt 'receipt panel ships empty; content comes from /truth/ at open time' ($homeHtml -match '<div class="pf-rc-doc" id="pf-receipt-panel" data-receipt-panel></div>' -and $homeHtml -match '<dialog class="pf-dialog pf-receipt-dialog" id="pf-receipt-dialog" aria-labelledby="pf-receipt-title" data-receipt-products="cache-vault proofshot lights-out">')
 $triggers = @([regex]::Matches($homeHtml, '<button type="button" class="ledger-receipt-button"[^>]*>'))
-Assert-Receipt 'receipt triggers carry only a product ID and stay hidden without the script' ($triggers.Count -eq 4 -and @($triggers | Where-Object { $_.Value -notmatch '^<button type="button" class="ledger-receipt-button" data-receipt-open="[a-z0-9-]+" aria-haspopup="dialog" aria-controls="pf-receipt-dialog" hidden>$' }).Count -eq 0)
+Assert-Receipt 'receipt triggers carry only a product ID and stay hidden without the script' ($triggers.Count -eq 1 -and @($triggers | Where-Object { $_.Value -notmatch '^<button type="button" class="ledger-receipt-button" data-receipt-open="[a-z0-9-]+" aria-haspopup="dialog" aria-controls="pf-receipt-dialog" hidden>$' }).Count -eq 0)
 Assert-Receipt 'homepage has no static tab widget' ($homeHtml -notmatch 'role="tablist"|role="tabpanel"')
 $names = @($manifest.products | ForEach-Object { [string]$_.id; [string]$_.name; [string]$_.displayName } | Where-Object { $_ } | Sort-Object -Unique)
 # The verification vocabulary names the Reality Gate check; it is bound to the
@@ -154,7 +154,7 @@ function Pairs($items, [string]$a, [string]$b) { ConvertTo-Json -Compress -Depth
 # Authored evidence may be bare URLs; the build labels those by file name
 # (Build-PublicTruthProduct in build-site.ps1), so compare under the same rule.
 function Evidence($items) { ConvertTo-Json -Compress -Depth 5 -InputObject @($items | ForEach-Object { if ($_ -is [string]) { [ordered]@{ label = ($_ -split '/')[-1]; url = $_ } } else { [ordered]@{ label = $_.label; url = $_.url } } }) }
-$receiptIds = @([regex]::Matches($homeHtml, 'data-receipt-open="([a-z0-9-]+)"') | ForEach-Object { $_.Groups[1].Value } | Select-Object -Unique)
+$receiptIds = @([regex]::Match($homeHtml, 'data-receipt-products="([^"]+)"').Groups[1].Value -split '\s+' | Where-Object { $_ })
 Assert-Receipt 'every homepage receipt product is in the authored release truth' ($receiptIds.Count -ge 3 -and @($receiptIds | Where-Object { $id = $_; -not @($authored.products | Where-Object id -eq $id).Count }).Count -eq 0)
 foreach ($id in $receiptIds) {
   $a = @($authored.products | Where-Object id -eq $id)[0]
@@ -171,18 +171,9 @@ foreach ($id in $receiptIds) {
   Assert-Receipt "$id`: /proof/index.json names exactly the files the presentation withholds from this site" ($wantWithheld -ceq $gotWithheld)
 }
 
-# ── 5. Published capture captions, alt text and disclosures stay verbatim ────
-$decoded = [System.Net.WebUtility]::HtmlDecode($homeHtml)
-$featured = @(((Read-Text (Join-Path $root 'homepage-ledger.json')) | ConvertFrom-Json).featured)
-foreach ($id in $featured) {
-  $module = (Read-Text (Join-Path $root "products/$id/module.json")) | ConvertFrom-Json
-  $article = [System.Net.WebUtility]::HtmlDecode([regex]::Match($homeHtml, '(?s)<article class="ledger-instrument" data-ledger-feature="' + [regex]::Escape($id) + '".*?</article>').Value)
-  Assert-Receipt "$id`: capture keeps its published alt text and caption" ($article -and $article.Contains('alt="' + [string]$module.card.mediaAlt + '"') -and $article.Contains('<figcaption>' + [string]$module.homepage.mediaDisclosure + '</figcaption>'))
-}
-$apostrophe = [string][char]0x2019
-foreach ($disclosure in @('Captures may show earlier builds or previous product names. Each preview states its context; the public record establishes current availability.', "Actual app previews or brand artwork. Some show earlier builds or previous product names. See each product$($apostrophe)s current release record.")) {
-  Assert-Receipt "published disclosure kept verbatim: $($disclosure.Substring(0, 36))" ($decoded.Contains($disclosure))
-}
+# ── 5. Editorial captures keep context and authentic source artwork ────────
+. "$PSScriptRoot/check-directory-contract.ps1"
+Assert-DirectoryContract $root $PublicDir { param($name,$ok) Assert-Receipt $name $ok }
 
 # ── 6. Canonical geometry and recorded emblem assets ─────────────────────────
 $master = Read-Text (Join-Path $root 'brand/PF_MARK_G_MASTER.svg')

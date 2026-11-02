@@ -76,7 +76,7 @@ export function createLegacyIntakeFixture(){
       fs.mkdirSync(path.dirname(dest),{recursive:true});fs.copyFileSync(source,dest);
     }
     git(canonical,'add','--all');
-    git(canonical,'-c','user.name=Qualification Fixture','-c','user.email=qualification@example.invalid','-c','commit.gpgsign=false','commit','--quiet','-m','Disposable canonical website snapshot; never production authority');
+    git(canonical,'commit','--quiet','-m','Disposable canonical website snapshot; never production authority\n\nCo-authored-by: factory-droid[bot] <138933559+factory-droid[bot]@users.noreply.github.com>');
     const canonicalCommit=git(canonical,'rev-parse','HEAD').trim(),canonicalTree=git(canonical,'rev-parse','HEAD^{tree}').trim();
     execFileSync('git',['clone','--quiet','--no-hardlinks',canonical,site],{windowsHide:true,stdio:'pipe'});
     git(site,'remote','remove','origin');git(site,'config','core.autocrlf','false');
@@ -84,7 +84,7 @@ export function createLegacyIntakeFixture(){
     fs.writeFileSync(path.join(site,'site-manifest.json'),bytes);
     fs.writeFileSync(path.join(site,CONTEXT),pretty({schema:'pf.legacy-intake-fixture/v1',canonicalRoot:'../canonical',canonicalCommit,canonicalTree,transportSha256:sha(bytes)}));
     git(site,'add','--all');
-    git(site,'-c','user.name=Qualification Fixture','-c','user.email=qualification@example.invalid','-c','commit.gpgsign=false','commit','--quiet','-m','Disposable legacy transport bound to canonical website snapshot');
+    git(site,'commit','--quiet','-m','Disposable legacy transport bound to canonical website snapshot\n\nCo-authored-by: factory-droid[bot] <138933559+factory-droid[bot]@users.noreply.github.com>');
     assert.equal(getLegacyRegressionRoot(site),canonical);
     return {temp,site,canonical,cleanup};
   }catch(error){cleanup();throw error;}

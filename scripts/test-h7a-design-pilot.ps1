@@ -82,8 +82,8 @@ Assert-Condition (([regex]::Matches($outputCatalog, '<details class="card-more">
 Assert-Condition ($outputCatalog -notmatch 'card-topline') 'output: no software card renders the old topline row'
 # H9 moves the entire functional catalog to /software/. The old mobile
 # curation toggle is replaced by filters; without JS all seven remain visible.
-Assert-Condition ($sourceCatalog -match 'class="h9-product-finder" data-h9-enhance hidden') 'source: software filters are progressive enhancement'
-Assert-Condition ($outputCatalog -match 'class="h9-product-finder" data-h9-enhance hidden' -and $outputCatalog -match 'class="finder-intents"') 'output: software filter controls survive build'
+Assert-Condition ($sourceCatalog -match '<form class="directory-finder" data-directory-finder hidden role="search">') 'source: directory filters are hidden progressive enhancement'
+Assert-Condition ($outputCatalog -match 'data-directory-finder hidden role="search"' -and $outputCatalog -match 'name="query"' -and $outputCatalog -match 'name="group"') 'output: directory search and group controls survive build'
 Assert-Condition ($signature -match '\.signature-home \.catalog-toggle') 'source: catalog toggle styles exist'
 Assert-Condition ($signature -match '(?s)@media \(max-width: 700px\)\s*\{\s*\.signature-home \.catalog-toggle') 'source: catalog toggle only appears at small widths'
 Assert-Condition ($experienceJs -match 'data-catalog-toggle' -and $experienceJs -match 'matchMedia\(''\(max-width: 700px\)''\)') 'source: mobile curation is runtime-driven and viewport-gated'
@@ -92,16 +92,25 @@ Assert-Condition ($outputExperienceJs -match 'data-catalog-toggle') 'output: cur
 # Curation may only ever happen at runtime; nothing may ship pre-hidden.
 Assert-Condition ($cardTemplate -notmatch '<article hidden') 'source: card template never ships pre-hidden products'
 Assert-Condition (($outputCatalog -notmatch '<article[^>]*\shidden[\s>][^>]*class="product-card') -and ($outputCatalog -notmatch '<article[^>]*class="product-card[^>]*"[^>]*\shidden[\s>]')) 'output: no generated software card is hidden by default'
-Assert-Condition ($sourceCatalog -notmatch 'data-catalog-toggle' -and ([regex]::Matches($outputCatalog, '<article class="product-card')).Count -eq 7) 'source/output: software ships the complete seven-tool catalog without a curation toggle'
-Assert-Condition ($sourceCatalog -match '<h1>Find your tool\.</h1>') 'source: catalog has a clear product-first heading'
-Assert-Condition ($sourceHome -match 'id="chain-title"' -and $sourceHome -match 'Recorded build evidence, where applicable\.' -and $sourceHome -match 'Known limitations stay on the record\.' -and $sourceHome -notmatch '@studio-evidence') 'source: Proof Ledger chain scopes build evidence and limitations honestly'
+$editorial = Get-Content (Join-Path $root 'site-editorial.json') -Raw | ConvertFrom-Json
+Assert-Condition ($sourceCatalog -notmatch 'data-catalog-toggle' -and ([regex]::Matches($outputCatalog, 'data-directory-entry="')).Count -eq @($editorial.entries | Where-Object visible).Count) 'source/output: directory ships the complete visible editorial projection without curation'
+Assert-Condition ($sourceCatalog -match '<h1>Tools for the work\.<br>Worlds of their own\.</h1>') 'source: directory has the current product-first heading'
+Assert-Condition ($sourceHome -match 'id="chain-title"' -and $sourceHome -match 'Record how it was made\.' -and $sourceHome -match 'Keep the qualifications visible\.' -and $sourceHome -notmatch '@studio-evidence') 'source: proof method scopes build evidence and limitations honestly'
 Assert-Condition ($sourceHome -match 'class="ledger-hero"[\s\S]*?href="/software/"' -and $sourceHome -notmatch 'studio-portfolio|data-home-products') 'source: Proof Ledger hero invites visitors to the functional catalog without an embedded selector'
 Assert-Condition ($sourceHome -notmatch 'hero-signals|home-reassurance') 'source: hero removes competing secondary signals'
 Assert-Condition ($sourceHome -notmatch 'theater-controls|product-finder|data-compare=') 'source: functional catalog controls do not compete with H9 editorial scenes'
-Assert-Condition ($outputHome -match 'Real software<br/>leaves a record\.' -and $outputHome -match 'Browse Software' -and $outputHome -match 'href="/software/"' -and $outputHome -notmatch 'studio-portfolio|studio-evidence') 'output: shipped Proof Ledger headline and catalog CTA survive build'
-Assert-Condition ($experience -match '\.layer-number\{font:9px Consolas,monospace;color:#969eb5;letter-spacing:\.14em\}') 'source: GhostLayer contrast color is corrected'
-Assert-Condition ($outputExperience -match '\.layer-number\{font:9px Consolas,monospace;color:#969eb5;letter-spacing:\.14em\}') 'output: GhostLayer contrast color survives build'
-Assert-Condition ($layerRatio -ge 4.5) ("WCAG AA: GhostLayer layer number contrast is {0:N2}:1 (>= 4.50:1)" -f $layerRatio)
+Assert-Condition ($outputHome -match 'Real software<br>leaves a record\.' -and $outputHome -match 'Browse Products' -and $outputHome -match 'href="/software/"' -and $outputHome -notmatch 'studio-portfolio|studio-evidence') 'output: main-site headline and directory CTA survive build'
+# The GhostLayer layer-number rule moved from experience.css to product-worlds.css with new pane colours.
+$layerRule = '.product-ghostlayer .layer-number,.product-ghostlayer .layer-state{font:10px var(--pf-mono);color:#bac9cc}'
+$worlds = Get-Content (Join-Path $root 'product-worlds.css') -Raw -Encoding UTF8
+$outputWorlds = Get-Content (Join-Path $public 'product-worlds.css') -Raw -Encoding UTF8
+Assert-Condition ($worlds.Contains($layerRule) -and $experience -notmatch '\.layer-number\{') 'source: GhostLayer layer number has one active colour rule'
+Assert-Condition ($outputWorlds.Contains($layerRule)) 'output: GhostLayer layer number colour survives build'
+# Panes are #2c3944c9 over a darker page and #34423b; the opaque base is the lower contrast bound.
+foreach ($pane in '#2c3944', '#34423b') {
+  $ratio = Get-ContrastRatio '#bac9cc' $pane
+  Assert-Condition ($ratio -ge 4.5) ("WCAG AA: GhostLayer layer number contrast on {0} is {1:N2}:1 (>= 4.50:1)" -f $pane, $ratio)
+}
 
 Write-Host "=== RESULT: $($script:passed) passed, $($script:failed) failed ==="
 if ($script:failed -gt 0) { exit 1 }

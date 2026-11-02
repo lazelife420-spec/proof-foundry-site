@@ -22,14 +22,15 @@
 [CmdletBinding()]
 param(
   [string]$BaselineRef = '',
-  [switch]$NegativeControl
+  [switch]$NegativeControl,
+  [string]$PublicDir = ''
 )
 
 $env:GIT_PAGER = 'cat'
 . "$PSScriptRoot/release-qualification.ps1"
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
-$publicDir = Join-Path $root 'public'
+if (-not $PublicDir) { $PublicDir = Join-Path $root 'public' }
 
 $script:passed = 0
 $script:failed = 0
@@ -432,7 +433,7 @@ foreach ($p in $workManifest.products) {
 Assert-Condition ($truthDrift.Count -eq 0 -and $workManifest.products.Count -eq 7 -and $proofRegistry.products.Count -eq 7) "truth: all seven generated proof records match candidate manifest release state (drift: $($truthDrift -join ', '))"
 
 # ── H1-H3 preservation guards on the files this tranche touched ─────────────
-Assert-Condition ($rg -match '<section class="pp-origin" id="origin">') "H3 guard: Reality Gate origin history remains semantically identified"
+Assert-Condition ($rg -match '<section\b(?=[^>]*\bclass="[^"]*\bpp-origin\b)(?=[^>]*\bid="origin")[^>]*>') "H3 guard: Reality Gate origin history remains semantically identified"
 Assert-Condition ($rg -match 'id="evidence-download"' -and $rg -match 'Withdrawn artifact record') "H3 guard: withdrawn Reality Gate artifact is disclosed as historical evidence"
 Assert-Condition ($rg -match 'Withdrawn:</strong> v1\.1\.0 is not available for download' -and $rg -notmatch 'Install, update, uninstall &amp; leftover data') "H3 guard: withdrawn Reality Gate truth suppresses obsolete install onboarding"
 $buildSrc = Get-Content (Join-Path $root 'scripts\build-site.ps1') -Raw -Encoding UTF8
