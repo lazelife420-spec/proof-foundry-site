@@ -11,7 +11,7 @@ All four web assets live in `brand/material/`. They were derived locally by `scr
 | `PF_PAPER_ARCHIVAL_v1.webp` | 1024 × 683 | 47,592 | `e82da24d6f4c14f2cbd9dca85e6febc0315688a5044e4f4309d15297f9a44410` | image generated for this site 2026-11-02 (source PNG SHA-256 `c5f8df706e5cba9be4c6b31c2f5cf926e2da5931230ad66dee697461418dd9ff`) | scale 0.6667, quality 0.82 |
 | `PF_BUTT_WELD_SEAM_v1.webp` | 1164 × 98 | 24,560 | `adbb56db1aaf062689d3591ecd4cc7a189a4e06b4b605a33d4b3375a769bdc3e` | image generated for this site 2026-11-02 (source PNG SHA-256 `b96aaffd9602f0a8e71e1ca18dbf07c4447e7f147bf0226763d9f16625126455`) | crop y 150–500, horizontal mirror, scale 0.28, quality 0.84; displayed at 499 × 42 CSS px (2.3× source density) |
 
-Total added payload: 335,184 bytes. A page downloads only the layers it uses: Home ≈ 0.33 MB, About ≈ 0.29 MB (no paper), Truth Files/Proof ≈ 0.33 MB. All are CSS backgrounds with a matching solid `background-color`, so they cause no layout shift and the first frame shows the same dark tone before decoding.
+Total added payload: 335,184 bytes. A page downloads only the layers it uses: Home, About (paper intro) and Truth Files ≈ 0.33 MB (all four); Proof Standard and Support ≈ 0.29 MB (no paper). All are CSS backgrounds with a matching solid `background-color`, so they cause no layout shift and the first frame shows the same dark tone before decoding.
 
 Generation prompts (verbatim, constraints included):
 

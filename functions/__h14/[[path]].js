@@ -619,9 +619,14 @@ function buildFooter(footerPartial, states, cfg) {
   return footerPartial.split('{{footer-products}}').join(items);
 }
 function buildHeader(headerPartial, cfg, activeId) {
+  // The primary navigation is the static key chain, so the selected key is projected
+  // onto it here exactly as scripts/foundry-presentation.ps1 does for public pages.
+  const active = (cfg.navLinks || []).find(i => i.id === activeId);
+  const current = active ? `<a href="${esc(shadowCatalogHref(active.href))}"` : null;
   return headerPartial
     .split('{{nav-links}}').join(buildNavLinks(cfg, activeId))
-    .split('{{nav-cta}}').join(buildNavCta(cfg));
+    .split('{{nav-cta}}').join(buildNavCta(cfg))
+    .replace(/<nav class="pf-route-chain\b[\s\S]*?<\/nav>/, nav => current ? nav.split(current).join(current + ' aria-current="page"') : nav);
 }
 
 // Static fallback page fetch — the deployed H13 output for this product.

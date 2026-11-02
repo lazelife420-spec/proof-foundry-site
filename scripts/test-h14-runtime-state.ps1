@@ -191,7 +191,7 @@ function Rev($r) { if ($r -and $r.Headers) { return ($r.Headers['X-PF-State-Revi
   Assert (([regex]::Matches($sw.Content,'data-product="')).Count -eq 7) 'catalog renders 7 products from runtime state'
   Assert ((Src $sw) -in @('live','cache') -and (Rev $sw) -eq 'A') 'catalog revision = live/A'
   Assert ($sw.Content -notmatch '\{\{[^}]+\}\}' -and $sw.Content -match 'data-category="[^"]+"' -and $sw.Content -match 'data-jobs="[^"]+"' -and $sw.Content -match 'card-commerce') 'catalog resolves all module and global tokens'
-  Assert ($sw.Content -match '<nav class="top-nav"[^>]*>[\s\S]*?href="/__h14/software/"[^>]*aria-current="page"' -and $sw.Content -match 'href="/proof-standard/"' -and $sw.Content -match 'href="/about/"' -and $sw.Content -notmatch 'href="/software/"') 'catalog navigation matches public structure with shadow catalog route'
+  Assert ($sw.Content -match '<nav class="pf-route-chain[^"]*" id="primary-nav"[^>]*>[\s\S]*?href="/__h14/software/"[^>]*aria-current="page"' -and $sw.Content -match 'href="/proof-standard/"' -and $sw.Content -match 'href="/about/"' -and $sw.Content -notmatch 'href="/software/"') 'catalog navigation matches public structure with shadow catalog route'
   Assert ($sw.Content -notmatch 'href="/(cache-vault|ghostlayer|lights-out|cleanroom|proofshot|forgecast|reality-gate)/"' -and $sw.Content -match 'href="/__h14/cleanroom/"') 'catalog product links stay in shadow namespace'
   Assert ($sw.Content -match '<meta name="robots" content="noindex, nofollow"' -and $sw.Headers['X-Robots-Tag'] -match 'noindex, nofollow') 'catalog is noindex and nofollow'
   $ti = (Get-Shadow '/truth/index.json').Content | ConvertFrom-Json

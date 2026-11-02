@@ -1318,3 +1318,11 @@ Replacement: links come from `#primary-nav a`; every page must have exactly one 
 ### `sitemap.xml` Home lastmod
 
 Home content (index.html) changes in this commit, so H4's material-input derivation moves `/` to the commit date (2026-11-02). H11 derives `/` from the same material date; no literal changed.
+
+### `scripts/test-h14-runtime-state.ps1` (catalog navigation)
+
+Old: the shadow catalog had to contain `<nav class="top-nav">` with `/__h14/software/` marked `aria-current="page"`.
+
+Why obsolete: same duplicate-menu removal. The `top-nav` element no longer exists; the single primary navigation is the `pf-route-chain` key chain (`id="primary-nav"`).
+
+Replacement: the same `aria-current="page"` on `/__h14/software/` is required inside `<nav class="pf-route-chain …" id="primary-nav">`. The other conditions (public `/proof-standard/` and `/about/` anchors, no public `/software/` link) are unchanged. The shadow runtime (`functions/__h14/[[path]].js` `buildHeader`) now projects the selected key onto that chain the same way `scripts/foundry-presentation.ps1` does for public pages. The header partial carries no `aria-current`, so the successor is satisfied only by that runtime projection, not by static markup.
