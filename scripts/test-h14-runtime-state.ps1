@@ -183,6 +183,10 @@ function Rev($r) { if ($r -and $r.Headers) { return ($r.Headers['X-PF-State-Revi
   Assert ((Src $r) -in @('live','cache')) 'state source = live or 304-cache'
   Assert ((Rev $r) -eq 'A') 'revision = A'
   Assert ($r.Content -match 'product-breadcrumb' -and $r.Content -notmatch '\{\{') 'shell rendered, tokens resolved'
+  $keyChain = [regex]::Match($r.Content, '(?s)<nav class="pf-route-chain.*?</nav>').Value
+  Assert ($keyChain -match '<a href="/__h14/software/" aria-current="true"' -and ([regex]::Matches($keyChain, 'aria-current=')).Count -eq 1) 'product page lights the Products key as its section'
+  $truthKeys = [regex]::Match((Get-Shadow '/truth/').Content, '(?s)<nav class="pf-route-chain.*?</nav>').Value
+  Assert ($truthKeys -match '<a href="/truth-files/" aria-current="true"' -and ([regex]::Matches($truthKeys, 'aria-current=')).Count -eq 1) 'truth page lights the Truth Files key as its section'
   Assert ($r.Content -match 'href="/__h14/truth/products/cleanroom\.json"[^>]*rel="alternate"|rel="alternate"[^>]*href="/__h14/truth/products/cleanroom\.json"') 'runtime truth alternate injected'
 
   # ── TEST 2: catalog + truth coherence on rev A ────────────────────────────

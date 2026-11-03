@@ -690,8 +690,25 @@ try {
     check(`forced colours (${scheme} palette): the decorative doctrine watermark is not drawn`, fc.watermark === false, fc);
     check(`forced colours (${scheme} palette): the six physical navigation keys are drawn in the button text colour and the current key adds a 3px highlight border`, fc.keys.length === 6 && fc.current.index === 0 && fc.keys[0] >= 20 && fc.keys.slice(1).every((n) => n >= 60) && fc.current.border === '3px' && contrast(fc.current.borderColor, fc.canvas) >= 3 && fc.current.borderColor.join() !== fc.button.join(), fc);
     await shot(`forced-colors-${scheme}-390`);
+    // Material grounds give way to the palette: the header steel, About's intro paper and the Founders receipt paper.
+    const grounds = { header: await evaluate(`getComputedStyle(document.querySelector('.site-header')).backgroundImage`) };
+    await go('/about/'); grounds.about = await evaluate(`getComputedStyle(document.querySelector('.about-intro-section')).backgroundImage`);
+    await go('/founders/'); grounds.founders = await evaluate(`getComputedStyle(document.querySelector('.founders-receipt')).backgroundImage`);
+    check(`forced colours (${scheme} palette): the header steel and the About and Founders paper give way to the palette`, Object.values(grounds).every((v) => v === 'none'), grounds);
   }
   await send('Emulation.setEmulatedMedia', { features: [] });
+
+  // Proof-stage focus, reached with real Tab presses. Wide: an amber outline over a dark band on the plate label (the
+  // dark band reads on the light plate, the amber on the housing). Below 1000px: an amber ring round the whole plate.
+  const tabTo = async (selector) => { for (let i = 0; i < 80; i++) { await key('Tab'); if (await evaluate(`document.activeElement.matches(${JSON.stringify(selector + ':focus-visible')})`)) return true; } return false; };
+  await viewport(1440);
+  await go('/');
+  const ringWide = (await tabTo('.pfa-rail li:nth-child(4) .stage-btn')) && await evaluate(`(() => { const s = getComputedStyle(document.activeElement); return { outline: s.outlineStyle + ' ' + s.outlineWidth + ' ' + s.outlineColor, offset: s.outlineOffset, shadow: s.boxShadow }; })()`);
+  check('1440px: a focused proof stage draws an amber outline over a dark band', ringWide && ringWide.outline === 'solid 3px rgb(255, 213, 138)' && ringWide.offset === '3px' && /rgb\(13, 18, 21\) 0px 0px 0px 3px/.test(ringWide.shadow), ringWide);
+  await viewport(390, true);
+  await go('/');
+  const ringNarrow = (await tabTo('.pfa-rail li:nth-child(4) .stage-btn')) && await evaluate(`(() => { const b = getComputedStyle(document.activeElement), p = getComputedStyle(document.activeElement.closest('li')); return { button: b.outlineStyle + ' ' + b.boxShadow, plate: p.outlineStyle + ' ' + p.outlineWidth + ' ' + p.outlineColor, offset: p.outlineOffset }; })()`);
+  check('390px: a focused proof stage rings its whole plate in amber, outside the plate edge', ringNarrow && ringNarrow.button === 'none none' && ringNarrow.plate === 'solid 3px rgb(255, 213, 138)' && ringNarrow.offset === '2px', ringNarrow);
 
   // ── Reduced motion ───────────────────────────────────────────────────────
   await viewport(1440);

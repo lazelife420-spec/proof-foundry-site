@@ -900,6 +900,8 @@ body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-ro
 }
 @media(forced-colors:active){
  body{background-image:none!important}
+ /* The header steel above outranks the plain reset in the earlier forced-colours block. */
+ :root body .site-header{background:Canvas}
  .site-footer::before{display:none}
 }
 
@@ -922,10 +924,10 @@ body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-ro
 :root .pf-route-chain a:focus-visible{transform:none;outline:3px solid #ffd58a;outline-offset:3px;color:#f3f6f7}
 :root .pf-route-chain a:active,:root .pf-route-chain a[data-engaged=true]{transform:translateY(2px);filter:brightness(.9) contrast(1.05)}
 :root .pf-route-chain .pf-chain-station{color:#b9a27a;font-size:11px;font-weight:500}
-:root .pf-route-chain a[aria-current=page]{border-image-source:url(/assets/round2/key-current.webp);background:none;box-shadow:none;color:#11191e;
+:root .pf-route-chain a:is([aria-current=page],[aria-current=true]){border-image-source:url(/assets/round2/key-current.webp);background:none;box-shadow:none;color:#11191e;
  text-shadow:0 1px 0 rgba(255,255,255,.38)}
-:root .pf-route-chain a[aria-current=page] .pf-chain-station{color:#5a4421}
-:root .pf-route-chain a[aria-current=page]:hover{color:#0b1013}
+:root .pf-route-chain a:is([aria-current=page],[aria-current=true]) .pf-chain-station{color:#5a4421}
+:root .pf-route-chain a:is([aria-current=page],[aria-current=true]):hover{color:#0b1013}
 /* Horizontal coupler: a forged link pinned through neighbouring ears, pin centres 46 px apart (x 12 and 58 in the art);
    each ear bore sits 8.5 px in from its key's end, so the 29 px gap above lands both pins in the bores.
    The li:nth-child(n) selector outranks the shipped per-key coupler transforms in foundry-connections.css. */
@@ -974,9 +976,9 @@ body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-ro
 /* Forced colours: plain system buttons in the palette (label and border in ButtonText), the current key with a 3 px
    Highlight border, and no rendered art. */
 @media (forced-colors:active){
- :root .pf-route-chain a,:root .pf-route-chain a:hover,:root .pf-route-chain a:focus-visible,:root .pf-route-chain a[aria-current=page]{border-image:none;border:2px solid ButtonText;background:ButtonFace;color:ButtonText;text-shadow:none;filter:none}
- :root .pf-route-chain a[aria-current=page]{border:3px solid Highlight}
- :root .pf-route-chain .pf-chain-station,:root .pf-route-chain a[aria-current=page] .pf-chain-station{color:ButtonText}
+ :root .pf-route-chain a,:root .pf-route-chain a:hover,:root .pf-route-chain a:focus-visible,:root .pf-route-chain a:is([aria-current=page],[aria-current=true]){border-image:none;border:2px solid ButtonText;background:ButtonFace;color:ButtonText;text-shadow:none;filter:none}
+ :root .pf-route-chain a:is([aria-current=page],[aria-current=true]){border:3px solid Highlight}
+ :root .pf-route-chain .pf-chain-station,:root .pf-route-chain a:is([aria-current=page],[aria-current=true]) .pf-chain-station{color:ButtonText}
  :root .pf-route-chain a::before{display:none}
  :root .pf-route-chain li:nth-child(n) .pf-route-coupler{background:none}
 }

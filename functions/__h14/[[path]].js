@@ -618,15 +618,16 @@ function buildFooter(footerPartial, states, cfg) {
     `<li><a href="/__h14/${esc(p.id)}/">${esc(p.displayName || p.homeName || p.name)}</a></li>`).join('\n            ');
   return footerPartial.split('{{footer-products}}').join(items);
 }
-function buildHeader(headerPartial, cfg, activeId) {
+function buildHeader(headerPartial, cfg, activeId, state = 'page') {
   // The primary navigation is the static key chain, so the selected key is projected
-  // onto it here exactly as scripts/foundry-presentation.ps1 does for public pages.
+  // onto it here exactly as scripts/foundry-presentation.ps1 does for public pages:
+  // "page" on the key's own page, "true" on a page inside its section.
   const active = (cfg.navLinks || []).find(i => i.id === activeId);
   const current = active ? `<a href="${esc(shadowCatalogHref(active.href))}"` : null;
   return headerPartial
     .split('{{nav-links}}').join(buildNavLinks(cfg, activeId))
     .split('{{nav-cta}}').join(buildNavCta(cfg))
-    .replace(/<nav class="pf-route-chain\b[\s\S]*?<\/nav>/, nav => current ? nav.split(current).join(current + ' aria-current="page"') : nav);
+    .replace(/<nav class="pf-route-chain\b[\s\S]*?<\/nav>/, nav => current ? nav.split(current).join(current + ` aria-current="${state}"`) : nav);
 }
 
 // Static fallback page fetch — the deployed H13 output for this product.
@@ -710,7 +711,7 @@ ${provenance(mode, fetched.revision)}</body></html>`, { mode, revision: fetched.
   // ── /__h14/truth/ index page ──────────────────────────────────────────────
   if (path === '/truth/' || path === '/truth') {
     const tmpl = await loadText(env, '/__h14/pages/truth.html');
-    const header = buildHeader(await loadText(env, '/__h14/partials/header.html'), cfg);
+    const header = buildHeader(await loadText(env, '/__h14/partials/header.html'), cfg, 'truth-files', 'true');
     const footer = buildFooter(await loadText(env, '/__h14/partials/footer.html'), orderedState, cfg);
     const cards = orderedState.map(p => {
       const st = (p.productStatus && cfg.statusTaxonomy && cfg.statusTaxonomy[p.productStatus]) || p.productStatus || '';
@@ -788,7 +789,7 @@ ${provenance(mode, fetched.revision)}</body></html>`, { mode, revision: fetched.
     let page = shell
       .replace(/<!--\s*@page\s+\S+\s*-->\s*\r?\n?/, '')
       .replace(/<!--\s*@product\s+\S+\s*-->\s*\r?\n?/, '')
-      .replace(/<!--\s*@include header\s*-->/, buildHeader(headerP, cfg, 'products'));
+      .replace(/<!--\s*@include header\s*-->/, buildHeader(headerP, cfg, 'products', 'true'));
     let c = content
       .replace(/<!--\s*@product-breadcrumb\s*-->/, crumb)
       .replace(/<!--\s*@product-related\s*-->/, related)

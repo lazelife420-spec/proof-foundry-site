@@ -88,10 +88,10 @@
 .pf-route-chain a::before,.pf-route-chain a::after{content:"";position:absolute;top:50%;width:5px;height:13px;transform:translateY(-50%);border:1px solid #a9b7a8;border-radius:50%;background:#030c10;box-shadow:inset 0 1px 2px #000}
 .pf-route-chain a::before{left:4px}.pf-route-chain a::after{right:4px}
 .pf-chain-station{font-size:9px;color:#b5a17b}
-.pf-route-chain a[aria-current=page]{background:repeating-linear-gradient(100deg,#ffffff08 0 1px,transparent 1px 4px),linear-gradient(#d2d8ca,#9aa99f 65%,#c0cab9);color:#10242b;border-color:#b9c9b5;border-bottom-color:#172526;box-shadow:inset 0 2px 4px #0005,0 2px 2px #0009}
-.pf-route-chain a[aria-current=page] .pf-chain-station{color:#20382e}
+.pf-route-chain a:is([aria-current=page],[aria-current=true]){background:repeating-linear-gradient(100deg,#ffffff08 0 1px,transparent 1px 4px),linear-gradient(#d2d8ca,#9aa99f 65%,#c0cab9);color:#10242b;border-color:#b9c9b5;border-bottom-color:#172526;box-shadow:inset 0 2px 4px #0005,0 2px 2px #0009}
+.pf-route-chain a:is([aria-current=page],[aria-current=true]) .pf-chain-station{color:#20382e}
 .pf-route-chain a:hover,.pf-route-chain a:focus-visible{transform:translateY(-2px);color:#fff}
-.pf-route-chain a[aria-current=page]:hover,.pf-route-chain a[aria-current=page]:focus-visible{color:#10242b}
+.pf-route-chain a:is([aria-current=page],[aria-current=true]):hover,.pf-route-chain a:is([aria-current=page],[aria-current=true]):focus-visible{color:#10242b}
 .pf-route-chain a:focus-visible{outline:2px solid #f0d3a0;outline-offset:5px}
 .pf-route-chain a:active,.pf-route-chain a[data-engaged=true]{transform:translateY(2px)}
 .pf-route-coupler{position:absolute;z-index:3;left:calc(100% - 4px);top:20px;width:38px;height:16px;pointer-events:none;display:flex;align-items:center;filter:drop-shadow(0 3px 1px #000)}
@@ -111,9 +111,9 @@
 @media(prefers-reduced-motion:reduce){.pf-route-chain a{transition:none;transform:none!important}}
 @media(forced-colors:active){
  .pf-route-chain a,.pf-route-chain a:hover{background:ButtonFace;color:ButtonText;border-color:ButtonText;box-shadow:none}
- .pf-route-chain a[aria-current=page]{border:3px solid Highlight;background:ButtonFace;color:ButtonText}
+ .pf-route-chain a:is([aria-current=page],[aria-current=true]){border:3px solid Highlight;background:ButtonFace;color:ButtonText}
  .pf-route-coupler{filter:none}.pf-route-coupler i{border-color:CanvasText;box-shadow:none}
- .pf-chain-station,.pf-route-chain a[aria-current=page] .pf-chain-station{color:ButtonText}
+ .pf-chain-station,.pf-route-chain a:is([aria-current=page],[aria-current=true]) .pf-chain-station{color:ButtonText}
  .pf-route-chain a::before,.pf-route-chain a::after{background:Canvas;border-color:CanvasText;box-shadow:none}
 }
 

@@ -81,7 +81,27 @@ Assert-H9 'Home header: the forced-colours micro mark is one hidden, aria-hidden
 # Studio-wide mark (2026-10-25): every page family header carries the same PF Mark G
 # picture and inline forced-colours mark, so each header is normalized identically
 # before the parity comparison.
-$normalizeHeader = { param($h) (([regex]::Match($h, '(?s)<header class="site-header".*?</header>\s*<nav class="pf-route-chain.*?</nav>').Value -replace ' aria-current="page"', '').Replace($homeFcHeaderMark, '').Replace($homeMarkPicture, $sharedMarkImg)) }
+$normalizeHeader = { param($h) (([regex]::Match($h, '(?s)<header class="site-header".*?</header>\s*<nav class="pf-route-chain.*?</nav>').Value -replace ' aria-current="(?:page|true)"', '').Replace($homeFcHeaderMark, '').Replace($homeMarkPicture, $sharedMarkImg)) }
+# Each page lights exactly one key: its own page's key as aria-current="page", or, inside a section, the
+# section's key as aria-current="true" (Products for a product page, Proof for the release records).
+$currentKeys = { param($h) @([regex]::Matches([regex]::Match($h, '(?s)<nav class="pf-route-chain.*?</nav>').Value, '<a href="([^"]+)" aria-current="([a-z]+)"') | ForEach-Object { $_.Groups[1].Value + ' ' + $_.Groups[2].Value }) -join ', ' }
+# The parity check strips the current marker, so the header and chain must carry exactly that one marker.
+$currentMarks = @($homeHtml, $software, $proof, $realityGate | ForEach-Object { ([regex]::Matches([regex]::Match($_, '(?s)<header class="site-header".*?</header>\s*<nav class="pf-route-chain.*?</nav>').Value, 'aria-current=')).Count })
+Assert-H9 'the key chain lights one key per page: Home and Products as the page, Products and Proof as the section' ((& $currentKeys $homeHtml) -ceq '/ page' -and (& $currentKeys $software) -ceq '/software/ page' -and (& $currentKeys $realityGate) -ceq '/software/ true' -and (& $currentKeys $proof) -ceq '/proof-standard/ true' -and @($currentMarks | Where-Object { $_ -ne 1 }).Count -eq 0)
+# Every built route: the six key pages light themselves; product pages, the release records, the Truth
+# index and every Truth File record light their section; any other route lights at most one key.
+$keyExpect = @{ '' = '/ page'; 'software' = '/software/ page'; 'proof-standard' = '/proof-standard/ page'; 'truth-files' = '/truth-files/ page'; 'about' = '/about/ page'; 'support' = '/support/ page'; 'proof' = '/proof-standard/ true'; 'truth' = '/truth-files/ true' }
+foreach ($m in Get-ChildItem (Join-Path $root 'products') -Directory) { $keyExpect[$m.Name] = '/software/ true'; $keyExpect['truth-files/' + $m.Name] = '/truth-files/ true' }
+$keyMiss = @(); $keyChecked = 0
+foreach ($f in Get-ChildItem $public -Recurse -Filter 'index.html' | Where-Object { $_.FullName -notmatch '[\\/]__h14[\\/]' }) {
+  $h = Get-Content $f.FullName -Raw -Encoding UTF8
+  if ($h -notmatch '<nav class="pf-route-chain') { continue }
+  $rel = $f.DirectoryName.Substring($public.Length).Trim('\', '/').Replace('\', '/')
+  $got = & $currentKeys $h
+  if ($keyExpect.ContainsKey($rel)) { $keyChecked++; if ($got -cne $keyExpect[$rel]) { $keyMiss += "$rel -> '$got'" } }
+  elseif ($got -match ',') { $keyMiss += "$rel -> '$got'" }
+}
+Assert-H9 "every built route lights its own key or its section's key ($keyChecked mapped routes$(if ($keyMiss.Count) { '; ' + ($keyMiss -join '; ') }))" ($keyChecked -ge 22 -and $keyMiss.Count -eq 0)
 $canonicalHeader = & $normalizeHeader $homeHtml
 $familyMarkCounts = @($software, $proof, $realityGate | ForEach-Object { ([regex]::Matches($_, [regex]::Escape($homeMarkPicture + $homeFcHeaderMark))).Count })
 $familyFcTotals = @($software, $proof, $realityGate | ForEach-Object { ([regex]::Matches($_, 'class="pf-mark-fc ')).Count })
