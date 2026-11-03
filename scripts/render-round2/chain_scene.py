@@ -193,6 +193,8 @@ def add_rust(nt, b, off, oi, wcl, pitmask, col_in, rough_in, height_in, bump, am
     # at the pin-head step paints an even copper washer.
     near = fn('MULTIPLY', has_pin, mr(rn, 1.0, 1.3, 1.0, 0.0))
     crev = fn('MULTIPLY', crev, fn('ADD', fn('SUBTRACT', 1.0, near), fn('MULTIPLY', near, ring_gate)))
+    if A.scene == 'mobile':
+        crev = fn('MULTIPLY', crev, fn('MULTIPLY_ADD', has_pin, -0.8, 1.0))   # see the phone clevis patches below
     pot = fn('MAXIMUM', fn('MAXIMUM', crev, fn('MULTIPLY', a_in.outputs['Fac'], 0.6)), gap)
     pot = fn('MULTIPLY_ADD', down, 0.45, pot)
     ring = fn('MULTIPLY', fn('MULTIPLY', mr(rn, 0.64, 0.74, 0.0, 1.0), mr(rn, 0.95, 1.15, 1.0, 0.0)), ring_gate)
@@ -238,6 +240,15 @@ def add_rust(nt, b, off, oi, wcl, pitmask, col_in, rough_in, height_in, bump, am
     L(rco, spn.inputs[0])
     spots = fn('MULTIPLY', mr(pitmask.outputs[0], 0.5, 0.85, 0.0, 1.0), mr(spn.outputs['Fac'], 0.56, 0.64, 0.0, 1.0))
     mask = fn('MAXIMUM', mask, fn('MULTIPLY', spots, mr(amt, 0.0, 1.0, 0.4, 0.95)))
+    if A.scene == 'mobile':
+        # Phone only: the clevis parts are small enough there that the crevice term fills each pin seat and yoke with one
+        # even colour (a washer ring, a solid block). Their oxide is drawn instead as broken patches about 3 frame px
+        # across (6 px in the 2x image, so the gaps survive), over dark stained steel, at about the links' coverage.
+        # The desktop graph is untouched.
+        brk = N.new('ShaderNodeTexNoise'); brk.inputs['Scale'].default_value = 14 / RS; brk.inputs['Detail'].default_value = 2
+        L(rco, brk.inputs[0])
+        keep = fn('ADD', fn('SUBTRACT', 1.0, has_pin), fn('MULTIPLY', has_pin, mr(brk.outputs['Fac'], 0.52, 0.6, 0.0, 1.0)))
+        mask = fn('MULTIPLY', mask, keep)
     # Scrubbed contacts stay bright: neither oxide nor its stain where the wear polish shows.
     clean = fn('SUBTRACT', 1.0, wcl.outputs[0])
     stain = fn('MULTIPLY', mr(raw, 0.3, 0.5, 0.0, 0.5), clean)

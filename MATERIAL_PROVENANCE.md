@@ -47,7 +47,7 @@ The Round 2 hardware in `assets/round2/` is rendered, not photographed or genera
 |---|---|---|---|---|
 | `chain-desktop-2800.webp` | 2800 × 862 | 67,590 | `f8807e0581fa534d8d3abdc8d9450aaa10175b0e629d665beb79891c60b7185e` | `chain_scene.py --scene desktop --mode base` (with the rust pass), 160 samples, quality 80 |
 | `chain-desktop-1400.webp` | 1400 × 431 | 25,752 | `e8cd24d123b581e189ca6284f86675abed210204824354fda77ba514dc020d78` | the same master, Lanczos to 1400, quality 82 |
-| `chain-mobile-320.webp` | 320 × 1270 | 18,626 | `c69432c6a66b302ccd90d5522a091e1f85b4b5eb86ee40b6aff22ff9bd975dd5` | `chain_mobile.py --scene mobile --mode base` (with the rust pass), 160 samples, quality 82 |
+| `chain-mobile-320.webp` | 320 × 1270 | 18,738 | `5a2f4de130cce7d3ab94e05ba8452f81209686abd2dadc4d5872c19555b91eb8` | `chain_mobile.py --scene mobile --mode base` (with the rust pass and the phone anchor correction), 160 samples, quality 82 |
 | `carriage-d-s0.webp` … `-s4.webp` | 416 × 220 | 6,564 / 8,008 / 10,868 / 12,442 / 14,918 | `3d50258707f7d0be…`, `ce9978c24c48a8c5…`, `5dc9722f47c22f9c…`, `45267add5b439839…`, `38f4389ca1881fdb…` | `chain_scene.py --mode carriage --stage 0…4`, transparent, 128 samples, quality 85 |
 | `plate-d-p0.webp` … `-p4.webp` | 346–347 × 196 | 5,528 / 6,060 / 6,414 / 6,844 / 6,824 | `f8c7689971a44fa1…`, `3d40ea781ab4a549…`, `0afcda7644c6a5bb…`, `04378cd7b7f5a0fc…`, `5cd1d6d5e567c2da…` | `chain_scene.py --mode plate --stage 0…4` (that stage's plate pressed), transparent, 128 samples, quality 85 |
 | `carriage-m-s0.webp` … `-s4.webp` | 120 × 135–136 | 4,472 / 3,104 / 2,672 / 2,456 / 2,474 | `02895568135d64d3…`, `b1b77125dc82b823…`, `4c52ca352056a60b…`, `f57f2935d28e5160…`, `1bcbdb605810d440…` | `chain_mobile.py --scene mobile --mode carriage --stage 0…4`, transparent, 128 samples, quality 85 |
@@ -75,6 +75,7 @@ The chain base downloads only at its own breakpoint: desktop 1x or 2x, or mobile
   - **Where it forms:** in crevices (ambient occlusion), inside the bends and in a ring just outside each contact (baked from the same distances as the wear map), at the pinned joints and on downward faces. Each part also carries general patches in its own blotch field.
   - **What stays clean:** the bearing contacts stay polished, because rust is faded out by the wear map. The pins, stainless and plates stay clean.
   - **Mobile:** the rust scales with the mobile chain (factor 95.08/208.6).
+  - **Phone anchors:** on the phone only, the clevis oxide is drawn as broken patches about 6 px across in the 2x image, over dark stained steel, with the crevice term largely removed. At phone size that term filled each pin seat and yoke with one even colour. The desktop graph is unchanged and re-renders pixel-identically.
   - **Scope:** rust is on only in the base and sample renders. The carriage and plate sprite modes build the same material graph as before, so the sprites are unchanged: plate 2 and carriage 2 re-render pixel-identical at 16 bits.
 - **Weld: a heightfield bead** (`ui_parts.py --part weld-seam`). Crescent ripples are laid in runs that end in craters and restart proud over them, with a wetted toe, porosity, spatter, and heat tint in the carbon-steel order.
   - **Light:** a level area strip along the seam, a dim fill and a soft sun from the upper left. Brightness is flat along the seam within 9%.
