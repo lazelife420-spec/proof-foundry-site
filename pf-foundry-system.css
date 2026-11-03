@@ -839,14 +839,14 @@ summary::-webkit-details-marker {
 }
 /* Material construction. One light source, upper left. Rolled mill steel carries the
    load; brushed stainless marks surfaces people handle; archival paper carries records.
-   A weld appears only where two permanent members meet: the chassis and the footer base.
+   A weld appears only where two permanent members meet: the chassis and the footer base. That butt weld is one
+   Blender render (assets/round2/weld-seam-*.webp, 2560 px, no repeat on screens up to 2560 px).
    Movable keys and chain links hang on pins and clevises, never welds. Assets and
    transforms: MATERIAL_PROVENANCE.md. */
 :root{
  --pf-mat-steel:url("/brand/material/PF_MILL_STEEL_GROUND_v1.webp");
  --pf-mat-stainless:url("/brand/material/PF_STAINLESS_BRUSHED_v1.webp");
  --pf-mat-paper:url("/brand/material/PF_PAPER_ARCHIVAL_v1.webp");
- --pf-mat-weld:url("/brand/material/PF_BUTT_WELD_SEAM_v1.webp");
  /* The central chassis plate: the 1150px weld-free source columns at 1.2x, wider than the 1320px rail
     so its joints with the side plates fall outside the reading column. */
  --pf-plate:1380px;
@@ -895,7 +895,7 @@ body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-ro
 }
 body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-room-truth-files,.pf-room-truth,.pf-room-proof,.pf-room-founders,.pf-room-roadmap,.pf-room-error,.pf-directory-page) .site-footer::before{
  content:"";position:absolute;left:0;right:0;top:-21px;height:42px;pointer-events:none;
- background:linear-gradient(rgba(12,15,17,.34),rgba(12,15,17,.34)),var(--pf-mat-weld) 137px 50%/499px 42px repeat-x;
+ background:linear-gradient(rgba(12,15,17,.34),rgba(12,15,17,.34)),url(/assets/round2/weld-seam-2560.webp) 50% 50%/2560px 42px repeat-x;background-image:linear-gradient(rgba(12,15,17,.34),rgba(12,15,17,.34)),image-set(url(/assets/round2/weld-seam-2560.webp) 1x,url(/assets/round2/weld-seam-5120.webp) 2x);
  -webkit-mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent);mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent);
 }
 @media(forced-colors:active){
@@ -997,7 +997,7 @@ body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-ro
  box-shadow:inset 0 22px 18px -16px #0009}
 :root body .site-footer::before{
  content:"";position:absolute;left:0;right:0;top:-21px;height:42px;pointer-events:none;
- background:linear-gradient(rgba(12,15,17,.34),rgba(12,15,17,.34)),var(--pf-mat-weld) 137px 50%/499px 42px repeat-x;
+ background:linear-gradient(rgba(12,15,17,.34),rgba(12,15,17,.34)),url(/assets/round2/weld-seam-2560.webp) 50% 50%/2560px 42px repeat-x;background-image:linear-gradient(rgba(12,15,17,.34),rgba(12,15,17,.34)),image-set(url(/assets/round2/weld-seam-2560.webp) 1x,url(/assets/round2/weld-seam-5120.webp) 2x);
  -webkit-mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent);mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent)}
 :root .site-footer::after{content:"";position:absolute;left:0;right:0;bottom:0;height:10px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.6));pointer-events:none}
 :root .site-footer .footer-grid{align-items:start}

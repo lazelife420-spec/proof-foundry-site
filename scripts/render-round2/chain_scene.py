@@ -77,8 +77,9 @@ def mat_varied(name, color, metal, rough, var=0.25, rvar=0.1, scale=1.6):
     L(fine.outputs['Fac'], bp.inputs['Height']); L(bp.outputs[0], inp(b, 'Normal'))
     return m
 
-def mat_forged(name, base=(0.05, 0.048, 0.046), worn=(0.66, 0.64, 0.6)):
-    """Blackened forged steel: dark rough base, mill-scale patches, forging pits, bright metal only where worn."""
+def mat_forged(name, base=(0.05, 0.048, 0.046), worn=(0.66, 0.64, 0.6), rust=0.0, ao_dist=0.18, general=0.0):
+    """Blackened forged steel: dark rough base, mill-scale patches, forging pits, bright metal only where worn.
+    rust > 0 adds iron oxide where water and grime sit (see add_rust); contact points stay scrubbed bright."""
     m, nt, b = node_mat(name)
     N = nt.nodes; L = nt.links.new
     tc = N.new('ShaderNodeTexCoord'); oi = N.new('ShaderNodeObjectInfo')
@@ -140,11 +141,138 @@ def mat_forged(name, base=(0.05, 0.048, 0.046), worn=(0.66, 0.64, 0.6)):
     h3 = N.new('ShaderNodeMath'); h3.operation = 'MULTIPLY_ADD'; L(seam.outputs[0], h3.inputs[0]); h3.inputs[1].default_value = 0.9; L(h2.outputs[0], h3.inputs[2])
     bp = N.new('ShaderNodeBump'); bp.inputs['Strength'].default_value = 0.5; bp.inputs['Distance'].default_value = 0.006
     L(h3.outputs[0], bp.inputs['Height']); L(bp.outputs[0], inp(b, 'Normal'))
+    if rust > 0:
+        add_rust(nt, b, off, oi, wcl, pitmask, pitcol.outputs[2], rp.outputs[0], h3.outputs[0], bp, rust, ao_dist, general)
     return m
 
+def add_rust(nt, b, off, oi, wcl, pitmask, col_in, rough_in, height_in, bump, amount, ao_dist, general=0.0):
+    """Iron oxide where it really forms on hanging chain: in crevices (ambient occlusion: link interlocks, clevis eyes,
+    cheek and yoke joints), on the inside of each link's bends ('rust_in', baked), in a ring just outside each contact
+    ('rust_gap', baked), at pinned joints (pin_c / pin_rad), more on faces that look down. The contacts themselves stay
+    scrubbed bright: rust is kept off the polished-wear zone ('wear', baked). Each object oxidises by its own amount (Object Info random). Dark, rough,
+    non-metallic oxide with sparse brighter crust; never a uniform orange coat."""
+    N = nt.nodes; L = nt.links.new
+    def mr(src, f0, f1, t0, t1, smooth=False):
+        r = N.new('ShaderNodeMapRange'); r.clamp = True
+        if smooth: r.interpolation_type = 'SMOOTHSTEP'
+        r.inputs['From Min'].default_value = f0; r.inputs['From Max'].default_value = f1
+        r.inputs['To Min'].default_value = t0; r.inputs['To Max'].default_value = t1
+        L(src, r.inputs['Value']); return r.outputs[0]
+    def fn(op, a, bb=None, c=None):
+        n = N.new('ShaderNodeMath'); n.operation = op
+        for i, v in enumerate((a, bb, c)):
+            if v is None: continue
+            if isinstance(v, (int, float)): n.inputs[i].default_value = v
+            else: L(v, n.inputs[i])
+        return n.outputs[0]
+    ao = N.new('ShaderNodeAmbientOcclusion'); ao.samples = 12; ao.only_local = False
+    ao.inputs['Distance'].default_value = ao_dist * RS
+    crev = mr(ao.outputs['AO'], 0.42, 0.9, 1.0, 0.0, smooth=True)
+    a_in = N.new('ShaderNodeAttribute'); a_in.attribute_name = 'rust_in'
+    a_gap = N.new('ShaderNodeAttribute'); a_gap.attribute_name = 'rust_gap'
+    geo = N.new('ShaderNodeNewGeometry'); nsep = N.new('ShaderNodeSeparateXYZ'); L(geo.outputs['Normal'], nsep.inputs[0])
+    down = mr(nsep.outputs['Y'], 0.0, -1.0, 0.0, 1.0)
+    # The contact ring fades where the surface turns edge-on, or it draws a rim-light outline on the link ends.
+    lw = N.new('ShaderNodeLayerWeight'); lw.inputs['Blend'].default_value = 0.5
+    gap = fn('MULTIPLY', a_gap.outputs['Fac'], mr(lw.outputs['Facing'], 0.55, 0.9, 1.0, 0.15))
+    # Pinned joints: a crevice ring where each pin head seats on its clevis, from world position about the pin axis
+    # (object properties 'pin_c' and 'pin_rad', set in bake_wear on every clevis part), so cheek and eye carry one
+    # continuous ring. Broken into arcs, heavier on the low side, with a short weep below the seat.
+    pos = geo.outputs['Position']
+    pc = N.new('ShaderNodeAttribute'); pc.attribute_type = 'OBJECT'; pc.attribute_name = 'pin_c'
+    prd = N.new('ShaderNodeAttribute'); prd.attribute_type = 'OBJECT'; prd.attribute_name = 'pin_rad'
+    dv = N.new('ShaderNodeVectorMath'); dv.operation = 'SUBTRACT'; L(pos, dv.inputs[0]); L(pc.outputs['Vector'], dv.inputs[1])
+    dsep = N.new('ShaderNodeSeparateXYZ'); L(dv.outputs[0], dsep.inputs[0])
+    rxy = fn('SQRT', fn('ADD', fn('MULTIPLY', dsep.outputs['X'], dsep.outputs['X']), fn('MULTIPLY', dsep.outputs['Y'], dsep.outputs['Y'])))
+    rn = fn('DIVIDE', rxy, prd.outputs['Fac'])
+    dy = fn('DIVIDE', dsep.outputs['Y'], fn('MAXIMUM', rxy, 1e-5))       # -1 straight below the pin (image down)
+    has_pin = mr(prd.outputs['Fac'], 0.0, 1e-4, 0.0, 1.0)
+    rnz = N.new('ShaderNodeTexNoise'); rnz.inputs['Scale'].default_value = 10 / RS; rnz.inputs['Detail'].default_value = 3; L(pos, rnz.inputs[0])
+    ring_gate = fn('MULTIPLY', mr(rnz.outputs['Fac'], 0.52, 0.62, 0.0, 1.0), mr(dy, 0.3, -0.8, 0.25, 1.0))
+    # Round the pin head the crevice term takes the same gaps and low-side weight as the ring; otherwise the occlusion
+    # at the pin-head step paints an even copper washer.
+    near = fn('MULTIPLY', has_pin, mr(rn, 1.0, 1.3, 1.0, 0.0))
+    crev = fn('MULTIPLY', crev, fn('ADD', fn('SUBTRACT', 1.0, near), fn('MULTIPLY', near, ring_gate)))
+    pot = fn('MAXIMUM', fn('MAXIMUM', crev, fn('MULTIPLY', a_in.outputs['Fac'], 0.6)), gap)
+    pot = fn('MULTIPLY_ADD', down, 0.45, pot)
+    ring = fn('MULTIPLY', fn('MULTIPLY', mr(rn, 0.64, 0.74, 0.0, 1.0), mr(rn, 0.95, 1.15, 1.0, 0.0)), ring_gate)
+    weep = fn('MULTIPLY', mr(rn, 0.9, 1.6, 1.0, 0.0), mr(dy, -0.6, -0.95, 0.0, 1.0))
+    ring = fn('MULTIPLY', fn('MAXIMUM', ring, fn('MULTIPLY', weep, 0.7)), has_pin)
+    pot = fn('MAXIMUM', pot, fn('MULTIPLY', ring, 0.35))
+    # One random value per part (per clevis assembly for the anchors: 'rust_seed', set in bake_wear), split into two
+    # independent draws: one sets how much the part oxidises, the other its general level. Drawing both from the same
+    # value left a low-drawn link clean on every face.
+    seed = N.new('ShaderNodeAttribute'); seed.attribute_type = 'OBJECT'; seed.attribute_name = 'rust_seed'
+    rnd = fn('ADD', fn('MULTIPLY', oi.outputs['Random'], fn('SUBTRACT', 1.0, has_pin)), fn('MULTIPLY', seed.outputs['Fac'], has_pin))
+    h1 = fn('FRACT', fn('MULTIPLY_ADD', rnd, 7.31, 0.13))
+    h2 = fn('FRACT', fn('MULTIPLY_ADD', rnd, 13.7, 0.61))
+    # Every part also oxidises a little on its own account, whichever way it faces, less on faces that look up.
+    up = mr(nsep.outputs['Y'], 0.0, 1.0, 0.0, 1.0)
+    gen = fn('MULTIPLY', fn('MULTIPLY_ADD', h2, 0.18, general), fn('MULTIPLY_ADD', up, -0.6, 1.0))
+    # Noise coordinates: each link keeps its own offset; clevis parts use world position, so one forged clevis (cheeks,
+    # eye, yoke) reads as one piece and its small eye cannot fall inside a single blotch of its own.
+    wsc = N.new('ShaderNodeVectorMath'); wsc.operation = 'ADD'; L(pos, wsc.inputs[0]); wsc.inputs[1].default_value = (3.7, 1.9, 5.3)
+    mixv = N.new('ShaderNodeMix'); mixv.data_type = 'VECTOR'; L(has_pin, mixv.inputs['Factor'])
+    L(off.outputs[0], mixv.inputs[4]); L(wsc.outputs[0], mixv.inputs[5]); rco = mixv.outputs[1]
+    # Per-part amount and broad blotches, so no two links rust alike and no edge is an even band.
+    amt = mr(h1, 0.0, 1.0, 0.9 * amount, 1.15 * amount)
+    blot = N.new('ShaderNodeTexNoise'); blot.inputs['Scale'].default_value = 3.2 / RS; blot.inputs['Detail'].default_value = 6
+    blot.inputs['Roughness'].default_value = 0.62; L(rco, blot.inputs[0])
+    grain = N.new('ShaderNodeTexNoise'); grain.inputs['Scale'].default_value = 140 / RS; grain.inputs['Detail'].default_value = 4
+    L(rco, grain.inputs[0])
+    # General oxide sits in its own, independent blotches: a face that misses the crevice blotches (an edge-on link's
+    # outer flank has no crevice at all) still gets patches of its own.
+    gofs = N.new('ShaderNodeVectorMath'); gofs.operation = 'ADD'; L(rco, gofs.inputs[0]); gofs.inputs[1].default_value = (7.1, 3.3, 9.9)
+    gblot = N.new('ShaderNodeTexNoise'); gblot.inputs['Scale'].default_value = 2.6 / RS; gblot.inputs['Detail'].default_value = 6
+    gblot.inputs['Roughness'].default_value = 0.62; L(gofs.outputs[0], gblot.inputs[0])
+    raw = fn('MULTIPLY', fn('ADD', fn('MULTIPLY', pot, mr(blot.outputs['Fac'], 0.4, 0.62, 0.0, 1.8)),
+                            fn('MULTIPLY', gen, mr(gblot.outputs['Fac'], 0.4, 0.62, 0.0, 1.8))), amt)
+    # Granular edges: two fine noises push the threshold around, so oxide breaks into grains and islands.
+    speck = N.new('ShaderNodeTexNoise'); speck.inputs['Scale'].default_value = 420 / RS; speck.inputs['Detail'].default_value = 2
+    L(rco, speck.inputs[0])
+    raw = fn('MULTIPLY', raw, mr(grain.outputs['Fac'], 0.25, 0.75, 0.5, 1.5))
+    raw = fn('MULTIPLY', raw, mr(speck.outputs['Fac'], 0.3, 0.7, 0.75, 1.3))
+    mask = mr(raw, 0.48, 0.62, 0.0, 1.0, smooth=True)
+    # Pitting rust: a sparse share of the forging pits weep oxide wherever they are, not only in crevices.
+    spn = N.new('ShaderNodeTexNoise'); spn.inputs['Scale'].default_value = 9 / RS; spn.inputs['Detail'].default_value = 3
+    L(rco, spn.inputs[0])
+    spots = fn('MULTIPLY', mr(pitmask.outputs[0], 0.5, 0.85, 0.0, 1.0), mr(spn.outputs['Fac'], 0.56, 0.64, 0.0, 1.0))
+    mask = fn('MAXIMUM', mask, fn('MULTIPLY', spots, mr(amt, 0.0, 1.0, 0.4, 0.95)))
+    # Scrubbed contacts stay bright: neither oxide nor its stain where the wear polish shows.
+    clean = fn('SUBTRACT', 1.0, wcl.outputs[0])
+    stain = fn('MULTIPLY', mr(raw, 0.3, 0.5, 0.0, 0.5), clean)
+    mask = fn('MULTIPLY', mask, clean)
+    # Oxide colour: mostly dark brown, mid red-brown in patches, a few brighter crust specks where it is thickest.
+    tone = N.new('ShaderNodeTexNoise'); tone.inputs['Scale'].default_value = 24 / RS; tone.inputs['Detail'].default_value = 8
+    L(rco, tone.inputs[0])
+    rc = N.new('ShaderNodeValToRGB'); e = rc.color_ramp.elements
+    e[0].position = 0.2; e[0].color = (0.012, 0.0065, 0.004, 1); e[1].position = 0.92; e[1].color = (0.105, 0.05, 0.012, 1)
+    rc.color_ramp.elements.new(0.6).color = (0.07, 0.024, 0.008, 1)
+    L(tone.outputs['Fac'], rc.inputs['Fac'])
+    crust = fn('MULTIPLY', mr(speck.outputs['Fac'], 0.6, 0.72, 0.0, 1.0), mr(mask, 0.85, 1.0, 0.0, 1.0))
+    rcol = N.new('ShaderNodeMix'); rcol.data_type = 'RGBA'; L(crust, rcol.inputs['Factor'])
+    L(rc.outputs['Color'], rcol.inputs[6]); rcol.inputs[7].default_value = (0.2, 0.09, 0.02, 1)
+    # A thin brown stain on the scale around each patch before the oxide proper.
+    st = N.new('ShaderNodeMix'); st.data_type = 'RGBA'; L(stain, st.inputs['Factor'])
+    L(col_in, st.inputs[6]); st.inputs[7].default_value = (0.018, 0.011, 0.0075, 1)
+    out = N.new('ShaderNodeMix'); out.data_type = 'RGBA'; L(fn('MULTIPLY', mask, 0.96), out.inputs['Factor'])
+    L(st.outputs[2], out.inputs[6]); L(rcol.outputs[2], out.inputs[7]); L(out.outputs[2], inp(b, 'Base Color'))
+    L(fn('MULTIPLY_ADD', mask, -0.92, 1.0), inp(b, 'Metallic'))
+    L(fn('MULTIPLY_ADD', mask, -0.3, 0.5), inp(b, 'Specular IOR Level', 'Specular'))
+    rr = N.new('ShaderNodeMix'); rr.data_type = 'FLOAT'; L(mask, rr.inputs['Factor'])
+    L(rough_in, rr.inputs[2]); rr.inputs[3].default_value = 0.88; L(rr.outputs[0], inp(b, 'Roughness'))
+    # Oxide sits proud of the steel as a fine crust.
+    L(fn('MULTIPLY_ADD', fn('MULTIPLY', mask, grain.outputs['Fac']), 0.9, height_in), bump.inputs['Height'])
+
+# Rust only in the chain scenes' base and sample renders. ui_parts reuses the link material for the key couplers,
+# which stay clean, and the carriage/plate sprite modes keep the 76767e4 material graph, so they render exactly as the
+# 76767e4 script does (the shipped carriage masters were made earlier, from Factory's copy of this scene).
+RUST = 1.0 if A.scene in ('desktop', 'mobile') and A.mode in ('base', 'sample') else 0.0
+# The mobile chain is the desktop chain scaled by chain_mobile's pitch ratio K; rust features scale with it.
+RS = 95.08 / 208.6 if A.scene == 'mobile' else 1.0
 M = {}
-M['link'] = mat_forged('forged-link')
-M['clevis'] = mat_forged('forged-clevis', base=(0.045, 0.044, 0.043), worn=(0.45, 0.44, 0.42))
+M['link'] = mat_forged('forged-link', rust=RUST, general=0.26)
+M['clevis'] = mat_forged('forged-clevis', base=(0.045, 0.044, 0.043), worn=(0.45, 0.44, 0.42), rust=RUST * 1.9, ao_dist=0.16, general=0.3)
 M['housing'] = mat_varied('satin-structural', (0.04, 0.042, 0.046), 0.8, 0.4, var=0.22, rvar=0.07, scale=1.4)
 M['bore'] = mat_varied('structural-back-wall', (0.034, 0.033, 0.032), 0.6, 0.58, var=0.3, rvar=0.1, scale=2.4)
 M['rail'] = mat_simple('blackened-rail', (0.03, 0.03, 0.031), 0.9, 0.34, brushed=0.05)
@@ -365,9 +493,25 @@ def bake_wear(objs):
         ev = o.evaluated_get(dg); me = ev.to_mesh()
         trees[o.name] = BVHTree.FromPolygons([o.matrix_world @ v.co for v in me.vertices], [list(p.vertices) for p in me.polygons])
         ev.to_mesh_clear()
+    # Each clevis part learns its pin's axis and the eye radius, for the pinned-joint rust ring.
+    eyes = [o for o in scn.objects if o.name.startswith('clevis-eye')]
+    for o in scn.objects:
+        if o.name.startswith(('clevis-cheek', 'clevis-eye', 'clevis-yoke')) and pins and eyes:
+            c = o.matrix_world @ (sum((Vector(bb) for bb in o.bound_box), Vector()) / 8)
+            pin = min(pins, key=lambda q: (q.matrix_world.translation - c).length)
+            eye = min(eyes, key=lambda q: (q.matrix_world.translation - pin.matrix_world.translation).length)
+            o['pin_c'] = list(pin.matrix_world.translation)
+            o['pin_rad'] = max(math.hypot(v.co.x, v.co.y) for v in eye.data.vertices)
+            pw = pin.matrix_world.translation; o['rust_seed'] = abs(pw.x * 0.37 + pw.y * 0.61) * 7.13 % 1.0   # one per assembly
     for o in objs:
         me = o.data; mw = o.matrix_world
         attr = me.color_attributes.new('wear', 'FLOAT_COLOR', 'POINT')
+        # Rust maps from the same distances. The link is built flat in its local XY plane, so its stadium centre line
+        # (half-length a, bend radius R) and wire radius r follow from the undisplaced mesh's extent.
+        r_in = me.color_attributes.new('rust_in', 'FLOAT_COLOR', 'POINT')
+        r_gap = me.color_attributes.new('rust_gap', 'FLOAT_COLOR', 'POINT')
+        xs = [abs(v.co.x) for v in me.vertices]; ys = [abs(v.co.y) for v in me.vertices]; zs = [abs(v.co.z) for v in me.vertices]
+        wr = max(zs); Rb = max(ys) - wr; ah = max(xs) - max(ys)
         for v in me.vertices:
             wp = mw @ v.co; best = 1e9
             for n2, t in trees.items():
@@ -376,6 +520,23 @@ def bake_wear(objs):
                 if hit[0] is not None: best = min(best, hit[3])
             w = max(0.0, 1.0 - best / (14 * S))
             attr.data[v.index].color = (w, w, w, 1)
+            # Inside of the bend: how far the surface point faces the link's eye (1 innermost), strongest on the bows
+            # where the next link bears and water collects.
+            x, y = v.co.x, v.co.y
+            if abs(x) <= ah:
+                nx, ny, cx, cy = 0.0, (1.0 if y >= 0 else -1.0), x, (Rb if y >= 0 else -Rb)
+            else:
+                ox = ah if x > 0 else -ah; dx, dy = x - ox, y; d = math.hypot(dx, dy) or 1.0
+                nx, ny, cx, cy = dx / d, dy / d, ox + Rb * dx / d, Rb * dy / d
+            tb = max(0.0, min(1.0, (abs(x) - ah + 0.3 * Rb) / (0.6 * Rb))); bow = 0.3 + 0.7 * tb * tb * (3 - 2 * tb)
+            inner = -((x - cx) * nx + (y - cy) * ny) / max(wr, 1e-6)
+            ri = max(0.0, min(1.0, inner)) * bow
+            r_in.data[v.index].color = (ri, ri, ri, 1)
+            # A ring just outside each contact: oxide builds where the joint traps moisture but nothing rubs. In wire
+            # radii, so it scales with the link (desktop r = 20 px: 6-9 px rising, 14-28 px falling).
+            bp = best / wr
+            gp = max(0.0, min(1.0, (bp - 0.3) / 0.15)) * max(0.0, min(1.0, (1.4 - bp) / 0.7))
+            r_gap.data[v.index].color = (gp, gp, gp, 1)
 
 # ---------------- lights, camera, render ----------------
 def area(name, loc, target, size, power, color, shape='RECTANGLE'):

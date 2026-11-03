@@ -1,6 +1,8 @@
 # SHA-256 of the 16-bit Cycles masters behind assets/round2 (kept outside the published site).
 # All masters are under pf-site-main-finish-design-options/round2/work.
-4681eea7faf68a5e01ce47031512b38ea509e99d332996141812a272ecd8bbb2  final-a11y/desktop-base-2x.png
+# The two chain bases and the weld (rust-weld/masters) come from the rust and weld pass of 2026-11-03. Each PNG carries
+# its render time, so a re-render changes the file hash; compare pixels (ffmpeg rgba64le) to check a reproduction.
+104fff3510734f84e1ef3d65cfda0f398ee27984e4bdb90be5595dc68fd0b590  rust-weld/masters/desktop-base-2x.png
 2c514e306ec06fd7bc6597955f960b1dba57cd9595d90d9c136ebacc9053ed91  final/desktop-carriage-s0-2x.png
 0b7f6cdfb4744dff08a8a1d8177ada4455520d86d34de4e0d1de7ecb4df1976e  final/desktop-carriage-s1-2x.png
 12aa7cd4ae784c3c2d1069314fe6c110501bfd9660ecf4a79d485fb499d4df64  final/desktop-carriage-s2-2x.png
@@ -11,7 +13,7 @@ eff3b77ce9be9e63330d5c7aca0b25378ab0bbe8239bcb56ffe0cb078d6a8f5d  final-a11y/des
 9d9aa926cf9639d88b323c48f1e3e220c9a7de20b26dd6b9c02401017b71a1e3  final-a11y/desktop-plate-p2-2x.png
 31c694067a7ca436503f84ff847a72f4194ace5e71127a1611ad6b63b3178e96  final-a11y/desktop-plate-p3-2x.png
 f2cba46f5b4ba4c7d72d4dffe430f0e848dade60e73bdf38a900d19d360c97cb  final-a11y/desktop-plate-p4-2x.png
-25447d647e5a7ff09a7ec58913cc3160475fe3a0c55983fb15dc1d9f72036c94  final/mobile-base-2x.png
+2cfc1552cbf641421c18ac9791c7ecf9adea7a5a296998843e20e1338812b933  rust-weld/masters/mobile-base-2x.png
 9b5a3c4791565cbc02a5ffc06ccae51ced489896214a63253d515af04d67933f  final/mobile-carriage-s0-2x.png
 13c33ac06483b84c6f70e8a7d32ac8ad4a46712a219a18bcd8aea706afa5df23  final/mobile-carriage-s1-2x.png
 0338f6e0bb9a1ca399825c26c203ec8cc85357151a4417b62ad43f5d0cae6175  final/mobile-carriage-s2-2x.png
@@ -24,3 +26,4 @@ cbbfcafb09539eed4716c87ecda99e9f29bcfda06a6670b0b51fd4b44cca40a1  final/mobile-c
 de92b8bc1e9ca99c95a3f4b52520fb5f16370fc8de9f4280279d4388c331dff9  ui/footer-panel-2x.png
 255ac281fd5112406f101849670fb77f39a62e395599a45d3ca753fb57cd95a3  ui/coupler-v-2x.png
 566e99de63148b8234b21bb7c18f29b69842ca932091d36ded591ac02226c9eb  ui/footer-rail-r-2x.png
+3b84130f3919280217f6cf94076d6380a55fc7e7c197e23352a9e9fee7f66d1e  rust-weld/masters/weld-seam-2x.png
