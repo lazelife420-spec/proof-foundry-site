@@ -42,6 +42,7 @@ Defined once at `pf-foundry-system.css:10-19`:
 | `--pf-steel` | `url('/brand/PF_WELDED_STEEL_v1.webp')` | the welded steel world material |
 | `--pf-mat-steel` / `--pf-mat-stainless` / `--pf-mat-paper` / `--pf-mat-weld` | `brand/material/*.webp` | 2026-11-02 material layers for Home and shared non-product rooms: mill-steel ground, brushed stainless for handled surfaces, archival paper for records, one butt weld at the footer/chassis join. Provenance, sizes and placement logic: `MATERIAL_PROVENANCE.md` |
 | `--pf-plate` / `--pf-bolt` | `1380px` / radial gradient | chassis plate width (joints fall outside the 1320px rail) and the cap-screw drawing used only at real mounting points |
+| Round 2 hardware | `assets/round2/*.webp` | Blender-rendered parts. `pf-foundry-system.css` owns the navigation key housings and the couplers: one row from 1240 px, a 3-column snake on tablets, 2 columns on phones, and no coupler rotated in CSS. It also owns the engraved footer panels. `pf-home-ledger.css` owns the raised seal mount behind the unchanged emblem and the chain base, plate and carriage sprites. Provenance and render commands: `MATERIAL_PROVENANCE.md` and `scripts/render-round2/` |
 | `--pf-rail` | `min(1280px, …)` | content rail width (narrows at 1200px and 640px breakpoints) |
 
 Per-product accent comes from `products/<id>/module.json` (`theme`/`brand` data), never from a new stylesheet. The approved PF artwork (`brand/PF_MARK_G_MASTER.svg` and derived marks) is never modified by CSS geometry changes.

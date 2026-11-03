@@ -627,6 +627,26 @@ document.addEventListener('error', (event) => { if (decorative(event.target)) ar
 // Failures that happened before this module ran.
 for (const img of document.images) if (decorative(img) && img.complete && img.currentSrc && img.naturalWidth === 0) artFailed(img);
 
+// Rendered carriage reach changes only after travel; the explanation and plate update immediately.
+function initChainSprites(machine) {
+  const cars = [...machine.querySelectorAll('.r2-car, .r2-car-m')];
+  const plates = [...machine.querySelectorAll('.r2-plates img')];
+  let shown = -1, timer = 0;
+  const showCar = (index) => {
+    shown = index;
+    cars.forEach(car => car.querySelectorAll('img').forEach((image, i) => { image.hidden = i !== index; }));
+  };
+  const apply = () => {
+    const index = Number(machine.dataset.active || 0);
+    plates.forEach((image, i) => { image.hidden = i !== index; });
+    clearTimeout(timer);
+    if (machine.dataset.motion !== 'on' || shown < 0) showCar(index);
+    else timer = setTimeout(() => showCar(index), 640);
+  };
+  new MutationObserver(apply).observe(machine, { attributes: true, attributeFilter: ['data-active', 'data-motion'] });
+  apply();
+}
+
 // The fixed forged chain illustrates provenance. Only its inspection carriage moves.
 function initProofChain() {
   const machine = document.querySelector('[data-mech="a"]');
@@ -716,6 +736,7 @@ function initProofChain() {
   new IntersectionObserver(entries => { inView = entries[0].isIntersecting; schedule(); }, { threshold: .05 }).observe(machine);
   machine.dataset.ready = '';
   choose(0, false);
+  initChainSprites(machine);
 }
 
 // ── start ────────────────────────────────────────────────────────────────────
