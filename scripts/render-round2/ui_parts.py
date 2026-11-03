@@ -49,7 +49,7 @@ elif part == 'coupler':
     for x in (12, 58): cyl('ear-pin', x, 16, -6, 6.5, 3.2, 'pin', bevel=0.6); cyl('pin-head', x, 16, 5.5, 7.5, 4.6, 'pin', bevel=0.8)
     finish(W, H, transparent=True, k=0.25)
 elif part == 'coupler-v':
-    # Drop link for the snaking key layouts (1100 px and below): two forged links hang between the side ears of two
+    # Drop link for the snaking key layouts (below 1240 px): two forged links hang between the side ears of two
     # stacked keys. Rendered upright under the same studio so it is never rotated in CSS. Drawn at its CSS size
     # (56 px keys, 24 px row gap): ear bores 80 px apart, at y 10 and 90 of a 32 x 100 canvas. The wire and pins match
     # the horizontal coupler as it is drawn at that layout (0.758 of its art).

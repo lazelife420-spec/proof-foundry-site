@@ -150,6 +150,9 @@ M['bore'] = mat_varied('structural-back-wall', (0.034, 0.033, 0.032), 0.6, 0.58,
 M['rail'] = mat_simple('blackened-rail', (0.03, 0.03, 0.031), 0.9, 0.34, brushed=0.05)
 M['ground'] = mat_simple('ground-face', (0.5, 0.5, 0.5), 1.0, 0.2, brushed=0.12)
 M['stainless'] = mat_simple('brushed-stainless', (0.52, 0.52, 0.51), 1.0, 0.24, aniso=0.6, brushed=0.3)
+# Stage plates carry engraved labels, so their face is a lighter, partly diffuse brushed stainless: under the black
+# studio world a fully metallic face renders too dark for the labels to reach 4.5:1.
+M['plate'] = mat_simple('plate-stainless', (0.52, 0.52, 0.51), 0.78, 0.3, aniso=0.55, brushed=0.3)
 M['pin'] = mat_simple('turned-pin', (0.42, 0.42, 0.41), 1.0, 0.26, brushed=0.1)
 M['screw'] = mat_simple('blackened-screw', (0.05, 0.05, 0.052), 1.0, 0.3)
 M['brass'] = mat_simple('brass-witness', (0.82, 0.6, 0.33), 1.0, 0.28)
@@ -309,7 +312,7 @@ def build_desktop():
     # window with a dark steel flag; RELEASE carries an inset brass witness plug.
     for i, x in enumerate(PLX):
         yc = (PLATE_Y0 + PLATE_Y1) / 2; top = 56.0
-        plate = box(f'plate-{i}', x, PLATE_Y0, 46.5, x + PLATE_W, PLATE_Y1, top, 'stainless', bevel=3.2, seg=1)
+        plate = box(f'plate-{i}', x, PLATE_Y0, 46.5, x + PLATE_W, PLATE_Y1, top, 'plate', bevel=3.2, seg=1)
         # Shallow window with the flag nearly flush, so an unselected plate reads finished rather than slotted.
         boolean(plate, box(f'window-{i}', x + 9, yc - 17, top - 1.5, x + 28, yc + 17, top + 5, 'stainless', bevel=0))
         parts = [plate]

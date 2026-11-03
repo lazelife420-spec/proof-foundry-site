@@ -908,7 +908,7 @@ body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-ro
    foundry-connections.css. Each coupler is rendered for its own orientation and never rotated in CSS, so the
    studio light stays upper left. ── */
 :root .pf-route-chain li{margin:0}
-:root .pf-route-chain ol{gap:30px}
+:root .pf-route-chain ol{gap:29px}
 :root .pf-route-chain a{height:64px;min-height:0;padding:0 30px;gap:9px;border-style:solid;border-width:0;border-radius:0;
  border-image:url(/assets/round2/key-rest.webp) 0 64 fill/0 32px/0 stretch;background:none;box-shadow:none;
  color:#dfe5e7;font-size:14px;font-weight:600;letter-spacing:.06em;white-space:nowrap;text-shadow:0 -1px 0 rgba(0,0,0,.9),0 1px 0 rgba(255,255,255,.08);transition:transform .08s ease-out,filter .08s}
@@ -916,21 +916,24 @@ body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-ro
 /* Hover: a soft reflected band crosses the recessed face. No glow, no lift. */
 :root .pf-route-chain a::before{content:"";position:absolute;left:24px;right:24px;top:15px;bottom:15px;width:auto;height:auto;transform:none;border:0;border-radius:0;box-shadow:none;
  background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.1) 46%,rgba(255,255,255,.16) 50%,rgba(255,255,255,.1) 54%,transparent 70%) -160px 0/220% 100% no-repeat;opacity:0;transition:background-position .5s ease-out,opacity .2s;pointer-events:none}
-@media (hover:hover){:root .pf-route-chain a:hover::before{opacity:1;background-position:100% 0}:root .pf-route-chain a:hover{transform:none;color:#f3f6f7}}
+/* A sticky :hover on a touch screen must not lift or whiten a key (the shipped hover rule does both). */
+:root .pf-route-chain a:hover{transform:none;color:#dfe5e7}
+@media (hover:hover){:root .pf-route-chain a:hover::before{opacity:1;background-position:100% 0}:root .pf-route-chain a:hover{color:#f3f6f7}}
 :root .pf-route-chain a:focus-visible{transform:none;outline:3px solid #ffd58a;outline-offset:3px;color:#f3f6f7}
-:root .pf-route-chain a:active{transform:translateY(2px);filter:brightness(.9) contrast(1.05)}
+:root .pf-route-chain a:active,:root .pf-route-chain a[data-engaged=true]{transform:translateY(2px);filter:brightness(.9) contrast(1.05)}
 :root .pf-route-chain .pf-chain-station{color:#b9a27a;font-size:11px;font-weight:500}
 :root .pf-route-chain a[aria-current=page]{border-image-source:url(/assets/round2/key-current.webp);background:none;box-shadow:none;color:#11191e;
- text-shadow:0 1px 0 rgba(255,255,255,.38);transform:translateY(1px)}
+ text-shadow:0 1px 0 rgba(255,255,255,.38)}
 :root .pf-route-chain a[aria-current=page] .pf-chain-station{color:#5a4421}
 :root .pf-route-chain a[aria-current=page]:hover{color:#0b1013}
-/* Horizontal coupler: a forged link pinned through neighbouring ears, pin centres 46 px apart (x 12 and 58 in the art).
+/* Horizontal coupler: a forged link pinned through neighbouring ears, pin centres 46 px apart (x 12 and 58 in the art);
+   each ear bore sits 8.5 px in from its key's end, so the 29 px gap above lands both pins in the bores.
    The li:nth-child(n) selector outranks the shipped per-key coupler transforms in foundry-connections.css. */
 :root .pf-route-chain li:nth-child(n) .pf-route-coupler{left:calc(100% - 20.5px);right:auto;top:16px;width:70px;height:32px;transform:none;filter:none;background:url(/assets/round2/coupler.webp) 0 0/100% 100% no-repeat}
 :root .pf-route-coupler i{display:none}
 /* One row down to 1240 px: the type tightens and the gap closes to 24 px, with the coupler scaled to match
    (pin pitch 24 + 2 x 8.5 = 41 px, 0.891 of the art). */
-@media (min-width:1240px) and (max-width:1359px){
+@media (min-width:1240px) and (max-width:1359.98px){
  :root .pf-route-chain ol{gap:24px}
  :root .pf-route-chain a{padding:0 22px;font-size:13px;letter-spacing:.02em}
  :root .pf-route-chain li:nth-child(n) .pf-route-coupler{left:calc(100% - 19.2px);top:17.74px;width:62.4px;height:28.5px}
@@ -939,14 +942,14 @@ body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-ro
    the key's end and 28 px down. With a 20 px column gap the horizontal coupler scales to 53 x 24.3 and its pins land in
    the bores. With a 24 px row gap the bores of stacked keys are 80 px apart, the pin pitch of the rendered drop link
    (coupler-v.webp: 32 x 100, pins at y 10 and 90). */
-@media (max-width:1239px){
+@media (max-width:1239.98px){
  :root .pf-route-chain ol{gap:24px 20px}
  :root .pf-route-chain a{height:56px;border-image-width:0 28px;padding:0 22px}
  :root .pf-route-chain li:nth-child(n){grid-column:auto;grid-row:auto}
  :root .pf-route-chain li:nth-child(n) .pf-route-coupler{left:calc(100% - 16.5px);right:auto;top:15.9px;width:53px;height:24.3px}
 }
 /* Tablets: three columns, 1 2 3 / 6 5 4. The chain drops at the right after 03 and runs back to the left. */
-@media (min-width:701px) and (max-width:1239px){
+@media (min-width:701px) and (max-width:1239.98px){
  :root .pf-route-chain ol{grid-template-columns:repeat(3,minmax(0,1fr))}
  :root .pf-route-chain li:nth-child(4){grid-column:3;grid-row:2}:root .pf-route-chain li:nth-child(5){grid-column:2;grid-row:2}:root .pf-route-chain li:nth-child(6){grid-column:1;grid-row:2}
  :root .pf-route-chain li:nth-child(3) .pf-route-coupler{left:calc(100% - 23.44px);top:18px;width:32px;height:100px;background-image:url(/assets/round2/coupler-v.webp)}
@@ -954,23 +957,24 @@ body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-ro
 }
 /* Phones: two columns, 1 2 / 4 3 / 5 6. The chain drops at the right after 02 and at the left after 04. The stage number
    sits above the label so the long labels stay on one line. */
-@media (max-width:700px){
+@media (max-width:700.98px){
  :root .pf-route-chain ol{grid-template-columns:repeat(2,minmax(0,1fr))}
  :root .pf-route-chain li:nth-child(3){grid-column:2;grid-row:2}:root .pf-route-chain li:nth-child(4){grid-column:1;grid-row:2}
  :root .pf-route-chain li:nth-child(5){grid-column:1;grid-row:3}:root .pf-route-chain li:nth-child(6){grid-column:2;grid-row:3}
- :root .pf-route-chain a{flex-direction:column;gap:3px;line-height:16px}
+ :root .pf-route-chain a{flex-direction:column;gap:3px;line-height:16px;padding-top:4px}
  :root .pf-route-chain .pf-chain-station{line-height:13px;letter-spacing:.1em}
  :root .pf-route-chain li:nth-child(2) .pf-route-coupler,:root .pf-route-chain li:nth-child(4) .pf-route-coupler{top:18px;width:32px;height:100px;background-image:url(/assets/round2/coupler-v.webp)}
  :root .pf-route-chain li:nth-child(2) .pf-route-coupler{left:calc(100% - 23.44px)}
  :root .pf-route-chain li:nth-child(4) .pf-route-coupler{left:-8.56px}
  :root .pf-route-chain li:nth-child(3) .pf-route-coupler{left:auto;right:calc(100% - 16.5px)}
 }
-@media (max-width:360px){:root .pf-route-chain a{padding:0 18px;letter-spacing:0}}
+@media (max-width:360px){:root .pf-route-chain a{padding:4px 18px 0;letter-spacing:0}}
+@media (max-width:340px){:root .pf-route-chain a{font-size:13px}}
 @media (prefers-reduced-motion:reduce){:root .pf-route-chain a,:root .pf-route-chain a::before{transition:none}}
 /* Forced colours: plain system buttons in the palette (label and border in ButtonText), the current key with a 3 px
    Highlight border, and no rendered art. */
 @media (forced-colors:active){
- :root .pf-route-chain a,:root .pf-route-chain a:hover,:root .pf-route-chain a[aria-current=page]{border-image:none;border:2px solid ButtonText;background:ButtonFace;color:ButtonText;text-shadow:none;filter:none}
+ :root .pf-route-chain a,:root .pf-route-chain a:hover,:root .pf-route-chain a:focus-visible,:root .pf-route-chain a[aria-current=page]{border-image:none;border:2px solid ButtonText;background:ButtonFace;color:ButtonText;text-shadow:none;filter:none}
  :root .pf-route-chain a[aria-current=page]{border:3px solid Highlight}
  :root .pf-route-chain .pf-chain-station,:root .pf-route-chain a[aria-current=page] .pf-chain-station{color:ButtonText}
  :root .pf-route-chain a::before{display:none}
@@ -998,7 +1002,7 @@ body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-ro
 :root .site-footer::after{content:"";position:absolute;left:0;right:0;bottom:0;height:10px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.6));pointer-events:none}
 :root .site-footer .footer-grid{align-items:start}
 :root .site-footer .footer-grid>nav{position:relative;padding:26px 30px 22px;border-style:solid;border-width:0;border-image:url(/assets/round2/footer-panel.webp) 56 fill/28px/0 stretch}
-:root .site-footer .footer-grid h2{display:flex;align-items:center;gap:10px;color:#c2ab80;letter-spacing:.2em;margin:0 0 10px;text-shadow:0 -1px 0 rgba(0,0,0,.9)}
+:root .site-footer .footer-grid h2{display:flex;align-items:center;gap:10px;color:#d9c6a0;letter-spacing:.2em;margin:0 0 10px;text-shadow:0 -1px 0 rgba(0,0,0,.9)}
 :root .site-footer .footer-grid h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(0,0,0,.9),rgba(0,0,0,.2));box-shadow:0 1px 0 rgba(255,255,255,.07)}
 /* Engraved links: a cut with a shadowed top wall and a light-catching lower lip, filled with a satin inlay. */
 :root .site-footer .footer-grid a{color:#bdc7cc;font-size:14px;font-weight:500;letter-spacing:.02em;text-decoration:none;text-shadow:0 -1px 0 rgba(0,0,0,.95),0 1px 0 rgba(255,255,255,.13);transition:color .15s}
@@ -1007,6 +1011,7 @@ body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-ro
 :root .site-footer .footer-brand-lockup img{padding:5px;background:linear-gradient(160deg,#41484d,#202529);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),inset 0 -1px 0 rgba(0,0,0,.6),0 1px 2px rgba(0,0,0,.7)}
 :root .site-footer .footer-bottom{border-top:1px solid #050607;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
 @media (max-width:1100px){:root .site-footer .footer-grid>nav{padding:22px 22px 16px}}
+@media (min-width:701px) and (max-width:780px){:root .site-footer .footer-grid>nav{padding:20px 14px 14px}}
 @media (prefers-reduced-motion:reduce){:root .site-footer .footer-grid a{transition:none}}
 /* Forced colours: the material base rule above outranks a plain reset, so this one is !important. */
 @media (forced-colors:active){

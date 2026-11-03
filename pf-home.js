@@ -627,23 +627,30 @@ document.addEventListener('error', (event) => { if (decorative(event.target)) ar
 // Failures that happened before this module ran.
 for (const img of document.images) if (decorative(img) && img.complete && img.currentSrc && img.naturalWidth === 0) artFailed(img);
 
-// Rendered carriage reach changes only after travel; the explanation and plate update immediately.
+// Rendered carriage reach changes only after travel; the explanation and plate update immediately. A sprite is
+// fetched when its stage is chosen and swapped in once decoded, so a part never blinks out on a first visit. Only the
+// layout on screen fetches; the other breakpoint's sprites stay lazy until it is shown.
 function initChainSprites(machine) {
-  const cars = [...machine.querySelectorAll('.r2-car, .r2-car-m')];
-  const plates = [...machine.querySelectorAll('.r2-plates img')];
-  let shown = -1, timer = 0;
-  const showCar = (index) => {
-    shown = index;
-    cars.forEach(car => car.querySelectorAll('img').forEach((image, i) => { image.hidden = i !== index; }));
+  const groups = [...machine.querySelectorAll('.r2-plates, .r2-car, .r2-car-m')].map(group => [...group.querySelectorAll('img')]);
+  const plates = groups.filter(images => images[0].parentElement.classList.contains('r2-plates'));
+  const cars = groups.filter(images => !plates.includes(images));
+  let active = -1, carShown = -1, timer = 0;
+  const onScreen = (images) => getComputedStyle(images[0].parentElement).display !== 'none';
+  const show = (images, index) => {
+    const ready = onScreen(images) ? (images[index].loading = 'eager', images[index].decode().catch(() => {})) : Promise.resolve();
+    return ready.then(() => { if (index === active) images.forEach((image, i) => { image.hidden = i !== index; }); });
   };
   const apply = () => {
     const index = Number(machine.dataset.active || 0);
-    plates.forEach((image, i) => { image.hidden = i !== index; });
+    if (index === active) return;
+    active = index;
+    plates.forEach(images => show(images, index));
+    cars.forEach(images => { if (onScreen(images)) images[index].loading = 'eager'; });
     clearTimeout(timer);
-    if (machine.dataset.motion !== 'on' || shown < 0) showCar(index);
-    else timer = setTimeout(() => showCar(index), 640);
+    const settle = () => { carShown = index; cars.forEach(images => show(images, index)); };
+    if (machine.dataset.motion !== 'on' || carShown < 0) settle(); else timer = setTimeout(settle, 640);
   };
-  new MutationObserver(apply).observe(machine, { attributes: true, attributeFilter: ['data-active', 'data-motion'] });
+  new MutationObserver(apply).observe(machine, { attributes: true, attributeFilter: ['data-active'] });
   apply();
 }
 
@@ -695,7 +702,6 @@ function initProofChain() {
     active = Math.max(0, Math.min(stages.length - 1, index));
     if (manual && state === 'running') { clear(); state = 'paused'; }
     machine.dataset.active = String(active);
-    machine.style.setProperty('--active', active);
     stages.forEach((stage, i) => {
       stage.dataset.engaged = String(i === active);
       buttons[i].setAttribute('aria-pressed', String(i === active));

@@ -1,5 +1,5 @@
 """Proof chain, mobile (160 x 635 px vertical frame), Cycles. Reuses the desktop scene's materials and helpers.
-blender -b --factory-startup -P chain_mobile.py -- --mode base|sample|carriage --stage N --scale 2 --samples N --out x.png
+blender -b --factory-startup -P chain_mobile.py -- --scene mobile --mode base|sample|carriage --stage N --scale 2 --samples N --out x.png
 The chain hangs vertically in tension (no sag). Parts are the desktop parts scaled by the pitch ratio K.
 A vertical V-way runs beside the chain; the carriage pointer reaches left to each checkpoint link with a fixed clearance.
 """

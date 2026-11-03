@@ -775,8 +775,9 @@ html[data-motion=off] .pf-lm{display:none}
  .pfa[data-active="1"] .r2-car{--travel:14.9286cqw}.pfa[data-active="2"] .r2-car{--travel:29.9286cqw}
  .pfa[data-active="3"] .r2-car{--travel:44.857cqw}.pfa[data-active="4"] .r2-car{--travel:59.786cqw}
  .pfa[data-motion=on] .r2-car{transition:transform .62s cubic-bezier(.5,0,.15,1.04)}
- .pfa-rail li[data-engaged=true] h3{color:#0e1418}
 }
+/* From 1181 px the labels sit on the rendered plates; below that they sit on the dark rail and keep their light ink. */
+@media (min-width:1181px){.pfa-rail li[data-engaged=true] h3{color:#0e1418}}
 @media (max-width:999px){
  .r2-plates,.r2-car{display:none}
  .r2-car-m{display:block;left:calc(92px * var(--s));top:calc(76.3px * var(--s));width:calc(60px * var(--s));height:calc(68px * var(--s));transform:translateY(var(--travel,0px))}
@@ -792,6 +793,7 @@ html[data-motion=off] .pf-lm{display:none}
 }
 /* The inspection light is a desktop effect; on the vertical layout the champagne edge marks the selected plate. */
 @media (max-width:999px){.pfa-rail li::after{display:none}}
+@media (prefers-reduced-motion:reduce){.pfa-rail li::after{transition:none!important}}
 /* Forced colours: no rendered hardware, and the stage list returns to the full width the round 2 mobile offset took. */
 @media (forced-colors:active){
  .pfa-assembly,.r2-car,.r2-car-m,.r2-plates,.pf-emblem.r2-seal::before,.pfa-rail li::after,.pfa-rail li::before,.pfa-rail::before{display:none}
