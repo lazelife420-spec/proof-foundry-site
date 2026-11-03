@@ -977,15 +977,24 @@ body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-ro
  :root .pf-route-chain li:nth-child(n) .pf-route-coupler{background:none}
 }
 
-/* ── Round 2 footer: engraved baseplate. Recessed link panels, stamped headings and engraved links. The material pages
-   keep their welded mill-steel base (body:is(...) .site-footer above), as the owner reviewed it; pages outside the
-   material system get the blackened plate below. ── */
-:root .site-footer{position:relative;margin-top:70px;padding:72px 0 22px;border-top:0;color:#c4cccd;
+/* ── Round 2 footer: engraved baseplate, the same on every page. The welded mill-steel base and its butt weld (the
+   material rules above) now also reach the product pages, and a restrained bolted rail runs under the weld: the weld
+   joins the base to the chassis, and eight socket screws at 240 px pitch, centred on the page, fasten the rail into
+   the base. The rail is one Blender render, 1920 px long, so it has no tile seams. Below it sit recessed link panels,
+   stamped headings and engraved links. :root body matches the material rule's specificity and comes later. ── */
+:root .site-footer{position:relative;margin-top:70px;padding:72px 0 22px;border-top:0;color:#c4cccd}
+:root body .site-footer{
  background:
-  linear-gradient(180deg,rgba(0,0,0,.55),transparent 120px),
-  repeating-linear-gradient(90deg,rgba(255,255,255,.012) 0 1px,transparent 1px 3px),
-  linear-gradient(180deg,#191d20,#121518 60%,#0b0d0f);
- box-shadow:0 -1px 0 #3a4247,0 -2px 0 #050607}
+  url(/assets/round2/footer-rail-1920.webp) 50% 8px/1920px 52px no-repeat,
+  linear-gradient(180deg,rgba(7,10,12,.5),rgba(7,10,12,.74)),var(--pf-mat-steel) center 18%/var(--pf-plate) auto,#121618;
+ background-image:
+  image-set(url(/assets/round2/footer-rail-1920.webp) 1x,url(/assets/round2/footer-rail-3840.webp) 2x),
+  linear-gradient(180deg,rgba(7,10,12,.5),rgba(7,10,12,.74)),var(--pf-mat-steel);
+ box-shadow:inset 0 22px 18px -16px #0009}
+:root body .site-footer::before{
+ content:"";position:absolute;left:0;right:0;top:-21px;height:42px;pointer-events:none;
+ background:linear-gradient(rgba(12,15,17,.34),rgba(12,15,17,.34)),var(--pf-mat-weld) 137px 50%/499px 42px repeat-x;
+ -webkit-mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent);mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent)}
 :root .site-footer::after{content:"";position:absolute;left:0;right:0;bottom:0;height:10px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.6));pointer-events:none}
 :root .site-footer .footer-grid{align-items:start}
 :root .site-footer .footer-grid>nav{position:relative;padding:26px 30px 22px;border-style:solid;border-width:0;border-image:url(/assets/round2/footer-panel.webp) 56 fill/28px/0 stretch}
@@ -1002,7 +1011,7 @@ body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-ro
 /* Forced colours: the material base rule above outranks a plain reset, so this one is !important. */
 @media (forced-colors:active){
  :root .site-footer{background:Canvas!important;box-shadow:none!important}
- :root .site-footer::after{display:none}
+ :root body .site-footer::before,:root .site-footer::after{display:none}
  :root .site-footer .footer-grid>nav{border-image:none;border:1px solid CanvasText}
  :root .site-footer .footer-grid h2,:root .site-footer .footer-grid a{text-shadow:none}
  :root .site-footer .footer-grid h2::after{background:CanvasText;box-shadow:none}

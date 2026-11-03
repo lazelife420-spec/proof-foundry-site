@@ -1,6 +1,6 @@
 # Material provenance
 
-Website material layers for Home and the shared non-product rooms (About, Support, Proof Standard, Proof, Truth, Truth Files, Founders, Roadmap, Products directory, 404). Product pages and per-product Truth File records are not changed.
+Website material layers for Home and the shared non-product rooms (About, Support, Proof Standard, Proof, Truth, Truth Files, Founders, Roadmap, Products directory, 404). Product pages and per-product Truth File records are not changed, except their footer. Since Round 2 every page shares the same welded mill-steel footer base, weld and rail.
 
 All four web assets live in `brand/material/`. They were derived locally by `scripts/derive-material-assets.mjs` (Chrome canvas, headless, isolated profile, WebP encoder). No third-party or stock images were used.
 
@@ -52,6 +52,10 @@ The Round 2 hardware in `assets/round2/` is rendered, not photographed or genera
 | `coupler.webp` | 140 × 64 | 1,938 | `39925529bb58980722b8e114dbfaabc6a9e97680041c7c0a6da5e43f1e3632eb` | `ui_parts.py --part coupler`, transparent |
 | `coupler-v.webp` | 64 × 200 | 2,500 | `f4156db39a54e143ed9975199cb9542d33c1b75dcb2b9db995c62325d1bafe92` | `ui_parts.py --part coupler-v`, transparent, 128 samples. This is the drop link for the snaking key layouts below 1240 px |
 | `footer-panel.webp` | 480 × 360 | 2,320 | `66528eb91c5747f10c97b5a4cf8290f564adde83166f09b3b4eb57b0b99f2740` | `ui_parts.py --part footer-panel` |
+| `footer-rail-3840.webp` | 3840 × 104 | 31,182 | `5c4f4cf4f5ba8fbf284764efa7eab3435a66dc97d9eef47d4c4b5f86a810e11e` | `ui_parts.py --part footer-rail`: one 1920 × 64 CSS px strip, transparent, with its shadow cast onto a catcher plane, 128 samples. Cropped to the top 104 rows (the shadow is fully faded by then), quality 80 |
+| `footer-rail-1920.webp` | 1920 × 52 | 10,340 | `be22f5c6f9b6d8532ae56e55dc515743b8e9835f215042fc47eb24fc9cc2ac15` | the same master and crop, Lanczos to 1x, quality 85 |
+
+The footer rail replaces Factory's earlier 280 px tile, which never rendered: its CSS was invalid. It is the restrained bolted upper rail that ChatGPT recommended on CP-0183 for owner review. It is a 22 px blackened bar whose top edge tucks under the butt weld that joins the footer base to the chassis. Eight socket screws at 240 px pitch, symmetric about the page centre, fasten it into the base. It is rendered whole at 1920 px, so it has no tile seams.
 
 The chain base downloads only at its own breakpoint: desktop 1x or 2x, or mobile. The selected stage's sprites load with the page, and the others load lazily. Every Round 2 layer is `aria-hidden` and is not drawn in forced colours.
 
@@ -65,5 +69,5 @@ ffmpeg -i <master.png> -c:v libwebp -quality 85 <asset.webp>
 
 The 16-bit masters are kept outside the published site with the review evidence. Their SHA-256 values are in `scripts/render-round2/MASTERS.sha256`.
 
-- The chain, mobile, seal, `key-current` and `coupler-v` masters were rendered after the last edit to their script.
+- The chain, mobile, seal, `key-current`, `coupler-v` and `footer-rail` masters were rendered after the last edit to their script.
 - The `key-rest`, `coupler` and `footer-panel` masters predate a later `ui_parts.py` edit, which changed `key-current`. Fresh renders from the committed script match them within the tolerance given above.

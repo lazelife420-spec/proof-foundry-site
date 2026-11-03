@@ -64,12 +64,15 @@ elif part == 'coupler-v':
     for y in (10, 90): cyl('ear-pin', 16, y, -6, 6.5, 3.2 * k, 'pin', bevel=0.6); cyl('pin-head', 16, y, 5.5, 7.5, 4.6 * k, 'pin', bevel=0.8)
     finish(W, H, transparent=True, k=0.25)
 elif part == 'footer-rail':
-    # Upper joining rail: one 280 px repeat with a single socket screw, tiled with background-repeat: round.
-    W, H = 280, 44
-    bar = box('rail', -10, 4, -10, 290, 40, 8, 'blackened', bevel=5, seg=1)
-    box('seat', -10, 0, -30, 290, 44, -12, 'bore', bevel=0)
-    sunk_screw(bar, 'rail-screw', 140, 22, 8, 6)
-    finish(W, H)
+    # Upper rail of the footer base: one restrained 22 px blackened bar, 1920 px long, rendered whole (no tile seams) and
+    # centred in CSS. Its top edge tucks under the butt weld that joins the base to the chassis, and eight socket screws
+    # at 240 px pitch, symmetric about the page centre, fasten it into the base below. Shadow only, on a transparent film.
+    W, H = 1920, 64
+    M['rail-steel'] = g['mat_simple']('rail-blackened-steel', (0.045, 0.047, 0.05), 0.9, 0.36, brushed=0.12)
+    bar = box('rail', 6, 3, -2, 1914, 25, 4, 'rail-steel', bevel=2.2, seg=2)
+    for d in (-840, -600, -360, -120, 120, 360, 600, 840): sunk_screw(bar, 'rail-screw', 960 + d, 14, 4, 4.0)
+    g['as_catcher']([box('base', -20, -20, -3.6, 1940, 90, -2.6, 'bore', bevel=0)])
+    finish(W, H, transparent=True, k=1.0)
 elif part == 'footer-panel':
     # Recessed link panel: 240 x 180, corners and screws in 28 px slices; the floor between stretches.
     W, H = 240, 180
