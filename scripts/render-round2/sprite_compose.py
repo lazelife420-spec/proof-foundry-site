@@ -23,7 +23,13 @@ def read(path):
 def main(obj, shadow, out):
     o, s = read(obj), read(shadow)
     assert o.shape == s.shape, (o.shape, s.shape)
-    ao, as_ = o[..., 3:], s[..., 3:]
+    ao, as_ = o[..., 3:], s[..., 3:].copy()
+    # Cycles leaves one stray shadow-catcher pixel (alpha up to 0.2) at the canvas's top-right corner, with nothing round
+    # it. A real shadow is smooth, so any pixel more than 3x its brightest neighbour (and above 1/255) takes that value.
+    a2 = np.pad(as_[..., 0], 1, mode='constant'); h, w = as_.shape[:2]
+    nb = np.max(np.stack([a2[1 + dy:1 + dy + h, 1 + dx:1 + dx + w] for dy in (-1, 0, 1) for dx in (-1, 0, 1) if dy or dx]), axis=0)
+    lone = (as_[..., 0] > 3 * nb + 1 / 255)
+    as_[..., 0] = np.where(lone, nb, as_[..., 0])
     a = ao + (1 - ao) * as_
     rgb = np.where(a > 1e-6, o[..., :3] * ao / np.maximum(a, 1e-6), 0)
     px = np.clip(np.concatenate([rgb, a], axis=2) * 65535 + 0.5, 0, 65535).astype('<u2')

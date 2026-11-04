@@ -75,7 +75,7 @@ Method: every `.html` file in the built tree (44 files) was scanned; header and 
 
 **Footer — one shape everywhere.** All 25 visible routes render a byte-identical footer DOM (same product list, same brand lockup, same hidden inline mark fallback). The `__h14/partials/footer.html` shadow variant is intentionally simpler (text lockup, no forced-colors picture, no hidden inline mark) — it is the template form for the shadow layer, not drift.
 
-**Header — one structure everywhere.** All 25 visible routes share the identical header DOM (brand lockup with `PF_MARK_G_HEADER.webp` + forced-colors SVG source + hidden inline `pf-mark-fc` fallback, nav toggle, nav panel, nav links Software / Proof / Truth Files / About, Support CTA). The only per-route difference is which element carries `aria-current`:
+**Header — one structure everywhere.** All 25 visible routes share the identical header DOM (brand lockup with `PF_MARK_G_TI_HEADER.webp` (since 2026-11-04) + forced-colors SVG source + hidden inline `pf-mark-fc` fallback, nav toggle, nav panel, nav links Software / Proof / Truth Files / About, Support CTA). The only per-route difference is which element carries `aria-current`:
 
 | Routes | `aria-current` on |
 |---|---|

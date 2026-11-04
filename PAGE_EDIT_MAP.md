@@ -4,7 +4,7 @@ Every visible section on every public route, mapped to the one file you edit and
 
 **Stylesheet order (builder-enforced, `scripts/build-site.ps1` `Process-Template`):** page sheets → `foundry-world.css` → `pf-site-ledger.css` → `pf-foundry-system.css` (last, wins ties; Home skips the first two injected sheets). Full ownership rules: `CSS_OWNERSHIP_AND_MATERIAL_CONTRACT.md`.
 
-**Shared on every route:** header = `partials/header.html` (nav links and CTA generated from `site-manifest.json` nav; brand mark swapped for `brand/PF_MARK_G_HEADER.webp` at build) · footer = `partials/footer.html` (product list generated) · style owner = `pf-foundry-system.css`. `partials/footer-compact.html` is **dormant**: `@include compact-footer` emits the standard footer.
+**Shared on every route:** header = `partials/header.html` (nav links and CTA generated from `site-manifest.json` nav; brand mark swapped for the Blender header mark `brand/emblem/PF_MARK_G_TI_HEADER.webp` at build; the footer logo is the Blender badge `brand/emblem/PF_MARK_G_TI_BADGE.webp`; both keep the vector micro mark for forced colours) · footer = `partials/footer.html` (product list generated) · style owner = `pf-foundry-system.css`. `partials/footer-compact.html` is **dormant**: `@include compact-footer` emits the standard footer.
 
 ## Home — `/` → `index.html` (style: `pf-home-ledger.css`; chrome: `pf-foundry-system.css`)
 

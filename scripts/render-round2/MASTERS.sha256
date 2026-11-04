@@ -57,26 +57,26 @@ c36781c92ee5fc7ba3b5afeeb756e23d8b2ea87ee53b66889d8782eb4857051a  round3/masters
 # Round 3 Home hardware (2026-11-03): the tray and carrier edge, the phone stage plates, the paper clamp, the index
 # plates' frame and the buttons. (The emblem's pointer light is rendered: see round3/glints below, emblem_glints.py.)
 eda1e6675a68cbaf90503938e4b01552f0cae7fc84d27a59c079de89d3825148  round3/masters/oxide-frame-2x.png
-0922f3fc27699e91f357628f627f31fdbc4ff213ea14e59d4c1740b55ab74050  round3/masters/stage-plate-2x.png
-cac8074fbf69240af65095222e70d63d954fdee84260482d2f415ef20790000d  round3/masters/stage-plate-on-2x.png
-ed7f0539674f00b1bb19d19491431146af34efa1fce2f976de05cae476e36dc7  round3/masters/clamp-2x.png
+ce249279a22f84943bf5d306c0a516b924c8e6eb85eaba1451cfdebe8f1ab322  round3/masters/stage-plate-2x.png
+b201e0cf179726e2c414562e0fc2bc25e906db7e6fd630a5ccd17cc07752267e  round3/masters/stage-plate-on-2x.png
+567c7c054fa1a07b1e58b30bba10429aa1c4fe358fe482c600560ea2d90221f6  round3/masters/clamp-2x.png
 eb5a2b0edc877ac55426d97bd2ca930d77dfa1d334a5eae58d36c02993f3061c  round3/masters/ti-frame-sm-2x.png
-1aab403ca002b3bf58429e9603992e215efbd68e3a6ef8a678efd9190a37ef8c  round3/masters/button-rest-2x.png
-7a25cae46b5eacb94675a26fe3e9587714ee802956cbe3b41991c571b8aa7251  round3/masters/button-pressed-2x.png
-a30d3cd5ef7aea5e9906ef2f321c3d343cb50c0645ae7493a6e1afebeef0cda6  round3/masters/button-primary-2x.png
-9fc1268cfa4acafd6d2a53b6291fc0af18713075d7fde95fa66682abe2ee5c83  round3/masters/button-primary-pressed-2x.png
+376b401a87cf2854127cfc246c5b7782d797648ea7713625bbb3fa283bc7cec9  round3/masters/button-rest-2x.png
+fa6a13608fd811ae6d51a78ac7526d61d4fe3432ff3a726fb1d448a4f255ed1b  round3/masters/button-pressed-2x.png
+579d7170845be18342066357544106587fc2100cf9d03fbf0e2e4450e00b0bc8  round3/masters/button-primary-2x.png
+1e845a7c2d4bd707367519dcfb66a0b3a187ac017e3a7b8659ef76f9d8178fda  round3/masters/button-primary-pressed-2x.png
 # Round 3 rendered ground, shadows and light (2026-11-03): the re-rendered head parts and head frame (the 8e0b8db
 # masters they replace are under prev-8e0b8db), the ground and paper tiles, the joints and sheet edge, and the light passes.
-4cfc887f48a1d01d691713038d63e3a279d5967327eff460a20b91fdbbd09b83  round3/masters/anchor-b-2x.png
-3b135d8ced143e5cde99413693f6d8f6aeba9eb9f0ff9ca2edc5ab09f9c78096  round3/masters/anchor-l-2x.png
-a82722539055bf65916ca4b0a8345f4aaffadd339b1e06276a8fde529f7c1d13  round3/masters/anchor-r-2x.png
-e0a6e9c124783ea431b647e05e37f2d20982ccba021ce79d2a9e6745b50e17b3  round3/masters/anchor-t-2x.png
-d1ff51ed157ab4cabad15ea3ec32db56682485a8678da418d3b1c0ed65e39757  round3/masters/coupler-2x.png
-31cd9aee6fc4ca05228d242165ffa28f77c41603e2ad7e36aefe2ca97310984f  round3/masters/drop-2x.png
+32285336f3286fb74764c5c45dbabefe42a011d922117fa8d018c8a24c71ac5c  round3/masters/anchor-b-2x.png
+a1d27d6226d273379b4634cac98ed4b4467bc3aaa9a28378e1f45bdf0d144548  round3/masters/anchor-l-2x.png
+03c1fb74c60d7747bb18076a5c1ac576b32a432e04ed58e88c2128a3a0f9b166  round3/masters/anchor-r-2x.png
+7d80d6a74eb9764bdbebcc8ea05a5db6976d76c1d53edf522e3fc0dcfe693cce  round3/masters/anchor-t-2x.png
+03141adcf70c6a85bc1237d8bdba7a4c238346ecdcf63c1aa2621485be5232f4  round3/masters/coupler-2x.png
+2bf083226c7ab4a5fc5ff74e8281372db4ddc2d6fc998cc88c7386712f86e773  round3/masters/drop-2x.png
 5a12a3e3642c15314380d2108e6912cd1995c862f7c7117da7b874a62a164100  round3/masters/head-frame-2x.png
-10916cc1447250a04f6446bcdd9c897ecfb1cef261b01bd83acc13aba91a980f  round3/masters/key-current-2x.png
-3c884b0d52a67bb7828ce4fe574f3dc42a7758c852495dc5ed4c114568fd777f  round3/masters/key-pressed-2x.png
-45e876ae72a719ac4862016a5a652761cc318bc5ab1ce9cad547b6d2a758d26c  round3/masters/key-rest-2x.png
+70b790e94bb96d6a426c5a267fefec0c1d6c6c79f6fe82edb3ee596fa076f87d  round3/masters/key-current-2x.png
+24a68d95e273bd43fbc2ef4b96f257421aaa853cf5d4462382f66bb9479bf987  round3/masters/key-pressed-2x.png
+281c6297d4184ec5d7d71e69d5e5fe058f6f7a2825e7c888e47bc047551ce06b  round3/masters/key-rest-2x.png
 baa5c3c8fd5e4ae0935cb75047885c3f841eb467f0a1d426456cdaf557a40a23  round3/masters/chassis-field-2x.png
 07591531719753f1a53254216db3f543a802a3cdabe3828cf7fc92aab7b2cd41  round3/masters/chassis-field-1x-wrapped.png
 0bca68df690bdf8277f2ea85dd54f0291b2645b163897ebc3df3d3bf25874cbb  round3/masters/footer-field-2x.png
@@ -85,8 +85,8 @@ f7c2e85a7b1a820bcf90a7947001c5b0c47691ef828a5f174f3ee648537c95d4  round3/masters
 32ac28c2fb9e363a8d595042b4cac5733c91abbb18657b95dfe649800007ebec  round3/masters/paper-field-1x-wrapped.png
 56520d4f97a15c0ad7ff93fd8de4886036151f8311b4b5d8197f17551a57a98c  round3/masters/chassis-joint-l-2x.png
 b7c7e77a15d981ee60e51702a0562da82349662d0f79ec428c5034574eace479  round3/masters/chassis-joint-r-2x.png
-a6256df205387883ed995e1eb817a4fd19acb8ef3f0b85793d25292fffdc84f9  round3/masters/sheet-edge-2x.png
-6ea980b5acc37c852ac531c780b13ddeb4f9aada579d773b0e9eaeb9a0f06f34  round3/masters/button-locked-2x.png
+cbbd27b55375ed77b13db41561acbaf9a137153c4cbb27d4c4d67f288b72c8e1  round3/masters/sheet-edge-2x.png
+262de5b5a332c10c7f3462ab16e56c5c285db0d1df29c8eb22801ca4a6de7d87  round3/masters/button-locked-2x.png
 89b24b0947e81a7432b0733071b7058fecf0d44c0640f45901836e3573a457c4  round3/chainlight/s0-off.png
 7153bee323267c1711041fc880392576f7dde42b3ce267328a1af9e5d9e81edf  round3/chainlight/s0-on.png
 6a648fff1341532099c8134464fe91eb170abead9e7ad01c09ee6d09c8bfb19b  round3/chainlight/s1-off.png
@@ -141,3 +141,13 @@ d6f5afcd41ccdd146265cad834f8a0d181ebaec959c45565ae1cc0c0e275f5b6  round3/masters
 f0c13c0d0d1a7709f450fc7e26f198a285e12b4d2241bf1ee6119720d5508d60  round3/masters/passes/sheet-edge-obj.png
 e006e7b697dea5ac22a185c208fb34d17fbdea522700c35d15c22e218d65d2d3  round3/masters/passes/sheet-edge-shadow.png
 48074855e5ec11cee3663f732faa149475bf3d1bc2b71a49eba4b36d091a8cda  round3/masters/head-frame-2x-edge.png
+# Round 3 Blender marks (owner decisions 2026-11-04): ti_emblem.py --mode plaque|mark|badge, two passes each.
+9ad1bdd5c6f22c48d39ab021f79f76a3b9ad543d45b3391f234584d476b77689  round3/masters/emblem-plaque-2x.png
+1604fca4e03ef7f9c79a3a2a216e578760a5e7a1f2ca453464418c19617e552b  round3/masters/emblem-mark-2x.png
+709965791d06bd74001d3bd5f955844f9d7fa9ba0bd236da07213e0847257f0a  round3/masters/emblem-badge-2x.png
+6f315950c3460ecbb01ca2de1e6648dd81a2bc78774478498dc389f87ab5bf01  round3/masters/passes/emblem-plaque-obj.png
+9aec6a7aefce0ab705f1f0ed8d8b43ca26d2e1d4636bc8ace1026705baae5aa3  round3/masters/passes/emblem-plaque-shadow.png
+d1c054a580042665a00806bfa9f06e9f7503cb7dfd24b1cda38641b3b8dc5779  round3/masters/passes/emblem-mark-obj.png
+3911199e4f52e694d4f3574def8ec123443a3c5dfcf66794a08093fb1c8687c3  round3/masters/passes/emblem-mark-shadow.png
+fa8ede9160652bc6c2050549cce2177b392ae6b4b49ce7ca5f8331b00c9ba4c6  round3/masters/passes/emblem-badge-obj.png
+e3a327b6f9ecfa43d60190a82e6ca0252fbcb708d7f9bde1704e22052703ad51  round3/masters/passes/emblem-badge-shadow.png

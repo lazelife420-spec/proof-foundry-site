@@ -649,7 +649,7 @@ try {
     await viewport(width);
     await go('/');
     const g = await evaluate(`(() => { const l = document.querySelector('.site-header .brand-lockup').getBoundingClientRect(), i = document.querySelector('.site-header .brand-mark'), m = i.getBoundingClientRect(); return { lockup: l.left, mark: m.left, w: m.width, h: m.height, src: i.currentSrc.split('/').pop() }; })()`);
-    check(`${width}px: Home header mark is the PF Mark G render, flush with the brand link`, Math.abs(g.mark - g.lockup) < 0.5 && g.src === 'PF_MARK_G_HEADER.webp' && Math.round(g.w) === (width <= 480 ? 38 : 50) && g.h > g.w, g);
+    check(`${width}px: Home header mark is the PF Mark G titanium render, flush with the brand link`, Math.abs(g.mark - g.lockup) < 0.5 && g.src === 'PF_MARK_G_TI_HEADER.webp' && Math.round(g.w) === (width <= 480 ? 38 : 50) && g.h > g.w, g);
   }
   // Layout details V5 specifies: the hero copy's face, the phone menu's Support
   // button inside its panel, and a skip link that is hidden until focused.

@@ -1,6 +1,17 @@
 """PF Mark G, the original emblem's assembly milled into the titanium hero plate, Cycles. Reproducible:
 blender -b --factory-startup -P ti_emblem.py -- --masks DIR --width 460 --scale 2 --samples N --out x.png
         [--glint N|E|S|W]  the same render with the pointer light from that side (emblem_glints.py)
+        [--mode plaque|mark|badge --pass obj|shadow]  the emblem's other renders (owner decisions, 2026-11-04):
+          plaque: the hero emblem on an opaque titanium coupon (chamfered edge, four flush socket screws) in R3's frame
+                  (u -26..282, v -26..330), for Inspect the Mark: pins, notes and loupe stay registered. Render it at
+                  the hero's own scale (--width 520.8823529 = 460 x 308/272, --scale 3.0717054 for 1600 x 1849), so
+                  the weave, brushing and blast keep their size against the letters;
+          mark:   the P, F and bridge alone, standing on the head plate, for the header (frame 46.7..209.3 x 44.8..211.2,
+                  centred on the mark);
+          badge:  the P, F and bridge on a small black-oxide plate, for the footer (frame 37..219 square, centred).
+          Each is a part over its own contact shadow: --pass obj (shadow catcher a holdout) and --pass shadow (the
+          dome and a soft contact light, no rim band; from 80 deg for the plaque, 55 deg for the mark and badge, so
+          the small marks keep a visible lift), combined by sprite_compose.py.
 
 This is the original emblem (scripts/pf-emblem/render-lib.js, the R3 plaque) rebuilt as part of the hero plate rather
 than an object on it. It keeps the original's geometry, legends and parts in its own units (the assembly frame x -8..264,
@@ -33,6 +44,8 @@ ap.add_argument('--cone', type=float, default=8); ap.add_argument('--rim', type=
 ap.add_argument('--shadow-sun', type=float, default=6.0); ap.add_argument('--denoise', type=int, default=1)
 # --glint N|E|S|W: add the pointer light, a low cool distant light from that side of the plate (emblem_glints.py).
 ap.add_argument('--glint', default=''); ap.add_argument('--glint-power', type=float, default=1.2)
+ap.add_argument('--mode', default='', choices=('', 'plaque', 'mark', 'badge'))
+ap.add_argument('--pass', dest='pass_', default='', choices=('', 'obj', 'shadow'))
 A = ap.parse_args(argv)
 bpy.ops.wm.read_factory_settings(use_empty=True)
 import ti_common as T
@@ -40,10 +53,13 @@ from ti_common import S
 scn = bpy.context.scene; T.scn = scn
 ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))
 
-U0, V0, UW, VH = -8.0, -8.0, 272.0, 314.0     # the original's assembly frame, emblem units
+U0, V0, UW, VH = -8.0, -8.0, 272.0, 314.0     # the original's assembly frame, emblem units (geometry and masks)
 R_FLOOR, R_GROOVE = 100.0, 114.0              # the seal floor and the turned groove, as render-lib.js
-U = A.width / UW                              # CSS px per emblem unit
-WPX, HPX = A.width, VH * U
+# The camera's frame: the hero's own unless --mode asks for another; --width is that frame's width in CSS px.
+CU0, CV0, CUW, CVH = {'': (U0, V0, UW, VH), 'plaque': (-26.0, -26.0, 308.0, 356.0),
+                      'mark': (46.7, 44.8, 162.6, 166.4), 'badge': (37.0, 37.0, 182.0, 182.0)}[A.mode]
+U = A.width / CUW                             # CSS px per emblem unit
+WPX, HPX = A.width * (UW / CUW), VH * U       # the mask frame in CSS px (exactly A.width for the hero's own frame)
 def X(u): return (u - U0) * U * S
 def Y(v): return -(v - V0) * U * S
 def Z(u): return u * U * S
@@ -183,6 +199,8 @@ def mat_face():
     sel2 = N.new('ShaderNodeMath'); sel2.operation = 'MAXIMUM'; L(sel.outputs[0], sel2.inputs[0]); L(sample(nt, 'mask-inlay-seam'), sel2.inputs[1])
     sel3 = N.new('ShaderNodeMath'); sel3.operation = 'MAXIMUM'; L(sel2.outputs[0], sel3.inputs[0]); L(ring, sel3.inputs[1])
     gr = N.new('ShaderNodeMapRange'); L(sel3.outputs[0], gr.inputs['Value']); gr.inputs['From Min'].default_value = 0.0; gr.inputs['From Max'].default_value = 0.12
+    if A.mode == 'plaque':   # the coupon's face is the plate itself: opaque titanium
+        L(surf, out.inputs['Surface']); return m
     ho = N.new('ShaderNodeHoldout')
     L(mixs(nt, gr.outputs[0], ho.outputs[0], surf), out.inputs['Surface'])
     return m
@@ -269,10 +287,21 @@ def assign(ob, mats, top_u, ch_u):
 face = mat_face(); pol = T.mat_titanium('ti-polished', T=640 * S, finish='polished'); carbon = mat_carbon()
 DEPTH, CARBON_TOP = 5.5, -4.0
 # Plate slab, face at z 0, running past the frame so the pixel filter never sees past it.
-bm = bmesh.new(); bmesh.ops.create_cube(bm, size=1.0); me = bpy.data.meshes.new('plate'); bm.to_mesh(me); bm.free()
+bm = bmesh.new(); bmesh.ops.create_cube(bm, size=1.0)
+if A.mode == 'plaque':
+    # The coupon: u -18..274, v -18..322, about 11 u thick, its top edge broken by a 1.5 u 35 deg chamfer (an even
+    # inset, so the corners keep the chamfer's width).
+    CP = (-18.0, -18.0, 274.0, 322.0)
+    bmesh.ops.scale(bm, vec=((CP[2] - CP[0]) * U * S, (CP[3] - CP[1]) * U * S, Z(10)), verts=bm.verts)
+    bmesh.ops.translate(bm, vec=(X((CP[0] + CP[2]) / 2), Y((CP[1] + CP[3]) / 2), -Z(5)), verts=bm.verts)
+    cdrop = 1.5 * math.tan(math.radians(35))
+    bmesh.ops.inset_region(bm, faces=[f for f in bm.faces if f.normal.z > 0.99], thickness=Z(1.5), depth=Z(cdrop), use_even_offset=True)
+    bmesh.ops.translate(bm, vec=(0, 0, -Z(cdrop)), verts=list(bm.verts))
+me = bpy.data.meshes.new('plate'); bm.to_mesh(me); bm.free()
 plate = bpy.data.objects.new('plate', me); scn.collection.objects.link(plate)
-plate.location = (WPX / 2 * S, -HPX / 2 * S, -Z(5)); plate.scale = (WPX * S * 1.04, HPX * S * 1.04, Z(10))
-bpy.context.view_layer.objects.active = plate; plate.select_set(True); bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+if A.mode != 'plaque':
+    plate.location = (WPX / 2 * S, -HPX / 2 * S, -Z(5)); plate.scale = (WPX * S * 1.04, HPX * S * 1.04, Z(10))
+    bpy.context.view_layer.objects.active = plate; plate.select_set(True); bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
 me.materials.append(face); me.materials.append(pol)
 # Seal floor: a pocket with a polished 35 deg rim chamfer; the turned groove at r 114.
 CH = 0.6; cw = Z(CH) * math.tan(math.radians(35))
@@ -324,7 +353,56 @@ for (u, v) in ((184.6, 266.6), (231.4, 287.4)):
     bpy.ops.mesh.primitive_uv_sphere_add(segments=32, ring_count=16, radius=1.0, location=(X(u), Y(v), Z(0.35)))
     rv = bpy.context.active_object; rv.name = 'rivet'; rv.scale = (Z(1.5), Z(1.5), Z(0.7)); rv.data.materials.append(scr); objs.append(rv)
 
-key = T.ti_studio(A.dome, A.sun, A.cone, A.rim)
+HOLD = bpy.data.materials.new('holdout'); HOLD.use_nodes = True; HOLD.node_tree.nodes.clear()
+HOLD.node_tree.links.new(HOLD.node_tree.nodes.new('ShaderNodeHoldout').outputs[0], HOLD.node_tree.nodes.new('ShaderNodeOutputMaterial').inputs['Surface'])
+def catcher(z_u, pad=60):
+    bpy.ops.mesh.primitive_plane_add(size=1); c = bpy.context.active_object; c.name = 'catcher'
+    c.location = (X(CU0 + CUW / 2), Y(CV0 + CVH / 2), Z(z_u)); c.scale = ((CUW + pad) * U * S, (CVH + pad) * U * S, 1)
+    if A.pass_ == 'obj': c.data.materials.append(HOLD)
+    else: c.data.materials.append(DARK); c.is_shadow_catcher = True
+    return c
+if A.mode in ('mark', 'badge'):
+    # Only the mark: the P, F, bridge and tack welds stay; the plate, floor, ring, legends and plates go.
+    keep = {'p', 'f', 'bridge', 'tack'}
+    for ob in list(scn.objects):
+        if ob.type == 'MESH' and ob.name.split('.')[0] not in keep: bpy.data.objects.remove(ob)
+    if A.mode == 'badge':
+        # A small black-oxide plate under the mark: u 43..213 square, about 4 u thick, a 1.5 u 35 deg chamfer.
+        bb = bmesh.new(); bmesh.ops.create_cube(bb, size=1.0)
+        bmesh.ops.scale(bb, vec=(Z(170), Z(170), Z(3)), verts=bb.verts); bmesh.ops.translate(bb, vec=(X(128), Y(128), -Z(7.0)), verts=bb.verts)
+        bd = 1.5 * math.tan(math.radians(35))
+        bmesh.ops.inset_region(bb, faces=[f for f in bb.faces if f.normal.z > 0.99], thickness=Z(1.5), depth=Z(bd), use_even_offset=True)
+        bmesh.ops.translate(bb, vec=(0, 0, -Z(bd)), verts=list(bb.verts))
+        bme = bpy.data.meshes.new('badge'); bb.to_mesh(bme); bb.free(); bo = bpy.data.objects.new('badge', bme); scn.collection.objects.link(bo)
+        ox = T.mat_oxide('badge-oxide', T=Z(170) * 3); edge = T.mat_titanium('badge-edge', T=640 * S, finish='polished')
+        bme.materials.append(ox); bme.materials.append(edge)
+        for f in bme.polygons: f.material_index = 0 if f.normal.z > 0.999 else 1
+        catcher(-8.5)
+    else:
+        catcher(-5.5)
+if A.mode == 'plaque':
+    # Four flush titanium socket screws 11 u in from the coupon's corners, seated in bores; their hex sockets show dark.
+    scr2 = T.mat_titanium('coupon-screw', T=640 * S, seed=2.3, finish='lapped')
+    for i, (u, v) in enumerate(((-7, -7), (263, -7), (-7, 311), (263, 311))):
+        bpy.ops.mesh.primitive_cylinder_add(vertices=96, radius=Z(5.2), depth=Z(2), location=(X(u), Y(v), 0))
+        apply_bool(plate, bpy.context.active_object, 'DIFFERENCE')
+        hd = cyl(f'coupon-screw{i}', u, v, -0.6, 0.0, 5.0); hd.data.materials.append(scr2)
+        bv = hd.modifiers.new('e', 'BEVEL'); bv.width = Z(0.4); bv.segments = 3; bv.limit_method = 'ANGLE'
+        bpy.context.view_layer.objects.active = hd; bpy.ops.object.modifier_apply(modifier='e')
+        hx = cyl('hex', u, v, -0.25, 1.0, 1.7, 6); hx.rotation_euler = (0, 0, 0.4 + i); apply_bool(hd, hx, 'DIFFERENCE')
+        fl = cyl('hex-floor', u, v, -0.30, -0.20, 1.7, 6); fl.rotation_euler = (0, 0, 0.4 + i); fl.data.materials.append(DARK)
+    for f in plate.data.polygons:
+        f.material_index = 0 if (f.normal.z > 0.999 and f.center.z > -1e-4) else 1
+    catcher(-10.0)
+key = T.ti_studio(A.dome, A.sun, A.cone, 0.0 if A.pass_ == 'shadow' else A.rim)
+if A.pass_ == 'shadow':
+    # The contact light (head_parts.py's): a shadowed, wide sun high over the key azimuth, so the shadow is short.
+    small = A.mode in ('mark', 'badge')   # a lower light, so the 50 and 34 px marks keep a lift of 1-2 CSS px
+    cd = bpy.data.lights.new('contact', 'SUN'); cd.energy = 0.5 if small else 0.35; cd.angle = math.radians(15 if small else 18)
+    co = bpy.data.objects.new('contact', cd); scn.collection.objects.link(co)
+    az, el = math.radians(32), math.radians(55 if small else 80)
+    to = __import__('mathutils').Vector((-math.sin(az) * math.cos(el), math.cos(az) * math.cos(el), math.sin(el)))
+    co.rotation_euler = (-to).to_track_quat('-Z', 'Y').to_euler(); key.data.use_shadow = False
 # The same key again, for diffuse surfaces only: the metals have no diffuse lobe, so they read exactly as in the field,
 # while the weave takes the parts' cast shadows, as the original emblem's floor does.
 sd = bpy.data.lights.new('shadow-sun', 'SUN'); sd.energy = A.shadow_sun; sd.angle = key.data.angle; sd.color = key.data.color
@@ -338,6 +416,8 @@ if A.glint:
     a, el = math.radians(az), math.radians(20)
     to_light = __import__('mathutils').Vector((-math.sin(a) * math.cos(el), math.cos(a) * math.cos(el), math.sin(el)))
     go.rotation_euler = (-to_light).to_track_quat('-Z', 'Y').to_euler()
-T.camera(WPX / 2 * S, -HPX / 2 * S, WPX * S, round(WPX * A.scale), round(HPX * A.scale))
+if A.pass_ == 'shadow': so.hide_render = True   # the diffuse-only key would throw long shadows on the catcher
+if A.mode: T.camera(X(CU0 + CUW / 2), Y(CV0 + CVH / 2), CUW * U * S, round(A.width * A.scale), round(CVH * U * A.scale))
+else: T.camera(WPX / 2 * S, -HPX / 2 * S, WPX * S, round(WPX * A.scale), round(HPX * A.scale))   # as committed
 T.render_setup(A.samples, A.out, transparent=True, denoise=bool(A.denoise))
 bpy.ops.render.render(write_still=True)

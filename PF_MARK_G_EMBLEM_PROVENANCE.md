@@ -12,7 +12,7 @@ The approved design is the claude.ai artifact `https://claude.ai/artifact/Un7bvJ
 
 One bundled V5 image is not shipped: the `weld-hot` overlay belongs to an optional "cooling" variant that V5 renders off by default.
 
-The V5 raster header mark is shipped as `brand/emblem/PF_MARK_G_HEADER.webp` (owner ruling, 2026-10-13: preserve the approved V5 design and the canonical PF Mark G). Only the homepage header uses it; the build swaps it in for `index.html` alone. Every other page family, the footer and the favicon keep the shared vector micro mark `brand/PF_HEADER_MARK.svg`, and in forced-colors mode the homepage header falls back to that vector mark.
+**Superseded on 2026-11-04** (see "Round 3 Blender marks" below): the header now carries `PF_MARK_G_TI_HEADER.webp` on every page and the footer the `PF_MARK_G_TI_BADGE.webp` badge. Before that, the V5 raster header mark was shipped as `brand/emblem/PF_MARK_G_HEADER.webp` (owner ruling, 2026-10-13: preserve the approved V5 design and the canonical PF Mark G). Only the homepage header uses it; the build swaps it in for `index.html` alone. Every other page family, the footer and the favicon keep the shared vector micro mark `brand/PF_HEADER_MARK.svg`, and in forced-colors mode the homepage header falls back to that vector mark.
 
 ## Canonical geometry
 
@@ -41,7 +41,7 @@ The files are used as published: no resizing, recompression or editing. The ligh
 | File | Dimensions | Bytes | Role | SHA-256 |
 |---|---|---|---|---|
 | `brand/emblem/PF_MARK_G_EMBLEM.webp` | 1600 × 1849 | 404,190 | Emblem (hero, dialog, loupe) | `8165fe7e753337ab6dfb969fff3f411ea13711165a66dab3c4998502b1d2031d` |
-| `brand/emblem/PF_MARK_G_HEADER.webp` | 256 × 262 | 10,194 | Homepage header mark (bare PF Mark G) | `eda57d5d1abe27adcfd3d13de0b5ec0b4ffa2a2c3cb3c5d768bc7e2b843936f0` |
+| `brand/emblem/PF_MARK_G_HEADER.webp` | 256 × 262 | 10,194 | Homepage header mark (bare PF Mark G), superseded 2026-11-04 | `eda57d5d1abe27adcfd3d13de0b5ec0b4ffa2a2c3cb3c5d768bc7e2b843936f0` |
 | `brand/emblem/LIGHT_NORTH.webp` | 800 × 925 | 20,690 | Upward-facing chamfers | `e9b7a6295bc1d60eab2657034bf4b24adef74c21fb11d2c2b7b9a4b9d2902f86` |
 | `brand/emblem/LIGHT_EAST.webp` | 800 × 925 | 18,818 | Right-facing chamfers | `3e1b2cf1874b67e1962746ed77a03876c7c0513466fb1e858d5ca3d5c2121e16` |
 | `brand/emblem/LIGHT_SOUTH.webp` | 800 × 925 | 22,852 | Downward-facing chamfers | `35bd9b2b391db13061d7c56d2be4d5b20774fbb3d2176155aeb0c7670ecdf28e` |
@@ -151,6 +151,23 @@ The passes are encoded from 8-bit straight-alpha PNGs (alpha the brightest chann
 |---|---|---|---|---|
 | `brand/emblem/PF_MARK_G_TI_920.webp` | 920 × 1062 | 62,722 | Titanium hero emblem, 2x | `044dc8eaf9cdfd6cfc0a6f366d9ae3dc29c8d11ef0f11cc303a8a9fe26d565b9` |
 | `brand/emblem/PF_MARK_G_TI_460.webp` | 460 × 531 | 32,674 | Titanium hero emblem, 1x | `86fa2e101e0cfd10403afcc2cc6dfa22a9dc48d83acce2bfc759bca28e56d268` |
+
+## Round 3 Blender marks: the header, Inspect the Mark and the footer (adopted 2026-11-04)
+
+On 2026-11-04 the owner chose to re-render the header mark and the Inspect the Mark plaque in Blender, to match the titanium hero, and to render the footer logo as a machined badge.
+- **Supersedes:** the 2026-10-13 decision to keep the V5 header render, and the R3 WebGL plaque adopted on 2026-10-15. `PF_MARK_G_HEADER.webp` and `PF_MARK_G_EMBLEM_R3.webp` stay in the repository, no longer referenced.
+- **Classification:** `GENERATED_BRAND_RENDER`, offline Cycles renders (Blender 5.2.3). They come from the hero emblem's own geometry, legends and materials (`ti_emblem.py`, the sections above), in one of three modes:
+  - `--mode plaque`: the hero emblem on an opaque titanium coupon (u −18..274, v −18..322; a 1.5 u 35° chamfer, inset evenly; four flush titanium socket screws). It is framed in R3's own frame (u −26..282, v −26..330, 1600 × 1849), so pf-home.js's pins, notes and loupe stay registered. It is rendered at the hero's own scale (`--width 520.8823529 --scale 3.0717054`), so the weave, brushing and blast keep their size against the letters. The dialog's notes and intro now describe the titanium mark.
+  - `--mode mark`: the P, F, bridge and tack welds alone, standing on the head plate, centred in its frame (u 46.7..209.3, v 44.8..211.2). 50 × 51 CSS px, with a contact shadow from a 55° light inside the image (a lift of about 1–2 CSS px), so the CSS drop shadow is gone. The vector micro mark stays for forced colours.
+  - `--mode badge`: the same P, F and bridge on a small black-oxide plate (u 43..213, chamfer inset evenly), centred in its frame (u 37..219), the footer logo at 34 × 34 CSS px, with the same 55° contact light. The inline vector micro mark stays for forced colours.
+- **Shadows:** each mode is rendered in two passes and combined by `sprite_compose.py`: `--pass obj` (the shadow catcher a holdout) and `--pass shadow` (the overhead dome and the soft contact light, no rim band). `sprite_compose.py` drops the one stray shadow-catcher pixel Cycles leaves at each canvas's top-right corner.
+- **Settings:** 256 samples. The plaque is `--width 520.8823529 --scale 3.0717054`. The header is rendered at 512 × 524 and the badge at 204 × 204, each Lanczos-downscaled to its size. Encoding is ffmpeg libwebp with alpha (quality 88 for the plaque, 90 for the others). The masters and passes are in `MASTERS.sha256`.
+
+| File | Dimensions | Bytes | Role | SHA-256 |
+|---|---|---|---|---|
+| `brand/emblem/PF_MARK_G_TI_PLAQUE.webp` | 1600 × 1849 | 178,942 | Inspect the Mark plaque | `4f2b9987ae54e53c38422ad43647df0157d55e2c61dc71ed0f8214b70440f83f` |
+| `brand/emblem/PF_MARK_G_TI_HEADER.webp` | 256 × 262 | 9,020 | Header mark, every page | `d38f7992058ca349534d3858dc761985666605a30b523c3a5523aa0679976f87` |
+| `brand/emblem/PF_MARK_G_TI_BADGE.webp` | 102 × 102 | 2,728 | Footer badge, every page | `231664b5c9755b764ed25dfbe82cfd67c1b774d11ea17a053ff0b60398568af6` |
 
 ## Boundary
 

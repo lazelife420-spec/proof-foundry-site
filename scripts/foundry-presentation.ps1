@@ -109,11 +109,12 @@ function Complete-FoundryPresentation([string]$Html, [string]$Name, [string]$Pag
 
 function Get-FoundryChrome([string]$Header, [string]$Footer) {
   # V5 (owner ruling, 2026-10-13; studio-wide 2026-10-25): every route's header carries
-  # the PF Mark G header render so the studio has one brand mark. Forced colours keep
-  # the shared vector micro mark.
+  # the PF Mark G header render so the studio has one brand mark. Since 2026-11-04 (owner
+  # decision) that render is the Blender titanium mark (ti_emblem.py --mode mark). Forced
+  # colours keep the shared vector micro mark.
   $sharedMark = '<img class="brand-mark" src="/brand/PF_HEADER_MARK.svg" alt="" width="42" height="42" />'
   if (-not $header.Contains($sharedMark)) { throw 'Header: the shared header no longer carries the expected micro mark.' }
-  $header = $header.Replace($sharedMark, '<picture class="brand-mark-picture"><source media="(forced-colors: active)" srcset="/brand/PF_HEADER_MARK.svg"/><img class="brand-mark" src="/brand/emblem/PF_MARK_G_HEADER.webp" alt="" width="50" height="51"/></picture>')
+  $header = $header.Replace($sharedMark, '<picture class="brand-mark-picture"><source media="(forced-colors: active)" srcset="/brand/PF_HEADER_MARK.svg"/><img class="brand-mark" src="/brand/emblem/PF_MARK_G_TI_HEADER.webp" alt="" width="50" height="51"/></picture>')
   # Forced colours (V5 refinement F5, studio-wide): every route's header and footer also carry an inline,
   # same-document copy of the canonical micro mark, shown only in forced colours and drawn in system colours
   # by pf-home-ledger.css on Home and pf-site-ledger.css on every other route. An SVG loaded through <img>
@@ -129,7 +130,9 @@ function Get-FoundryChrome([string]$Header, [string]$Footer) {
   $header = $header.Replace('</picture>', '</picture>' + $fcMark['header'])
 
 
-  $footerLogo = '<img class="footer-logo" src="/brand/PF_HEADER_MARK.svg" alt="" width="42" height="42"/>'
+  # The footer's logo is the Blender badge (ti_emblem.py --mode badge, owner decision 2026-11-04); the inline vector
+  # micro mark after it is shown only in forced colours.
+  $footerLogo = '<img class="footer-logo" src="/brand/emblem/PF_MARK_G_TI_BADGE.webp" alt="" width="34" height="34"/>'
   if (([regex]::Matches($footer, [regex]::Escape($footerLogo))).Count -ne 1) { throw 'Footer: the shared footer no longer carries the expected logo.' }
   $footer = $footer.Replace($footerLogo, $footerLogo + $fcMark['footer'])
   return @{ Header=$header; Footer=$footer }
