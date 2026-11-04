@@ -1,6 +1,6 @@
 """Hero titanium plate, Cycles. Reproducible:
 blender -b --factory-startup -P ti_plate.py -- --part field|frame|oxide-field|head-frame|mill-field|paper-field
-        |chassis-joint-l|chassis-joint-r --scale 2 --samples N --out x.png
+        |chassis-joint-l|chassis-joint-r|stainless-field|cladding-joint-h --scale 2 --samples N --out x.png
 
 field: one 640 x 640 CSS px tile of bead-blasted grade 2 titanium. Every noise runs on a torus of the tile's period,
        so the tile wraps exactly in x and y; the CSS repeats it from the plate's padding box and never stretches it.
@@ -21,11 +21,13 @@ ap.add_argument('--denoise', type=int, default=1); ap.add_argument('--cone', typ
 # frame only: the corner set's size, the screws' inset from both edges, and their head and socket radii (CSS px).
 ap.add_argument('--size', type=float, default=192); ap.add_argument('--screw-in', type=float, default=22)
 ap.add_argument('--head-r', type=float, default=8); ap.add_argument('--socket-r', type=float, default=2.5)
-# mill-field / paper-field only: the tile's size (CSS px), the material's seed, the view exposure, and (mill-field
-# only) the steel's tone.
+# mill-field, paper-field and stainless-field: the tile's size (CSS px), the material's seed and the view exposure;
+# mill-field and stainless-field also the metal's tone. cladding-joint-h reads --tone and --seed for the stainless its
+# chamfers are cut from (rooms.sh passes stainless-field's). head-frame --metal stainless has its own fixed edge finish.
 ap.add_argument('--tile', type=float, default=512); ap.add_argument('--seed', type=float, default=0.0)
 ap.add_argument('--tone', type=float, default=0.06); ap.add_argument('--exposure', type=float, default=0.0)
 ap.add_argument('--margin', type=float, default=6)   # head-frame only: the shadow margin right and below, CSS px
+ap.add_argument('--metal', default='oxide', choices=('oxide', 'stainless'))   # head-frame only: the plate's metal
 A = ap.parse_args(argv)
 bpy.ops.wm.read_factory_settings(use_empty=True)
 import ti_common as T
@@ -110,12 +112,15 @@ elif A.part == 'frame':
     T.ti_studio(A.dome, A.sun, A.cone, A.rim)
     T.camera(W / 2 * S, -H / 2 * S, W * S, W * A.scale, H * A.scale)
     T.render_setup(A.samples, A.out, transparent=True)
-elif A.part in ('mill-field', 'paper-field'):
+elif A.part in ('mill-field', 'paper-field', 'stainless-field'):
     # The page's ground and its paper, each one tile of --tile CSS px that wraps exactly (torus noise, plane run past the
     # frame): mill-field is hot-rolled plate (the chassis at --tile 690, half the 1380 px plate, so its joints fall on
-    # tile edges; the footer base a darker tone and its own seed), paper-field the archival paper of every sheet.
+    # tile edges; the footer base a darker tone and its own seed), stainless-field brushed 304 stainless (the About
+    # room's cladding and the service panels), paper-field the archival paper of every sheet.
     W = H = A.tile
-    mat = T.mat_mill_steel('mill', T=W * S, seed=A.seed, tone=A.tone) if A.part == 'mill-field' else T.mat_paper('paper', T=W * S, seed=A.seed)
+    mat = (T.mat_mill_steel('mill', T=W * S, seed=A.seed, tone=A.tone) if A.part == 'mill-field' else
+           T.mat_stainless('stainless', T=W * S, seed=A.seed, tone=A.tone) if A.part == 'stainless-field' else
+           T.mat_paper('paper', T=W * S, seed=A.seed))
     plane('field', -32, -32, W + 32, H + 32, 0, mat)
     T.ti_studio(A.dome, A.sun, A.cone, A.rim)
     T.camera(W / 2 * S, -H / 2 * S, W * S, W * A.scale, H * A.scale)
@@ -159,6 +164,40 @@ elif A.part in ('chassis-joint-l', 'chassis-joint-r'):
     T.ti_studio(A.dome, A.sun, A.cone, A.rim)
     T.camera(W / 2 * S, -H / 2 * S, W * S, W * A.scale, H * A.scale)
     T.render_setup(A.samples, A.out, transparent=True)
+elif A.part == 'cladding-joint-h':
+    # About's cladding: brushed stainless sheets 920 px tall whose butt joints are recessed. A 64 x 920 CSS px strip that
+    # repeats in x and y: the upper sheet's lower edge and the lower sheet's upper edge are each broken by a 1 px 35 deg
+    # chamfer, with a 2 px gap between (rows 917-919). The faces are holdouts, so the stainless field shows through;
+    # lit by the same key, the lower sheet's chamfer (facing up) catches the light and the upper one falls dark.
+    # rooms.sh: --tone 0.16 --seed 0.7, the stainless-field's.
+    W, H = 64, 920
+    face = holdout('face')
+    # The chamfers are the sheet's own stainless at the field's tone (--tone, as stainless-field), ground rather than
+    # brushed (roughness 0.7), so the lit one reads as a soft lip, about as bright as the field's own highlights.
+    edge = T.mat_stainless('sheet-edge', T=W * S, seed=A.seed, tone=A.tone, rough=0.7)
+    dark = T.node_mat('gap')[0]; dark.node_tree.nodes['Principled BSDF'].inputs['Base Color'].default_value = (0.004, 0.004, 0.0045, 1)
+    dark.node_tree.nodes['Principled BSDF'].inputs['Roughness'].default_value = 0.8
+    drop = 1.0 * math.tan(math.radians(35))
+    def sheet(name, prof):
+        # prof: (y, z) in CSS px, extruded along x across the strip and past it.
+        bm = bmesh.new()
+        lo = [bm.verts.new((-32 * S, -y * S, z * S)) for y, z in prof]; hi = [bm.verts.new(((W + 32) * S, -y * S, z * S)) for y, z in prof]
+        n = len(prof)
+        bm.faces.new(lo); bm.faces.new(hi[::-1])
+        for i in range(n): bm.faces.new((lo[i], hi[i], hi[(i + 1) % n], lo[(i + 1) % n]))
+        bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+        me = bpy.data.meshes.new(name); bm.to_mesh(me); bm.free()
+        ob = bpy.data.objects.new(name, me); scn.collection.objects.link(ob)
+        me.materials.append(face); me.materials.append(edge); me.materials.append(dark)
+        for f in me.polygons:
+            f.material_index = 0 if f.normal.z > 0.999 else (1 if f.normal.z > 0.05 else 2)
+        return ob
+    sheet('upper', [(-40, -8), (917, -8), (917, -drop), (916, 0), (-40, 0)])
+    sheet('lower', [(919, -8), (960, -8), (960, 0), (920, 0), (919, -drop)])
+    plane('gap-floor', -32, 916.5, W + 32, 919.5, -7.9, dark)
+    T.ti_studio(A.dome, A.sun, A.cone, A.rim)
+    T.camera(W / 2 * S, -H / 2 * S, W * S, W * A.scale, H * A.scale)
+    T.render_setup(A.samples, A.out, transparent=True)
 elif A.part == 'oxide-field':
     # The head plate's face: one 512 x 512 CSS px tile of bead-blasted black-oxide steel, wrapping exactly.
     W = H = 512
@@ -176,6 +215,8 @@ elif A.part == 'head-frame':
     ox = T.mat_oxide('oxide', T=512 * S); pol = T.mat_titanium('edge', T=640 * S, finish='polished')
     m_edge, nte, be = T.node_mat('oxide-edge'); be.inputs['Base Color'].default_value = (0.2, 0.205, 0.21, 1)
     be.inputs['Metallic'].default_value = 1.0; be.inputs['Roughness'].default_value = 0.22
+    if A.metal == 'stainless':   # --metal stainless: the same plate in brushed 304 stainless (service panels)
+        m_edge = T.mat_stainless('stainless-edge', T=512 * S, seed=1.9, tone=0.7, rough=0.16)
     face = holdout('face')
     dark = T.node_mat('socket')[0]; dark.node_tree.nodes['Principled BSDF'].inputs['Base Color'].default_value = (0.006, 0.006, 0.007, 1)
     globals()['DARK'] = dark
@@ -199,6 +240,7 @@ elif A.part == 'head-frame':
         f.material_index = 0 if (f.normal.z > 0.999 and f.center.z > -1e-5) else 1
     scr = T.node_mat('cap')[0]; sb = scr.node_tree.nodes['Principled BSDF']
     sb.inputs['Base Color'].default_value = (0.09, 0.092, 0.096, 1); sb.inputs['Metallic'].default_value = 1; sb.inputs['Roughness'].default_value = 0.28
+    if A.metal == 'stainless': sb.inputs['Base Color'].default_value = (0.55, 0.55, 0.54, 1); sb.inputs['Roughness'].default_value = 0.24
     for (x, y) in corners:
         # Counterbore floor, then the cap screw seated in it: chamfered head, hex socket, top 0.6 px below the face.
         bpy.ops.mesh.primitive_cylinder_add(vertices=96, radius=8.2 * S, depth=0.4 * S, location=(x * S, -y * S, -4.6 * S))

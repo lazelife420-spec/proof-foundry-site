@@ -459,8 +459,8 @@
 
 /* Software junction: seven actual workstations, never seven tiny identical
    tiles. Each real screenshot remains an unobstructed display/window. */
-.h9-software-hero{position:relative;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse 60% 80% at 87% 4%,#6d796a16,transparent 82%);border-bottom:1px solid #536067}
-.h9-software-hero::before{content:"";position:absolute;inset:0 0 auto auto;width:min(21vw,260px);height:100%;border-left:1px solid #85918645;background:repeating-linear-gradient(0deg,transparent 0 21px,#c5caba12 22px 23px,transparent 24px 45px);mask-image:linear-gradient(to left,#000,transparent)}
+.h9-software-hero{position:relative;overflow:hidden;isolation:isolate;background:none;border-bottom:1px solid #536067}
+.h9-software-hero::before{content:"";position:absolute;inset:0 0 auto auto;width:min(21vw,260px);height:100%;border-left:1px solid #85918645}
 .h9-software-hero .h9-software-wrap{position:relative;padding:37px 0 42px}
 .h9-catalog-heading h2{font-size:clamp(30px,3vw,45px);letter-spacing:-.035em;max-width:14ch}
 .h9-product-finder{border:1px solid #5a6a6870;background:linear-gradient(120deg,#172125,#10181a);padding:24px 26px;margin:0 0 34px;box-shadow:inset 0 2px #a5b2a32a, 0 8px 22px #0003}
@@ -537,9 +537,6 @@
 .directory-foot{margin-top:auto;padding:22px 24px 26px}
 .directory-state{font:10px/1.8 var(--pf-mono);color:#c1cfc2;min-height:3.6em;margin-bottom:19px}
 .directory-foot .button{font-size:12px;width:100%;text-align:center}
-.directory-entry--lights-out{border-top-color:#80a4b1;background:radial-gradient(ellipse at 50% 30%,#3146584f,#0a141d)}
-.directory-entry--cleanroom{border-top-color:#d4dbc3;background:linear-gradient(145deg,#45574866,#162725)}
-.directory-entry--crosspoint{border-top-color:#bfa575}.directory-entry--forgecast{border-top-color:#7eb6ac}
 .directory-systems{padding-block:65px 20px}
 .directory-system-record{border-top:1px solid #728477;margin:0}
 .directory-system-record>summary{cursor:pointer;padding:25px 6px;font-size:23px;min-height:60px}
@@ -563,4 +560,26 @@
  .directory-entry,.directory-finder,.directory-art,.directory-no-art,.directory-zero,[data-directory-empty]{background:Canvas;color:CanvasText;border-color:CanvasText;box-shadow:none}
  .directory-entry p,.directory-entry .kicker,.directory-finder label,.directory-finder [data-directory-count],.directory-art figcaption,.directory-no-art>span,.directory-heading p,.directory-system-record>summary>span{color:CanvasText;text-shadow:none}
  .directory-finder input,.directory-finder select{background:Field;color:FieldText;border-color:FieldText}
+}
+/* Round 3 (owner: "use adobe tools or blender", 2026-11-04): the directory's cards and no-art plates are titanium index
+   plates of the hero's stock (ti-frame-sm, ti-field), as Home's records links; their rendered screws replace the CSS
+   rings. The per-product colour stays as a flat top rule (UI); washes, glows, insets and drop slabs go. */
+.directory-entry{position:relative;border:0 solid;border-image:url(/assets/round3/ti-frame-sm.webp) 48/24px/0 stretch;box-shadow:none;background:url(/assets/round3/ti-field-1280.webp) var(--px,0) var(--py,0)/640px 640px repeat,#323130;background-image:image-set(url(/assets/round3/ti-field-640.webp) 1x,url(/assets/round3/ti-field-1280.webp) 2x)}
+.directory-entry{--accent:#a5b19d}.directory-entry--lights-out{--accent:#80a4b1}.directory-entry--cleanroom{--accent:#d4dbc3}
+.directory-entry--crosspoint{--accent:#bfa575}.directory-entry--forgecast{--accent:#7eb6ac}
+/* Each card is cut from its own part of the sheet (nine offsets, so no two cards in a grid share a crop). */
+.directory-entry:nth-child(9n+2){--px:-271px;--py:-149px}.directory-entry:nth-child(9n+3){--px:-401px;--py:-53px}.directory-entry:nth-child(9n+4){--px:-137px;--py:-311px}
+.directory-entry:nth-child(9n+5){--px:-523px;--py:-227px}.directory-entry:nth-child(9n+6){--px:-61px;--py:-457px}.directory-entry:nth-child(9n+7){--px:-337px;--py:-389px}
+.directory-entry:nth-child(9n+8){--px:-449px;--py:-97px}.directory-entry:nth-child(9n){--px:-211px;--py:-523px}
+.directory-entry::after{content:"";position:absolute;left:24px;right:24px;top:6px;height:3px;background:var(--accent);pointer-events:none}
+.directory-art{border:1px solid #627870;box-shadow:none}
+.directory-no-art{border:0 solid;border-image:url(/assets/round3/ti-frame-sm.webp) 48/24px/0 stretch;box-shadow:none;background:url(/assets/round3/ti-field-1280.webp) var(--px,0) var(--py,0)/640px 640px repeat,#323130;background-image:image-set(url(/assets/round3/ti-field-640.webp) 1x,url(/assets/round3/ti-field-1280.webp) 2x);--px:-311px;--py:-421px}
+.directory-no-art i{display:none}
+/* Each no-art plate takes its card's offset shifted by a fixed amount, so no two plates (and no plate and its card) share a crop. */
+.directory-no-art{background-position:calc(var(--card-px,0px) - 311px) calc(var(--card-py,0px) - 421px)}
+.directory-entry{--card-px:var(--px,0px);--card-py:var(--py,0px)}
+.directory-finder{box-shadow:none}
+@media(forced-colors:active){
+ .directory-entry,.directory-no-art{border-image:none;border:1px solid CanvasText;background:Canvas}
+ .directory-entry::after{background:CanvasText}
 }

@@ -730,25 +730,11 @@ html[data-motion=off] .pf-lm{display:none}
  .pf-emblem>img{display:none}.pf-emblem .pf-seal-fc{display:block!important;position:absolute;inset:0}
  .home-statement h1,.home-intro,.home-maker-line,.home-maker figcaption,.pf-inspect,.home-orientation p:not(.kicker),.home-records p:not(.kicker),.home-contact p:not(.kicker),.home-records-links>a>span{color:CanvasText;text-shadow:none}
 }
-/* Materials (tokens in pf-foundry-system.css). The hero plate is blackened carbon steel held
-   by its existing corner fasteners; light oxidation only where its lower corners sit on the
-   chassis ledge and hold moisture. People press the stage plates, so they are brushed
-   stainless, each cut from a different part of the sheet. Records are archival paper. */
-.home-opening{background:
- radial-gradient(74px 20px at 0 100%,rgba(124,68,34,.17),transparent 72%),
- radial-gradient(96px 18px at 100% 100%,rgba(112,62,32,.13),transparent 72%),
- linear-gradient(120deg,rgba(35,49,53,.46),rgba(14,22,25,.84) 60%),
- var(--pf-mat-steel) 70% 12%/var(--pf-plate) auto,#141c1f}
+/* Materials. Every surface below is a Blender render (MATERIAL_PROVENANCE.md): the hero plate is titanium, the stage
+   plates brushed stainless, the records archival paper. The generated textures these rules once layered are retired. */
 .ledger-paper{background:url(/assets/round3/paper-field-1024.webp) 0 0/512px 512px repeat,#e9e6dd;background-image:image-set(url(/assets/round3/paper-field-512.webp) 1x,url(/assets/round3/paper-field-1024.webp) 2x)}
 .pfa-record{background:url(/assets/round3/paper-field-1024.webp) -137px -211px/512px 512px repeat,#e9e6dd;background-image:image-set(url(/assets/round3/paper-field-512.webp) 1x,url(/assets/round3/paper-field-1024.webp) 2x)}
 .pfa-fallback{background:url(/assets/round3/paper-field-1024.webp) -301px -59px/512px 512px repeat,#e9e6dd;background-image:image-set(url(/assets/round3/paper-field-512.webp) 1x,url(/assets/round3/paper-field-1024.webp) 2x)}
-@media (max-width:700px){
- .pfa-rail li{background:
-   radial-gradient(circle at calc(100% - 10px) 11px,#1d2328 0 1px,#d2d7db 1.5px,#8f979d 2.6px,#4a5258 3.2px,rgba(0,0,0,.5) 3.7px,transparent 4.2px),
-   radial-gradient(circle at calc(100% - 10px) calc(100% - 11px),#1d2328 0 1px,#d2d7db 1.5px,#8f979d 2.6px,#4a5258 3.2px,rgba(0,0,0,.5) 3.7px,transparent 4.2px),
-   linear-gradient(180deg,rgba(214,219,223,.58),rgba(168,174,179,.5)),
-   var(--pf-mat-stainless) calc(-300px + var(--k,0) * 113px) calc(-250px + var(--k,0) * 47px)/900px auto no-repeat,#a6abb0}
-}
 @media(forced-colors:active){.home-opening,.ledger-paper,.pfa-record,.pfa-fallback,.pfa-rail li,.pfa-rail li::before{background:Canvas}}
 /* Operating copy must win over the integrated prototype's engraving-scale type. */
 .pfa-stamp{font-size:12px;line-height:1.6;letter-spacing:.055em}
@@ -925,7 +911,8 @@ html[data-motion=off] .pf-lm{display:none}
    Blender (ti_plate.py --part mill-field, ti_common.mat_mill_steel): a 690 px tile, half the 1380 px plate, so its
    joints with the side plates fall on tile edges, and rendered joint strips (chassis-joint-l/-r: a 1 px chamfer on
    each plate and the 2 px gap between) in place of the CSS stripes. The light falloff and the hero pool go: light
-   belongs to the rendered parts. It replaces the generated mill-steel image on Home; the other rooms keep it for now. */
+   belongs to the rendered parts. It replaces the generated mill-steel image on Home; the other rooms followed on 2026-11-04 (room-field,
+   pf-foundry-system.css). */
 body.pf-ledger-page{background-color:#1b1f21;
  background-image:url(/assets/round3/chassis-joint-l.webp),url(/assets/round3/chassis-joint-r.webp),url(/assets/round3/chassis-field-1380.webp);
  background-image:url(/assets/round3/chassis-joint-l.webp),url(/assets/round3/chassis-joint-r.webp),image-set(url(/assets/round3/chassis-field-690.webp) 1x,url(/assets/round3/chassis-field-1380.webp) 2x);

@@ -1,8 +1,8 @@
 # Material provenance
 
-Website material layers for Home and the shared non-product rooms (About, Support, Proof Standard, Proof, Truth, Truth Files, Founders, Roadmap, Products directory, 404). Product pages and per-product Truth File records are not changed, except their footer. Since Round 2 every page shares the same welded mill-steel footer base, weld and rail.
+Website material layers for Home and the shared non-product rooms (About, Support, Proof Standard, Proof, Truth, Truth Files, Founders, Roadmap, Products directory, 404) and, since Round 3, each product's Truth File record. Product pages are not changed, except their footer. Since Round 2 every page shares the same welded mill-steel footer base, weld and rail.
 
-The three web assets below live in `brand/material/`. They were derived locally by `scripts/derive-material-assets.mjs` (Chrome canvas, headless, isolated profile, WebP encoder). No third-party or stock images were used. The butt weld is no longer a material layer: it is rendered hardware, `assets/round2/weld-seam-*.webp` (see Round 2 rendered hardware).
+The three web assets below live in `brand/material/`. They are retired: since 2026-11-04 no page uses them (Home since "Round 3 rendered ground, shadows and light", the other rooms since "Round 3, the other rooms"), and the `--pf-mat-*` tokens that pointed at them are removed. The files stay in the tree for the record. They were derived locally by `scripts/derive-material-assets.mjs` (Chrome canvas, headless, isolated profile, WebP encoder). No third-party or stock images were used. The butt weld is no longer a material layer: it is rendered hardware, `assets/round2/weld-seam-*.webp` (see Round 2 rendered hardware).
 
 | Asset | Size | Bytes | SHA-256 | Source | Transform |
 |---|---|---|---|---|---|
@@ -16,7 +16,7 @@ Retired on 2026-11-03, at the owner's request ("real weld beads"): `PF_BUTT_WELD
 - **How it was shown:** cropped, mirrored and repeated at 499 × 42 CSS px, so the same bead and a mirror seam came back every 499 px.
 - **What replaced it:** the rendered `weld-seam-2560.webp` / `weld-seam-5120.webp`. The file and its `--pf-mat-weld` token are removed.
 
-Total payload of the three layers: 310,624 bytes. A page downloads only the layers it uses: About (paper intro) and Truth Files ≈ 0.31 MB (all three); Proof Standard and Support ≈ 0.26 MB (no paper). Home loads none of them since Round 3 (see "Round 3 rendered ground, shadows and light"): every layer it used is overridden by a Blender render. All are CSS backgrounds with a matching solid `background-color`, so they cause no layout shift and the first frame shows the same dark tone before decoding.
+Total payload of the three layers: 310,624 bytes, none of it downloaded by any page since 2026-11-04. Their Blender replacements are CSS backgrounds with a matching solid `background-color`, so they cause no layout shift and the first frame shows the same dark tone before decoding.
 
 Generation prompts (verbatim, constraints included):
 
@@ -28,7 +28,7 @@ Source PNGs are retained outside the published site with the review evidence. Ge
 
 ## Material logic
 
-One light source, upper left. Rolled mill steel carries the load (Home is shaded least). Brushed stainless marks surfaces people handle: the five stage plates, the Proof Standard inspection frame, the Support service panel, the Truth Files clamp bar and the About room. Archival paper carries records. The central chassis plate is 1380 px wide, so its recessed joints with the side plates fall outside the 1320 px reading rail; About's stainless cladding sheets are 920 px tall with recessed butt joints. The only weld is the butt weld where the footer base meets the chassis. Movable keys and chain links hang on pins and clevises. Iron oxide appears at the lower corners of Home's carbon-steel hero plate, where it rests on the chassis ledge, and on the proof chain's forged links and clevises (the rust pass below). The pins, the stainless carriage and the stage plates stay clean. Forced colours remove the page ground, the footer base and weld, and all Round 2 hardware. The header steel and the paper behind About's intro and the Founders receipt still keep their material in forced colours, because those resets lose on specificity. That is a known open item; Round 2 did not touch it.
+One light source, upper left. Rolled mill steel carries the load (Home is shaded least). Brushed stainless marks surfaces people handle: the five stage plates, the Support service panel and the About room's cladding. The Proof Standard machine and each Truth File record's head are black-oxide plate, as Home's head plate, and every hanging sheet is held by the rendered clamp bar. Archival paper carries records. The central chassis plate is 1380 px wide, so its recessed joints with the side plates fall outside the 1320 px reading rail; About's stainless cladding sheets are 920 px tall with recessed butt joints. The only weld is the butt weld where the footer base meets the chassis. Movable keys and chain links hang on pins and clevises. Iron oxide appears only on the proof chain's forged links and clevises (the rust pass below); Home's hero plate is titanium ("Round 3 titanium hero plate"). The pins, the stainless carriage and the stage plates stay clean. Forced colours remove the page ground, the footer base and weld, and all Round 2 hardware. Until Round 3 the header steel and the paper behind About's intro and the Founders receipt kept their material in forced colours, because those resets lost on specificity; since "Round 3, the other rooms" no page keeps any material there.
 
 ## Round 2 rendered hardware
 
@@ -213,7 +213,7 @@ On 2026-11-03 the owner said "use adobe tools or blender". No Adobe creative app
   - The footer base has its own seed and a darker tone (mean 18).
   - The plate joints are rendered strips: a 1 px 35° chamfer on each plate and the 2 px gap between, lit by the key light (`chassis-joint-l/-r`). They replace CSS stripes.
   - The CSS light falloff on the chassis, the cool pool behind the hero, and the footer's darkening gradient, inset shadow and bottom band are gone: light belongs to the rendered parts. The weld strip is unchanged (owner decision, 2026-11-03).
-  - The other rooms keep the generated image for now; only Home and the shared footer move.
+  - The other rooms followed on 2026-11-04 (see "Round 3, the other rooms").
 - **Paper.** Home's sheets (the studio principle, the inspection record, the no-script stage list and the receipt) were a generated paper image under cream washes (`PF_PAPER_ARCHIVAL_v1.webp`). They are now archival cotton paper rendered as a 512 px tile (`ti_common.mat_paper`: mottled formation, long fibres both ways, a fine tooth). Mean sRGB 233/230/224, the old sheet's tone.
   - Each sheet's edge is rendered (`sheet-edge`, on all four sheets): the sheet lies on the chassis and its lower edge lifts 1.2 px, so the soft contact light from 45° casts the short shadow a thin sheet throws, about 1 px down its right edge and a soft 2–3 px band under its lower edge, in place of the CSS outline and 26 px blur.
   - The receipt's sheet takes the same clamp bar as the other two.
@@ -257,3 +257,45 @@ On 2026-11-03 the owner said "use adobe tools or blender". No Adobe creative app
 | `assets/round3/chain-light-s2.webp` | 466 × 315 | 54,380 | `531ccea38da1b3a4a218614747563f9b33a74cb2e9459d12ba455b83b3c6189d` | `chain_scene.py --scene desktop --mode base --scale 2 --samples 160 --crop 2`, with and without `--lit 2`, differenced by `chain_light.py` (RGBA), quality 88 |
 | `assets/round3/chain-light-s3.webp` | 465 × 319 | 59,894 | `d6bc2e26197934ce369b706a49312537cb41207fcab681e9883912df06573cd1` | `chain_scene.py --scene desktop --mode base --scale 2 --samples 160 --crop 3`, with and without `--lit 3`, differenced by `chain_light.py` (RGBA), quality 88 |
 | `assets/round3/chain-light-s4.webp` | 465 × 324 | 56,714 | `801834ed8403316717bde1d0ce397d32d96bd1bb01e834b249301f0dd8db877d` | `chain_scene.py --scene desktop --mode base --scale 2 --samples 160 --crop 4`, with and without `--lit 4`, differenced by `chain_light.py` (RGBA), quality 88 |
+
+## Round 3, the other rooms
+
+On 2026-11-04 the owner asked for the other rooms under the same rule ("Yes, other rooms", after "use adobe tools or blender"). Every room now stands on rendered material: About, Founders, Proof Standard, Proof, Roadmap, Support, Truth Files, each product's Truth File record, Truth, the products directory and 404. Driver: `round2/work/round3/rooms.sh` (16-bit 2x masters, then WebP; its encode log `masters/rooms-encode.out` lists these sizes and hashes). No page loads the three generated images above any more.
+- **The ground.** The rooms stand on the same hot-rolled plate as Home, a darker tone and its own seed (`room-field`, mean sRGB 25, the shade the generated steel had under its wash), with Home's rendered plate joints at the same places. The CSS joint stripes, the light falloff and the shade wash go. The per-product records keep their flat ground (`scripts/test-continuity-repairs.mjs` pins it).
+- **About** is a cleaner, newer room: brushed 304 stainless cladding (`ti_common.mat_stainless`: fine grain and longer brushing streaks along x, soft rolling clouds, an anisotropic sheen on a constant tangent, a light bump from the grain; torus noise of the tile's period, so it wraps exactly), mean sRGB 42 as before. Its sheets are 920 px tall; each butt joint (`cladding-joint-h`) is a 1 px 35° chamfer on each sheet and the 2 px gap between, lit by the key: the lower sheet's chamfer catches the light, the upper one falls dark. The chamfers are the sheet's own stainless, ground rather than brushed (roughness 0.7), so the lit lip is about sRGB 56, the brightness of the CSS seam it replaces, and text that crosses a joint keeps its contrast (table below).
+- **Paper.** Every sheet is the rendered archival paper with its rendered edge and short shadow (`paper-field`, `sheet-edge`), each at its own offset into the tile: About's intro, the Founders receipt, Support's help box, the Proof Standard doctrine, Truth's register, the Truth Files register, Proof's receipt cards and each record's sheets. The coloured caps (5 px tops, the receipt spine) and the drop slabs go. The Founders receipt no longer tilts: a rendered sheet is never rotated. The sheets that hang (About's intro, the Founders receipt, the help box, the Truth Files register and each record's head) are held by Home's rendered clamp bar.
+- **Plates.** The Proof Standard machine and each record's head are black-oxide plate (`oxide-field` in `oxide-frame`, as Home's head plate). Support's service panel is brushed stainless in the same plate's edge and four socket screws, rendered in stainless (`stainless-frame`, `head-frame --metal stainless`; its chamfer is a finer, brighter finish than the face, as the titanium frames' polished chamfers). The directory's cards and no-art plates and each record's return plate are titanium index plates (`ti-field` in `ti-frame-sm`, as Home's records links), each card cut from a different part of the sheet. The CSS screws (`--pf-bolt`), inset bevels, washes and glows go, and so does the directory hero's ruled texture.
+- **Kept as UI or lettering.** The directory's per-product colour is a flat 3 px rule. The roadmap's timeline is a hairline with square markers (an unavailable stop is filled with the ground's tone, so the line stops at it). The 404's cast numerals take the studio's cast-letter shadow set (the owner kept etched and stamped lettering, 2026-11-04).
+- **Forced colours.** Every sheet and plate becomes Canvas with a CanvasText frame, and the clamps and the Support panel are hidden; no page keeps a url() background or border image. This also closes the open item under "Material logic": the header and the paper behind About's intro and the Founders receipt no longer keep their material.
+- **Layout fixes made with it.**
+  - The record head holds its return plate from 541 px, and up to 700 px the plate stays in the flow, so its label no longer runs under the first sheet.
+  - The Product scope sheet lines up with the record's other sheets; it sat at the viewport's edge.
+  - The Support hero's text sits 20 px inside the panel's edge at every width (20 px of padding to 700 px; 12 px of padding plus the panel's 8 px reach from 701 to 1024 px).
+  - The Proof Standard machine clears its lower screws from 701 to 900 px.
+  - Focus rings that matched their surface now contrast with it: Proof's receipt buttons, the 404's primary button, and the Truth Files register rows (ring inside the row; the register starts below its clamp bar, so the first row's ring is whole).
+  - The 10 px counters on the paper (Proof's receipts, Truth's register, the Truth Files register) are darkened from 3.6–3.8:1 to 5.0:1 or better.
+  - Up to 700 px each record's return plate is 60 × 40 px; its frame is drawn at 10 px there, so the rendered screws stay in its corners.
+- **Not converted.** These stay open, pending the owner:
+  - Each record's two connection joints (`brand/connections/<product>.svg`, inlined by `scripts/foundry-presentation.ps1`) are vector drawings with gradient metals, drawn screws and an SVG drop shadow, and the product pages share them. Their parts move on hover by CSS rotate and scale, so a faithful render needs Blender-rendered motion frames.
+  - The site-wide `.button` keeps a 1 px inset highlight and a 1 px hover lift. It is shared with the product pages, and `scripts/continuity/check-components.cjs` pins it as identical on the 11 routes it checks (the products directory, the seven product pages, Proof Standard, one record and Founders).
+
+**Contrast on the rooms' surfaces**, against the single worst pixel of each surface (the brightest for light text, the darkest for dark):
+
+| Text | Surface | Ratio |
+|---|---|---|
+| #b3bdbf / #a5b0ad / #c9b083 | room ground (body text / table heads / kickers) | 8.1:1 / 7.0:1 / 7.4:1 |
+| #b3bdbf / #c9b083 / #e7e9e7 | About stainless, joints included | 5.7:1 / 5.2:1 / 8.9:1 |
+| #b3bdbf / #c9b083 | Support panel (stainless) | 6.0:1 / 5.5:1 |
+| #b5c4c0 / #c6b28e / #c9b083 | black oxide (stage numbers / record state / kickers) | 6.5:1 / 5.7:1 / 5.6:1 |
+| #c7d4cc / #c1cfc2 / #c9b38c | titanium cards (purpose / state / 9 px kicker) | 6.3:1 / 5.9:1 / 4.7:1 |
+| #5c6756 / #52695f / #4b6268 | paper (doctrine rules / receipt badges / record labels) | 4.5:1 / 4.5:1 / 4.9:1 |
+| #505d48 / #525d41 / #505d45 | paper (10 px counters: receipts / Truth register / Truth Files register, the last on its even rows' tint too) | 5.3:1 / 5.3:1 / 5.0:1 |
+
+| Asset | Pixels | Bytes | SHA-256 | Scene and mode |
+|---|---|---|---|---|
+| `assets/round3/room-field-1380.webp` | 1380 × 1380 | 33,880 | `e3f32f4aa43100c435d6a85390f4fb3be2622d666ea3d1e18db8a11164ea97b4` | `ti_plate.py --part mill-field --tile 690 --tone 0.18 --seed 1.3 --scale 2`, 384 samples, no denoise, quality 90; repeated at 690 CSS px |
+| `assets/round3/room-field-690.webp` | 690 × 690 | 8,442 | `6e677a18d750156915a2471ea76a0f396bd21faee0679b4d41a39492bc37308d` | the same master, Lanczos to 1x from a 3 × 3 tiling, quality 92 |
+| `assets/round3/stainless-field-1380.webp` | 1380 × 1380 | 39,118 | `239e491f3a12744e457a6c55ef65935ae96c5f0b35f15c294348c01e6ed4b0ec` | `ti_plate.py --part stainless-field --tile 690 --tone 0.16 --seed 0.7 --scale 2`, 384 samples, no denoise, quality 90; repeated at 690 CSS px (About's ground, the Support panel's face) |
+| `assets/round3/stainless-field-690.webp` | 690 × 690 | 14,090 | `c0cd49e15578715cd31347d42d7d71fcf7a0c56b8479fce52b50f2ace69a5e15` | the same master, Lanczos to 1x from a 3 × 3 tiling, quality 92 |
+| `assets/round3/stainless-frame.webp` | 368 × 448 | 19,748 | `c06fb775aa66a3903f4f1b774aaac8e5b276c1a26246a4b211e8f7fcad79bf55` | `ti_plate.py --part head-frame --metal stainless --margin 24 --scale 2`, 128 samples, outer 8 device px faded: rows 0–200 over rows 600–848 of the 368 × 848 master, quality 90 (`yuva420p`); sliced as `oxide-frame.webp` |
+| `assets/round3/cladding-joint-h.webp` | 128 × 1840 | 750 | `817a2aa806d755585ad774ffdd219f529728826527f2bd6999a9a6633ef7799d` | `ti_plate.py --part cladding-joint-h --tone 0.16 --seed 0.7 --scale 2`, 128 samples, quality 90 (`yuva420p`); repeated from 0 0 at 64 × 920 CSS px |

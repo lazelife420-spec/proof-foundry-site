@@ -18,16 +18,18 @@ Every route sits inside one gunmetal foundry frame: the same header, footer, nav
 | `experience.css` | software + product pages | interactive product demo blocks |
 | `h9-software.css` | software page | finder and product cards on the catalog page |
 | `product-page.css` | product pages | product page skeleton; per-product rules must be scoped under `body.product-<id>` |
-| `truth-files.css` | truth-files routes | Truth File record layout |
+| `truth-files.css` | Proof, Truth, the Truth Files and each record | Truth File record layout; each record's rendered head, sheets and return plate |
 | `pf-home-ledger.css` | home only | the home ledger: welded frame, capture cards, proof chain, mark inspector, release specimen |
-| `foundry-world.css`, `pf-site-ledger.css` | every non-home route | inner-route world backdrop and ledger strips |
-| `pf-foundry-system.css` | **every route, always last** | the shared owner: material tokens, fonts, header/footer/nav, buttons, focus, skip link, paper sheet mounting, motion, forced-colors, responsive frames |
+| `foundry-world.css` | every route (fourth) | inner-route world backdrop |
+| `pf-site-ledger.css`, `studio.css` | none | stripped by the builder (`scripts/foundry-presentation.ps1`); kept in the tree, not loaded |
+| `foundry-rooms.css` | every route except Home, the products directory and the product pages (last) | the rooms' page classes, their rendered sheets (paper, sheet edge, clamp bar), the Proof Standard machine, the Support panel and the rooms' focus colours |
+| `pf-foundry-system.css` | **every route, second** (after `styles.css`) | the shared owner: fonts, header/footer/nav, buttons, focus, skip link, the rooms' ground, motion, forced-colors, responsive frames |
 
-**Builder-enforced cascade order** (`scripts/build-site.ps1` template processor): page sheets → `foundry-world.css` → `pf-site-ledger.css` → `pf-foundry-system.css`. Home skips the two injected middle sheets. A rule in the shared owner therefore wins any tie against a page sheet — that is the mechanism that keeps the frame identical everywhere.
+**Builder-enforced cascade order** (`scripts/foundry-presentation.ps1`, `Complete-FoundryPresentation`, checked 2026-11-04): `styles.css` → `pf-foundry-system.css` → `foundry-connections.css` → `foundry-world.css` → the route's own sheets → `foundry-rooms.css` (rooms only). A later sheet wins a tie, so a page sheet that restates a shared-owner property overrides it on that route; the frame stays identical only because page sheets do not restate the shared owner's selectors.
 
 ## 3. Material tokens (the forged-metal vocabulary)
 
-Defined once at `pf-foundry-system.css:10-19`:
+Most of these were defined in `pf-site-ledger.css`, which the builder no longer loads; on built pages only `--pf-paper`, `--pf-sans`, `--pf-mono` (with `--pf-serif` and `--pf-rail`) are defined, in `styles.css`. The table records the vocabulary (checked 2026-11-04):
 
 | Token | Value | Meaning |
 |---|---|---|
@@ -39,9 +41,10 @@ Defined once at `pf-foundry-system.css:10-19`:
 | `--pf-muted` | `#b5c0c5` | muted text on dark |
 | `--pf-rule`, `--pf-paper-rule` | `#ffffff29` / `#0b0f142e` | hairline rules on dark / on paper |
 | `--pf-sans` / `--pf-mono` | Archivo / IBM Plex Mono | the two typefaces (self-hosted, latin subsets) |
-| `--pf-steel` | `url('/brand/PF_WELDED_STEEL_v1.webp')` | the welded steel world material |
-| `--pf-mat-steel` / `--pf-mat-stainless` / `--pf-mat-paper` | `brand/material/*.webp` | 2026-11-02 material layers for Home and shared non-product rooms: mill-steel ground, brushed stainless for handled surfaces, archival paper for records. The butt weld at the footer/chassis join is rendered hardware (`assets/round2/weld-seam-*.webp`); the generated weld tile and `--pf-mat-weld` were retired on 2026-11-03. Provenance, sizes and placement logic: `MATERIAL_PROVENANCE.md` |
-| `--pf-plate` / `--pf-bolt` | `1380px` / radial gradient | chassis plate width (joints fall outside the 1320px rail) and the cap-screw drawing used only at real mounting points |
+| `--pf-steel` | unset | the welded steel world material (`brand/PF_WELDED_STEEL_v1.webp`); only `pf-site-ledger.css`, which no page loads, uses it, and no page downloads the image |
+| `--pf-mat-steel` / `--pf-mat-stainless` / `--pf-mat-paper` | retired | 2026-11-02 generated material layers (mill steel, brushed stainless, archival paper). Removed on 2026-11-04, when the last rooms moved to Blender renders; the images stay unreferenced in `brand/material/` for the record. The generated weld tile and `--pf-mat-weld` were retired on 2026-11-03. Provenance: `MATERIAL_PROVENANCE.md` |
+| `--pf-plate` / `--pf-bolt` | retired | the generated chassis image's width and a CSS cap-screw drawing; removed on 2026-11-04. The ground is a rendered 690 px tile with rendered joints at the 1380 px plate's edges, and every screw is part of a rendered plate |
+| Round 3 rooms | `assets/round3/*.webp` | Blender renders (`MATERIAL_PROVENANCE.md`, "Round 3, the other rooms"). `pf-foundry-system.css` owns the rooms' ground: the room steel, and About's stainless cladding with its rendered joints. `foundry-rooms.css` owns the rooms' sheets (paper, sheet edge, clamp bar), the Proof Standard machine (black oxide) and the Support panel (stainless). `h9-software.css` owns the directory's titanium cards; `truth-files.css` each record's head, sheets and return plate. Each block ends with its forced-colours reset (no border image, Canvas, CanvasText frame, art pseudo-elements hidden) |
 | Round 2 hardware | `assets/round2/*.webp` | Blender-rendered parts. `pf-foundry-system.css` owns the navigation key housings and the couplers: one row from 1240 px, a 3-column snake on tablets, 2 columns on phones, and no coupler rotated in CSS. It also owns the footer. Every page shares the welded mill-steel base, the rendered butt weld (one 2560 px render, no CSS tile), a restrained bolted rail under the weld, and the engraved link panels. `pf-home-ledger.css` owns the raised seal mount behind the unchanged emblem and the chain base, plate and carriage sprites. Provenance and render commands: `MATERIAL_PROVENANCE.md` and `scripts/render-round2/` |
 | `--pf-rail` | `min(1280px, …)` | content rail width (narrows at 1200px and 640px breakpoints) |
 
@@ -113,7 +116,7 @@ These are dead weight, not breakage. Per the owner's rule to stop adding complex
 
 ## 8. Editing rules implied by the contract
 
-1. Want to change the frame (fonts, colors, rail, buttons, focus, sheet mounting)? Edit `pf-foundry-system.css` — and run the cross-route screenshot set, because it touches all 25 routes (see `MODULARITY_MUTATION_TESTS.md` m4).
+1. Want to change the frame (fonts, colors, rail, buttons, focus)? Edit `pf-foundry-system.css` — and run the cross-route screenshot set, because it touches all 25 routes (see `MODULARITY_MUTATION_TESTS.md` m4). The rooms' sheets, plates and clamps are `foundry-rooms.css` (and `truth-files.css` for the records).
 2. Want to change one page's content look? Edit that page's sheet, scoped to its own classes.
 3. Want to change one product's identity? Edit `products/<id>/module.json` data — the accent propagates to that product's surfaces only (m2).
-4. Never restate a shared-owner property in a page sheet; the shared owner loads last and will win the tie anyway.
+4. Never restate a shared-owner property in a page sheet: page sheets load after the shared owner, so the restatement would win on that route and fork the frame.

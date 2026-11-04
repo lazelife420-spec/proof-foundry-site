@@ -176,7 +176,7 @@
 .pf-room-proof .receipts-note{font-size:13px;max-width:100ch;color:var(--muted);margin-bottom:35px;line-height:1.85}
 .pf-room-proof .receipts-grid{display:block;counter-reset:receipt}
 .pf-room-proof .receipt-card{--text:#243936;--muted:#4d655e;--line:#81958a70;--accent:#5e664a;--pf-action-bg:#33443b;--pf-action-ink:#f1f2e6;counter-increment:receipt;position:relative;padding:32px 35px;margin-bottom:22px;border:0;border-left:5px solid #8c9981;background:#e9eadf;color:var(--text);box-shadow:0 10px 25px #0002;display:grid;grid-template-columns:1.05fr 1.3fr .65fr;gap:20px 35px}
-.pf-room-proof .receipt-card::before{content:counter(receipt,decimal-leading-zero);position:absolute;right:30px;top:26px;font:10px var(--pf-mono);color:#67785e}
+.pf-room-proof .receipt-card::before{content:counter(receipt,decimal-leading-zero);position:absolute;right:30px;top:26px;font:10px var(--pf-mono);color:#505d48}
 .pf-room-proof .receipt-card-head{grid-column:1;display:flex;gap:16px;align-items:start}
 .pf-room-proof .receipt-card-head h3{font:400 31px/1.05 var(--pf-serif);letter-spacing:-.035em;margin-bottom:10px}
 .pf-room-proof .status-indicator{font:10px/1.7 var(--pf-mono);color:#52695d;max-width:15ch}
@@ -223,7 +223,7 @@
 .pf-room-truth .truth-public-register .support-grid{display:block;background:#e6e8dd;color:#263d34;padding:12px 40px;counter-reset:register}
 .pf-room-truth .truth-public-register .detail-card{counter-increment:register;display:grid;grid-template-columns:.8fr 1.2fr;gap:9px 45px;padding:28px 0;border-color:#8d9a8c70;position:relative;padding-left:38px}
 .pf-room-truth .truth-public-register .detail-card:first-child{border-top:0}
-.pf-room-truth .truth-public-register .detail-card::before{content:counter(register,decimal-leading-zero);position:absolute;top:33px;left:0;font:10px var(--pf-mono);color:#667452}
+.pf-room-truth .truth-public-register .detail-card::before{content:counter(register,decimal-leading-zero);position:absolute;top:33px;left:0;font:10px var(--pf-mono);color:#525d41}
 .pf-room-truth .truth-public-register .detail-card h3{grid-row:span 2;font:400 28px/1.1 var(--pf-serif);margin:0}
 .pf-room-truth .truth-public-register .detail-card p{color:#405d4f;font-size:12px;margin:0}
 .pf-room-truth .truth-public-register .detail-card .text-link{font-size:12px;color:#2f5342;display:inline}
@@ -238,7 +238,7 @@
 .pf-room-truth-files .tf-grid{display:block;counter-reset:record}
 .pf-room-truth-files .tf-card{counter-increment:record;position:relative;background:#ecebe2;color:#263b35;display:grid;grid-template-columns:.9fr 1.1fr;gap:18px 70px;text-decoration:none;padding:30px 38px 28px 70px;border:0;border-bottom:1px solid #8c9a8970;box-shadow:none;margin:0;transition:background .2s}
 .pf-room-truth-files .tf-card:nth-child(even){background:#e4e6da}
-.pf-room-truth-files .tf-card::before{content:counter(record,decimal-leading-zero);position:absolute;top:38px;left:25px;font:10px var(--pf-mono);color:#657557}
+.pf-room-truth-files .tf-card::before{content:counter(record,decimal-leading-zero);position:absolute;top:38px;left:25px;font:10px var(--pf-mono);color:#505d45}
 .pf-room-truth-files .tf-card:hover{background:#f6f4e9}
 .pf-room-truth-files .tf-card-head{display:flex;align-items:start;gap:19px;grid-row:span 2}
 .pf-room-truth-files .tf-card-head>svg{flex:none;width:33px;height:33px;margin-top:4px}
@@ -284,36 +284,73 @@
   :is(.pf-room-about,.pf-room-support,.pf-room-roadmap) main :is(p,li,a),.pf-room-about .about-intro-box h2,.pf-room-about .about-intro-box p,.pf-room-support #help-safety .support-content-box :is(p,li,strong,a){color:CanvasText}
   .pf-room-roadmap .roadmap-list article::before{background:CanvasText;border-color:CanvasText;box-shadow:none}
 }
-/* Room materials (tokens in pf-foundry-system.css). Proof Standard: an exposed, bolted
-   inspection frame. Support: a removable stainless service panel held by four screws.
-   Truth Files, Proof and Founders: archival paper; the Truth Files register hangs from a
-   stainless clamp bar. About's stainless ground is set by the shared owner. */
-.pf-room-standard .ledger-chain-machine{border:1px solid #0a0e10;background:
- var(--pf-bolt) 4px 4px/14px 14px no-repeat,var(--pf-bolt) calc(100% - 4px) 4px/14px 14px no-repeat,
- var(--pf-bolt) 4px calc(100% - 4px)/14px 14px no-repeat,var(--pf-bolt) calc(100% - 4px) calc(100% - 4px)/14px 14px no-repeat,
- linear-gradient(130deg,rgba(36,46,48,.86),rgba(14,22,26,.9) 45%),var(--pf-mat-stainless) 0 0/cover no-repeat,#141c20;
- box-shadow:inset 0 1px rgba(220,226,224,.16),inset 0 -1px #000,0 0 0 1px #050708,0 10px 25px #0006}
+/* Room structure the Round 3 materials below dress: Support's service panel sits behind its hero. */
 body.studio.pf-room-support .support-hero{position:relative;isolation:isolate}
-body.studio.pf-room-support .support-hero::after{content:"";display:block;position:absolute;z-index:-1;inset:0 -28px;pointer-events:none;border:1px solid #06090a;
- background:
-  var(--pf-bolt) 6px 6px/14px 14px no-repeat,var(--pf-bolt) calc(100% - 6px) 6px/14px 14px no-repeat,
-  var(--pf-bolt) 6px calc(100% - 6px)/14px 14px no-repeat,var(--pf-bolt) calc(100% - 6px) calc(100% - 6px)/14px 14px no-repeat,
-  radial-gradient(90% 70% at 0 0,rgba(226,232,232,.07),transparent 70%),
-  linear-gradient(rgba(16,22,25,.86),rgba(16,22,25,.88)),var(--pf-mat-stainless) 20% 30%/cover no-repeat,#22282b;
- box-shadow:inset 0 1px rgba(226,232,230,.14),inset 0 -1px #000,0 0 0 2px #0b0f11,0 12px 22px #0006}
-.pf-room-support .support-section{border-top:1px solid #050708;box-shadow:inset 0 1px rgba(205,214,210,.06)}
-.pf-room-about .about-intro-section,.pf-room-founders .founders-receipt{background-image:linear-gradient(rgba(226,222,208,.42),rgba(226,222,208,.42)),var(--pf-mat-paper);background-size:auto,1024px auto}
+body.studio.pf-room-support .support-hero::after{content:"";display:block;position:absolute;z-index:-1;pointer-events:none}
+.pf-room-support .support-section{border-top:1px solid #050708}
 .pf-room-proof .receipt-section-title{color:#4b5943}
-.pf-room-proof .receipt-card{background:linear-gradient(rgba(233,234,223,.6),rgba(233,234,223,.6)),var(--pf-mat-paper) 0 0/1024px auto,#e9eadf}
-.pf-room-truth-files .tf-card{background:linear-gradient(rgba(236,235,226,.56),rgba(236,235,226,.56)),var(--pf-mat-paper) 0 calc(var(--rec,0) * -137px)/1024px auto,#ecebe2}
-.pf-room-truth-files .tf-card:nth-child(2n){--rec:1}.pf-room-truth-files .tf-card:nth-child(3n){--rec:2}
-.pf-room-truth-files .tf-grid{box-shadow:0 0 0 1px #070a0b,0 14px 30px #0006}
-.pf-room-truth-files .tf-grid::before{content:"";display:block;height:18px;
- background:var(--pf-bolt) 16px 50%/14px 14px no-repeat,var(--pf-bolt) calc(100% - 16px) 50%/14px 14px no-repeat,
-  linear-gradient(180deg,rgba(222,227,230,.5),rgba(150,156,160,.55)),var(--pf-mat-stainless) 0 40%/100% auto no-repeat,#a8adb1;
- box-shadow:inset 0 1px #fff6,inset 0 -1px #0008,0 2px 3px #0009}
-@media(max-width:700px){body.studio.pf-room-support .support-hero::after{inset:0 -12px}}
-@media(forced-colors:active){
- .pf-room-standard .ledger-chain-machine,.pf-room-proof .receipt-card,.pf-room-truth-files .tf-card,.pf-room-about .about-intro-section,.pf-room-founders .founders-receipt{background:Canvas}
- body.studio.pf-room-support .support-hero::after,.pf-room-truth-files .tf-grid::before{display:none}
+/* ── Round 3, the other rooms (owner: "use adobe tools or blender", 2026-11-04). Every sheet is the rendered archival paper
+   (paper-field) with its rendered edge and short shadow (sheet-edge); the sheets that hang are held by the rendered clamp
+   bar (clamp) in place of a coloured cap; the Founders receipt no longer tilts, since a rendered part is never rotated.
+   Proof Standard's machine is Home's black-oxide rail; Support's service panel is brushed stainless with its rendered
+   edge and four socket screws (head_parts' build: ti_plate.py --part head-frame --metal stainless). CSS screws, washes,
+   falloffs and drop slabs go; text and UI rules stay. ── */
+.pf-room-about .about-intro-section,.pf-room-founders .founders-receipt,.pf-room-support #help-safety .support-content-box,
+.pf-room-standard .standard-doctrine-box,.pf-room-truth .truth-public-register .support-grid,.pf-room-truth-files .tf-grid,.pf-room-proof .receipt-card{
+ border:0 solid;border-radius:0;box-shadow:none;border-image:url(/assets/round3/sheet-edge.webp) 16 32 64 16/8px 16px 32px 8px/4px 8px 8px 4px stretch;background:url(/assets/round3/paper-field-1024.webp) var(--px,0) var(--py,0)/512px 512px repeat,#e9e6dd;background-image:image-set(url(/assets/round3/paper-field-512.webp) 1x,url(/assets/round3/paper-field-1024.webp) 2x)}
+.pf-room-about .about-intro-section{--px:-59px;--py:-301px}
+.pf-room-founders .founders-receipt{--px:-383px;--py:-167px;transform:none}
+.pf-room-support #help-safety .support-content-box{--px:-251px;--py:-433px;position:relative}
+.pf-room-standard .standard-doctrine-box{--px:-97px;--py:-389px}
+.pf-room-truth .truth-public-register .support-grid{--px:-337px;--py:-53px}
+.pf-room-truth-files .tf-grid{--px:-59px;--py:-173px;position:relative}
+.pf-room-proof .receipt-card:nth-child(7n+1){--px:-23px;--py:-311px}.pf-room-proof .receipt-card:nth-child(7n+2){--px:-149px;--py:-41px}
+.pf-room-proof .receipt-card:nth-child(7n+3){--px:-277px;--py:-379px}.pf-room-proof .receipt-card:nth-child(7n+4){--px:-401px;--py:-113px}
+.pf-room-proof .receipt-card:nth-child(7n+5){--px:-61px;--py:-457px}.pf-room-proof .receipt-card:nth-child(7n+6){--px:-191px;--py:-227px}
+.pf-room-proof .receipt-card:nth-child(7n+7){--px:-433px;--py:-271px}
+/* The Truth Files register is one sheet: its records are printed on it (a flat print tint on even rows, a hover tint). */
+.pf-room-truth-files .tf-card{background:transparent}
+.pf-room-truth-files .tf-card:nth-child(even){background:rgba(70,82,60,.045)}
+.pf-room-truth-files .tf-card:hover{background:rgba(255,255,255,.3)}
+.pf-room-about .about-intro-section::before,.pf-room-founders .founders-receipt::before,
+.pf-room-support #help-safety .support-content-box::before,.pf-room-truth-files .tf-grid::before{content:"";display:block;position:absolute;z-index:1;top:-13px;left:calc(-1 * var(--clamp-out,10px));right:calc(-1 * var(--clamp-out,10px));height:30px;box-sizing:border-box;border:0 solid;border-width:0 36px;border-image:url(/assets/round3/clamp.webp) 0 72 fill/0 36px/0 stretch;background:none;box-shadow:none;pointer-events:none}
+@media (max-width:700px){
+ .pf-room-about .about-intro-section,.pf-room-founders .founders-receipt,.pf-room-support #help-safety .support-content-box,.pf-room-truth-files .tf-grid{--clamp-out:8px}
 }
+/* From 701 to 900 px the machine's own padding (14 px sides, 20 px foot) put the last stage's rule over the frame's
+   lower screws; the frame's screws sit 8-25 px in from each corner. */
+@media (min-width:701px) and (max-width:900px){.pf-room-standard .ledger-chain-machine{padding-right:30px;padding-bottom:30px}}
+.pf-room-standard .ledger-chain-machine{border:0 solid;border-image:url(/assets/round3/oxide-frame.webp) 56 112 104 56/28px 56px 52px 28px/0 24px 24px 0 stretch;background:url(/assets/round3/oxide-field-1024.webp) 0 0/512px 512px repeat,#1d1f21;background-image:image-set(url(/assets/round3/oxide-field-512.webp) 1x,url(/assets/round3/oxide-field-1024.webp) 2x);box-shadow:none}
+@media (max-width:700.98px){.pf-room-standard .ledger-chain-machine{border-image-width:16px 32px 29.71px 16px;border-image-outset:0 13.71px 13.71px 0}}
+body.studio.pf-room-support .support-hero::after{inset:0 -20px;border:0 solid;box-shadow:none;
+ border-image:url(/assets/round3/stainless-frame.webp) 56 112 104 56/28px 56px 52px 28px/0 24px 24px 0 stretch;
+ background:url(/assets/round3/stainless-field-1380.webp) -233px -131px/690px 690px repeat,#2b2f31;
+ background-image:image-set(url(/assets/round3/stainless-field-690.webp) 1x,url(/assets/round3/stainless-field-1380.webp) 2x)}
+@media (max-width:1024px){body.studio.pf-room-support .support-hero{padding-inline:12px}body.studio.pf-room-support .support-hero::after{inset:0 -8px}}
+@media (max-width:700px){body.studio.pf-room-support .support-hero{padding-inline:20px}body.studio.pf-room-support .support-hero::after{inset:0;border-image-width:16px 32px 29.71px 16px;border-image-outset:0 13.71px 13.71px 0}}
+.pf-room-support .support-section{box-shadow:none}
+.pf-room-roadmap .roadmap-list article::before{box-shadow:none}
+/* An unavailable stop is an empty marker: filled with the room's own ground tone so the timeline rule stops at it. */
+.pf-room-roadmap .roadmap-unavailable article::before{background:#191919}
+.pf-room-error .route-break{text-shadow:-.6px -1px 0 rgba(255,244,214,.32),.6px 1px 0 rgba(0,0,0,.95),1.6px 2.6px 2px rgba(0,0,0,.62)}
+@media (forced-colors:active){
+ .pf-room-about .about-intro-section,.pf-room-founders .founders-receipt,.pf-room-support #help-safety .support-content-box,
+ .pf-room-standard .standard-doctrine-box,.pf-room-truth .truth-public-register .support-grid,.pf-room-truth-files .tf-grid,.pf-room-proof .receipt-card,
+ .pf-room-standard .ledger-chain-machine{border-image:none;border:1px solid CanvasText;background:Canvas;box-shadow:none}
+ .pf-room-truth-files .tf-card,.pf-room-truth-files .tf-card:nth-child(even),.pf-room-truth-files .tf-card:hover{background:Canvas}
+ .pf-room-about .about-intro-section::before,.pf-room-founders .founders-receipt::before,
+ .pf-room-support #help-safety .support-content-box::before,.pf-room-truth-files .tf-grid::before,body.studio.pf-room-support .support-hero::after{display:none}
+ .pf-room-error .route-break{text-shadow:none}
+ .pf-room-roadmap .roadmap-unavailable article::before{background:CanvasText}
+}
+/* Focus. The global ring is the control's own text colour 5 px outside it, so a light button on paper or a dark
+   button on the room ground had a ring that matched the surface around it (about 1.1:1). These rings take a colour
+   that contrasts with that surface instead. */
+.pf-room-proof .receipt-card .button-primary:focus-visible{outline-color:#1b2b27}
+.pf-room-error .button-primary:focus-visible{outline-color:#e7e9e7}
+/* A register row spans the whole sheet, so its ring goes inside the row, on the paper, not off the sheet's edge. */
+.pf-room-truth-files .tf-card:focus-visible{outline-offset:-6px}
+/* The clamp bar covers the register's top 9 px; the first row starts below it, so its ring and its numeral stay clear. */
+.pf-room-truth-files .tf-grid{padding-top:10px}
+/* The register's 10 px numerals sit on the rendered paper (its darkest pixel and the even rows' tint): darkened from
+   #67785e, #667452 and #657557 (3.6-3.8:1) to 5.0:1 or better. */

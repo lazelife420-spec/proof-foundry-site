@@ -486,3 +486,29 @@
 @media(max-width:780px){.tf-page .tf-hero{margin-top:18px;padding:35px 24px 22px}.tf-page .tf-hero::before{left:15px;right:15px}.tf-page .tf-section{padding:32px 24px;box-shadow:5px 0 #344646}.tf-page .record-return{right:15px;top:40px}}
 @media(max-width:540px){.tf-page .tf-hero{padding:24px 16px 20px}.tf-page .tf-section{padding:28px 17px}.tf-page .record-return{position:relative;right:auto;top:auto;width:150px;margin:22px 0 0}.tf-page .tf-product-head{padding-right:0}.tf-page .tf-hero::before{top:-5px}}
 @media(forced-colors:active){.tf-page .tf-hero,.tf-page .tf-section,.tf-page .record-return .record-joint{color:CanvasText!important;background:Canvas!important;border:1px solid CanvasText!important;box-shadow:none!important}.tf-page .tf-section a{color:LinkText!important}}
+/* Round 3 (owner: "use adobe tools or blender", 2026-11-04): a record's head is a black-oxide plate (oxide-field and the
+   head plate's rendered edge), held by the rendered clamp bar; its sections are rendered paper with their rendered edge;
+   the return joint is a small titanium plate. The page ground stays flat (no chassis on a record), and the facts, lists
+   and machines keep their opaque print colours. */
+.tf-page .tf-hero{border:0 solid;border-image:url(/assets/round3/oxide-frame.webp) 56 112 104 56/28px 56px 52px 28px/0 24px 24px 0 stretch;background:url(/assets/round3/oxide-field-1024.webp) 0 0/512px 512px repeat,#1d1f21;background-image:image-set(url(/assets/round3/oxide-field-512.webp) 1x,url(/assets/round3/oxide-field-1024.webp) 2x);box-shadow:none}
+.tf-page .tf-hero::before{top:-13px;left:52px;right:52px;height:30px;box-sizing:border-box;border:0 solid;border-width:0 36px;
+ border-image:url(/assets/round3/clamp.webp) 0 72 fill/0 36px/0 stretch;background:none;box-shadow:none}
+.tf-page .tf-section,.tf-page .tf-section:nth-of-type(even),.tf-page .tf-section:first-of-type{border:0 solid;border-radius:0;box-shadow:none;border-image:url(/assets/round3/sheet-edge.webp) 16 32 64 16/8px 16px 32px 8px/4px 8px 8px 4px stretch;background:url(/assets/round3/paper-field-1024.webp) var(--px,0) var(--py,0)/512px 512px repeat,#e9e6dd;background-image:image-set(url(/assets/round3/paper-field-512.webp) 1x,url(/assets/round3/paper-field-1024.webp) 2x);--px:-59px;--py:-173px}
+.tf-page .tf-section:nth-of-type(even){--px:-311px;--py:-421px}
+.tf-page .tf-section:nth-of-type(3n){--px:-163px;--py:-29px}
+.tf-page .record-return .record-joint{border-radius:0;border:0 solid;border-image:url(/assets/round3/ti-frame-sm.webp) 48/24px/0 stretch;box-shadow:none;background:url(/assets/round3/ti-field-1280.webp) var(--px,0) var(--py,0)/640px 640px repeat,#323130;background-image:image-set(url(/assets/round3/ti-field-640.webp) 1x,url(/assets/round3/ti-field-1280.webp) 2x)}
+@media(max-width:780px){.tf-page .tf-hero::before{left:15px;right:15px}.tf-page .tf-section{box-shadow:none}}
+/* From 541 px the return plate sits absolutely in the head; between 541 and 780 px it was taller than the head, so its
+   label ran under the first sheet. The head now holds it, with room for the sheet edge's 4 px outset. */
+@media(min-width:541px){.tf-page .tf-hero{min-height:208px}}
+/* Up to 700 px the return plate is in flow (position:relative), so the 40 px offset from the 780 px rule only pushed it
+   under the first sheet; it stays where the flow puts it. */
+@media(max-width:700px){.tf-page .record-return{top:auto;right:auto}}
+/* The Product scope sheet sits outside .store-shell, so the margin-left:0 meant for the shell's sheets put it at the
+   viewport's edge; it lines up with the stack above (the shell's left edge is (100% - rail) / 2). */
+.tf-page .tf-section.container{margin-left:calc((100% - var(--pf-rail)) / 2)}
+@media(max-width:540px){.tf-page .tf-hero{border-image-width:16px 32px 29.71px 16px;border-image-outset:0 13.71px 13.71px 0}.tf-page .tf-hero::before{top:-13px}}
+@media(forced-colors:active){.tf-page .tf-hero,.tf-page .tf-section,.tf-page .record-return .record-joint{border-image:none!important}.tf-page .tf-hero::before{display:none}}
+/* Up to 700 px the return plate is 60 x 40 px: its frame is drawn at 10 px (the plate's own scale), so the rendered
+   screws stay in the frame's corners, clear of the joint drawn inside it. */
+@media(max-width:700px){.tf-page .record-return .record-joint{border-image-width:10px}}

@@ -116,6 +116,30 @@ def mat_mill_steel(name, T=6.9, seed=0.0, tone=0.06):
     L(h.outputs[0], bp.inputs['Height']); L(bp.outputs[0], inp(b, 'Normal'))
     return m
 
+def mat_stainless(name, T=5.12, seed=0.0, tone=0.62, rough=0.3):
+    """Cold-rolled 304 stainless with a No. 4 brushed finish: fine grain lines along x (very long, thin, faint),
+    longer brushing streaks, soft rolling clouds, a light bump from the grain and an anisotropic sheen whose tangent
+    is constant along x, so a tile stretched or repeated never sweeps. Torus noise of period T: the field tiles exactly."""
+    m, nt, b = node_mat(name); L = nt.links.new
+    inp(b, 'Metallic').default_value = 1.0
+    vec, w = torus4d(nt, T, seed, seed * 1.3)
+    gvec, gw = torus4d_aniso(nt, T, 0.006, 1.0, seed + 3.3, seed + 0.9)
+    svec, sw = torus4d_aniso(nt, T, 0.012, 1.0, seed + 1.7, seed + 2.2)
+    grain = noise4(nt, gvec, gw, 1 / 0.004, detail=2, rough=0.5)
+    streak = noise4(nt, svec, sw, 1 / 0.022, detail=3, rough=0.55)
+    cloud = noise4(nt, vec, w, 1 / 0.9, detail=3, rough=0.5)
+    k = _mul(nt, map_range(nt, grain, 0.3, 0.7, 0.88, 1.1), map_range(nt, streak, 0.3, 0.7, 0.95, 1.04))
+    k = _mul(nt, k, map_range(nt, cloud, 0.35, 0.65, 0.95, 1.04))
+    col = nt.nodes.new('ShaderNodeCombineColor')
+    for i, t in enumerate((tone, tone * 1.01, tone * 1.03)): L(_mul(nt, k, t), col.inputs[i])
+    L(col.outputs[0], inp(b, 'Base Color'))
+    L(map_range(nt, streak, 0.3, 0.7, rough + 0.04, rough - 0.04), inp(b, 'Roughness'))
+    inp(b, 'Anisotropic').default_value = 0.6
+    tv = nt.nodes.new('ShaderNodeCombineXYZ'); tv.inputs[0].default_value = 1.0; L(tv.outputs[0], inp(b, 'Tangent'))
+    bp = nt.nodes.new('ShaderNodeBump'); bp.inputs['Strength'].default_value = 0.04; bp.inputs['Distance'].default_value = 0.001
+    L(grain, bp.inputs['Height']); L(bp.outputs[0], inp(b, 'Normal'))
+    return m
+
 def mat_paper(name, T=5.12, seed=0.0, tone=(0.885, 0.84, 0.655)):
     """Archival cotton paper: matte, a faint sheen, and two scales of fibre (long fibres laid both ways, short fibres
     and a fine tooth) in the albedo and a shallow bump. Torus noise of period T, so the sheet's field tiles exactly."""

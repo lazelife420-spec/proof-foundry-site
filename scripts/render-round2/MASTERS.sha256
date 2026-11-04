@@ -151,3 +151,13 @@ d1c054a580042665a00806bfa9f06e9f7503cb7dfd24b1cda38641b3b8dc5779  round3/masters
 3911199e4f52e694d4f3574def8ec123443a3c5dfcf66794a08093fb1c8687c3  round3/masters/passes/emblem-mark-shadow.png
 fa8ede9160652bc6c2050549cce2177b392ae6b4b49ce7ca5f8331b00c9ba4c6  round3/masters/passes/emblem-badge-obj.png
 e3a327b6f9ecfa43d60190a82e6ca0252fbcb708d7f9bde1704e22052703ad51  round3/masters/passes/emblem-badge-shadow.png
+# Round 3, the other rooms (round3/rooms.sh): the room steel, About's stainless and its cladding joint, and the Support
+# panel's stainless edge. *-1x-wrapped.png is the 1x tile (Lanczos from a 3 x 3 tiling); stainless-frame-2x-edge.png has
+# its outer 8 device px faded.
+a5c41f7d54429e6d3672ddc1da4b6e979a7c7f2b44d5151ed6f821e024920145  round3/masters/room-field-2x.png
+404f21c3d444b4baa8c08b7275f8cf159e9a819cfdba7870955bf25ce4c051cd  round3/masters/room-field-1x-wrapped.png
+e504a7a11caeb19dca9ba4d915835f1f87e3e59bc1d283190693335ea2858b30  round3/masters/stainless-field-2x.png
+1c64d37efb85c46dfff5be9ebd9180fe30dc21d1929801806d4675f7b458aa91  round3/masters/stainless-field-1x-wrapped.png
+ad2afb86f3bda097c76e8272927134b79de468b8c35f78de6053db065a1fd094  round3/masters/stainless-frame-2x.png
+7ac2fd7e292880bb7f38b83065aa6592db1d028145cf113b1b19af48768cbbef  round3/masters/stainless-frame-2x-edge.png
+721d46c84ea75ec3a89e0958c339eb14694e24c0b014d3fc83f8d60195fb7d75  round3/masters/cladding-joint-h-2x.png

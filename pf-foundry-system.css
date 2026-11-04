@@ -844,55 +844,28 @@ summary::-webkit-details-marker {
    Blender render (assets/round2/weld-seam-*.webp, 2560 px, no repeat on screens up to 2560 px).
    Movable keys and chain links hang on pins and clevises, never welds. Assets and
    transforms: MATERIAL_PROVENANCE.md. */
-:root{
- --pf-mat-steel:url("/brand/material/PF_MILL_STEEL_GROUND_v1.webp");
- --pf-mat-stainless:url("/brand/material/PF_STAINLESS_BRUSHED_v1.webp");
- --pf-mat-paper:url("/brand/material/PF_PAPER_ARCHIVAL_v1.webp");
- /* The central chassis plate: the 1150px weld-free source columns at 1.2x, wider than the 1320px rail
-    so its joints with the side plates fall outside the reading column. */
- --pf-plate:1380px;
- --pf-plate-shade:rgba(10,14,16,.5);
- /* Button-head cap screw seen under the upper-left light: socket, lit crown, shadowed skirt. */
- --pf-bolt:radial-gradient(circle at 44% 40%,#0a0d0e 0 1.2px,#a3aca9 1.7px,#6b7573 3px,#353d3d 4.3px,#0d1112 5.1px,rgba(0,0,0,.5) 5.9px,transparent 6.6px);
+body:is(.pf-room-support,.pf-room-standard,.pf-room-truth-files,.pf-room-truth,.pf-room-proof,.pf-room-founders,.pf-room-roadmap,.pf-room-error,.pf-directory-page){
+ /* Round 3 (owner: "use adobe tools or blender"): the rooms stand on the same hot-rolled plate as Home, rendered in
+    Blender (ti_plate.py --part mill-field, a darker tone: Home carries the heaviest structure and is shaded least),
+    with the rendered plate joints; the generated steel, its wash and the CSS falloff and joint stripes are gone. */
+ background-color:#191919;
+ background-image:url(/assets/round3/chassis-joint-l.webp),url(/assets/round3/chassis-joint-r.webp),url(/assets/round3/room-field-1380.webp);
+ background-image:url(/assets/round3/chassis-joint-l.webp),url(/assets/round3/chassis-joint-r.webp),image-set(url(/assets/round3/room-field-690.webp) 1x,url(/assets/round3/room-field-1380.webp) 2x);
+ background-size:12px 512px,12px 512px,690px 690px;background-repeat:repeat-y,repeat-y,repeat;
+ background-position:calc(50% - 690px) 0,calc(50% + 690px) 0,calc(50% - 345px) 0;
 }
-body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-room-truth-files,.pf-room-truth,.pf-room-proof,.pf-room-founders,.pf-room-roadmap,.pf-room-error,.pf-directory-page){
- background-color:#1b1f21;
- background-image:
-  linear-gradient(90deg,transparent calc(50% - var(--pf-plate)/2 - 2px),#050708 calc(50% - var(--pf-plate)/2 - 2px) calc(50% - var(--pf-plate)/2),rgba(205,214,210,.08) calc(50% - var(--pf-plate)/2) calc(50% - var(--pf-plate)/2 + 1px),transparent calc(50% - var(--pf-plate)/2 + 1px) calc(50% + var(--pf-plate)/2 - 1px),rgba(205,214,210,.05) calc(50% + var(--pf-plate)/2 - 1px) calc(50% + var(--pf-plate)/2),#050708 calc(50% + var(--pf-plate)/2) calc(50% + var(--pf-plate)/2 + 2px),transparent calc(50% + var(--pf-plate)/2 + 2px)),
-  radial-gradient(120% 60% at 0 0,rgba(214,224,220,.05),transparent 62%),
-  linear-gradient(var(--pf-plate-shade),var(--pf-plate-shade)),
-  var(--pf-mat-steel);
- background-size:100% 100%,100% 2600px,100% 100%,var(--pf-plate) auto;
- background-repeat:no-repeat,no-repeat,no-repeat,repeat;
- background-position:0 0,0 0,0 0,center top;
-}
-/* Home carries the heaviest structure: the plate is shaded least. About is a cleaner,
-   newer stainless room with no mill scale. */
-body.pf-ledger-page{--pf-plate-shade:rgba(10,14,16,.32)}
+/* About is a cleaner, newer room: brushed 304 stainless cladding (ti_plate.py --part stainless-field), its sheets 920 px
+   tall with recessed, rendered butt joints (--part cladding-joint-h), on the same plate joints. */
 body.pf-room-about{
- background-color:#262b2e;
- background-image:
-  linear-gradient(90deg,transparent calc(50% - var(--pf-plate)/2 - 1px),#07090a calc(50% - var(--pf-plate)/2 - 1px) calc(50% - var(--pf-plate)/2 + 1px),transparent calc(50% - var(--pf-plate)/2 + 1px) calc(50% + var(--pf-plate)/2 - 1px),#07090a calc(50% + var(--pf-plate)/2 - 1px) calc(50% + var(--pf-plate)/2 + 1px),transparent calc(50% + var(--pf-plate)/2 + 1px)),
-  /* Cladding sheets are 920px tall (the source sheet at plate width); their butt joints are recessed. */
-  repeating-linear-gradient(180deg,transparent 0 917px,#07090a 917px 919px,rgba(226,232,230,.07) 919px 920px),
-  radial-gradient(120% 60% at 0 0,rgba(226,232,232,.06),transparent 62%),
-  linear-gradient(rgba(16,21,24,.8),rgba(16,21,24,.8)),
-  var(--pf-mat-stainless);
- background-size:100% 100%,100% 100%,100% 2600px,100% 100%,var(--pf-plate) auto;
- background-repeat:no-repeat,no-repeat,no-repeat,no-repeat,repeat;
- background-position:0 0,0 0,0 0,0 0,center top;
-}
-body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-room-truth-files,.pf-room-truth,.pf-room-proof,.pf-room-founders,.pf-room-roadmap,.pf-room-error,.pf-directory-page) .site-header{
- background:
-  linear-gradient(180deg,rgba(245,247,236,.07),transparent 8px),
-  linear-gradient(180deg,rgba(40,48,52,.6),rgba(22,30,34,.66) 14%,rgba(13,19,22,.78) 84%,rgba(7,11,13,.94)),
-  var(--pf-mat-steel) center 37%/var(--pf-plate) auto,#14191c;
+ background-color:#2a2a2a;
+ background-image:url(/assets/round3/chassis-joint-l.webp),url(/assets/round3/chassis-joint-r.webp),url(/assets/round3/cladding-joint-h.webp),url(/assets/round3/stainless-field-1380.webp);
+ background-image:url(/assets/round3/chassis-joint-l.webp),url(/assets/round3/chassis-joint-r.webp),url(/assets/round3/cladding-joint-h.webp),image-set(url(/assets/round3/stainless-field-690.webp) 1x,url(/assets/round3/stainless-field-1380.webp) 2x);
+ background-size:12px 512px,12px 512px,64px 920px,690px 690px;background-repeat:repeat-y,repeat-y,repeat,repeat;
+ background-position:calc(50% - 690px) 0,calc(50% + 690px) 0,0 0,calc(50% - 345px) 0;
 }
 /* Footer base: a heavier member, butt-welded to the chassis along its top edge. */
 body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-room-truth-files,.pf-room-truth,.pf-room-proof,.pf-room-founders,.pf-room-roadmap,.pf-room-error,.pf-directory-page) .site-footer{
  position:relative;border-top:0;
- background:linear-gradient(180deg,rgba(7,10,12,.5),rgba(7,10,12,.74)),var(--pf-mat-steel) center 18%/var(--pf-plate) auto,#121618;
- box-shadow:inset 0 22px 18px -16px #0009;
 }
 body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-room-truth-files,.pf-room-truth,.pf-room-proof,.pf-room-founders,.pf-room-roadmap,.pf-room-error,.pf-directory-page) .site-footer::before{
  content:"";position:absolute;left:0;right:0;top:-21px;height:42px;pointer-events:none;
@@ -990,14 +963,6 @@ body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-ro
    the base. The rail is one Blender render, 1920 px long, so it has no tile seams. Below it sit recessed link panels,
    stamped headings and engraved links. :root body matches the material rule's specificity and comes later. ── */
 :root .site-footer{position:relative;margin-top:70px;padding:72px 0 22px;border-top:0;color:#c4cccd}
-:root body .site-footer{
- background:
-  url(/assets/round2/footer-rail-1920.webp) 50% 8px/1920px 52px no-repeat,
-  linear-gradient(180deg,rgba(7,10,12,.5),rgba(7,10,12,.74)),var(--pf-mat-steel) center 18%/var(--pf-plate) auto,#121618;
- background-image:
-  image-set(url(/assets/round2/footer-rail-1920.webp) 1x,url(/assets/round2/footer-rail-3840.webp) 2x),
-  linear-gradient(180deg,rgba(7,10,12,.5),rgba(7,10,12,.74)),var(--pf-mat-steel);
- box-shadow:inset 0 22px 18px -16px #0009}
 :root body .site-footer::before{
  content:"";position:absolute;left:0;right:0;top:-21px;height:42px;pointer-events:none;
  background:linear-gradient(rgba(12,15,17,.34),rgba(12,15,17,.34)),url(/assets/round2/weld-seam-2560.webp) 50% 50%/2560px 42px repeat-x;background-image:linear-gradient(rgba(12,15,17,.34),rgba(12,15,17,.34)),image-set(url(/assets/round2/weld-seam-2560.webp) 1x,url(/assets/round2/weld-seam-5120.webp) 2x);
