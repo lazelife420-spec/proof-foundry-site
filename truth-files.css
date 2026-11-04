@@ -512,3 +512,27 @@
 /* Up to 700 px the return plate is 60 x 40 px: its frame is drawn at 10 px (the plate's own scale), so the rendered
    screws stay in the frame's corners, clear of the joint drawn inside it. */
 @media(max-width:700px){.tf-page .record-return .record-joint{border-image-width:10px}}
+/* Round 3 (owner: "Yes, render them", 2026-11-04): each record's connection joints are Blender renders of the authored
+   mechanisms (scripts/render-round2/joint_parts.py): the drawing's gradients, painted highlights and drop shadow
+   become real parts, light and a contact shadow. Their motion is rendered too: nine frames at even steps of engagement
+   (frame 0 rest, frame 8 engaged), and nothing rendered is rotated or scaled in CSS. The page moves a whole-number frame
+   index (--joint-frame, a registered <integer>, so an interrupted or reversed hover always lands on a whole frame) with
+   the drawing's own timing (--joint-time, --joint-ease from foundry-connections.css), so it eases in and out as the
+   drawing did. The render covers the SVG's box plus its shadow margin (the viewBox -6..252 x -6..168); the SVG after it
+   keeps the layout, hidden, and is the forced-colours drawing. Reduced motion holds frame 0 (foundry-connections.css sets
+   --joint-engage to 0 and turns transitions off). It prints as rendered (print-color-adjust), as the drawing did. */
+@property --joint-frame{syntax:'<integer>';inherits:false;initial-value:0}
+.tf-page [data-joint]{position:relative}
+.tf-page .joint-render+.joint-svg{visibility:hidden}
+.tf-page .joint-render{position:absolute;left:-2.5%;top:-3.75%;width:107.5%;height:108.75%;pointer-events:none;
+ --joint-frame:calc(var(--joint-engage,0) * 8);background-repeat:no-repeat;background-size:900% 100%;
+ background-position:calc(var(--joint-frame) * 12.5%) 0;transition:--joint-frame var(--joint-time,380ms) var(--joint-ease,cubic-bezier(.2,.72,.16,1));
+ -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.tf-page .joint-render--cache-vault{background-image:url(/assets/round3/joints/cache-vault-2x.webp);background-image:image-set(url(/assets/round3/joints/cache-vault-1x.webp) 1x,url(/assets/round3/joints/cache-vault-2x.webp) 2x)}
+.tf-page .joint-render--cleanroom{background-image:url(/assets/round3/joints/cleanroom-2x.webp);background-image:image-set(url(/assets/round3/joints/cleanroom-1x.webp) 1x,url(/assets/round3/joints/cleanroom-2x.webp) 2x)}
+.tf-page .joint-render--forgecast{background-image:url(/assets/round3/joints/forgecast-2x.webp);background-image:image-set(url(/assets/round3/joints/forgecast-1x.webp) 1x,url(/assets/round3/joints/forgecast-2x.webp) 2x)}
+.tf-page .joint-render--ghostlayer{background-image:url(/assets/round3/joints/ghostlayer-2x.webp);background-image:image-set(url(/assets/round3/joints/ghostlayer-1x.webp) 1x,url(/assets/round3/joints/ghostlayer-2x.webp) 2x)}
+.tf-page .joint-render--lights-out{background-image:url(/assets/round3/joints/lights-out-2x.webp);background-image:image-set(url(/assets/round3/joints/lights-out-1x.webp) 1x,url(/assets/round3/joints/lights-out-2x.webp) 2x)}
+.tf-page .joint-render--proofshot{background-image:url(/assets/round3/joints/proofshot-2x.webp);background-image:image-set(url(/assets/round3/joints/proofshot-1x.webp) 1x,url(/assets/round3/joints/proofshot-2x.webp) 2x)}
+.tf-page .joint-render--reality-gate{background-image:url(/assets/round3/joints/reality-gate-2x.webp);background-image:image-set(url(/assets/round3/joints/reality-gate-1x.webp) 1x,url(/assets/round3/joints/reality-gate-2x.webp) 2x)}
+@media(forced-colors:active){.tf-page .joint-render{display:none}.tf-page .joint-render+.joint-svg{visibility:visible}}

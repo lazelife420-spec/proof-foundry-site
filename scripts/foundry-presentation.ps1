@@ -28,6 +28,12 @@ function Get-FoundryJoint([string]$Id, [string]$Instance) {
   }
   return $svg
 }
+# On the Truth File records each joint is also a Blender render (assets/round3/joints/<id>-1x/-2x.webp, nine motion
+# frames, scripts/render-round2/joint_parts.py); truth-files.css shows it over the SVG, which stays for forced colours.
+function Get-FoundryJointRender([string]$Id) {
+  foreach ($d in '1x', '2x') { if (-not (Test-Path (Join-Path $root "assets/round3/joints/$Id-$d.webp"))) { return '' } }
+  return '<span class="joint-render joint-render--' + $Id + '" aria-hidden="true"></span>'
+}
 function Build-FoundryDoors {
   $out = ''
   foreach ($m in ($productRegistry | Where-Object {$_.visibility -eq 'visible'} | Sort-Object { if ($_.homepage.order) { [int]$_.homepage.order } else { [int]$_.order } })) {
@@ -70,7 +76,7 @@ function Complete-FoundryPresentation([string]$Html, [string]$Name, [string]$Pag
   # Existing semantic body classes stay stable; data attributes identify the V3 presentation.
   if ($html -match '\btf-page\b' -and $world -ne 'home') {
     $joint = Get-FoundryJoint $world ('record-' + $world)
-    $reverse = '<a class="record-return foundry-connection" href="/' + $world + '/" data-world-link="' + $world + '"><span class="record-joint" data-joint="' + $world + '">' + $joint + '</span><span>Reverse face / return to product <span aria-hidden="true">↗</span></span></a>'
+    $reverse = '<a class="record-return foundry-connection" href="/' + $world + '/" data-world-link="' + $world + '"><span class="record-joint" data-joint="' + $world + '">' + (Get-FoundryJointRender $world) + $joint + '</span><span>Reverse face / return to product <span aria-hidden="true">↗</span></span></a>'
     $html = $html.Replace('<p class="tf-hero-kicker">Product record</p>', '<p class="tf-hero-kicker">The Truth Files / Product record</p>')
     $summaryMatch = [regex]::Match($html, '(?s)<p class="tf-product-summary">.*?</p>')
     if ($summaryMatch.Success) {
@@ -85,7 +91,7 @@ function Complete-FoundryPresentation([string]$Html, [string]$Name, [string]$Pag
     }
     $html = $html.Replace('<!-- @record-next -->', '')
     $nextJoint = Get-FoundryJoint 'lights-out' ('continue-' + $world)
-    $html = $html.Replace('</main>', '<nav class="record-next container" aria-label="Continue exploring"><span>Leave the records. Enter a quieter world.</span><a class="text-link foundry-connection" href="/lights-out/" data-world-link="lights-out"><span data-joint="lights-out">' + $nextJoint + '</span><span>Enter Lights Out ↗</span></a><a class="text-link" href="/">The Foundry ↗</a></nav></main>')
+    $html = $html.Replace('</main>', '<nav class="record-next container" aria-label="Continue exploring"><span>Leave the records. Enter a quieter world.</span><a class="text-link foundry-connection" href="/lights-out/" data-world-link="lights-out"><span data-joint="lights-out">' + (Get-FoundryJointRender 'lights-out') + $nextJoint + '</span><span>Enter Lights Out ↗</span></a><a class="text-link" href="/">The Foundry ↗</a></nav></main>')
   }
   # Project selected state into static shared navigation, including the no-JS route.
   $currentRoute = if ($Name -eq 'index.html') { '/' } elseif ($Product) { '/' + $Product + '/' } elseif ($Page) { '/' + $Page + '/' } else { '' }
