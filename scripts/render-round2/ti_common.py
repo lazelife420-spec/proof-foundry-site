@@ -115,6 +115,25 @@ def mat_titanium(name, T=6.4, finish='blasted', seed=0.0):
         L(map_range(nt, blot, 0.3, 0.7, 0.12, 0.18), inp(b, 'Roughness'))
     return m
 
+def mat_oxide(name, T=5.12, seed=0.0):
+    """Bead-blasted mild steel with a black-oxide finish: a dark, satin, partly metallic conversion coat, soft
+    blast clouds and a fine grain. Noise on a torus of period T metres, so the field tiles exactly."""
+    m, nt, b = node_mat(name); L = nt.links.new
+    inp(b, 'Metallic').default_value = 0.75
+    vec, w = torus4d(nt, T, seed, seed * 1.3)
+    L(map_range(nt, noise4(nt, vec, w, 1 / 0.4, detail=2), 0.3, 0.7, 0.3, 0.42), inp(b, 'Roughness'))
+    grain = noise4(nt, vec, w, 1 / 0.005, detail=1, rough=0.5); cloud = noise4(nt, vec, w, 1 / 0.6, detail=3, rough=0.55)
+    k = nt.nodes.new('ShaderNodeMath'); k.operation = 'MULTIPLY'
+    L(map_range(nt, grain, 0.3, 0.7, 0.8, 1.16), k.inputs[0]); L(map_range(nt, cloud, 0.35, 0.65, 0.9, 1.1), k.inputs[1])
+    base = nt.nodes.new('ShaderNodeMath'); base.operation = 'MULTIPLY'; L(k.outputs[0], base.inputs[0]); base.inputs[1].default_value = 0.2
+    col = nt.nodes.new('ShaderNodeCombineColor'); L(base.outputs[0], col.inputs[0]); L(base.outputs[0], col.inputs[1])
+    bb = nt.nodes.new('ShaderNodeMath'); bb.operation = 'MULTIPLY'; L(base.outputs[0], bb.inputs[0]); bb.inputs[1].default_value = 1.07
+    L(bb.outputs[0], col.inputs[2]); L(col.outputs[0], inp(b, 'Base Color'))
+    pits = noise4(nt, vec, w, 1 / 0.012, detail=3, rough=0.6)
+    bp = nt.nodes.new('ShaderNodeBump'); bp.inputs['Strength'].default_value = 0.06; bp.inputs['Distance'].default_value = 0.002
+    L(pits, bp.inputs['Height']); L(bp.outputs[0], inp(b, 'Normal'))
+    return m
+
 GOLD = (0.80, 0.53, 0.15)
 
 def gold_bsdf(nt, T=6.4):
@@ -131,7 +150,7 @@ def mat_tin_gold(name):
     g = gold_bsdf(nt); nt.links.new(g.outputs[0], nt.nodes['Material Output'].inputs['Surface'])
     return m
 
-def ti_studio(dome=1.0, sun=3.0, cone=22.0, rim=0.0):
+def ti_studio(dome=1.0, sun=3.0, cone=22.0, rim=0.0, band_lo=6.0):
     """Overhead dome (ray directions within `cone` deg of zenith, a smooth edge of a quarter of that) plus one sun from
     the chain studio's key direction: azimuth 32 deg left of image-up, elevation 18 deg, angle 6 deg."""
     w = bpy.data.worlds.new('ti-dome'); w.use_nodes = True; nt = w.node_tree; N = nt.nodes; L = nt.links.new
@@ -149,7 +168,7 @@ def ti_studio(dome=1.0, sun=3.0, cone=22.0, rim=0.0):
             else: L(v, n.inputs[i])
         return n.outputs[0]
     lo = N.new('ShaderNodeMapRange'); lo.interpolation_type = 'SMOOTHSTEP'; L(sep.outputs['Z'], lo.inputs['Value'])
-    lo.inputs['From Min'].default_value = math.sin(math.radians(6)); lo.inputs['From Max'].default_value = math.sin(math.radians(12))
+    lo.inputs['From Min'].default_value = math.sin(math.radians(band_lo)); lo.inputs['From Max'].default_value = math.sin(math.radians(band_lo + 6))
     hi = N.new('ShaderNodeMapRange'); hi.interpolation_type = 'SMOOTHSTEP'; L(sep.outputs['Z'], hi.inputs['Value'])
     hi.inputs['From Min'].default_value = math.sin(math.radians(30)); hi.inputs['From Max'].default_value = math.sin(math.radians(40))
     band = m('MULTIPLY', lo.outputs[0], m('SUBTRACT', 1.0, hi.outputs[0]))

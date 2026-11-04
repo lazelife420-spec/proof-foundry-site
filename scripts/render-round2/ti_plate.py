@@ -99,4 +99,61 @@ elif A.part == 'frame':
     T.ti_studio(A.dome, A.sun, A.cone, A.rim)
     T.camera(W / 2 * S, -H / 2 * S, W * S, W * A.scale, H * A.scale)
     T.render_setup(A.samples, A.out, transparent=True)
+elif A.part == 'oxide-field':
+    # The head plate's face: one 512 x 512 CSS px tile of bead-blasted black-oxide steel, wrapping exactly.
+    W = H = 512
+    plane('field', -32, -32, W + 32, H + 32, 0, T.mat_oxide('oxide', T=W * S))
+    T.ti_studio(A.dome, A.sun, A.cone, A.rim)
+    T.camera(W / 2 * S, -H / 2 * S, W * S, W * A.scale, H * A.scale)
+    T.render_setup(A.samples, A.out, denoise=bool(A.denoise))
+elif A.part == 'head-frame':
+    # The head plate's edge: a 6 mm black-oxide plate bolted 3 mm proud of the chassis, its top edge broken by a 2 px
+    # 35 deg chamfer, an M4 socket cap screw in a counterbore 16 px in from both edges at each corner, and its soft
+    # shadow on the chassis in a 6 px margin right and below. 160 x 400 CSS px plus the margin; the CSS uses the top
+    # crop on the header and the bottom crop on the key bank, so the two read as one plate. The face is a holdout.
+    W, H, MG, CH = 160, 400, 6, 2.0
+    ox = T.mat_oxide('oxide', T=512 * S); pol = T.mat_titanium('edge', T=640 * S, finish='polished')
+    m_edge, nte, be = T.node_mat('oxide-edge'); be.inputs['Base Color'].default_value = (0.2, 0.205, 0.21, 1)
+    be.inputs['Metallic'].default_value = 1.0; be.inputs['Roughness'].default_value = 0.22
+    face = holdout('face')
+    dark = T.node_mat('socket')[0]; dark.node_tree.nodes['Principled BSDF'].inputs['Base Color'].default_value = (0.006, 0.006, 0.007, 1)
+    globals()['DARK'] = dark
+    # The chassis below: a shadow catcher, so only the plate's shadow lands on the page's own ground.
+    ground = plane('chassis', -40, -40, W + 40, H + 40, -6, dark); ground.is_shadow_catcher = True
+    bm = bmesh.new(); bmesh.ops.create_cube(bm, size=1.0)
+    bmesh.ops.scale(bm, vec=(W * S, H * S, 6 * S), verts=bm.verts)
+    bmesh.ops.translate(bm, vec=(W / 2 * S, -H / 2 * S, -3 * S), verts=bm.verts)
+    drop = CH * math.tan(math.radians(35))
+    bmesh.ops.inset_region(bm, faces=[f for f in bm.faces if f.normal.z > 0.99], thickness=math.hypot(CH, drop) * S, depth=drop * S)
+    bmesh.ops.translate(bm, vec=(0, 0, -drop * S), verts=list(bm.verts))
+    me = bpy.data.meshes.new('plate'); bm.to_mesh(me); bm.free()
+    pl = bpy.data.objects.new('plate', me); scn.collection.objects.link(pl); me.materials.append(face); me.materials.append(m_edge)
+    corners = ((16, 16), (W - 16, 16), (16, H - 16), (W - 16, H - 16))
+    for (x, y) in corners:
+        bpy.ops.mesh.primitive_cylinder_add(vertices=96, radius=8.2 * S, depth=10 * S, location=(x * S, -y * S, 0))
+        cutter = bpy.context.active_object
+        bo = pl.modifiers.new('cb', 'BOOLEAN'); bo.operation = 'DIFFERENCE'; bo.object = cutter; bo.solver = 'EXACT'
+        bpy.context.view_layer.objects.active = pl; bpy.ops.object.modifier_apply(modifier='cb'); bpy.data.objects.remove(cutter)
+    for f in pl.data.polygons:
+        f.material_index = 0 if (f.normal.z > 0.999 and f.center.z > -1e-5) else 1
+    scr = T.node_mat('cap')[0]; sb = scr.node_tree.nodes['Principled BSDF']
+    sb.inputs['Base Color'].default_value = (0.09, 0.092, 0.096, 1); sb.inputs['Metallic'].default_value = 1; sb.inputs['Roughness'].default_value = 0.28
+    for (x, y) in corners:
+        # Counterbore floor, then the cap screw seated in it: chamfered head, hex socket, top 0.6 px below the face.
+        bpy.ops.mesh.primitive_cylinder_add(vertices=96, radius=8.2 * S, depth=0.4 * S, location=(x * S, -y * S, -4.6 * S))
+        bpy.context.active_object.data.materials.append(dark)
+        bpy.ops.mesh.primitive_cylinder_add(vertices=96, radius=7 * S, depth=4.0 * S, location=(x * S, -y * S, -2.6 * S))
+        hd = bpy.context.active_object; hd.data.materials.append(scr)
+        bv = hd.modifiers.new('e', 'BEVEL'); bv.width = 1.0 * S; bv.segments = 3; bv.limit_method = 'ANGLE'
+        bpy.context.view_layer.objects.active = hd; bpy.ops.object.modifier_apply(modifier='e')
+        ang = random.uniform(0, math.pi)
+        bpy.ops.mesh.primitive_cylinder_add(vertices=6, radius=3.0 * S, depth=6 * S, location=(x * S, -y * S, -0.6 * S))
+        sk = bpy.context.active_object; sk.rotation_euler = (0, 0, ang)
+        bo = hd.modifiers.new('s', 'BOOLEAN'); bo.operation = 'DIFFERENCE'; bo.object = sk; bo.solver = 'EXACT'
+        bpy.context.view_layer.objects.active = hd; bpy.ops.object.modifier_apply(modifier='s'); bpy.data.objects.remove(sk)
+        bpy.ops.mesh.primitive_cylinder_add(vertices=6, radius=3.0 * S, depth=0.2 * S, location=(x * S, -y * S, -3.3 * S))
+        fl = bpy.context.active_object; fl.rotation_euler = (0, 0, ang); fl.data.materials.append(dark)
+    T.ti_studio(A.dome, A.sun, A.cone, A.rim)
+    T.camera((W + MG) / 2 * S, -(H + MG) / 2 * S, (W + MG) * S, (W + MG) * A.scale, (H + MG) * A.scale)
+    T.render_setup(A.samples, A.out, transparent=True)
 bpy.ops.render.render(write_still=True)

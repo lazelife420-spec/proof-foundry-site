@@ -127,3 +127,43 @@ The frame is a 9-slice of the plate's edge. The flat face is a holdout, so the f
 | `assets/round3/ti-frame-384.webp` | 384 × 384 | 6,312 | `39b081f9cdb0647f08c29c9445f0f0941e7131b11aac68b7a7b8f9bec8447d53` | `ti_plate.py --part frame --scale 2`: 1.5 px shadow gap, 2 px 35° polished chamfer, four ISO 10642 M4 titanium countersunk screws 22 px in; transparent, 256 samples, quality 88; sliced 96 / 48 px |
 
 The emblem cut into the plate is recorded in `PF_MARK_G_EMBLEM_PROVENANCE.md`.
+
+## Round 3 head plate
+
+On 2026-11-03 the owner asked for the navigation to be "way better, real built" and chose a bolted head plate that scrolls with the page.
+
+**The plate:** the header and the key bank are one black-oxide steel plate.
+- The face is a tiling field (`ti_plate.py --part oxide-field`), mean sRGB 40, one step darker than the titanium hero.
+- The edge (`ti_plate.py --part head-frame`) has:
+  - a 2 px 35° chamfer;
+  - four M4 socket cap screws in counterbores;
+  - the plate's shadow on the chassis.
+- The edge is cropped into a top half for the header and a bottom half for the key bank.
+
+**The keys and chain** (`head_parts.py`) keep the Round 2 canvases, bores and registration, so every CSS offset still lands a pin in its bore:
+- brushed stainless bezels and brushed dark caps;
+- the current key's bead-blasted stainless cap latched 4 px down, and a pressed state;
+- 3.2 px ear tongues, so the chain truly threads: the end links pass down through the bores and round the ear tips;
+- a clevis anchor at each end of the chain: sideways from 701 px, above and below the end keys on phones.
+
+**Rendering:** all parts use the titanium studio, whose low band reaches the horizon here so the bezels' machined edges catch the key light. The key light casts no shadow in these sprites; their contact shadows come from the overhead dome.
+
+**Contrast:** the lit key's legend (#11191e) reads 6.5:1 against the darkest pixel of its cap.
+
+| Asset | Pixels | Bytes | SHA-256 | Scene and mode |
+|---|---|---|---|---|
+| `assets/round3/oxide-field-1024.webp` | 1024 × 1024 | 28,170 | `92baf251ad86937c4bf5abacfbc08ed2b6cf9cf75ea37830496a78bde98e69ee` | `ti_plate.py --part oxide-field --scale 2`, 384 samples, no denoise, quality 92; repeated at 512 CSS px |
+| `assets/round3/oxide-field-512.webp` | 512 × 512 | 9,374 | `9fc8ab47e5fa7e38435ff509e9a333bd575ec2e98c78dfb016530ebb37d38f59` | the same master, Lanczos to 1x from a 3 × 3 tiling, quality 95 |
+| `assets/round3/head-frame-top.webp` | 332 × 200 | 6,660 | `fc24e7ee38651e251dddf6282d361ca099c30a063c04699e3a8d6a0edd0c999d` | `ti_plate.py --part head-frame --scale 2`, 128 samples: rows 0–200 of the 332 × 812 master, quality 90 |
+| `assets/round3/head-frame-bottom.webp` | 332 × 212 | 7,078 | `0eede2ff7c7eda9add60f0b6c496040172561f82877af2256d2e67c82ef4180f` | the same master, rows 600–812, quality 90 |
+| `assets/round3/key-rest.webp` | 400 × 128 | 5,910 | `6ea1094e7e3b8f9a378243d08591348ad1526cda08ac9da61316166b90885fca` | `head_parts.py --part key-rest --rim 2.5`, 128 samples, quality 90 |
+| `assets/round3/key-current.webp` | 400 × 128 | 6,318 | `acd1a5fb08c2c8b32f64f1999264a5a0212e1accabce5acc23727dacfd29e832` | `head_parts.py --part key-current --rim 2.5`, 128 samples, quality 90 |
+| `assets/round3/key-pressed.webp` | 400 × 128 | 5,998 | `052953216cc3d6f8b38d37b70513879e4dca213ef73c62732217b6d36f98f373` | `head_parts.py --part key-pressed --rim 2.5`, 128 samples, quality 90 |
+| `assets/round3/coupler.webp` | 140 × 64 | 3,390 | `c13719ffe6cdf97a0879b5d9f67dd64e0045da8e9aab5a1546f8a696a2ff06d6` | `head_parts.py --part coupler --rim 2.5`: three links threaded through the ear bores, 128 samples, quality 90 |
+| `assets/round3/drop.webp` | 64 × 200 | 4,060 | `4f7fa420f4eb773daf04690b5e4b957ec90f481232a27e0567177c2e2d098f65` | `head_parts.py --part drop --rim 2.5`, 128 samples, quality 90 |
+| `assets/round3/anchor-l.webp` | 72 × 64 | 2,114 | `6580e850277be0e14e5fe742c80be05ce6c034ff1d55b7694c6e5c8befd12a37` | `head_parts.py --part anchor-l --rim 2.5`, 128 samples, quality 90 |
+| `assets/round3/anchor-r.webp` | 72 × 64 | 2,098 | `a2a6dcaaa9dca05d78027472c845c774e72c40aa52f32362be3d58dcd4d57926` | `head_parts.py --part anchor-r --rim 2.5`, 128 samples, quality 90 |
+| `assets/round3/anchor-t.webp` | 48 × 80 | 1,810 | `0e996aa6c4ec2898174c545fe45f5d43794ffbfee6cfb4dd830a02506cbf916b` | `head_parts.py --part anchor-t --rim 2.5`, 128 samples, quality 90 |
+| `assets/round3/anchor-b.webp` | 48 × 80 | 1,862 | `4a5c09dc6292d00cffd26529b1ed1bce4ac776580a37951ca321bc9c95ac5384` | `head_parts.py --part anchor-b --rim 2.5`, 128 samples, quality 90 |
+
+The Round 2 key, coupler and drop-link files stay in `assets/round2/` and are no longer referenced.

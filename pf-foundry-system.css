@@ -1038,3 +1038,60 @@ body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-ro
  :root .site-footer .footer-grid h2::after{background:CanvasText;box-shadow:none}
  :root .site-footer .footer-brand-lockup img{background:none;box-shadow:none}
 }
+
+/* ── Round 3: the head plate. The header and the key bank are one bolted black-oxide plate at the top of the
+   chassis, its nameplate above and its latching key bank below. It is bolted on, so it scrolls with the page (owner
+   decision, 2026-11-03). One tiled face (assets/round3/oxide-field-*) runs through both halves, offset in the key
+   bank by the header's height; the header takes the edge's top crop (top corners and plain sides) and the key bank
+   its bottom crop (plain sides, bottom corners, and the plate's shadow on the chassis in a 6 px outset). The keys
+   are brushed stainless bezels with brushed caps, and the chain is threaded: three links through the ear bores at
+   each joint, two at each drop, and a clevis anchor at each end, so no ear is left open (head_parts.py). ── */
+:root{--pf-head-h:94px}
+@media (max-width:700px){:root{--pf-head-h:71px}}
+:root body .site-header{position:relative;top:auto;z-index:auto;width:var(--pf-rail);height:var(--pf-head-h);margin:16px auto 0;
+ border:0 solid;border-image:url(/assets/round3/head-frame-top.webp) 56 76 0 56/28px 38px 0 28px/0 6px 0 0 stretch;
+ background:url(/assets/round3/oxide-field-1024.webp) 0 0/512px 512px repeat,#1d1f21;
+ background-image:image-set(url(/assets/round3/oxide-field-512.webp) 1x,url(/assets/round3/oxide-field-1024.webp) 2x);
+ box-shadow:none;backdrop-filter:none}
+:root body .site-header::before{content:none}
+:root body .site-header .nav-row{width:auto;height:100%;min-height:0;box-sizing:border-box;padding:0 44px;border-inline:0;background:none}
+:root body .site-header .nav-row::before,:root body .site-header .nav-row::after{content:none}
+:root body .site-header .brand-name,:root body .site-header .header-maker-note{text-shadow:-.6px -1px 0 rgba(0,0,0,.9),.6px 1px 0 rgba(255,255,255,.1)}
+:root body .pf-route-chain{width:var(--pf-rail);box-sizing:border-box;margin:0 auto 30px;padding:14px 52px 34px;
+ border:0 solid;border-image:url(/assets/round3/head-frame-bottom.webp) 0 76 68 56/0 38px 34px 28px/0 6px 6px 0 stretch;
+ background:url(/assets/round3/oxide-field-1024.webp) 0 calc(-1 * var(--pf-head-h))/512px 512px repeat,#1d1f21;
+ background-image:image-set(url(/assets/round3/oxide-field-512.webp) 1x,url(/assets/round3/oxide-field-1024.webp) 2x)}
+/* Keys and chain: the Round 3 art on the Round 2 canvases, so every offset above still lands a pin in its bore. */
+:root .pf-route-chain a{border-image-source:url(/assets/round3/key-rest.webp)}
+:root .pf-route-chain a:active,:root .pf-route-chain a[data-engaged=true]{transform:none;filter:none;border-image-source:url(/assets/round3/key-pressed.webp)}
+:root .pf-route-chain a:is([aria-current=page],[aria-current=true]){border-image-source:url(/assets/round3/key-current.webp)}
+:root .pf-route-chain li:nth-child(n) .pf-route-coupler{background-image:url(/assets/round3/coupler.webp)}
+:root .pf-route-chain li:last-child .pf-route-coupler{display:block;background-image:url(/assets/round3/anchor-r.webp);left:calc(100% - 16.5px);top:16px;width:36px;height:32px}
+:root .pf-route-chain li:first-child::after{content:"";position:absolute;z-index:3;pointer-events:none;left:-19.5px;top:16px;width:36px;height:32px;background:url(/assets/round3/anchor-l.webp) 0 0/100% 100% no-repeat}
+@media (max-width:1239.98px){
+ :root .pf-route-chain li:first-child::after{left:-17.06px;top:14px;width:31.5px;height:28px}
+ :root .pf-route-chain li:last-child .pf-route-coupler{left:calc(100% - 14.44px);top:14px;width:31.5px;height:28px}
+}
+@media (min-width:701px) and (max-width:1239.98px){
+ :root .pf-route-chain li:nth-child(3) .pf-route-coupler{background-image:url(/assets/round3/drop.webp)}
+ /* 06 starts the second row at the left, so its free ear is its left one. */
+ :root .pf-route-chain li:last-child .pf-route-coupler{left:-17.06px;right:auto;background-image:url(/assets/round3/anchor-l.webp)}
+}
+@media (max-width:700.98px){
+ :root body .site-header{margin:10px auto 0;border-image-width:16px 21.4px 0 16px;border-image-outset:0 3.4px 0 0}
+ :root body .site-header .nav-row{padding:0 24px}
+ :root body .pf-route-chain{padding:16px 22px 28px;border-image-width:0 21.4px 19.4px 16px;border-image-outset:0 3.4px 3.4px 0}
+ :root .pf-route-chain li:nth-child(2) .pf-route-coupler,:root .pf-route-chain li:nth-child(4) .pf-route-coupler{background-image:url(/assets/round3/drop.webp)}
+ /* No side room inside the phone plate: the anchors stand above 01's left ear and below 06's right ear. */
+ :root .pf-route-chain li:first-child::after{left:-3.06px;top:-1.75px;width:21px;height:35px;background-image:url(/assets/round3/anchor-t.webp)}
+ :root .pf-route-chain li:last-child .pf-route-coupler{left:calc(100% - 17.94px);top:22.75px;width:21px;height:35px;background-image:url(/assets/round3/anchor-b.webp)}
+}
+@media (max-width:360px){:root body .pf-route-chain{padding-inline:16px}:root .pf-route-chain a{padding-inline:14px}}
+@media (forced-colors:active){
+ :root body .site-header,:root body .pf-route-chain{border-image:none;background:Canvas;border:1px solid CanvasText}
+ /* The key art and the chain above come later than the shipped forced-colours reset, so it is repeated here: the keys
+    are drawn as system buttons and the chain, which is decoration, is hidden. */
+ :root .pf-route-chain a,:root .pf-route-chain a:active,:root .pf-route-chain a[data-engaged=true],:root .pf-route-chain a:is([aria-current=page],[aria-current=true]){border-image:none}
+ :root .pf-route-chain li:nth-child(n) .pf-route-coupler,:root .pf-route-chain li:first-child::after{display:none}
+ :root body .site-header .brand-name,:root body .site-header .header-maker-note{text-shadow:none}
+}

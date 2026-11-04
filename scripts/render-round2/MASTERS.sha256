@@ -41,3 +41,16 @@ b00a29bc3cf084a636e29892972b7f9cd6a563886fc05600e3a436a100a1e7ad  round3/emasks/
 d42622f77bfeb098aa9ddcd8121c023f1d9872b25089485c141dd2088531b865  round3/emasks/mask-bridge-seam.png
 1e4203c167abff5242777a49625d1b1ff15f24d33b5abfc6404eff9a7a9dd159  round3/emasks/temper-color.png
 1850d785e95819a7722d5e7a0263b934133283a7d4f8ca18c4979577efce7b44  round3/emasks/temper-amount.png
+# Round 3 head plate (2026-11-03): the black-oxide face and edge, and the key bank's keys, chain and anchors.
+40820a4543596395c45e0e257adb33156522859ad6b851385c702c301e905a6e  round3/masters/oxide-field-2x.png
+0be82cd90f9b65932773f70d7c63b7178776e6550778eb36b3b44da4887a365f  round3/masters/oxide-field-1x-wrapped.png
+5e6cc8dcd8aa9cf597602f1f7fcb559b6173a277b9232ecf9122ab10134f863c  round3/masters/head-frame-2x.png
+3e3afbd28fb599b3d0692f6bd36a6467a6858aed3ac51fabdd33394fb191fd85  round3/masters/key-rest-2x.png
+c36781c92ee5fc7ba3b5afeeb756e23d8b2ea87ee53b66889d8782eb4857051a  round3/masters/key-current-2x.png
+8ec6ad789cba3c195f78b9338fca19faa8245b6c6e47e2030807715c1936059a  round3/masters/key-pressed-2x.png
+6f57ea788eb90af877089973aa62d83960c37ced39a242290b9f0017345c57b5  round3/masters/coupler-2x.png
+7727d15c4d2ba6f1250a3432bba0ea2b306ee6d8c2a2ebccd8b6a28c3f061be4  round3/masters/drop-2x.png
+2fa32deeea99d813ed99e865759862cbd469e73d21e97378a66535dc4561847b  round3/masters/anchor-l-2x.png
+7f985e56ee7cca5ca9c8e4cf1d0b969edb561b08732da3224636730528351e33  round3/masters/anchor-r-2x.png
+64456505bb71d4a7ede8f82a13f324aa1c5a60eaaff32892d1aca49d6836707b  round3/masters/anchor-t-2x.png
+38e4e6f2d12d52c032ac781c42294be2efc3a6177938538dc2cea0118f144da7  round3/masters/anchor-b-2x.png
