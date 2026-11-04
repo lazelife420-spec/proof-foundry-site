@@ -24,7 +24,7 @@
 .pfa .pf-chain-toggle{font:600 14px/1.4 var(--pf-sans);padding:12px 16px}
 .pfa .stage-btn:disabled{cursor:default;opacity:1}
 .pfa .pfa-rail p{font-size:16px;line-height:1.5}
-@media(max-width:699px){
+@media(max-width:700px){
  .pfa-toolbar{flex-wrap:wrap}
  .pfa-rail p{font-size:16px;line-height:1.35}
 }
@@ -66,7 +66,7 @@
 .pfa-record [data-detail-text]{margin:0;font-size:15px;line-height:1.65;color:#26363a;max-width:72ch}
 .pfa-caption{margin:16px 0 0}
 
-@media (min-width:1000px){
+@media (min-width:701px){
  .pfa-assembly{aspect-ratio:1400/431}
  .pfa-rail{position:static;display:grid;grid-template-columns:14.9314cqw 14.9561cqw 14.9807cqw 14.9557cqw 14.9307cqw;margin:-.7839cqw .7743cqw 0;padding:22px 14.2596cqw 18px 9.4371cqw;
   background:
@@ -99,7 +99,7 @@
  .pfa-rail h3,.pfa-num{left:calc(var(--px) + 1.6cqw);width:9.6207cqw}
 }
 @media (min-width:1181px) and (max-width:1359px){.pfa-rail h3{font-size:15px;letter-spacing:.05em}.pfa-num{font-size:12.5px}}
-@media (min-width:1000px) and (max-width:1180px){
+@media (min-width:701px) and (max-width:1180px){
  .pfa-num{top:calc(25.5143cqw - 7px);font-size:15px;letter-spacing:.16em;text-indent:.16em}
  .pfa-rail li{padding:0 6px}
  .pfa-rail h3{position:relative;padding-top:14px;font-size:15px;line-height:1.2;letter-spacing:.1em;text-align:center;color:#dfe6ea;text-shadow:0 -1px 0 rgba(0,0,0,.7)}
@@ -107,7 +107,7 @@
 }
 /* Below 1000px the same nine links hang vertically in the guide channel; each
    plate is mounted beside its link on a carrier bolted to the housing. */
-@media (max-width:999px){
+@media (max-width:700px){
  .pfa-machine{--s:1.1;--pw:320px;width:min(100%,calc(120.57px * var(--s) + var(--pw) + 8px));margin-inline:auto}
  .pfa-assembly{position:absolute;left:0;top:0;width:calc(160px * var(--s));aspect-ratio:160/635}
  .pfa-rail{--pitch:calc(95.08px * var(--s));--ph:92px;--pg:calc(var(--pitch) - var(--ph));display:flex;flex-direction:column;gap:var(--pg);box-sizing:border-box;min-height:calc(635px * var(--s));margin:0 0 0 calc(120.57px * var(--s));padding:calc(300.46px * var(--s) - 2 * var(--pitch) - var(--ph) / 2) 8px 26px 0}
@@ -144,7 +144,7 @@
   .pfa-rail li:has(.stage-btn:focus-visible){z-index:3;outline:3px solid #ffd58a;outline-offset:2px}
  }
 }
-@media (max-width:699px){.pfa-machine{--s:1;width:auto}.pfa-rail p{font-size:15px;line-height:1.3}.pfa-toolbar{align-items:flex-start}.pfa-stamp{font-size:9.5px;letter-spacing:.08em}}
+@media (max-width:700px){.pfa-machine{--s:1;width:auto}.pfa-rail p{font-size:15px;line-height:1.3}.pfa-toolbar{align-items:flex-start}.pfa-stamp{font-size:9.5px;letter-spacing:.08em}}
 @media (max-width:360px){.pfa-machine{margin-inline:-6px}.pfa-rail{padding-right:2px}.pfa-rail li{padding:5px 17px 6px 9px}.pfa-rail h3{font-size:14.5px;letter-spacing:.06em}}
 @media (forced-colors:active){
  .pfa-rail,.pfa-rail li{background:Canvas;color:CanvasText;forced-color-adjust:auto}
@@ -742,7 +742,7 @@ html[data-motion=off] .pf-lm{display:none}
 .ledger-paper{background:linear-gradient(rgba(230,231,223,.5),rgba(230,231,223,.5)),var(--pf-mat-paper) 0 0/1024px auto,#e6e7df}
 .pfa-record{background:linear-gradient(180deg,rgba(244,243,238,.42),rgba(232,230,222,.5)),var(--pf-mat-paper) 37% 0/1024px auto,#f0efe9}
 .pfa-fallback{background:linear-gradient(rgba(240,239,233,.46),rgba(240,239,233,.46)),var(--pf-mat-paper) 61% 0/1024px auto,var(--pf-paper)}
-@media (max-width:999px){
+@media (max-width:700px){
  .pfa-rail li{background:
    radial-gradient(circle at calc(100% - 10px) 11px,#1d2328 0 1px,#d2d7db 1.5px,#8f979d 2.6px,#4a5258 3.2px,rgba(0,0,0,.5) 3.7px,transparent 4.2px),
    radial-gradient(circle at calc(100% - 10px) calc(100% - 11px),#1d2328 0 1px,#d2d7db 1.5px,#8f979d 2.6px,#4a5258 3.2px,rgba(0,0,0,.5) 3.7px,transparent 4.2px),
@@ -755,8 +755,8 @@ html[data-motion=off] .pf-lm{display:none}
 .pfa-caption{font:400 15px/1.75 var(--pf-sans);color:#c4cdc9;max-width:90ch}
 .pfa-record [data-detail-text]{font-size:17px;line-height:1.7}
 .pfa-record-label{font-size:12px}
-@media(max-width:999px){.pfa-record [data-detail-text]{font-size:16px}}
-@media(max-width:699px){.pfa-stamp{max-width:30ch}}
+@media(max-width:700px){.pfa-record [data-detail-text]{font-size:16px}}
+@media(max-width:700px){.pfa-stamp{max-width:30ch}}
 
 /* Round 2: Cycles-rendered hardware (assets/round2, MATERIAL_PROVENANCE.md). The original emblem image is unchanged. */
 /* ── Maker's seal: the owner's choice, a raised serviceable inspection plate on four stand-offs, mounted behind the
@@ -774,7 +774,7 @@ html[data-motion=off] .pf-lm{display:none}
 .r2-car,.r2-car-m,.r2-plates{position:absolute;z-index:2;pointer-events:none}
 .r2-car img,.r2-car-m img,.r2-plates img{position:absolute;display:block}
 .r2-car-m{display:none}
-@media (min-width:1000px){
+@media (min-width:701px){
  .pfa-rail h3{z-index:3}
  .r2-plates{inset:0}
  .r2-plates img{top:22.0714cqw;height:7cqw;width:12.3571cqw}
@@ -788,7 +788,7 @@ html[data-motion=off] .pf-lm{display:none}
 }
 /* From 1181 px the labels sit on the rendered plates; below that they sit on the dark rail and keep their light ink. */
 @media (min-width:1181px){.pfa-rail li[data-engaged=true] h3{color:#0e1418}}
-@media (max-width:999px){
+@media (max-width:700px){
  .r2-plates,.r2-car{display:none}
  .r2-car-m{display:block;left:calc(92px * var(--s));top:calc(76.3px * var(--s));width:calc(60px * var(--s));height:calc(68px * var(--s));transform:translateY(var(--travel,0px))}
  .r2-car-m img{inset:0;width:100%;height:100%}
@@ -802,7 +802,7 @@ html[data-motion=off] .pf-lm{display:none}
  .pfa-rail li[data-engaged=true]{box-shadow:0 0 0 1px #0a0d10,inset 3px 0 0 #c9a76a,inset 0 1px 0 rgba(255,255,255,.6),inset 0 -1px 0 rgba(0,0,0,.25),1px 2px 3px rgba(0,0,0,.55);transform:translateX(1px)}
 }
 /* The inspection light is a desktop effect; on the vertical layout the champagne edge marks the selected plate. */
-@media (max-width:999px){.pfa-rail li::after{display:none}}
+@media (max-width:700px){.pfa-rail li::after{display:none}}
 @media (prefers-reduced-motion:reduce){.pfa-rail li::after{transition:none!important}}
 /* Forced colours: no rendered hardware, and the stage list returns to the full width the round 2 mobile offset took. */
 @media (forced-colors:active){
@@ -829,3 +829,7 @@ html[data-motion=off] .pf-lm{display:none}
 .pf-emblem.r3-seal>img{filter:none}
 @media (min-width:1240px){.home-maker:has(.r3-seal){max-width:460px}}
 @media (forced-colors:active){.home-opening{border-image:none;border:1px solid CanvasText}.home-statement h1,.home-statement>.kicker,.home-intro,.home-maker figcaption,.home-maker-line,.pf-inspect{text-shadow:none}}
+/* Round 3: the horizontal proof machine runs down to 701 px inside its bay, so tablets see the same instrument as
+   desktops (owner decision, 2026-11-03); only phones hang the chain vertically. The stage text tightens to fit. */
+@media (min-width:701px) and (max-width:999px){.pfa .pfa-rail p{font-size:14px;line-height:1.35}.pfa-rail h3{font-size:13px;letter-spacing:.08em}.pfa-rail li{padding:0 5px}}
+@media (min-width:701px) and (max-width:800px){.pfa .pfa-rail p{font-size:13px}}
