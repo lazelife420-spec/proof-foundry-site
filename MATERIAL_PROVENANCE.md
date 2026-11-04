@@ -100,3 +100,30 @@ Each master was rendered by the branch of the committed script that draws it, an
 - **The rust pass:** it changed only the base branches of `chain_scene.py` and `chain_mobile.py` and added the `weld-seam` part to `ui_parts.py`. The chain bases and the weld were rendered from the committed scripts.
 - **Sprites:** the carriage and plate sprites render the same pixels from the committed script. The shipped carriage masters date from Factory's earlier copy of the scene, whose carriage branch is identical.
 - **Other ui_parts edits:** earlier edits to `ui_parts.py` touched only other parts (`key-current`, `coupler-v`, `footer-rail`). The two pixel-identical re-renders above confirm it for `key-rest` and `coupler`.
+
+## Round 3 titanium hero plate
+
+On 2026-11-03 the owner asked for the Home hero plate to "blend in … titanium or something", and approved this plate from stills. It is rendered with Cycles, like the Round 2 hardware, using the same Blender build.
+
+**The titanium studio:** both scripts share `scripts/render-round2/ti_common.py`, so the plate face and the emblem cut into it read one tone everywhere. Its lights are all distant:
+- an overhead dome within 8° of the zenith;
+- one sun from the chain studio's key direction (azimuth 32° left of image-up, elevation 18°, angle 6°);
+- a low band toward that key that lights only the edge breaks facing it.
+
+**The material:** bead-blasted grade 2 titanium, from noise run on a torus of the tile's period, so the field wraps exactly.
+
+**The field tile:**
+- **Tone:** mean sRGB 51, brightest 99.9th-percentile pixel 60. That keeps the hero's lightest small text above AA contrast.
+- **Overhang:** the rendered plane runs past the image, so the pixel filter never darkens the tile's edges. A first render had a dark 1 px border that showed as a seam at every repeat.
+- **1x tile:** resampled from a 3 × 3 tiling, so the filter wraps too.
+- **Encoding:** ffmpeg libwebp. The fine blast grain survives at quality 92, not at 80.
+
+The frame is a 9-slice of the plate's edge. The flat face is a holdout, so the field shows through it.
+
+| Asset | Pixels | Bytes | SHA-256 | Scene and mode |
+|---|---|---|---|---|
+| `assets/round3/ti-field-1280.webp` | 1280 × 1280 | 97,970 | `9287235737d87aa78bca4fad5ceebc2ca5551dd2ceed0007f3a48cd0d0bb7514` | `ti_plate.py --part field --scale 2`, 384 samples, no denoise, quality 92; repeated at 640 CSS px from the plate's padding box |
+| `assets/round3/ti-field-640.webp` | 640 × 640 | 17,528 | `fa81c3f2f89f5ba0c41a422c32a61658bd856056e86efda58698cfaeb9237178` | the same master, Lanczos to 1x from a 3 × 3 tiling, quality 95 |
+| `assets/round3/ti-frame-384.webp` | 384 × 384 | 6,312 | `39b081f9cdb0647f08c29c9445f0f0941e7131b11aac68b7a7b8f9bec8447d53` | `ti_plate.py --part frame --scale 2`: 1.5 px shadow gap, 2 px 35° polished chamfer, four ISO 10642 M4 titanium countersunk screws 22 px in; transparent, 256 samples, quality 88; sliced 96 / 48 px |
+
+The emblem cut into the plate is recorded in `PF_MARK_G_EMBLEM_PROVENANCE.md`.

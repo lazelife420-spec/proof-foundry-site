@@ -812,3 +812,20 @@ html[data-motion=off] .pf-lm{display:none}
 /* Functional text around the seal and records reads at 14px or more. */
 .home-maker figcaption{font-size:14px;line-height:1.7}.pf-inspect{font-size:14px}
 @media (min-width:761px){.home-records{padding-bottom:30px}}
+/* ── Round 3: the hero is a bead-blasted grade 2 titanium plate set flush in the chassis (ti_plate.py). A tiled field
+   is repeated from the padding box and never stretched; a 9-sliced edge carries the shadow gap, the polished chamfer
+   and four countersunk titanium screws. The original emblem's assembly is milled into the plate itself (ti_emblem.py):
+   its flat face is transparent, so the field runs straight through it and the emblem has no edge of its own. Text on the plate is
+   etched: a fine shadow on the cut's upper-left wall, a faint light lip below right. ── */
+.home-opening{border:0 solid;border-image:url(/assets/round3/ti-frame-384.webp) 96/48px/0 stretch;box-shadow:none;
+ background:url(/assets/round3/ti-field-1280.webp) 0 0/640px 640px repeat,#323130;
+ background-image:image-set(url(/assets/round3/ti-field-640.webp) 1x,url(/assets/round3/ti-field-1280.webp) 2x)}
+.home-opening::before,.home-opening::after{content:none}
+.home-statement h1{text-shadow:-.6px -1px 0 rgba(0,0,0,.55),.6px 1px 0 rgba(255,255,255,.07)}
+.home-statement>.kicker,.home-intro{text-shadow:-.5px -.8px 0 rgba(0,0,0,.6)}
+.home-maker figcaption,.home-maker-line,.pf-inspect{text-shadow:-.5px -.8px 0 rgba(0,0,0,.7),.5px .8px 0 rgba(255,255,255,.1)}
+.home-maker-line{border-top-color:rgba(0,0,0,.55);box-shadow:0 1px 0 rgba(255,255,255,.07)}
+.pf-emblem.r3-seal{aspect-ratio:272/314}
+.pf-emblem.r3-seal>img{filter:none}
+@media (min-width:1240px){.home-maker:has(.r3-seal){max-width:460px}}
+@media (forced-colors:active){.home-opening{border-image:none;border:1px solid CanvasText}.home-statement h1,.home-statement>.kicker,.home-intro,.home-maker figcaption,.home-maker-line,.pf-inspect{text-shadow:none}}

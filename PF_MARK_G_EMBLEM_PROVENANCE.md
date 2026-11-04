@@ -113,6 +113,33 @@ An independent reviewer confirmed it.
 
 **Known limit:** on the shadow side the letter sidewalls render nearly black. A later re-render may lift them.
 
+## Round 3 titanium hero emblem (adopted 2026-11-03)
+
+On 2026-11-03 the owner asked for the maker's mark to be "etched into titanium and carbon fibre … part of the background", with "the original details and intricacy … like original but even better", and chose the gold F. The homepage hero now shows the original R3 plaque's assembly rebuilt as part of the titanium hero plate. The Inspect the Mark dialog and its loupe still use the R3 files above, and the dialog says so.
+
+**Classification:** `GENERATED_BRAND_RENDER`. It is an offline Cycles render (Blender 5.2.3) made by `scripts/render-round2/ti_emblem.py`.
+- **Geometry:** the letters are extruded from the three path strings of `brand/PF_MARK_G_MASTER.svg` (master SHA-256 `575d90ae…39a1`), read at run time, under R3's own transform `translate(26.16 30.72) scale(.76)`.
+- **Layout:** the original's units, parts and proportions (the assembly frame x −8..264, y −8..306).
+- **Masks:** the legends, ticks, witness marks, inlays and temper colours are drawn by `scripts/render-round2/emblem_masks.py`. It reproduces `render-lib.js`'s `glyphRun`, `lineText` and `arcText` verbatim and uses the `assets/fonts` IBM Plex Mono files.
+- **Materials:**
+  - the seal floor is a pocket filled with 2×2 twill carbon;
+  - the ring band is turned titanium;
+  - the P is brushed titanium with temper colours round its two tack welds;
+  - the F is brushed gold titanium nitride;
+  - the bridge is a titanium key with its brass record inlay;
+  - the two identification plates are inlaid titanium with engraved legends, held by two screws and two rivets.
+- **The plate face:** its flat face is a holdout, so the titanium field (`ti_plate.py --part field`, `MATERIAL_PROVENANCE.md`) shows through. The emblem has no edge of its own.
+- **Not evidence:** as with V5 and R3, the machining, welds, fasteners and engraved text are fabrication-inspired design details, not evidence.
+
+**Living metal:** the pointer highlight's R3 masks do not register on this layout, so the hero no longer runs it (`data-living-metal` removed). The spans and their reduced-motion and forced-colours rules stay. Re-rendering masks for this emblem is open.
+
+**Masters:** the 16-bit master and the masks are hashed in `scripts/render-round2/MASTERS.sha256`. Encoding is WebP with ffmpeg libwebp: the 2x master as rendered at quality 88, and the 1x Lanczos-downscaled at quality 90, both with alpha.
+
+| File | Dimensions | Bytes | Role | SHA-256 |
+|---|---|---|---|---|
+| `brand/emblem/PF_MARK_G_TI_920.webp` | 920 × 1062 | 62,722 | Titanium hero emblem, 2x | `044dc8eaf9cdfd6cfc0a6f366d9ae3dc29c8d11ef0f11cc303a8a9fe26d565b9` |
+| `brand/emblem/PF_MARK_G_TI_460.webp` | 460 × 531 | 32,674 | Titanium hero emblem, 1x | `86fa2e101e0cfd10403afcc2cc6dfa22a9dc48d83acce2bfc759bca28e56d268` |
+
 ## Boundary
 
 This record establishes source identity, canonical geometry and reproducibility. It is not visual approval and makes no claim about legibility at every size. No product capture, release record or existing brand file changes.
