@@ -1002,25 +1002,39 @@ body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-ro
  background:linear-gradient(rgba(12,15,17,.34),rgba(12,15,17,.34)),url(/assets/round2/weld-seam-2560.webp) 50% 50%/2560px 42px repeat-x;background-image:linear-gradient(rgba(12,15,17,.34),rgba(12,15,17,.34)),image-set(url(/assets/round2/weld-seam-2560.webp) 1x,url(/assets/round2/weld-seam-5120.webp) 2x);
  -webkit-mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent);mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent)}
 :root .site-footer::after{content:"";position:absolute;left:0;right:0;bottom:0;height:10px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.6));pointer-events:none}
-:root .site-footer .footer-grid{align-items:start}
-:root .site-footer .footer-grid>nav{position:relative;padding:26px 30px 22px;border-style:solid;border-width:0;border-image:url(/assets/round2/footer-panel.webp) 56 fill/28px/0 stretch}
-:root .site-footer .footer-grid h2{display:flex;align-items:center;gap:10px;color:#d9c6a0;letter-spacing:.2em;margin:0 0 10px;text-shadow:0 -1px 0 rgba(0,0,0,.9)}
+/* Lettering (Round 3): real text given relief by the one studio light at the upper left. Group headings are raised,
+   cast letters in brass lacquer: a lit upper-left shoulder, a dark lower-right shoulder and a short cast shadow.
+   Links and the base's own text are die-stamped and lacquer-filled: the cut's upper-left wall is in shadow and its
+   lower-right lip catches the light. Contrast is the fill against the panel floor's brightest pixel (74). */
+:root .site-footer .footer-grid{align-items:stretch}
+:root .site-footer .footer-grid>nav{position:relative;padding:30px 34px 26px;border-style:solid;border-width:0;border-image:url(/assets/round2/footer-panel.webp) 56 fill/28px/0 stretch}
+:root .site-footer .footer-grid h2{display:flex;align-items:center;gap:12px;font:600 16px/1.25 var(--pf-mono);letter-spacing:.14em;color:#e6d4ac;margin:0 0 14px;
+ text-shadow:-.6px -1px 0 rgba(255,244,214,.32),.6px 1px 0 rgba(0,0,0,.95),1.6px 2.6px 2px rgba(0,0,0,.62)}
 :root .site-footer .footer-grid h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(0,0,0,.9),rgba(0,0,0,.2));box-shadow:0 1px 0 rgba(255,255,255,.07)}
-/* Engraved links: a cut with a shadowed top wall and a light-catching lower lip, filled with a satin inlay. */
-:root .site-footer .footer-grid a{color:#bdc7cc;font-size:14px;font-weight:500;letter-spacing:.02em;text-decoration:none;text-shadow:0 -1px 0 rgba(0,0,0,.95),0 1px 0 rgba(255,255,255,.13);transition:color .15s}
-:root .site-footer .footer-grid a:hover{color:#dce3e6;text-decoration:none}
+:root .site-footer .footer-grid a{color:#d3dadd;font-size:15px;font-weight:600;letter-spacing:.02em;white-space:nowrap;text-decoration:none;
+ text-shadow:-.6px -1px 0 rgba(0,0,0,.92),.6px 1px 0 rgba(255,255,255,.17);transition:color .15s}
+:root .site-footer .footer-grid a:hover{color:#eef2f3;text-decoration:none}
 :root .site-footer a:focus-visible{outline:3px solid #ffd58a;outline-offset:2px;border-radius:1px;color:#eef2f4}
-:root .site-footer .footer-brand-lockup img{padding:5px;background:linear-gradient(160deg,#41484d,#202529);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),inset 0 -1px 0 rgba(0,0,0,.6),0 1px 2px rgba(0,0,0,.7)}
-:root .site-footer .footer-bottom{border-top:1px solid #050607;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
-@media (max-width:1100px){:root .site-footer .footer-grid>nav{padding:22px 22px 16px}}
-@media (min-width:701px) and (max-width:780px){:root .site-footer .footer-grid>nav{padding:20px 14px 14px}}
+:root .site-footer .footer-brand-lockup span{font-weight:600;color:#dfe5e7;text-shadow:-.6px -1px 0 rgba(0,0,0,.9),.6px 1px 0 rgba(255,255,255,.14)}
+:root .site-footer .footer-brand p{color:#c3ccd0;text-shadow:-.5px -.8px 0 rgba(0,0,0,.85),.5px .8px 0 rgba(255,255,255,.1)}
+:root .site-footer .footer-bottom{border-top:1px solid #050607;box-shadow:inset 0 1px 0 rgba(255,255,255,.05);font-size:12px;color:#aab6bb}
+:root .site-footer .footer-bottom p{text-shadow:-.5px -.8px 0 rgba(0,0,0,.9),.5px .8px 0 rgba(255,255,255,.12)}
+/* One link per line until both panels have room for two columns, so no link wraps onto a second line. */
+@media (max-width:1299px){:root .site-footer .footer-grid ul{columns:1}}
+@media (min-width:701px) and (max-width:1100px){
+ :root .site-footer .footer-grid{grid-template-columns:1fr 1fr}
+ :root .site-footer .footer-brand{grid-column:1/-1}
+ :root .site-footer .footer-grid>nav{padding:30px 32px 24px}
+}
+@media (max-width:700px){:root .site-footer .footer-grid>nav{padding:30px 30px 24px}:root .site-footer .footer-grid h2{letter-spacing:.12em}:root .site-footer .footer-bottom{font-size:11px}}
+@media (max-width:560px){:root .site-footer .footer-grid{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){:root .site-footer .footer-grid a{transition:none}}
 /* Forced colours: the material base rule above outranks a plain reset, so this one is !important. */
 @media (forced-colors:active){
  :root .site-footer{background:Canvas!important;box-shadow:none!important}
  :root body .site-footer::before,:root .site-footer::after{display:none}
  :root .site-footer .footer-grid>nav{border-image:none;border:1px solid CanvasText}
- :root .site-footer .footer-grid h2,:root .site-footer .footer-grid a{text-shadow:none}
+ :root .site-footer .footer-grid h2,:root .site-footer .footer-grid a,:root .site-footer .footer-brand-lockup span,:root .site-footer .footer-brand p,:root .site-footer .footer-bottom p{text-shadow:none}
  :root .site-footer .footer-grid h2::after{background:CanvasText;box-shadow:none}
  :root .site-footer .footer-brand-lockup img{background:none;box-shadow:none}
 }

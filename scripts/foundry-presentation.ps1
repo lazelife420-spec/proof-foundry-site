@@ -90,9 +90,10 @@ function Complete-FoundryPresentation([string]$Html, [string]$Name, [string]$Pag
   # Project selected state into static shared navigation, including the no-JS route.
   $currentRoute = if ($Name -eq 'index.html') { '/' } elseif ($Product) { '/' + $Product + '/' } elseif ($Page) { '/' + $Page + '/' } else { '' }
   # A page inside a section lights its section's key as the current location (aria-current="true"),
-  # never as the current page: product pages sit under Products, release records under Proof, and
-  # the Truth File records under Truth Files.
-  $sectionRoute = if ($Product) { '/software/' } elseif ($Page -in @('proof','receipts')) { '/proof-standard/' } elseif ($Page -eq 'truth' -or $Page -like 'truth-files-*') { '/truth-files/' } else { '' }
+  # never as the current page: product pages sit under Products, release records under Proof, the
+  # Truth File records under Truth Files, and the Founders Circle and Roadmap under About (the
+  # footer's Company group).
+  $sectionRoute = if ($Product) { '/software/' } elseif ($Page -in @('proof','receipts')) { '/proof-standard/' } elseif ($Page -eq 'truth' -or $Page -like 'truth-files-*') { '/truth-files/' } elseif ($Page -in @('founders','roadmap')) { '/about/' } else { '' }
   $html = [regex]::Replace($html, '(?s)<nav class="pf-route-chain\b.*?</nav>', [System.Text.RegularExpressions.MatchEvaluator]{param($nav)
     [regex]::Replace($nav.Value, '<a href="([^"]+)"', [System.Text.RegularExpressions.MatchEvaluator]{param($link)
       if ($link.Groups[1].Value -eq $currentRoute) { $link.Value + ' aria-current="page"' }
