@@ -1,5 +1,6 @@
 """PF Mark G, the original emblem's assembly milled into the titanium hero plate, Cycles. Reproducible:
 blender -b --factory-startup -P ti_emblem.py -- --masks DIR --width 460 --scale 2 --samples N --out x.png
+        [--glint N|E|S|W]  the same render with the pointer light from that side (emblem_glints.py)
 
 This is the original emblem (scripts/pf-emblem/render-lib.js, the R3 plaque) rebuilt as part of the hero plate rather
 than an object on it. It keeps the original's geometry, legends and parts in its own units (the assembly frame x -8..264,
@@ -30,6 +31,8 @@ ap.add_argument('--out', default='//emblem.png')
 ap.add_argument('--dome', type=float, default=0.62); ap.add_argument('--sun', type=float, default=0.6)
 ap.add_argument('--cone', type=float, default=8); ap.add_argument('--rim', type=float, default=1.4)
 ap.add_argument('--shadow-sun', type=float, default=6.0); ap.add_argument('--denoise', type=int, default=1)
+# --glint N|E|S|W: add the pointer light, a low cool distant light from that side of the plate (emblem_glints.py).
+ap.add_argument('--glint', default=''); ap.add_argument('--glint-power', type=float, default=1.2)
 A = ap.parse_args(argv)
 bpy.ops.wm.read_factory_settings(use_empty=True)
 import ti_common as T
@@ -327,6 +330,14 @@ key = T.ti_studio(A.dome, A.sun, A.cone, A.rim)
 sd = bpy.data.lights.new('shadow-sun', 'SUN'); sd.energy = A.shadow_sun; sd.angle = key.data.angle; sd.color = key.data.color
 so = bpy.data.objects.new('shadow-sun', sd); scn.collection.objects.link(so); so.rotation_euler = key.rotation_euler
 so.visible_glossy = False; so.visible_transmission = False
+if A.glint:
+    # The pointer light: low (20 deg), cool, 10 deg wide, from the side the pointer is on; image-up is world +y.
+    az = {'N': 0.0, 'E': -90.0, 'S': 180.0, 'W': 90.0}[A.glint]
+    gd = bpy.data.lights.new('glint', 'SUN'); gd.energy = A.glint_power; gd.angle = math.radians(10); gd.color = (0.9, 0.95, 1.0)
+    go = bpy.data.objects.new('glint', gd); scn.collection.objects.link(go)
+    a, el = math.radians(az), math.radians(20)
+    to_light = __import__('mathutils').Vector((-math.sin(a) * math.cos(el), math.cos(a) * math.cos(el), math.sin(el)))
+    go.rotation_euler = (-to_light).to_track_quat('-Z', 'Y').to_euler()
 T.camera(WPX / 2 * S, -HPX / 2 * S, WPX * S, round(WPX * A.scale), round(HPX * A.scale))
 T.render_setup(A.samples, A.out, transparent=True, denoise=bool(A.denoise))
 bpy.ops.render.render(write_still=True)

@@ -131,7 +131,19 @@ On 2026-11-03 the owner asked for the maker's mark to be "etched into titanium a
 - **The plate face:** its flat face is a holdout, so the titanium field (`ti_plate.py --part field`, `MATERIAL_PROVENANCE.md`) shows through. The emblem has no edge of its own.
 - **Not evidence:** as with V5 and R3, the machining, welds, fasteners and engraved text are fabrication-inspired design details, not evidence.
 
-**Living metal:** the pointer highlight's R3 masks do not register on this layout, so the hero no longer runs it (`data-living-metal` removed). The spans and their reduced-motion and forced-colours rules stay. Re-rendering masks for this emblem is open.
+**Living metal:** the pointer highlight runs again on the hero, and its light is rendered.
+- **How:** `ti_emblem.py --glint N|E|S|W` renders the hero emblem as shipped (256 samples), plus one low, cool distant light (20° up, 10° wide) from that side of the plate. `scripts/render-round2/emblem_glints.py` takes `glint − base`, premultiplied, so the transparent plate face adds nothing. That difference is what the light adds: the chamfers, ring walls, gold edges and turned band that face it. It is kept off the etched legends and the plates' engraving (`emblem_masks.py`'s `mask-etch` and `mask-id-ink`, grown by 1 px): their floors are drawn in the emblem while the plate around them is the page's own titanium, which the light does not reach, so a glint there would wash the letters out.
+- **On the page:** pf-home.js sets `--lN/--lE/--lS/--lW` from the side of the seal the pointer is on. Each pass is added over the emblem with `mix-blend-mode: plus-lighter` at that opacity, so two neighbouring passes blend into a light from in between.
+- **What went:** the CSS gradients, the R3 masks and the seal, bridge, brass and engraving layers. Reduced motion, motion off and forced colours still hide every layer.
+
+| File | Dimensions | Bytes | Role | SHA-256 |
+|---|---|---|---|---|
+| `brand/emblem/PF_MARK_G_TI_GLINT_N.webp` | 920 × 1062 | 132,598 | Light from the north side | `40aa5075ff7d4f7dc0b53ed8fd57ced3ce8f4b8481e0935204c100ee2b4d6369` |
+| `brand/emblem/PF_MARK_G_TI_GLINT_E.webp` | 920 × 1062 | 135,416 | Light from the east side | `27ff4c49e33b561e0877bdf0be1a82791cb0afbe8adf92108b2bbb3a62c0164f` |
+| `brand/emblem/PF_MARK_G_TI_GLINT_S.webp` | 920 × 1062 | 127,850 | Light from the south side | `d107ded56446a629904fa6c22907200d733f6ba7d4f15702f9ce1a01ef37ac5d` |
+| `brand/emblem/PF_MARK_G_TI_GLINT_W.webp` | 920 × 1062 | 136,426 | Light from the west side | `c4d204f1779a258b2b0fd69c5658d875a3586630dafe4b4a9f3152da0a3aa9ef` |
+
+The passes are encoded from 8-bit straight-alpha PNGs (alpha the brightest channel, so a pass only ever adds light, even where a browser cannot blend it) with ffmpeg libwebp at quality 88, `yuva420p`.
 
 **Masters:** the 16-bit master and the masks are hashed in `scripts/render-round2/MASTERS.sha256`. Encoding is WebP with ffmpeg libwebp: the 2x master as rendered at quality 88, and the 1x Lanczos-downscaled at quality 90, both with alpha.
 

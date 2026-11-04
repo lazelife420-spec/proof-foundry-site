@@ -739,9 +739,9 @@ html[data-motion=off] .pf-lm{display:none}
  radial-gradient(96px 18px at 100% 100%,rgba(112,62,32,.13),transparent 72%),
  linear-gradient(120deg,rgba(35,49,53,.46),rgba(14,22,25,.84) 60%),
  var(--pf-mat-steel) 70% 12%/var(--pf-plate) auto,#141c1f}
-.ledger-paper{background:linear-gradient(rgba(230,231,223,.5),rgba(230,231,223,.5)),var(--pf-mat-paper) 0 0/1024px auto,#e6e7df}
-.pfa-record{background:linear-gradient(180deg,rgba(244,243,238,.42),rgba(232,230,222,.5)),var(--pf-mat-paper) 37% 0/1024px auto,#f0efe9}
-.pfa-fallback{background:linear-gradient(rgba(240,239,233,.46),rgba(240,239,233,.46)),var(--pf-mat-paper) 61% 0/1024px auto,var(--pf-paper)}
+.ledger-paper{background:url(/assets/round3/paper-field-1024.webp) 0 0/512px 512px repeat,#e9e6dd;background-image:image-set(url(/assets/round3/paper-field-512.webp) 1x,url(/assets/round3/paper-field-1024.webp) 2x)}
+.pfa-record{background:url(/assets/round3/paper-field-1024.webp) -137px -211px/512px 512px repeat,#e9e6dd;background-image:image-set(url(/assets/round3/paper-field-512.webp) 1x,url(/assets/round3/paper-field-1024.webp) 2x)}
+.pfa-fallback{background:url(/assets/round3/paper-field-1024.webp) -301px -59px/512px 512px repeat,#e9e6dd;background-image:image-set(url(/assets/round3/paper-field-512.webp) 1x,url(/assets/round3/paper-field-1024.webp) 2x)}
 @media (max-width:700px){
  .pfa-rail li{background:
    radial-gradient(circle at calc(100% - 10px) 11px,#1d2328 0 1px,#d2d7db 1.5px,#8f979d 2.6px,#4a5258 3.2px,rgba(0,0,0,.5) 3.7px,transparent 4.2px),
@@ -824,7 +824,7 @@ html[data-motion=off] .pf-lm{display:none}
 .home-statement h1{text-shadow:-.6px -1px 0 rgba(0,0,0,.55),.6px 1px 0 rgba(255,255,255,.07)}
 .home-statement>.kicker,.home-intro{text-shadow:-.5px -.8px 0 rgba(0,0,0,.6)}
 .home-maker figcaption,.home-maker-line,.pf-inspect{text-shadow:-.5px -.8px 0 rgba(0,0,0,.7),.5px .8px 0 rgba(255,255,255,.1)}
-.home-maker-line{border-top-color:rgba(0,0,0,.55);box-shadow:0 1px 0 rgba(255,255,255,.07)}
+.home-maker-line{border-top-color:rgba(0,0,0,.55);box-shadow:none}
 .pf-emblem.r3-seal{aspect-ratio:272/314}
 .pf-emblem.r3-seal>img{filter:none}
 @media (min-width:1240px){.home-maker:has(.r3-seal){max-width:460px}}
@@ -833,3 +833,123 @@ html[data-motion=off] .pf-lm{display:none}
    desktops (owner decision, 2026-11-03); only phones hang the chain vertically. The stage text tightens to fit. */
 @media (min-width:701px) and (max-width:999px){.pfa .pfa-rail p{font-size:14px;line-height:1.35}.pfa-rail h3{font-size:13px;letter-spacing:.08em}.pfa-rail li{padding:0 5px}}
 @media (min-width:701px) and (max-width:800px){.pfa .pfa-rail p{font-size:13px}}
+/* ── Round 3: the rest of Home's hardware is rendered too, from the same stock as the head plate and the hero, so every
+   surface is a part with a job (owner request: "each background each screen should feel like it's there for a reason").
+   - The proof machine's tray and the phone carrier are black-oxide plates of the head plate's stock: its tiled face and
+     its full rendered edge (oxide-frame.webp, the head frame's top and bottom crops), four socket cap screws, shadow.
+   - The phone stage plates are rendered brushed stainless (head_parts.py stage-plate); the selected one carries the
+     current key's champagne witness line, inlaid.
+   - Paper is clamped: a rendered stainless bar (head_parts.py clamp) holds the inspection record's and the studio
+     principle's top edges, and the principle is a sheet on the chassis instead of a band across it.
+   - The records links are titanium index plates of the hero's stock (ti_plate.py frame --size 96, M2.5 screws).
+   - Home's buttons are the nav keys' build without the chain ears (head_parts.py button-*): the primary carries the
+     latched key's bead-blasted cap; the inspection toggle latches down while it is pressed. ── */
+@media (min-width:701px){
+ .pfa .pfa-rail{margin-top:8px;border:0 solid;border-image:url(/assets/round3/oxide-frame.webp) 56 112 104 56/28px 56px 52px 28px/0 24px 24px 0 stretch;
+  background:url(/assets/round3/oxide-field-1024.webp) 0 0/512px 512px repeat,#1d1f21;
+  background-image:image-set(url(/assets/round3/oxide-field-512.webp) 1x,url(/assets/round3/oxide-field-1024.webp) 2x);box-shadow:none}
+ .pfa .pfa-rail p{color:#d3dadd;text-shadow:-.6px -1px 0 rgba(0,0,0,.9),.6px 1px 0 rgba(255,255,255,.12)}
+ .pfa .pfa-rail li[data-engaged=true] p{color:#f1f5f7}
+ .pfa .pfa-rail p::before{display:none}
+}
+@media (max-width:700px){
+ .pfa .pfa-rail::before{border:0 solid;border-image:url(/assets/round3/oxide-frame.webp) 56 112 104 56/28px 56px 52px 28px/0 24px 24px 0 stretch;
+  background:url(/assets/round3/oxide-field-1024.webp) -137px 0/512px 512px repeat,#1d1f21;
+  background-image:image-set(url(/assets/round3/oxide-field-512.webp) 1x,url(/assets/round3/oxide-field-1024.webp) 2x);box-shadow:none}
+ .pfa .pfa-rail li,.pfa .pfa-rail li[data-engaged=true]{border:0 solid;border-radius:1px;border-image:url(/assets/round3/stage-plate.webp) 44 52 44 24 fill/22px 26px 22px 12px/3px stretch;
+  background:url(/assets/round3/stage-plate-on.webp) 0 0/0 0 no-repeat,#a8a8a8;box-shadow:none;transform:none}
+ .pfa .pfa-rail li[data-engaged=true]{border-image-source:url(/assets/round3/stage-plate-on.webp)}
+}
+.pfa-record{position:relative}
+.pfa-record::before,.ledger-doctrine::before{content:"";position:absolute;z-index:1;top:-13px;left:calc(-1 * var(--clamp-out));right:calc(-1 * var(--clamp-out));height:30px;box-sizing:border-box;
+ border:0 solid;border-width:0 36px;border-image:url(/assets/round3/clamp.webp) 0 72 fill/0 36px/0 stretch;pointer-events:none}
+.pfa-record{--clamp-out:24px}
+.ledger-paper.ledger-doctrine{--bleed:20px;--clamp-out:10px;position:relative;box-sizing:border-box;width:calc(var(--pf-rail) + 2 * var(--bleed));margin:64px auto 28px;padding-inline:0;box-shadow:0 0 0 1px #0a0d10,inset 0 1px 0 #fff,0 12px 26px rgba(0,0,0,.5)}
+.ledger-doctrine>.container{width:auto;margin-inline:var(--bleed)}
+/* The sheet's clamp stays inside the viewport at every width (from 701 to 1024 px the rail leaves 32 px a side) and,
+   on desktops, 4 px inside the chassis plate's joints. On phones the text keeps 18 px of paper. */
+@media (max-width:700px){.pfa-record{--clamp-out:14px}.ledger-paper.ledger-doctrine{--bleed:8px;--clamp-out:8px;margin-top:48px}.ledger-doctrine>.container{margin-inline:18px}}
+.home-records-links>a{border:0 solid;border-image:url(/assets/round3/ti-frame-sm.webp) 48/24px/0 stretch;box-shadow:none;padding:24px 30px;
+ background:url(/assets/round3/ti-field-1280.webp) 0 0/640px 640px repeat,#323130;
+ background-image:image-set(url(/assets/round3/ti-field-640.webp) 1x,url(/assets/round3/ti-field-1280.webp) 2x)}
+.home-records-links>a:nth-child(2){background-position:-271px -149px}
+.home-records-links>a>span:first-child{color:#d2cdc0;text-shadow:-.5px -.8px 0 rgba(0,0,0,.7),.5px .8px 0 rgba(255,255,255,.08)}
+.home-records-links strong{color:#eef0e7;text-shadow:-.6px -1px 0 rgba(0,0,0,.55),.6px 1px 0 rgba(255,255,255,.07)}
+.home-records-links>a>span:last-child{right:30px;color:#dcc597;text-shadow:-.5px -.8px 0 rgba(0,0,0,.7)}
+.home-records-links>a:hover strong{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px}
+@media (max-width:760px){.home-records-links>a{padding:22px 26px}}
+:is(.home-opening,.home-contact) .button,.pfa .pf-chain-toggle{min-height:48px;border:0 solid;border-radius:3px;border-image:url(/assets/round3/button-rest.webp) 56 fill/28px/4px stretch;
+ background:url(/assets/round3/button-pressed.webp) 0 0/0 0 no-repeat,#1d2023;box-shadow:none;color:#e6e2d8;text-shadow:-.6px -1px 0 rgba(0,0,0,.9),.6px 1px 0 rgba(255,255,255,.1);transition:none}
+:is(.home-opening,.home-contact) .button:hover,.pfa .pf-chain-toggle:hover:not(:disabled){transform:none;color:#fff}
+:is(.home-opening,.home-contact) .button:focus-visible,.pfa .pf-chain-toggle:focus-visible{outline:3px solid #ffd58a;outline-offset:3px}
+.pfa .pf-chain-toggle:disabled{opacity:1;color:#9aa0a2;border-image-source:url(/assets/round3/button-locked.webp)}
+:is(.home-opening,.home-contact) .button:active,.pfa .pf-chain-toggle:active,.pfa .pf-chain-toggle[aria-pressed=true]{border-image-source:url(/assets/round3/button-pressed.webp)}
+.home-opening .button-primary{border-image-source:url(/assets/round3/button-primary.webp);color:#11191e;text-shadow:.5px .8px 0 rgba(255,255,255,.3);
+ background:url(/assets/round3/button-primary-pressed.webp) 0 0/0 0 no-repeat,#b0b0ab}
+.home-opening .button-primary:hover{color:#000}
+.home-opening .button-primary:active{border-image-source:url(/assets/round3/button-primary-pressed.webp)}
+@media (forced-colors:active){
+ .pfa .pfa-rail,.pfa .pfa-rail li,.pfa .pfa-rail li[data-engaged=true],.home-records-links>a,:is(.home-opening,.home-contact) .button,.pfa .pf-chain-toggle{border-image:none;background:Canvas;text-shadow:none}
+ .pfa .pfa-rail li,.home-records-links>a{border:1px solid CanvasText}
+ :is(.home-opening,.home-contact) .button,.pfa .pf-chain-toggle,
+ :is(.home-opening,.home-contact) .button:is(:hover,:active),.home-opening .button-primary,.home-opening .button-primary:is(:hover,:active),
+ .pfa .pf-chain-toggle:is(:hover,:active,:disabled,[aria-pressed=true]){border-image:none;border:1px solid ButtonText;background:ButtonFace;color:ButtonText;text-shadow:none}
+ .pfa .pfa-rail li[data-engaged=true]{border:3px solid Highlight}
+ .pfa-record::before,.ledger-doctrine::before{display:none}
+ .ledger-paper.ledger-doctrine{box-shadow:none;border:1px solid CanvasText}
+ .home-records-links>a>span:is(:first-child,:last-child),.home-records-links strong,.pfa .pfa-rail p{color:CanvasText;text-shadow:none}
+}
+/* Round 3: the seal's pointer light again ("living metal", pf-home.js), rendered. Each layer is what one low, cool light
+   adds to the milled emblem from one side of the plate (ti_emblem.py --glint, emblem_glints.py): the chamfers, ring
+   walls, gold edges and turned band that face it. pf-home.js sets --lN/--lE/--lS/--lW from the pointer's side, and
+   the layers are added over the emblem (plus-lighter), so two neighbours blend into a light from in between. The CSS
+   gradients and the R3 masks go; reduced motion, motion off and forced colours still hide every layer. */
+.pf-emblem.r3-seal>.pf-lm{z-index:2;-webkit-mask-image:none;mask-image:none;mix-blend-mode:plus-lighter;background:none 0 0/100% 100% no-repeat}
+.pf-emblem.r3-seal>.pf-lm--n{background-image:url("/brand/emblem/PF_MARK_G_TI_GLINT_N.webp");opacity:calc(var(--lN) * .85)}
+.pf-emblem.r3-seal>.pf-lm--e{background-image:url("/brand/emblem/PF_MARK_G_TI_GLINT_E.webp");opacity:calc(var(--lE) * .85)}
+.pf-emblem.r3-seal>.pf-lm--s{background-image:url("/brand/emblem/PF_MARK_G_TI_GLINT_S.webp");opacity:calc(var(--lS) * .85)}
+.pf-emblem.r3-seal>.pf-lm--w{background-image:url("/brand/emblem/PF_MARK_G_TI_GLINT_W.webp");opacity:calc(var(--lW) * .85)}
+.pf-emblem.r3-seal>:is(.pf-lm--seal,.pf-lm--bridge,.pf-lm--brass,.pf-lm--eng){display:none}
+/* Round 3: the proof chain's inspection light, rendered. Each stage's box carries what a small cool spot above that
+   checkpoint link adds to the chain (chain_scene.py --lit, chain_light.py), added over the shipped chain art, which does
+   not change. The CSS radial pool goes; the box, its opacity and its timing stay. */
+@media (min-width:701px){
+ .pfa-rail li::after{background:none 0 0/100% 100% no-repeat;mix-blend-mode:plus-lighter}
+ .pfa-rail li:nth-child(1)::after{background-image:url(/assets/round3/chain-light-s0.webp)}
+ .pfa-rail li:nth-child(2)::after{background-image:url(/assets/round3/chain-light-s1.webp)}
+ .pfa-rail li:nth-child(3)::after{background-image:url(/assets/round3/chain-light-s2.webp)}
+ .pfa-rail li:nth-child(4)::after{background-image:url(/assets/round3/chain-light-s3.webp)}
+ .pfa-rail li:nth-child(5)::after{background-image:url(/assets/round3/chain-light-s4.webp)}
+}
+/* Round 3, rendered ground (owner: "use adobe tools or blender"). Home's chassis plate is hot-rolled mild steel rendered in
+   Blender (ti_plate.py --part mill-field, ti_common.mat_mill_steel): a 690 px tile, half the 1380 px plate, so its
+   joints with the side plates fall on tile edges, and rendered joint strips (chassis-joint-l/-r: a 1 px chamfer on
+   each plate and the 2 px gap between) in place of the CSS stripes. The light falloff and the hero pool go: light
+   belongs to the rendered parts. It replaces the generated mill-steel image on Home; the other rooms keep it for now. */
+body.pf-ledger-page{background-color:#1b1f21;
+ background-image:url(/assets/round3/chassis-joint-l.webp),url(/assets/round3/chassis-joint-r.webp),url(/assets/round3/chassis-field-1380.webp);
+ background-image:url(/assets/round3/chassis-joint-l.webp),url(/assets/round3/chassis-joint-r.webp),image-set(url(/assets/round3/chassis-field-690.webp) 1x,url(/assets/round3/chassis-field-1380.webp) 2x);
+ background-size:12px 512px,12px 512px,690px 690px;background-repeat:repeat-y,repeat-y,repeat;
+ background-position:calc(50% - 690px) 0,calc(50% + 690px) 0,calc(50% - 345px) 0}
+.ledger-hero{background:none}
+/* Paper sheets lie on the chassis: their edge is rendered (head_parts.py sheet-edge), the key light casting the short
+   shadow a thin sheet throws, about 1 px down its right edge and a soft band under its lifted lower edge, in place of
+   the CSS outline and blur. The face is transparent, so the paper tile shows through; the clamp covers the top edge. */
+.ledger-paper.ledger-doctrine,.pfa-record,.pfa-fallback,.pf-rc-doc{border:0 solid;border-radius:0;box-shadow:none;
+ border-image:url(/assets/round3/sheet-edge.webp) 16 32 64 16/8px 16px 32px 8px/4px 8px 8px 4px stretch}
+/* The receipt dialog's sheet is the same paper, held by the same clamp (its empty .ledger-clamp is the bar). */
+.pf-rc-bay{padding-top:22px}
+.pf-mk-fig>img,.pf-loupe>img{filter:none}
+.pf-rc-bed{position:relative}
+.pf-rc-bed>.ledger-clamp{position:absolute;z-index:1;top:-13px;left:-14px;right:-14px;height:30px;box-sizing:border-box;border:0 solid;border-width:0 36px;
+ border-image:url(/assets/round3/clamp.webp) 0 72 fill/0 36px/0 stretch;pointer-events:none}
+.pf-rc-doc{border-top:0;background:url(/assets/round3/paper-field-1024.webp) -211px -97px/512px 512px repeat,#e9e6dd;
+ background-image:image-set(url(/assets/round3/paper-field-512.webp) 1x,url(/assets/round3/paper-field-1024.webp) 2x)}
+@media (max-width:700px){.pf-rc-bay{padding-top:18px}.pf-rc-bed>.ledger-clamp{left:-9px;right:-9px}}
+@media (forced-colors:active){
+ body.pf-ledger-page{background-image:none}
+ .ledger-paper.ledger-doctrine,.pfa-record,.pfa-fallback,.pf-rc-doc{border-image:none;border:1px solid CanvasText}
+ .pf-rc-doc,.pfa-fallback{background:Canvas}
+ .pf-rc-bed>.ledger-clamp{display:none}
+ .pfa .pf-chain-toggle:disabled{border-image:none}
+}

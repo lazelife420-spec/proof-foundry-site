@@ -4,7 +4,8 @@ Frame units: desktop is the V5 1400 x 431 px frame; 1 px = 0.01 m. Image x -> +X
 The camera is orthographic, so link, plate and rail positions land on the same pixels the HTML overlay expects.
 Modes: base (no carriage, plates at rest), carriage (carriage only over shadow catchers, transparent),
 plate (plate N pressed with the selected indicator, over shadow catchers, transparent).
-All materials are procedural; lighting is area lights only; no downloaded HDRI or texture.
+base with --lit N / --crop N: the inspection light on stage N, cropped to its pool box (see chain_light.py).
+All materials are procedural; lighting is area lights (plus the inspection spot with --lit); no downloaded HDRI or texture.
 """
 import bpy, bmesh, math, sys, argparse, random
 from mathutils import Vector, Matrix
@@ -16,6 +17,10 @@ ap.add_argument('--scene', default='desktop'); ap.add_argument('--mode', default
 ap.add_argument('--stage', type=int, default=2); ap.add_argument('--scale', type=float, default=1)
 ap.add_argument('--samples', type=int, default=64); ap.add_argument('--out', default='//chain.png')
 ap.add_argument('--alt', type=int, default=0)
+# base mode only: --lit N adds the inspection light (a small cool spot above stage N's checkpoint link) and --crop N
+# renders only that stage's light-pool box (the box the CSS draws the light in), so a lit and an unlit crop can be
+# differenced into the light's own contribution (chain_light.py).
+ap.add_argument('--lit', type=int, default=-1); ap.add_argument('--crop', type=int, default=-1)
 A = ap.parse_args(argv)
 S = 0.01
 random.seed(7)
@@ -369,6 +374,9 @@ CX = [247.9, 456.5, 666.2, 876.0, 1085.1]
 PLX = [169, 378, 588, 797.4, 1006.4]; PLATE_W = 157.1; PLATE_Y0, PLATE_Y1 = 317, 397
 RAIL_Y = 272
 MARKS = [p + PLATE_W / 2 for p in PLX]
+# The checkpoint links' light-pool boxes as pf-home-ledger.css sets them (--lx, --lw, --ly, --lh in cqw of the frame).
+POOL = [(10.5707, 14.2057, 6.0, 9.1714), (25.4907, 14.2307, 7.9143, 8.95), (40.4657, 14.2464, 8.5714, 8.8714),
+        (55.455, 14.2293, 7.8786, 9.0), (70.4043, 14.2, 6.0143, 9.1429)]
 MID, HALF, SAG, YEND = 666.2, 418.9, 34.0, 148.0
 def chain_y(x):
     # Slight gravity sag between the anchors (parabolic approximation of the catenary).
@@ -614,7 +622,21 @@ if A.scene == 'desktop':
         flag = [o for o in plate_parts[A.stage] if o.name.startswith('flag')][0]
         flag.data.materials[0] = M['champagne']; flag.location.z += 1.0 * S
     elif A.mode == 'base':
-        pass
+        if A.lit >= 0:
+            # The inspection light: a small cool spot 5 m above the checkpoint link, a 16 deg cone with a soft edge,
+            # so its pool falls off inside the stage's box.
+            sd = bpy.data.lights.new('inspection', 'SPOT'); sd.energy = 1500; sd.color = (0.84, 0.9, 1.0)
+            sd.spot_size = math.radians(16); sd.spot_blend = 0.95; sd.shadow_soft_size = 0.3
+            so = bpy.data.objects.new('inspection', sd); scn.collection.objects.link(so)
+            tgt = P(CX[A.lit], CY[A.lit], 0.0); so.location = tgt + Vector((0.4, 0.6, 5.0))
+            so.rotation_euler = (tgt - so.location).to_track_quat('-Z', 'Y').to_euler()
+        if A.crop >= 0:
+            # The pool box, from the CSS stage vars (cqw of the 1400 px frame): x (lx - 1.2) .. + (lw + 2.4), y likewise.
+            lx, lw, ly, lh = POOL[A.crop]
+            x0, x1, y0, y1 = (lx - 1.2) * 14, (lx + lw + 1.2) * 14, (ly - 1.2) * 14, (ly + lh + 1.2) * 14
+            scn.render.use_border = True; scn.render.use_crop_to_border = True
+            scn.render.border_min_x = x0 / 1400; scn.render.border_max_x = x1 / 1400
+            scn.render.border_min_y = 1 - y1 / 431; scn.render.border_max_y = 1 - y0 / 431
     elif A.mode in ('carriage', 'plate'):
         scn.render.film_transparent = True; scn.render.image_settings.color_mode = 'RGBA'
         everything = [o for o in scn.objects if o.type == 'MESH']

@@ -1,11 +1,13 @@
 """Hero titanium plate, Cycles. Reproducible:
-blender -b --factory-startup -P ti_plate.py -- --part field|frame --scale 2 --samples N --out x.png
+blender -b --factory-startup -P ti_plate.py -- --part field|frame|oxide-field|head-frame|mill-field|paper-field
+        |chassis-joint-l|chassis-joint-r --scale 2 --samples N --out x.png
 
 field: one 640 x 640 CSS px tile of bead-blasted grade 2 titanium. Every noise runs on a torus of the tile's period,
        so the tile wraps exactly in x and y; the CSS repeats it from the plate's padding box and never stretches it.
 frame: a 192 x 192 CSS px plate corner set, sliced 48 px in CSS (border-image, no fill). The plate sits flush in a
        chassis pocket: a 1.5 px shadow gap at the outer edge, a 2 px x 35 deg polished chamfer, and four ISO 10642 M4
        titanium countersunk screws 22 px in from both edges. The flat face is a holdout, so the field shows through.
+       --size 96 --screw-in 12 --head-r 4.5 --socket-r 1.4 is the records index plates' set (M2.5 heads), sliced 24 px.
 Both use ti_common.ti_studio(), so the face reads the same tone in the field and around the screws.
 """
 import bpy, bmesh, math, sys, argparse, os, random
@@ -16,6 +18,14 @@ ap.add_argument('--part', default='field'); ap.add_argument('--scale', type=floa
 ap.add_argument('--samples', type=int, default=64); ap.add_argument('--out', default='//ti.png')
 ap.add_argument('--dome', type=float, default=0.62); ap.add_argument('--sun', type=float, default=0.6)
 ap.add_argument('--denoise', type=int, default=1); ap.add_argument('--cone', type=float, default=8); ap.add_argument('--rim', type=float, default=1.4)
+# frame only: the corner set's size, the screws' inset from both edges, and their head and socket radii (CSS px).
+ap.add_argument('--size', type=float, default=192); ap.add_argument('--screw-in', type=float, default=22)
+ap.add_argument('--head-r', type=float, default=8); ap.add_argument('--socket-r', type=float, default=2.5)
+# mill-field / paper-field only: the tile's size (CSS px), the material's seed, the view exposure, and (mill-field
+# only) the steel's tone.
+ap.add_argument('--tile', type=float, default=512); ap.add_argument('--seed', type=float, default=0.0)
+ap.add_argument('--tone', type=float, default=0.06); ap.add_argument('--exposure', type=float, default=0.0)
+ap.add_argument('--margin', type=float, default=6)   # head-frame only: the shadow margin right and below, CSS px
 A = ap.parse_args(argv)
 bpy.ops.wm.read_factory_settings(use_empty=True)
 import ti_common as T
@@ -62,7 +72,8 @@ if A.part == 'field':
     T.camera(W / 2 * S, -H / 2 * S, W * S, W * A.scale, H * A.scale)
     T.render_setup(A.samples, A.out, denoise=bool(A.denoise))
 elif A.part == 'frame':
-    W = H = 192; G, CH = 1.5, 2.0
+    W = H = A.size; G, CH = 1.5, 2.0; IN, HR = A.screw_in, A.head_r
+    screws = ((IN, IN), (W - IN, IN), (IN, H - IN), (W - IN, H - IN))
     ti = T.mat_titanium('ti-blasted', T=640 * S); pol = T.mat_titanium('ti-polished', T=640 * S, finish='polished')
     scr = T.mat_titanium('ti-screw', T=640 * S, seed=2.3, finish='lapped')   # grade 5 heads, lapped
     face = holdout('face')
@@ -86,16 +97,65 @@ elif A.part == 'frame':
     for f in pl.data.polygons:
         f.material_index = 0 if (f.normal.z > 0.999 and f.center.z > -1e-5) else 1
     # Countersink bores through the face, so the heads seat in the plate and their sockets read as recesses.
-    for (x, y) in ((22, 22), (W - 22, 22), (22, H - 22), (W - 22, H - 22)):
-        bpy.ops.mesh.primitive_cylinder_add(vertices=96, radius=8.2 * S, depth=2 * S, location=(x * S, -y * S, 0))
+    for (x, y) in screws:
+        bpy.ops.mesh.primitive_cylinder_add(vertices=96, radius=(HR + 0.2) * S, depth=2 * S, location=(x * S, -y * S, 0))
         bo = pl.modifiers.new('bore', 'BOOLEAN'); bo.operation = 'DIFFERENCE'; bo.object = bpy.context.active_object; bo.solver = 'EXACT'
         cutter = bpy.context.active_object; bpy.context.view_layer.objects.active = pl; bpy.ops.object.modifier_apply(modifier='bore'); bpy.data.objects.remove(cutter)
     for f in pl.data.polygons:
         f.material_index = 0 if (f.normal.z > 0.999 and f.center.z > -1e-5) else 1
-    for i, (x, y) in enumerate(((22, 22), (W - 22, 22), (22, H - 22), (W - 22, H - 22))):
-        countersunk(f'screw{i}', x, y, 8, scr, 2.5, random.uniform(0, math.pi))
-        bpy.ops.mesh.primitive_torus_add(major_radius=8.25 * S, minor_radius=0.35 * S, location=(x * S, -y * S, -0.15 * S))
+    for i, (x, y) in enumerate(screws):
+        countersunk(f'screw{i}', x, y, HR, scr, A.socket_r, random.uniform(0, math.pi))
+        bpy.ops.mesh.primitive_torus_add(major_radius=(HR + 0.25) * S, minor_radius=0.35 * S, location=(x * S, -y * S, -0.15 * S))
         ring = bpy.context.active_object; ring.data.materials.append(dark)
+    T.ti_studio(A.dome, A.sun, A.cone, A.rim)
+    T.camera(W / 2 * S, -H / 2 * S, W * S, W * A.scale, H * A.scale)
+    T.render_setup(A.samples, A.out, transparent=True)
+elif A.part in ('mill-field', 'paper-field'):
+    # The page's ground and its paper, each one tile of --tile CSS px that wraps exactly (torus noise, plane run past the
+    # frame): mill-field is hot-rolled plate (the chassis at --tile 690, half the 1380 px plate, so its joints fall on
+    # tile edges; the footer base a darker tone and its own seed), paper-field the archival paper of every sheet.
+    W = H = A.tile
+    mat = T.mat_mill_steel('mill', T=W * S, seed=A.seed, tone=A.tone) if A.part == 'mill-field' else T.mat_paper('paper', T=W * S, seed=A.seed)
+    plane('field', -32, -32, W + 32, H + 32, 0, mat)
+    T.ti_studio(A.dome, A.sun, A.cone, A.rim)
+    T.camera(W / 2 * S, -H / 2 * S, W * S, W * A.scale, H * A.scale)
+    T.render_setup(A.samples, A.out, denoise=bool(A.denoise))
+    scn.view_settings.exposure = A.exposure
+elif A.part in ('chassis-joint-l', 'chassis-joint-r'):
+    # The butt joint between the 1380 px chassis plate and a side plate, as a 12 x 512 CSS px strip that repeats down
+    # the page (the section is the same all the way, so it wraps). The plate edge sits at canvas x 6: each plate's top
+    # edge is broken by a 1 px 35 deg chamfer, and a 2 px gap runs between them, outside the chassis plate. The faces
+    # are holdouts, so the chassis field (mill-field) shows through; only the chamfers and the gap are drawn. -l is the
+    # left joint (chassis plate to the right), -r the right one; each is rendered for its own side, never mirrored.
+    W, H = 12, 512; left = A.part.endswith('-l')
+    face = holdout('face')
+    edge, nte, be = T.node_mat('plate-edge'); be.inputs['Base Color'].default_value = (0.3, 0.3, 0.3, 1)
+    be.inputs['Metallic'].default_value = 1.0; be.inputs['Roughness'].default_value = 0.3
+    dark = T.node_mat('gap')[0]; dark.node_tree.nodes['Principled BSDF'].inputs['Base Color'].default_value = (0.004, 0.004, 0.0045, 1)
+    dark.node_tree.nodes['Principled BSDF'].inputs['Roughness'].default_value = 0.8
+    drop = 1.0 * math.tan(math.radians(35))
+    def slab(name, prof):
+        bm = bmesh.new()
+        lo = [bm.verts.new((x * S, 32 * S, z * S)) for x, z in prof]; hi = [bm.verts.new((x * S, -(H + 32) * S, z * S)) for x, z in prof]
+        n = len(prof)
+        bm.faces.new(lo[::-1]); bm.faces.new(hi)
+        for i in range(n): bm.faces.new((lo[i], lo[(i + 1) % n], hi[(i + 1) % n], hi[i]))
+        bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+        me = bpy.data.meshes.new(name); bm.to_mesh(me); bm.free()
+        ob = bpy.data.objects.new(name, me); scn.collection.objects.link(ob)
+        me.materials.append(face); me.materials.append(edge); me.materials.append(dark)
+        for f in me.polygons:
+            f.material_index = 0 if f.normal.z > 0.999 else (1 if f.normal.z > 0.05 else 2)
+        return ob
+    if left:
+        slab('side', [(-40, -8), (4, -8), (4, -drop), (3, 0), (-40, 0)])
+        slab('chassis', [(6, -8), (52, -8), (52, 0), (7, 0), (6, -drop)])
+        g0, g1 = 4, 6
+    else:
+        slab('chassis', [(-40, -8), (6, -8), (6, -drop), (5, 0), (-40, 0)])
+        slab('side', [(8, -8), (52, -8), (52, 0), (9, 0), (8, -drop)])
+        g0, g1 = 6, 8
+    plane('gap-floor', g0 - 0.5, -32, g1 + 0.5, H + 32, -7.9, dark)
     T.ti_studio(A.dome, A.sun, A.cone, A.rim)
     T.camera(W / 2 * S, -H / 2 * S, W * S, W * A.scale, H * A.scale)
     T.render_setup(A.samples, A.out, transparent=True)
@@ -109,9 +169,10 @@ elif A.part == 'oxide-field':
 elif A.part == 'head-frame':
     # The head plate's edge: a 6 mm black-oxide plate bolted 3 mm proud of the chassis, its top edge broken by a 2 px
     # 35 deg chamfer, an M4 socket cap screw in a counterbore 16 px in from both edges at each corner, and its soft
-    # shadow on the chassis in a 6 px margin right and below. 160 x 400 CSS px plus the margin; the CSS uses the top
+    # shadow on the chassis in a --margin px margin right and below (default 6, as committed at 8e0b8db; the shipped
+    # frame now uses 24, so the key light's shadow fades out inside the art). 160 x 400 CSS px plus the margin; the CSS uses the top
     # crop on the header and the bottom crop on the key bank, so the two read as one plate. The face is a holdout.
-    W, H, MG, CH = 160, 400, 6, 2.0
+    W, H, MG, CH = 160, 400, A.margin, 2.0
     ox = T.mat_oxide('oxide', T=512 * S); pol = T.mat_titanium('edge', T=640 * S, finish='polished')
     m_edge, nte, be = T.node_mat('oxide-edge'); be.inputs['Base Color'].default_value = (0.2, 0.205, 0.21, 1)
     be.inputs['Metallic'].default_value = 1.0; be.inputs['Roughness'].default_value = 0.22

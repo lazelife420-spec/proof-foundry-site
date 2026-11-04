@@ -56,11 +56,100 @@ def map_range(nt, src, f0, f1, t0, t1):
     m.inputs['To Min'].default_value = t0; m.inputs['To Max'].default_value = t1
     return m.outputs[0]
 
+def torus4d_aniso(nt, T, kx, ky, x0=0.0, y0=0.0):
+    """torus4d with each circle's radius scaled (kx, ky), so a noise read through it is kx times as fine along x and ky
+    times along y and still wraps exactly on the tile's period T: kx << ky draws streaks along x."""
+    N = nt.nodes; L = nt.links.new
+    tc = N.new('ShaderNodeTexCoord'); sep = N.new('ShaderNodeSeparateXYZ'); L(tc.outputs['Object'], sep.inputs[0])
+    def circle(src, off, k):
+        a = N.new('ShaderNodeMath'); a.operation = 'MULTIPLY_ADD'; L(src, a.inputs[0])
+        a.inputs[1].default_value = 2 * math.pi / T; a.inputs[2].default_value = off
+        outs = []
+        for op in ('COSINE', 'SINE'):
+            t = N.new('ShaderNodeMath'); t.operation = op; L(a.outputs[0], t.inputs[0])
+            m = N.new('ShaderNodeMath'); m.operation = 'MULTIPLY'; L(t.outputs[0], m.inputs[0]); m.inputs[1].default_value = k * T / (2 * math.pi)
+            outs.append(m.outputs[0])
+        return outs
+    (cx, sx), (cy, sy) = circle(sep.outputs['X'], x0, kx), circle(sep.outputs['Y'], y0, ky)
+    comb = N.new('ShaderNodeCombineXYZ'); L(cx, comb.inputs[0]); L(sx, comb.inputs[1]); L(cy, comb.inputs[2])
+    return comb.outputs[0], sy
+
+def _mul(nt, a, b):
+    m = nt.nodes.new('ShaderNodeMath'); m.operation = 'MULTIPLY'
+    for i, v in enumerate((a, b)):
+        if isinstance(v, (int, float)): m.inputs[i].default_value = v
+        else: nt.links.new(v, m.inputs[i])
+    return m.outputs[0]
+
+def mat_mill_steel(name, T=6.9, seed=0.0, tone=0.06):
+    """Hot-rolled mild steel plate as it leaves the mill: a dark, partly metallic mill scale with soft clouds, darker
+    scale flakes, rolling streaks and fine bright rolling lines along x, and a fine grain. All noise runs on a torus of period T metres, so the field
+    tiles exactly. `tone` is the linear albedo before the variations; the chassis and the footer base differ only in
+    tone and seed."""
+    m, nt, b = node_mat(name); L = nt.links.new
+    inp(b, 'Metallic').default_value = 0.6
+    vec, w = torus4d(nt, T, seed, seed * 1.7)
+    svec, sw = torus4d_aniso(nt, T, 0.012, 1.0, seed + 2.1, seed * 0.6 + 0.4)
+    lvec, lw = torus4d_aniso(nt, T, 0.004, 1.0, seed + 4.7, seed * 0.3 + 1.9)
+    grain = noise4(nt, vec, w, 1 / 0.004, detail=1, rough=0.5)
+    cloud = noise4(nt, vec, w, 1 / 0.7, detail=3, rough=0.55)
+    flake = noise4(nt, vec, w, 1 / 0.18, detail=4, rough=0.62)
+    streak = noise4(nt, svec, sw, 1 / 0.035, detail=3, rough=0.6)
+    line = noise4(nt, lvec, lw, 1 / 0.012, detail=2, rough=0.5)
+    k = _mul(nt, map_range(nt, grain, 0.3, 0.7, 0.86, 1.12), map_range(nt, cloud, 0.35, 0.65, 0.82, 1.14))
+    k = _mul(nt, k, map_range(nt, streak, 0.3, 0.7, 0.8, 1.16))
+    ln = nt.nodes.new('ShaderNodeMapRange'); L(line, ln.inputs['Value']); ln.clamp = True
+    ln.inputs['From Min'].default_value = 0.66; ln.inputs['From Max'].default_value = 0.72
+    ln.inputs['To Min'].default_value = 1.0; ln.inputs['To Max'].default_value = 1.35
+    k = _mul(nt, k, ln.outputs[0])
+    fl = nt.nodes.new('ShaderNodeMapRange'); L(flake, fl.inputs['Value']); fl.clamp = True
+    fl.inputs['From Min'].default_value = 0.6; fl.inputs['From Max'].default_value = 0.7
+    fl.inputs['To Min'].default_value = 1.0; fl.inputs['To Max'].default_value = 0.86
+    base = _mul(nt, _mul(nt, k, fl.outputs[0]), tone)
+    col = nt.nodes.new('ShaderNodeCombineColor'); L(base, col.inputs[0]); L(_mul(nt, base, 1.02), col.inputs[1])
+    L(_mul(nt, base, 1.06), col.inputs[2]); L(col.outputs[0], inp(b, 'Base Color'))
+    L(map_range(nt, cloud, 0.3, 0.7, 0.62, 0.48), inp(b, 'Roughness'))
+    inp(b, 'Anisotropic').default_value = 0.3
+    tv = nt.nodes.new('ShaderNodeCombineXYZ'); tv.inputs[0].default_value = 1.0; L(tv.outputs[0], inp(b, 'Tangent'))
+    h = nt.nodes.new('ShaderNodeMath'); h.operation = 'ADD'; L(grain, h.inputs[0]); L(_mul(nt, streak, 0.6), h.inputs[1])
+    bp = nt.nodes.new('ShaderNodeBump'); bp.inputs['Strength'].default_value = 0.05; bp.inputs['Distance'].default_value = 0.002
+    L(h.outputs[0], bp.inputs['Height']); L(bp.outputs[0], inp(b, 'Normal'))
+    return m
+
+def mat_paper(name, T=5.12, seed=0.0, tone=(0.885, 0.84, 0.655)):
+    """Archival cotton paper: matte, a faint sheen, and two scales of fibre (long fibres laid both ways, short fibres
+    and a fine tooth) in the albedo and a shallow bump. Torus noise of period T, so the sheet's field tiles exactly."""
+    m, nt, b = node_mat(name); L = nt.links.new
+    inp(b, 'Metallic').default_value = 0.0; inp(b, 'Roughness').default_value = 0.88
+    inp(b, 'Sheen Weight').default_value = 0.12
+    vec, w = torus4d(nt, T, seed, seed * 1.3)
+    hx, hw = torus4d_aniso(nt, T, 0.12, 1.0, seed + 1.1, seed + 0.7)
+    vx, vw = torus4d_aniso(nt, T, 1.0, 0.12, seed + 2.3, seed + 1.9)
+    tooth = noise4(nt, vec, w, 1 / 0.006, detail=2, rough=0.5)
+    cloud = noise4(nt, vec, w, 1 / 0.9, detail=3, rough=0.5)
+    fh = noise4(nt, hx, hw, 1 / 0.02, detail=3, rough=0.6); fv = noise4(nt, vx, vw, 1 / 0.02, detail=3, rough=0.6)
+    fib = nt.nodes.new('ShaderNodeMath'); fib.operation = 'MAXIMUM'; L(fh, fib.inputs[0]); L(fv, fib.inputs[1])
+    mott = noise4(nt, vec, w, 1 / 0.08, detail=3, rough=0.6)
+    k = _mul(nt, map_range(nt, tooth, 0.3, 0.7, 0.92, 1.06), map_range(nt, cloud, 0.35, 0.65, 0.9, 1.07))
+    k = _mul(nt, k, map_range(nt, mott, 0.35, 0.65, 0.91, 1.06))
+    k = _mul(nt, k, map_range(nt, fib.outputs[0], 0.5, 0.8, 1.0, 0.82))
+    col = nt.nodes.new('ShaderNodeCombineColor')
+    for i in range(3): L(_mul(nt, k, tone[i]), col.inputs[i])
+    L(col.outputs[0], inp(b, 'Base Color'))
+    h = nt.nodes.new('ShaderNodeMath'); h.operation = 'ADD'; L(tooth, h.inputs[0]); L(_mul(nt, fib.outputs[0], 0.8), h.inputs[1])
+    bp = nt.nodes.new('ShaderNodeBump'); bp.inputs['Strength'].default_value = 0.25; bp.inputs['Distance'].default_value = 0.002
+    L(h.outputs[0], bp.inputs['Height']); L(bp.outputs[0], inp(b, 'Normal'))
+    return m
+
 TI_BASE = (0.53, 0.52, 0.50)
 
-def brush(nt, b, strength=0.04, axis='x', streaks=0.0):
-    """Brushing along `axis`: noise stretched 1:60 drives a faint bump and an anisotropic sheen whose tangent follows the
-    stroke. `streaks` (0..1) also lays the strokes into the reflectance, the visible grain of a brushed face."""
+def brush(nt, b, strength=0.04, axis='x', streaks=0.0, tangent=False):
+    """Brushing along `axis`: noise stretched 1:60 drives a faint bump and an anisotropic sheen. `streaks` (0..1) also
+    lays the strokes into the reflectance, the visible grain of a brushed face.
+    The Principled BSDF ignores an unlinked Tangent's value and uses the radial tangent round the object's z axis, so
+    by default the sheen fans out from the part's centre (unnoticeable on the small Round 3 key and seal parts, kept so
+    their masters still reproduce). tangent=True links a constant tangent along the stroke: use it for any flat face
+    that a 3- or 9-slice stretches, where a fanned sheen would stretch into a visible sweep."""
     N = nt.nodes; L = nt.links.new
     geo = N.new('ShaderNodeNewGeometry'); mp = N.new('ShaderNodeMapping')
     mp.inputs['Scale'].default_value = (4, 240, 1) if axis == 'x' else (240, 4, 1)
@@ -70,6 +159,9 @@ def brush(nt, b, strength=0.04, axis='x', streaks=0.0):
     L(nz.outputs['Fac'], bp.inputs['Height']); L(bp.outputs[0], inp(b, 'Normal'))
     inp(b, 'Anisotropic').default_value = 0.35 if not streaks else 0.6
     inp(b, 'Tangent').default_value = (1, 0, 0) if axis == 'x' else (0, 1, 0)
+    if tangent:
+        tv = N.new('ShaderNodeCombineXYZ'); tv.inputs[0].default_value = 1.0 if axis == 'x' else 0.0
+        tv.inputs[1].default_value = 0.0 if axis == 'x' else 1.0; L(tv.outputs[0], inp(b, 'Tangent'))
     if streaks:
         bc = inp(b, 'Base Color'); base = bc.default_value[:]
         k = N.new('ShaderNodeMapRange'); L(nz.outputs['Fac'], k.inputs['Value'])

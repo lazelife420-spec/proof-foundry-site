@@ -1,6 +1,7 @@
 """Round 3 head plate hardware, Cycles: the six-key latching bank and the chain that threads it. Reproducible:
 blender -b --factory-startup -P head_parts.py -- --part key-rest|key-current|key-pressed|coupler|drop|anchor-l|anchor-r|anchor-t|anchor-b
-        --scale 2 --samples N --out x.png
+        |button-rest|button-pressed|button-primary|button-primary-pressed|button-locked|clamp|stage-plate|stage-plate-on
+        |sheet-edge [--pass obj|shadow] --scale 2 --samples N --out x.png
 
 Same canvases, bores and registration as the Round 2 parts in ui_parts.py, so every CSS offset still holds:
 - keys 200 x 64 CSS px: ears 0..22 and 178..200 with bores at x 8.5 / 191.5, y 32, r 4.2; housing 16..184;
@@ -15,6 +16,19 @@ What changes is how they are built and lit:
   middle link lies flat between them: the links are threaded, not laid on top;
 - every part sits on the head plate (a shadow catcher) and the chain's tongues and housings are occluders, so the
   sprites carry their own contact shadows and the links disappear under the ears where they pass beneath them.
+The same build makes the page's other hardware, so a press anywhere on the site is the same mechanism:
+- buttons 120 x 60: the key without its ears, 9-sliced 28 px with a 4 px outset so the bezel lands on the element's box
+  at any size; the primary button carries the latched key's bead-blasted stainless cap, the others the brushed cap;
+- button-locked: the cap held at the pressed depth with a dull, unlit finish, for a key that cannot be pressed now;
+- sheet-edge 160 x 160: a paper sheet's corner set lying on the chassis, its face a holdout (the CSS paper shows
+  through), its lower edge lifting 1.2 px as paper does; its shadow pass takes the contact light from 45 deg, so the
+  sheet throws a thin soft shadow down its right edge and a soft band under its lifted lower edge;
+- clamp 160 x 30: a brushed stainless bar pressing a paper sheet's top edge, an M4 socket cap screw on a washer through
+  each end; 3-sliced 36 px, so the bar runs the sheet's width;
+- stage-plate 160 x 96: the phone proof machine's brushed stainless stage plate, two lapped M3 socket screws on washers
+  at its right edge,
+  9-sliced with a 3 px outset; stage-plate-on is the selected plate, with the current key's champagne witness line
+  inlaid down its left edge.
 Lighting is ti_common.ti_studio() (all distant), so a 3-sliced key reads the same however far it is stretched. Its
 low band reaches the horizon here, so the housings' 45 deg machined edges catch the key light. The
 key light casts no shadow here (it would throw them 50 px), so the contact shadows come from the overhead dome.
@@ -29,6 +43,15 @@ ap.add_argument('--samples', type=int, default=128); ap.add_argument('--out', de
 ap.add_argument('--dome', type=float, default=0.62); ap.add_argument('--sun', type=float, default=0.6)
 ap.add_argument('--cone', type=float, default=8); ap.add_argument('--rim', type=float, default=1.4)
 ap.add_argument('--band-lo', type=float, default=-4.0)
+# --pass obj: the part lit by the full studio, its plate and occluders holdouts (no shadow); --pass shadow: the plate's
+# shadow under the dome and the contact light below, without the rim band (sheet-edge takes the contact light from
+# 45 deg). sprite_compose.py lays the part over that shadow. Without --pass the sprite is rendered in one go, as the
+# committed 8e0b8db masters were.
+ap.add_argument('--pass', dest='pass_', default='', choices=('', 'obj', 'shadow'))
+# The shadow pass's contact light: a shadowed, wide sun high over the key azimuth, so the shadow is short and soft and
+# fades out inside each canvas's margin.
+ap.add_argument('--contact-el', type=float, default=80); ap.add_argument('--contact-angle', type=float, default=18)
+ap.add_argument('--contact-power', type=float, default=0.35)
 A = ap.parse_args(argv)
 bpy.ops.wm.read_factory_settings(use_empty=True)
 import ti_common as T
@@ -90,10 +113,10 @@ def link_obj(name, cx, cy, z, theta, phi, a, R, r, mat):
     mo.data.materials.append(mat); return mo
 
 # ---------------- materials ----------------
-def satin(name, color, metal, rough, brushed=0.0):
+def satin(name, color, metal, rough, brushed=0.0, tangent=False):
     m, nt, b = T.node_mat(name); b.inputs['Base Color'].default_value = (*color, 1); b.inputs['Metallic'].default_value = metal
     b.inputs['Roughness'].default_value = rough
-    if brushed: T.brush(nt, b, strength=0.05, axis='x', streaks=brushed)
+    if brushed: T.brush(nt, b, strength=0.05, axis='x', streaks=brushed, tangent=tangent)
     return m
 HOUSING = satin('bezel-stainless', (0.5, 0.5, 0.49), 1.0, 0.3, brushed=0.9)   # machined, brushed bezel
 CAP = satin('cap-brushed', (0.11, 0.112, 0.118), 1.0, 0.3, brushed=1.4)
@@ -101,7 +124,16 @@ CAP_ON = satin('cap-stainless', (0.9, 0.9, 0.89), 1.0, 0.24, brushed=0.4)    # b
 SCREW = satin('screw', (0.1, 0.102, 0.106), 1.0, 0.3)
 SOCKET = satin('socket', (0.006, 0.006, 0.007), 0.0, 0.9)
 CHAMP = satin('champagne', (0.84, 0.72, 0.52), 1.0, 0.2, brushed=0.4)
+CAP_DULL = satin('cap-dull', (0.085, 0.087, 0.09), 1.0, 0.62, brushed=0.6)   # a locked cap: no sheen
 PIN = satin('pin', (0.62, 0.62, 0.6), 1.0, 0.22)
+HOLD = bpy.data.materials.new('holdout'); HOLD.use_nodes = True; HOLD.node_tree.nodes.clear()
+HOLD.node_tree.links.new(HOLD.node_tree.nodes.new('ShaderNodeHoldout').outputs[0], HOLD.node_tree.nodes.new('ShaderNodeOutputMaterial').inputs['Surface'])
+# The stretched parts take a constant tangent (ti_common.brush). The stage plate's sheet is smoother than the bezels,
+# so more of its sheen falls inside the narrow dome: its face renders about 168/255, the tone of the CSS plate it
+# replaces, and the dark legends keep their contrast.
+PLATE_ST = satin('plate-stainless', (0.9, 0.9, 0.89), 1.0, 0.2, brushed=1.0, tangent=True)
+BAR = satin('bar-stainless', (0.5, 0.5, 0.49), 1.0, 0.3, brushed=0.9, tangent=True)
+SCREW_LAP = satin('screw-lapped', (0.55, 0.55, 0.54), 1.0, 0.22)   # the stage plates' heads, so they read on the bright sheet
 
 def forged(name):
     """Clean forged steel for the chain: blackened stock with bright wear on the crowns that bear."""
@@ -119,14 +151,19 @@ def forged(name):
     return m
 LINK = forged('forged-link')
 
-def catcher_plate(x0, y0, x1, y1):
+def catcher_plate(x0, y0, x1, y1, z=PLATE_Z):
     bpy.ops.mesh.primitive_plane_add(size=1); pl = bpy.context.active_object; pl.name = 'plate'
-    pl.location = P((x0 + x1) / 2, (y0 + y1) / 2, PLATE_Z); pl.scale = ((x1 - x0) * S, (y1 - y0) * S, 1)
-    pl.data.materials.append(SOCKET); pl.is_shadow_catcher = True; return pl
+    pl.location = P((x0 + x1) / 2, (y0 + y1) / 2, z); pl.scale = ((x1 - x0) * S, (y1 - y0) * S, 1)
+    if A.pass_ == 'obj': pl.data.materials.append(HOLD)
+    else: pl.data.materials.append(SOCKET); pl.is_shadow_catcher = True
+    return pl
 
 def occluder(ob):
     """A part another sprite draws: it hides what is behind it and takes shadows, but adds no pixels of its own."""
-    ob.is_shadow_catcher = True; return ob
+    if A.pass_ == 'obj':
+        ob.data.materials.clear(); ob.data.materials.append(HOLD)
+    else: ob.is_shadow_catcher = True
+    return ob
 
 def key(state, render=True):
     """The key body. Ears are 3.2 px tongues at z -4.0..-0.8 so links can pass through the bores."""
@@ -143,8 +180,13 @@ def key(state, render=True):
         box('marker', 29, 21, z1 - 0.4, 31.2, 43, z1 + 0.3, CHAMP, bevel=0.3)
     return hs, ears
 
-def finish(W, H):
-    sun = T.ti_studio(A.dome, A.sun, A.cone, A.rim, A.band_lo); sun.data.use_shadow = False
+def finish(W, H, sun_shadow=False):
+    sun = T.ti_studio(A.dome, A.sun, A.cone, 0.0 if A.pass_ == 'shadow' else A.rim, A.band_lo); sun.data.use_shadow = sun_shadow
+    if A.pass_ == 'shadow' and not sun_shadow:
+        cd = bpy.data.lights.new('contact', 'SUN'); cd.energy = A.contact_power; cd.angle = math.radians(A.contact_angle)
+        co = bpy.data.objects.new('contact', cd); scn.collection.objects.link(co)
+        az, el = math.radians(32), math.radians(A.contact_el)
+        to = Vector((-math.sin(az) * math.cos(el), math.cos(az) * math.cos(el), math.sin(el))); co.rotation_euler = (-to).to_track_quat('-Z', 'Y').to_euler()
     T.camera(W / 2 * S, -H / 2 * S, W * S, W * A.scale, H * A.scale)
     T.render_setup(A.samples, A.out, transparent=True)
     bpy.ops.render.render(write_still=True)
@@ -211,3 +253,48 @@ elif A.part in ('anchor-t', 'anchor-b'):
     cyl('pin', 12, py, -9.0, -1.4, 2.6, PIN, bevel=0.4)
     link_obj('anchor-link', 12, (py + by) / 2, -2.4, math.pi / 2, math.pi / 2 - 0.2, (26.6 - 2 * (LINK_R - LINK_r)) / 2, LINK_R, LINK_r, LINK)
     catcher_plate(-40, -40, 64, 80); finish(W, H)
+elif A.part.startswith('button'):
+    W, H = 120, 60; primary = 'primary' in A.part; locked = A.part.endswith('locked'); pressed = A.part.endswith('pressed') or locked
+    hs = box('housing', 4, 4, PLATE_Z, 116, 56, 6, HOUSING, bevel=2.4, seg=3)
+    cut(hs, box('recess', 10, 10, 0, 110, 50, 20, HOUSING, bevel=0))
+    z0, z1 = (-3.5, 2.2) if pressed else (-2.0, 4.2)
+    box('cap', 12, 12, z0, 108, 48, z1, CAP_DULL if locked else (CAP_ON if primary else CAP), bevel=1.6, seg=3)
+    for x, y in ((7, 7), (113, 53)): cap_screw('retainer', x, y, 6, 2.0, SCREW, SOCKET)
+    catcher_plate(-20, -20, 140, 80); finish(W, H)
+elif A.part == 'clamp':
+    # The sheet and the chassis under it are one shadow catcher at z 0; the bar's ends sit beyond the sheet's edges.
+    W, H = 160, 30
+    box('bar', 4, 8, 0.4, 156, 22, 3.6, BAR, bevel=1.4, seg=3)
+    for x in (18, 142):
+        cyl('washer', x, 15, 3.6, 4.2, 5.6, BAR, bevel=0.3)
+        cap_screw('m4', x, 15, 4.2, 4.0, SCREW, SOCKET)
+    catcher_plate(-20, -20, 180, 50, z=0); finish(W, H)
+elif A.part in ('stage-plate', 'stage-plate-on'):
+    W, H = 160, 96
+    box('plate', 3, 3, PLATE_Z, 157, 93, PLATE_Z + 3.0, PLATE_ST, bevel=1.0, seg=2)
+    if A.part.endswith('-on'):
+        box('witness', 6, 12, PLATE_Z + 2.6, 8.4, 84, PLATE_Z + 3.3, CHAMP, bevel=0.3)
+    for y in (13, 83):
+        cyl('washer', 147, y, PLATE_Z + 3.0, PLATE_Z + 3.4, 3.7, BAR, bevel=0.2)
+        cap_screw('m3', 147, y, PLATE_Z + 3.4, 2.6, SCREW_LAP, SOCKET)
+    catcher_plate(-20, -20, 180, 116); finish(W, H)
+elif A.part == 'sheet-edge':
+    # The sheet: a 0.3 px sheet whose face is a holdout, its last 24 px lifting to 1.2 px (paper's curl), on the
+    # chassis (a shadow catcher at z 0). Corner set 4..152 in a 160 canvas: 4 px of margin left and top, 8 right and
+    # bottom for the shadow, which the contact light (from 45 deg here) keeps short and soft.
+    W, H = 160, 160
+    face = bpy.data.materials.new('sheet-face'); face.use_nodes = True; fnt = face.node_tree; fnt.nodes.clear()
+    fo = fnt.nodes.new('ShaderNodeOutputMaterial'); fh = fnt.nodes.new('ShaderNodeHoldout'); fnt.links.new(fh.outputs[0], fo.inputs['Surface'])
+    bm = bmesh.new()
+    x0, y0, x1, y1, n = 4.0, 4.0, 152.0, 152.0, 74
+    def lift(y): return 1.2 * max(0.0, (y - 128.0) / 24.0) ** 2
+    grid = [[bm.verts.new(P(x0 + (x1 - x0) * i / n, y0 + (y1 - y0) * j / n, 0.3 + lift(y0 + (y1 - y0) * j / n))) for i in range(n + 1)] for j in range(n + 1)]
+    for j in range(n):
+        for i in range(n):
+            bm.faces.new((grid[j][i], grid[j][i + 1], grid[j + 1][i + 1], grid[j + 1][i]))
+    me = bpy.data.meshes.new('sheet'); bm.to_mesh(me); bm.free()
+    sh = bpy.data.objects.new('sheet', me); scn.collection.objects.link(sh); me.materials.append(face)
+    for pg in me.polygons: pg.use_smooth = True
+    so = sh.modifiers.new('thick', 'SOLIDIFY'); so.thickness = 0.3 * S; so.offset = -1.0
+    A.contact_el, A.contact_angle = 45.0, 24.0
+    catcher_plate(-40, -40, 200, 200, z=0); finish(W, H)

@@ -16,7 +16,7 @@ Retired on 2026-11-03, at the owner's request ("real weld beads"): `PF_BUTT_WELD
 - **How it was shown:** cropped, mirrored and repeated at 499 × 42 CSS px, so the same bead and a mirror seam came back every 499 px.
 - **What replaced it:** the rendered `weld-seam-2560.webp` / `weld-seam-5120.webp`. The file and its `--pf-mat-weld` token are removed.
 
-Total payload of the three layers: 310,624 bytes. A page downloads only the layers it uses: Home, About (paper intro) and Truth Files ≈ 0.31 MB (all three); Proof Standard and Support ≈ 0.26 MB (no paper). All are CSS backgrounds with a matching solid `background-color`, so they cause no layout shift and the first frame shows the same dark tone before decoding.
+Total payload of the three layers: 310,624 bytes. A page downloads only the layers it uses: About (paper intro) and Truth Files ≈ 0.31 MB (all three); Proof Standard and Support ≈ 0.26 MB (no paper). Home loads none of them since Round 3 (see "Round 3 rendered ground, shadows and light"): every layer it used is overridden by a Blender render. All are CSS backgrounds with a matching solid `background-color`, so they cause no layout shift and the first frame shows the same dark tone before decoding.
 
 Generation prompts (verbatim, constraints included):
 
@@ -134,10 +134,10 @@ On 2026-11-03 the owner asked for the navigation to be "way better, real built" 
 
 **The plate:** the header and the key bank are one black-oxide steel plate.
 - The face is a tiling field (`ti_plate.py --part oxide-field`), mean sRGB 40, one step darker than the titanium hero.
-- The edge (`ti_plate.py --part head-frame`) has:
+- The edge (`ti_plate.py --part head-frame --margin 24`) has:
   - a 2 px 35° chamfer;
   - four M4 socket cap screws in counterbores;
-  - the plate's shadow on the chassis.
+  - the plate's shadow on the chassis, in a 24 px margin so the key light's shadow fades out inside the art (its outer 8 device px fade to zero, where Cycles' pixel filter leaves a faint last column).
 - The edge is cropped into a top half for the header and a bottom half for the key bank.
 
 **The keys and chain** (`head_parts.py`) keep the Round 2 canvases, bores and registration, so every CSS offset still lands a pin in its bore:
@@ -154,16 +154,106 @@ On 2026-11-03 the owner asked for the navigation to be "way better, real built" 
 |---|---|---|---|---|
 | `assets/round3/oxide-field-1024.webp` | 1024 × 1024 | 28,170 | `92baf251ad86937c4bf5abacfbc08ed2b6cf9cf75ea37830496a78bde98e69ee` | `ti_plate.py --part oxide-field --scale 2`, 384 samples, no denoise, quality 92; repeated at 512 CSS px |
 | `assets/round3/oxide-field-512.webp` | 512 × 512 | 9,374 | `9fc8ab47e5fa7e38435ff509e9a333bd575ec2e98c78dfb016530ebb37d38f59` | the same master, Lanczos to 1x from a 3 × 3 tiling, quality 95 |
-| `assets/round3/head-frame-top.webp` | 332 × 200 | 6,660 | `fc24e7ee38651e251dddf6282d361ca099c30a063c04699e3a8d6a0edd0c999d` | `ti_plate.py --part head-frame --scale 2`, 128 samples: rows 0–200 of the 332 × 812 master, quality 90 |
-| `assets/round3/head-frame-bottom.webp` | 332 × 212 | 7,078 | `0eede2ff7c7eda9add60f0b6c496040172561f82877af2256d2e67c82ef4180f` | the same master, rows 600–812, quality 90 |
-| `assets/round3/key-rest.webp` | 400 × 128 | 5,910 | `6ea1094e7e3b8f9a378243d08591348ad1526cda08ac9da61316166b90885fca` | `head_parts.py --part key-rest --rim 2.5`, 128 samples, quality 90 |
-| `assets/round3/key-current.webp` | 400 × 128 | 6,318 | `acd1a5fb08c2c8b32f64f1999264a5a0212e1accabce5acc23727dacfd29e832` | `head_parts.py --part key-current --rim 2.5`, 128 samples, quality 90 |
-| `assets/round3/key-pressed.webp` | 400 × 128 | 5,998 | `052953216cc3d6f8b38d37b70513879e4dca213ef73c62732217b6d36f98f373` | `head_parts.py --part key-pressed --rim 2.5`, 128 samples, quality 90 |
-| `assets/round3/coupler.webp` | 140 × 64 | 3,390 | `c13719ffe6cdf97a0879b5d9f67dd64e0045da8e9aab5a1546f8a696a2ff06d6` | `head_parts.py --part coupler --rim 2.5`: three links threaded through the ear bores, 128 samples, quality 90 |
-| `assets/round3/drop.webp` | 64 × 200 | 4,060 | `4f7fa420f4eb773daf04690b5e4b957ec90f481232a27e0567177c2e2d098f65` | `head_parts.py --part drop --rim 2.5`, 128 samples, quality 90 |
-| `assets/round3/anchor-l.webp` | 72 × 64 | 2,114 | `6580e850277be0e14e5fe742c80be05ce6c034ff1d55b7694c6e5c8befd12a37` | `head_parts.py --part anchor-l --rim 2.5`, 128 samples, quality 90 |
-| `assets/round3/anchor-r.webp` | 72 × 64 | 2,098 | `a2a6dcaaa9dca05d78027472c845c774e72c40aa52f32362be3d58dcd4d57926` | `head_parts.py --part anchor-r --rim 2.5`, 128 samples, quality 90 |
-| `assets/round3/anchor-t.webp` | 48 × 80 | 1,810 | `0e996aa6c4ec2898174c545fe45f5d43794ffbfee6cfb4dd830a02506cbf916b` | `head_parts.py --part anchor-t --rim 2.5`, 128 samples, quality 90 |
-| `assets/round3/anchor-b.webp` | 48 × 80 | 1,862 | `4a5c09dc6292d00cffd26529b1ed1bce4ac776580a37951ca321bc9c95ac5384` | `head_parts.py --part anchor-b --rim 2.5`, 128 samples, quality 90 |
+| `assets/round3/head-frame-top.webp` | 368 × 200 | 8,152 | `a727a6f732016493e9fb77456dc944bde305e479dd8191c434268b0cc23e944c` | `ti_plate.py --part head-frame --margin 24 --scale 2`, 128 samples, outer 8 device px faded: rows 0–200 of the 368 × 848 master, quality 90 |
+| `assets/round3/head-frame-bottom.webp` | 368 × 248 | 11,028 | `66e67992178e53ec9d0176d64750292c6cfad8bcf16c6a14d841719738561251` | the same master, rows 600–848, quality 90 |
+| `assets/round3/key-rest.webp` | 400 × 128 | 5,212 | `78968dd53fd878cdd36c22833883cc8a2c974d5bdf0e9944511e32723ac666c0` | `head_parts.py --part key-rest --rim 2.5`, two passes (`--pass obj` and `--pass shadow`, `sprite_compose.py`), 128 samples, quality 90 |
+| `assets/round3/key-current.webp` | 400 × 128 | 5,604 | `13abdfed45ca598e4cdca4d450f074ecfa7d56a563024ba2d980fd0251684911` | `head_parts.py --part key-current --rim 2.5`, two passes (`--pass obj` and `--pass shadow`, `sprite_compose.py`), 128 samples, quality 90 |
+| `assets/round3/key-pressed.webp` | 400 × 128 | 5,318 | `1c9194ec73c206be523feba6e3641b1a9743127fe39dc60905feddaae5857b78` | `head_parts.py --part key-pressed --rim 2.5`, two passes (`--pass obj` and `--pass shadow`, `sprite_compose.py`), 128 samples, quality 90 |
+| `assets/round3/coupler.webp` | 140 × 64 | 2,674 | `7971a11630caaa3323ae8e14bd9d236c8827bccb5ea0155fea04a771f2a06521` | `head_parts.py --part coupler --rim 2.5`: three links threaded through the ear bores, two passes (`--pass obj` and `--pass shadow`, `sprite_compose.py`), 128 samples, quality 90 |
+| `assets/round3/drop.webp` | 64 × 200 | 3,332 | `598c37bf0d052fabe26ca50aaee28e19c14a2f0af5292bec8a583c77c0dc6554` | `head_parts.py --part drop --rim 2.5`, two passes (`--pass obj` and `--pass shadow`, `sprite_compose.py`), 128 samples, quality 90 |
+| `assets/round3/anchor-l.webp` | 72 × 64 | 1,672 | `91ed35b43056bc07c438609e55c9765082888f8a88b9559452a32d3cdc2c2375` | `head_parts.py --part anchor-l --rim 2.5`, two passes (`--pass obj` and `--pass shadow`, `sprite_compose.py`), 128 samples, quality 90 |
+| `assets/round3/anchor-r.webp` | 72 × 64 | 1,770 | `f55a55ea8d423bc248e8620b2f12016097bdbd2e94fb2e4956911e7c18304651` | `head_parts.py --part anchor-r --rim 2.5`, two passes (`--pass obj` and `--pass shadow`, `sprite_compose.py`), 128 samples, quality 90 |
+| `assets/round3/anchor-t.webp` | 48 × 80 | 1,476 | `4eb91d3a01b2c8e98f8d754e9979052090c92dc5e5935f7a4a13ddb32369bb41` | `head_parts.py --part anchor-t --rim 2.5`, two passes (`--pass obj` and `--pass shadow`, `sprite_compose.py`), 128 samples, quality 90 |
+| `assets/round3/anchor-b.webp` | 48 × 80 | 1,522 | `a5c38d82d69f0f9158c495329229f60695504edafe7b8c3c49b43a3e49540f6f` | `head_parts.py --part anchor-b --rim 2.5`, two passes (`--pass obj` and `--pass shadow`, `sprite_compose.py`), 128 samples, quality 90 |
 
 The Round 2 key, coupler and drop-link files stay in `assets/round2/` and are no longer referenced.
+
+## Round 3 Home hardware
+
+On 2026-11-03 the owner asked that on Home "each background each screen should feel like it's there for a reason". The remaining CSS-drawn hardware on Home is now rendered, from the same stock as the head plate and the hero:
+- **The proof machine's tray and the phone carrier** are black-oxide plates of the head plate's stock: the tiled oxide face and the head frame's full edge (four M4 socket cap screws, chamfer, shadow), 9-sliced. They replace a CSS navy slab and a CSS carrier, each with gradient screws.
+- **The phone stage plates** are rendered brushed stainless with two lapped M3 socket screws on washers; the selected plate carries the current key's champagne witness line, inlaid. They replace CSS gradient plates.
+- **Paper is clamped:** a brushed stainless bar, an M4 socket cap screw on a washer through each end, holds the top edge of the inspection record and of the studio-principle sheet. The principle is now a sheet on the chassis instead of a band across it.
+- **The records links** are titanium index plates of the hero's stock: the tiled titanium field, and the hero frame's build at 96 CSS px with M2.5 countersunk titanium screws.
+- **Home's buttons** (Browse Products, Visit Support, the inspection toggle) are the nav keys' build without the chain ears. The primary button carries the latched key's bead-blasted stainless cap. The toggle latches down while it is pressed.
+
+**Rendering:** the same titanium studio as the rest of Round 3. Faces that a 3- or 9-slice stretches (the clamp bar, the stage plate) take a constant brush tangent (`ti_common.brush(tangent=True)`). Without it the Principled BSDF fans the sheen out from each part's centre, which a slice would stretch into a visible sweep. The buttons keep the keys' materials unchanged.
+
+**Contrast**, measured on the 16-bit masters against the single worst pixel anywhere on the face under the text (the whole tile, for the tiled faces):
+
+| Text | Surface | Ratio |
+|---|---|---|
+| #11191e | primary cap, rest / pressed | 6.4:1 / 6.3:1 |
+| #e6e2d8 | button cap | 12.0:1 |
+| #9aa0a2 | locked cap (`button-locked`), disabled toggle | 6.8:1 |
+| #192026 | stage plate | 6.6:1 |
+| #d3dadd | oxide tray | 8.1:1 |
+| #d2cdc0 | titanium index plate | 6.2:1 |
+| #dcc597 | titanium index plate, arrow | 5.8:1 |
+
+| Asset | Pixels | Bytes | SHA-256 | Scene and mode |
+|---|---|---|---|---|
+| `assets/round3/oxide-frame.webp` | 368 × 448 | 18,762 | `c7aed9d943e5511cedfb7df78f2186541e483124b87bc55144493daa74d58cbf` | the same master, rows 0–200 over rows 600–848 (the rows between are plain sides), quality 90 |
+| `assets/round3/stage-plate.webp` | 320 × 192 | 3,464 | `229ea2c0dea1e99dc806d97aa6ba58dec6326e355148441a992e6bfbe3680195` | `head_parts.py --part stage-plate --rim 2.5`, two passes (`--pass obj` and `--pass shadow`, `sprite_compose.py`), 128 samples, quality 90 |
+| `assets/round3/stage-plate-on.webp` | 320 × 192 | 3,692 | `aaea6bb7c5bfc89d2bc39b1f0bb9c555af992a2045009c79715a11980e070aed` | `head_parts.py --part stage-plate-on --rim 2.5`, two passes (`--pass obj` and `--pass shadow`, `sprite_compose.py`), 128 samples, quality 90 |
+| `assets/round3/clamp.webp` | 320 × 60 | 2,350 | `48e87baa66a4e9e6c350dcd72cd6467808153981a5c6496edbac50c3e1f68625` | `head_parts.py --part clamp --rim 2.5`, two passes (`--pass obj` and `--pass shadow`, `sprite_compose.py`), 128 samples, quality 90; 3-sliced 36 px |
+| `assets/round3/ti-frame-sm.webp` | 192 × 192 | 3,336 | `80c12fba3d7982d253fbb84b535abd064d2173d7ccd56110f004655dcb4066ee` | `ti_plate.py --part frame --size 96 --screw-in 12 --head-r 4.5 --socket-r 1.4`, 128 samples, quality 90; sliced 24 px |
+| `assets/round3/button-rest.webp` | 240 × 120 | 2,994 | `07304fda16807f049d01704032b32250482c552e1d60f96f5e9e63e0c24b7452` | `head_parts.py --part button-rest --rim 2.5`, two passes (`--pass obj` and `--pass shadow`, `sprite_compose.py`), 128 samples, quality 90; 9-sliced 28 px, 4 px outset |
+| `assets/round3/button-pressed.webp` | 240 × 120 | 3,090 | `68babd314b51c032eccfbc2d961b520937518cacd62534ab7b347ede52b1045a` | `head_parts.py --part button-pressed --rim 2.5`, as above |
+| `assets/round3/button-primary.webp` | 240 × 120 | 3,082 | `953b49d284151473ec4ba3a29b1e98ff8b291e6aea0aad8b4ef6a8a6eba64362` | `head_parts.py --part button-primary --rim 2.5`, as above |
+| `assets/round3/button-primary-pressed.webp` | 240 × 120 | 3,232 | `5f6aa36c3dcac2b68d6839c6b2ce9e91fa76252c1037b27f122d6539a0b91438` | `head_parts.py --part button-primary-pressed --rim 2.5`, as above |
+
+**Forced colours:** the tray, the plates and the index plates become Canvas with a CanvasText frame, the selected stage plate takes a 3 px Highlight frame, the buttons become system buttons, and the clamps are hidden.
+
+## Round 3 rendered ground, shadows and light
+
+On 2026-11-03 the owner said "use adobe tools or blender". No Adobe creative application is installed on this workstation; everything below is rendered in Blender 5.2.3. An audit of Home (nine agents, adversarially verified) listed what was still drawn by CSS or came from generated images; this pass replaces it.
+- **The ground.** Home's chassis plate and every page's footer base were a generated mill-steel image (`PF_MILL_STEEL_GROUND_v1.webp`, above). They are now hot-rolled mild steel rendered as tiles that wrap exactly (`ti_common.mat_mill_steel`: mill scale, rolling streaks and lines along x, flakes and a fine grain on a torus of the tile's period).
+  - The chassis tile is 690 px, half the 1380 px plate, so the joints with the side plates fall on tile edges. Mean sRGB 34, the tone the shaded image had.
+  - The footer base has its own seed and a darker tone (mean 18).
+  - The plate joints are rendered strips: a 1 px 35° chamfer on each plate and the 2 px gap between, lit by the key light (`chassis-joint-l/-r`). They replace CSS stripes.
+  - The CSS light falloff on the chassis, the cool pool behind the hero, and the footer's darkening gradient, inset shadow and bottom band are gone: light belongs to the rendered parts. The weld strip is unchanged (owner decision, 2026-11-03).
+  - The other rooms keep the generated image for now; only Home and the shared footer move.
+- **Paper.** Home's sheets (the studio principle, the inspection record, the no-script stage list and the receipt) were a generated paper image under cream washes (`PF_PAPER_ARCHIVAL_v1.webp`). They are now archival cotton paper rendered as a 512 px tile (`ti_common.mat_paper`: mottled formation, long fibres both ways, a fine tooth). Mean sRGB 233/230/224, the old sheet's tone.
+  - Each sheet's edge is rendered (`sheet-edge`, on all four sheets): the sheet lies on the chassis and its lower edge lifts 1.2 px, so the soft contact light from 45° casts the short shadow a thin sheet throws, about 1 px down its right edge and a soft 2–3 px band under its lower edge, in place of the CSS outline and 26 px blur.
+  - The receipt's sheet takes the same clamp bar as the other two.
+- **Contact shadows.** The low rim band of the studio throws shadows 40 px and more. Each sprite's canvas cut them off, so every key, link, anchor and button ended in a hard dark box. Every `head_parts.py` sprite is now rendered twice and combined by `sprite_compose.py`:
+  - **`--pass obj`:** the part under the full studio, with its plate and occluders as holdouts;
+  - **`--pass shadow`:** the plate's contact shadow, under the overhead dome and a soft contact light high over the key azimuth (80° up, 18° wide; `--contact-el/-angle/-power`), so it is short and soft and fades out inside the canvas; the paper sheet's edge takes that light from 45°.
+  - The canvases, bores and offsets are unchanged.
+  - The head plate's edge is re-rendered with a 24 px margin, so the key light's shadow on the chassis fades out inside the art, where it used to be cut off at 6 px. The proof tray and the phone carrier use the same edge.
+- **Light.** The proof chain's inspection light was a CSS radial gradient over the chain render.
+  - It is now what a small cool spot (1500 W, 16° cone, blend 0.95, colour 0.84/0.9/1.0, 5 m above the checkpoint link) adds to the same scene. Each stage's light-pool box is rendered with and without the spot at the base's 160 samples and differenced (`chain_light.py`). The difference is kept above 1.5/255 of residual noise, faded to zero over the box's outer 10 CSS px, and stored as straight-alpha RGBA (alpha the brightest channel), then added over the unchanged chain art with `mix-blend-mode: plus-lighter`. Where a browser cannot blend it, or the chain has not loaded, it still only adds light.
+  - The CSS light sweep across the nav keys on hover is gone.
+- **States.** The inspection toggle's locked state ("Motion off") is its own render: the cap held down, with a dull finish.
+
+**Contrast on the ground**, against the single worst pixel of each tile (the brightest for light text, the darkest for dark):
+
+| Text | Surface | Ratio |
+|---|---|---|
+| #c0cbc5 / #eef0e7 | chassis (body text / headings) | 7.4:1 / 10.8:1 |
+| #aebbaf | chassis (the hash scope note) | 6.2:1 |
+| #d3bb92 | chassis (hero kicker) | 6.7:1 |
+| #c3ccd0 / #aab6bb | footer base | 10.0:1 / 7.9:1 |
+| #9aa0a2 | footer base (locked motion switch) | 6.2:1 |
+| #1b292d / #26363a | paper (text) | 11.2:1 / 9.4:1 |
+| #3e5054 | paper (record label) | 6.3:1 |
+| #6a5b42 | paper (kicker) | 4.9:1 |
+
+| Asset | Pixels | Bytes | SHA-256 | Scene and mode |
+|---|---|---|---|---|
+| `assets/round3/chassis-field-1380.webp` | 1380 × 1380 | 42,050 | `4d4fcfe965613b4d3e2c057360536440dbd3239a87fa45d807e1007f5fc0e7f9` | `ti_plate.py --part mill-field --tile 690 --tone 0.27 --seed 0 --scale 2`, 384 samples, no denoise, quality 90; repeated at 690 CSS px |
+| `assets/round3/chassis-field-690.webp` | 690 × 690 | 10,984 | `6e19eeebfd26cabddbf74ac36b2a4d1cab17d02af17c5e5f9d66c082644b0794` | the same master, Lanczos to 1x from a 3 × 3 tiling, quality 92 |
+| `assets/round3/chassis-joint-l.webp` | 24 × 1024 | 2,262 | `050c4687a34aead263d7ce87d89f7bb76e304ec6a60e8005ac0d14548dabfe0e` | `ti_plate.py --part chassis-joint-l --scale 2`, 128 samples, quality 90; repeat-y at the plate's left edge |
+| `assets/round3/chassis-joint-r.webp` | 24 × 1024 | 2,198 | `75e3d20513bc0cafbd253ae478bb8ad6f399b3ea3487879435de884ff91716d9` | `ti_plate.py --part chassis-joint-r --scale 2`, as above, at its right edge |
+| `assets/round3/footer-field-1024.webp` | 1024 × 1024 | 15,136 | `b6ed6f73c543270447e49f42ab4e64c8d9bc7915e246c606658dca9309541ba1` | `ti_plate.py --part mill-field --tile 512 --tone 0.13 --seed 3.7 --scale 2`, 384 samples, no denoise, quality 90 |
+| `assets/round3/footer-field-512.webp` | 512 × 512 | 4,060 | `5e9b57ad71239d745d9c22962938c23897c2b3b834c9b9f5a72936dd012a15c6` | the same master, Lanczos to 1x from a 3 × 3 tiling, quality 92 |
+| `assets/round3/paper-field-1024.webp` | 1024 × 1024 | 19,876 | `3a7476673b98219aa637fbddff98a2bb4e0a635c3d70170038ddf9d754d6303c` | `ti_plate.py --part paper-field --tile 512 --seed 0 --exposure 4.1 --scale 2`, 384 samples, no denoise, quality 92 |
+| `assets/round3/paper-field-512.webp` | 512 × 512 | 7,856 | `b3e3765db7cae672c619d9c637193e386b063431b68bdba12b5a7f158d0b725a` | the same master, Lanczos to 1x from a 3 × 3 tiling, quality 94 |
+| `assets/round3/sheet-edge.webp` | 320 × 320 | 4,936 | `0a406726afcc3e360ba57e474781be0992b874625a2d7c8295282a38e4cc210a` | `head_parts.py --part sheet-edge --rim 2.5`, two passes (`--pass obj` and `--pass shadow`, `sprite_compose.py`), 128 samples, quality 90 (contact light from 45°); 9-sliced 8/16/32/8 px with a 4/8/8/4 px outset, no fill |
+| `assets/round3/button-locked.webp` | 240 × 120 | 3,116 | `451b794b702d58efe0a65bbb38d65f06e5e871de8cc6b9d7bb906daa1d6d7e7f` | `head_parts.py --part button-locked --rim 2.5`, two passes (`--pass obj` and `--pass shadow`, `sprite_compose.py`), 128 samples, quality 90 |
+| `assets/round3/chain-light-s0.webp` | 465 × 324 | 61,730 | `7ad481cc549274a6e45458a4a76f953710762bcd5e96f2a0dff1014a1ff2a3ef` | `chain_scene.py --scene desktop --mode base --scale 2 --samples 160 --crop 0`, with and without `--lit 0`, differenced by `chain_light.py` (RGBA), quality 88 |
+| `assets/round3/chain-light-s1.webp` | 465 × 317 | 50,460 | `fdb61835e7a00d0c7e211d13105fcc9ac698660ce3c07d84b120a44c306ac468` | `chain_scene.py --scene desktop --mode base --scale 2 --samples 160 --crop 1`, with and without `--lit 1`, differenced by `chain_light.py` (RGBA), quality 88 |
+| `assets/round3/chain-light-s2.webp` | 466 × 315 | 54,380 | `531ccea38da1b3a4a218614747563f9b33a74cb2e9459d12ba455b83b3c6189d` | `chain_scene.py --scene desktop --mode base --scale 2 --samples 160 --crop 2`, with and without `--lit 2`, differenced by `chain_light.py` (RGBA), quality 88 |
+| `assets/round3/chain-light-s3.webp` | 465 × 319 | 59,894 | `d6bc2e26197934ce369b706a49312537cb41207fcab681e9883912df06573cd1` | `chain_scene.py --scene desktop --mode base --scale 2 --samples 160 --crop 3`, with and without `--lit 3`, differenced by `chain_light.py` (RGBA), quality 88 |
+| `assets/round3/chain-light-s4.webp` | 465 × 324 | 56,714 | `801834ed8403316717bde1d0ce397d32d96bd1bb01e834b249301f0dd8db877d` | `chain_scene.py --scene desktop --mode base --scale 2 --samples 160 --crop 4`, with and without `--lit 4`, differenced by `chain_light.py` (RGBA), quality 88 |
