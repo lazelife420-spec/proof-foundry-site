@@ -31,10 +31,15 @@
       <h1 id="proof-title">Proof Foundry <span>Receipts</span></h1>
       <p>Public proof for what we ship: routes, releases, checksums, receipts, and verification status.</p>
       <p>Each product's current public record, in plain language, is in <a class="text-link" href="/truth-files/">the Truth Files</a>.</p>
+      <nav class="pf-section-switch" aria-label="Proof pages">
+        <a href="/proof-standard/"><b>Proof Standard</b><span>The doctrine — what we verify, what we refuse to claim, and why.</span></a>
+        <a href="/proof/" aria-current="page"><b>Receipts</b><span>The release ledger — release records, checksums, and receipts per version.</span></a>
+      </nav>
     </section>
 
     <section aria-labelledby="receipts-title">
       <h2 id="receipts-title" class="receipts-title">Product receipts</h2>
+      <!-- @receipt-index -->
       <p class="receipts-note">
         <strong>Verification state guide:</strong> <span class="state-verified-text">VERIFIED</span>, PUBLISHED, NOT_PUBLISHED and <span class="state-pending-text">PENDING</span> describe what Proof Foundry's authored release record lists for each dimension; they are not independent certification. Where a receipt or manifest is linked, you can read what it records. A SHA-256 hash shows file identity, not safety.
       </p>

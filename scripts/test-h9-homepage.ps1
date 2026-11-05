@@ -42,12 +42,12 @@ function Invoke-SubCheck([string]$label, [string]$exe, [string[]]$arguments, [st
 Write-Host '=== H9 HOMEPAGE-FIRST DESIGN AND TRUTH GUARD ===' -ForegroundColor Cyan
 
 $sections = @([regex]::Matches($homeHtml, '<section class="([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
-Assert-H9 'Home preserves the current six-section main-site order without a portfolio' (($sections -join ',') -ceq 'ledger-hero,home-orientation container,ledger-chain container,ledger-paper ledger-doctrine,home-records container,home-contact container' -and $homeHtml -notmatch 'studio-threshold|studio-portfolio|data-home-products')
+Assert-H9 'Home keeps its six sections in the Option A order (hero, instrument, orientation, principle, records, contact) without a portfolio' (($sections -join ',') -ceq 'ledger-hero,ledger-chain container,home-orientation container,ledger-paper ledger-doctrine,home-records container,home-contact container' -and $homeHtml -notmatch 'studio-threshold|studio-portfolio|data-home-products')
 # V5 hero (owner ruling, 2026-10-13): the approved headline and copy, scoped to
 # the hero itself, replace the page-wide phrase match, which the meta tags also
 # satisfied.
 function Get-VisibleText([string]$html) { (([regex]::Replace([regex]::Replace($html, '(?i)<br\s*/?>', ' '), '<[^>]+>', ' ')) -replace '\s+', ' ').Trim() }
-$hero = [regex]::Match($homeHtml, '(?s)<section class="ledger-hero"[^>]*>.*?(?=<section class="home-orientation)').Value
+$hero = [regex]::Match($homeHtml, '(?s)<section class="ledger-hero"[^>]*>.*?</section>').Value
 $heroH1 = [regex]::Match($hero, '(?s)<h1(?: id="([^"]+)")?[^>]*>(.*?)</h1>')
 $heroClaims = (Get-VisibleText $hero) + ' ' + ((@([regex]::Matches($hero, '\s(?:aria-label|aria-description|title|alt|placeholder)\s*=\s*(?:"([^"]*)"|''([^'']*)'')') | ForEach-Object { $_.Groups[1].Value + $_.Groups[2].Value })) -join ' ')
 $overclaim = '(?i)\b(verified|certif\w*|secur\w*|safe(ly|ty)?|guarant\w*|trusted|trustworthy|signed|audit\w*|tamper-?proof|proven|bulletproof|unbreakable|unhackable|risk-free)\b'
@@ -86,7 +86,11 @@ $normalizeHeader = { param($h) (([regex]::Match($h, '(?s)<header class="site-hea
 # section's key as aria-current="true" (Products for a product page, Proof for the release records).
 $currentKeys = { param($h) @([regex]::Matches([regex]::Match($h, '(?s)<nav class="pf-route-chain.*?</nav>').Value, '<a href="([^"]+)" aria-current="([a-z]+)"') | ForEach-Object { $_.Groups[1].Value + ' ' + $_.Groups[2].Value }) -join ', ' }
 # The parity check strips the current marker, so the header and chain must carry exactly that one marker.
-$currentMarks = @($homeHtml, $software, $proof, $realityGate | ForEach-Object { ([regex]::Matches([regex]::Match($_, '(?s)<header class="site-header".*?</header>\s*<nav class="pf-route-chain.*?</nav>').Value, 'aria-current=')).Count })
+# CP-0185 Home Option A (owner decision, 2026-11-05): Home's key bank follows its hero, and its nameplate carries a
+# compact section menu. Home's shared chrome is therefore its nameplate without that menu, followed by its key bank.
+$homeQuick = [regex]::Match($homeHtml, '(?s)<details class="pf-quicknav"[^>]*>.*?</details>').Value
+$homeChrome = ([regex]::Match($homeHtml, '(?s)<header class="site-header".*?</header>').Value.Replace($homeQuick, '')) + "`n" + [regex]::Match($homeHtml, '(?s)<nav class="pf-route-chain.*?</nav>').Value
+$currentMarks = @($homeChrome, $software, $proof, $realityGate | ForEach-Object { ([regex]::Matches([regex]::Match($_, '(?s)<header class="site-header".*?</header>\s*<nav class="pf-route-chain.*?</nav>').Value, 'aria-current=')).Count })
 Assert-H9 'the key chain lights one key per page: Home and Products as the page, Products and Proof as the section' ((& $currentKeys $homeHtml) -ceq '/ page' -and (& $currentKeys $software) -ceq '/software/ page' -and (& $currentKeys $realityGate) -ceq '/software/ true' -and (& $currentKeys $proof) -ceq '/proof-standard/ true' -and @($currentMarks | Where-Object { $_ -ne 1 }).Count -eq 0)
 # Every built route: the six key pages light themselves; product pages, the release records, the Truth
 # index, every Truth File record, the Founders Circle and the Roadmap light their section; any other
@@ -103,7 +107,11 @@ foreach ($f in Get-ChildItem $public -Recurse -Filter 'index.html' | Where-Objec
   elseif ($got -match ',') { $keyMiss += "$rel -> '$got'" }
 }
 Assert-H9 "every built route lights its own key or its section's key ($keyChecked mapped routes$(if ($keyMiss.Count) { '; ' + ($keyMiss -join '; ') }))" ($keyChecked -ge 24 -and $keyMiss.Count -eq 0)
-$canonicalHeader = & $normalizeHeader $homeHtml
+$canonicalHeader = & $normalizeHeader $homeChrome
+$keyHrefs = @([regex]::Matches([regex]::Match($homeHtml, '(?s)<nav class="pf-route-chain.*?</nav>').Value, '<a href="([^"]+)"') | ForEach-Object { $_.Groups[1].Value }) -join ','
+$quickHrefs = @([regex]::Matches($homeQuick, '<a href="([^"]+)"') | ForEach-Object { $_.Groups[1].Value }) -join ','
+$quickElsewhere = @($software, $proof, $realityGate | Where-Object { $_ -match 'pf-quicknav' }).Count
+Assert-H9 'Home (Option A): the hero comes before the key bank, and the nameplate menu mirrors the six keys in order with Home current; no other page has it' ($homeQuick -and ([regex]::Matches($homeHtml, 'class="pf-quicknav"')).Count -eq 1 -and $homeQuick -match '<summary>Menu</summary>' -and $homeQuick -match '<nav aria-label="Site sections">' -and $quickHrefs -ceq $keyHrefs -and $keyHrefs -ceq '/,/software/,/proof-standard/,/truth-files/,/about/,/support/' -and $homeQuick -match '<a href="/" aria-current="page">Home</a>' -and ([regex]::Matches($homeQuick, 'aria-current=')).Count -eq 1 -and $homeHtml.IndexOf('class="ledger-hero"') -lt $homeHtml.IndexOf('id="primary-nav"') -and $quickElsewhere -eq 0)
 $familyMarkCounts = @($software, $proof, $realityGate | ForEach-Object { ([regex]::Matches($_, [regex]::Escape($homeMarkPicture + $homeFcHeaderMark))).Count })
 $familyFcTotals = @($software, $proof, $realityGate | ForEach-Object { ([regex]::Matches($_, 'class="pf-mark-fc ')).Count })
 Assert-H9 'every page family header carries the PF Mark G picture and inline forced-colours mark (studio-wide)' (@($familyMarkCounts | Where-Object { $_ -ne 1 }).Count -eq 0 -and @($familyFcTotals | Where-Object { $_ -ne 2 }).Count -eq 0)
@@ -131,7 +139,7 @@ foreach ($p in @($manifest.products | Where-Object visible)) {
 }
 Assert-H9 'directory projection is independently validated against current editorial and release inputs' ((& node (Join-Path $PSScriptRoot 'portfolio-review.cjs') --verify-generated $public 2>&1 | Out-String) -match 'Editorial generated targets verified:' -and $LASTEXITCODE -eq 0)
 $proofshotSoftwareCard = [regex]::Match($software, '(?s)<article class="product-card[^>]*data-product="proofshot".*?</article>').Value
-Assert-H9 'directory imagery states its context, and hidden ProofShot has no directory card while its history remains reachable' ($software -match 'Existing capture or artwork\. Version context is retained in the product record\.' -and $software -notmatch 'data-directory-entry="proofshot"' -and $software -match 'href="/proofshot/"')
+Assert-H9 'directory imagery states its context, and hidden ProofShot has no directory card while its history remains reachable' ($software -match 'Card images are existing captures or artwork\. Version context is retained in the product record\.' -and $software -notmatch 'data-directory-entry="proofshot"' -and $software -match 'href="/proofshot/"')
 $headerMark = Get-Content (Join-Path $public 'brand/PF_HEADER_MARK.svg') -Raw -Encoding UTF8
 $makerSeal = Get-Content (Join-Path $public 'brand/PF_MAKER_SEAL.svg') -Raw -Encoding UTF8
 $masterPaths = @([regex]::Matches((Get-Content (Join-Path $root 'brand/PF_MARK_G_MASTER.svg') -Raw -Encoding UTF8), '<path[^>]*\sd="([^"]+)"') | ForEach-Object { $_.Groups[1].Value })

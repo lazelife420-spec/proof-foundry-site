@@ -15,7 +15,7 @@ function Assert-DirectoryContract([string]$Root, [string]$PublicDir, [scriptbloc
     $card = [regex]::Match($html, '(?s)<article\b[^>]*data-directory-entry="' + [regex]::Escape($entry.id) + '"[^>]*>.*?</article>').Value
     $decoded = [Net.WebUtility]::HtmlDecode($card)
     & $Assert "$($entry.id): directory purpose and group come from editorial presentation" ($decoded.Contains([string]$entry.shortDescription) -and $decoded.Contains('data-directory-group="' + $entry.group + '"'))
-    & $Assert "$($entry.id): artwork is authentic, contextualized and named, or honestly absent" (($entry.artwork -and $card.Contains('src="' + $entry.artwork + '"') -and (Test-Path (Join-Path $PublicDir $entry.artwork.TrimStart('/'))) -and $card -match 'alt="[^"]+"' -and $card -match '<figcaption>Existing capture or artwork\. Version context is retained in the product record\.</figcaption>') -or (-not $entry.artwork -and $card -notmatch '<img\b' -and $card -match 'directory-no-art" aria-hidden="true"'))
+    & $Assert "$($entry.id): artwork is authentic, contextualized and named, or honestly absent" (($entry.artwork -and $card.Contains('src="' + $entry.artwork + '"') -and (Test-Path (Join-Path $PublicDir $entry.artwork.TrimStart('/'))) -and $card -match 'alt="[^"]+"' -and $card -notmatch '<figcaption>' -and ([regex]::Matches($html, '<p class="directory-art-note">Card images are existing captures or artwork\. Version context is retained in the product record\.</p>')).Count -eq 1) -or (-not $entry.artwork -and $card -notmatch '<img\b' -and $card -match 'directory-no-art" aria-hidden="true"'))
     $targetOK = $false
     if ($entry.destination) {
       $route, $fragment = $entry.destination -split '#', 2

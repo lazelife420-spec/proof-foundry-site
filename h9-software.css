@@ -583,3 +583,6 @@
  .directory-entry,.directory-no-art{border-image:none;border:1px solid CanvasText;background:Canvas}
  .directory-entry::after{background:CanvasText}
 }
+/* CP-0185 P1: the image context note is stated once for the directory instead of on every card. */
+.directory-heading{flex-wrap:wrap}
+.pf-directory .directory-art-note{margin:22px 0 0;font-size:13px;line-height:1.6;color:#bfccc6}

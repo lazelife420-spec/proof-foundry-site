@@ -1073,3 +1073,239 @@ body.pf-ledger-page{background-color:#1b1f21;
 @media (max-width:700px){.home-orientation,.home-contact{padding-inline:20px}.home-orientation::after,.home-contact::after{inset:0;border-image-width:16px 32px 29.71px 16px;border-image-outset:0 13.71px 13.71px 0}}
 @media (max-width:360px){.home-orientation,.home-contact{padding-inline:16px}.home-orientation h2{font-size:30px}}
 @media (forced-colors:active){.home-orientation::after,.home-contact::after{display:none}.home-orientation,.home-contact{border:1px solid CanvasText}}
+/* ── CP-0185 tranche 2 (2026-11-05): the owner found tranche 1 "still too subtle". Bolder, from the same existing renders
+   and CSS, and judged blind by three independent reviewers (new version picked in 18/18 pairs, obviousness 6-9/10), then
+   made physical rather than glowing on their advice: one brass swatch (the F's), satin gunmetal, real screw heads, no halos.
+   - The seal: larger, under a soft studio light, held in a satin gunmetal collar with turning rings and four slotted screws,
+     notched at 12 o'clock so the binary inscription stays on the titanium; a dark counterbore between seal and collar.
+   - The chain: unlit plates go dark with light lettering and a bevelled rim; the selected plate becomes a brass insert
+     (the sprite's own grain, brass hue) seated by a solid steel plunger from the carriage; on phones it also slides 5px
+     toward the carriage, so the state is not colour alone. The description under it gets a brass rule.
+   - The record: a riveted brass station tag with stamped numerals; the tranche-1 index strip goes (one gold, not three).
+   Contrast measured on rendered pixels; forced colours drops every new layer (the selected plate keeps its Highlight border). ── */
+.home-maker{isolation:isolate}
+.home-maker::before{content:"";position:absolute;z-index:-1;left:-18%;right:-18%;top:-6%;height:96%;pointer-events:none;
+ background:radial-gradient(closest-side at 50% 44%,rgba(255,246,226,.16),rgba(255,246,226,.06) 48%,rgba(255,246,226,0) 78%)}
+@media (max-width:1000px){.home-maker{max-width:340px}.home-maker::before{left:0;right:0}}
+@media (max-width:760px){.home-maker{max-width:min(100%,370px)}}
+@media (max-width:360px){.home-maker{max-width:100%}}
+.pf-emblem.r3-seal{container-type:inline-size}
+.pf-emblem.r3-seal::before{background:
+  radial-gradient(circle at 49.4% 42.6%,transparent 0 44.6cqw,rgba(255,240,215,.16) 44.95cqw,transparent 45.4cqw),
+  radial-gradient(circle at 50.5% 43.8%,transparent 0 42.6cqw,rgba(3,4,5,.92) 43.3cqw 44.7cqw,rgba(3,4,5,.55) 45.3cqw,transparent 45.6cqw),
+  radial-gradient(circle at 49.6% 42.9%,transparent 0 48.5cqw,rgba(255,250,235,.13) 48.85cqw,transparent 49.3cqw),
+  radial-gradient(circle at 50.4% 43.7%,transparent 0 47cqw,rgba(0,0,0,.6) 47.25cqw,rgba(0,0,0,.28) 48.2cqw,transparent 49.2cqw)}
+.pf-emblem.r3-seal::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+ background:
+  radial-gradient(.85cqw .18cqw at 17.33% 15.0%,#0b0d0f 0 55%,transparent 100%),
+  radial-gradient(circle at calc(17.33% - .35cqw) calc(15.0% - .4cqw),rgba(255,255,255,.32) 0 .14cqw,transparent .4cqw),
+  radial-gradient(circle at 17.33% 15.0%,#86827c 0 .45cqw,#615d58 .85cqw,#34312e 1.08cqw,rgba(0,0,0,.6) 1.26cqw,transparent 1.4cqw),
+  radial-gradient(.18cqw .85cqw at 82.67% 15.0%,#0b0d0f 0 55%,transparent 100%),
+  radial-gradient(circle at calc(82.67% - .35cqw) calc(15.0% - .4cqw),rgba(255,255,255,.32) 0 .14cqw,transparent .4cqw),
+  radial-gradient(circle at 82.67% 15.0%,#86827c 0 .45cqw,#615d58 .85cqw,#34312e 1.08cqw,rgba(0,0,0,.6) 1.26cqw,transparent 1.4cqw),
+  radial-gradient(.18cqw .85cqw at 17.33% 71.6%,#0b0d0f 0 55%,transparent 100%),
+  radial-gradient(circle at calc(17.33% - .35cqw) calc(71.6% - .4cqw),rgba(255,255,255,.32) 0 .14cqw,transparent .4cqw),
+  radial-gradient(circle at 17.33% 71.6%,#86827c 0 .45cqw,#615d58 .85cqw,#34312e 1.08cqw,rgba(0,0,0,.6) 1.26cqw,transparent 1.4cqw),
+  radial-gradient(.85cqw .18cqw at 82.67% 71.6%,#0b0d0f 0 55%,transparent 100%),
+  radial-gradient(circle at calc(82.67% - .35cqw) calc(71.6% - .4cqw),rgba(255,255,255,.32) 0 .14cqw,transparent .4cqw),
+  radial-gradient(circle at 82.67% 71.6%,#86827c 0 .45cqw,#615d58 .85cqw,#34312e 1.08cqw,rgba(0,0,0,.6) 1.26cqw,transparent 1.4cqw),
+  radial-gradient(circle at 50% 43.3%,transparent 0 45.2cqw,rgba(255,250,235,.32) 45.3cqw,transparent 45.55cqw,transparent 46.85cqw,rgba(255,250,235,.22) 47cqw,rgba(0,0,0,.55) 47.15cqw,transparent 47.2cqw),
+  repeating-radial-gradient(circle at 50% 43.3%,rgba(255,250,235,.06) 0 .3cqw,rgba(0,0,0,.08) .3cqw .6cqw),
+  conic-gradient(from 210deg at 50% 43.3%,#46433f,#86827b 10%,#58554f 22%,#33302d 36%,#4d4a45 50%,#959088 61%,#5d5a54 74%,#383532 88%,#46433f);
+ -webkit-mask:radial-gradient(circle at 50% 43.3%,transparent 0 45.2cqw,#000 45.4cqw 47.1cqw,transparent 47.2cqw),radial-gradient(circle at 17.33% 15.0%,#000 0 1.4cqw,transparent 1.5cqw),radial-gradient(circle at 82.67% 15.0%,#000 0 1.4cqw,transparent 1.5cqw),radial-gradient(circle at 17.33% 71.6%,#000 0 1.4cqw,transparent 1.5cqw),radial-gradient(circle at 82.67% 71.6%,#000 0 1.4cqw,transparent 1.5cqw);
+ mask:radial-gradient(circle at 50% 43.3%,transparent 0 45.2cqw,#000 45.4cqw 47.1cqw,transparent 47.2cqw),radial-gradient(circle at 17.33% 15.0%,#000 0 1.4cqw,transparent 1.5cqw),radial-gradient(circle at 82.67% 15.0%,#000 0 1.4cqw,transparent 1.5cqw),radial-gradient(circle at 17.33% 71.6%,#000 0 1.4cqw,transparent 1.5cqw),radial-gradient(circle at 82.67% 71.6%,#000 0 1.4cqw,transparent 1.5cqw);
+ filter:drop-shadow(0 1px 0 rgba(0,0,0,.7))}
+.pf-emblem.r3-seal>img{z-index:2;filter:drop-shadow(0 1px 1px rgba(0,0,0,.45))}
+.pf-emblem.r3-seal>.pf-lm--n{opacity:max(.62,calc(var(--lN) * .85))}
+.pf-emblem.r3-seal>.pf-lm--w{opacity:max(.32,calc(var(--lW) * .85))}
+.pf-emblem.r3-seal>.pf-lm{z-index:3}
+
+.pfa .pfa-record::after{display:none}
+.pfa .pfa-record-label{display:inline-block;align-self:start;justify-self:start;padding:10px 24px 12px;border-radius:1px;color:#24180a;
+ background:radial-gradient(circle at 9px 50%,#efe3c4 0 1.3px,#7a6638 2.3px,#3b2f17 3px,transparent 3.5px),radial-gradient(circle at calc(100% - 9px) 50%,#efe3c4 0 1.3px,#7a6638 2.3px,#3b2f17 3px,transparent 3.5px),
+  repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,rgba(0,0,0,.035) 1px 3px),linear-gradient(180deg,#cdb27a 0,#ab8b46 58%,#8f7238 100%);
+ box-shadow:inset 0 1px 0 rgba(255,244,214,.55),inset 0 -1px 0 rgba(0,0,0,.3),0 1px 0 rgba(0,0,0,.35),0 2px 3px rgba(0,0,0,.3);text-shadow:0 1px 0 rgba(255,236,190,.5)}
+.pfa .pfa-record-label span{color:#24180a;text-shadow:0 1px 0 rgba(255,236,190,.55)}
+
+@media (min-width:701px){
+ .pfa .pfa-rail li::before{background:rgba(6,8,10,.58);box-shadow:inset 1px 1px 0 rgba(205,205,198,.38),inset -1px -1px 0 rgba(0,0,0,.65)}
+ .pfa .pfa-rail li[data-engaged=true]::before{opacity:0}
+ .pfa .pfa-rail li[data-engaged=true] .pfa-num{color:#140e05;text-shadow:0 1px 0 rgba(255,236,190,.45)}
+ .pfa .pfa-rail li:not([data-engaged=true]) .pfa-num{color:#e6ebee;text-shadow:0 -1px 0 rgba(0,0,0,.85)}
+ .pfa .r2-plates img:not([hidden]){filter:sepia(1) saturate(2) hue-rotate(2deg) brightness(.82) contrast(1.1) drop-shadow(0 -2px 0 rgba(5,7,9,.85)) drop-shadow(0 2px 2px rgba(0,0,0,.55))}
+ .pfa .r2-car::after{left:calc(50% - 2px);width:4px;background:linear-gradient(90deg,#41474b,#d3d9dc 45%,#565c60);box-shadow:1px 0 1px rgba(0,0,0,.5)}
+ .pfa .r2-car::before{left:calc(50% - .55cqw);width:1.1cqw;height:1.1cqw;top:calc(100% + .1cqw);background:radial-gradient(circle,#d0d6d9 0 28%,#6a7074 52%,#1f2326 68%,transparent 72%)}
+ .pfa .pfa-rail li[data-engaged=true] p{background:none;box-shadow:inset 0 4px 0 #ab8b46;color:#fff}
+}
+@media (min-width:1181px){.pfa .pfa-rail li:not([data-engaged=true]) h3{color:#e6ebee;text-shadow:0 -1px 0 rgba(0,0,0,.85)}.pfa .pfa-rail li[data-engaged=true] h3{color:#140e05}
+ .pfa .pfa-rail li:nth-child(4) :is(h3,.pfa-num){width:8.5cqw}.pfa .pfa-rail li:nth-child(4) h3{letter-spacing:.06em}}
+@media (max-width:700px){
+ .pfa .pfa-rail li:not([data-engaged=true]){filter:none}
+ .pfa .pfa-rail li::after{display:block;content:"";position:absolute;z-index:-1;inset:0;width:auto;height:auto;opacity:1;pointer-events:none;border-radius:1px}
+ .pfa .pfa-rail li:not([data-engaged=true])::after{background:repeating-linear-gradient(90deg,rgba(255,255,255,.03) 0 1px,transparent 1px 3px),rgba(10,12,14,.58);box-shadow:inset 1px 1px 0 rgba(255,255,255,.16),inset -1px -1px 0 rgba(0,0,0,.65),inset 0 3px 7px rgba(0,0,0,.45)}
+ .pfa .pfa-rail li:not([data-engaged=true]) :is(h3,.pfa-num){color:#eef2f4;text-shadow:0 -1px 0 rgba(0,0,0,.8)}
+ .pfa .pfa-rail li:not([data-engaged=true]) p{color:#e2e8ea}
+ .pfa .pfa-rail li[data-engaged=true]::after{background:#ab8b46;box-shadow:none;mix-blend-mode:color}
+ .pfa .pfa-rail li[data-engaged=true]::before{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.24),rgba(255,255,255,0) 38%,rgba(0,0,0,.14)),repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,rgba(0,0,0,.05) 1px 3px)}
+ .pfa .pfa-rail li[data-engaged=true]{transform:translate(-5px,2px);box-shadow:0 -2px 0 rgba(5,7,9,.9),0 0 0 1px rgba(171,139,70,.95),2px 3px 4px rgba(0,0,0,.5)}
+ .pfa .r2-car-m{filter:none}
+ .pfa .r2-car-m::after{left:70%;width:24%;height:5px;top:calc(50% - 2.5px);border-radius:1px;background:linear-gradient(180deg,#d3d9dc,#6a7074 60%,#3d4347);box-shadow:0 1px 1px rgba(0,0,0,.6)}
+}
+@media (forced-colors:active){
+ .home-maker::before,.pf-emblem.r3-seal::after,.pfa .pfa-rail li::after{display:none}
+ .pfa .pfa-record-label{background:none;box-shadow:none;text-shadow:none}
+}
+/* ── CP-0185 tranche 3 (2026-11-05), from the owner-side review of tranche 2: the chain shows mechanical registration
+   (five index stops on the guide rail; the plunger seats in the selected one; on phones the carriage arm ends in a pin at
+   the plate edge), the brass goes satin and seats deeper, and the record leads with the selected stage (number tag beside
+   the stage name, one brass rule) while the mounting note becomes a titled disclosure. ── */
+@media (min-width:701px){
+ .pfa .r2-plates img:not([hidden]){filter:sepia(1) saturate(1.3) hue-rotate(2deg) brightness(.8) contrast(1.06) drop-shadow(0 -3px 0 rgba(5,7,9,.9)) drop-shadow(0 2px 2px rgba(0,0,0,.55))}
+ .pfa .pfa-machine::after{content:"";position:absolute;z-index:1;pointer-events:none;left:0;right:0;top:21.2cqw;height:.85cqw;
+  background:
+   linear-gradient(90deg,transparent calc(17.6964cqw - .2cqw),rgba(0,0,0,.85) calc(17.6964cqw - .2cqw) calc(17.6964cqw + .12cqw),rgba(255,255,255,.18) calc(17.6964cqw + .12cqw) calc(17.6964cqw + .2cqw),transparent calc(17.6964cqw + .2cqw)),
+   linear-gradient(90deg,transparent calc(32.6251cqw - .2cqw),rgba(0,0,0,.85) calc(32.6251cqw - .2cqw) calc(32.6251cqw + .12cqw),rgba(255,255,255,.18) calc(32.6251cqw + .12cqw) calc(32.6251cqw + .2cqw),transparent calc(32.6251cqw + .2cqw)),
+   linear-gradient(90deg,transparent calc(47.6251cqw - .2cqw),rgba(0,0,0,.85) calc(47.6251cqw - .2cqw) calc(47.6251cqw + .12cqw),rgba(255,255,255,.18) calc(47.6251cqw + .12cqw) calc(47.6251cqw + .2cqw),transparent calc(47.6251cqw + .2cqw)),
+   linear-gradient(90deg,transparent calc(62.5536cqw - .2cqw),rgba(0,0,0,.85) calc(62.5536cqw - .2cqw) calc(62.5536cqw + .12cqw),rgba(255,255,255,.18) calc(62.5536cqw + .12cqw) calc(62.5536cqw + .2cqw),transparent calc(62.5536cqw + .2cqw)),
+   linear-gradient(90deg,transparent calc(77.4822cqw - .2cqw),rgba(0,0,0,.85) calc(77.4822cqw - .2cqw) calc(77.4822cqw + .12cqw),rgba(255,255,255,.18) calc(77.4822cqw + .12cqw) calc(77.4822cqw + .2cqw),transparent calc(77.4822cqw + .2cqw))}
+}
+@media (max-width:700px){
+ .pfa .pfa-rail li[data-engaged=true]::after{background:#a3874e}
+ .pfa .pfa-rail li[data-engaged=true]::before{background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,0) 40%,rgba(0,0,0,.12)),repeating-linear-gradient(90deg,rgba(255,255,255,.04) 0 1px,rgba(0,0,0,.04) 1px 3px)}
+ .pfa .r2-car-m::before{content:"";position:absolute;z-index:3;left:calc(81% - 5px);top:calc(50% - 5px);width:10px;height:10px;border-radius:50%;
+  background:radial-gradient(circle,#e3e7e9 0 24%,#7d8488 46%,#2a2e31 70%,transparent 74%);box-shadow:0 0 0 1px rgba(0,0,0,.6)}
+}
+.pfa .pfa-record-label{padding:7px 18px 9px}
+.pfa .pfa-record-label span{font-size:30px}
+.pfa .pfa-record h4{justify-self:start;display:inline-block;font-size:28px;padding-bottom:4px;border-bottom:2px solid #ab8b46}
+@media (min-width:701px){.pfa .pfa-record-label{grid-row:1;align-self:center}.pfa .pfa-record>h4,.pfa .pfa-record [data-detail-text]{grid-column:2}}
+@media (max-width:700px){.pfa .pfa-record-label span{font-size:24px}.pfa .pfa-record h4{font-size:24px}}
+.pfa .pfa-explainer{margin:12px 0 0;max-width:62ch}
+.pfa .pfa-explainer>summary{display:inline-flex;align-items:center;gap:10px;cursor:pointer;list-style:none;padding:8px 0;font:600 13px/1.4 var(--pf-mono);letter-spacing:.08em;text-transform:uppercase;color:#c9b083}
+.pfa .pfa-explainer>summary::-webkit-details-marker{display:none}
+.pfa .pfa-explainer>summary::before{content:"";width:7px;height:7px;border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(-45deg);transition:transform .15s}
+.pfa .pfa-explainer[open]>summary::before{transform:rotate(45deg)}
+.pfa .pfa-explainer>summary:focus-visible{outline:3px solid #ffd58a;outline-offset:3px}
+.pfa .pfa-explainer .pfa-caption{margin:4px 0 0}
+@media (prefers-reduced-motion:reduce){.pfa .pfa-explainer>summary::before{transition:none}}
+@media (forced-colors:active){.pfa .pfa-machine::after,.pfa .r2-car-m::before{display:none}.pfa .pfa-record h4{border-bottom-color:CanvasText}}
+
+/* ── CP-0185 Home: Option A, PF first (owner decision, 2026-11-05) ──────────────────────────────────────────────
+   Home only. The nameplate is its own bolted plate and carries a compact section menu (the same six destinations as
+   the keys): an open row of links from 901 px, a Menu disclosure below. Then the hero (headline, Browse Products, the
+   maker's seal), then the six-key bank, hung from the hero's titanium plate on two forged drops, then the five-stage
+   instrument. The bank follows the hero in the document too (build-site.ps1, <!-- @route-chain -->). */
+body.pf-ledger-page .site-header{height:auto;min-height:calc(var(--pf-head-h) + 30px);padding-bottom:30px;box-sizing:border-box;margin-bottom:22px;
+ border-image:url(/assets/round3/oxide-frame.webp) 56 112 104 56/28px 56px 52px 28px/0 24px 24px 0 stretch}
+body.pf-ledger-page .site-header .nav-row{height:var(--pf-head-h)}
+body.pf-ledger-page .pf-quicknav{flex:none}
+body.pf-ledger-page .pf-quicknav ul{list-style:none;margin:0;padding:0}
+body.pf-ledger-page .pf-quicknav a{text-decoration:none;color:#dfe4e0}
+body.pf-ledger-page .pf-quicknav a:focus-visible{outline:3px solid #ffd58a;outline-offset:3px}
+@media (min-width:901px){
+ body.pf-ledger-page .pf-quicknav>summary{display:none}
+ body.pf-ledger-page .pf-quicknav::details-content{content-visibility:visible}
+ body.pf-ledger-page .pf-quicknav ul{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:2px 22px}
+ body.pf-ledger-page .pf-quicknav a{display:inline-flex;align-items:center;min-height:40px;font:600 12.5px/1 var(--pf-mono);letter-spacing:.08em;text-transform:uppercase;border-bottom:2px solid transparent;padding-top:2px}
+ body.pf-ledger-page .pf-quicknav a:hover{color:#fff;border-bottom-color:#8f7238}
+ body.pf-ledger-page .pf-quicknav a[aria-current=page]{color:#e9cf96;border-bottom-color:#ab8b46}
+}
+@media (min-width:901px) and (max-width:1199.98px){body.pf-ledger-page .site-header .header-maker-note{display:none}body.pf-ledger-page .pf-quicknav{margin-left:auto}}
+@media (max-width:900.98px){
+ body.pf-ledger-page .pf-quicknav{margin-left:auto}
+ body.pf-ledger-page .pf-quicknav>summary{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 14px 0 16px;cursor:pointer;list-style:none;font:600 13px/1 var(--pf-mono);letter-spacing:.12em;text-transform:uppercase;color:#e9ece9;
+  background:linear-gradient(180deg,#2a3236,#171d20);border:1px solid #56636a;border-top-color:#6c787d;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 2px 0 #050708}
+ body.pf-ledger-page .pf-quicknav>summary::-webkit-details-marker{display:none}
+ body.pf-ledger-page .pf-quicknav>summary::after{content:"+";content:"+" / "";font:400 19px/1 var(--pf-mono);color:#c6cdc8}
+ body.pf-ledger-page .pf-quicknav[open]>summary::after{content:"\2212";content:"\2212" / ""}
+ body.pf-ledger-page .pf-quicknav>summary:focus-visible{outline:3px solid #ffd58a;outline-offset:3px}
+ body.pf-ledger-page .pf-quicknav nav{position:absolute;z-index:30;left:12px;right:12px;top:calc(var(--pf-head-h) - 2px);padding:10px;
+  background:linear-gradient(180deg,#1d2427,#141a1d);border:1px solid #4b585c;border-top:3px solid #6c787d;box-shadow:0 10px 0 #050708,0 18px 28px rgba(0,0,0,.55)}
+ body.pf-ledger-page .pf-quicknav ul{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+ body.pf-ledger-page .pf-quicknav a{display:flex;align-items:center;min-height:46px;padding:0 14px;font:600 14px/1.2 var(--pf-mono);letter-spacing:.06em;text-transform:uppercase;background:#11171a;border:1px solid #2f3a3e}
+ body.pf-ledger-page .pf-quicknav a[aria-current=page]{color:#e9cf96;border-color:#8f7238}
+}
+@media (max-width:700.98px){
+ body.pf-ledger-page .site-header{border-image-width:16px 32px 29.71px 16px;border-image-outset:0 13.71px 13.71px 0;min-height:calc(var(--pf-head-h) + 14px);padding-bottom:14px;margin-bottom:18px}
+}
+
+/* The key bank hangs from the hero's titanium plate on two forged hangers: the chain's own clevis anchors, one bolted to
+   the hero's lower edge and one to the bank's upper edge, their rods interlinked across the gap, centred over the first and
+   last keys of the bank's top row (01 and 06 in one row, 01 and 03 on tablets, 01 and 02 on phones). It reads as one
+   chassis, not a separate panel further down. */
+body.pf-ledger-page main>.pf-route-chain{position:relative;margin:30px auto 40px;padding-top:30px;background-position:0 0;
+ border-image:url(/assets/round3/oxide-frame.webp) 56 112 104 56/28px 56px 52px 28px/0 24px 24px 0 stretch}
+body.pf-ledger-page main>.pf-route-chain+.ledger-chain{margin-top:0}
+@media (max-width:700.98px){
+ body.pf-ledger-page main>.pf-route-chain{margin:26px auto 30px;padding-top:22px;border-image-width:16px 32px 29.71px 16px;border-image-outset:0 13.71px 13.71px 0}
+}
+@media (forced-colors:active){
+ body.pf-ledger-page .site-header,body.pf-ledger-page main>.pf-route-chain{border-image:none}
+ body.pf-ledger-page main>.pf-route-chain li::before{display:none}
+ body.pf-ledger-page .pf-quicknav a{color:LinkText}
+ body.pf-ledger-page .pf-quicknav a[aria-current=page]{color:CanvasText}
+}
+/* The open menu panel paints above the hero plate; on narrow phones the Menu button stays on the brand row. */
+body.pf-ledger-page .site-header{position:relative;z-index:40}
+@media (max-width:900.98px){body.pf-ledger-page .site-header .nav-row{flex-wrap:nowrap;gap:12px}}
+@media (max-width:440px){body.pf-ledger-page .pf-quicknav>summary{gap:7px;padding:0 10px 0 12px;font-size:12px;letter-spacing:.1em}}
+@media (max-width:900.98px){body.pf-ledger-page .pf-quicknav:not([open]) nav{display:none}}
+@media (max-width:380px){body.pf-ledger-page .site-header .nav-row{padding-inline:16px;gap:8px}body.pf-ledger-page .pf-quicknav>summary{width:44px;padding:0;justify-content:center;font-size:0;letter-spacing:0}body.pf-ledger-page .pf-quicknav>summary::after{content:"\2261";content:"\2261" / "";font-size:22px}body.pf-ledger-page .pf-quicknav[open]>summary::after{content:"\00D7";content:"\00D7" / ""}body.pf-ledger-page .site-header .brand-name small{letter-spacing:.06em}}
+/* r5 (review fixes). Hangers: drawn by the top row's end keys, so they sit centred over those keys at every layout. Each is
+   two clevis anchors (30 x 50 art, 40 x 67 from 1024 px, 24 x 40 on phones) overlapping so their rods interlink. */
+body.pf-ledger-page main>.pf-route-chain li::before{content:none}
+body.pf-ledger-page main>.pf-route-chain :is(li:nth-child(1),li:nth-child(6))::before{content:"";position:absolute;z-index:4;pointer-events:none;left:50%;
+ top:-94px;width:30px;height:86px;margin-left:-15px;
+ background:url(/assets/round3/anchor-t.webp) 50% 0/30px 50px no-repeat,url(/assets/round3/anchor-b.webp) 50% 100%/30px 50px no-repeat;
+ filter:drop-shadow(0 2px 1px rgba(0,0,0,.65)) brightness(1.18)}
+@media (min-width:1024px){body.pf-ledger-page main>.pf-route-chain :is(li:nth-child(1),li:nth-child(6))::before{top:-106px;width:40px;height:98px;margin-left:-20px;background-size:40px 67px,40px 67px}}
+@media (min-width:701px) and (max-width:1239.98px){
+ body.pf-ledger-page main>.pf-route-chain li:nth-child(6)::before{content:none}
+ body.pf-ledger-page main>.pf-route-chain li:nth-child(3)::before{content:"";position:absolute;z-index:4;pointer-events:none;left:50%;top:-94px;width:30px;height:86px;margin-left:-15px;
+  background:url(/assets/round3/anchor-t.webp) 50% 0/30px 50px no-repeat,url(/assets/round3/anchor-b.webp) 50% 100%/30px 50px no-repeat;filter:drop-shadow(0 2px 1px rgba(0,0,0,.65)) brightness(1.18)}
+}
+@media (min-width:1024px) and (max-width:1239.98px){body.pf-ledger-page main>.pf-route-chain li:nth-child(3)::before{top:-106px;width:40px;height:98px;margin-left:-20px;background-size:40px 67px,40px 67px}}
+@media (max-width:700.98px){
+ body.pf-ledger-page main>.pf-route-chain li:nth-child(6)::before{content:none}
+ body.pf-ledger-page main>.pf-route-chain :is(li:nth-child(1),li:nth-child(2))::before{content:"";position:absolute;z-index:4;pointer-events:none;left:50%;top:-76px;width:24px;height:70px;margin-left:-12px;
+  background:url(/assets/round3/anchor-t.webp) 50% 0/24px 40px no-repeat,url(/assets/round3/anchor-b.webp) 50% 100%/24px 40px no-repeat;filter:drop-shadow(0 2px 1px rgba(0,0,0,.65)) brightness(1.18)}
+}
+/* Quick menu items: no inherited list rhythm, so HOME lines up with the other five. */
+body.pf-ledger-page .pf-quicknav li{margin:0}
+/* The nameplate's row sits at the plate's visual centre. */
+body.pf-ledger-page .site-header{padding-top:12px;padding-bottom:18px}
+@media (max-width:700.98px){body.pf-ledger-page .site-header{padding-top:7px;padding-bottom:7px}}
+/* Narrow phones: the brand lockup may compress and the Menu button is a 44 px icon up to 420 px, inside the plate. */
+@media (max-width:420px){
+ body.pf-ledger-page .site-header .nav-row{padding-inline:16px;gap:8px}
+ body.pf-ledger-page .site-header .brand-lockup{flex:0 1 auto;min-width:0}
+ body.pf-ledger-page .site-header .brand-name small{letter-spacing:.04em;white-space:normal}
+ body.pf-ledger-page .pf-quicknav>summary{width:44px;padding:0;justify-content:center;font-size:0;letter-spacing:0}
+ body.pf-ledger-page .pf-quicknav>summary::after{content:"\2261";content:"\2261" / "";font-size:22px}
+ body.pf-ledger-page .pf-quicknav[open]>summary::after{content:"\00D7";content:"\00D7" / ""}
+}
+/* From 1200 px: the maker note is set apart from the link row, and the opening is a little tighter so the hangers and the
+   bank's top edge reach the first screen at 900 px tall. */
+@media (min-width:1200px){
+ body.pf-ledger-page .site-header .header-maker-note{padding-right:26px;margin-right:4px;border-right:1px solid rgba(160,172,168,.35)}
+ body.pf-ledger-page .site-header{margin-bottom:12px}
+ body.pf-ledger-page .ledger-hero{padding-top:16px}
+ body.pf-ledger-page .home-opening{padding-top:34px}
+}
+/* Forced colours: the open phone panel keeps a plain box; the desktop row stays a plain row of links. */
+@media (forced-colors:active) and (max-width:900.98px){
+ body.pf-ledger-page .pf-quicknav>summary,body.pf-ledger-page .pf-quicknav nav,body.pf-ledger-page .pf-quicknav a{background:Canvas;color:LinkText;border:1px solid CanvasText;box-shadow:none}
+ body.pf-ledger-page .pf-quicknav a[aria-current=page]{border:2px solid Highlight}
+}
+@media (max-width:340px){body.pf-ledger-page .site-header .brand-lockup{gap:9px}body.pf-ledger-page .site-header .brand-name small{letter-spacing:0;white-space:nowrap}}
+/* r6: on narrow phones the header mark keeps its size and the tagline stays on one line at normal spacing (it may wrap,
+   not slide under the button, when a reader widens text spacing). Forced colours: only the current link is underlined on
+   the desktop row. From 1200 px the opening is 16 px tighter, so the bank's top edge reaches a 900 px first screen. */
+@media (max-width:420px){body.pf-ledger-page .site-header :is(.brand-mark-picture,.brand-mark){flex:none}body.pf-ledger-page .site-header .brand-name small{letter-spacing:0;white-space:normal}body.pf-ledger-page .site-header .brand-lockup{gap:10px}}
+@media (forced-colors:active) and (min-width:901px){body.pf-ledger-page .pf-quicknav a{border-bottom:0;padding-bottom:2px}body.pf-ledger-page .pf-quicknav a[aria-current=page]{border-bottom:2px solid Highlight;padding-bottom:0}}
+@media (min-width:1200px){body.pf-ledger-page .site-header{padding-bottom:14px;margin-bottom:10px}}
+/* From 1240 px (one row of keys, hangers over 01 and 06, clear of the seal's links) the opening tightens further, so the
+   hangers and the bank's top edge sit inside a 900 px first screen. */
+@media (min-width:1240px){body.pf-ledger-page .site-header{margin-bottom:6px}body.pf-ledger-page .ledger-hero{padding-top:8px}body.pf-ledger-page .home-opening{padding-bottom:30px}}
+@media (max-width:339.98px){body.pf-ledger-page .site-header .brand-name small{max-width:19.5ch}}

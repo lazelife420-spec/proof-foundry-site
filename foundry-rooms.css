@@ -240,7 +240,7 @@
 .pf-room-truth-files .tf-card:hover{background:#f6f4e9}
 .pf-room-truth-files .tf-card-head{display:flex;align-items:start;gap:19px;grid-row:span 2}
 .pf-room-truth-files .tf-card-head>svg{flex:none;width:33px;height:33px;margin-top:4px}
-.pf-room-truth-files .tf-card h2{font:400 31px/1.1 var(--pf-serif);margin:0 0 12px}
+.pf-room-truth-files .tf-card :is(h2,h4){font:400 31px/1.1 var(--pf-serif);margin:0 0 12px}
 .pf-room-truth-files .tf-card-state{font:10px var(--pf-mono);color:#4d6049}
 .pf-room-truth-files .tf-card>p{font-size:13px;color:#455c4e;line-height:1.8}
 .pf-room-truth-files .tf-card-facts{grid-column:2;display:flex;flex-wrap:wrap;gap:6px 25px;font:10px/1.7 var(--pf-mono);color:#4d6049}
@@ -425,7 +425,7 @@ body.studio.pf-room-support .support-hero::after{inset:0 -20px;border:0 solid;bo
 }
 @media (max-width:700px){
  .pf-room-truth-files .tf-section>h2{font-size:clamp(32px,8.4vw,38px)}
- .pf-room-truth-files .tf-card h2{font-size:clamp(24px,6.2vw,28px)}
+ .pf-room-truth-files .tf-card :is(h2,h4){font-size:clamp(24px,6.2vw,28px)}
 }
 @media (min-width:460px) and (max-width:700px){.pf-room-truth-files .tf-section:last-child .support-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 24px}}
 /* Support */
@@ -490,3 +490,99 @@ body.studio.pf-room-support .support-hero::after{inset:0 -20px;border:0 solid;bo
 body:is(.pf-room-about,.pf-room-proof,.pf-room-support,.pf-room-truth-files) :is(.kicker,.eyebrow,.ledger-label){font-size:13px;letter-spacing:.1em}
 .pf-room-truth-files .tf-hero-kicker{font-size:13px;letter-spacing:.1em}
 .pf-room-proof .sha256-value{font:13px/1.7 var(--pf-mono)}
+/* CP-0185 P1 — page organisation. Proof and Truth: a two-page section switch, so the header key's parent rule is visible
+   (Proof = Proof Standard + Receipts; Truth Files = Truth Files + Public Truth). Receipts: a status index above the cards.
+   Truth Files: records grouped by their authoritative status. Support: four task routes first. About: four rules as rows. */
+.pf-section-switch{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:34px;max-width:900px}
+.pf-section-switch a{position:relative;display:grid;align-content:start;gap:6px;min-height:44px;padding:16px 20px 17px;text-decoration:none;color:var(--text);background:linear-gradient(180deg,#1b2327,#13191c);border:1px solid #3b474a;border-top:3px solid #56636a;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 6px 0 #050708}
+.pf-section-switch a b{font:600 13px/1.3 var(--pf-mono);letter-spacing:.1em;text-transform:uppercase}
+.pf-section-switch a span{font-size:14px;line-height:1.55;color:var(--muted)}
+.pf-section-switch a:not([aria-current]) b::after{content:" \2192";content:" \2192" / "";letter-spacing:0}
+.pf-section-switch a:not([aria-current]):hover{border-top-color:#ab8b46;background:#1d272b}
+.pf-section-switch a:focus-visible{outline:3px solid #d8b568;outline-offset:3px}
+.pf-section-switch a[aria-current=page]{background:#e8e5d9;color:#243635;border-color:#b4b7a7;border-top-color:#86988b;box-shadow:inset 0 1px #fff8,0 6px 0 #050e12}
+.pf-section-switch a[aria-current=page] span{color:#3c524c}
+.pf-section-switch a[aria-current=page]::after{content:"This page";content:"This page" / "";position:absolute;top:14px;right:16px;font:600 11px/1 var(--pf-mono);letter-spacing:.08em;text-transform:uppercase;color:#4d5f4a}
+@media (max-width:700px){.pf-section-switch{grid-template-columns:1fr;gap:10px;margin-top:26px}.pf-section-switch a{padding:14px 16px 15px}}
+
+.pf-room-proof .receipt-index-label{grid-column:1/-1;margin:0 0 10px;font:600 13px/1.4 var(--pf-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.pf-room-proof .receipt-index{grid-column:1/-1;list-style:none;margin:0 0 40px;padding:0;background:#11171a;border:1px solid #3b474a;border-top:3px solid #56636a;box-shadow:0 6px 0 #050708}
+.pf-room-proof .receipt-index li{margin:0;border-top:1px solid #29343a}
+.pf-room-proof .receipt-index li:first-child{border-top:0}
+.pf-room-proof .receipt-index a{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1.25fr) minmax(0,1.1fr) minmax(0,1.35fr) 18px;gap:16px;align-items:center;min-height:52px;padding:12px 20px;text-decoration:none;color:var(--text)}
+.pf-room-proof .receipt-index a::after{content:"\2193";content:"\2193" / "";font:15px var(--pf-mono);color:var(--muted);justify-self:end}
+.pf-room-proof .receipt-index a:hover{background:#1a2226}
+.pf-room-proof .receipt-index a:focus-visible{outline:3px solid #d8b568;outline-offset:-3px}
+.pf-room-proof .receipt-index b{font:400 22px/1.2 var(--pf-serif);letter-spacing:-.02em}
+.pf-room-proof .receipt-index :is(.ri-platform,.ri-version){font:13px/1.5 var(--pf-mono);color:var(--muted)}
+.pf-room-proof .receipt-index .ri-version{color:var(--text)}
+.pf-room-proof .receipt-index .ri-state{justify-self:start;font:600 12px/1.4 var(--pf-mono);letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border:1px solid currentColor;color:#b9cfa9}
+.pf-room-proof .receipt-index .ri-state--withdrawn{color:#e0b88c}
+@media (max-width:700px){
+ .pf-room-proof .receipt-index a{grid-template-columns:minmax(0,1fr) auto;gap:3px 12px;padding:12px 14px}
+ .pf-room-proof .receipt-index b{grid-column:1;font-size:20px}
+ .pf-room-proof .receipt-index :is(.ri-platform,.ri-version){grid-column:1;font-size:13px}
+ .pf-room-proof .receipt-index .ri-state{grid-column:2;grid-row:1/span 3;align-self:center;max-width:15ch;text-align:center}
+ .pf-room-proof .receipt-index a{grid-template-columns:minmax(0,1fr) auto 14px}
+ .pf-room-proof .receipt-index a::after{grid-column:3;grid-row:1/span 3;align-self:center}
+}
+
+.pf-room-truth-files .tf-grid{counter-reset:none}
+.pf-room-truth-files .tf-status-jump{counter-reset:record;display:flex;flex-wrap:wrap;gap:10px;margin:0 0 34px}
+.pf-room-truth-files .tf-status-jump a{display:inline-flex;align-items:center;gap:12px;min-height:44px;padding:8px 16px;font:600 13px/1.3 var(--pf-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--text);text-decoration:none;background:#151c1f;border:1px solid #3b474a;border-top:3px solid #56636a}
+.pf-room-truth-files .tf-status-jump a:hover{border-top-color:#ab8b46}
+.pf-room-truth-files .tf-status-jump a:focus-visible{outline:3px solid #d8b568;outline-offset:3px}
+.pf-room-truth-files .tf-status-jump b{display:inline-grid;place-items:center;min-width:28px;height:28px;padding:0 7px;background:#e8e5d9;color:#243635;font-size:14px}
+.pf-room-truth-files .tf-group+.tf-group{margin-top:56px}
+.pf-room-truth-files .tf-group-title{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 16px;font:400 30px/1.2 var(--pf-serif);margin:0 0 26px;color:var(--text)}
+.pf-room-truth-files .tf-group-count{font:600 12px/1.4 var(--pf-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+.pf-room-support .support-tasks{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:34px}
+.pf-room-support .support-tasks a{position:relative;display:grid;align-content:start;gap:8px;min-height:44px;padding:18px 20px 22px;text-decoration:none;color:#243635;background:#e8e5d9;border:1px solid #b4b7a7;border-top:5px solid #86988b;box-shadow:0 6px 0 #050e12,inset 0 1px #fff8}
+.pf-room-support .support-tasks a::after{content:"\2193";content:"\2193" / "";position:absolute;top:16px;right:18px;font:15px var(--pf-mono);color:#4d5f4a}
+.pf-room-support .support-tasks a:hover{border-top-color:#ab8b46;background:#f0ede2}
+.pf-room-support .support-tasks a:focus-visible{outline:3px solid #d8b568;outline-offset:3px}
+.pf-room-support .support-task-no{font:600 12px/1 var(--pf-mono);letter-spacing:.1em;color:#5a6a52}
+.pf-room-support .support-tasks b{padding-right:26px;font:400 25px/1.15 var(--pf-serif);color:#1f302d;letter-spacing:-.02em}
+.pf-room-support .support-tasks a>span:last-child{font-size:14px;line-height:1.5;color:#3c524c}
+.pf-room-support .support-more{margin:24px 0;border-top:1px solid #9aa69a;border-bottom:1px solid #9aa69a}
+.pf-room-support .support-more summary{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:52px;cursor:pointer;list-style:none}
+.pf-room-support .support-more summary::-webkit-details-marker{display:none}
+.pf-room-support .support-more summary::after{content:"+";content:"+" / "";flex:none;font:400 24px/1 var(--pf-mono);color:#273c37}
+.pf-room-support .support-more[open] summary::after{content:"\2212";content:"\2212" / ""}
+.pf-room-support .support-more summary:focus-visible{outline:3px solid #8f7238;outline-offset:2px}
+.pf-room-support .support-more summary h3{margin:0!important;font-size:21px}
+.pf-room-support .support-more>:last-child{margin-bottom:18px}
+@media (max-width:1024px){.pf-room-support .support-tasks{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:700px){.pf-room-support .support-tasks{gap:10px;margin-top:26px}.pf-room-support .support-tasks a{padding:14px 14px 16px;gap:6px}.pf-room-support .support-tasks b{font-size:21px}.pf-room-support .support-tasks a>span:last-child{font-size:13px}}
+@media (max-width:380px){.pf-room-support .support-tasks{grid-template-columns:1fr}}
+
+.pf-room-about .about-values-grid{grid-template-columns:1fr;gap:0}
+.pf-room-about .about-card{display:grid;grid-template-columns:52px minmax(0,1fr);column-gap:18px;padding:26px 0 28px;margin:0!important}
+.pf-room-about .about-card::before{grid-row:1/span 3;margin:6px 0 0;font:600 13px var(--pf-mono);color:#b5bfae}
+.pf-room-about .about-card>*{grid-column:2}
+.pf-room-about .about-card h3{max-width:none;font-size:26px;margin-bottom:10px}
+.pf-room-about .about-card>p{max-width:62ch;font-size:16px;line-height:1.75}
+.pf-room-about .about-more{margin-top:14px;max-width:62ch;padding-left:16px;border-left:2px solid #86988b}
+.pf-room-about .about-more summary{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:44px;cursor:pointer;font:600 14px/1.4 var(--pf-mono);letter-spacing:.02em;color:var(--text)}
+.pf-room-about .about-more summary::after{content:"+";content:"+" / "";flex:none;font:400 22px/1 var(--pf-mono);color:var(--muted)}
+.pf-room-about .about-more[open] summary::after{content:"\2212";content:"\2212" / ""}
+.pf-room-about .about-more summary:focus-visible{outline:3px solid #d8b568;outline-offset:2px}
+.pf-room-about .about-more p{margin:4px 0 6px;font-size:15px;line-height:1.75;color:var(--muted)}
+@media (max-width:700px){.pf-room-about .about-card{grid-template-columns:38px minmax(0,1fr);column-gap:12px}.pf-room-about .about-card h3{font-size:23px}}
+@media (forced-colors:active){
+ .pf-section-switch a,.pf-room-proof .receipt-index,.pf-room-truth-files .tf-status-jump a,.pf-room-support .support-tasks a{background:Canvas;color:CanvasText;border:1px solid CanvasText;box-shadow:none}
+ .pf-section-switch a[aria-current=page]{border:3px solid Highlight}
+ .pf-room-proof .receipt-index .ri-state,.pf-room-truth-files .tf-status-jump b{color:CanvasText;background:Canvas;border:1px solid CanvasText}
+}
+/* Support: the reference sections that are not first-screen tasks, as one text row under the four routes. */
+.pf-room-support .support-more-links{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px 26px;margin-top:18px}
+.pf-room-support .support-more-links a{display:inline-flex;align-items:center;min-height:36px;font-size:15px;text-underline-offset:6px}
+@media (max-width:700px){.pf-room-support .support-more-links{gap:2px 20px;margin-top:12px}.pf-room-support .support-more-links a{font-size:14px}}
+/* Receipts at desktop width: the index sits directly under the section heading, so it reaches the first screen; the state guide follows it. */
+@media (min-width:1051px){.pf-room-proof .receipts-note{grid-column:1/-1;max-width:72ch}.pf-room-proof .receipts-title{margin-bottom:14px}.pf-room-proof .proof-hero{margin-bottom:30px}.pf-room-proof .pf-section-switch{margin-top:26px}}
+/* Support on phones: a tighter opening so the four routes fit the first screen under the full key bank. */
+@media (max-width:700px){.pf-room-support .support-hero{padding-top:30px;padding-bottom:26px}.pf-room-support .support-hero h1{font-size:54px;margin-bottom:16px}.pf-room-support .support-hero .support-intro{font-size:16px;line-height:1.6}.pf-room-support .support-tasks a{padding:12px 12px 14px;gap:4px}.pf-room-support .support-tasks b{font-size:20px;padding-right:16px}.pf-room-support .support-tasks a::after{top:12px;right:12px}.pf-room-support .support-tasks a>span:last-child{font-size:13px;line-height:1.45}}
+/* Support: titles stay on one line in the four-across row; phone text links clear the tiles' shadow for their focus ring. */
+@media (min-width:1025px) and (max-width:1199.98px){.pf-room-support .support-tasks b{font-size:22px}}
+@media (max-width:700px){.pf-room-support .support-more-links{margin-top:16px}}

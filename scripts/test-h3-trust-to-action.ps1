@@ -130,11 +130,15 @@ Assert-Condition ($stylesCss -match '\.onboarding-list dt') "shared onboarding-l
 
 # ── H1/H2 preservation guards (this tranche touches shared files) ───────────
 # H9 keeps the forge-to-outside Home journey concise; product browsing is on Software.
-$journey = @('ledger-hero', 'home-orientation', 'ledger-chain', 'ledger-doctrine', 'home-records', 'home-contact')
+# CP-0185 Home Option A (owner decision, 2026-11-05): PF first. The hero, then the six-key bank, then the five-stage
+# instrument; the orientation bridge follows the instrument.
+$journey = @('ledger-hero', 'ledger-chain', 'home-orientation', 'ledger-doctrine', 'home-records', 'home-contact')
 $positions = @($journey | ForEach-Object { [regex]::Match($homeHtml, '<section\b[^>]*class="[^"]*\b' + $_ + '\b[^"]*"').Index })
 $ordered = @($positions | Where-Object { $_ -le 0 }).Count -eq 0
 for ($i = 1; $i -lt $positions.Count; $i++) { if ($positions[$i] -le $positions[$i - 1]) { $ordered = $false } }
-Assert-Condition ($ordered -and ([regex]::Matches($homeHtml, 'class="pfa-num"')).Count -eq 5 -and ([regex]::Matches($homeHtml, 'class="stage-btn"')).Count -eq 5 -and $homeHtml -match 'id="chain-title"' -and $homeHtml -notmatch 'class="studio-portfolio"|studio-evidence') "Proof Ledger: hero, orientation, five-stage proof chain, principle, records and support form the main-site journey"
+$keyBankAt = $homeHtml.IndexOf('id="primary-nav"')
+if (-not ($keyBankAt -gt $positions[0] -and $keyBankAt -lt $positions[1] -and $keyBankAt -gt $homeHtml.IndexOf('</header>'))) { $ordered = $false }
+Assert-Condition ($ordered -and ([regex]::Matches($homeHtml, 'class="pfa-num"')).Count -eq 5 -and ([regex]::Matches($homeHtml, 'class="stage-btn"')).Count -eq 5 -and $homeHtml -match 'id="chain-title"' -and $homeHtml -notmatch 'class="studio-portfolio"|studio-evidence') "Proof Ledger: hero, key bank, five-stage proof chain, orientation, principle, records and support form the main-site journey"
 $heroHtml = [regex]::Match($homeHtml, '(?s)<section class="ledger-hero"[^>]*>.*?</section>').Value
 $directoryIds = @([regex]::Matches($catalogHtml, '<article\b[^>]*data-directory-entry="([^"]+)"') | ForEach-Object { $_.Groups[1].Value } | Sort-Object)
 $expectedIds = @('cache-vault','lights-out','cleanroom','ghostlayer','forgecast','hardline-zero','crosspoint','reality-gate','proof-foundry-app') | Sort-Object

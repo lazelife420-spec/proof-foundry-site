@@ -1912,8 +1912,35 @@ function Build-TruthIndexCards {
 # the machine records, so the two surfaces can never disagree.
 # ─────────────────────────────────────────────────────────────────────────────
 function Build-TruthFileCards {
-  $cards = ''
+  # CP-0185 P1: status first. Cards are grouped by productStatus in first-seen
+  # order, each group labelled with its taxonomy label and count, with a jump
+  # row above. Card markup and facts are unchanged.
+  $groups = [ordered]@{}
   foreach ($p in $allProductState) {
+    $statusLabel = if ($manifest.statusTaxonomy -and $manifest.statusTaxonomy.PSObject.Properties[$p.productStatus]) { $manifest.statusTaxonomy.($p.productStatus) } else { $p.productStatus }
+    $gKey = ([string]$p.productStatus).ToLower() -replace '[^a-z0-9]+', '-'
+    if (-not $groups.Contains($gKey)) { $groups[$gKey] = [ordered]@{ label = [string]$statusLabel; cards = @() } }
+    $groups[$gKey].cards += (Build-TruthFileCard $p)
+  }
+  $jump = ($groups.Keys | ForEach-Object { "<a href=`"#tf-group-$_`">$(Html-Attr $groups[$_].label) <b>$(@($groups[$_].cards).Count)</b><span class=`"sr-only`"> $(if (@($groups[$_].cards).Count -eq 1) { 'record' } else { 'records' })</span></a>" }) -join ''
+  $out = "<nav class=`"tf-status-jump`" aria-label=`"Records by status`">$jump</nav>"
+  foreach ($k in $groups.Keys) {
+    $n = @($groups[$k].cards).Count
+    $out += @"
+
+      <section class="tf-group" id="tf-group-$k" aria-labelledby="tf-group-$k-title">
+        <h3 class="tf-group-title" id="tf-group-$k-title">$(Html-Attr $groups[$k].label) <span class="tf-group-count">$n $(if ($n -eq 1) { 'record' } else { 'records' })</span></h3>
+        <div class="tf-grid">$($groups[$k].cards -join '')
+        </div>
+      </section>
+"@
+  }
+  return $out
+}
+
+function Build-TruthFileCard($p) {
+  $cards = ''
+  foreach ($p in @($p)) {
     $stateLabel = if ($manifest.stateLabels -and $manifest.stateLabels.PSObject.Properties[$p.state]) { $manifest.stateLabels.($p.state) } else { $p.state }
     $statusLabel = if ($manifest.statusTaxonomy -and $manifest.statusTaxonomy.PSObject.Properties[$p.productStatus]) { $manifest.statusTaxonomy.($p.productStatus) } else { $p.productStatus }
     $ver = if ($p.release -and $p.release.publicVersion) { "v$($p.release.publicVersion)" } elseif ($p.release -and $p.release.withdrawnVersion) { "Withdrawn v$($p.release.withdrawnVersion)" } else { 'Unreleased' }
@@ -1921,7 +1948,7 @@ function Build-TruthFileCards {
     $cardText = if (-not [string]::IsNullOrWhiteSpace([string]$p.statusStatement)) { [string]$p.statusStatement } else { [string]$p.cardSummary }
     $cards += @"
         <a class="tf-card" href="/truth-files/$(Html-Attr $p.id)/">
-          <div class="tf-card-head">$($p.markSvg)<div><h2>$(Html-Attr $p.name)</h2><span class="tf-card-state">$(Html-Attr $stateLabel)</span></div></div>
+          <div class="tf-card-head">$($p.markSvg)<div><h4>$(Html-Attr $p.name)</h4><span class="tf-card-state">$(Html-Attr $stateLabel)</span></div></div>
           <p>$(Html-Attr $cardText)</p>
           <div class="tf-card-facts"><span><b>$(Html-Attr $ver)</b> · $(Html-Attr $statusLabel)</span><span>$(Html-Attr $plats)</span></div>
           <span class="tf-open">Open the record →</span>
@@ -2338,6 +2365,9 @@ function Build-ReceiptCards {
     } else {
       $verHtml = '<dd style="color:var(--muted);">Unreleased</dd>'
     }
+    # CP-0185 P1: one index row per receipt, from the same values as its card.
+    $idxVer = if ($publicVer) { "v$publicVer" + $(if ($p.release -and $p.release.companionPublicVersion -and [string]$p.release.companionPublicVersion -ne [string]$publicVer) { " $([char]0x00B7) companion v$($p.release.companionPublicVersion)" } else { '' }) } elseif ($p.release -and $p.release.releaseStatus -eq 'WITHDRAWN' -and $p.release.withdrawnVersion) { "$(StateWord 'withdrawnVersionCell') (v$($p.release.withdrawnVersion))" } else { 'Unreleased' }
+    $script:ReceiptIndexRows += "<li><a href=`"#receipt-$(Html-Attr $p.id)`"><b>$(Html-Attr $t['name'])</b><span class=`"ri-platform`">$(Html-Attr $t['platform'])</span><span class=`"ri-version`">$(Html-Attr $idxVer)</span><span class=`"ri-state ri-state--$(Html-Attr $statusClass)`">$(Html-Attr $ps)</span></a></li>"
 
     # primary artifact + full SHA-256
     $primaryArtifact = $null
@@ -3189,6 +3219,23 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
 
   # Inject partials
   $html = $html -replace '<!--\s*@include header\s*-->', $header
+  # CP-0185 Home Option A (owner decision, 2026-11-05): a template that carries the route-chain marker gets the
+  # six-key bank there, after its hero, in the document as well as on screen, so keyboard order matches what is
+  # seen. Its nameplate then carries a compact section menu built from the same six keys, so every destination
+  # stays one tap away before the visitor scrolls. Every other page keeps the bank under its nameplate.
+  if ($html.Contains('<!-- @route-chain -->')) {
+    $chainMatch = [regex]::Match($html, '(?s)<nav class="pf-route-chain\b.*?</nav>')
+    if (-not $chainMatch.Success) { throw "$srcName carries <!-- @route-chain --> but its header has no key bank." }
+    $html = $html.Remove($chainMatch.Index, $chainMatch.Length)
+    $html = $html.Replace('<!-- @route-chain -->', $chainMatch.Value)
+    $quickKeys = @([regex]::Matches($chainMatch.Value, '<a href="([^"]+)"[^>]*><span class="pf-chain-station"[^>]*>[^<]*</span><span>([^<]+)</span></a>'))
+    if ($quickKeys.Count -ne 6) { throw "Quick menu: expected the six keys, found $($quickKeys.Count)." }
+    $quickItems = ($quickKeys | ForEach-Object { $cur = if ($_.Groups[1].Value -eq '/') { ' aria-current="page"' } else { '' }; "<li><a href=`"$($_.Groups[1].Value)`"$cur>$($_.Groups[2].Value)</a></li>" }) -join ''
+    $quickNav = "<details class=`"pf-quicknav`" data-quicknav><summary>Menu</summary><nav aria-label=`"Site sections`"><ul>$quickItems</ul></nav></details>"
+    $makerNote = [regex]::Match($html, '(?s)<p class="header-maker-note">.*?</p>')
+    if (-not $makerNote.Success) { throw "$($srcName): the nameplate has no maker note to place the quick menu after." }
+    $html = $html.Insert($makerNote.Index + $makerNote.Length, $quickNav)
+  }
   $html = $html -replace '<!--\s*@include footer\s*-->', $footer
   $html = $html -replace '<!--\s*@include compact-footer\s*-->', $footer
 
@@ -3210,7 +3257,11 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   $html = $html -replace '<!--\s*@products\s*-->', (Build-ProductCards $null)
 
   # Inject receipt cards (receipts page)
+  $script:ReceiptIndexRows = @()
   $html = $html -replace '<!--\s*@receipts\s*-->', (Build-ReceiptCards)
+  if ($html.Contains('<!-- @receipt-index -->')) {
+    $html = $html.Replace('<!-- @receipt-index -->', ('<p class="receipt-index-label" id="receipt-index-label">Jump to a receipt</p><ul class="receipt-index" aria-labelledby="receipt-index-label">' + ($script:ReceiptIndexRows -join '') + '</ul>'))
+  }
 
   # Public truth index cards (/truth/ page) — same manifest model as the JSON
   $html = $html -replace '<!--\s*@truth-products\s*-->', (Build-TruthIndexCards)

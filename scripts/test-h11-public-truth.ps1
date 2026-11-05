@@ -150,8 +150,10 @@ foreach ($mm in [regex]::Matches($sitemap, '<loc>([^<]+)</loc>\s*<lastmod>([^<]+
 $headSitemap = (git -C $root show 'HEAD:sitemap.xml') -join "`n"
 $headLastmod = @{}
 foreach ($mm in [regex]::Matches($headSitemap, '<loc>([^<]+)</loc>\s*<lastmod>([^<]+)</lastmod>')) { $headLastmod[$mm.Groups[1].Value] = $mm.Groups[2].Value }
-Assert-Truth ($lastmodByLoc['https://theprooffoundry.com/truth/'] -eq '2026-10-20') 'sitemap: /truth/ carries its record-wording material date (2026-10-20)'
-Assert-Truth ($lastmodByLoc['https://theprooffoundry.com/proof-standard/'] -eq '2026-10-20') 'sitemap: /proof-standard/ carries its record-wording material date (2026-10-20)'
+# CP-0185 P1 (2026-11-05): /truth/, /proof-standard/, /proof/, /truth-files/, /about/ and /support/ were reorganised
+# (section switches, receipt index, status groups, task routes, principle rows), so each moves with its sitemap date.
+Assert-Truth ($lastmodByLoc['https://theprooffoundry.com/truth/'] -eq '2026-11-05') 'sitemap: /truth/ carries its page-organisation material date (2026-11-05)'
+Assert-Truth ($lastmodByLoc['https://theprooffoundry.com/proof-standard/'] -eq '2026-11-05') 'sitemap: /proof-standard/ carries its page-organisation material date (2026-11-05)'
 # Every route changed through the shared header/footer on 2026-10-05. These
 # exact assertions and HEAD equality retain the sitemap gate population; H4
 # independently checks material dates. Release dates are not website dates.
@@ -174,14 +176,16 @@ Assert-Truth ($LASTEXITCODE -eq 0 -and $homeMaterialDate -match '^\d{4}-\d{2}-\d
 # the same dates from their material-input history.
 $reconciledLastmod = @{
   'https://theprooffoundry.com/' = (@($homeMaterialDate, '2026-10-20') | Sort-Object | Select-Object -Last 1)
-  'https://theprooffoundry.com/about/' = '2026-10-25'
+  'https://theprooffoundry.com/about/' = '2026-11-05'
   'https://theprooffoundry.com/cache-vault/' = '2026-11-01'
   'https://theprooffoundry.com/lights-out/' = '2026-11-01'
   'https://theprooffoundry.com/proofshot/' = '2026-11-01'
   'https://theprooffoundry.com/reality-gate/' = '2026-11-01'
   'https://theprooffoundry.com/roadmap/' = '2026-10-25'
-  'https://theprooffoundry.com/software/' = '2026-11-01'
-  'https://theprooffoundry.com/support/' = '2026-10-25'
+  'https://theprooffoundry.com/software/' = '2026-11-05'
+  'https://theprooffoundry.com/support/' = '2026-11-05'
+  'https://theprooffoundry.com/proof/' = '2026-11-05'
+  'https://theprooffoundry.com/truth-files/' = '2026-11-05'
 }
 foreach ($kv in $headLastmod.GetEnumerator()) {
   if ($kv.Key -eq 'https://theprooffoundry.com/proof-standard/') { continue }

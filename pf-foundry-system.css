@@ -1140,3 +1140,23 @@ body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-ro
 :root .site-footer .footer-bottom{font-size:13px}
 @media (max-width:700px){:root .site-footer .footer-bottom{font-size:13px}}
 :root .pf-route-chain a:is([aria-current=page],[aria-current=true]) .pf-chain-station{color:#3f2d12}
+/* ── CP-0185 tranche 3 (2026-11-05): footer links engraved into the two group baseplates instead of eight screwed-on
+   plates: each link is a shallow milled channel in the plate (dark upper wall, faint lower lip) with inlaid lettering
+   whose cut catches light low and falls dark at the top. Real links, routes and the gold focus ring unchanged; the stack
+   is shorter on phones. Header: the key rail sits tighter above the hero on phones (key size, the 24px row pitch and
+   the couplers unchanged), and key labels fit their faces: untracked 12.5px lettering to 440px, and at 360px and
+   below a two-line label inside the face (28px ears each side), the station number kept. ── */
+:root .site-footer .footer-grid nav ul{display:grid;gap:4px}
+:root .site-footer .footer-grid nav li{margin:0;border-radius:2px;background:linear-gradient(180deg,rgba(0,0,0,.3),rgba(0,0,0,.16));
+ box-shadow:inset 0 1px 0 rgba(0,0,0,.8),inset 0 2px 4px rgba(0,0,0,.35),inset 0 -1px 0 rgba(255,255,255,.09)}
+:root .site-footer .footer-grid nav a{position:relative;display:block;box-sizing:border-box;min-height:40px;padding:12px 14px 11px;font:700 14px/17px var(--pf-mono);letter-spacing:.1em;text-transform:uppercase;
+ border:0;border-image:none;border-radius:2px;box-shadow:none;text-shadow:none;color:transparent;
+ background:linear-gradient(180deg,#a49c8d,#dcd4c2 48%,#f4eddc) 0 12px/100% 17px no-repeat;-webkit-background-clip:text;background-clip:text;
+ filter:drop-shadow(0 1px 0 rgba(255,255,255,.15)) drop-shadow(0 -1px 0 rgba(0,0,0,.85))}
+:root .site-footer .footer-grid nav a::after{content:none}
+:root .site-footer .footer-grid nav a:is(:hover,:focus-visible){background-image:linear-gradient(180deg,#8f7238,#e2c489 48%,#f6e6bf)}
+@media (forced-colors:active){:root .site-footer .footer-grid nav li{background:none;box-shadow:none}:root .site-footer .footer-grid nav a{background:none;color:LinkText;filter:none}}
+@media (max-width:700.98px){:root body .pf-route-chain{padding-top:12px;padding-bottom:20px;margin-bottom:18px}}
+@media (max-width:440px){:root .pf-route-chain a{font-size:12.5px;letter-spacing:0}}
+@media (max-width:360px){:root .pf-route-chain a{font-size:12px;padding:4px 28px 0}
+ :root .pf-route-chain a>span:not(.pf-chain-station){white-space:normal;text-align:center;line-height:13px}}

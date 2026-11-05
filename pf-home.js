@@ -785,3 +785,26 @@ if (receiptDialog && receiptTriggers.length) initReceipts(receiptDialog, receipt
 document.querySelectorAll('[data-living-metal]').forEach(initLivingMetal);
 document.querySelectorAll('.ledger-feature-media').forEach(initGlass);
 initProofChain();
+
+// CP-0185 Home Option A: the nameplate's section menu is an open row of links from 901 px and a Menu disclosure below.
+// Without script, Chromium still shows the row from 901 px (pf-home-ledger.css, ::details-content).
+{
+  const quickNav = document.querySelector('[data-quicknav]');
+  if (quickNav) {
+    const wide = matchMedia('(min-width: 901px)');
+    const syncQuick = () => { quickNav.open = wide.matches; };
+    syncQuick();
+    wide.addEventListener('change', syncQuick);
+    quickNav.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape' || wide.matches || !quickNav.open) return;
+      quickNav.open = false;
+      quickNav.querySelector('summary').focus();
+    });
+    document.addEventListener('pointerdown', (event) => {
+      if (!wide.matches && quickNav.open && !quickNav.contains(event.target)) quickNav.open = false;
+    });
+    quickNav.addEventListener('focusout', (event) => {
+      if (!wide.matches && quickNav.open && event.relatedTarget && !quickNav.contains(event.relatedTarget)) quickNav.open = false;
+    });
+  }
+}

@@ -79,7 +79,7 @@ body.studio.secondary-page:not(.tf-page) main {
 .studio.product-roadmap .roadmap-list article {
   border-color:var(--line); border-radius:0; background:transparent; box-shadow:none; color:var(--text);
 }
-.studio.secondary-page :is(.detail-card h3,.about-nav-card h3,.support-content-box h2,.tf-card h2) { color:var(--text) }
+.studio.secondary-page :is(.detail-card h3,.about-nav-card h3,.support-content-box h2,.tf-card :is(h2,h4)) { color:var(--text) }
 .studio.secondary-page :is(.detail-card p,.about-nav-card p,.tf-card p,.roadmap-list article>p) { color:var(--muted) }
 .studio.secondary-page .about-intro-box { border-left-color:var(--teal) }
 .studio.secondary-page .tf-card:hover { color:var(--teal); border-color:var(--teal) }
