@@ -979,3 +979,97 @@ body.pf-ledger-page{background-color:#1b1f21;
 /* Forced colours draw no plates and list the stages as bordered items, so the plate-shaped hit areas go and each item
    takes its own press (pf-home.js). */
 @media (forced-colors:active){.pfa .pfa-rail .stage-btn::before{content:none}}
+/* ── CP-0185 (2026-11-05): an obvious visual state, from the existing renders and CSS only (no new art).
+   The PF seal sits in a machined counterbore and casts onto the titanium; the proof chain shows its selected station
+   unmistakably (lit, pressed plate; unlit others; the carriage pointing at it; its description window lit; the record
+   stamped with the same number in brass). Geometry of the master PF, the nine links and two anchors is unchanged. ── */
+/* --- PF seal: seated in a machined counterbore, raised housing casting onto the titanium --- */
+.pf-emblem.r3-seal::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+ background:
+  radial-gradient(ellipse 48% 41.58% at 50.9% 44.4%,transparent 0 88.6%,rgba(4,5,6,.78) 90.2%,rgba(4,5,6,.5) 93.5%,rgba(4,5,6,0) 100%),
+  radial-gradient(ellipse 47.2% 40.88% at 49.4% 42.5%,transparent 0 96.6%,rgba(255,255,255,.16) 98.4%,transparent 100%)}
+.pf-emblem.r3-seal>img{filter:drop-shadow(0 1px 0 rgba(0,0,0,.55)) drop-shadow(7px 13px 12px rgba(0,0,0,.5))}
+.pf-emblem.r3-seal>.pf-lm--n{opacity:max(.45,calc(var(--lN) * .85))}
+.pf-emblem.r3-seal>.pf-lm--w{opacity:max(.25,calc(var(--lW) * .85))}
+
+/* --- Proof chain: the selected station is unmistakable --- */
+/* Record: a champagne index edge, a big stamped number, a stronger title. */
+.pfa .pfa-record::after{content:"";position:absolute;pointer-events:none;left:0;top:10px;bottom:6px;width:6px;background:linear-gradient(90deg,#8a6a2f,#d8b878 45%,#a8843f);box-shadow:1px 0 0 rgba(0,0,0,.35)}
+.pfa .pfa-record-label{color:#5a4a2c}
+.pfa .pfa-record-label span{font:700 44px/1 var(--pf-mono);letter-spacing:.02em;color:#7a5a22;text-shadow:0 1px 0 #fff;margin-top:6px}
+.pfa .pfa-record h4{font-size:26px;font-weight:700}
+.pfa .pfa-record [data-detail-text]{font-size:17px;color:#1f2e32}
+
+@media (min-width:701px){
+ /* Unselected plates sit unlit; the selected one is lit and pressed. */
+ .pfa .pfa-rail li::before{content:"";position:absolute;z-index:1;pointer-events:none;left:var(--plx);top:22.0714cqw;width:12.3929cqw;height:7cqw;background:rgba(6,8,10,.18);transition:opacity .3s ease-out}
+ .pfa .pfa-rail li[data-engaged=true]::before{opacity:0}
+ .pfa .r2-plates img:not([hidden]){filter:drop-shadow(0 -2px 0 rgba(5,7,9,.85)) drop-shadow(0 0 .9cqw rgba(255,200,120,.55))}
+ /* The carriage's pointer: a plumb line from the carriage body down onto the selected plate. */
+ .pfa .r2-car::after{content:"";position:absolute;left:calc(50% - 1.5px);top:calc(100% - 1.05cqw);width:3px;height:1.55cqw;background:linear-gradient(180deg,#e9d3a0,#c9a76a);box-shadow:0 0 6px rgba(255,205,130,.85)}
+ .pfa .r2-car::before{content:"";position:absolute;left:calc(50% - .32cqw);top:calc(100% + .32cqw);width:.64cqw;height:.64cqw;border-radius:50%;background:radial-gradient(circle,#fff3d6,#e2b866 55%,rgba(226,184,102,0) 72%)}
+ /* The selected stage's description reads as the lit window under its plate. */
+ .pfa .pfa-rail li[data-engaged=true] p{color:#fff;background:linear-gradient(180deg,rgba(201,167,106,.22),rgba(201,167,106,.05));box-shadow:inset 0 3px 0 #c9a76a;border-radius:1px}
+ .pfa .pfa-rail p{padding-bottom:10px}
+}
+@media (min-width:1360px){.pfa .pfa-rail h3{font-size:18px;letter-spacing:.1em}.pfa .pfa-num{font-size:14px}}
+@media (min-width:1181px){.pfa .pfa-rail li[data-engaged=true] h3{color:#000}.pfa .stage-btn[aria-pressed=true]{text-decoration-color:#8a6a2f;text-decoration-thickness:3px}}
+
+@media (max-width:700px){
+ .pfa .pfa-rail li:not([data-engaged=true]){filter:brightness(.82) saturate(.7)}
+ .pfa .pfa-rail li[data-engaged=true]::after{display:block;content:"";position:absolute;z-index:-1;inset:3px 4px 3px 3px;width:auto;height:auto;opacity:1;border-radius:1px;
+  background:linear-gradient(90deg,rgba(255,210,128,.58),rgba(255,214,140,.22) 45%,rgba(255,214,140,.06) 85%);box-shadow:inset 0 0 0 4px rgba(184,146,79,.95),inset 0 6px 8px rgba(70,48,12,.28)}
+ .pfa .pfa-rail h3{font-size:18px;letter-spacing:.1em}
+ .pfa .pfa-num{font-size:15px}
+ .pfa .r2-car-m{filter:drop-shadow(0 0 5px rgba(255,205,130,.55))}
+ .pfa .r2-car-m::after{content:"";position:absolute;left:72%;top:calc(50% - 2px);width:26%;height:4px;border-radius:2px;background:linear-gradient(180deg,#f0dcae,#b8924f);box-shadow:0 0 5px rgba(255,205,130,.8)}
+ .pfa .pfa-record-label span{font-size:36px}
+ .pfa .pfa-record h4{font-size:23px}
+}
+@media (prefers-reduced-motion:reduce){.pfa .pfa-rail li::before{transition:none}}
+/* Forced colours: no dimming, lamps, pointer or pocket; the system palette carries the state (3px Highlight border). */
+@media (forced-colors:active){
+ .pf-emblem.r3-seal::before,.pfa .pfa-rail li[data-engaged=true]::after,.pfa .r2-car-m::after,.pfa .pfa-record::after,.pfa .pfa-rail li::before{display:none}
+ .pfa .pfa-rail li:not([data-engaged=true]),.pfa .r2-car-m{filter:none}
+}
+/* ── CP-0185 composition (2026-11-05), merged from five measured audits (Home, Proof, About, Truth Files, Support)
+   at 500/1440/390/320. Labels on one scale: 13px labels, 14-15px controls, 15px copy. This stylesheet loads only on
+   Home, so the label sizes here do not reach other pages. ── */
+.kicker{font-size:13px;letter-spacing:.1em}
+.home-statement>.kicker{font-size:13px;letter-spacing:.1em}
+.home-maker-line{font-size:13px}
+.home-records-links>a>span:first-child{font-size:13px}
+.ledger-receipt-button{font-size:14px}
+:is(.home-opening,.home-contact) .button{font-size:15px}
+.pfa-caption{max-width:62ch}
+/* ── CP-0185 composition: Home. Content unchanged; existing rendered parts only. ── */
+/* Section heads on one step: the chain head matches its sibling h2s (44px desktop, 34px phones). */
+.ledger-chain .home-section-head h2{font-size:clamp(30px,3.1vw,44px);text-wrap:balance}
+@media (max-width:760px){.ledger-chain .home-section-head h2,.home-contact h2{font-size:34px}}
+/* Records: the two link plates span both grid rows, so the receipt control sits under its paragraph and no cell is empty. */
+@media (min-width:761px){.home-records{padding-top:48px}.home-records-links{grid-column:2;grid-row:1/span 2}}
+/* Studio-principle sheet: kicker over heading in one column, copy beside it, so there is no empty kicker column. */
+@media (min-width:701px){
+ .ledger-paper.ledger-doctrine{padding-block:72px}
+ .doctrine-layout{grid-template-columns:1.15fr 1fr;grid-template-rows:auto 1fr;gap:18px 70px}
+ .doctrine-layout>.kicker{grid-column:1;grid-row:1}
+ .doctrine-layout h2{grid-column:1;grid-row:2}
+ .doctrine-layout>div{grid-column:2;grid-row:1/span 2;max-width:56ch}
+}
+/* Stacked margins go: the lone link above the sheet and the hash note no longer add padding to a margin. */
+.ledger-chain{padding-top:64px;padding-bottom:0}
+@media (max-width:760px){.ledger-chain{padding-top:45px}}
+.home-records .home-hash-scope{margin-bottom:0}
+/* The orientation and contact bands are mounted on the brushed-stainless plate (the Support hero's recipe,
+   foundry-rooms.css:322-327), so Home no longer runs bare dark bands. Text stays on the rail; the plate bleeds 20px. */
+.home-orientation,.home-contact{position:relative;isolation:isolate;border-top:0;border-bottom:0}
+.home-orientation::after,.home-contact::after{content:"";position:absolute;z-index:-1;inset:0 -20px;pointer-events:none;border:0 solid;box-shadow:none;
+ border-image:url(/assets/round3/stainless-frame.webp) 56 112 104 56/28px 56px 52px 28px/0 24px 24px 0 stretch;
+ background:url(/assets/round3/stainless-field-1380.webp) -233px -131px/690px 690px repeat,#2b2f31;
+ background-image:image-set(url(/assets/round3/stainless-field-690.webp) 1x,url(/assets/round3/stainless-field-1380.webp) 2x)}
+.home-orientation,.home-contact{margin-top:24px;padding-block:48px}
+@media (max-width:1024px){.home-orientation,.home-contact{padding-inline:12px}.home-orientation::after,.home-contact::after{inset:0 -8px}}
+@media (max-width:760px){.home-orientation,.home-contact{padding-block:36px}}
+@media (max-width:700px){.home-orientation,.home-contact{padding-inline:20px}.home-orientation::after,.home-contact::after{inset:0;border-image-width:16px 32px 29.71px 16px;border-image-outset:0 13.71px 13.71px 0}}
+@media (max-width:360px){.home-orientation,.home-contact{padding-inline:16px}.home-orientation h2{font-size:30px}}
+@media (forced-colors:active){.home-orientation::after,.home-contact::after{display:none}.home-orientation,.home-contact{border:1px solid CanvasText}}

@@ -1121,3 +1121,22 @@ body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-ro
 :root .site-footer .footer-grid a{color:#b9c1c4;text-shadow:-1px -1px 0 rgba(0,0,0,.95),-.5px -.5px 1px rgba(0,0,0,.55),1px 1px 0 rgba(255,255,255,.22)}
 :root .site-footer .footer-grid a:is(:hover,:focus-visible){color:#e3e8ea;text-shadow:-1px -1px 0 rgba(0,0,0,.95),1px 1px 0 rgba(255,255,255,.3)}
 @media (forced-colors:active){:root .site-footer .footer-grid a,:root .site-footer .footer-grid a:is(:hover,:focus-visible){text-shadow:none}}
+/* ── CP-0185 (2026-11-05): footer links stamped into the panels as inlaid nameplate lettering, each in its own
+   milled recess: uppercase mono like the keys, an ivory inlay (about 10:1 on the recess), the cut lit from above. Real links;
+   focus keeps its gold ring and brightens the inlay as hover does. ── */
+:root .site-footer .footer-grid ul{display:grid;gap:8px}
+:root .site-footer .footer-grid li{margin:0}
+:root .site-footer .footer-grid nav a{display:block;padding:10px 16px 9px;font:700 14px/1.2 var(--pf-mono);letter-spacing:.12em;text-transform:uppercase;
+ color:#ddd3bf;background:rgba(0,0,0,.24);border-radius:2px;
+ box-shadow:inset 0 2px 3px rgba(0,0,0,.85),inset 0 -1px 0 rgba(255,255,255,.12),0 1px 0 rgba(255,255,255,.07);
+ text-shadow:0 -1px 0 rgba(0,0,0,.95),0 1px 0 rgba(255,255,255,.2)}
+:root .site-footer .footer-grid nav a:is(:hover,:focus-visible){color:#f6eedc;background:rgba(0,0,0,.34);text-shadow:0 -1px 0 rgba(0,0,0,.95),0 1px 0 rgba(255,255,255,.28)}
+@media (forced-colors:active){:root .site-footer .footer-grid nav a{box-shadow:none;background:none;text-shadow:none}}
+/* ── CP-0185 shared chrome (2026-11-05): the header tagline was 7px on phones and 9px on desktop (now 10px everywhere)s, the footer
+   copyright 11-12px, and the current key's station number 3.5:1 on its lit plate. ── */
+.brand-name small{font-size:10px}
+@media (max-width:900px){.brand-name small{font-size:10px}}
+@media (max-width:700px){.brand-name small{font-size:10px}}
+:root .site-footer .footer-bottom{font-size:13px}
+@media (max-width:700px){:root .site-footer .footer-bottom{font-size:13px}}
+:root .pf-route-chain a:is([aria-current=page],[aria-current=true]) .pf-chain-station{color:#3f2d12}

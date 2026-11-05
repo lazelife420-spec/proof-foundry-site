@@ -347,3 +347,146 @@ body.studio.pf-room-support .support-hero::after{inset:0 -20px;border:0 solid;bo
 .pf-room-truth-files .tf-grid{padding-top:10px}
 /* The register's 10 px numerals sit on the rendered paper (its darkest pixel and the even rows' tint): darkened from
    #67785e, #667452 and #657557 (3.6-3.8:1) to 5.0:1 or better. */
+/* ── CP-0185 composition: the rooms. Content unchanged; existing rendered parts only. One type scale across rooms:
+   13px labels (mono metadata, numerals, field labels), 14px values and controls, 15px record copy, 16px form fields.
+   Register rooms (Proof, Truth Files) share one heading step: section h2 42px (phones clamp(32px,8.4vw,38px)),
+   record title 31px (phones clamp(24px,6.2vw,28px)). ── */
+
+/* Proof */
+.pf-room-proof .proof-hero{grid-template-rows:auto 1fr auto}
+.pf-room-proof .receipt-card{grid-template-rows:auto 1fr}
+.pf-room-proof .receipt-fields :is(.matrix-evidence,.candidate-version){grid-column:2}
+.pf-room-proof .receipt-details summary{align-items:center}
+.pf-room-proof .receipts-note{font-size:15px;max-width:60ch}
+.pf-room-proof .receipt-card :is(p,li){font-size:15px}
+.pf-room-proof .receipt-card::before,.pf-room-proof .status-indicator,.pf-room-proof .platform-badge,.pf-room-proof .receipt-section-title,
+.pf-room-proof .receipt-fields dt,.pf-room-proof .receipt-details .receipt-fields dt{font-size:13px}
+.pf-room-proof .receipt-fields dd,.pf-room-proof .receipt-fields dd a,.pf-room-proof .receipt-details .receipt-fields dd,.pf-room-proof .receipt-details .receipt-fields dd a,
+.pf-room-proof .receipt-card-action a,.pf-room-proof .receipt-details summary,.pf-room-proof .verification-ledger-actions .button{font-size:14px}
+.pf-room-proof .verification-ledger p{font-size:15px;max-width:58ch}
+.pf-room-proof .verification-ledger-actions .button{text-align:center;justify-content:center}
+.pf-room-proof .receipts-title,.pf-room-proof .verification-ledger h2{font-size:42px}
+@media (max-width:700px){
+ .pf-room-proof .receipts-title,.pf-room-proof .verification-ledger h2{font-size:clamp(32px,8.4vw,38px)}
+ .pf-room-proof .receipt-card-head h3{font-size:clamp(24px,6.2vw,28px)}
+}
+@media (min-width:1051px){
+ .pf-room-proof section[aria-labelledby="receipts-title"]{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:70px;align-items:end}
+ .pf-room-proof .receipts-title{margin-bottom:35px}
+ .pf-room-proof .receipts-grid{grid-column:1/-1}
+ .pf-room-proof .receipt-card{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto 1fr auto;column-gap:70px}
+ .pf-room-proof .build-desc{grid-row:2/span 2;max-width:58ch}
+ .pf-room-proof .receipt-card-action{grid-column:2;grid-row:3;align-self:end;justify-self:end;width:min(100%,300px);margin-top:0}
+ .pf-room-proof .receipt-details-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto 1fr;column-gap:70px}
+ .pf-room-proof .receipt-details-grid>.receipt-section:first-child{grid-row:span 2}
+ .pf-room-proof .limits-list{columns:2;column-gap:70px}
+ .pf-room-proof .limits-list li{break-inside:avoid}
+ .pf-room-proof .verification-ledger{max-width:none;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:70px}
+ .pf-room-proof .verification-ledger>:not(.verification-ledger-actions){grid-column:1}
+ .pf-room-proof .verification-ledger-actions{grid-column:2;grid-row:1/span 3;align-self:end;flex-direction:column;align-items:stretch;margin-top:0}
+}
+/* About */
+.pf-room-about .about-card h3{max-width:22ch}
+.pf-room-about .about-card:nth-child(even){margin-top:0}
+.pf-room-about .about-card p{font-size:15px;line-height:1.75}
+.pf-room-about .about-nav-card p{font-size:15px;line-height:1.6}
+.pf-room-about .about-card::before{font:500 20px/1 var(--pf-mono);letter-spacing:.06em;color:#a9b4a8;text-shadow:-.6px -1px 0 rgba(255,244,214,.32),.6px 1px 0 rgba(0,0,0,.95),1.6px 2.6px 2px rgba(0,0,0,.62);margin-bottom:22px}
+.pf-room-about .about-nav-card:last-child{border-bottom:0;padding-bottom:0;margin-bottom:0}
+.pf-room-about :is(.about-principles,.about-nav-section) .section-heading h2{font:400 45px/1.1 var(--pf-serif);max-width:8ch}
+.pf-room-about .about-nav-section{position:relative;isolation:isolate;border-top:0}
+.pf-room-about .about-nav-section::after{content:"";position:absolute;z-index:-1;pointer-events:none;inset:0 -20px;border:0 solid;border-image:url(/assets/round3/oxide-frame.webp) 56 112 104 56/28px 56px 52px 28px/0 24px 24px 0 stretch;background:url(/assets/round3/oxide-field-1024.webp) 0 0/512px 512px repeat,#1d1f21;background-image:image-set(url(/assets/round3/oxide-field-512.webp) 1x,url(/assets/round3/oxide-field-1024.webp) 2x)}
+@media (min-width:1051px){.pf-room-about .about-intro-section{grid-template-columns:calc(37.5% - 40px) 1fr;gap:80px}}
+@media (min-width:701px) and (max-width:1050px){.pf-room-about .about-intro-section{grid-template-columns:calc((100% + 40px)/2.8 - 40px) 1fr;gap:40px}}
+@media (min-width:701px){
+ .pf-room-about .about-principles{padding-bottom:45px}
+ .pf-room-about :is(.about-principles,.about-nav-section) .section-heading{position:sticky;top:24px;align-self:start;margin-bottom:0}
+}
+@media (min-width:701px) and (max-width:1024px){.pf-room-about .about-nav-section{padding-inline:12px}.pf-room-about .about-nav-section::after{inset:0 -8px}}
+@media (max-width:700px){
+ .pf-room-about :is(.about-principles,.about-nav-section) .section-heading h2{font-size:36px;max-width:none}
+ .pf-room-about .about-card::before{margin-bottom:14px}
+ .pf-room-about .about-nav-section{padding:35px 20px}
+ .pf-room-about .about-nav-section::after{inset:0;border-image-width:16px 32px 29.71px 16px;border-image-outset:0 13.71px 13.71px 0}
+}
+@media (forced-colors:active){.pf-room-about .about-nav-section::after{display:none}.pf-room-about .about-nav-section{border:1px solid CanvasText}}
+/* Truth Files index */
+.pf-room-truth-files .tf-section:last-child h3 a{font:inherit;letter-spacing:inherit}
+.pf-room-truth-files .tf-card>p{font-size:15px;line-height:1.7;max-width:68ch}
+.pf-room-truth-files .tf-card-state,.pf-room-truth-files .tf-card-facts,.pf-room-truth-files .tf-card::before,.pf-room-truth-files .tf-axiom{font-size:13px}
+.pf-room-truth-files .tf-card-state{line-height:1.4}
+.pf-room-truth-files .tf-card-facts{line-height:1.6}
+.pf-room-truth-files .tf-open{font-size:14px}
+.pf-room-truth-files .tf-section>h2{font-size:42px}
+.pf-room-truth-files .tf-section:last-child{margin-top:0;padding-bottom:0}
+@media (min-width:1051px){
+ .pf-room-truth-files .tf-card{grid-template-columns:minmax(340px,.62fr) minmax(0,1.38fr)}
+ .pf-room-truth-files .tf-section:last-child{display:block}
+ .pf-room-truth-files .tf-section:last-child .support-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:35px}
+}
+@media (max-width:700px){
+ .pf-room-truth-files .tf-section>h2{font-size:clamp(32px,8.4vw,38px)}
+ .pf-room-truth-files .tf-card h2{font-size:clamp(24px,6.2vw,28px)}
+}
+@media (min-width:460px) and (max-width:700px){.pf-room-truth-files .tf-section:last-child .support-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 24px}}
+/* Support */
+.pf-room-support .support-task-links a{font-size:15px}
+.pf-room-support .support-products-grid .detail-card p{font-size:15px}
+.pf-room-support .support-products-grid .detail-card .note,.pf-room-support .pf-support-draft-heading p,.pf-room-support .pf-support-draft-actions .text-link{font-size:14px}
+.pf-room-support .pf-support-fields label,.pf-room-support .support-diagnostic-label,.pf-room-support #diagnostic-template{font-size:13px}
+.pf-room-support .pf-support-fields :is(input,select,textarea){font-size:16px}
+.pf-room-support .pf-support-fields input{text-overflow:ellipsis}
+.pf-room-support .pf-support-draft-heading{margin-bottom:24px}
+.pf-room-support .support-content-box>ul:last-child{margin-bottom:0}
+@media (max-width:700px){.pf-room-support .support-task-links a,.pf-room-support .support-template-wrapper .button{font-size:14px}}
+/* Checksums is a record: it lies flat on the archival sheet (no clamp; #help-safety stays the one hanging sheet). */
+.pf-room-support #checksums .support-content-box{border:0 solid;border-image:url(/assets/round3/sheet-edge.webp) 16 32 64 16/8px 16px 32px 8px/4px 8px 8px 4px stretch;background:url(/assets/round3/paper-field-1024.webp) -137px -211px/512px 512px repeat,#e9e6dd;background-image:image-set(url(/assets/round3/paper-field-512.webp) 1x,url(/assets/round3/paper-field-1024.webp) 2x);padding:32px 34px}
+.pf-room-support #checksums .support-content-box :is(p,li,strong,h3,a){color:#273c37}
+.pf-room-support #checksums .support-content-box code{background:#dce0d1;color:#294333}
+@media (max-width:700px){.pf-room-support #checksums .support-content-box{padding:25px 20px}}
+/* The worksheet is a handled surface: the hero's brushed-stainless service panel, bookending the page. */
+.pf-room-support .pf-support-draft{border:0 solid;border-image:url(/assets/round3/stainless-frame.webp) 56 112 104 56/28px 56px 52px 28px/0 24px 24px 0 stretch;background:url(/assets/round3/stainless-field-1380.webp) -97px -311px/690px 690px repeat,#2b2f31;background-image:image-set(url(/assets/round3/stainless-field-690.webp) 1x,url(/assets/round3/stainless-field-1380.webp) 2x);padding:36px 34px 32px 36px}
+@media (max-width:700px){.pf-room-support .pf-support-draft{border-image-width:16px 32px 29.71px 16px;border-image-outset:0 13.71px 13.71px 0;padding:26px 20px 24px}}
+/* Product help entries are titanium index plates (the stock of Home's records links and the Software directory). */
+.pf-room-support .support-products-grid{gap:16px}
+.pf-room-support .support-products-grid .detail-card{position:relative;padding:28px 30px;border:0 solid;border-image:url(/assets/round3/ti-frame-sm.webp) 48/24px/0 stretch;background:url(/assets/round3/ti-field-1280.webp) var(--px,0) var(--py,0)/640px 640px repeat,#323130;background-image:image-set(url(/assets/round3/ti-field-640.webp) 1x,url(/assets/round3/ti-field-1280.webp) 2x)}
+.pf-room-support .support-products-grid .detail-card:nth-child(7n+2){--px:-271px;--py:-149px}.pf-room-support .support-products-grid .detail-card:nth-child(7n+3){--px:-401px;--py:-53px}
+.pf-room-support .support-products-grid .detail-card:nth-child(7n+4){--px:-137px;--py:-311px}.pf-room-support .support-products-grid .detail-card:nth-child(7n+5){--px:-523px;--py:-227px}
+.pf-room-support .support-products-grid .detail-card:nth-child(7n+6){--px:-61px;--py:-457px}.pf-room-support .support-products-grid .detail-card:nth-child(7n){--px:-337px;--py:-389px}
+@media (max-width:700px){.pf-room-support .support-products-grid .detail-card{padding:24px 24px 26px}}
+@media (min-width:701px){
+ .pf-room-support .support-section{padding:45px 0}
+ .pf-room-support .support-section:not(#help-safety,#products)>.section-heading{margin-bottom:0}
+ .pf-room-support .support-section:not(#products,#report)>.section-heading{position:sticky;top:24px;align-self:start}
+ .pf-room-support #products{display:block}
+ .pf-room-support #products .section-heading{max-width:none;display:grid;grid-template-columns:.9fr 1.1fr;column-gap:80px;margin-bottom:30px}
+ .pf-room-support #products .section-heading>.kicker{grid-column:1/-1}
+ .pf-room-support #products .section-heading>p:last-child{grid-column:2;grid-row:2;align-self:end;margin:0}
+ .pf-room-support .support-products-grid{grid-template-columns:1fr 1fr;gap:20px}
+ .pf-room-support .support-products-grid .detail-card{display:block}
+ .pf-room-support .support-products-grid .detail-card h3{margin-bottom:12px}
+ .pf-room-support .support-products-grid .detail-card p+p{margin-top:10px}
+ .pf-room-support #help-safety .support-content-box{display:grid;grid-template-columns:1fr 1fr;column-gap:70px}
+ .pf-room-support #help-safety .support-content-box>:is(p:first-child,ul){grid-column:1/-1}
+ .pf-room-support #help-safety .support-list-styled{max-width:none}
+ .pf-room-support #help-safety .support-content-box>p{max-width:none}
+ .pf-room-support #help-safety .support-content-box>p:not(:first-child){margin:0}
+}
+@media (min-width:1051px){
+ .pf-room-support #report{grid-template-rows:auto auto auto auto auto 1fr;row-gap:40px}
+ .pf-room-support #report .support-content-box{display:contents}
+ .pf-room-support #report .section-heading{grid-column:1;grid-row:1}
+ .pf-room-support #report .support-warning-lead{grid-column:2;grid-row:1;align-self:end;margin:0}
+ .pf-room-support #report .pf-support-draft{grid-column:1/-1;margin:0}
+ .pf-room-support #report .support-content-box>.support-copy-row{grid-column:1;grid-row:3/7;margin:0}
+ .pf-room-support #report .support-content-box>.support-copy-row .support-diagnostic-label{margin-top:0}
+ .pf-room-support #report :is(.support-privacy-callout,.support-content-box>.note){grid-column:2;margin:0;align-self:start}
+ .pf-room-support #report .support-privacy-callout{grid-row:3}
+}
+@media (forced-colors:active){
+ .pf-room-support .support-products-grid .detail-card,.pf-room-support #checksums .support-content-box,.pf-room-support .pf-support-draft{border-image:none;border:1px solid CanvasText;background:Canvas}
+}
+/* Labels on the four rooms at 13px (11px before; the Truth Files hero kicker was 9px on phones). Scoped to these rooms,
+   so the product pages, which share the base rule, are unchanged. The Proof receipts' SHA-256 values join the tier. */
+body:is(.pf-room-about,.pf-room-proof,.pf-room-support,.pf-room-truth-files) :is(.kicker,.eyebrow,.ledger-label){font-size:13px;letter-spacing:.1em}
+.pf-room-truth-files .tf-hero-kicker{font-size:13px;letter-spacing:.1em}
+.pf-room-proof .sha256-value{font:13px/1.7 var(--pf-mono)}
