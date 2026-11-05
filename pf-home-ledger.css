@@ -940,3 +940,42 @@ body.pf-ledger-page{background-color:#1b1f21;
  .pf-rc-bed>.ledger-clamp{display:none}
  .pfa .pf-chain-toggle:disabled{border-image:none}
 }
+/* ── The proof chain as a working instrument (CP-0184, 2026-11-04). The mechanism already selected a stage, swapped in
+   the pressed plate's render and slid the carriage; it now reads as a control:
+   - the whole plate takes the press (pf-home.js), not only its lettering;
+   - the selected plate seats 2 px into the housing, its pressed render and its lettering together, with the narrow
+     gap it leaves above it; a plate under the pointer gives 1 px before it engages;
+   - the inspection record names the existing page that holds that stage's evidence.
+   The chain and its anchors never move; the carriage still travels on its own rail (.62 s, instant with motion off). ── */
+.pfa .r2-plates img:not([hidden]){transform:translateY(2px);filter:drop-shadow(0 -2px 0 rgba(5,7,9,.85))}
+.pfa-rail li[data-engaged=true] :is(h3,.pfa-num){transform:translateY(2px)}
+.pfa-rail li:not([data-engaged=true]):active :is(h3,.pfa-num){transform:translateY(1px)}
+.pfa-record-link{grid-column:2;margin:6px 0 0}
+.pfa-record .text-link,.pfa-fallback .text-link{color:#1d3a3f;font-size:14px;text-decoration:underline;text-underline-offset:3px}
+.pfa-record .text-link:focus-visible,.pfa-fallback .text-link:focus-visible{outline:3px solid #1d3a3f;outline-offset:3px}
+/* The whole rendered plate is the button's hit area (its ::before), from 701 px: the plates' left edges are those of
+   .r2-plates. From 701 to 1180 px the label sits below the machine, so the area is placed in the machine; from 1181 px
+   the label sits on the plate, so the area is placed relative to the label. */
+@media (min-width:701px){
+ .pfa-rail li:nth-child(1){--plx:11.5cqw}.pfa-rail li:nth-child(2){--plx:26.4286cqw}.pfa-rail li:nth-child(3){--plx:41.4286cqw}
+ .pfa-rail li:nth-child(4){--plx:56.3571cqw}.pfa-rail li:nth-child(5){--plx:71.2857cqw}
+ .pfa .pfa-rail .stage-btn::before{content:"";position:absolute;z-index:1;left:var(--plx);top:22.0714cqw;width:12.3929cqw;height:7cqw}
+}
+@media (min-width:1181px){.pfa .pfa-rail .stage-btn::before{left:calc(var(--plx) - var(--px) - 1.6cqw);top:calc(-3.4429cqw - 1px)}}
+/* Here the lettering stays put while a plate is pressed: a transformed h3 would become the containing block of the
+   button's hit area and move it from under the pointer mid-press. :not() and :active make this outrank the 1px press. */
+@media (min-width:701px) and (max-width:1180px){.pfa .pfa-rail h3,.pfa .pfa-rail li[data-engaged=true] h3,.pfa .pfa-rail li:not([data-engaged=true]):active h3{position:static;transform:none}}
+/* On phones the whole plate seats, its lettering with it (not 2 px more), and the whole plate is the button's own hit
+   area. The seated plate shows the dark gap it leaves above it and a champagne hairline, so the selected stop reads at a
+   glance beside the carriage finger and the champagne edge of its render. */
+@media (max-width:700px){
+ .pfa .pfa-rail li :is(h3,.pfa-num),.pfa .pfa-rail li[data-engaged=true] :is(h3,.pfa-num),.pfa .pfa-rail li:active :is(h3,.pfa-num){transform:none}
+ .pfa .pfa-rail .stage-btn::before{content:"";position:absolute;z-index:1;inset:0}
+ .pfa .pfa-rail li[data-engaged=true]{transform:translateY(2px);box-shadow:0 -2px 0 rgba(5,7,9,.9),0 0 0 1px rgba(201,167,106,.75)}
+ .pfa .pfa-rail li:not([data-engaged=true]):active{transform:translateY(1px)}
+ .pfa-record-link{grid-column:1}
+}
+@media(forced-colors:active){.pfa-record .text-link,.pfa-fallback .text-link{color:LinkText}.pfa-record .text-link:focus-visible,.pfa-fallback .text-link:focus-visible{outline-color:Highlight}}
+/* Forced colours draw no plates and list the stages as bordered items, so the plate-shaped hit areas go and each item
+   takes its own press (pf-home.js). */
+@media (forced-colors:active){.pfa .pfa-rail .stage-btn::before{content:none}}

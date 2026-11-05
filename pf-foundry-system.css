@@ -1114,3 +1114,10 @@ body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-ro
  .button:focus-visible{outline-color:Highlight;box-shadow:none}
 }
 @media print{.button{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+/* Footer links stamped into their panels (CP-0184, 2026-11-04). The die-stamped lettering read as printed text: the fill
+   was near-white and the cut's walls were hairlines. The fill is now the cut's machined floor, a full 1 px upper-left
+   wall in shadow and a lit lower-right lip, under the one studio light at the upper left. The links stay real text links;
+   hover brightens the floor, focus keeps its gold ring. */
+:root .site-footer .footer-grid a{color:#b9c1c4;text-shadow:-1px -1px 0 rgba(0,0,0,.95),-.5px -.5px 1px rgba(0,0,0,.55),1px 1px 0 rgba(255,255,255,.22)}
+:root .site-footer .footer-grid a:is(:hover,:focus-visible){color:#e3e8ea;text-shadow:-1px -1px 0 rgba(0,0,0,.95),1px 1px 0 rgba(255,255,255,.3)}
+@media (forced-colors:active){:root .site-footer .footer-grid a,:root .site-footer .footer-grid a:is(:hover,:focus-visible){text-shadow:none}}

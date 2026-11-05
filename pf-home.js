@@ -670,6 +670,15 @@ function initProofChain() {
     'Current availability, qualification and withdrawal belong to the published release record.',
     'Known gaps stay visible. The record is incomplete without its limitations.'
   ];
+  // Each stage's record points at the existing public page that holds that evidence.
+  const evidence = [
+    ['/truth-files/#tf-products-title', 'Recorded source for each product: the Truth Files'],
+    ['/proof/#receipts-title', 'How each release was built: the product receipts'],
+    ['/proof/#products-grid', 'Published SHA-256 for each download: the product receipts'],
+    ['/truth/#truth-products-title', 'Current release state of each product: the public truth'],
+    ['/proof-standard/#brief-title', 'What a record does and does not prove: the Proof Standard']
+  ];
+  const evidenceLink = machine.querySelector('[data-detail-link]');
   let active = 0, state = 'idle', timer = 0, inView = false;
   const policyOff = () => reduce.matches || forced.matches || document.documentElement.dataset.motion === 'off';
   function clear() { clearTimeout(timer); timer = 0; }
@@ -709,11 +718,18 @@ function initProofChain() {
     machine.querySelector('[data-detail-num]').textContent = String(active + 1).padStart(2, '0');
     machine.querySelector('[data-detail-title]').textContent = buttons[active].textContent;
     machine.querySelector('[data-detail-text]').textContent = descriptions[active];
+    if (evidenceLink) { evidenceLink.href = evidence[active][0]; evidenceLink.textContent = evidence[active][1]; }
     sync();
   }
   buttons.forEach((button, i) => {
     button.disabled = false;
     button.addEventListener('click', () => choose(i));
+    // The whole plate is the control, not only its lettering: a press anywhere on it selects the stage.
+    stages[i].addEventListener('click', event => {
+      if (event.target.closest('button, a')) return;
+      choose(i);
+      buttons[i].focus({ preventScroll: true });
+    });
     button.addEventListener('keydown', event => {
       const delta = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
       const index = event.key === 'Home' ? 0 : event.key === 'End' ? 4 : event.key in delta ? (i + delta[event.key] + 5) % 5 : -1;
@@ -723,6 +739,11 @@ function initProofChain() {
       buttons[index].focus({ preventScroll: true });
     });
   });
+  // An inspection pass holds while someone reaches into the record (pointer or keyboard), so the evidence link does not
+  // move or change target under them; the toggle then offers to resume, as after a manual press.
+  const record = machine.querySelector('#pfa-record');
+  const hold = () => { if (state === 'running') { clear(); state = 'paused'; sync(); } };
+  if (record) { record.addEventListener('pointerenter', hold); record.addEventListener('focusin', hold); }
   toggle.hidden = false;
   toggle.addEventListener('click', () => {
     if (policyOff()) return;
