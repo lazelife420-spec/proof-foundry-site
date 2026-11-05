@@ -276,8 +276,7 @@ On 2026-11-04 the owner asked for the other rooms under the same rule ("Yes, oth
   - The 10 px counters on the paper (Proof's receipts, Truth's register, the Truth Files register) are darkened from 3.6–3.8:1 to 5.0:1 or better.
   - Up to 700 px each record's return plate is 60 × 40 px; its frame is drawn at 10 px there, so the rendered screws stay in its corners.
 - **The connection joints** on each record are rendered too (see "The connection joints" below).
-- **Not converted.** This stays open, pending the owner:
-  - The site-wide `.button` keeps a 1 px inset highlight and a 1 px hover lift. It is shared with the product pages, and `scripts/continuity/check-components.cjs` pins it as identical on the 11 routes it checks (the products directory, the seven product pages, Proof Standard, one record and Founders).
+- **The site-wide button** is rendered too, on every page (see "The site-wide button" below).
 
 **Contrast on the rooms' surfaces**, against the single worst pixel of each surface (the brightest for light text, the darkest for dark):
 
@@ -325,3 +324,22 @@ The owner chose to render them ("Yes, render them"). Each Truth File record show
 | `assets/round3/joints/proofshot-1x.webp` | 1548 × 116 | 30,682 | `d4ae8b932f328ff6a0fd3d5dbc4e66087ee8ee6857b53e2bfeb764b3d6bcd3c3` | the same frames at 172 × 116 |
 | `assets/round3/joints/reality-gate-2x.webp` | 3096 × 232 | 35,060 | `1198d2adb6827b65f456c62c9a19b332a948dd8bdb67a421d3633e982334b159` | `joint_parts.py --joint reality-gate --frames 9 --scale 2`, 128 samples, two passes (`--pass obj` and `--pass shadow`, `sprite_compose.py`), nine frames scaled to 344 × 232 and laid left to right (`joint_strips.py`), quality 90 (`yuva420p`) |
 | `assets/round3/joints/reality-gate-1x.webp` | 1548 × 116 | 17,190 | `bede7b16ddeed10a0ee8a7d5951c656d809a39b5f8b7761fa67b8ae3395252c3` | the same frames at 172 × 116 |
+
+### The site-wide button (2026-11-04)
+
+The owner chose to render it ("Yes, render it"). Every `.button` on the site is now Home's rendered push button: the head plate's key without its ears (`head_parts.py --part button-*`; the rows under "Round 3 Home hardware", and `button-locked` under "Round 3 rendered ground, shadows and light"). That is a cap in a stainless bezel, 9-sliced 28 px with a 4 px outset, so the bezel lands on the button's box at any size. No new art was needed; the five existing renders cover every state:
+
+| State | Render | Lettering | Contrast on the cap face |
+|---|---|---|---|
+| `.button`, `.button-primary` | `button-primary` (the latched key's bead-blasted stainless cap) | #11191e, raised | 6.6:1 (hover #000, 7.8:1) |
+| `.button-secondary` | `button-rest` (the brushed dark cap) | #e6e2d8, stamped | 12.0:1 (hover #fff, 15.5:1) |
+| pressed (`:active`) | `button-primary-pressed` / `button-pressed` | as at rest | 6.6:1 / 11.9:1 |
+| unavailable (`aria-disabled`, `:disabled`, `.button-muted`) | `button-locked` (the cap held down, dull) | #9aa0a2 | 6.8:1 |
+
+- **What goes:** the CSS bevel (an inset highlight), the 1 px hover lift, and the flat and colour-mixed fills. Before, unavailable buttons looked like working ones (the product pages' 65 % opacity rule reached none of them); now they show the locked key. Hover only lifts the lettering's tone; nothing rendered moves.
+- **What stays:** each button keeps its 1 px border, transparent under the art, so it keeps the box it had and nothing around it moves. Home's buttons keep their own, identical rules.
+- **Lettering:** the raised and stamped lettering are the text treatments the owner kept on 2026-11-04. Page rules that coloured links on paper (Proof's receipts, the records' sections) no longer reach buttons.
+- **Focus:** Home's gold ring (3 px, 3 px out) with a dark band outside it, so it reads on the dark rooms, on paper and on the light product worlds.
+- **Forced colours:** system button colours, with no art and no lettering shadow, at rest, on hover and when pressed; unavailable buttons take GrayText.
+- **Print:** the keys print as on screen (`print-color-adjust`), so the lettering keeps its contrast on the printed cap.
+- **Spacing:** the bezel reaches 4 px past each box, so rows where buttons sat close keep at least 8 px between bezels. That applies to the records' machine-record pair (16 px above, a 14 px margin, about 17 px between boxes), Proof's ledger actions (22 px), the Founders and 404 rows on phones (22 px), and Support's privacy note under its copy button (14 px).

@@ -430,7 +430,7 @@
   display:grid;
   gap:10px
 }
-.download-disabled,.button[aria-disabled=true] {
+.download-disabled {
   opacity:.65
 }
 .ps-early-finding {

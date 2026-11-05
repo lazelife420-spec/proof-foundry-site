@@ -1079,3 +1079,38 @@ body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-ro
 :root .pf-route-chain a::before{content:none}
 /* The footer's motion switch stays legible when it is locked (reduced motion): 6.5:1 on the base, not half opacity. */
 .motion-toggle:disabled{opacity:1;color:#9aa0a2}
+/* ── Round 3 (owner: "Yes, render it", 2026-11-04): every .button is Home's rendered push button, the head plate's key
+   without its ears (head_parts.py --part button-*, MATERIAL_PROVENANCE.md "Round 3 Home hardware"): a brushed or bead-
+   blasted cap in a stainless bezel, 9-sliced 28 px with a 4 px outset, so the bezel lands on the button's box at any
+   size. The CSS bevel (an inset highlight), the hover lift and the flat fills go. The 1 px border stays (transparent, under
+   the art), so every button keeps the box it had and nothing around it moves.
+   - .button and .button-primary: the latched key's bead-blasted stainless cap, dark lettering;
+   - .button-secondary: the brushed dark cap, stamped light lettering;
+   - pressed (:active): the cap seated, its own render; hover only lifts the lettering's tone;
+   - unavailable (aria-disabled, :disabled, .button-muted): the locked render, the cap held at the pressed depth with a
+     dull finish, at full opacity;
+   - focus: Home's gold ring with a dark band outside it, so it reads on the dark rooms, on paper and on light product
+     worlds alike;
+   - the stamped and raised lettering are the owner's kept text treatments (2026-11-04);
+   - print keeps the keys as on screen (print-color-adjust), so the lettering keeps its contrast on the printed cap.
+   Each state's art is listed in the background at 0 x 0, so it is fetched before it is needed. ── */
+.button{min-height:48px;border:1px solid transparent;border-radius:3px;border-image:url(/assets/round3/button-primary.webp) 56 fill/28px/4px stretch;
+ background:url(/assets/round3/button-primary-pressed.webp) 0 0/0 0 no-repeat,#b0b0ab;box-shadow:none;color:#11191e;
+ text-shadow:.5px .8px 0 rgba(255,255,255,.3);transition:none}
+.button:hover{background:url(/assets/round3/button-primary-pressed.webp) 0 0/0 0 no-repeat,#b0b0ab;transform:none;color:#000}
+.button:active{border-image-source:url(/assets/round3/button-primary-pressed.webp)}
+.button-secondary,.button-secondary:hover{border-image-source:url(/assets/round3/button-rest.webp);background:url(/assets/round3/button-pressed.webp) 0 0/0 0 no-repeat,#1d2023;
+ color:#e6e2d8;text-shadow:-.6px -1px 0 rgba(0,0,0,.9),.6px 1px 0 rgba(255,255,255,.1)}
+.button-secondary:hover{color:#fff}
+.button-secondary:active{border-image-source:url(/assets/round3/button-pressed.webp)}
+.button:is([aria-disabled=true],:disabled,.button-muted),.button:is([aria-disabled=true],:disabled,.button-muted):is(:hover,:active){
+ border-image-source:url(/assets/round3/button-locked.webp);background:#1d2023;color:#9aa0a2;text-shadow:-.6px -1px 0 rgba(0,0,0,.9);opacity:1;cursor:default}
+.button:focus-visible{outline:3px solid #ffd58a;outline-offset:3px;box-shadow:0 0 0 9px #11191e}
+@media(forced-colors:active){
+ .button,.button:is(:hover,:active),.button-secondary,.button-secondary:is(:hover,:active),.button:is([aria-disabled=true],:disabled,.button-muted),.button:is([aria-disabled=true],:disabled,.button-muted):is(:hover,:active){
+  border-image:none;border:1px solid ButtonText;background:ButtonFace;color:ButtonText;text-shadow:none}
+ .button-secondary,.button-secondary:is(:hover,:active){background:Canvas;color:CanvasText;border-color:CanvasText}
+ .button:is([aria-disabled=true],:disabled,.button-muted),.button:is([aria-disabled=true],:disabled,.button-muted):is(:hover,:active){color:GrayText;border-color:GrayText}
+ .button:focus-visible{outline-color:Highlight;box-shadow:none}
+}
+@media print{.button{-webkit-print-color-adjust:exact;print-color-adjust:exact}}

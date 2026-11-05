@@ -243,7 +243,7 @@ html[data-travel=on]::view-transition-new(root) {
   .error-notice .hero-actions {
     align-items:start;
     flex-direction:column;
-    gap:13px
+    gap:22px
   }
   .form-row {
     display:block

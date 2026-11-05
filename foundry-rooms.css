@@ -119,7 +119,7 @@
 .pf-room-support .support-template-label{display:block;font:11px var(--pf-mono);margin-bottom:10px;color:#bdc6be}
 .pf-room-support #diagnostic-template{min-height:280px;font:12px/1.8 var(--pf-mono);margin-bottom:20px;background:#192126}
 .pf-room-support .support-copy-row{margin-top:20px}
-.pf-room-support .support-privacy-callout{border-left:2px solid #baa27c;padding:0 0 0 20px;margin-bottom:25px}
+.pf-room-support .support-privacy-callout{border-left:2px solid #baa27c;padding:0 0 0 20px;margin-bottom:25px;margin-top:14px}
 .pf-room-support .support-list-styled,.pf-room-support .support-list-muted,.pf-room-support .support-list-ordered{padding-left:20px}
 .pf-room-support .support-list-ordered li{padding:4px 0}
 
@@ -197,15 +197,13 @@
 .pf-room-proof .receipt-details summary span{font-size:18px}
 .pf-room-proof .receipt-details-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:30px;padding-top:25px}
 .pf-room-proof .receipt-card :is(p,li){font-size:13px;color:#425c51;overflow-wrap:anywhere}
-.pf-room-proof .receipt-card a{color:#2d5044}
-.pf-room-proof .receipt-card .button{color:var(--pf-action-ink)}
-.pf-room-proof .receipt-card .button-secondary{color:var(--text);border-color:#83978a}
+.pf-room-proof .receipt-card a:not(.button){color:#2d5044}
 .pf-room-proof .receipt-card :is(code,pre,.code-block){background:#dce0d1;color:#294333;border-color:#83968b70}
 .pf-room-proof .sha256-copy{color:#294333;border-color:#83968b}
 .pf-room-proof .verification-ledger{margin-top:60px;border-top:1px solid var(--line);padding:40px 0 0;max-width:85ch}
 .pf-room-proof .verification-ledger h2{font:400 34px/1.2 var(--pf-serif);margin-bottom:25px}
 .pf-room-proof .verification-ledger p{font-size:14px;color:var(--muted)}
-.pf-room-proof .verification-ledger-actions{display:flex;flex-wrap:wrap;gap:15px;margin-top:25px}
+.pf-room-proof .verification-ledger-actions{display:flex;flex-wrap:wrap;gap:22px;margin-top:25px}
 
 .pf-room-truth .support-hero{display:grid;grid-template-columns:1fr 1fr;gap:25px 80px}
 .pf-room-truth .support-hero>.kicker{grid-column:1/-1}
@@ -266,7 +264,7 @@
   .pf-room-about .support-hero{display:block;min-height:0;padding:45px 0 40px}.pf-room-about .support-hero h1{font-size:clamp(43px,12vw,66px);max-width:11ch}.pf-room-about .support-intro{font-size:29px;margin-top:32px;max-width:17ch}
   .pf-room-about .about-intro-section{display:block;padding:30px 22px;margin:25px 0 35px}.pf-room-about .about-intro-box h2{font-size:29px;max-width:18ch;margin-bottom:22px}.pf-room-about .about-intro-box p{font-size:17px}
   .pf-room-about .about-principles,.pf-room-about .about-nav-section{display:block;padding:35px 0}.pf-room-about .about-principles .section-heading h2{font-size:36px;max-width:none}.pf-room-about .about-values-grid{grid-template-columns:1fr;gap:30px}.pf-room-about .about-card:nth-child(even){margin-top:0}.pf-room-about .about-card::before{margin-bottom:16px}.pf-room-about .about-card h3{max-width:22ch;font-size:24px}.pf-room-about .about-nav-section{margin-top:0}.pf-room-about .about-nav-card{display:block}.pf-room-about .about-nav-card p{margin-top:15px}
-  .pf-room-founders .founders-hero{display:block;padding:40px 0 50px}.pf-room-founders .hero-copy h1{font-size:clamp(39px,10.8vw,58px)}.pf-room-founders .hero-lede{font-size:15px}.pf-room-founders .hero-actions{gap:14px;align-items:stretch;flex-direction:column}.pf-room-founders .hero-actions .button{font-size:12px;padding-inline:12px}.pf-room-founders .founders-receipt{transform:none;margin:45px 8px 0 0;padding:28px 22px;box-shadow:8px 9px 0 #555d5330,0 20px 35px #0003}.pf-room-founders .receipt-head{margin-bottom:35px}.pf-room-founders .receipt-seal{width:58px}.pf-room-founders .founders-boundary{display:block;padding:35px 0 45px}.pf-room-founders .founders-boundary h2{font-size:30px;max-width:17ch;margin-bottom:25px}.pf-room-founders .founders-boundary p{font-size:15px}.pf-room-founders .founders-ledger .section-head{display:block;margin-bottom:30px}.pf-room-founders .founders-ledger h2{font-size:33px;margin-bottom:20px}.pf-room-founders .ledger-table{min-width:580px}.pf-room-founders .ledger-wrap{padding-bottom:10px}.pf-room-founders .ledger-table th{font-size:10px}.pf-room-founders .ledger-table td{font-size:12px}
+  .pf-room-founders .founders-hero{display:block;padding:40px 0 50px}.pf-room-founders .hero-copy h1{font-size:clamp(39px,10.8vw,58px)}.pf-room-founders .hero-lede{font-size:15px}.pf-room-founders .hero-actions{gap:22px;align-items:stretch;flex-direction:column}.pf-room-founders .hero-actions .button{font-size:12px;padding-inline:12px}.pf-room-founders .founders-receipt{transform:none;margin:45px 8px 0 0;padding:28px 22px;box-shadow:8px 9px 0 #555d5330,0 20px 35px #0003}.pf-room-founders .receipt-head{margin-bottom:35px}.pf-room-founders .receipt-seal{width:58px}.pf-room-founders .founders-boundary{display:block;padding:35px 0 45px}.pf-room-founders .founders-boundary h2{font-size:30px;max-width:17ch;margin-bottom:25px}.pf-room-founders .founders-boundary p{font-size:15px}.pf-room-founders .founders-ledger .section-head{display:block;margin-bottom:30px}.pf-room-founders .founders-ledger h2{font-size:33px;margin-bottom:20px}.pf-room-founders .ledger-table{min-width:580px}.pf-room-founders .ledger-wrap{padding-bottom:10px}.pf-room-founders .ledger-table th{font-size:10px}.pf-room-founders .ledger-table td{font-size:12px}
   .pf-room-roadmap .roadmap-studio{padding-top:40px}.pf-room-roadmap .roadmap-studio>h1{font-size:58px;margin-top:22px}.pf-room-roadmap .roadmap-intro{margin:27px 0 40px;font-size:17px}.pf-room-roadmap .roadmap-studio>.kicker:not(:first-child){margin-top:30px}.pf-room-roadmap .roadmap-list{margin-left:5px;padding-left:23px}.pf-room-roadmap .roadmap-list article{display:block;padding:20px 0 35px}.pf-room-roadmap .roadmap-list article::before{left:-28px;top:27px}.pf-room-roadmap .roadmap-list h2{font-size:28px;margin-top:11px;margin-bottom:20px}.pf-room-roadmap .roadmap-list article>p{font-size:14px}.pf-room-roadmap .roadmap-directions-details,.pf-room-roadmap .roadmap-studio>.note{margin-left:0}.pf-room-roadmap .roadmap-directions-details summary{font-size:18px}.pf-room-roadmap .evidence-content h2{font-size:26px}
   .pf-room-support .support-hero{display:block;padding:40px 0 35px}.pf-room-support .support-hero h1{font-size:68px;margin-bottom:25px}.pf-room-support .support-hero .support-intro{font-size:18px;max-width:32ch}.pf-room-support .support-task-links{gap:6px 23px;padding-top:20px;margin-top:25px}.pf-room-support .support-task-links a{min-height:44px;font-size:12px}.pf-room-support .support-section,.pf-room-support #products{display:block;padding:35px 0}.pf-room-support .section-heading{margin-bottom:25px}.pf-room-support .section-heading h2,.pf-room-support #help-safety .section-heading h2{font-size:31px;max-width:20ch}.pf-room-support #help-safety .support-content-box{padding:25px 20px}.pf-room-support #help-safety .support-list-styled{display:block;margin-bottom:25px}.pf-room-support #help-safety .support-list-styled li{padding-top:20px;margin-top:25px}.pf-room-support #help-safety .support-list-styled strong{font-size:19px}.pf-room-support .support-products-grid .detail-card{display:block;padding:23px 0}.pf-room-support .support-products-grid .detail-card h3{font-size:25px;margin-bottom:15px}.pf-room-support .support-products-grid .detail-card p+p{margin-top:12px}.pf-room-support .support-content-box :is(p,li){font-size:14px}.pf-room-support #diagnostic-template{font-size:11px;min-height:290px}.pf-room-support .support-template-wrapper .button{width:100%;font-size:12px}.pf-room-support .pf-support-fields{display:block}.pf-room-support .pf-support-fields label{margin-top:22px!important}.pf-room-support .pf-support-draft-actions{display:block}.pf-room-support .pf-support-draft-actions .button{margin-top:20px;width:100%}
   .pf-room-error .error-station{display:block;min-height:0;padding:35px 0 55px}.pf-room-error .route-break{color:#91a297;text-shadow:0 -1px #dae0d64d,0 3px 0 #030b0e;height:135px;font-size:130px;margin-bottom:35px;max-width:260px}.pf-room-error .error-notice{padding:0 0 0 22px}.pf-room-error .error-notice h1{font-size:39px;max-width:12ch}.pf-room-error .error-notice p{font-size:15px}.pf-room-error .error-notice .hero-actions{margin-top:25px}
@@ -280,7 +278,6 @@
   .pf-room-about .about-intro-section,.pf-room-support #help-safety .support-content-box,.pf-room-founders .founders-receipt,.pf-room-standard .standard-doctrine-box,.pf-room-proof .receipt-card,.pf-room-truth .truth-public-register .support-grid,.pf-room-truth-files .tf-card{background:Canvas;color:CanvasText;box-shadow:none;border:1px solid CanvasText}
   :is(.pf-room-founders,.pf-room-standard,.pf-room-proof,.pf-room-truth,.pf-room-truth-files) main :is(p,li,dt,dd,h2,h3,h4,code,a,span){color:CanvasText}
   .pf-room-error .route-break{color:#91a297;text-shadow:0 -1px #dae0d64d,0 3px 0 #030b0e;color:CanvasText}
-  .pf-room-proof .receipt-card .button{background:ButtonFace;color:ButtonText;border-color:ButtonText}
   :is(.pf-room-about,.pf-room-support,.pf-room-roadmap) main :is(p,li,a),.pf-room-about .about-intro-box h2,.pf-room-about .about-intro-box p,.pf-room-support #help-safety .support-content-box :is(p,li,strong,a){color:CanvasText}
   .pf-room-roadmap .roadmap-list article::before{background:CanvasText;border-color:CanvasText;box-shadow:none}
 }
@@ -343,11 +340,7 @@ body.studio.pf-room-support .support-hero::after{inset:0 -20px;border:0 solid;bo
  .pf-room-error .route-break{text-shadow:none}
  .pf-room-roadmap .roadmap-unavailable article::before{background:CanvasText}
 }
-/* Focus. The global ring is the control's own text colour 5 px outside it, so a light button on paper or a dark
-   button on the room ground had a ring that matched the surface around it (about 1.1:1). These rings take a colour
-   that contrasts with that surface instead. */
-.pf-room-proof .receipt-card .button-primary:focus-visible{outline-color:#1b2b27}
-.pf-room-error .button-primary:focus-visible{outline-color:#e7e9e7}
+/* Focus. The buttons carry their own two-tone ring (pf-foundry-system.css, the rendered button). */
 /* A register row spans the whole sheet, so its ring goes inside the row, on the paper, not off the sheet's edge. */
 .pf-room-truth-files .tf-card:focus-visible{outline-offset:-6px}
 /* The clamp bar covers the register's top 9 px; the first row starts below it, so its ring and its numeral stay clear. */

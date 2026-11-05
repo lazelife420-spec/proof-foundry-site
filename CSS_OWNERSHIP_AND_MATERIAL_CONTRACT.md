@@ -23,7 +23,7 @@ Every route sits inside one gunmetal foundry frame: the same header, footer, nav
 | `foundry-world.css` | every route (fourth) | inner-route world backdrop |
 | `pf-site-ledger.css`, `studio.css` | none | stripped by the builder (`scripts/foundry-presentation.ps1`); kept in the tree, not loaded |
 | `foundry-rooms.css` | every route except Home, the products directory and the product pages (last) | the rooms' page classes, their rendered sheets (paper, sheet edge, clamp bar), the Proof Standard machine, the Support panel and the rooms' focus colours |
-| `pf-foundry-system.css` | **every route, second** (after `styles.css`) | the shared owner: fonts, header/footer/nav, buttons, focus, skip link, the rooms' ground, motion, forced-colors, responsive frames |
+| `pf-foundry-system.css` | **every route, second** (after `styles.css`) | the shared owner: fonts, header/footer/nav, buttons (the rendered push button on every route: `assets/round3/button-*.webp`, `MATERIAL_PROVENANCE.md` "The site-wide button"), focus, skip link, the rooms' ground, motion, forced-colors, responsive frames |
 
 **Builder-enforced cascade order** (`scripts/foundry-presentation.ps1`, `Complete-FoundryPresentation`, checked 2026-11-04): `styles.css` → `pf-foundry-system.css` → `foundry-connections.css` → `foundry-world.css` → the route's own sheets → `foundry-rooms.css` (rooms only). A later sheet wins a tie, so a page sheet that restates a shared-owner property overrides it on that route; the frame stays identical only because page sheets do not restate the shared owner's selectors.
 

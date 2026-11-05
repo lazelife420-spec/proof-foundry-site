@@ -478,7 +478,7 @@
 .tf-page .tf-section:nth-of-type(even){background:#f6f4eb}
 .tf-page .tf-section:first-of-type{border-top:4px solid #acaaa0}
 .tf-page .tf-section h2{color:#283630}
-.tf-page .tf-section a{color:#2a4e50;text-decoration-color:#67817b}
+.tf-page .tf-section a:not(.button){color:#2a4e50;text-decoration-color:#67817b}
 .tf-page .tf-section code{white-space:normal;overflow-wrap:anywhere}
 .tf-page .record-return{right:36px;top:52px;width:155px}
 .tf-page .record-return .record-joint{background:linear-gradient(#354443,#111b1d);border:1px solid #657472;border-radius:0 0 16px 16px;box-shadow:inset 0 1px #cbd0b844,0 8px 9px #0005}
@@ -536,3 +536,6 @@
 .tf-page .joint-render--proofshot{background-image:url(/assets/round3/joints/proofshot-2x.webp);background-image:image-set(url(/assets/round3/joints/proofshot-1x.webp) 1x,url(/assets/round3/joints/proofshot-2x.webp) 2x)}
 .tf-page .joint-render--reality-gate{background-image:url(/assets/round3/joints/reality-gate-2x.webp);background-image:image-set(url(/assets/round3/joints/reality-gate-1x.webp) 1x,url(/assets/round3/joints/reality-gate-2x.webp) 2x)}
 @media(forced-colors:active){.tf-page .joint-render{display:none}.tf-page .joint-render+.joint-svg{visibility:visible}}
+/* The machine record's two buttons are rendered keys whose bezels reach 4 px past their boxes; they sat 3 px apart
+   (inline, separated by a space) and touched when they wrapped. They keep at least 8 px of plate between bezels. */
+.tf-page .tf-machine .button{margin:16px 14px 0 0}
