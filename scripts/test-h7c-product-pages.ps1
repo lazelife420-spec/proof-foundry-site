@@ -139,7 +139,7 @@ Assert-Condition ($catalogHtml -match 'class="pf-directory-grid" id="directory-r
 foreach ($slug in @('cache-vault', 'lights-out', 'cleanroom', 'ghostlayer', 'forgecast', 'hardline-zero', 'crosspoint', 'reality-gate', 'proof-foundry-app')) {
   $entry = [regex]::Match($catalogHtml, '(?s)<article\b[^>]*data-directory-entry="' + [regex]::Escape($slug) + '"[^>]*>.*?</article>').Value
   # Owner decision (2026-11-05): an internal system with no public page declares that instead of a link.
-  $path = ($entry -match '<a class="button button-secondary" href="[^"]+">') -or ($slug -in @('hardline-zero', 'crosspoint', 'proof-foundry-app') -and $entry -match 'class="directory-no-route">' -and $entry -notmatch '<a\b')
+  $path = ($entry -match '<a class="button button-secondary" href="[^"]+">') -or ($slug -in @('hardline-zero', 'crosspoint', 'proof-foundry-app') -and ($entry -match 'class="directory-availability directory-availability--none">No public installer<' -or $catalogHtml -match 'data-directory-group-note="Foundry systems">None of these has a public installer\.<') -and $entry -notmatch '<a\b')
   Assert-Condition ($entry -match '<h3>[^<]+</h3>' -and $entry -match 'class="directory-purpose">[^<]+' -and $entry -match 'class="directory-state">[^<]+' -and $path) "$slug - directory entry has identity, purpose, availability and an exploration path (or declares none)"
 }
 # Owner decision (2026-11-05): the review-inventory history section is withheld; ProofShot's product history stays

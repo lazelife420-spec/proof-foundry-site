@@ -15,14 +15,15 @@ function Assert-DirectoryContract([string]$Root, [string]$PublicDir, [scriptbloc
     $card = [regex]::Match($html, '(?s)<article\b[^>]*data-directory-entry="' + [regex]::Escape($entry.id) + '"[^>]*>.*?</article>').Value
     $decoded = [Net.WebUtility]::HtmlDecode($card)
     & $Assert "$($entry.id): directory purpose and group come from editorial presentation" ($decoded.Contains([string]$entry.shortDescription) -and $decoded.Contains('data-directory-group="' + $entry.group + '"'))
-    & $Assert "$($entry.id): artwork is authentic, contextualized and named, or honestly absent" (($entry.artwork -and $card.Contains('src="' + $entry.artwork + '"') -and (Test-Path (Join-Path $PublicDir $entry.artwork.TrimStart('/'))) -and $card -match 'alt="[^"]+"' -and $card -notmatch '<figcaption>' -and ([regex]::Matches($html, '<p class="directory-art-note">Card images are existing captures or artwork\. Version context is retained in the product record\.</p>')).Count -eq 1) -or (-not $entry.artwork -and $card -notmatch '<img\b' -and $card -match 'directory-no-art" aria-hidden="true"'))
+    & $Assert "$($entry.id): artwork is authentic, contextualized and named, or honestly absent" (($entry.artwork -and $card.Contains('src="' + $entry.artwork + '"') -and (Test-Path (Join-Path $PublicDir $entry.artwork.TrimStart('/'))) -and $card -match 'alt="[^"]+"' -and $card -notmatch '<figcaption>' -and ([regex]::Matches($html, '<p class="directory-art-note">Card images are existing captures or artwork\. Version context is retained in the product record\.</p>')).Count -eq 1) -or (-not $entry.artwork -and $card -notmatch '<img\b' -and $card -match 'directory-no-art" aria-hidden="true"' -and ([regex]::Matches($html, '<p class="directory-emblem-note">Each Foundry system\u2019s emblem is a drawing of what it does, not a screenshot\.</p>')).Count -eq 1))
     $targetOK = $false
     if ($entry.destination) {
       $route, $fragment = $entry.destination -split '#', 2
       $target = Join-Path $PublicDir ($route.TrimStart('/') + 'index.html')
       $targetOK = $card.Contains('href="' + $entry.destination + '"') -and (Test-Path $target)
       if ($targetOK -and $fragment) { $targetOK = (Get-Content $target -Raw).Contains('id="' + $fragment + '"') }
-    } else { $targetOK = $card -match 'Product page not yet available\.' -and $card -notmatch '<a\b' }
+    } else { $targetOK = $card -notmatch '<a\b' -and $card -notmatch 'not yet available' -and ($card -match 'class="directory-availability directory-availability--none">No public installer<' -or
+      $html -match ('data-directory-group-note="' + [regex]::Escape($entry.group) + '">None of these has a public installer\.<')) }
     & $Assert "$($entry.id): directory destination resolves to an actual local page or fragment, or declares no route" $targetOK
     & $Assert "$($entry.id): entry is visible without JavaScript and never offers an installer directly" ($card -and $card -notmatch '<article[^>]*\shidden\b|<a[^>]*href="https?://|>\s*Download\b')
     $product = @($manifest.products | Where-Object id -eq $entry.id)[0]

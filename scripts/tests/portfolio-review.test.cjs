@@ -142,7 +142,10 @@ test('explicit absent artwork and destination render without broken images or a 
  const input=copyDirectory();input.entries=[{...input.entries[0],artwork:null,destination:null}];
  const output=renderDirectoryFixture(input);
  assert.equal(output.count,1);assert.doesNotMatch(output.html,/<img\b|<a\b/);
- assert.match(output.html,/Product page not yet available/);
+ assert.doesNotMatch(output.html,/not yet available/);
+ // A card without a page is still a useful summary: name, availability, purpose and release status.
+ assert.match(output.html,/<h3>[^<]+<\/h3><p class="directory-availability directory-availability--(public|none)">[^<]+<\/p><p class="directory-purpose">[^<]+</);
+ assert.match(output.html,/class="directory-state">[^<]+</);
 });
 test('editorial text is escaped while versions come only from release authority',()=>{
  const input=copyDirectory();input.entries=[input.entries[0]];

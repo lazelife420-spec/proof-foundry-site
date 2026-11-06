@@ -613,7 +613,6 @@
  text-shadow:0 -1px 0 rgba(0,0,0,.9),0 1px 0 rgba(255,255,255,.14)}
 .directory-entry[data-directory-group="Foundry systems"] .directory-purpose{min-height:0;font-size:14px;line-height:1.6}
 .directory-entry[data-directory-group="Foundry systems"] .directory-foot{padding:10px 20px 20px}
-.directory-entry[data-directory-group="Foundry systems"] .directory-no-route{margin:0;font:12px/1.6 var(--pf-mono);color:#b9c6bd}
 .pf-directory .directory-history-link{margin:10px 0 0;font-size:14px}
 @media(max-width:1100px){
  .pf-directory-grid>.directory-entry,.pf-directory-grid>.directory-entry[data-directory-group="Foundry systems"]{grid-column:span 6}
@@ -648,9 +647,8 @@
 /* The release line reads first; the candidate note is quieter. */
 .directory-state{font-size:12px;color:#d3ddd5}
 .directory-state-note{font-size:13px;color:#aebbb3}
-/* Foundry systems: content sits at the top of the nameplate card; "no page" reads below the status. */
+/* Foundry systems: content sits at the top of the nameplate card. */
 .directory-entry[data-directory-group="Foundry systems"] .directory-foot{margin-top:0;padding-bottom:24px}
-.directory-entry[data-directory-group="Foundry systems"] .directory-no-route{font-size:11px;color:#aab8af}
 .directory-entry[data-directory-group="Foundry systems"] h3{text-transform:none;letter-spacing:.04em;font-size:16px;border:1px solid;border-color:#07090a #5a666d #5a666d #07090a}
 /* The image note only accompanies products that are shown. */
 .pf-directory:not(:has(.directory-entry[data-directory-group="Everyday software"]:not([hidden]))) .directory-art-note{display:none}
@@ -668,5 +666,256 @@
  .pf-directory-grid>.directory-entry .directory-purpose{min-height:0}
  .pf-directory-grid>.directory-entry .directory-foot .button{min-height:42px;padding-block:10px}
 }
+/* Showing more cards (a category back to All) must not scroll the finder away: no scroll anchoring on this page. Nor
+   does typing: the site-wide scroll-padding-top (for a header that is no longer sticky) made the first keystroke
+   scroll the search field down, so this page uses none. */
+body.pf-directory-page{overflow-anchor:none}
+html:has(body.pf-directory-page){scroll-padding-top:0}
+/* The narrowest phones: a product name is a little smaller up to 340px (and again up to 315px), so a long one-word
+   name fits whole, also with enlarged text spacing; if it still cannot fit, it wraps rather than running under the
+   capture. */
+@media(max-width:360px){.pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"]) h3{overflow-wrap:break-word}}
+@media(max-width:340px){.pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"]) h3{font-size:21px}}
+@media(max-width:315px){.pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"]) h3{font-size:19px}}
 /* The hero's decorative rule crossed the intro paragraph on the directory page (pre-existing); it is dropped here. */
 .pf-directory-page .h9-software-hero::before{display:none}
+/* Products final pass (2026-11-05): each card says whether it has a public download; the group filter is a row of
+   category chips (native radio buttons); the count shows only while a filter is active, in a place that never moves
+   the directory, and its live region stays in the accessibility tree when empty. */
+.directory-availability{display:inline-flex;align-items:center;gap:8px;margin:0 0 12px;padding:4px 10px 4px 9px;font:600 12px/1.3 var(--pf-mono);letter-spacing:.04em;border:1px solid}
+.directory-availability::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:currentColor}
+.directory-availability--public{color:#bfdbad;border-color:#6f8f62;background:rgba(36,58,33,.45)}
+.directory-availability--none{color:#d6cbad;border-color:#80775f;background:rgba(0,0,0,.22)}
+.directory-entry[data-directory-group="Foundry systems"] .directory-availability{margin-bottom:10px}
+.directory-chips{display:flex;flex-wrap:wrap;gap:8px;align-self:end}
+.directory-finder .directory-chip{position:relative;display:inline-flex;align-items:center;min-height:42px;padding:9px 14px;font:600 12px/1.2 var(--pf-mono);letter-spacing:.05em;color:#d5dfd2;background:#0d191f;border:1px solid #60766c;cursor:pointer}
+/* The radio covers the chip's border box (half a pixel more, so fractional chip edges are covered after pixel snapping),
+   and only the radio takes presses (the label ignores them), so no press reaches the label (whose activation would
+   scroll the page); the global input min-height (44px), max-width (100%) and rounded corners do not change its size or shape. Hover still styles
+   the chip, as the radio is inside it. */
+.directory-finder .directory-chip{pointer-events:none}
+.directory-finder .directory-chip input{pointer-events:auto}
+.directory-finder .directory-chip input{position:absolute;inset:-1.5px;display:block;width:auto;height:auto;min-height:0;max-width:none;margin:0;padding:0;opacity:0;cursor:pointer;appearance:none;background:none;border:0;border-radius:0}
+.directory-finder .directory-chip:hover{border-color:#a5b19d}
+.directory-finder .directory-chip:has(input:checked){color:#13201b;background:#d7c39b;border-color:#d7c39b}
+.directory-finder .directory-chip:has(input:focus-visible){outline:3px solid #ffd58a;outline-offset:2px}
+/* 701-1023px: search and Clear on the first line, the chips below with the count at their right (in Clear's column, so
+   it never widens anything). 1024px and up: one line (the search field is then about 310-400px wide up to 1100px, and
+   wider above), and the count sits above Clear, level with the search label, in a reserved row, so a filter never
+   moves the directory. */
+@media(min-width:701px){
+ .directory-finder{grid-template-columns:minmax(0,1fr) auto;row-gap:14px}
+ .directory-finder>label:first-child{grid-column:1;grid-row:1}
+ .directory-finder button[type=reset]{grid-column:2;grid-row:1;align-self:end}
+ .directory-chips{grid-column:1;grid-row:2}
+ .directory-finder [data-directory-count]{grid-column:2;grid-row:2;align-self:center;justify-self:end}
+}
+@media(min-width:1024px){
+ .directory-finder{grid-template-columns:minmax(0,1fr) auto auto;grid-template-rows:minmax(18px,auto) auto;row-gap:4px}
+ .directory-finder>label:first-child{grid-row:1/3}
+ .directory-finder [data-directory-count]{grid-column:2/4;grid-row:1;align-self:end}
+ .directory-chips{grid-column:2;grid-row:2;flex-wrap:nowrap}
+ .directory-finder button[type=reset]{grid-column:3;grid-row:2}
+}
+@media(max-width:700px){
+ .directory-finder{grid-template-columns:minmax(0,1fr) auto;align-items:center}
+ .directory-finder>label:first-child,.directory-chips{grid-column:1/-1}
+ .directory-chips{gap:6px}.directory-finder .directory-chip{min-height:40px;padding:8px 11px;font-size:11.5px}
+ .directory-finder [data-directory-count]{grid-column:1;grid-row:3}
+ .directory-finder button[type=reset]{grid-column:2;grid-row:3;justify-self:end}
+ .directory-availability{font-size:11.5px;margin-bottom:8px}
+ /* Readable typed text, and no iOS zoom-on-focus (it applies to inputs under 16px). */
+ .directory-finder input[type=search]{font-size:16px}
+}
+/* The narrowest phones: a slightly smaller capture leaves the badge room for one line at 320px (it wraps only where it
+   cannot fit, below about 316px or with enlarged text spacing), and the chips take two rows. */
+@media(max-width:360px){
+ .pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"]){grid-template-columns:minmax(0,1fr) 112px}
+ .pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"])>.directory-art{margin-right:12px}
+ .directory-availability{letter-spacing:0;padding-inline:8px 9px}
+ .directory-finder .directory-chip{padding-inline:9px;font-size:11px;letter-spacing:.03em}
+}
+@media(forced-colors:active){
+ .directory-availability,.directory-finder .directory-chip{background:Canvas;color:CanvasText;border:1px solid CanvasText}
+ .directory-availability::before{background:CanvasText}
+ .directory-finder .directory-chip:has(input:checked){forced-color-adjust:none;background:Highlight;color:HighlightText;border-color:Highlight}
+ .directory-finder .directory-chip:has(input:focus-visible){outline:3px solid CanvasText}
+}
+/* ── Storefront pass (owner decision 2026-11-06, Option A with refinements). Product discovery leads the page: the
+   nameplate carries the compact section menu (as on Home) and the six-key bank follows the listings (build-site.ps1,
+   <!-- @route-chain -->). The finder is a machined panel: an engraved search slot, one availability selector (All products /
+   Available downloads / No public installer) and the Clear key. Each Foundry system carries its own engraved emblem (a
+   drawing of what it does, not a screenshot), and their shared availability is stated once under the group label. ── */
+
+/* Compact section menu in the nameplate: an open row of links from 901 px, a Menu disclosure below. The nameplate
+   rules apply only where the bank has moved into <main>; the shadow catalog keeps its bank under the nameplate. */
+body.pf-directory-page:has(main>.pf-route-chain) .site-header{position:relative;z-index:40}
+body.pf-directory-page .pf-quicknav{flex:none}
+body.pf-directory-page .pf-quicknav ul{list-style:none;margin:0;padding:0}
+body.pf-directory-page .pf-quicknav li{margin:0}
+body.pf-directory-page .pf-quicknav a{text-decoration:none;color:#dfe4e0}
+body.pf-directory-page .pf-quicknav a:focus-visible{outline:3px solid #ffd58a;outline-offset:3px}
+@media (min-width:901px){
+ body.pf-directory-page .pf-quicknav>summary{display:none}
+ body.pf-directory-page .pf-quicknav::details-content{content-visibility:visible}
+ body.pf-directory-page .pf-quicknav ul{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:2px 22px}
+ body.pf-directory-page .pf-quicknav a{display:inline-flex;align-items:center;min-height:40px;font:600 12.5px/1 var(--pf-mono);letter-spacing:.08em;text-transform:uppercase;border-bottom:2px solid transparent;padding-top:2px}
+ body.pf-directory-page .pf-quicknav a:hover{color:#fff;border-bottom-color:#8f7238}
+ body.pf-directory-page .pf-quicknav a[aria-current=page]{color:#e9cf96;border-bottom-color:#ab8b46}
+}
+@media (min-width:901px) and (max-width:1199.98px){body.pf-directory-page:has(main>.pf-route-chain) .site-header .header-maker-note{display:none}body.pf-directory-page .pf-quicknav{margin-left:auto}}
+@media (min-width:1200px){body.pf-directory-page:has(main>.pf-route-chain) .site-header .header-maker-note{padding-right:26px;margin-right:4px;border-right:1px solid rgba(160,172,168,.35)}}
+@media (max-width:900.98px){
+ body.pf-directory-page:has(main>.pf-route-chain) .site-header .nav-row{flex-wrap:nowrap;gap:12px}
+ body.pf-directory-page .pf-quicknav{margin-left:auto}
+ body.pf-directory-page .pf-quicknav>summary{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 14px 0 16px;cursor:pointer;list-style:none;font:600 13px/1 var(--pf-mono);letter-spacing:.12em;text-transform:uppercase;color:#e9ece9;
+  background:linear-gradient(180deg,#2a3236,#171d20);border:1px solid #56636a;border-top-color:#6c787d;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 2px 0 #050708}
+ body.pf-directory-page .pf-quicknav>summary::-webkit-details-marker{display:none}
+ body.pf-directory-page .pf-quicknav>summary::after{content:"+";content:"+" / "";font:400 19px/1 var(--pf-mono);color:#c6cdc8}
+ body.pf-directory-page .pf-quicknav[open]>summary::after{content:"\2212";content:"\2212" / ""}
+ body.pf-directory-page .pf-quicknav>summary:focus-visible{outline:3px solid #ffd58a;outline-offset:3px}
+ body.pf-directory-page .pf-quicknav nav{position:absolute;z-index:30;left:12px;right:12px;top:calc(var(--pf-head-h) - 2px);padding:10px;
+  background:linear-gradient(180deg,#1d2427,#141a1d);border:1px solid #4b585c;border-top:3px solid #6c787d;box-shadow:0 10px 0 #050708,0 18px 28px rgba(0,0,0,.55)}
+ body.pf-directory-page .pf-quicknav:not([open]) nav{display:none}
+ body.pf-directory-page .pf-quicknav ul{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+ body.pf-directory-page .pf-quicknav a{display:flex;align-items:center;min-height:46px;padding:0 14px;font:600 14px/1.2 var(--pf-mono);letter-spacing:.06em;text-transform:uppercase;background:#11171a;border:1px solid #2f3a3e}
+ body.pf-directory-page .pf-quicknav a[aria-current=page]{color:#e9cf96;border-color:#8f7238}
+}
+@media (max-width:440px){body.pf-directory-page .pf-quicknav>summary{gap:7px;padding:0 10px 0 12px;font-size:12px;letter-spacing:.1em}}
+@media (max-width:420px){
+ body.pf-directory-page:has(main>.pf-route-chain) .site-header .nav-row{padding-inline:16px;gap:8px}
+ body.pf-directory-page:has(main>.pf-route-chain) .site-header .brand-lockup{flex:0 1 auto;min-width:0;gap:10px}
+ body.pf-directory-page:has(main>.pf-route-chain) .site-header :is(.brand-mark-picture,.brand-mark){flex:none}
+ body.pf-directory-page:has(main>.pf-route-chain) .site-header .brand-name small{letter-spacing:0;white-space:normal}
+ body.pf-directory-page .pf-quicknav>summary{width:44px;padding:0;justify-content:center;font-size:0;letter-spacing:0}
+ body.pf-directory-page .pf-quicknav>summary::after{content:"\2261";content:"\2261" / "";font-size:22px}
+ body.pf-directory-page .pf-quicknav[open]>summary::after{content:"\00D7";content:"\00D7" / ""}
+}
+@media (max-width:339.98px){body.pf-directory-page:has(main>.pf-route-chain) .site-header .brand-name small{max-width:19.5ch}}
+@media (forced-colors:active){
+ body.pf-directory-page .pf-quicknav a{color:LinkText}
+ body.pf-directory-page .pf-quicknav a[aria-current=page]{color:CanvasText}
+}
+@media (forced-colors:active) and (max-width:900.98px){
+ body.pf-directory-page .pf-quicknav>summary,body.pf-directory-page .pf-quicknav nav,body.pf-directory-page .pf-quicknav a{background:Canvas;color:LinkText;border:1px solid CanvasText;box-shadow:none}
+ body.pf-directory-page .pf-quicknav a[aria-current=page]{border:2px solid Highlight}
+}
+@media (forced-colors:active) and (min-width:901px){body.pf-directory-page .pf-quicknav a{border-bottom:0;padding-bottom:2px}body.pf-directory-page .pf-quicknav a[aria-current=page]{border-bottom:2px solid Highlight;padding-bottom:0}}
+
+/* The six-key bank follows the listings: the connected navigation continues the page instead of leading it. */
+body.pf-directory-page main>.pf-route-chain{margin:60px auto 36px}
+@media (max-width:700.98px){body.pf-directory-page main>.pf-route-chain{margin:44px auto 28px}}
+/* With the bank moved, the nameplate and the bank are each a whole bolted plate, framed exactly as on Home: the full
+   oxide frame (the head frame's top and bottom crops), so neither stops in a straight cut. */
+body.pf-directory-page:has(main>.pf-route-chain) .site-header{height:auto;min-height:calc(var(--pf-head-h) + 30px);padding-top:12px;padding-bottom:18px;box-sizing:border-box;margin-bottom:22px;
+ border-image:url(/assets/round3/oxide-frame.webp) 56 112 104 56/28px 56px 52px 28px/0 24px 24px 0 stretch}
+body.pf-directory-page:has(main>.pf-route-chain) .site-header .nav-row{height:var(--pf-head-h)}
+body.pf-directory-page main>.pf-route-chain{position:relative;padding-top:30px;background-position:0 0;
+ border-image:url(/assets/round3/oxide-frame.webp) 56 112 104 56/28px 56px 52px 28px/0 24px 24px 0 stretch}
+@media (min-width:1200px){body.pf-directory-page:has(main>.pf-route-chain) .site-header{margin-bottom:12px}}
+@media (max-width:700.98px){
+ body.pf-directory-page:has(main>.pf-route-chain) .site-header{border-image-width:16px 32px 29.71px 16px;border-image-outset:0 13.71px 13.71px 0;min-height:calc(var(--pf-head-h) + 14px);padding-top:7px;padding-bottom:7px;margin-bottom:18px}
+ body.pf-directory-page main>.pf-route-chain{padding-top:22px;border-image-width:16px 32px 29.71px 16px;border-image-outset:0 13.71px 13.71px 0}
+}
+@media (forced-colors:active){body.pf-directory-page:has(main>.pf-route-chain) .site-header,body.pf-directory-page main>.pf-route-chain{border-image:none}}
+
+/* The finder: a machined panel with four set screws, an engraved search slot, one selector and the Clear key. */
+.pf-directory-page .directory-finder{gap:14px 20px;padding:22px 26px;border:1px solid #4d5b60;border-top-color:#6e7b80;border-bottom-color:#20272a;
+ background:radial-gradient(circle at 11px 11px,#7d898d 0 1.8px,#161c1f 2.4px,transparent 3.2px),radial-gradient(circle at calc(100% - 11px) 11px,#7d898d 0 1.8px,#161c1f 2.4px,transparent 3.2px),
+  radial-gradient(circle at 11px calc(100% - 11px),#7d898d 0 1.8px,#161c1f 2.4px,transparent 3.2px),radial-gradient(circle at calc(100% - 11px) calc(100% - 11px),#7d898d 0 1.8px,#161c1f 2.4px,transparent 3.2px),
+  repeating-linear-gradient(90deg,rgba(255,255,255,.02) 0 1px,transparent 1px 3px),linear-gradient(180deg,#242d31,#161c1f);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.07),inset 0 -2px 0 rgba(0,0,0,.45),0 3px 0 #050708}
+.pf-directory-page .directory-finder>label{font:600 11px/1.4 var(--pf-mono);letter-spacing:.14em;text-transform:uppercase;color:#c9b388}
+.pf-directory-page .directory-finder input[type=search]{min-height:46px;margin-top:9px;padding:0 14px 0 40px;border:1px solid #2b3539;border-radius:2px;color:#eef2ee;
+ background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23b9a27a' stroke-width='1.6'%3E%3Ccircle cx='6.5' cy='6.5' r='4.5'/%3E%3Cpath d='M10 10l4.5 4.5' stroke-linecap='round'/%3E%3C/svg%3E") 14px 50%/16px 16px no-repeat,#0a1013;
+ box-shadow:inset 0 2px 5px rgba(0,0,0,.75),0 1px 0 rgba(255,255,255,.07)}
+.pf-directory-page .directory-finder input[type=search]::placeholder{color:#93a39d}
+.pf-directory-page .directory-finder input[type=search]:focus{border-color:#8c7646}
+.pf-directory-page .directory-finder [data-directory-count]{font:600 11px/1.4 var(--pf-mono);letter-spacing:.08em;color:#c9b388}
+/* The availability selector: a recessed track with three positions. The chosen one is a raised brass plate whose lamp is
+   lit; every position reserves its lamp, so choosing never changes a position's width. */
+.pf-directory-page .directory-chips{display:inline-grid;grid-auto-flow:column;grid-auto-columns:auto;gap:3px;padding:3px;justify-self:start;align-self:end;
+ background:#0a1013;border:1px solid #2b3539;border-radius:2px;box-shadow:inset 0 2px 5px rgba(0,0,0,.75),0 1px 0 rgba(255,255,255,.07)}
+.pf-directory-page .directory-finder .directory-chip{min-height:40px;padding:0 16px 0 13px;gap:9px;justify-content:center;text-align:center;border:1px solid transparent;border-radius:1px;
+ background:transparent;color:#cdd5d0;font:600 12px/1.15 var(--pf-mono);letter-spacing:.06em;text-shadow:none;box-shadow:none}
+.pf-directory-page .directory-finder .directory-chip::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:#253034;box-shadow:inset 0 1px 1px rgba(0,0,0,.8)}
+.pf-directory-page .directory-finder .directory-chip:hover{border-color:transparent;background:rgba(255,255,255,.05);color:#f1f4f1}
+.pf-directory-page .directory-finder .directory-chip:has(input:checked){color:#1d1607;border-color:#f0e2bf #8c7442 #6e5a31 #d9c290;
+ background:linear-gradient(180deg,#e7d6ae,#bda26b);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 1px 2px rgba(0,0,0,.6);text-shadow:0 1px 0 rgba(255,255,255,.3)}
+.pf-directory-page .directory-finder .directory-chip:has(input:checked)::before{background:#5f8f3e;box-shadow:inset 0 1px 1px rgba(0,0,0,.45),0 0 0 1px rgba(40,60,25,.55)}
+.pf-directory-page .directory-finder .directory-chip:has(input:focus-visible){outline:3px solid #ffd58a;outline-offset:2px}
+/* 701-1199 px: search and Clear on the first line, the selector below with the count at its right. From 1200 px, one
+   line: search, selector, Clear, with the count above Clear in a reserved row. */
+@media (min-width:1024px) and (max-width:1199.98px){
+ .pf-directory-page .directory-finder{grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto;row-gap:14px}
+ .pf-directory-page .directory-finder>label:first-child{grid-column:1;grid-row:1}
+ .pf-directory-page .directory-finder button[type=reset]{grid-column:2;grid-row:1;align-self:end}
+ .pf-directory-page .directory-chips{grid-column:1;grid-row:2}
+ .pf-directory-page .directory-finder [data-directory-count]{grid-column:2;grid-row:2;align-self:center;justify-self:end}
+}
+@media (min-width:1200px){
+ .pf-directory-page .directory-finder{grid-template-columns:minmax(0,1fr) auto auto;grid-template-rows:minmax(18px,auto) auto;row-gap:4px}
+ .pf-directory-page .directory-finder>label:first-child{grid-column:1;grid-row:1/3}
+ .pf-directory-page .directory-finder [data-directory-count]{grid-column:2/4;grid-row:1;align-self:end;justify-self:end}
+ .pf-directory-page .directory-chips{grid-column:2;grid-row:2}
+ .pf-directory-page .directory-finder button[type=reset]{grid-column:3;grid-row:2}
+}
+/* Phones: the selector spans the panel in three equal positions (a long label takes two lines). Where the three cannot
+   fit side by side (below about 358 px, or with enlarged text spacing), a position wraps to a second row inside the
+   track instead of running past the panel. */
+@media (max-width:700.98px){
+ .pf-directory-page .directory-finder{padding:18px 18px 16px}
+ .pf-directory-page .directory-chips{display:flex;flex-wrap:wrap;justify-self:stretch}
+ .pf-directory-page .directory-finder .directory-chips>.directory-chip{flex:1 1 0}
+ .pf-directory-page .directory-finder .directory-chip{min-height:46px;padding:4px 8px;gap:6px;font-size:11px;letter-spacing:.03em}
+ .pf-directory-page .directory-finder .directory-chip::before{width:6px;height:6px}
+}
+@media (forced-colors:active){
+ .pf-directory-page .directory-finder{background:Canvas;border:1px solid CanvasText}
+ .pf-directory-page .directory-finder input[type=search]{background:Field;color:FieldText;border:1px solid FieldText;padding-left:14px}
+ .pf-directory-page .directory-chips{background:Canvas;border:1px solid CanvasText}
+ .pf-directory-page .directory-finder .directory-chip{background:Canvas;color:CanvasText;border:1px solid CanvasText}
+ .pf-directory-page .directory-finder .directory-chip::before{background:CanvasText}
+ .pf-directory-page .directory-finder .directory-chip:has(input:checked){forced-color-adjust:none;background:Highlight;color:HighlightText;border-color:Highlight}
+ .pf-directory-page .directory-finder .directory-chip:has(input:checked)::before{background:HighlightText}
+ .pf-directory-page .directory-finder .directory-chip:has(input:focus-visible){outline:3px solid CanvasText}
+}
+
+/* Narrow screens: one card per row, with a capture large enough to read (about 38% of the card) beside the name, badge
+   and purpose; the Foundry systems take full rows too. */
+@media (max-width:700.98px){
+ .pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"]){grid-template-columns:minmax(0,1fr) clamp(112px,38%,240px)}
+ .pf-directory-grid>.directory-entry[data-directory-group="Foundry systems"]{grid-column:1/-1}
+}
+
+/* Foundry systems: an engraved emblem beside each nameplate, in the system's own accent. */
+.directory-entry:where([data-directory-group="Foundry systems"]){--sys:#a5b19d}
+.directory-entry--hardline-zero{--sys:#d29a6a;--emblem:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='none' stroke='%23d29a6a' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M11 5h13l6 6v19H11z'/%3E%3Cpath d='M24 5v6h6'/%3E%3Cpath d='M15 15h11M15 20h11M15 25h7'/%3E%3Cpath d='M5 35h30' stroke-width='3.2' stroke-linecap='square'/%3E%3C/svg%3E")}
+.directory-entry--crosspoint{--sys:#7fc1b3;--emblem:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='none' stroke='%237fc1b3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 11l28 18M6 29l28-18'/%3E%3Cpath d='M28 29.5h6v-6M28 10.5h6v6'/%3E%3Ccircle cx='20' cy='20' r='4.5' fill='%23111a1d'/%3E%3C/svg%3E")}
+.directory-entry--reality-gate{--sys:#d7c39b;--emblem:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='none' stroke='%23d7c39b' stroke-width='2' stroke-linecap='square'%3E%3Cpath d='M9 34V7M31 34V7'/%3E%3Cpath d='M9 13h22M9 21h22'/%3E%3Cpath d='M14 13l4 8M22 13l4 8' stroke-width='1.4'/%3E%3Cpath d='M5 34h30' stroke-width='3.2'/%3E%3C/svg%3E")}
+.directory-entry--proof-foundry-app{--sys:#9db4cf;--emblem:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='none' stroke='%239db4cf' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M7 33V9h6v24zM15 33V6h6v27zM23.5 32.5L28 9l5.5 1-4.5 23.5z'/%3E%3Ccircle cx='18' cy='19' r='2.2'/%3E%3Cpath d='M4 34h32' stroke-width='3.2' stroke-linecap='square'/%3E%3C/svg%3E")}
+.directory-entry[data-directory-group="Foundry systems"] .directory-no-art{display:block;position:absolute;left:20px;top:24px;width:48px;height:48px;min-height:0;margin:0;border:1px solid #3a474c;border-image:none;border-radius:2px;
+ background:var(--emblem) 50% 50%/32px 32px no-repeat,linear-gradient(180deg,#0c1215,#161d20);box-shadow:inset 0 2px 5px rgba(0,0,0,.8),0 1px 0 rgba(255,255,255,.08),inset 0 -2px 0 color-mix(in srgb,var(--sys) 35%,transparent)}
+.directory-entry[data-directory-group="Foundry systems"] h3{margin-left:62px;min-height:48px;box-sizing:border-box;display:flex;align-items:center}
+@media (max-width:700.98px){
+ .directory-entry[data-directory-group="Foundry systems"] .directory-no-art{left:14px;top:18px;width:44px;height:44px;background-size:28px 28px,auto}
+ .directory-entry[data-directory-group="Foundry systems"] h3{margin-left:56px;min-height:44px}
+}
+@media (max-width:1419.98px) and (forced-colors:none){@media not all and (max-width:1100px){
+ .directory-entry[data-directory-group="Foundry systems"] h3{margin-left:0;margin-top:58px}
+}}
+@media (forced-colors:active){
+ .directory-entry[data-directory-group="Foundry systems"] .directory-no-art{display:none}
+ .directory-entry[data-directory-group="Foundry systems"] h3{margin-left:0}
+}
+
+/* A group whose cards share their availability says so once, under its label. */
+.pf-directory-grid>.directory-group-note{grid-column:1/-1;margin:-14px 0 0;font:500 12.5px/1.5 var(--pf-mono);letter-spacing:.03em;color:#bcc8c1}
+.pf-directory-grid:not(:has(.directory-entry[data-directory-group="Everyday software"]:not([hidden]))) .directory-group-note[data-directory-group-note="Everyday software"],
+.pf-directory-grid:not(:has(.directory-entry[data-directory-group="Foundry systems"]:not([hidden]))) .directory-group-note[data-directory-group-note="Foundry systems"]{display:none}
+@media (forced-colors:active){.pf-directory-grid>.directory-group-note{color:CanvasText}}
+/* The emblem note accompanies the emblems, as the image note accompanies the captures. */
+.pf-directory .directory-emblem-note{margin:22px 0 0;font-size:13px;line-height:1.6;color:#bfccc6}
+.pf-directory:has(.directory-entry[data-directory-group="Everyday software"]:not([hidden])) .directory-emblem-note{margin-top:4px}
+.pf-directory:not(:has(.directory-entry[data-directory-group="Foundry systems"]:not([hidden]))) .directory-emblem-note{display:none}
+@media (forced-colors:active){.pf-directory .directory-emblem-note{display:none}}

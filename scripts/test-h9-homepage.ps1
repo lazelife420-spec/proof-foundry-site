@@ -90,18 +90,23 @@ $currentKeys = { param($h) @([regex]::Matches([regex]::Match($h, '(?s)<nav class
 # compact section menu. Home's shared chrome is therefore its nameplate without that menu, followed by its key bank.
 $homeQuick = [regex]::Match($homeHtml, '(?s)<details class="pf-quicknav"[^>]*>.*?</details>').Value
 $homeChrome = ([regex]::Match($homeHtml, '(?s)<header class="site-header".*?</header>').Value.Replace($homeQuick, '')) + "`n" + [regex]::Match($homeHtml, '(?s)<nav class="pf-route-chain.*?</nav>').Value
-$currentMarks = @($homeChrome, $software, $proof, $realityGate | ForEach-Object { ([regex]::Matches([regex]::Match($_, '(?s)<header class="site-header".*?</header>\s*<nav class="pf-route-chain.*?</nav>').Value, 'aria-current=')).Count })
+# Products (owner decision, 2026-11-06) takes the same arrangement: its listings come before its key bank, and its
+# nameplate carries the same compact menu with Products current. Its shared chrome is read the same way as Home's.
+$softwareQuick = [regex]::Match($software, '(?s)<details class="pf-quicknav"[^>]*>.*?</details>').Value
+$softwareChrome = ([regex]::Match($software, '(?s)<header class="site-header".*?</header>').Value.Replace($softwareQuick, '')) + "`n" + [regex]::Match($software, '(?s)<nav class="pf-route-chain.*?</nav>').Value
+$currentMarks = @($homeChrome, $softwareChrome, $proof, $realityGate | ForEach-Object { ([regex]::Matches([regex]::Match($_, '(?s)<header class="site-header".*?</header>\s*<nav class="pf-route-chain.*?</nav>').Value, 'aria-current=')).Count })
 Assert-H9 'the key chain lights one key per page: Home and Products as the page, Products and Proof as the section' ((& $currentKeys $homeHtml) -ceq '/ page' -and (& $currentKeys $software) -ceq '/software/ page' -and (& $currentKeys $realityGate) -ceq '/software/ true' -and (& $currentKeys $proof) -ceq '/proof-standard/ true' -and @($currentMarks | Where-Object { $_ -ne 1 }).Count -eq 0)
 # Every built route: the six key pages light themselves; product pages, the release records, the Truth
 # index, every Truth File record, the Founders Circle and the Roadmap light their section; any other
 # route lights at most one key.
 $keyExpect = @{ '' = '/ page'; 'software' = '/software/ page'; 'proof-standard' = '/proof-standard/ page'; 'truth-files' = '/truth-files/ page'; 'about' = '/about/ page'; 'support' = '/support/ page'; 'proof' = '/proof-standard/ true'; 'truth' = '/truth-files/ true'; 'founders' = '/about/ true'; 'roadmap' = '/about/ true' }
 foreach ($m in Get-ChildItem (Join-Path $root 'products') -Directory) { $keyExpect[$m.Name] = '/software/ true'; $keyExpect['truth-files/' + $m.Name] = '/truth-files/ true' }
-$keyMiss = @(); $keyChecked = 0
+$keyMiss = @(); $keyChecked = 0; $quickPages = @()
 foreach ($f in Get-ChildItem $public -Recurse -Filter 'index.html' | Where-Object { $_.FullName -notmatch '[\\/]__h14[\\/]' }) {
   $h = Get-Content $f.FullName -Raw -Encoding UTF8
   if ($h -notmatch '<nav class="pf-route-chain') { continue }
   $rel = $f.DirectoryName.Substring($public.Length).Trim('\', '/').Replace('\', '/')
+  if ($h -match 'class="pf-quicknav"') { $quickPages += $rel }
   $got = & $currentKeys $h
   if ($keyExpect.ContainsKey($rel)) { $keyChecked++; if ($got -cne $keyExpect[$rel]) { $keyMiss += "$rel -> '$got'" } }
   elseif ($got -match ',') { $keyMiss += "$rel -> '$got'" }
@@ -110,12 +115,18 @@ Assert-H9 "every built route lights its own key or its section's key ($keyChecke
 $canonicalHeader = & $normalizeHeader $homeChrome
 $keyHrefs = @([regex]::Matches([regex]::Match($homeHtml, '(?s)<nav class="pf-route-chain.*?</nav>').Value, '<a href="([^"]+)"') | ForEach-Object { $_.Groups[1].Value }) -join ','
 $quickHrefs = @([regex]::Matches($homeQuick, '<a href="([^"]+)"') | ForEach-Object { $_.Groups[1].Value }) -join ','
-$quickElsewhere = @($software, $proof, $realityGate | Where-Object { $_ -match 'pf-quicknav' }).Count
-Assert-H9 'Home (Option A): the hero comes before the key bank, and the nameplate menu mirrors the six keys in order with Home current; no other page has it' ($homeQuick -and ([regex]::Matches($homeHtml, 'class="pf-quicknav"')).Count -eq 1 -and $homeQuick -match '<summary>Menu</summary>' -and $homeQuick -match '<nav aria-label="Site sections">' -and $quickHrefs -ceq $keyHrefs -and $keyHrefs -ceq '/,/software/,/proof-standard/,/truth-files/,/about/,/support/' -and $homeQuick -match '<a href="/" aria-current="page">Home</a>' -and ([regex]::Matches($homeQuick, 'aria-current=')).Count -eq 1 -and $homeHtml.IndexOf('class="ledger-hero"') -lt $homeHtml.IndexOf('id="primary-nav"') -and $quickElsewhere -eq 0)
+$quickElsewhere = @($proof, $realityGate | Where-Object { $_ -match 'pf-quicknav' }).Count
+$quickPageList = (@($quickPages | Sort-Object) -join ',')
+Assert-H9 "Home (Option A): the hero comes before the key bank, and the nameplate menu mirrors the six keys in order with Home current; only Home and Products have it (pages with it: '$quickPageList')" ($homeQuick -and ([regex]::Matches($homeHtml, 'class="pf-quicknav"')).Count -eq 1 -and $homeQuick -match '<summary>Menu</summary>' -and $homeQuick -match '<nav aria-label="Site sections">' -and $quickHrefs -ceq $keyHrefs -and $keyHrefs -ceq '/,/software/,/proof-standard/,/truth-files/,/about/,/support/' -and $homeQuick -match '<a href="/" aria-current="page">Home</a>' -and ([regex]::Matches($homeQuick, 'aria-current=')).Count -eq 1 -and $homeHtml.IndexOf('class="ledger-hero"') -lt $homeHtml.IndexOf('id="primary-nav"') -and $quickElsewhere -eq 0 -and $quickPageList -ceq ',software')
+$softwareQuickHrefs = @([regex]::Matches($softwareQuick, '<a href="([^"]+)"') | ForEach-Object { $_.Groups[1].Value }) -join ','
+$bankAt = $software.IndexOf('id="primary-nav"')
+$lastCardAt = $software.LastIndexOf('data-directory-entry="')
+$directoryEndAt = if ($lastCardAt -ge 0) { $software.IndexOf('</section>', $lastCardAt) } else { -1 }
+Assert-H9 'Products (owner decision 2026-11-06): the listings come before the key bank, and the nameplate menu mirrors the six keys in order with Products current' ($softwareQuick -and ([regex]::Matches($software, 'class="pf-quicknav"')).Count -eq 1 -and $softwareQuick -match '<summary>Menu</summary>' -and $softwareQuick -match '<nav aria-label="Site sections">' -and $softwareQuickHrefs -ceq $keyHrefs -and $softwareQuick -match '<a href="/software/" aria-current="page">Products</a>' -and ([regex]::Matches($softwareQuick, 'aria-current=')).Count -eq 1 -and $lastCardAt -gt 0 -and $directoryEndAt -gt $lastCardAt -and $directoryEndAt -lt $bankAt -and $software.IndexOf('class="directory-history-link"') -lt $bankAt -and $bankAt -lt $software.IndexOf('</main>') -and ([regex]::Matches($software, 'id="primary-nav"')).Count -eq 1)
 $familyMarkCounts = @($software, $proof, $realityGate | ForEach-Object { ([regex]::Matches($_, [regex]::Escape($homeMarkPicture + $homeFcHeaderMark))).Count })
 $familyFcTotals = @($software, $proof, $realityGate | ForEach-Object { ([regex]::Matches($_, 'class="pf-mark-fc ')).Count })
 Assert-H9 'every page family header carries the PF Mark G picture and inline forced-colours mark (studio-wide)' (@($familyMarkCounts | Where-Object { $_ -ne 1 }).Count -eq 0 -and @($familyFcTotals | Where-Object { $_ -ne 2 }).Count -eq 0)
-$headerParity = @($software, $proof, $realityGate | ForEach-Object { (& $normalizeHeader $_) -ceq $canonicalHeader })
+$headerParity = @($softwareChrome, $proof, $realityGate | ForEach-Object { (& $normalizeHeader $_) -ceq $canonicalHeader })
 Assert-H9 'all page families share canonical navigation, support CTA and reachable catalog' ($canonicalHeader -match 'href="/software/"' -and $canonicalHeader -match 'href="/proof-standard/"' -and $canonicalHeader -match 'href="/truth-files/"' -and $canonicalHeader -match 'href="/about/"' -and $canonicalHeader -match 'href="/support/"' -and ([regex]::Matches($canonicalHeader, '<nav[^>]*aria-label="Primary navigation"')).Count -eq 1 -and ([regex]::Matches($canonicalHeader, '(?s)<nav[^>]*aria-label="Primary navigation"[^>]*>.*?</nav>')).Count -eq 1 -and $canonicalHeader -notmatch 'class="top-nav"|class="nav-panel"|class="nav-toggle"' -and $homeHtml -match 'class="button button-primary" href="/software/"' -and $manifest.navCta.href -eq '/support/' -and $manifest.navCta.label -eq 'Support' -and $headerParity.Count -eq 3 -and @($headerParity | Where-Object { -not $_ }).Count -eq 0)
 Assert-H9 'hero is brand-owned and contains no product card or fixed portfolio' ($hero -notmatch '(?i)cache vault|reality gate|ghostlayer|forgecast|proofshot|lights out|cleanroom|data-module=' -and $homeHtml -notmatch 'class="studio-hero-product"|data-ledger-feature=|data-ledger-specimen=')
 

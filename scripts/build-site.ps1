@@ -3223,6 +3223,7 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   # six-key bank there, after its hero, in the document as well as on screen, so keyboard order matches what is
   # seen. Its nameplate then carries a compact section menu built from the same six keys, so every destination
   # stays one tap away before the visitor scrolls. Every other page keeps the bank under its nameplate.
+  # Products (owner decision, 2026-11-06) carries the marker after its listings, so product discovery leads the page.
   if ($html.Contains('<!-- @route-chain -->')) {
     $chainMatch = [regex]::Match($html, '(?s)<nav class="pf-route-chain\b.*?</nav>')
     if (-not $chainMatch.Success) { throw "$srcName carries <!-- @route-chain --> but its header has no key bank." }
@@ -3230,7 +3231,9 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
     $html = $html.Replace('<!-- @route-chain -->', $chainMatch.Value)
     $quickKeys = @([regex]::Matches($chainMatch.Value, '<a href="([^"]+)"[^>]*><span class="pf-chain-station"[^>]*>[^<]*</span><span>([^<]+)</span></a>'))
     if ($quickKeys.Count -ne 6) { throw "Quick menu: expected the six keys, found $($quickKeys.Count)." }
-    $quickItems = ($quickKeys | ForEach-Object { $cur = if ($_.Groups[1].Value -eq '/') { ' aria-current="page"' } else { '' }; "<li><a href=`"$($_.Groups[1].Value)`"$cur>$($_.Groups[2].Value)</a></li>" }) -join ''
+    # The page's own key is current: index.html is Home, any other template is its own route (software.html is /software/).
+    $quickCurrent = if ($srcName -eq 'index.html') { '/' } else { '/' + [IO.Path]::GetFileNameWithoutExtension($srcName) + '/' }
+    $quickItems = ($quickKeys | ForEach-Object { $cur = if ($_.Groups[1].Value -eq $quickCurrent) { ' aria-current="page"' } else { '' }; "<li><a href=`"$($_.Groups[1].Value)`"$cur>$($_.Groups[2].Value)</a></li>" }) -join ''
     $quickNav = "<details class=`"pf-quicknav`" data-quicknav><summary>Menu</summary><nav aria-label=`"Site sections`"><ul>$quickItems</ul></nav></details>"
     $makerNote = [regex]::Match($html, '(?s)<p class="header-maker-note">.*?</p>')
     if (-not $makerNote.Success) { throw "$($srcName): the nameplate has no maker note to place the quick menu after." }
@@ -3655,6 +3658,10 @@ foreach ($pg in @('software.html','truth.html')) {
     $pgHtml = [regex]::Replace($pgHtml, '(?s)<form class="directory-finder".*?</form>', '')
     $pgHtml = $pgHtml.Replace('class="pf-directory-grid" id="directory-results"', 'class="products-grid" id="products-grid"')
     $pgHtml = $pgHtml.Replace('<!-- @directory-entries -->', '<!-- @all-products -->')
+    # The runtime header keeps its key bank under the nameplate; the public page's bank marker has no role here.
+    $pgHtml = $pgHtml.Replace("<!-- @route-chain -->`n", '').Replace('<!-- @route-chain -->', '')
+    # Nor does it draw the Foundry systems' emblems, so the note about them has no place there.
+    $pgHtml = [regex]::Replace($pgHtml, '[ ]*<p class="directory-emblem-note">.*?</p>\r?\n?', '')
     $pgHtml = [regex]::Replace($pgHtml, '(?s)<section class="directory-systems.*?</section>', '')
     $pgHtml = [regex]::Replace($pgHtml, '(?s)<p data-directory-empty.*?</p>', '')
     $pgHtml = $pgHtml.Replace('<!-- @directory-records -->', '').Replace("<script>document.documentElement.classList.add('h9-software-js')</script>", '')

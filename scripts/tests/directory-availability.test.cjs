@@ -22,3 +22,74 @@ test('recorded companion without a downloadable artifact is explicitly unoffered
   assert.match(entry('cache-vault'), /Android · v0\.3\.1/);
   assert.doesNotMatch(entry('cache-vault'), /not offered here/);
 });
+// Owner decision 2026-11-05: each card says whether it has a public download, from the release record only.
+const cardOf = (html, id) => new RegExp('<article\\b[^>]*data-directory-entry="' + id + '"[\\s\\S]*?</article>').exec(html)?.[0];
+const badgeOf = card => /class="directory-availability directory-availability--(public|none)">([^<]+)</.exec(card || '')?.slice(1, 3);
+// A public download is a public release with a verified public artifact: a download URL and a published SHA-256.
+const verified = a => !!a.downloadUrl && /^[0-9a-f]{64}$/i.test(String(a.sha256 || ''));
+const hasPublicDownload = (truthDoc, id) => (truthDoc.products.find(p => p.id === id)?.channels || [])
+  .some(c => c.track === 'PUBLIC' && c.publicationState === 'PUBLIC_RELEASE' && c.artifacts.some(verified));
+const noteOf = (html, group) => new RegExp('data-directory-group-note="' + group + '">None of these has a public installer\\.<').test(html);
+test('availability follows the release record, and a group with no public download says so once instead of on every card', () => {
+  const html = renderDirectory(editorial, model, truth, manifest, context).html;
+  const visible = editorial.entries.filter(e => e.visible);
+  assert.ok(visible.length > 0);
+  for (const g of [...new Set(visible.map(e => e.group))]) {
+    const members = visible.filter(e => e.group === g), none = members.every(e => !hasPublicDownload(truth, e.id));
+    assert.equal(noteOf(html, g), none, g);
+    for (const e of members) {
+      const card = cardOf(html, e.id), pub = hasPublicDownload(truth, e.id);
+      assert.match(card, new RegExp('data-availability="' + (pub ? 'download' : 'none') + '"'), e.id);
+      assert.deepEqual(badgeOf(card), pub ? ['public', 'Public download'] : (none ? undefined : ['none', 'No public installer']), e.id);
+    }
+  }
+  // Today: five public downloads; the four Foundry systems share one note, and Reality Gate is among them.
+  assert.equal((html.match(/directory-availability--public">Public download</g) || []).length, 5);
+  assert.ok(noteOf(html, 'Foundry systems'));
+  assert.equal(badgeOf(cardOf(html, 'reality-gate')), undefined);
+});
+test('a release without a download URL, or a withdrawn channel, gives "No public installer"', () => {
+  const mutated = structuredClone(truth);
+  for (const c of mutated.products.find(p => p.id === 'cache-vault').channels) for (const a of c.artifacts) delete a.downloadUrl;
+  for (const c of mutated.products.find(p => p.id === 'lights-out').channels) c.track = 'WITHDRAWN';
+  for (const c of mutated.products.find(p => p.id === 'ghostlayer').channels) for (const a of c.artifacts) delete a.sha256;
+  const html = renderDirectory(editorial, model, mutated, manifest, context).html;
+  assert.deepEqual(badgeOf(cardOf(html, 'ghostlayer')), ['none', 'No public installer']);
+  assert.match(cardOf(html, 'ghostlayer'), /data-availability="none"/);
+  assert.deepEqual(badgeOf(cardOf(html, 'cache-vault')), ['none', 'No public installer']);
+  assert.deepEqual(badgeOf(cardOf(html, 'lights-out')), ['none', 'No public installer']);
+  assert.deepEqual(badgeOf(cardOf(html, 'cleanroom')), ['public', 'Public download']);
+});
+test('each card names the platforms with a public download, from the release record only', () => {
+  const html = renderDirectory(editorial, model, truth, manifest, context).html;
+  for (const e of editorial.entries.filter(x => x.visible)) {
+    const card = cardOf(html, e.id);
+    const expected = [...new Set((truth.products.find(p => p.id === e.id)?.channels || [])
+      .filter(c => c.track === 'PUBLIC' && c.publicationState === 'PUBLIC_RELEASE' && c.artifacts.some(verified))
+      .map(c => String(c.platform).toLowerCase()))].join(' ');
+    const got = /data-download-platforms="([^"]*)"/.exec(card)?.[1] ?? '';
+    assert.equal(got, expected, e.id);
+  }
+  // Lights Out has a Windows download only (its Android build is not offered here).
+  assert.equal(/data-download-platforms="([^"]*)"/.exec(cardOf(html, 'lights-out'))?.[1], 'windows');
+  // The platform data is groundwork for later Windows and Android filters (owner, 2026-11-06); the finder does not use it yet.
+});
+// Owner decision 2026-11-05: no hard-coded product count; "N shown" only while a filter is active.
+test('the finder searches the availability badge and states no product count at rest', () => {
+  const js = fs.readFileSync(path.join(root, 'foundry-navigation.js'), 'utf8');
+  const selector = /querySelectorAll\('([^']*\.directory-purpose[^']*)'\)/.exec(js)?.[1];
+  assert.ok(selector, 'finder search selector');
+  for (const part of ['h3', '.directory-availability', '.directory-purpose', '.directory-state', '.directory-state-note']) assert.ok(selector.split(',').includes(part), part);
+  assert.match(js, /textContent=filtering\?count\+' shown':/);
+  assert.match(js, /'All shown'/);
+  assert.doesNotMatch(js, /'products?'|' products'/);
+  assert.match(js, /dataset\.availability/);
+  const page = fs.readFileSync(path.join(root, 'software.html'), 'utf8');
+  // The availability filter offers exactly the owner's three choices.
+  assert.match(page, /<select name="availability"[^>]*><option value="">All products<\/option><option value="download">Available downloads<\/option><option value="none">No public installer<\/option><\/select>/);
+  assert.match(page, /<p data-directory-count role="status" aria-live="polite"><\/p>/);
+  assert.doesNotMatch(page, /\b\d+ products\b/i);
+  // The count is a live region: it stays rendered (in the accessibility tree) even when empty.
+  const css = fs.readFileSync(path.join(root, 'h9-software.css'), 'utf8');
+  assert.doesNotMatch(css, /\[data-directory-count\][^{]*\{[^}]*display:\s*none/);
+});

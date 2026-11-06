@@ -419,26 +419,40 @@ function renderDirectory(input, model, releaseTruth, manifest, context) {
   const products=new Map(manifest.products.map(p=>[p.id,p]));
   const releases=new Map(releaseTruth.products.map(p=>[p.id,p]));
   const groups=[...new Set(entries.map(e=>e.group))];
+  // A public download is a public release with a verified public artifact: a download URL and a published SHA-256.
+  const verifiedArtifact=a=>!!a.downloadUrl&&/^[0-9a-f]{64}$/i.test(String(a.sha256||''));
+  const releasedOf=id=>(releases.get(id)?.channels||[]).filter(c=>c.track==='PUBLIC'&&c.publicationState==='PUBLIC_RELEASE');
+  const hasDownload=id=>releasedOf(id).some(c=>c.artifacts.some(verifiedArtifact));
+  // Owner decision 2026-11-06: where no card in a group has a public download, that is said once, under the group's
+  // label, instead of the same badge on every card (four in a row made the systems look unfinished).
+  const groupWithout=new Set(groups.filter(g=>entries.filter(e=>e.group===g).every(e=>!hasDownload(e.id))));
   // Owner decision 2026-11-05: each editorial group is introduced by its own name, so the Foundry systems read as
   // their own row. Labels are not entries; the finder hides a label whose group has no visible card (CSS :has).
   let previousGroup=null;
   const html=entries.map(entry=>{
-    const groupLabel=entry.group!==previousGroup?'<p class="directory-group-label" role="heading" aria-level="3" data-directory-group-label="'+esc(entry.group)+'">'+esc(entry.group)+'</p>':'';
+    const groupLabel=entry.group!==previousGroup?'<p class="directory-group-label" role="heading" aria-level="3" data-directory-group-label="'+esc(entry.group)+'">'+esc(entry.group)+'</p>'+
+      (groupWithout.has(entry.group)?'<p class="directory-group-note" data-directory-group-note="'+esc(entry.group)+'">None of these has a public installer.</p>':''):'';
     previousGroup=entry.group;
     const identity=identities.get(entry.id), product=products.get(entry.id), release=releases.get(entry.id);
     const name=entry.id==='crosspoint'?'CrossPoint':identity.name;
     const channels=release?.channels.filter(c=>c.track==='PUBLIC')||[];
     const released=channels.filter(c=>c.publicationState==='PUBLIC_RELEASE');
     let state=released.length?released.map(c=>c.platform[0].toUpperCase()+c.platform.slice(1)+' · v'+c.version+
-      (c.artifacts.some(a=>a.downloadUrl)?'':' · not offered here')).join(' / '):'Internal product · no public installer';
+      (c.artifacts.some(verifiedArtifact)?'':' · not offered here')).join(' / '):'Internal product';
     if (entry.id==='reality-gate') state='Internal development · public v1.1.0 withdrawn';
     // Owner decision 2026-11-05: a pending candidate is stated with the site's approved candidate sentence.
     let candidateNote=String(product?.candidateStatus||product?.presentation?.candidateStatus||'');
     // Reality Gate keeps its no-successor fact on its card (the same sentence its withheld record carried).
-    if (entry.id==='reality-gate') candidateNote='Public v1.1.0 is withdrawn; no public successor is established.';
+    if (entry.id==='reality-gate') candidateNote='No public successor is established.';
+    // Owner decision 2026-11-05: each card says whether it has a public download, from the release record only.
+    const publicDownload=hasDownload(entry.id);
+    // The platforms with a public download (for the finder: "android installer" lists only cards that offer one).
+    const downloadPlatforms=[...new Set(released.filter(c=>c.artifacts.some(verifiedArtifact)).map(c=>String(c.platform).toLowerCase()))].join(' ');
+    const availability=!publicDownload&&groupWithout.has(entry.group)?'':
+      '<p class="directory-availability directory-availability--'+(publicDownload?'public':'none')+'">'+(publicDownload?'Public download':'No public installer')+'</p>';
     const media=entry.artwork?'<figure class="directory-art"><img src="'+esc(entry.artwork)+'" alt="'+esc(product?.presentation?.cardImageAlt||name+' artwork')+'" loading="lazy" width="960" height="540"/></figure>':'<div class="directory-no-art" aria-hidden="true"><i></i><i></i><i></i></div>';
-    const link=entry.destination?'<a class="button button-secondary" href="'+esc(entry.destination)+'">Explore '+esc(name)+' <span aria-hidden="true">↗</span></a>':'<p class="directory-no-route">Product page not yet available.</p>';
-    return groupLabel+'<article class="directory-entry directory-entry--'+esc(entry.id)+'" data-directory-entry="'+esc(entry.id)+'" data-directory-group="'+esc(entry.group)+'"><header><p class="kicker">'+esc(entry.group)+'</p><h3>'+esc(name)+'</h3><p class="directory-purpose">'+esc(entry.shortDescription)+'</p></header>'+media+'<div class="directory-foot"><p class="directory-state">'+esc(state)+'</p>'+(candidateNote?'<p class="directory-state-note">'+esc(candidateNote)+'</p>':'')+link+'</div></article>';
+    const link=entry.destination?'<a class="button button-secondary" href="'+esc(entry.destination)+'">Explore '+esc(name)+' <span aria-hidden="true">↗</span></a>':'';
+    return groupLabel+'<article class="directory-entry directory-entry--'+esc(entry.id)+'" data-directory-entry="'+esc(entry.id)+'" data-directory-group="'+esc(entry.group)+'" data-availability="'+(publicDownload?'download':'none')+'"'+(downloadPlatforms?' data-download-platforms="'+esc(downloadPlatforms)+'"':'')+'><header><p class="kicker">'+esc(entry.group)+'</p><h3>'+esc(name)+'</h3>'+availability+'<p class="directory-purpose">'+esc(entry.shortDescription)+'</p></header>'+media+'<div class="directory-foot"><p class="directory-state">'+esc(state)+'</p>'+(candidateNote?'<p class="directory-state-note">'+esc(candidateNote)+'</p>':'')+link+'</div></article>';
   }).join('');
   return {
     count:entries.length,
