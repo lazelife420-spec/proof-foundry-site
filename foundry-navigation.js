@@ -25,7 +25,8 @@
   const clear = keep => {
     if (selected) selected.style.viewTransitionName = '';
     selected = null;
-    document.querySelectorAll('[data-engaged]').forEach(el => { if (el !== keep) el.removeAttribute('data-engaged'); });
+    // Only the links this script presses: Home's proof chain keeps its chosen stage in data-engaged on its plates.
+    document.querySelectorAll('a[data-engaged]').forEach(el => { if (el !== keep) el.removeAttribute('data-engaged'); });
   };
   const direction = activation => activation?.navigationType === 'traverse' && activation.entry?.index < activation.from?.index ? 'back' : 'forward';
   document.addEventListener('pointerdown', e => {
