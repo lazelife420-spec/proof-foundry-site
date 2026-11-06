@@ -150,7 +150,7 @@ foreach ($p in @($manifest.products | Where-Object visible)) {
 }
 Assert-H9 'directory projection is independently validated against current editorial and release inputs' ((& node (Join-Path $PSScriptRoot 'portfolio-review.cjs') --verify-generated $public 2>&1 | Out-String) -match 'Editorial generated targets verified:' -and $LASTEXITCODE -eq 0)
 $proofshotSoftwareCard = [regex]::Match($software, '(?s)<article class="product-card[^>]*data-product="proofshot".*?</article>').Value
-Assert-H9 'directory imagery states its context, and hidden ProofShot has no directory card while its history remains reachable' ($software -match 'Card images are existing captures or artwork\. Version context is retained in the product record\.' -and $software -notmatch 'data-directory-entry="proofshot"' -and $software -match 'href="/proofshot/"')
+Assert-H9 'directory imagery states its context, and hidden ProofShot has no directory card while its history remains reachable' ($software -match 'Pictures may show an earlier version\. Each product page shows its current release\.' -and $software -notmatch 'data-directory-entry="proofshot"' -and $software -match 'href="/proofshot/"')
 $headerMark = Get-Content (Join-Path $public 'brand/PF_HEADER_MARK.svg') -Raw -Encoding UTF8
 $makerSeal = Get-Content (Join-Path $public 'brand/PF_MAKER_SEAL.svg') -Raw -Encoding UTF8
 $masterPaths = @([regex]::Matches((Get-Content (Join-Path $root 'brand/PF_MARK_G_MASTER.svg') -Raw -Encoding UTF8), '<path[^>]*\sd="([^"]+)"') | ForEach-Object { $_.Groups[1].Value })

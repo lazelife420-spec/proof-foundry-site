@@ -136,10 +136,15 @@ foreach ($module in $commerceModules) {
 
 # 4. Main-site Products directory and preserved historical navigation.
 Assert-Condition ($catalogHtml -match 'class="pf-directory-grid" id="directory-results"') "Products directory contains its filter-results grid"
+# Visual verdict (2026-11-06): a card's page is a button when every visible card in its group has a page, otherwise a
+# plain link. The expected form comes from site-editorial.json, so neither form can stand in for the other.
+$linkEditorial = @((Get-Content (Join-Path $Root 'site-editorial.json') -Raw | ConvertFrom-Json).entries | Where-Object { $_.visible })
 foreach ($slug in @('cache-vault', 'lights-out', 'cleanroom', 'ghostlayer', 'forgecast', 'hardline-zero', 'crosspoint', 'reality-gate', 'proof-foundry-app')) {
   $entry = [regex]::Match($catalogHtml, '(?s)<article\b[^>]*data-directory-entry="' + [regex]::Escape($slug) + '"[^>]*>.*?</article>').Value
   # Owner decision (2026-11-05): an internal system with no public page declares that instead of a link.
-  $path = ($entry -match '<a class="button button-secondary" href="[^"]+">') -or ($slug -in @('hardline-zero', 'crosspoint', 'proof-foundry-app') -and ($entry -match 'class="directory-availability directory-availability--none">No public installer<' -or $catalogHtml -match 'data-directory-group-note="Foundry systems">None of these has a public installer\.<') -and $entry -notmatch '<a\b')
+  $ed = @($linkEditorial | Where-Object { $_.id -ceq $slug })[0]
+  $linkClass = if (@($linkEditorial | Where-Object { $_.group -ceq $ed.group -and -not $_.destination }).Count -eq 0) { 'button button-secondary' } else { 'text-link directory-link' }
+  $path = ($ed.destination -and $entry -match ('<a class="' + $linkClass + '" href="' + [regex]::Escape($ed.destination) + '">') -and ([regex]::Matches($entry, '<a\b')).Count -eq 1) -or (-not $ed.destination -and ($slug -in @('hardline-zero', 'crosspoint', 'proof-foundry-app') -and ($entry -match 'class="directory-availability directory-availability--none">No public installer<' -or $catalogHtml -match 'data-directory-group-note="Foundry systems">None of these has a public installer\.<') -and $entry -notmatch '<a\b'))
   Assert-Condition ($entry -match '<h3>[^<]+</h3>' -and $entry -match 'class="directory-purpose">[^<]+' -and $entry -match 'class="directory-state">[^<]+' -and $path) "$slug - directory entry has identity, purpose, availability and an exploration path (or declares none)"
 }
 # Owner decision (2026-11-05): the review-inventory history section is withheld; ProofShot's product history stays

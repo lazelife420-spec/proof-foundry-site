@@ -3660,8 +3660,6 @@ foreach ($pg in @('software.html','truth.html')) {
     $pgHtml = $pgHtml.Replace('<!-- @directory-entries -->', '<!-- @all-products -->')
     # The runtime header keeps its key bank under the nameplate; the public page's bank marker has no role here.
     $pgHtml = $pgHtml.Replace("<!-- @route-chain -->`n", '').Replace('<!-- @route-chain -->', '')
-    # Nor does it draw the Foundry systems' emblems, so the note about them has no place there.
-    $pgHtml = [regex]::Replace($pgHtml, '[ ]*<p class="directory-emblem-note">.*?</p>\r?\n?', '')
     $pgHtml = [regex]::Replace($pgHtml, '(?s)<section class="directory-systems.*?</section>', '')
     $pgHtml = [regex]::Replace($pgHtml, '(?s)<p data-directory-empty.*?</p>', '')
     $pgHtml = $pgHtml.Replace('<!-- @directory-records -->', '').Replace("<script>document.documentElement.classList.add('h9-software-js')</script>", '')

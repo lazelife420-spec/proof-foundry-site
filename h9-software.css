@@ -914,8 +914,5 @@ body.pf-directory-page main>.pf-route-chain{position:relative;padding-top:30px;b
 .pf-directory-grid:not(:has(.directory-entry[data-directory-group="Everyday software"]:not([hidden]))) .directory-group-note[data-directory-group-note="Everyday software"],
 .pf-directory-grid:not(:has(.directory-entry[data-directory-group="Foundry systems"]:not([hidden]))) .directory-group-note[data-directory-group-note="Foundry systems"]{display:none}
 @media (forced-colors:active){.pf-directory-grid>.directory-group-note{color:CanvasText}}
-/* The emblem note accompanies the emblems, as the image note accompanies the captures. */
-.pf-directory .directory-emblem-note{margin:22px 0 0;font-size:13px;line-height:1.6;color:#bfccc6}
-.pf-directory:has(.directory-entry[data-directory-group="Everyday software"]:not([hidden])) .directory-emblem-note{margin-top:4px}
-.pf-directory:not(:has(.directory-entry[data-directory-group="Foundry systems"]:not([hidden]))) .directory-emblem-note{display:none}
-@media (forced-colors:active){.pf-directory .directory-emblem-note{display:none}}
+/* A group where not every card has a page offers the pages that exist as plain links (visual verdict 2026-11-06). */
+.pf-directory-grid .directory-foot .directory-link{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:14px;line-height:1.4}

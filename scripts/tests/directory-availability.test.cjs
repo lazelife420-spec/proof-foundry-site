@@ -93,3 +93,26 @@ test('the finder searches the availability badge and states no product count at 
   const css = fs.readFileSync(path.join(root, 'h9-software.css'), 'utf8');
   assert.doesNotMatch(css, /\[data-directory-count\][^{]*\{[^}]*display:\s*none/);
 });
+
+// Visual verdict on 9fbdf92 (2026-11-06): in a group where not every card has a page, the pages that exist are offered as
+// plain links, so the cards without one read as complete informational listings rather than cards missing a button.
+test('a group where not every card has a page offers its pages as plain links, not buttons', () => {
+  const html = renderDirectory(editorial, model, truth, manifest, context).html;
+  const visible = editorial.entries.filter(e => e.visible);
+  const escape = s => s.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&');
+  for (const g of [...new Set(visible.map(e => e.group))]) {
+    const members = visible.filter(e => e.group === g), allLinked = members.every(e => e.destination);
+    for (const e of members) {
+      const card = cardOf(html, e.id);
+      if (!e.destination) { assert.doesNotMatch(card, /<a\b/, e.id); continue; }
+      assert.match(card, new RegExp('<a class="' + (allLinked ? 'button button-secondary' : 'text-link directory-link') + '" href="' + escape(e.destination) + '">'), e.id);
+    }
+  }
+  // Today: Reality Gate's page is a plain link and the five everyday products keep their buttons.
+  assert.match(cardOf(html, 'reality-gate'), /<a class="text-link directory-link" href="\/reality-gate\/">Explore Reality Gate /);
+  assert.equal((html.match(/<a class="button button-secondary"/g) || []).length, 5);
+  // Were every Foundry system to have a page, the group would offer buttons again.
+  const linked = JSON.parse(JSON.stringify(editorial));
+  for (const e of linked.entries) if (e.visible && e.group === 'Foundry systems' && !e.destination) e.destination = '/reality-gate/';
+  assert.match(cardOf(renderDirectory(linked, model, truth, manifest, context).html, 'crosspoint'), /<a class="button button-secondary" href="\/reality-gate\/">/);
+});

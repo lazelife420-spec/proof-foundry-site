@@ -426,6 +426,9 @@ function renderDirectory(input, model, releaseTruth, manifest, context) {
   // Owner decision 2026-11-06: where no card in a group has a public download, that is said once, under the group's
   // label, instead of the same badge on every card (four in a row made the systems look unfinished).
   const groupWithout=new Set(groups.filter(g=>entries.filter(e=>e.group===g).every(e=>!hasDownload(e.id))));
+  // Visual verdict 2026-11-06: in a group where not every card has a page, the pages that exist are plain links, so
+  // the cards without one read as complete informational listings, not cards missing a button.
+  const groupAllLinked=new Set(groups.filter(g=>entries.filter(e=>e.group===g).every(e=>e.destination)));
   // Owner decision 2026-11-05: each editorial group is introduced by its own name, so the Foundry systems read as
   // their own row. Labels are not entries; the finder hides a label whose group has no visible card (CSS :has).
   let previousGroup=null;
@@ -451,7 +454,7 @@ function renderDirectory(input, model, releaseTruth, manifest, context) {
     const availability=!publicDownload&&groupWithout.has(entry.group)?'':
       '<p class="directory-availability directory-availability--'+(publicDownload?'public':'none')+'">'+(publicDownload?'Public download':'No public installer')+'</p>';
     const media=entry.artwork?'<figure class="directory-art"><img src="'+esc(entry.artwork)+'" alt="'+esc(product?.presentation?.cardImageAlt||name+' artwork')+'" loading="lazy" width="960" height="540"/></figure>':'<div class="directory-no-art" aria-hidden="true"><i></i><i></i><i></i></div>';
-    const link=entry.destination?'<a class="button button-secondary" href="'+esc(entry.destination)+'">Explore '+esc(name)+' <span aria-hidden="true">↗</span></a>':'';
+    const link=!entry.destination?'':'<a class="'+(groupAllLinked.has(entry.group)?'button button-secondary':'text-link directory-link')+'" href="'+esc(entry.destination)+'">Explore '+esc(name)+' <span aria-hidden="true">↗</span></a>';
     return groupLabel+'<article class="directory-entry directory-entry--'+esc(entry.id)+'" data-directory-entry="'+esc(entry.id)+'" data-directory-group="'+esc(entry.group)+'" data-availability="'+(publicDownload?'download':'none')+'"'+(downloadPlatforms?' data-download-platforms="'+esc(downloadPlatforms)+'"':'')+'><header><p class="kicker">'+esc(entry.group)+'</p><h3>'+esc(name)+'</h3>'+availability+'<p class="directory-purpose">'+esc(entry.shortDescription)+'</p></header>'+media+'<div class="directory-foot"><p class="directory-state">'+esc(state)+'</p>'+(candidateNote?'<p class="directory-state-note">'+esc(candidateNote)+'</p>':'')+link+'</div></article>';
   }).join('');
   return {
