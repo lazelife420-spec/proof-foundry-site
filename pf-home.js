@@ -806,5 +806,14 @@ initProofChain();
     quickNav.addEventListener('focusout', (event) => {
       if (!wide.matches && quickNav.open && event.relatedTarget && !quickNav.contains(event.relatedTarget)) quickNav.open = false;
     });
+    // Following one of its links closes the phone menu (a modified click that opens a new tab does not) and returns
+    // focus to the Menu button, so Back from the back-forward cache shows it closed; a cached return re-syncs.
+    quickNav.addEventListener('click', (event) => {
+      if (wide.matches || !quickNav.open || event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey ||
+        event.shiftKey || event.altKey || !event.target.closest('nav a[href]')) return;
+      quickNav.open = false;
+      quickNav.querySelector('summary').focus({ preventScroll: true });
+    });
+    addEventListener('pageshow', (event) => { if (event.persisted) syncQuick(); });
   }
 }
