@@ -138,9 +138,14 @@ foreach ($module in $commerceModules) {
 Assert-Condition ($catalogHtml -match 'class="pf-directory-grid" id="directory-results"') "Products directory contains its filter-results grid"
 foreach ($slug in @('cache-vault', 'lights-out', 'cleanroom', 'ghostlayer', 'forgecast', 'hardline-zero', 'crosspoint', 'reality-gate', 'proof-foundry-app')) {
   $entry = [regex]::Match($catalogHtml, '(?s)<article\b[^>]*data-directory-entry="' + [regex]::Escape($slug) + '"[^>]*>.*?</article>').Value
-  Assert-Condition ($entry -match '<h3>[^<]+</h3>' -and $entry -match 'class="directory-purpose">[^<]+' -and $entry -match 'class="directory-state">[^<]+' -and $entry -match '<a class="button button-secondary" href="[^"]+">') "$slug - directory entry has identity, purpose, availability and an exploration path"
+  # Owner decision (2026-11-05): an internal system with no public page declares that instead of a link.
+  $path = ($entry -match '<a class="button button-secondary" href="[^"]+">') -or ($slug -in @('hardline-zero', 'crosspoint', 'proof-foundry-app') -and $entry -match 'class="directory-no-route">' -and $entry -notmatch '<a\b')
+  Assert-Condition ($entry -match '<h3>[^<]+</h3>' -and $entry -match 'class="directory-purpose">[^<]+' -and $entry -match 'class="directory-state">[^<]+' -and $path) "$slug - directory entry has identity, purpose, availability and an exploration path (or declares none)"
 }
-Assert-Condition ($catalogHtml -notmatch 'data-directory-entry="proofshot"' -and $catalogHtml -match 'id="portfolio-proofshot"' -and $catalogHtml -match 'href="/proofshot/">Read ProofShot' -and $catalogHtml -match 'href="/truth-files/proofshot/">Historical Truth File') "ProofShot is unfeatured but retains its historical product and Truth File paths"
+# Owner decision (2026-11-05): the review-inventory history section is withheld; ProofShot's product history stays
+# linked from the directory and its Truth File stays listed on /truth-files/.
+$truthFilesIndex = Get-Content (Join-Path $PublicDir 'truth-files\index.html') -Raw -Encoding UTF8
+Assert-Condition ($catalogHtml -notmatch 'data-directory-entry="proofshot"' -and $catalogHtml -match 'href="/proofshot/">Read ProofShot' -and $truthFilesIndex -match 'href="/truth-files/proofshot/"') "ProofShot is unfeatured but retains its product history path, and its Truth File stays listed"
 
 # Equal directory geometry belongs to h9-software.css, not unloaded studio.css.
 $directoryCss = [IO.File]::ReadAllText((Join-Path $PublicDir 'h9-software.css'))

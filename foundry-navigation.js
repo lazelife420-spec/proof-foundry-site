@@ -163,11 +163,14 @@
       const cards=[...document.querySelectorAll('[data-directory-entry]')];
       const query=finder.elements.query, group=finder.elements.group;
       const normalize=s=>s.normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+      // The finder searches a fixed text per card (group, name, purpose, state and note), read once, so a query's
+      // result never depends on which parts of a card are currently rendered.
+      const searchText=new Map(cards.map(card=>[card,normalize([card.dataset.directoryGroup||'',...[...card.querySelectorAll('h3,.directory-purpose,.directory-state,.directory-state-note')].map(e=>e.textContent)].join(' ').replace(/\s+/g,' '))]));
       const update=()=>{
         const terms=normalize(query.value).trim().split(/\s+/).filter(Boolean);
         let count=0;
         for (const card of cards) {
-          const match=(!group.value||card.dataset.directoryGroup===group.value)&&terms.every(t=>normalize(card.innerText).includes(t));
+          const match=(!group.value||card.dataset.directoryGroup===group.value)&&terms.every(t=>searchText.get(card).includes(t));
           card.hidden=!match;if(match)count++;
         }
         finder.querySelector('[data-directory-count]').textContent=count+' '+(count===1?'product':'products');

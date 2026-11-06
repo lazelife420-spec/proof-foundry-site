@@ -586,3 +586,87 @@
 /* CP-0185 P1: the image context note is stated once for the directory instead of on every card. */
 .directory-heading{flex-wrap:wrap}
 .pf-directory .directory-art-note{margin:22px 0 0;font-size:13px;line-height:1.6;color:#bfccc6}
+/* Products pass (owner decisions, 2026-11-05). The directory lists the public products first, then the Foundry systems as
+   a compact row of nameplates (each tool stays its own card, its name stamped into a recessed plate, no placeholder
+   letters). Each group is introduced by its editorial name. The review-inventory sections are withheld from this page. */
+.pf-directory-grid{grid-template-columns:repeat(12,minmax(0,1fr));gap:26px}
+.pf-directory-grid>.directory-entry{grid-column:span 4}
+.pf-directory-grid>.directory-group-label{grid-column:1/-1;display:flex;align-items:center;gap:16px;margin:0;font:600 13px/1.4 var(--pf-mono);letter-spacing:.12em;text-transform:uppercase;color:#d7c39b}
+.pf-directory-grid>.directory-group-label::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,#73867c,transparent)}
+.pf-directory-grid>.directory-group-label:not(:first-child){margin-top:24px}
+.pf-directory-grid:not(:has(.directory-entry[data-directory-group="Everyday software"]:not([hidden]))) .directory-group-label[data-directory-group-label="Everyday software"],
+.pf-directory-grid:not(:has(.directory-entry[data-directory-group="Foundry systems"]:not([hidden]))) .directory-group-label[data-directory-group-label="Foundry systems"]{display:none}
+/* Public product cards: the same content, a little less padding and no reserved empty lines. */
+.directory-entry>header{padding:22px 22px 14px}
+.directory-entry h3{margin:12px 0 10px}
+.directory-purpose{min-height:3.4em}
+.directory-state{min-height:0;margin-bottom:14px}
+.directory-foot{padding:18px 22px 22px}
+.directory-state-note{margin:-6px 0 14px;font-size:13px;line-height:1.55;color:#c7d4cc}
+/* Foundry systems: compact nameplate cards, four across. */
+.pf-directory-grid>.directory-entry[data-directory-group="Foundry systems"]{grid-column:span 3}
+.directory-entry[data-directory-group="Foundry systems"] :is(.directory-no-art,.directory-art,.kicker){display:none}
+.directory-entry[data-directory-group="Foundry systems"]>header{padding:24px 20px 6px}
+.directory-entry[data-directory-group="Foundry systems"] h3{margin:0 0 14px;padding:13px 14px 12px;font:700 15px/1.25 var(--pf-mono);letter-spacing:.1em;text-transform:uppercase;color:#e2dccb;
+ background:linear-gradient(180deg,rgba(0,0,0,.42),rgba(0,0,0,.2));border-radius:2px;
+ box-shadow:inset 0 1px 0 rgba(0,0,0,.85),inset 0 3px 6px rgba(0,0,0,.4),inset 0 -1px 0 rgba(255,255,255,.1);
+ text-shadow:0 -1px 0 rgba(0,0,0,.9),0 1px 0 rgba(255,255,255,.14)}
+.directory-entry[data-directory-group="Foundry systems"] .directory-purpose{min-height:0;font-size:14px;line-height:1.6}
+.directory-entry[data-directory-group="Foundry systems"] .directory-foot{padding:10px 20px 20px}
+.directory-entry[data-directory-group="Foundry systems"] .directory-no-route{margin:0;font:12px/1.6 var(--pf-mono);color:#b9c6bd}
+.pf-directory .directory-history-link{margin:10px 0 0;font-size:14px}
+@media(max-width:1100px){
+ .pf-directory-grid>.directory-entry,.pf-directory-grid>.directory-entry[data-directory-group="Foundry systems"]{grid-column:span 6}
+}
+@media(max-width:700px){
+ .pf-directory-grid{gap:20px}
+ .pf-directory-grid>.directory-entry{grid-column:1/-1}
+ .pf-directory-grid>.directory-entry[data-directory-group="Foundry systems"]{grid-column:span 6}
+ .directory-entry[data-directory-group="Foundry systems"]>header{padding:18px 14px 4px}
+ .directory-entry[data-directory-group="Foundry systems"] h3{font-size:13px;letter-spacing:.06em;padding:11px 10px 10px}
+ .directory-entry[data-directory-group="Foundry systems"] .directory-purpose{font-size:13px}
+ .directory-entry[data-directory-group="Foundry systems"] .directory-foot{padding:8px 14px 16px}
+}
+@media(max-width:420px){.pf-directory-grid>.directory-entry[data-directory-group="Foundry systems"]{grid-column:1/-1}}
+@media(forced-colors:active){
+ .directory-entry[data-directory-group="Foundry systems"] h3{background:Canvas;color:CanvasText;border:1px solid CanvasText;box-shadow:none;text-shadow:none}
+ .pf-directory-grid>.directory-group-label{color:CanvasText}.pf-directory-grid>.directory-group-label::after{background:CanvasText}
+}
+/* The group label now names the group, so the per-card kicker is not repeated. Phones: each product is a compact row,
+   name and purpose beside a small capture, with its status and action below. */
+.pf-directory-grid>.directory-entry .kicker{display:none}
+@media(max-width:700px){
+ .pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"]){display:grid;grid-template-columns:minmax(0,1fr) 128px;grid-template-rows:auto auto;align-items:start}
+ .pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"])[hidden]{display:none}
+ .pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"])>header{grid-column:1;grid-row:1;padding:20px 12px 8px 18px}
+ .pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"]) h3{font-size:24px;margin:4px 0 8px}
+ .pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"]) .directory-purpose{font-size:14px;line-height:1.55}
+ .pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"])>.directory-art{grid-column:2;grid-row:1;margin:20px 16px 0 0;padding:5px}
+ .pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"])>.directory-foot{grid-column:1/-1;grid-row:2;padding:10px 18px 18px}
+}
+/* Products pass, review round 1. */
+/* The release line reads first; the candidate note is quieter. */
+.directory-state{font-size:12px;color:#d3ddd5}
+.directory-state-note{font-size:13px;color:#aebbb3}
+/* Foundry systems: content sits at the top of the nameplate card; "no page" reads below the status. */
+.directory-entry[data-directory-group="Foundry systems"] .directory-foot{margin-top:0;padding-bottom:24px}
+.directory-entry[data-directory-group="Foundry systems"] .directory-no-route{font-size:11px;color:#aab8af}
+.directory-entry[data-directory-group="Foundry systems"] h3{text-transform:none;letter-spacing:.04em;font-size:16px;border:1px solid;border-color:#07090a #5a666d #5a666d #07090a}
+/* The image note only accompanies products that are shown. */
+.pf-directory:not(:has(.directory-entry[data-directory-group="Everyday software"]:not([hidden]))) .directory-art-note{display:none}
+/* Desktop: a tighter opening so the first product reaches the first screen; three columns down to 901px. */
+@media(min-width:701px){
+ .pf-directory-page .h9-software-hero{padding:30px 0 26px}
+ .pf-directory-page .h9-software-hero h1{font-size:clamp(40px,4vw,58px)}
+ .pf-directory .directory-heading{padding:16px 0}
+ .directory-finder{padding:18px 22px;margin-bottom:18px}
+}
+@media(min-width:901px) and (max-width:1100px){.pf-directory-grid>.directory-entry{grid-column:span 4}.pf-directory-grid>.directory-entry[data-directory-group="Foundry systems"]{grid-column:span 6}}
+@media(min-width:701px) and (max-width:900px){.pf-directory-grid>.directory-entry,.pf-directory-grid>.directory-entry[data-directory-group="Foundry systems"]{grid-column:span 6}}
+/* Phones: no reserved lines under one-line purposes, and a shorter action. */
+@media(max-width:700px){
+ .pf-directory-grid>.directory-entry .directory-purpose{min-height:0}
+ .pf-directory-grid>.directory-entry .directory-foot .button{min-height:42px;padding-block:10px}
+}
+/* The hero's decorative rule crossed the intro paragraph on the directory page (pre-existing); it is dropped here. */
+.pf-directory-page .h9-software-hero::before{display:none}

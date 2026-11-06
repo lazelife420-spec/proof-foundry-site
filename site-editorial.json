@@ -53,7 +53,7 @@
       "group": "Foundry systems",
       "shortDescription": "Keep the work contract visible across tools and agents.",
       "artwork": null,
-      "destination": "/software/#portfolio-hardline-zero"
+      "destination": null
     },
     {
       "id": "crosspoint",
@@ -62,7 +62,7 @@
       "group": "Foundry systems",
       "shortDescription": "Give every handoff a recipient, a state and a record.",
       "artwork": null,
-      "destination": "/software/#portfolio-crosspoint"
+      "destination": null
     },
     {
       "id": "reality-gate",
@@ -70,8 +70,8 @@
       "order": 80,
       "group": "Foundry systems",
       "shortDescription": "Connect a project, permitted execution and its evidence.",
-      "artwork": "/assets/studio/08-ci-run-complete-card-960.png",
-      "destination": "/software/#portfolio-reality-gate"
+      "artwork": null,
+      "destination": "/reality-gate/"
     },
     {
       "id": "proof-foundry-app",
@@ -80,7 +80,7 @@
       "group": "Foundry systems",
       "shortDescription": "A software library with the record attached.",
       "artwork": null,
-      "destination": "/software/#portfolio-proof-foundry-app"
+      "destination": null
     },
     {
       "id": "proofshot",

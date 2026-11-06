@@ -207,8 +207,9 @@ $rgScope = [regex]::Match($rgPage, '(?s)<details class="pp-sub" id="development-
 Assert-Condition ($rgPrivacy -and $rgPrivacy -notmatch 'MCP|8765' -and $rgScope -match '127\.0\.0\.1:8765') 'Reality Gate lists the MCP adapter under development scope, not the v1.1.0 privacy list'
 Assert-Condition ($rgPage -match 'Illustrative sample receipt: the hash values are placeholders, not from a real run\.' -and $rgPage -match 'artifactHashes entry is a placeholder') 'Reality Gate sample receipt is labelled as illustrative with placeholder hashes'
 Assert-Condition ($rgPage -match '<h2>What v1\.1\.0 did \(historical\)</h2>') 'Reality Gate capability section is historical and past tense'
-$rgSystem = [regex]::Match($softwarePage, '(?s)<article\b[^>]*data-preserved-system="portfolio-reality-gate"[^>]*>.*?</article>').Value
-Assert-Condition ($rgDirectory -match 'href="/software/#portfolio-reality-gate"' -and $rgDirectory -notmatch 'compare-choice|data-compare=|href="https://downloads\.' -and $rgSystem -match 'Withdrawn; do not distribute' -and $rgSystem -match 'no public successor is established' -and $rgSystem -match 'href="/reality-gate/"') 'Software Reality Gate entry opens its scoped internal/historical record, not acquisition or Compare'
+# Owner decision (2026-11-05): the review-inventory sections (systems records, release context, preserved history) are
+# withheld from the public Products page. Reality Gate's card states its withdrawal and opens its own historical page.
+Assert-Condition ($rgDirectory -match 'href="/reality-gate/"' -and $rgDirectory -match 'Public v1\.1\.0 is withdrawn; no public successor is established\.' -and $rgDirectory -notmatch 'compare-choice|data-compare=|href="https://downloads\.' -and $softwarePage -notmatch 'data-preserved-system=|class="directory-systems|Release context|pf-portfolio-channel|Evidence: ') 'Software Reality Gate entry opens its historical page, not acquisition or Compare, and no review-inventory section is published'
 $rgSource = @((Get-Content $manifestPath -Raw -Encoding UTF8 | ConvertFrom-Json).products | Where-Object { $_.id -eq 'reality-gate' })[0]
 Assert-Condition ($null -eq $rgSource.PSObject.Properties['featured'] -and $rgSource.proofStatus -eq 'withdrawn · historical record' -and $rgPage -match '<strong>Proof</strong> withdrawn · historical record' -and $rgPage -notmatch '<strong>Proof</strong> verified') 'Reality Gate carries no inert featured flag and no "Proof verified" pill'
 $rgProofDesc = [regex]::Match($rgProof, '(?s)<article class="receipt-card" id="receipt-reality-gate".*?<p class="build-desc">(.*?)</p>').Groups[1].Value
@@ -299,11 +300,12 @@ $crSupport = [regex]::Match($supportPage, '(?s)<article class="detail-card">\s*<
 $crRoadmap = [regex]::Match($roadmapPage, '(?s)<article>\s*<div>\s*<p class="kicker">[^<]*</p>\s*<h2><a href="/cleanroom/">.*?</article>').Value
 $crMissing = @()
 if (([regex]::Matches($crPage, [regex]::Escape($crExpected))).Count -lt 6) { $crMissing += '/cleanroom/' }   # meta, og, download, update, established, release note
-if (-not ($crCard -match 'Windows · v1\.0\.7 · newer GitHub version unreconciled' -and $crCard -match 'href="/cleanroom/"' -and $softwarePage -match 'Website v1\.0\.7 and published GitHub v1\.0\.10 remain unreconciled\. No promotion is proposed\.')) { $crMissing += '/software/' }
+# Owner decision (2026-11-05): the directory states the candidate with the site's approved on-hold sentence.
+if (-not ($crCard -match 'Windows · v1\.0\.7' -and $crCard.Contains($crExpected) -and $crCard -match 'href="/cleanroom/"' -and $softwarePage -notmatch 'unreconciled')) { $crMissing += '/software/' }
 if (-not $crSupport.Contains($crExpected)) { $crMissing += '/support/' }
 if (-not $crRoadmap.Contains($crExpected) -or $crRoadmap -match '\bNext\b') { $crMissing += '/roadmap/' }
 if (-not $crTf.Contains('<span class="tf-sub">' + $crExpected + '</span>')) { $crMissing += '/truth-files/cleanroom/' }
-Assert-Condition ($crMissing.Count -eq 0) "K4: Cleanroom candidate surfaces retain the exact on-hold status; directory keeps v1.0.7 current and marks the newer GitHub version unreconciled ($($crMissing -join ', '))"
+Assert-Condition ($crMissing.Count -eq 0) "K4: Cleanroom candidate surfaces retain the exact on-hold status; directory keeps v1.0.7 current and states the on-hold candidate ($($crMissing -join ', '))"
 # R5 no second candidate wording anywhere
 $k4Second = @(Get-ChildItem -LiteralPath $publicDir -Recurse -Filter '*.html' | Where-Object { (Get-Content $_.FullName -Raw -Encoding UTF8) -match '(?i)next build|in evaluation|newer verified release|v1\.0\.10\)? (?:is )?in progress|work on v1\.0\.10' } | ForEach-Object { $_.Name })
 Assert-Condition ($k4Second.Count -eq 0) "K4: no second Cleanroom candidate wording (next build, in progress, in evaluation, newer verified release) remains ($($k4Second -join ', '))"

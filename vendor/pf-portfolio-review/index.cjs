@@ -419,7 +419,12 @@ function renderDirectory(input, model, releaseTruth, manifest, context) {
   const products=new Map(manifest.products.map(p=>[p.id,p]));
   const releases=new Map(releaseTruth.products.map(p=>[p.id,p]));
   const groups=[...new Set(entries.map(e=>e.group))];
+  // Owner decision 2026-11-05: each editorial group is introduced by its own name, so the Foundry systems read as
+  // their own row. Labels are not entries; the finder hides a label whose group has no visible card (CSS :has).
+  let previousGroup=null;
   const html=entries.map(entry=>{
+    const groupLabel=entry.group!==previousGroup?'<p class="directory-group-label" role="heading" aria-level="3" data-directory-group-label="'+esc(entry.group)+'">'+esc(entry.group)+'</p>':'';
+    previousGroup=entry.group;
     const identity=identities.get(entry.id), product=products.get(entry.id), release=releases.get(entry.id);
     const name=entry.id==='crosspoint'?'CrossPoint':identity.name;
     const channels=release?.channels.filter(c=>c.track==='PUBLIC')||[];
@@ -427,10 +432,13 @@ function renderDirectory(input, model, releaseTruth, manifest, context) {
     let state=released.length?released.map(c=>c.platform[0].toUpperCase()+c.platform.slice(1)+' · v'+c.version+
       (c.artifacts.some(a=>a.downloadUrl)?'':' · not offered here')).join(' / '):'Internal product · no public installer';
     if (entry.id==='reality-gate') state='Internal development · public v1.1.0 withdrawn';
-    if (entry.id==='cleanroom') state+=' · newer GitHub version unreconciled';
-    const media=entry.artwork?'<figure class="directory-art"><img src="'+esc(entry.artwork)+'" alt="'+esc(product?.presentation?.cardImageAlt||name+' artwork')+'" loading="lazy" width="960" height="540"/></figure>':'<div class="directory-no-art" aria-hidden="true"><span>'+esc(entry.id==='hardline-zero'?'HLZ':entry.id==='crosspoint'?'CP':'PF')+'</span><i></i><i></i><i></i></div>';
+    // Owner decision 2026-11-05: a pending candidate is stated with the site's approved candidate sentence.
+    let candidateNote=String(product?.candidateStatus||product?.presentation?.candidateStatus||'');
+    // Reality Gate keeps its no-successor fact on its card (the same sentence its withheld record carried).
+    if (entry.id==='reality-gate') candidateNote='Public v1.1.0 is withdrawn; no public successor is established.';
+    const media=entry.artwork?'<figure class="directory-art"><img src="'+esc(entry.artwork)+'" alt="'+esc(product?.presentation?.cardImageAlt||name+' artwork')+'" loading="lazy" width="960" height="540"/></figure>':'<div class="directory-no-art" aria-hidden="true"><i></i><i></i><i></i></div>';
     const link=entry.destination?'<a class="button button-secondary" href="'+esc(entry.destination)+'">Explore '+esc(name)+' <span aria-hidden="true">↗</span></a>':'<p class="directory-no-route">Product page not yet available.</p>';
-    return '<article class="directory-entry directory-entry--'+esc(entry.id)+'" data-directory-entry="'+esc(entry.id)+'" data-directory-group="'+esc(entry.group)+'"><header><p class="kicker">'+esc(entry.group)+'</p><h3>'+esc(name)+'</h3><p class="directory-purpose">'+esc(entry.shortDescription)+'</p></header>'+media+'<div class="directory-foot"><p class="directory-state">'+esc(state)+'</p>'+link+'</div></article>';
+    return groupLabel+'<article class="directory-entry directory-entry--'+esc(entry.id)+'" data-directory-entry="'+esc(entry.id)+'" data-directory-group="'+esc(entry.group)+'"><header><p class="kicker">'+esc(entry.group)+'</p><h3>'+esc(name)+'</h3><p class="directory-purpose">'+esc(entry.shortDescription)+'</p></header>'+media+'<div class="directory-foot"><p class="directory-state">'+esc(state)+'</p>'+(candidateNote?'<p class="directory-state-note">'+esc(candidateNote)+'</p>':'')+link+'</div></article>';
   }).join('');
   return {
     count:entries.length,
