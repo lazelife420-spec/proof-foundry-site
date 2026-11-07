@@ -3663,6 +3663,9 @@ foreach ($pg in @('software.html','truth.html')) {
     $pgHtml = [regex]::Replace($pgHtml, '(?s)<section class="directory-systems.*?</section>', '')
     $pgHtml = [regex]::Replace($pgHtml, '(?s)<p data-directory-empty.*?</p>', '')
     $pgHtml = $pgHtml.Replace('<!-- @directory-records -->', '').Replace("<script>document.documentElement.classList.add('h9-software-js')</script>", '')
+    # A product link in the catalog shell stays in the shadow lane, as the runtime's own card and navigation links do
+    # (Gate 1 on 4c4e6a4: the ProofShot history link sent shadow visitors to the public /proofshot/).
+    foreach ($shadowModule in $productRegistry) { $pgHtml = $pgHtml.Replace('href="/' + $shadowModule.id + '/"', 'href="/__h14/' + $shadowModule.id + '/"') }
   }
   foreach ($assetName in @('styles.css','studio.css','experience.css','signature.css','product-page.css','site.js','experience.js','h9-homepage.css','h9-software.css','h9-homepage.js','h9-software.js')) {
     $assetPath = Join-Path $root $assetName
