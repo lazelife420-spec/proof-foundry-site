@@ -29,8 +29,8 @@ function fixture() {
 test('website authority uses the remotely preserved seven-product model and exact website projection', () => {
   const result = readAuthoredInputs();
   assert.equal(result.manifest.products.length, 7);
-  assert.equal(result.projection.modelSha256, 'c1a57e8f4c3c5cbe5a658d4dcbfe44186de08dee7fdc60b92cfff544b901441b');
-  assert.equal(crypto.createHash('sha256').update(result.projectionBytes).digest('hex'), 'e4279a614a44aa8e23bbb9aa7aad90f28ff215265cc70d42313f55a7d142ef47');
+  assert.equal(result.projection.modelSha256, 'd0a2c17539123dc65067b8e2a9b9edcd2fa4269e708c42694d00691b2aaaa89a');
+  assert.equal(crypto.createHash('sha256').update(result.projectionBytes).digest('hex'), '720728e20e175b049c40bef6ce27a0703905787dcde29cb1f3be433d0074bf0e');
   assert.equal(result.provenance.mode, 'WEBSITE_SOURCE_AUTHORITY');
   assert.equal(result.provenance.foundationAuthorityScope, 'HISTORICAL_RECONCILIATION_SNAPSHOT');
 });

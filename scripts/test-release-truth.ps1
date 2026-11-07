@@ -272,7 +272,7 @@ $rec = @{}; foreach ($p in @($manifest.products)) { $rec[[string]$p.id] = $p }
 $k4Pills = [ordered]@{
   'cache-vault' = "SHA-256 published $dot hosted CI failed"; 'lights-out' = "First-party qualification $dot unsigned"
   'cleanroom' = "SHA-256 published $dot no release receipt"; 'ghostlayer' = "Owner-stamped receipt $dot unsigned"
-  'forgecast' = "SHA-256 published $dot production-signed APK"; 'proofshot' = "Licensing finding open $dot unsigned" }
+  'forgecast' = "SHA-256 published $dot signed Android APK $([char]0x2014) production signing identity not yet established"; 'proofshot' = "Licensing finding open $dot unsigned" }
 $pillProblems = @()
 foreach ($p in @($manifest.products | Where-Object { $_.visible })) {
   $page = Get-Content (Join-Path $publicDir ($p.route.Trim('/') + '\index.html')) -Raw -Encoding UTF8

@@ -358,12 +358,12 @@
         "evidenceClass": { "ARTIFACT_CUSTODY": "NONE", "RUNTIME_VALIDATION": "NONE", "REALITY_GATE": "NONE" }
       },
       "downloadLabel": "Download v0.3.5 (APK)",
-      "distType": "Android APK Package (private production signing identity)",
-      "build": "Android APK (v0.3.5 release build, private ForgeCast signing identity)",
+      "distType": "Android APK Package (production signing identity not yet verified)",
+      "build": "Android APK (v0.3.5 release build, signed; production signing identity not yet verified)",
       "testStatus": "1110/1110",
       "testCount": "1110/1110",
       "releaseNote": "Public release v0.3.5 (Android APK). Adds Ask ForgeCast (deterministic weather-decision answers with evidence, no cloud chatbot), condition- and timing-aware Wear/Bring clothing guidance, dynamic decision widgets (Best Window, Wear/Bring, rain and cooling changes ahead, honest stale state), a forecast-aware Ask discovery strip with screen-reader support, and Samsung OneUI widget reliability (native cached-bitmap restore after reboot or background freezing). Upgrading from v0.3.4 keeps settings and data (verified on device); upgrading from v0.3.3 or earlier requires uninstall/reinstall. Served via Proof Foundry distribution; the same bytes are attached to the v0.3.5 GitHub release.",
-      "proofStatus": "SHA-256 published · production-signed APK",
+      "proofStatus": "SHA-256 published · signed Android APK — production signing identity not yet established",
       "proofLinks": [
         "https://downloads.theprooffoundry.com/forgecast/v0.3.5/ForgeCast-Weather-v0.3.5-android-release.apk.sha256.txt"
       ],

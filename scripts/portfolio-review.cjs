@@ -9,7 +9,7 @@ if (process.argv.length!==2 && !verifyOnly) throw new Error('Only the bounded ge
 const root = path.resolve(__dirname, '..');
 const bytes = fs.readFileSync(path.join(root, 'portfolio-review.json'));
 const sha = b => crypto.createHash('sha256').update(b).digest('hex');
-if (sha(bytes) !== 'ee22ac607237a0d4deb87e72b33ba677d2bc7ec4df50c0cb9e295f1f6bd3aac1') throw new Error('Reviewed discovery input changed');
+if (sha(bytes) !== 'eb15fba30cb8fbe1c1675e4ec4be13b3c3980d2361c12aaa1ec98dc796f679b9') throw new Error('Reviewed discovery input changed');
 const model = JSON.parse(bytes);
 if (sha(fs.readFileSync(path.join(root, 'release-truth.json'))) !== model.websiteReleaseTruthSha256)
   throw new Error('Website release authority drift; do not reconcile automatically');

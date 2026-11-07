@@ -2031,7 +2031,7 @@ function Build-TruthFileShell($module, $source) {
   }
   $artIndex = 0
   foreach ($a in @($p.artifacts)) {
-    $sign = if ($a.signingStatus -eq 'PRODUCTION_SIGNED') { 'Production-signed' } elseif ($a.signingStatus -eq 'DEBUG_SIGNED') { 'Debug-signed' } else { 'Unsigned' }
+    $sign = if ($a.signingStatus -eq 'PRODUCTION_SIGNED') { if ($p.id -eq 'forgecast') { 'Signed' } else { 'Production-signed' } } elseif ($a.signingStatus -eq 'DEBUG_SIGNED') { 'Debug-signed' } else { 'Unsigned' }
     # Full 64-hex digest, wrapped (forged-continuity R1: record room shows complete, copyable hashes; the 16-char prefix remains a substring so test-truth-files.ps1:62 still matches)
     $artNote = 'SHA-256 <code class="inline tf-sha">' + (Html-Attr $a.sha256) + '</code> · ' + (Html-Attr $sign)
     if ($a.distType) { $artNote += ' · ' + (Html-Attr $a.distType) }

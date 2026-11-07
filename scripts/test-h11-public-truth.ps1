@@ -176,8 +176,12 @@ Assert-Truth ($LASTEXITCODE -eq 0 -and $homeMaterialDate -match '^\d{4}-\d{2}-\d
 # the same dates from their material-input history.
 # 2026-11-06 Products storefront pass: /software/ moved (availability selector,
 # Foundry systems emblems, section menu); its literal moves with its sitemap date.
+# 2026-11-06 ForgeCast signing wording (owner HOLD, PRODUCTION_SIGNER_INTENT =
+# NOT_ESTABLISHED): /proof/ moved (ForgeCast build line no longer names a
+# production signing identity); / (Home) moved via ForgeCast homepage card;
+# their literals move with their sitemap dates.
 $reconciledLastmod = @{
-  'https://theprooffoundry.com/' = (@($homeMaterialDate, '2026-10-20') | Sort-Object | Select-Object -Last 1)
+  'https://theprooffoundry.com/' = (@($homeMaterialDate, '2026-11-06') | Sort-Object | Select-Object -Last 1)
   'https://theprooffoundry.com/about/' = '2026-11-05'
   'https://theprooffoundry.com/cache-vault/' = '2026-11-01'
   'https://theprooffoundry.com/lights-out/' = '2026-11-01'
@@ -186,7 +190,7 @@ $reconciledLastmod = @{
   'https://theprooffoundry.com/roadmap/' = '2026-10-25'
   'https://theprooffoundry.com/software/' = '2026-11-06'
   'https://theprooffoundry.com/support/' = '2026-11-05'
-  'https://theprooffoundry.com/proof/' = '2026-11-05'
+  'https://theprooffoundry.com/proof/' = '2026-11-06'
   'https://theprooffoundry.com/truth-files/' = '2026-11-05'
 }
 foreach ($kv in $headLastmod.GetEnumerator()) {

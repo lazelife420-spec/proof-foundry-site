@@ -390,7 +390,7 @@
               "downloadUrl": "https://downloads.theprooffoundry.com/forgecast/v0.3.5/ForgeCast-Weather-v0.3.5-android-release.apk",
               "sha256Url": "https://downloads.theprooffoundry.com/forgecast/v0.3.5/ForgeCast-Weather-v0.3.5-android-release.apk.sha256.txt",
               "signingStatus": "PRODUCTION_SIGNED",
-              "distributionType": "Android APK Package (private production signing identity)",
+              "distributionType": "Android APK Package (production signing identity not yet verified)",
               "sourcePlatform": "Android"
             }
           ],
