@@ -29,6 +29,7 @@
 
 [CmdletBinding()]
 param(
+  [switch]$PreviewHeroEmblem,
   [switch]$ValidateOnly,
   # Build/validate against an alternate manifest and/or output directory. Lets the
   # invariant tests exercise fixture data without ever writing to the canonical
@@ -3219,26 +3220,10 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
 
   # Inject partials
   $html = $html -replace '<!--\s*@include header\s*-->', $header
-  # CP-0185 Home Option A (owner decision, 2026-11-05): a template that carries the route-chain marker gets the
-  # six-key bank there, after its hero, in the document as well as on screen, so keyboard order matches what is
-  # seen. Its nameplate then carries a compact section menu built from the same six keys, so every destination
-  # stays one tap away before the visitor scrolls. Every other page keeps the bank under its nameplate.
-  # Products (owner decision, 2026-11-06) carries the marker after its listings, so product discovery leads the page.
-  if ($html.Contains('<!-- @route-chain -->')) {
-    $chainMatch = [regex]::Match($html, '(?s)<nav class="pf-route-chain\b.*?</nav>')
-    if (-not $chainMatch.Success) { throw "$srcName carries <!-- @route-chain --> but its header has no key bank." }
-    $html = $html.Remove($chainMatch.Index, $chainMatch.Length)
-    $html = $html.Replace('<!-- @route-chain -->', $chainMatch.Value)
-    $quickKeys = @([regex]::Matches($chainMatch.Value, '<a href="([^"]+)"[^>]*><span class="pf-chain-station"[^>]*>[^<]*</span><span>([^<]+)</span></a>'))
-    if ($quickKeys.Count -ne 6) { throw "Quick menu: expected the six keys, found $($quickKeys.Count)." }
-    # The page's own key is current: index.html is Home, any other template is its own route (software.html is /software/).
-    $quickCurrent = if ($srcName -eq 'index.html') { '/' } else { '/' + [IO.Path]::GetFileNameWithoutExtension($srcName) + '/' }
-    $quickItems = ($quickKeys | ForEach-Object { $cur = if ($_.Groups[1].Value -eq $quickCurrent) { ' aria-current="page"' } else { '' }; "<li><a href=`"$($_.Groups[1].Value)`"$cur>$($_.Groups[2].Value)</a></li>" }) -join ''
-    $quickNav = "<details class=`"pf-quicknav`" data-quicknav><summary>Menu</summary><nav aria-label=`"Site sections`"><ul>$quickItems</ul></nav></details>"
-    $makerNote = [regex]::Match($html, '(?s)<p class="header-maker-note">.*?</p>')
-    if (-not $makerNote.Success) { throw "$($srcName): the nameplate has no maker note to place the quick menu after." }
-    $html = $html.Insert($makerNote.Index + $makerNote.Length, $quickNav)
-  }
+  # CP-0185 (owner directive, 2026-11-07): Unify welded navigation across all 6 pages.
+  # The canonical welded six-key chain navigation (pf-route-chain) sits consistently
+  # under the header on all six pages. No quicknav menu is injected.
+  $html = $html.Replace('<!-- @route-chain -->', '')
   $html = $html -replace '<!--\s*@include footer\s*-->', $footer
   $html = $html -replace '<!--\s*@include compact-footer\s*-->', $footer
 
@@ -3558,8 +3543,17 @@ $compatDocument | Add-Member -NotePropertyName generatedFrom -NotePropertyValue 
 $compatManifest = $compatDocument | ConvertTo-Json -Depth 100
 [IO.File]::WriteAllText((Join-Path $publicDir 'site-manifest.json'), ($compatManifest + "
 "), $noBom)
-Copy-Item (Join-Path $root 'brand')  $publicDir -Recurse -Force
+if (Test-Path (Join-Path $publicDir 'brand')) { Remove-Item (Join-Path $publicDir 'brand') -Recurse -Force }
+Copy-Item (Join-Path $root 'brand') $publicDir -Recurse -Force
+if (Test-Path (Join-Path $publicDir 'assets')) { Remove-Item (Join-Path $publicDir 'assets') -Recurse -Force }
 Copy-Item (Join-Path $root 'assets') $publicDir -Recurse -Force
+# CP-0185 (owner directive 2026-11-07): Preview-only integration of repaired B+C on website hero
+if ($PreviewHeroEmblem) {
+  $previewHero460 = Join-Path $root 'review/main-finish/mark-g-candidates/refined_bc_hero_460.webp'
+  $previewHero920 = Join-Path $root 'review/main-finish/mark-g-candidates/refined_bc_hero_920.webp'
+  if (Test-Path $previewHero460) { Copy-Item $previewHero460 (Join-Path $publicDir 'brand/emblem/PF_MARK_G_TI_460.webp') -Force }
+  if (Test-Path $previewHero920) { Copy-Item $previewHero920 (Join-Path $publicDir 'brand/emblem/PF_MARK_G_TI_920.webp') -Force }
+}
 
 # Module-local packaging: products/<id>/logo.svg + media/ are published under
 # a deterministic, product-scoped asset path. SVG is accepted only as a passive

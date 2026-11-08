@@ -2,30 +2,33 @@
 @view-transition {
   navigation:auto
 }
-/* Sequential, never simultaneous: the departing page clears to the page
-   surface before the arriving page appears, so no frame shows text from both
-   documents. Whole-page snapshots are never clipped by a moving edge. */
+/* Blackout-free document travel: the departing page remains 100% visible
+   underneath while the arriving page dissolves in over top (180ms), ensuring
+   the document canvas is never empty and eliminating navigation flash. */
 html[data-travel=on]::view-transition {
-  background:#0b0f14
+  background:transparent
 }
 html[data-travel=on]::view-transition-group(root) {
   animation:none
 }
 html[data-travel=on]::view-transition-old(root) {
-  animation:foundry-depart 360ms linear both;
+  animation:none;
   mix-blend-mode:normal
 }
 html[data-travel=on]::view-transition-new(root) {
-  animation:foundry-arrive 360ms linear both;
+  animation:foundry-arrive 180ms ease-out both;
   mix-blend-mode:normal
 }
-@keyframes foundry-depart {
-  0% {opacity:1}
-  40%,100% {opacity:0}
-}
 @keyframes foundry-arrive {
-  0%,55% {opacity:0}
+  0% {opacity:0}
   100% {opacity:1}
+}
+@media (prefers-reduced-motion:reduce) {
+  html[data-travel]::view-transition-group(*),
+  html[data-travel]::view-transition-old(*),
+  html[data-travel]::view-transition-new(*) {
+    animation:none!important
+  }
 }
 /* Shared chrome is identical on every page: show the destination copy at
    once and hold it in place for the whole journey. */
