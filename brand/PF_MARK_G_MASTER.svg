@@ -1,7 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Proof Foundry PF mark">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Proof Foundry PF mark (Refined B+C)">
   <g fill="none" stroke-linejoin="miter">
+    <!-- Canonical Path 1: Silver P with untouched inner counter opening -->
     <path d="M42 34H116C157 34 181 56 181 91C181 126 157 148 116 148H82V222H42V34ZM82 70V112H115C132 112 141 104 141 91C141 78 132 70 115 70H82Z" fill="#F4F0E8"/>
+    <!-- Canonical Path 2: Proud Champagne-Gold F with continuous unbroken vertical stem -->
     <path d="M146 34H226V72H186V106H218V143H186V222H146V34Z" fill="#D6A84F"/>
-    <path d="M138 70H186V106H138Z" fill="#F4F0E8" opacity=".96"/>
+    <!-- Canonical Path 3: Refined Recessed Titanium Key Bridge (3.00 SVG units clearance, filleted corners, cold press-fit joint) -->
+    <path d="M145.5 76H146V104H145.5C144.6 104 144.0 103.4 144.0 102.5V77.5C144.0 76.6 144.6 76 145.5 76Z" fill="#E2DDD5" opacity=".95"/>
+    <!-- Decorative primitive: Restrained Brass Record Inlay along lower edge of key -->
+    <line x1="145" y1="102" x2="146" y2="102" stroke="#D6A84F" stroke-width="1.5" stroke-linecap="round"/>
   </g>
 </svg>

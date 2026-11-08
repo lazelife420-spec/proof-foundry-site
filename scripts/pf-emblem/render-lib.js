@@ -16,7 +16,7 @@ window.PFRender = (() => {
   // ---------------------------------------------------------------- canonical PF Mark G (do not edit)
   const P_PATH = 'M42 34H116C157 34 181 56 181 91C181 126 157 148 116 148H82V222H42V34ZM82 70V112H115C132 112 141 104 141 91C141 78 132 70 115 70H82Z';
   const F_PATH = 'M146 34H226V72H186V106H218V143H186V222H146V34Z';
-  const B_PATH = 'M138 70H186V106H138Z';
+  const B_PATH = 'M145.5 76H146V104H145.5C144.6 104 144.0 103.4 144.0 102.5V77.5C144.0 76.6 144.6 76 145.5 76Z';
   const LT = { tx: 26.16, ty: 30.72, s: 0.76 };             // canonical -> seal floor
   const lt = (g) => { g.translate(LT.tx, LT.ty); g.scale(LT.s, LT.s); };
 

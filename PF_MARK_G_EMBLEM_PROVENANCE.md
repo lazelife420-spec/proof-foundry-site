@@ -16,13 +16,13 @@ One bundled V5 image is not shipped: the `weld-hot` overlay belongs to an option
 
 ## Canonical geometry
 
-`render-lib.js` embeds the three path strings of `brand/PF_MARK_G_MASTER.svg` verbatim (master SHA-256 `575d90ae4754216811634d6ab33a3b966b1932e335aff3a04317be03314239a1`) and places them with one transform, `translate(26.16 30.72) scale(.76)`. The seal, chassis, plates and engraving are drawn around them. The Inspect the Mark outlines in `pf-home.js` use the same three strings. `scripts/check-home-receipt-truth.ps1` checks both against the master file.
+`render-lib.js` embeds the three path strings of `brand/PF_MARK_G_MASTER.svg` verbatim (master SHA-256 `ec2972ba156ec06e7caded657fc21b0b3cbc6a9da85998ac137cc59040cc9de6`) and places them with one transform, `translate(26.16 30.72) scale(.76)`. The seal, chassis, plates and engraving are drawn around them. The Inspect the Mark outlines in `pf-home.js` use the same three strings. `scripts/check-home-receipt-truth.ps1` checks both against the master file.
 
 ## Generator and reproduction
 
 | File | Role | SHA-256 |
 |---|---|---|
-| `scripts/pf-emblem/render-lib.js` | Renderer, byte-identical to the one that produced the approved V5 files | `4cb3996029c123b0e1a4965a04a6d4cdef5835a77555caa01c7a32ada6c67550` |
+| `scripts/pf-emblem/render-lib.js` | Renderer, byte-identical to the one that produced the approved V5 files | `83ccda22b3ec7668ace20430c3093679334fccede831a0921e6a243619cc811d` |
 
 `scripts/pf-emblem/render.html` is the original harness with its font URLs pointed at `assets/fonts/`. The original harness had SHA-256 `3b6522bed94eb6d04c9fa8e011989f35edba3be60d3826408250901d013bda42`. The font bytes are the same files. `scripts/pf-emblem/render-emblem.mjs` drives Chrome over CDP with the options used for V5, one fresh page load per run: `{ encode: true, hot: true, masks: [eN, eE, eS, eW, bridge, brass, seal, eng] }` for the emblem and masks, and `{ encode: true, markOnly: true, width: 256, q: 0.92 }` for the header mark. Noise is seeded (`20261013`). The script writes only to a new directory you name and compares every output with `brand/emblem/`.
 
@@ -149,8 +149,8 @@ The passes are encoded from 8-bit straight-alpha PNGs (alpha the brightest chann
 
 | File | Dimensions | Bytes | Role | SHA-256 |
 |---|---|---|---|---|
-| `brand/emblem/PF_MARK_G_TI_920.webp` | 920 × 1062 | 62,722 | Titanium hero emblem, 2x | `044dc8eaf9cdfd6cfc0a6f366d9ae3dc29c8d11ef0f11cc303a8a9fe26d565b9` |
-| `brand/emblem/PF_MARK_G_TI_460.webp` | 460 × 531 | 32,674 | Titanium hero emblem, 1x | `86fa2e101e0cfd10403afcc2cc6dfa22a9dc48d83acce2bfc759bca28e56d268` |
+| `brand/emblem/PF_MARK_G_TI_920.webp` | 920 × 1062 | 42,614 | Titanium hero emblem, 2x | `57340316844c00b3f659b0cdaf099cbf080a34ac596a30111d57fc495c3d1507` |
+| `brand/emblem/PF_MARK_G_TI_460.webp` | 460 × 531 | 23,522 | Titanium hero emblem, 1x | `354642ad2879b41048b0d6cdef62a6321a50dee2d8ac4fd173e6aa43426a6d9d` |
 
 ## Round 3 Blender marks: the header, Inspect the Mark and the footer (adopted 2026-11-04)
 

@@ -7,7 +7,7 @@
 </defs>
 <path d="M42 34H116C157 34 181 56 181 91C181 126 157 148 116 148H82V222H42V34ZM82 70V112H115C132 112 141 104 141 91C141 78 132 70 115 70H82Z" fill="url(#steel)" stroke="#1c1714" stroke-width="4" filter="url(#rough)"/>
 <path d="M146 34H226V72H186V106H218V143H186V222H146V34Z" fill="url(#fire)" stroke="#25170e" stroke-width="4" filter="url(#rough)"/>
-<path d="M138 70H186V106H138Z" fill="#f0e2cb" opacity=".92"/>
+<path d="M145.5 76H146V104H145.5C144.6 104 144.0 103.4 144.0 102.5V77.5C144.0 76.6 144.6 76 145.5 76Z" fill="#f0e2cb" opacity=".92"/>
 <path d="M150 38L222 38" stroke="#ffb54a" stroke-width="3" opacity=".72" filter="url(#glow)"/>
 <path d="M48 38L112 38" stroke="#f7d7a1" stroke-width="2" opacity=".4"/>
 </svg>

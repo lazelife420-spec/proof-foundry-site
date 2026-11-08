@@ -86,14 +86,12 @@ $normalizeHeader = { param($h) (([regex]::Match($h, '(?s)<header class="site-hea
 # section's key as aria-current="true" (Products for a product page, Proof for the release records).
 $currentKeys = { param($h) @([regex]::Matches([regex]::Match($h, '(?s)<nav class="pf-route-chain.*?</nav>').Value, '<a href="([^"]+)" aria-current="([a-z]+)"') | ForEach-Object { $_.Groups[1].Value + ' ' + $_.Groups[2].Value }) -join ', ' }
 # The parity check strips the current marker, so the header and chain must carry exactly that one marker.
-# CP-0185 Home Option A (owner decision, 2026-11-05): Home's key bank follows its hero, and its nameplate carries a
-# compact section menu. Home's shared chrome is therefore its nameplate without that menu, followed by its key bank.
-$homeQuick = [regex]::Match($homeHtml, '(?s)<details class="pf-quicknav"[^>]*>.*?</details>').Value
-$homeChrome = ([regex]::Match($homeHtml, '(?s)<header class="site-header".*?</header>').Value.Replace($homeQuick, '')) + "`n" + [regex]::Match($homeHtml, '(?s)<nav class="pf-route-chain.*?</nav>').Value
-# Products (owner decision, 2026-11-06) takes the same arrangement: its listings come before its key bank, and its
-# nameplate carries the same compact menu with Products current. Its shared chrome is read the same way as Home's.
-$softwareQuick = [regex]::Match($software, '(?s)<details class="pf-quicknav"[^>]*>.*?</details>').Value
-$softwareChrome = ([regex]::Match($software, '(?s)<header class="site-header".*?</header>').Value.Replace($softwareQuick, '')) + "`n" + [regex]::Match($software, '(?s)<nav class="pf-route-chain.*?</nav>').Value
+# CP-0185 (owner directive, 2026-11-07): Unify welded navigation across all 6 pages.
+# Every page family header carries the same PF Mark G picture and inline forced-colours mark,
+# and all six pages share the canonical welded six-key chain navigation (pf-route-chain)
+# directly under the header without quicknav or text navigation.
+$homeChrome = [regex]::Match($homeHtml, '(?s)<header class="site-header".*?</header>\s*<nav class="pf-route-chain.*?</nav>').Value
+$softwareChrome = [regex]::Match($software, '(?s)<header class="site-header".*?</header>\s*<nav class="pf-route-chain.*?</nav>').Value
 $currentMarks = @($homeChrome, $softwareChrome, $proof, $realityGate | ForEach-Object { ([regex]::Matches([regex]::Match($_, '(?s)<header class="site-header".*?</header>\s*<nav class="pf-route-chain.*?</nav>').Value, 'aria-current=')).Count })
 Assert-H9 'the key chain lights one key per page: Home and Products as the page, Products and Proof as the section' ((& $currentKeys $homeHtml) -ceq '/ page' -and (& $currentKeys $software) -ceq '/software/ page' -and (& $currentKeys $realityGate) -ceq '/software/ true' -and (& $currentKeys $proof) -ceq '/proof-standard/ true' -and @($currentMarks | Where-Object { $_ -ne 1 }).Count -eq 0)
 # Every built route: the six key pages light themselves; product pages, the release records, the Truth
@@ -114,15 +112,9 @@ foreach ($f in Get-ChildItem $public -Recurse -Filter 'index.html' | Where-Objec
 Assert-H9 "every built route lights its own key or its section's key ($keyChecked mapped routes$(if ($keyMiss.Count) { '; ' + ($keyMiss -join '; ') }))" ($keyChecked -ge 24 -and $keyMiss.Count -eq 0)
 $canonicalHeader = & $normalizeHeader $homeChrome
 $keyHrefs = @([regex]::Matches([regex]::Match($homeHtml, '(?s)<nav class="pf-route-chain.*?</nav>').Value, '<a href="([^"]+)"') | ForEach-Object { $_.Groups[1].Value }) -join ','
-$quickHrefs = @([regex]::Matches($homeQuick, '<a href="([^"]+)"') | ForEach-Object { $_.Groups[1].Value }) -join ','
-$quickElsewhere = @($proof, $realityGate | Where-Object { $_ -match 'pf-quicknav' }).Count
 $quickPageList = (@($quickPages | Sort-Object) -join ',')
-Assert-H9 "Home (Option A): the hero comes before the key bank, and the nameplate menu mirrors the six keys in order with Home current; only Home and Products have it (pages with it: '$quickPageList')" ($homeQuick -and ([regex]::Matches($homeHtml, 'class="pf-quicknav"')).Count -eq 1 -and $homeQuick -match '<summary>Menu</summary>' -and $homeQuick -match '<nav aria-label="Site sections">' -and $quickHrefs -ceq $keyHrefs -and $keyHrefs -ceq '/,/software/,/proof-standard/,/truth-files/,/about/,/support/' -and $homeQuick -match '<a href="/" aria-current="page">Home</a>' -and ([regex]::Matches($homeQuick, 'aria-current=')).Count -eq 1 -and $homeHtml.IndexOf('class="ledger-hero"') -lt $homeHtml.IndexOf('id="primary-nav"') -and $quickElsewhere -eq 0 -and $quickPageList -ceq ',software')
-$softwareQuickHrefs = @([regex]::Matches($softwareQuick, '<a href="([^"]+)"') | ForEach-Object { $_.Groups[1].Value }) -join ','
-$bankAt = $software.IndexOf('id="primary-nav"')
-$lastCardAt = $software.LastIndexOf('data-directory-entry="')
-$directoryEndAt = if ($lastCardAt -ge 0) { $software.IndexOf('</section>', $lastCardAt) } else { -1 }
-Assert-H9 'Products (owner decision 2026-11-06): the listings come before the key bank, and the nameplate menu mirrors the six keys in order with Products current' ($softwareQuick -and ([regex]::Matches($software, 'class="pf-quicknav"')).Count -eq 1 -and $softwareQuick -match '<summary>Menu</summary>' -and $softwareQuick -match '<nav aria-label="Site sections">' -and $softwareQuickHrefs -ceq $keyHrefs -and $softwareQuick -match '<a href="/software/" aria-current="page">Products</a>' -and ([regex]::Matches($softwareQuick, 'aria-current=')).Count -eq 1 -and $lastCardAt -gt 0 -and $directoryEndAt -gt $lastCardAt -and $directoryEndAt -lt $bankAt -and $software.IndexOf('class="directory-history-link"') -lt $bankAt -and $bankAt -lt $software.IndexOf('</main>') -and ([regex]::Matches($software, 'id="primary-nav"')).Count -eq 1)
+Assert-H9 "all six pages carry the canonical welded six-key chain navigation directly under the header without quicknav (pages with quicknav: '$quickPageList')" ($quickPages.Count -eq 0 -and $keyHrefs -ceq '/,/software/,/proof-standard/,/truth-files/,/about/,/support/' -and $homeHtml.IndexOf('id="primary-nav"') -lt $homeHtml.IndexOf('id="main-content"') -and $software.IndexOf('id="primary-nav"') -lt $software.IndexOf('id="main-content"'))
+Assert-H9 'Home and Products carry unified six-key navigation ahead of page content with active page marked' (($homeHtml -match '<nav class="pf-route-chain[^"]*" id="primary-nav"[^>]*>[\s\S]*?href="/" aria-current="page"') -and ($software -match '<nav class="pf-route-chain[^"]*" id="primary-nav"[^>]*>[\s\S]*?href="/software/" aria-current="page"') -and ([regex]::Matches($homeHtml, 'id="primary-nav"')).Count -eq 1 -and ([regex]::Matches($software, 'id="primary-nav"')).Count -eq 1)
 $familyMarkCounts = @($software, $proof, $realityGate | ForEach-Object { ([regex]::Matches($_, [regex]::Escape($homeMarkPicture + $homeFcHeaderMark))).Count })
 $familyFcTotals = @($software, $proof, $realityGate | ForEach-Object { ([regex]::Matches($_, 'class="pf-mark-fc ')).Count })
 Assert-H9 'every page family header carries the PF Mark G picture and inline forced-colours mark (studio-wide)' (@($familyMarkCounts | Where-Object { $_ -ne 1 }).Count -eq 0 -and @($familyFcTotals | Where-Object { $_ -ne 2 }).Count -eq 0)
@@ -155,7 +147,10 @@ $headerMark = Get-Content (Join-Path $public 'brand/PF_HEADER_MARK.svg') -Raw -E
 $makerSeal = Get-Content (Join-Path $public 'brand/PF_MAKER_SEAL.svg') -Raw -Encoding UTF8
 $masterPaths = @([regex]::Matches((Get-Content (Join-Path $root 'brand/PF_MARK_G_MASTER.svg') -Raw -Encoding UTF8), '<path[^>]*\sd="([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
 $renderLib = Get-Content (Join-Path $root 'scripts/pf-emblem/render-lib.js') -Raw -Encoding UTF8
-Assert-H9 'the vector micro mark and the renderer of the PF Mark G render use the canonical master paths' ($masterPaths.Count -eq 3 -and @($masterPaths | Where-Object { $headerMark.Contains($_) -and $renderLib.Contains($_) }).Count -eq 3)
+$obsoleteBridge = 'M138 70H186V106H138Z'
+$forgedMark = if (Test-Path (Join-Path $public 'brand/PF_MARK_G_FORGED.svg')) { Get-Content (Join-Path $public 'brand/PF_MARK_G_FORGED.svg') -Raw -Encoding UTF8 } else { '' }
+Assert-H9 'the vector micro mark, maker seal, and renderer of the PF Mark G render use the canonical master paths' ($masterPaths.Count -eq 3 -and @($masterPaths | Where-Object { $headerMark.Contains($_) -and $renderLib.Contains($_) -and $makerSeal.Contains($_) }).Count -eq 3)
+Assert-H9 'all shipped PF mark derivatives and renderer reject obsolete bridge geometry' (-not $headerMark.Contains($obsoleteBridge) -and -not $makerSeal.Contains($obsoleteBridge) -and -not $renderLib.Contains($obsoleteBridge) -and ($forgedMark -eq '' -or -not $forgedMark.Contains($obsoleteBridge)))
 Assert-H9 'active main-site preserves reduced motion and actual SVG forced-color support' ($homeCss -match 'prefers-reduced-motion:reduce' -and $homeCss -match '\.pf-lm\{display:none\}' -and $homeCss -match 'forced-colors:active' -and $homeCss -match 'CanvasText' -and $headerMark -match 'fill:CanvasText' -and $makerSeal -match 'fill:CanvasText' -and $makerSeal -match 'stroke:CanvasText')
 
 Assert-H9 'Home scopes hash identity and custody honestly' ($homeHtml -match 'A SHA-256 match identifies exact files' -and $homeHtml -match 'does not establish custody or safety' -and $homeHtml -notmatch 'HASH VERIFIED' -and $proof -match 'Artifact custody')
