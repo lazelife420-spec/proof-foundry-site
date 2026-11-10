@@ -92,7 +92,7 @@ const NOTES = [
   { title: 'The original F', u: 186, v: 71, shape: 'F', loupe: [186, 126, 2.7],
     body: "The F keeps the second master contour and its exact relationship to the P, in brushed gold titanium nitride standing over the titanium P. Its outlines and proportions stay fixed. F is for foundry." },
   { title: 'The connecting bridge', u: 112, v: 97, shape: 'B', loupe: [150, 97, 3.0],
-    body: "The master's bridge ties the two letters together: a titanium key across the F stem, tacked to the P, with a brass record inlay along its lower edge. Proof and making, joined." },
+    body: 'A recessed, contoured titanium key joins the P to the F without interrupting the continuous gold stem. A restrained brass inlay marks the joint: proof and making, joined.' },
   { title: 'The cut edge', u: 104, v: 214, shape: 'edge', loupe: [92, 196, 3.2],
     body: 'A polished chamfer breaks every edge of the letters: bright where it faces the light at the upper left, dark where it turns away, as here along the foot of the P. The magnifier crops the same image, so every inspection point stays registered.' },
   { title: "The maker's seal", u: 46, v: 197, shape: 'seal', loupe: [52, 186, 2.4],
