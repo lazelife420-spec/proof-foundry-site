@@ -204,10 +204,20 @@ function Get-ModuleInputDates([string]$baseline, [string]$productId) {
 
 function Get-ChangedSourceDate([string]$baseline, [string]$relativePath) {
   $previous = Read-GitText $baseline $relativePath
+  if ($relativePath.EndsWith('.html') -and $null -ne $previous) {
+    # Match Get-ModuleRouteSignatures normalization: developer comments and
+    # whitespace differences do not alter the published route content.
+    $previous = [regex]::Replace($previous, '(?s)<!--.*?-->', '')
+    $previous = [regex]::Replace($previous, '\s+', ' ').Trim()
+  }
   $commits = @(& git -C $root rev-list --reverse "$baseline..HEAD" -- $relativePath)
   $lastDate = $null
   foreach ($commit in $commits) {
     $current = Read-GitText $commit $relativePath
+    if ($relativePath.EndsWith('.html') -and $null -ne $current) {
+      $current = [regex]::Replace($current, '(?s)<!--.*?-->', '')
+      $current = [regex]::Replace($current, '\s+', ' ').Trim()
+    }
     if ($current -cne $previous) {
       $lastDate = (& git -C $root show -s --format=%cs $commit).Trim()
     }
