@@ -937,8 +937,8 @@ body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-ro
  :root .pf-route-chain ol{grid-template-columns:repeat(2,minmax(0,1fr))}
  :root .pf-route-chain li:nth-child(3){grid-column:2;grid-row:2}:root .pf-route-chain li:nth-child(4){grid-column:1;grid-row:2}
  :root .pf-route-chain li:nth-child(5){grid-column:1;grid-row:3}:root .pf-route-chain li:nth-child(6){grid-column:2;grid-row:3}
- :root .pf-route-chain a{flex-direction:column;gap:3px;line-height:16px;padding-top:4px}
- :root .pf-route-chain .pf-chain-station{line-height:13px;letter-spacing:.1em}
+ :root .pf-route-chain a{flex-direction:column;justify-content:center;gap:2px;line-height:14px;padding:0 18px}
+ :root .pf-route-chain .pf-chain-station{line-height:13px;letter-spacing:.12em}
  :root .pf-route-chain li:nth-child(2) .pf-route-coupler,:root .pf-route-chain li:nth-child(4) .pf-route-coupler{top:18px;width:32px;height:100px;background-image:url(/assets/round2/coupler-v.webp)}
  :root .pf-route-chain li:nth-child(2) .pf-route-coupler{left:calc(100% - 23.44px)}
  :root .pf-route-chain li:nth-child(4) .pf-route-coupler{left:-8.56px}
@@ -1028,9 +1028,14 @@ body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-ro
  background:url(/assets/round3/oxide-field-1024.webp) 0 calc(-1 * var(--pf-head-h))/512px 512px repeat,#1d1f21;
  background-image:image-set(url(/assets/round3/oxide-field-512.webp) 1x,url(/assets/round3/oxide-field-1024.webp) 2x)}
 /* Keys and chain: the Round 3 art on the Round 2 canvases, so every offset above still lands a pin in its bore. */
-:root .pf-route-chain a{border-image-source:url(/assets/round3/key-rest.webp)}
-:root .pf-route-chain a:active,:root .pf-route-chain a[data-engaged=true]{transform:none;filter:none;border-image-source:url(/assets/round3/key-pressed.webp)}
-:root .pf-route-chain a:is([aria-current=page],[aria-current=true]){border-image-source:url(/assets/round3/key-current.webp)}
+:root .pf-route-chain a{border-image-source:url(/assets/round3/key-rest.webp);box-shadow:none;color:#e2e8ea;text-shadow:0 -1px 0 rgba(0,0,0,.95),0 1px 0 rgba(255,255,255,.12)}
+:root .pf-route-chain a .pf-chain-station{color:#c5ab80;font-weight:600;letter-spacing:.12em;text-shadow:0 -1px 0 rgba(0,0,0,.95),0 1px 0 rgba(214,168,79,.3)}
+:root .pf-route-chain a:hover{color:#f7f9fa;box-shadow:none}
+:root .pf-route-chain a:hover .pf-chain-station{color:#d6a84f;text-shadow:0 -1px 0 rgba(0,0,0,.95),0 1px 0 rgba(214,168,79,.45)}
+:root .pf-route-chain a:active,:root .pf-route-chain a[data-engaged=true]{transform:none;filter:none;border-image-source:url(/assets/round3/key-pressed.webp);box-shadow:none}
+:root .pf-route-chain a:is([aria-current=page],[aria-current=true]){border-image-source:url(/assets/round3/key-current.webp);box-shadow:none;color:#0f171b;text-shadow:0 1px 0 rgba(255,255,255,.72),0 -0.5px 0 rgba(0,0,0,.35)}
+:root .pf-route-chain a:is([aria-current=page],[aria-current=true]) .pf-chain-station{color:#38250f;font-weight:600;text-shadow:0 1px 0 rgba(255,255,255,.65)}
+:root .pf-route-chain a:is([aria-current=page],[aria-current=true]):hover{color:#070d10}
 :root .pf-route-chain li:nth-child(n) .pf-route-coupler{background-image:url(/assets/round3/coupler.webp)}
 :root .pf-route-chain li:last-child .pf-route-coupler{display:block;background-image:url(/assets/round3/anchor-r.webp);left:calc(100% - 16.5px);top:16px;width:36px;height:32px}
 :root .pf-route-chain li:first-child::after{content:"";position:absolute;z-index:3;pointer-events:none;left:-19.5px;top:16px;width:36px;height:32px;background:url(/assets/round3/anchor-l.webp) 0 0/100% 100% no-repeat}
@@ -1057,7 +1062,8 @@ body:is(.pf-ledger-page,.pf-room-about,.pf-room-support,.pf-room-standard,.pf-ro
  :root body .site-header,:root body .pf-route-chain{border-image:none;background:Canvas;border:1px solid CanvasText}
  /* The key art and the chain above come later than the shipped forced-colours reset, so it is repeated here: the keys
     are drawn as system buttons and the chain, which is decoration, is hidden. */
- :root .pf-route-chain a,:root .pf-route-chain a:active,:root .pf-route-chain a[data-engaged=true],:root .pf-route-chain a:is([aria-current=page],[aria-current=true]){border-image:none}
+ :root .pf-route-chain a,:root .pf-route-chain a:active,:root .pf-route-chain a[data-engaged=true],:root .pf-route-chain a:is([aria-current=page],[aria-current=true]){border-image:none;box-shadow:none;color:ButtonText;text-shadow:none}
+ :root .pf-route-chain .pf-chain-station,:root .pf-route-chain a:is([aria-current=page],[aria-current=true]) .pf-chain-station{color:ButtonText;text-shadow:none}
  :root .pf-route-chain li:nth-child(n) .pf-route-coupler,:root .pf-route-chain li:first-child::after{display:none}
  :root body .site-header .brand-name,:root body .site-header .header-maker-note{text-shadow:none}
 }

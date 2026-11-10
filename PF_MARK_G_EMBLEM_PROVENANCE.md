@@ -149,8 +149,8 @@ The passes are encoded from 8-bit straight-alpha PNGs (alpha the brightest chann
 
 | File | Dimensions | Bytes | Role | SHA-256 |
 |---|---|---|---|---|
-| `brand/emblem/PF_MARK_G_TI_920.webp` | 920 × 1062 | 42,614 | Titanium hero emblem, 2x | `57340316844c00b3f659b0cdaf099cbf080a34ac596a30111d57fc495c3d1507` |
-| `brand/emblem/PF_MARK_G_TI_460.webp` | 460 × 531 | 23,522 | Titanium hero emblem, 1x | `354642ad2879b41048b0d6cdef62a6321a50dee2d8ac4fd173e6aa43426a6d9d` |
+| `brand/emblem/PF_MARK_G_TI_920.webp` | 920 × 1062 | 45,276 | Titanium hero emblem, 2x | `76ab20d8f304290d0f9480a43e9f00888c83f65e9fd1279ac23c34be3fe6d254` |
+| `brand/emblem/PF_MARK_G_TI_460.webp` | 460 × 531 | 27,854 | Titanium hero emblem, 1x | `4d922a713f68d2c9d1a017a06cd084a1a5faac9c3bd8f1491880bba838133de8` |
 
 ## Round 3 Blender marks: the header, Inspect the Mark and the footer (adopted 2026-11-04)
 

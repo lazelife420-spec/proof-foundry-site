@@ -684,15 +684,15 @@ html[data-motion=off] .pf-lm{display:none}
 
 /* Home composition: the original mark, shared metal and one evidence mechanism. */
 .ledger-hero{padding:30px 0 0;background:radial-gradient(ellipse at 74% 25%,#4c59552b,transparent 60%)}
-.home-opening{position:relative;display:grid;grid-template-columns:1.12fr .88fr;align-items:center;gap:32px;padding:44px 40px 52px;border:1px solid #5c6866;border-top:3px solid #aab5ae;background:linear-gradient(120deg,#23313570,#111b1e 60%);box-shadow:inset 0 1px #ffffff26,inset 0 -5px 12px #0006,0 20px 38px #0005}
-.home-opening::before,.home-opening::after{content:"";position:absolute;width:10px;height:10px;border:2px solid #697573;border-radius:50%;background:linear-gradient(135deg,#111a1d 45%,#b5bdb4 49% 54%,#111a1d 58%);box-shadow:0 1px 1px #000;top:13px;pointer-events:none}
+.home-opening{position:relative;display:grid;grid-template-columns:1.12fr .88fr;align-items:center;gap:32px;padding:44px 40px 52px;border:1px solid #5c6866;border-top:3px solid #c2cdc6;background:linear-gradient(120deg,#23313570,#111b1e 60%);box-shadow:inset 0 1px #ffffff38,inset 0 -5px 14px rgba(0,0,0,.7),0 24px 44px rgba(0,0,0,.6)}
+.home-opening::before,.home-opening::after{content:"";position:absolute;width:10px;height:10px;border:2px solid #7a8885;border-radius:50%;background:linear-gradient(135deg,#111a1d 45%,#c8d2c7 49% 54%,#111a1d 58%);box-shadow:0 1px 2px #000;top:13px;pointer-events:none}
 .home-opening::before{left:13px}.home-opening::after{right:13px}
 .home-statement{min-width:0;padding:20px 0}
-.home-statement>.kicker{font-size:10px;color:#d3bb92;letter-spacing:.13em;line-height:1.8;margin-bottom:28px}
-.home-statement h1{font-size:clamp(44px,5.7vw,82px);font-weight:700;line-height:1.04;letter-spacing:-.055em;color:#eef0e7;text-shadow:0 1px #fff2,0 5px 12px #0007}
-.home-intro{font-size:clamp(17px,1.6vw,22px);line-height:1.6;color:#c1cdc9;margin-top:24px}
+.home-statement>.kicker{font-size:11px;font-weight:600;color:#dfbc7a;letter-spacing:.16em;text-transform:uppercase;line-height:1.8;margin-bottom:28px;text-shadow:0 -1px 0 rgba(0,0,0,.95),0 1px 0 rgba(214,168,79,.25)}
+.home-statement h1{font-size:clamp(44px,5.7vw,82px);font-weight:700;line-height:1.04;letter-spacing:-.055em;color:#f4f6f2;text-shadow:0 1px 0 rgba(255,255,255,.22),0 2px 4px rgba(0,0,0,.85),0 8px 24px rgba(0,0,0,.6)}
+.home-intro{font-size:clamp(17px,1.6vw,22px);line-height:1.6;color:#c8d5d1;margin-top:24px}
 .home-statement .studio-actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:30px}
-.home-maker-line{font:11px/1.7 var(--pf-mono);color:#aebbaf;margin-top:30px;padding-top:16px;border-top:1px solid #53625b}
+.home-maker-line{font:11px/1.7 var(--pf-mono);letter-spacing:.08em;color:#9ab0a6;margin-top:30px;padding-top:16px;border-top:1px solid rgba(83,98,91,.6);text-shadow:0 -1px 0 rgba(0,0,0,.8)}
 .home-maker{position:relative;text-align:center;width:100%;max-width:400px;margin:0 auto;min-width:0}
 .pf-emblem{position:relative;width:100%;aspect-ratio:1600/1849;--lN:0;--lE:0;--lS:0;--lW:0;--lOn:0;--mx:28%;--my:24%;--ang:-38deg}
 .pf-emblem>img{display:block;width:100%;height:auto;object-fit:contain;filter:drop-shadow(0 12px 10px #0006)}
@@ -700,14 +700,16 @@ html[data-motion=off] .pf-lm{display:none}
 .pf-inspect{position:relative;display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:8px 2px;margin:5px 0 0;border:0;border-bottom:1px solid #bfa778;background:transparent;color:#ead3a6;font:12px/1.5 var(--pf-mono);cursor:pointer}
 .pf-inspect:focus-visible{outline:2px solid #e5cfaa;outline-offset:5px}
 .home-orientation{display:grid;grid-template-columns:1fr 1fr;gap:70px;padding-block:70px;border-bottom:1px solid var(--line)}
-.home-orientation h2,.home-records h2,.home-contact h2{font-size:clamp(30px,3.1vw,44px);line-height:1.14;letter-spacing:-.035em;margin:17px 0}
+.home-orientation h2,.home-records h2,.home-contact h2{font-size:clamp(30px,3.1vw,44px);line-height:1.14;letter-spacing:-.035em;margin:17px 0;color:#f0f3ef;text-shadow:0 1px 0 rgba(255,255,255,.15),0 2px 4px rgba(0,0,0,.8)}
 .home-orientation p:not(.kicker),.home-records p:not(.kicker),.home-contact p:not(.kicker){color:#c0cbc5;max-width:60ch;line-height:1.8;font-size:16px}
+.home-orientation .kicker,.home-records .kicker,.home-contact .kicker{color:#dfbc7a;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;text-shadow:0 -1px 0 rgba(0,0,0,.95),0 1px 0 rgba(214,168,79,.25)}
 .home-orientation .text-link{display:inline-flex;margin-top:22px}
 .home-records{display:grid;grid-template-columns:1fr 1fr;gap:30px 70px;padding-block:75px}
 .home-records-links{display:grid;gap:16px;align-content:center}
-.home-records-links>a{position:relative;display:grid;gap:10px;padding:23px 25px;border:1px solid #74827b;border-left:4px solid #b1a07c;background:linear-gradient(130deg,#2c3939,#182224);text-decoration:none;box-shadow:inset 0 1px #e8eee21c,0 5px 0 #060f12}
-.home-records-links>a>span:first-child{font:10px var(--pf-mono);color:#bfccbf;text-transform:uppercase;letter-spacing:.08em}
-.home-records-links strong{font-size:24px;font-weight:500}
+.home-records-links>a{position:relative;display:grid;gap:10px;padding:23px 25px;border:1px solid #74827b;border-left:4px solid #d6a84f;background:linear-gradient(130deg,#2c3939,#182224);text-decoration:none;box-shadow:inset 0 1px rgba(232,238,226,.15),inset 0 -1px rgba(0,0,0,.5),0 5px 0 #060f12,0 12px 24px rgba(0,0,0,.45);transition:border-color .15s ease,box-shadow .15s ease}
+.home-records-links>a:hover{border-color:#9cb0a5;border-left-color:#ffd58a;box-shadow:inset 0 1px rgba(255,255,255,.25),0 5px 0 #060f12,0 16px 32px rgba(0,0,0,.55)}
+.home-records-links>a>span:first-child{font:10px var(--pf-mono);color:#c8d5c8;text-transform:uppercase;letter-spacing:.1em}
+.home-records-links strong{font-size:24px;font-weight:600;color:#f2f6f4;text-shadow:0 -1px 0 rgba(0,0,0,.9),0 1px 0 rgba(255,255,255,.1)}
 .home-records-links>a>span:last-child{position:absolute;right:20px;top:34px;font-size:22px;color:#d4bb8c}
 .home-records .home-hash-scope{grid-column:1/-1;font-size:12px;color:#aebeb8;padding-top:20px;border-top:1px solid var(--line)}
 .home-contact{display:flex;align-items:center;justify-content:space-between;gap:40px;padding:45px 0 60px;border-top:1px solid var(--line)}
@@ -804,17 +806,19 @@ html[data-motion=off] .pf-lm{display:none}
    its flat face is transparent, so the field runs straight through it and the emblem has no edge of its own. Text on the plate is
    etched: a fine shadow on the cut's upper-left wall, a faint light lip below right. ── */
 .home-opening{border:0 solid;border-image:url(/assets/round3/ti-frame-384.webp) 96/48px/0 stretch;box-shadow:none;
+ filter:drop-shadow(0 20px 36px rgba(0,0,0,.6));
  background:url(/assets/round3/ti-field-1280.webp) 0 0/640px 640px repeat,#323130;
  background-image:image-set(url(/assets/round3/ti-field-640.webp) 1x,url(/assets/round3/ti-field-1280.webp) 2x)}
 .home-opening::before,.home-opening::after{content:none}
-.home-statement h1{text-shadow:-.6px -1px 0 rgba(0,0,0,.55),.6px 1px 0 rgba(255,255,255,.07)}
-.home-statement>.kicker,.home-intro{text-shadow:-.5px -.8px 0 rgba(0,0,0,.6)}
+.home-statement h1{color:#f4f6f2;text-shadow:0 1px 0 rgba(255,255,255,.18),0 2px 4px rgba(0,0,0,.85),0 8px 24px rgba(0,0,0,.6)}
+.home-statement>.kicker{color:#dfbc7a;text-shadow:0 -1px 0 rgba(0,0,0,.95),0 1px 0 rgba(214,168,79,.3)}
+.home-intro{text-shadow:-.5px -.8px 0 rgba(0,0,0,.6)}
 .home-maker figcaption,.home-maker-line,.pf-inspect{text-shadow:-.5px -.8px 0 rgba(0,0,0,.7),.5px .8px 0 rgba(255,255,255,.1)}
 .home-maker-line{border-top-color:rgba(0,0,0,.55);box-shadow:none}
 .pf-emblem.r3-seal{aspect-ratio:272/314}
 .pf-emblem.r3-seal>img{filter:none}
 @media (min-width:1240px){.home-maker:has(.r3-seal){max-width:460px}}
-@media (forced-colors:active){.home-opening{border-image:none;border:1px solid CanvasText}.home-statement h1,.home-statement>.kicker,.home-intro,.home-maker figcaption,.home-maker-line,.pf-inspect{text-shadow:none}}
+@media (forced-colors:active){.home-opening{border-image:none;border:1px solid CanvasText;filter:none}.home-statement h1,.home-statement>.kicker,.home-intro,.home-maker figcaption,.home-maker-line,.pf-inspect{text-shadow:none}}
 /* Round 3: the horizontal proof machine runs down to 701 px inside its bay, so tablets see the same instrument as
    desktops (owner decision, 2026-11-03); only phones hang the chain vertically. The stage text tightens to fit. */
 @media (min-width:701px) and (max-width:999px){.pfa .pfa-rail p{font-size:14px;line-height:1.35}.pfa-rail h3{font-size:13px;letter-spacing:.08em}.pfa-rail li{padding:0 5px}}

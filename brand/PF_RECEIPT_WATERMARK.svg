@@ -24,7 +24,7 @@
 <g fill="none" stroke="#293c41"><circle data-maker-mark="pressed-seal" cx="128" cy="128" r="119" stroke-width="1.8"/><circle cx="128" cy="128" r="110" stroke-width=".8"/></g>
 <g data-pf-geometry="shipped-G" transform="translate(31.52 35.84) scale(.72)">
   
-  <g fill="#293c41"><path d="M42 34H116C157 34 181 56 181 91C181 126 157 148 116 148H82V222H42V34ZM82 70V112H115C132 112 141 104 141 91C141 78 132 70 115 70H82Z"/><path d="M146 34H226V72H186V106H218V143H186V222H146V34Z"/><path d="M138 70H186V106H138Z"/></g>
+  <g fill="#293c41"><path d="M42 34H116C157 34 181 56 181 91C181 126 157 148 116 148H82V222H42V34ZM82 70V112H115C132 112 141 104 141 91C141 78 132 70 115 70H82Z"/><path d="M146 34H226V72H186V106H218V143H186V222H146V34Z"/><path d="M145.5 76H146V104H145.5C144.6 104 144.0 103.4 144.0 102.5V77.5C144.0 76.6 144.6 76 145.5 76Z"/></g>
   <path data-maker-mark="receipt-fold" d="M90 77H109L118 86V106H90ZM109 77V86H118" fill="none" stroke="#886a36" stroke-width="2" stroke-linejoin="miter"/>
   
   <path data-maker-mark="record-crossbar" d="M139 103.5H185" stroke="#886a36" stroke-width="3.1"/>

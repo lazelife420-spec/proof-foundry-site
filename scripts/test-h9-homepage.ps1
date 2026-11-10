@@ -126,11 +126,17 @@ Assert-H9 'product browsing lives on Software rather than Home' ($publicModules.
 Assert-H9 'withdrawn product stays on its record without a standalone Home panel' ($withdrawnModules.Count -gt 0 -and $renderedWithdrawn.Count -eq 0 -and $sourceHome -notmatch '@studio-withdrawn' -and $homeHtml -notmatch 'studio-withdrawn|Withdrawn work' -and $realityGate -match 'Withdrawn')
 $markProvenance = Get-Content (Join-Path $root 'PF_MARK_G_EMBLEM_PROVENANCE.md') -Raw -Encoding UTF8
 $headerMarkRow = [regex]::Match($markProvenance, '\|\s*`brand/emblem/PF_MARK_G_TI_HEADER\.webp`\s*\|[^\n]*\|\s*`([0-9a-f]{64})`\s*\|')
+$hero920Row = [regex]::Match($markProvenance, '\|\s*`brand/emblem/PF_MARK_G_TI_920\.webp`\s*\|[^\n]*\|\s*`([0-9a-f]{64})`\s*\|')
+$hero460Row = [regex]::Match($markProvenance, '\|\s*`brand/emblem/PF_MARK_G_TI_460\.webp`\s*\|[^\n]*\|\s*`([0-9a-f]{64})`\s*\|')
 $brandLink = [regex]::Match($homeHeader, '(?s)<a class="brand-lockup" href="/">(.*?)</a>')
 # The titanium header render, adopted by owner decision on 2026-11-04 (ti_emblem.py --mode mark).
 $headerMarkFile = Join-Path $public 'brand/emblem/PF_MARK_G_TI_HEADER.webp'
+$hero920File = Join-Path $public 'brand/emblem/PF_MARK_G_TI_920.webp'
+$hero460File = Join-Path $public 'brand/emblem/PF_MARK_G_TI_460.webp'
 $headerMarkSha = if (Test-Path -LiteralPath $headerMarkFile) { (Get-FileHash -LiteralPath $headerMarkFile -Algorithm SHA256).Hash.ToLowerInvariant() } else { 'missing' }
-Assert-H9 'Home header carries the approved PF Mark G render, with the vector micro mark for forced colours, inside a named home link' ($brandLink.Success -and $brandLink.Groups[1].Value.Contains($homeMarkPicture) -and ([regex]::Matches($homeHeader, '<img\b')).Count -eq 1 -and (Get-VisibleText $brandLink.Groups[1].Value) -match '^The Proof Foundry\b' -and $headerMarkRow.Success -and $headerMarkSha -ceq 'd38f7992058ca349534d3858dc761985666605a30b523c3a5523aa0679976f87' -and $headerMarkSha -ceq $headerMarkRow.Groups[1].Value)
+$hero920Sha = if (Test-Path -LiteralPath $hero920File) { (Get-FileHash -LiteralPath $hero920File -Algorithm SHA256).Hash.ToLowerInvariant() } else { 'missing' }
+$hero460Sha = if (Test-Path -LiteralPath $hero460File) { (Get-FileHash -LiteralPath $hero460File -Algorithm SHA256).Hash.ToLowerInvariant() } else { 'missing' }
+Assert-H9 'Home header carries the approved PF Mark G render, with the vector micro mark for forced colours, inside a named home link' ($brandLink.Success -and $brandLink.Groups[1].Value.Contains($homeMarkPicture) -and ([regex]::Matches($homeHeader, '<img\b')).Count -eq 1 -and (Get-VisibleText $brandLink.Groups[1].Value) -match '^The Proof Foundry\b' -and $headerMarkRow.Success -and $headerMarkSha -ceq 'd38f7992058ca349534d3858dc761985666605a30b523c3a5523aa0679976f87' -and $headerMarkSha -ceq $headerMarkRow.Groups[1].Value -and $hero920Row.Success -and $hero920Sha -ceq $hero920Row.Groups[1].Value -and $hero460Row.Success -and $hero460Sha -ceq $hero460Row.Groups[1].Value)
 $homeFooter = [regex]::Match($homeHtml, '(?s)<footer class="site-footer".*?</footer>').Value
 Assert-H9 'the footer carries the rendered badge, the vector micro mark only for forced colours, and the maker seal a forced-colours vector, without legacy mono glyph branding' (([regex]::Matches($homeFooter, '<img[^>]*PF_MARK_G_TI_BADGE\.webp')).Count -eq 1 -and ([regex]::Matches($homeHtml, '<img[^>]*PF_HEADER_MARK\.svg')).Count -eq 0 -and $homeHtml -match 'pf-seal-inline' -and $homeHtml -notmatch 'pf-stamp-top|PF_MARK_G_MONO_LIGHT\.svg' -and $homeHtml -match 'class="site-footer"')
 
