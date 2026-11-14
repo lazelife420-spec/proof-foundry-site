@@ -94,7 +94,7 @@ Assert-Condition ($loBlock -notmatch '"offers"') "F9: Lights Out JSON-LD no long
 Assert-Condition ($loJson.name -eq 'Lights Out') "F9: Lights Out JSON-LD identity (name) preserved"
 Assert-Condition ($loJson.author.name -eq 'The Proof Foundry') "F9: Lights Out JSON-LD author preserved"
 Assert-Condition (-not [string]::IsNullOrWhiteSpace($loJson.description)) "F9: Lights Out JSON-LD description preserved"
-Assert-Condition ($lo -match 'Public Windows v11\.1\.3' -and $lo -match 'Download Lights Out v11\.1\.3' -and $lo -notmatch 'downloads are currently on hold|currently unavailable') "F9: Lights Out visible copy states the public v11.1.3 release and download"
+Assert-Condition ($lo -match 'Public Windows v11\.2\.0' -and $lo -match 'Download Lights Out v11\.2\.0' -and $lo -notmatch 'downloads are currently on hold|currently unavailable') "F9: Lights Out visible copy states the public v11.2.0 release and download"
 
 $ps = Read-Page 'proofshot'
 $psBlock = @(Get-JsonLdBlocks $ps)[0]
@@ -104,7 +104,7 @@ Assert-Condition ($psJson.name -eq 'ProofShot') "F9: ProofShot JSON-LD identity 
 Assert-Condition ($psJson.author.name -eq 'The Proof Foundry') "F9: ProofShot JSON-LD author preserved"
 Assert-Condition (-not [string]::IsNullOrWhiteSpace($psJson.description)) "F9: ProofShot JSON-LD description preserved"
 Assert-Condition ($ps -match 'Download ProofShot v2\.0\.0' -and $ps -notmatch 'No public ProofShot release') "F9: ProofShot visible copy states its public v2.0.0 release"
-Assert-Condition ($ps -match 'href="#release-status"' -and $ps -match 'id="release-status"' -and $ps -notmatch 'no changelog yet') "H3 guard: ProofShot release-details path replaces the no-release statement"
+Assert-Condition ($ps -match 'href="#download"' -and $ps -match 'id="release-status"' -and $ps -match 'id="evidence-release-status"' -and $ps -notmatch 'no changelog yet') "H3 guard: ProofShot release-details path replaces the no-release statement"
 
 # Meta-layer consistency: meta descriptions must not contradict structured data
 Assert-Condition (@(Get-JsonLdBlocks $ps)[0] -notmatch 'available|in stock|InStock') "F9: ProofShot JSON-LD carries no availability language"
@@ -124,9 +124,17 @@ Assert-Condition ($lo -match 'href="#release-note"') "H3 guard: Lights Out what-
 # presentation.valueLine carry approved copy. Those three copy fields are
 # neutralized on both sides before comparison; every other field — release,
 # sha256, artifacts, downloads — must still match the pinned baseline exactly.
-$canonical = (git -C $root show 34a291d78fa92f1a18cf76cef3ee56b391186e77:site-manifest.json) -join "`n" | ConvertFrom-Json
-$workProducts = @($manifest.products)
-$baseProducts = @($canonical.products)
+# git emits UTF-8; force the console decoder so multi-byte manifest copy does not mojibake
+$prevOutEnc = [Console]::OutputEncoding
+[Console]::OutputEncoding = [Text.Encoding]::UTF8
+try { $canonical = (git -C $root show 34a291d78fa92f1a18cf76cef3ee56b391186e77:site-manifest.json) -join "`n" | ConvertFrom-Json }
+finally { [Console]::OutputEncoding = $prevOutEnc }
+# Lights Out v11.2.0 and Cache Vault v0.3.1 are declared Verified public-release
+# truth migrations against the pinned baseline, and Reality Gate's withdrawn
+# v1.1.0 record is the explicit local migration; the other products must
+# still match production exactly.
+$workProducts = @($manifest.products | Where-Object { $_.id -notin @('lights-out', 'cache-vault', 'reality-gate') })
+$baseProducts = @($canonical.products | Where-Object { $_.id -notin @('lights-out', 'cache-vault', 'reality-gate') })
 foreach ($set in @($workProducts, $baseProducts)) {
   $fc = @($set | Where-Object { $_.id -eq 'forgecast' }) | Select-Object -First 1
   if ($fc) { $fc.summary = $null; $fc.cardSummary = $null; if ($fc.presentation) { $fc.presentation.valueLine = $null } }
@@ -148,6 +156,10 @@ foreach ($set in @($workProducts, $baseProducts)) {
       $pp.release.PSObject.Properties.Remove('companionPublicVersion')
     }
     $pp.PSObject.Properties.Remove('packageId')
+    # CP-0189 restoration: product.directory carries the software-catalog
+    # presentation copy for the restored approved composition. Presentation
+    # only; pinned production predates it.
+    $pp.PSObject.Properties.Remove('directory')
   }
 }
 Assert-Condition (($workProducts | ConvertTo-Json -Depth 30 -Compress) -ceq ($baseProducts | ConvertTo-Json -Depth 30 -Compress)) "truth: every product equals current production, except authorized ForgeCast copy fields (summary, cardSummary, presentation.valueLine) and H10 truth fields"

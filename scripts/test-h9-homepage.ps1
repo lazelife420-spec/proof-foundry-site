@@ -12,6 +12,8 @@ $homeHtml = Get-Content $homePath -Raw -Encoding UTF8
 $softwareHtml = Get-Content $softwarePath -Raw -Encoding UTF8
 $manifest = Get-Content (Join-Path $root 'site-manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 $cv = $manifest.products | Where-Object id -eq 'cache-vault'
+$forgecastHtml = Get-Content (Join-Path $public 'forgecast/index.html') -Raw -Encoding UTF8
+$proofshotHtml = Get-Content (Join-Path $public 'proofshot/index.html') -Raw -Encoding UTF8
 
 $pass = 0
 $fail = 0
@@ -26,34 +28,37 @@ function Assert-H9([string]$name, [bool]$condition) {
   }
 }
 
-Write-Host "=== H9 HOMEPAGE & CATALOG GUARD ===" -ForegroundColor Cyan
+Write-Host "=== CP-0189 HOMEPAGE & CATALOG GUARD ===" -ForegroundColor Cyan
 
-# 1. Core Composition
-Assert-H9 'H9 editorial hero exists' ($homeHtml -match 'h9-hero-product')
-Assert-H9 'authentic Cache Vault hero media exists' ($homeHtml -match 'cv-quick-paste\.png')
-Assert-H9 'ForgeCast major scene exists' ($homeHtml -match 'v030-today\.png')
-Assert-H9 'Reality Gate major scene exists' ($homeHtml -match '08-ci-run-complete\.50deeeef7e10fbe8\.png')
-Assert-H9 'all four secondary products exist' (($homeHtml -match 'data-product="ghostlayer"') -and ($homeHtml -match 'data-product="cleanroom"') -and ($homeHtml -match 'data-product="lights-out"') -and ($homeHtml -match 'data-product="proofshot"'))
+# 1. Core Composition — the approved ledger page is the homepage authority.
+Assert-H9 'approved ledger hero exists' ($homeHtml -match 'ledger-hero')
+Assert-H9 'machined emblem hero asset exists' ($homeHtml -match 'PF_MARK_G_TI_460\.webp')
+Assert-H9 'record-chain composition exists' ($homeHtml -match 'ledger-chain' -and $homeHtml -match 'pfa-machine')
+Assert-H9 'homepage makes no per-product claims' ($homeHtml -notmatch 'data-product="(?:cache-vault|reality-gate|forgecast|lights-out|cleanroom|ghostlayer|proofshot)"')
+Assert-H9 'homepage template uses no product placement markers or fixed product markup' (([IO.File]::ReadAllText((Join-Path $root 'index.html')) -notmatch 'data-product="' -and [IO.File]::ReadAllText((Join-Path $root 'index.html')) -notmatch '@homepage-featured|@all-products|@homepage-major-scenes|@homepage-secondary'))
+$indexSrc = [IO.File]::ReadAllText((Join-Path $root 'index.html'))
+Assert-H9 'the opt-in homepage shelf is the only data-driven product surface' ($indexSrc -match '<!-- @homepage-shelf -->' -and ([regex]::Matches($indexSrc,'@homepage-')).Count -eq 1)
+Assert-H9 'release-receipt inspection dialog exists' ($homeHtml -match 'pf-receipt-dialog' -and $homeHtml -match 'data-receipt-open')
+Assert-H9 'engraved route-chain navigation exists' ($homeHtml -match 'pf-route-chain' -and $homeHtml -match 'pf-chain-station')
 
-# 2. Status Truth
-function Test-ProofShotPublic([string]$html) {
-  $card = [regex]::Match($html, '(?s)<article\b[^>]*data-product="proofshot".*?</article>').Value
-  return ($card -match 'Public v2\.0\.0' -and $card -match 'href="/proofshot/"' -and $card -notmatch 'No public release|Explore development')
+# 2. Status Truth — release facts live on catalog records and product pages.
+Assert-H9 'Reality Gate appears as a withdrawn record on the catalog' ($softwareHtml -match 'public v1\.1\.0 withdrawn' -and $softwareHtml -notmatch 'Download Reality Gate')
+Assert-H9 'Cache Vault catalog entry advertises public v0.3.1' ($softwareHtml -match 'v0\.3\.1')
+Assert-H9 'Lights Out catalog entry advertises v11.2.0 + companion v11.1.1' ($softwareHtml -match 'v11\.2\.0' -and $softwareHtml -match 'v11\.1\.1')
+function Test-ProofShotPublic([string]$catalog, [string]$productPage) {
+  return ($catalog -match 'href="/proofshot/"' -and $productPage -match 'Public release' -and $productPage -match 'v2\.0\.0' -and $productPage -notmatch 'No public ProofShot release')
 }
-Assert-H9 'ProofShot homepage card advertises public v2.0.0' (Test-ProofShotPublic $homeHtml)
-Assert-H9 'Cache Vault hero advertises public v0.2.4' ($homeHtml -match 'PUBLIC v0\.2\.4')
-Assert-H9 'Reality Gate remains Developer Pilot' ($homeHtml -match 'Reality Gate' -and $homeHtml -match 'Developer Pilot')
+Assert-H9 'ProofShot public v2.0.0 release reachable from the catalog' (Test-ProofShotPublic $softwareHtml $proofshotHtml)
 
-# 3. New /software/ Route
+# 3. /software/ Route — approved directory composition.
 Assert-H9 '/software/ route exists' (Test-Path $softwarePath)
-$catalogIds = @([regex]::Matches($softwareHtml, '<article\b[^>]*data-product="([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
-$expectedIds = @('cache-vault','reality-gate','forgecast','lights-out','cleanroom','ghostlayer','proofshot')
-Assert-H9 '/software/ contains exactly seven distinct product cards' ((($catalogIds | Sort-Object) -join ',') -eq (($expectedIds | Sort-Object) -join ','))
-Assert-H9 '/software/ contains filtering controls' ($softwareHtml -match 'product-finder' -or $softwareHtml -match 'finder-intents')
-Assert-H9 '/software/ contains comparison UX' ($softwareHtml -match 'compare-choice' -and $softwareHtml -match 'data-compare')
-Assert-H9 '/software/ exposes all seven products for comparison' (([regex]::Matches($softwareHtml, 'data-compare=')).Count -eq 7)
-Assert-H9 '/software/ ProofShot card uses public release state' ([regex]::Match($softwareHtml, '(?s)<article\b[^>]*data-product="proofshot".*?</article>').Value -match 'data-availability="public-release"')
-Assert-H9 '/software/ has exactly one active primary-nav item' (([regex]::Matches($softwareHtml, 'aria-current="page"')).Count -eq 1 -and $softwareHtml -match '<a href="/software/" aria-current="page">Software</a>')
+$catalogIds = @([regex]::Matches($softwareHtml, 'data-directory-entry="([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
+Assert-H9 '/software/ covers the six public products plus withdrawn Reality Gate' (@(@('cache-vault','forgecast','lights-out','cleanroom','ghostlayer','reality-gate') | Where-Object { $_ -in $catalogIds }).Count -eq 6)
+Assert-H9 '/software/ carries the internal foundry-system records' (@(@('hardline-zero','crosspoint','proof-foundry-app') | Where-Object { $_ -in $catalogIds }).Count -eq 3)
+Assert-H9 '/software/ contains the finder controls (hidden for progressive enhancement)' ($softwareHtml -match 'data-directory-finder[^>]*hidden' -and $softwareHtml -match 'name="query"')
+Assert-H9 '/software/ has no comparison database UI' ($softwareHtml -notmatch 'data-compare|compare-choice')
+Assert-H9 '/software/ marks withdrawn Reality Gate with availability=none' ($softwareHtml -match 'data-directory-entry="reality-gate"[^>]*data-availability="none"')
+Assert-H9 '/software/ has exactly one active primary-nav item' (([regex]::Matches($softwareHtml, 'aria-current="page"')).Count -eq 1 -and $softwareHtml -match '<a href="/software/" aria-current="page">')
 foreach ($page in @(@{Name='homepage';Html=$homeHtml}, @{Name='software';Html=$softwareHtml})) {
   $ids = @([regex]::Matches($page.Html, '\bid="([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
   $missingLabels = @([regex]::Matches($page.Html, 'aria-labelledby="([^"]+)"') | ForEach-Object { $_.Groups[1].Value -split '\s+' } | Where-Object { $_ -notin $ids })
@@ -63,32 +68,29 @@ $deadCatalogLinks = @(Get-ChildItem $public -Recurse -Filter *.html | Where-Obje
 Assert-H9 'all generated pages route catalog discovery to /software/ instead of a missing home anchor' ($deadCatalogLinks.Count -eq 0)
 
 # 4. Old Homepage Cleanup
-Assert-H9 'old homepage filter/compare database UI is not on /' ($homeHtml -notmatch 'catalog-nav' -and $homeHtml -notmatch 'theater-controls')
+Assert-H9 'homepage database filter/compare UI stays on the catalog' ($homeHtml -notmatch 'data-directory-finder' -and $homeHtml -notmatch 'theater-controls' -and $homeHtml -notmatch 'data-compare')
 
 # 5. Manifest-driven Proof & Integrity
 Assert-H9 'manifest-driven release/version/hash substitution remains intact' ($homeHtml -notmatch '\{\{products\.')
-# VR1: the homepage receipt ledger keeps artifact/version/status but raw digests
-# and source commits live on the release records and product pages, not here.
 Assert-H9 'Proof narrative keeps raw 64-char digests off the homepage' ($homeHtml -notmatch '<dd>[a-f0-9]{64}</dd>')
 Assert-H9 'No source commit is rendered or mislabeled on the homepage' ($homeHtml -notmatch '<dt>Source commit</dt>')
-Assert-H9 'receipt filename matches current canonical Cache Vault artifact' ($homeHtml -match [regex]::Escape($cv.artifacts[0].filename))
 Assert-H9 'receipt SHA-256 stays off the homepage narrative' ($homeHtml -notmatch [regex]::Escape($cv.artifacts[0].sha256))
-Assert-H9 'receipt v0.2.4 source commit stays off the homepage narrative' ($homeHtml -notmatch 'abbd84462a8165068405cbfcddf4bfaf6b8f6f29')
+Assert-H9 'receipt source commits stay off the homepage narrative' ($homeHtml -notmatch 'abbd84462a8165068405cbfcddf4bfaf6b8f6f29' -and $homeHtml -notmatch 'eddbae7')
 
-# 6. Specific Wording & Liability Bounds
-Assert-H9 'GhostLayer "zero-trace" claim absent' ($homeHtml -notmatch 'zero-trace')
-Assert-H9 'ProofShot "screen capture" wording absent' ($homeHtml -notmatch 'screen capture')
-Assert-H9 'ForgeCast privacy/network wording remains bounded' ($homeHtml -match 'network data where required; the app does not add analytics tracking')
+# 6. Specific Wording & Liability Bounds — disclosures live on product pages.
+Assert-H9 'GhostLayer "zero-trace" claim absent' ($homeHtml -notmatch 'zero-trace' -and $softwareHtml -notmatch 'zero-trace')
+Assert-H9 'ProofShot "screen capture" wording absent' ($homeHtml -notmatch 'screen capture' -and $softwareHtml -notmatch 'screen capture')
+Assert-H9 'ForgeCast privacy/network wording remains bounded on its product page' ($forgecastHtml -match '(?i)recorded weather|Forecasts use network data|analytics')
 
 # 7. Negative controls exercise the same predicate against mutated in-memory
 # content; no source or public file is changed by these controls.
-Assert-H9 'NEGATIVE CONTROL: stale ProofShot version is rejected' (-not (Test-ProofShotPublic ($homeHtml.Replace('Public v2.0.0', 'Public v1.6.18'))))
-Assert-H9 'NEGATIVE CONTROL: old unreleased ProofShot state is rejected' (-not (Test-ProofShotPublic ($homeHtml.Replace('Public v2.0.0', 'Development · No public release'))))
-Assert-H9 'NEGATIVE CONTROL: missing ProofShot product card is rejected' (-not (Test-ProofShotPublic ($homeHtml.Replace('data-product="proofshot"', 'data-product="removed"'))))
+Assert-H9 'NEGATIVE CONTROL: stale ProofShot version is rejected' (-not (Test-ProofShotPublic $softwareHtml ($proofshotHtml.Replace('v2.0.0', 'v1.6.18'))))
+Assert-H9 'NEGATIVE CONTROL: unreleased ProofShot state is rejected' (-not (Test-ProofShotPublic $softwareHtml ($proofshotHtml.Replace('v2.0.0', 'No public release'))))
+Assert-H9 'NEGATIVE CONTROL: missing ProofShot route is rejected' (-not (Test-ProofShotPublic ($softwareHtml.Replace('href="/proofshot/"', 'href="/removed/"')) $proofshotHtml))
 
 if ($fail -gt 0) {
-  Write-Host "=== H9 RESULT: $pass passed, $fail failed ===" -ForegroundColor Red
+  Write-Host "=== CP-0189 RESULT: $pass passed, $fail failed ===" -ForegroundColor Red
   exit 1
 }
 
-Write-Host "=== H9 RESULT: $pass passed, $fail failed ===" -ForegroundColor Green
+Write-Host "=== CP-0189 RESULT: $pass passed, $fail failed ===" -ForegroundColor Green

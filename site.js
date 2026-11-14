@@ -18,7 +18,7 @@
     const close = button('Close', 'gallery-close'); close.setAttribute('aria-label', 'Close screenshot');
     header.append(identity,close);
     const canvas = make('div','gallery-canvas'); canvas.tabIndex = 0; canvas.setAttribute('aria-label','Screenshot. Zoom to inspect details.');
-    const full = make('img','gallery-full'); canvas.append(full);
+    const full = make('img','gallery-full'); full.alt=''; canvas.append(full);
     const information = make('div','gallery-information');
     const title = make('strong'), caption = make('p'); caption.setAttribute('aria-live','polite');
     const text = make('div'); text.append(title,caption);

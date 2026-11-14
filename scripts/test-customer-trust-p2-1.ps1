@@ -29,7 +29,7 @@ $supportHtml = Get-Content $supportPath -Raw -Encoding UTF8
 # 2. Header & Footer Navigation
 $homeHtml = Get-Content (Join-Path $publicDir "index.html") -Raw -Encoding UTF8
 Assert-Condition ($homeHtml -match '<a href="/support/"') "Header nav contains link to /support/"
-Assert-Condition ($homeHtml -match '<li><a href="/support/">Support</a></li>') "Footer nav contains link to /support/"
+Assert-Condition ($homeHtml -match '<nav aria-label="Footer">[\s\S]*?<a href="/support/">Support</a>') "Footer nav contains link to /support/"
 
 # 3. Product Support Signposts (All 7 Products)
 $products = @('reality-gate', 'cache-vault', 'lights-out', 'cleanroom', 'ghostlayer', 'forgecast', 'proofshot')
@@ -75,7 +75,7 @@ Assert-Condition ($supportHtml -match 'The 8-Field Checksum Identity Schema') "/
 
 # 8. Lights Out Dead-End Link Fix
 $loHtml = Get-Content (Join-Path $publicDir "lights-out\index.html") -Raw -Encoding UTF8
-Assert-Condition ($loHtml -match '<a href="/support/#report">contact the project</a>') "Lights Out dead-end link updated to point to /support/#report"
+Assert-Condition ($loHtml -match '<a href="/support/#report">see the support guide</a>') "Lights Out dead-end link updated to point to /support/#report"
 
 # 9. P1 Regression Assertions
 $rgHtml = Get-Content (Join-Path $publicDir "reality-gate\index.html") -Raw -Encoding UTF8
@@ -92,10 +92,10 @@ Assert-Condition ($loRegistry.release.releaseStatus -eq 'PUBLIC_RELEASE') "P1 Re
 
 # 10. Hardened Support Release-Truth Parity Assertions
 Assert-Condition ($supportHtml -match 'Reality Gate[\s\S]*?v1\.1\.0') "Support release truth: Reality Gate v1.1.0"
-Assert-Condition ($supportHtml -match 'Cache Vault[\s\S]*?Public Windows v0\.2\.4') "Support release truth: Cache Vault final public v0.2.4"
+Assert-Condition ($supportHtml -match 'Cache Vault[\s\S]*?Public Windows v0\.3\.1') "Support release truth: Cache Vault final public v0.3.1"
 Assert-Condition ($supportHtml -notmatch 'v0\.2\.3-rc') "Support release truth: no RC candidate strings for Cache Vault"
 $loSupportCard = [regex]::Match($supportHtml, '(?s)<article class="detail-card">\s*<h3><a href="/lights-out/">.*?</article>').Value
-Assert-Condition ((-not [string]::IsNullOrWhiteSpace($loSupportCard)) -and ($loSupportCard -match 'Public Windows v11\.1\.3 available[\s\S]*?Android companion v11\.1\.1') -and ($loSupportCard -notmatch 'on hold|currently unavailable|candidates? on')) "Support release truth: Lights Out public release, companion parity and download availability agree"
+Assert-Condition ((-not [string]::IsNullOrWhiteSpace($loSupportCard)) -and ($loSupportCard -match 'Public Windows v11\.2\.0 available from its public GitHub release[\s\S]*?Android companion v11\.1\.1') -and ($loSupportCard -match 'no Android companion download') -and ($loSupportCard -notmatch 'on hold|currently unavailable|candidates? on')) "Support release truth: Lights Out public release, companion parity and download availability agree"
 Assert-Condition ($supportHtml -match 'Cleanroom[\s\S]*?v1\.0\.7[\s\S]*?v1\.0\.10') "Support release truth: Cleanroom v1.0.7 / candidate v1.0.10"
 Assert-Condition ($supportHtml -notmatch 'Cleanroom[\s\S]*?v1\.2\.0') "Support release truth: Cleanroom rejects incorrect v1.2.0"
 Assert-Condition ($supportHtml -notmatch 'Cleanroom[\s\S]*?v1\.3\.0') "Support release truth: Cleanroom rejects incorrect v1.3.0"

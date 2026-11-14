@@ -503,6 +503,10 @@
   background: var(--pf-brass);
 }
 
+.signature-home .card-availability[data-availability="withdrawn-unavailable"] i {
+  background: #b1a8a0;
+}
+
 .signature-home .catalog-image-link {
   border-radius: 0;
   background: #0c1114;

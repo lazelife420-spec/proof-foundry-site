@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"><rect width="1200" height="630" fill="#0b0f14"/><path d="M56 106H1144M56 542H1144" stroke="#ffffff24"/><text x="56" y="74" fill="#b5c0c5" font-family="Consolas,monospace" font-size="15" letter-spacing="3">THE PROOF FOUNDRY</text><text x="56" y="253" fill="#f4f7f8" font-family="Georgia,serif" font-weight="700" font-size="64" letter-spacing="-2">Useful software.</text><text x="56" y="328" fill="#f4f7f8" font-family="Georgia,serif" font-weight="700" font-size="64" letter-spacing="-2">Receipts included.</text><text x="56" y="414" fill="#d6a84f" font-family="Consolas,monospace" font-size="14" letter-spacing="2">BUILD IT · PROVE IT · SHIP IT</text><svg x="790" y="143" width="324" height="356" viewBox="0 0 400 440" role="img" aria-label="Proof Foundry forged maker’s plate">
+<defs>
+  <linearGradient id="pf-sc-plate" x1="0" y1="0" x2="1" y2=".85"><stop stop-color="#222a32"/><stop offset=".28" stop-color="#2d3740"/><stop offset=".64" stop-color="#171d23"/><stop offset="1" stop-color="#202830"/></linearGradient>
+  <linearGradient id="pf-sc-silver" x1="0" y1="0" x2=".9" y2="1"><stop stop-color="#f2f5f7"/><stop offset=".45" stop-color="#c3cdd4"/><stop offset="1" stop-color="#89959f"/></linearGradient>
+  <linearGradient id="pf-sc-gold" x1="0" y1="0" x2=".9" y2="1"><stop stop-color="#f3dfb4"/><stop offset=".48" stop-color="#d6a84f"/><stop offset="1" stop-color="#9e7329"/></linearGradient>
+  <filter id="pf-sc-grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".73" numOctaves="3" seed="31"/><feColorMatrix type="saturate" values="0"/></filter>
+  <clipPath id="pf-sc-clip"><path d="M10 3H384L397 16V424L384 437H10L3 430V10Z"/></clipPath>
+</defs>
+<path data-maker-mark="plate-edge" d="M10 3H384L397 16V424L384 437H10L3 430V10Z" fill="url(#pf-sc-plate)" stroke="#4c5863" stroke-width="2"/>
+<path d="M14 14H382V426H14Z" fill="none" stroke="#2c3740" stroke-width="1"/>
+<rect width="400" height="440" filter="url(#pf-sc-grain)" clip-path="url(#pf-sc-clip)" opacity=".04"/>
+<g transform="translate(47 32) scale(1.1953125)"><defs>
+  <path id="pf-sc-top" d="M21 128A107 107 0 0 1 235 128"/>
+  <path id="pf-sc-bottom" d="M34 183A109 109 0 0 0 222 183"/>
+</defs>
+<circle cx="128" cy="128" r="110" fill="#0f1419"/>
+<g data-maker-mark="pressed-seal" fill="none">
+  <circle cx="128" cy="129.1" r="119" stroke="#55626d" stroke-width="1.15"/>
+  <circle cx="128" cy="128" r="119" stroke="#11171c" stroke-width="1.5"/>
+  <circle cx="128" cy="128.8" r="110" stroke="#62707b" stroke-width=".75"/>
+  <circle cx="128" cy="128" r="110" stroke="#26313a" stroke-width=".8"/>
+  <circle cx="128" cy="128" r="99" stroke="#2d3942" stroke-width=".65"/>
+</g>
+<g data-pf-geometry="shipped-G" transform="translate(31.52 35.84) scale(.72)">
+  <g fill="#070a0d" opacity=".65" transform="translate(1.4 2)"><path d="M42 34H116C157 34 181 56 181 91C181 126 157 148 116 148H82V222H42V34ZM82 70V112H115C132 112 141 104 141 91C141 78 132 70 115 70H82Z"/><path d="M146 34H226V72H186V106H218V143H186V222H146V34Z"/><path d="M145.5 76H146V104H145.5C144.6 104 144.0 103.4 144.0 102.5V77.5C144.0 76.6 144.6 76 145.5 76Z"/></g>
+  <path d="M42 34H116C157 34 181 56 181 91C181 126 157 148 116 148H82V222H42V34ZM82 70V112H115C132 112 141 104 141 91C141 78 132 70 115 70H82Z" fill="url(#pf-sc-silver)"/>
+  <path d="M146 34H226V72H186V106H218V143H186V222H146V34Z" fill="url(#pf-sc-gold)"/>
+  <path d="M145.5 76H146V104H145.5C144.6 104 144.0 103.4 144.0 102.5V77.5C144.0 76.6 144.6 76 145.5 76Z" fill="#8e99a2"/>
+  <line data-maker-mark="record-crossbar" x1="145" y1="102" x2="146" y2="102" stroke="#d6a84f" stroke-width="1.5" stroke-linecap="round"/>
+</g>
+<g data-maker-mark="alignment" fill="none" stroke="#b89249" stroke-width="1.2"><path d="M128 7V13M243 128H249M128 243V249M7 128H13"/></g>
+<g data-maker-mark="three-stages" fill="none" stroke="#9e7c3c" stroke-width="1.2"><path d="M114 12V16M128 10V16M142 12V16"/></g>
+<g fill="#85939c" font-family="ui-monospace,Consolas,monospace" font-size="7.7" letter-spacing="1.05">
+  <text data-maker-mark="source-artifact-record"><textPath href="#pf-sc-top" startOffset="50%" text-anchor="middle">SOURCE / ARTIFACT / RECORD</textPath></text>
+  <text data-maker-mark="build-prove-ship" font-size="7.4" letter-spacing=".75"><textPath href="#pf-sc-bottom" startOffset="50%" text-anchor="middle">BUILD IT · PROVE IT · SHIP IT</textPath></text>
+</g>
+<text data-maker-mark="binary-pf" x="22" y="147" transform="rotate(-90 22 147)" fill="#5e6c75" font-family="ui-monospace,Consolas,monospace" font-size="3.3" letter-spacing=".55">01010000 01000110</text>
+<text data-maker-mark="record-code" x="234" y="112" transform="rotate(90 234 112)" fill="#5e6c75" font-family="ui-monospace,Consolas,monospace" font-size="3.3" letter-spacing=".55">record(source, artifact)</text></g>
+<g data-maker-mark="fastener-1" transform="translate(24 24)"><circle r="4.4" fill="#445257" stroke="#b0b9b3" stroke-width="1"/><path d="M-2.3 0H2.3" transform="rotate(45)" stroke="#202e34" stroke-width="1.1"/></g>
+<g data-maker-mark="fastener-2" transform="translate(376 24)"><circle r="4.4" fill="#445257" stroke="#b0b9b3" stroke-width="1"/><path d="M-2.3 0H2.3" transform="rotate(-45)" stroke="#202e34" stroke-width="1.1"/></g>
+<g data-maker-mark="fastener-3" transform="translate(24 416)"><circle r="4.4" fill="#445257" stroke="#b0b9b3" stroke-width="1"/><path d="M-2.3 0H2.3" transform="rotate(-45)" stroke="#202e34" stroke-width="1.1"/></g>
+<g data-maker-mark="fastener-4" transform="translate(376 416)"><circle r="4.4" fill="#445257" stroke="#b0b9b3" stroke-width="1"/><path d="M-2.3 0H2.3" transform="rotate(45)" stroke="#202e34" stroke-width="1.1"/></g>
+<path d="M37 373H363" stroke="#313d46"/>
+<text x="200" y="360" text-anchor="middle" fill="#d9e0e5" font-family="ui-monospace,Consolas,monospace" font-size="17" font-weight="700" letter-spacing="1.5">THE PROOF FOUNDRY</text>
+<text x="200" y="397" text-anchor="middle" fill="#d6a84f" font-family="ui-monospace,Consolas,monospace" font-size="9.5" letter-spacing="1.1">BUILD IT · PROVE IT · SHIP IT</text>
+<text x="200" y="416" text-anchor="middle" fill="#8c99a2" font-family="ui-monospace,Consolas,monospace" font-size="7.5" letter-spacing="1.1">SOURCE / ARTIFACT / RECORD</text>
+</svg><text x="56" y="585" fill="#b5c0c5" font-family="Consolas,monospace" font-size="13" letter-spacing="2">SOURCE / ARTIFACT / RECORD</text><text x="870" y="585" fill="#b5c0c5" font-family="Consolas,monospace" font-size="13">theprooffoundry.com</text></svg>

@@ -1,0 +1,273 @@
+/* Common architecture and native document travel. No product paint. */
+@view-transition {
+  navigation:auto
+}
+/* Blackout-free document travel: the departing page remains 100% visible
+   underneath while the arriving page dissolves in over top (180ms), ensuring
+   the document canvas is never empty and eliminating navigation flash. */
+html[data-travel=on]::view-transition {
+  background:transparent
+}
+html[data-travel=on]::view-transition-group(root) {
+  animation:none
+}
+html[data-travel=on]::view-transition-old(root) {
+  animation:none;
+  mix-blend-mode:normal
+}
+html[data-travel=on]::view-transition-new(root) {
+  animation:foundry-arrive 180ms ease-out both;
+  mix-blend-mode:normal
+}
+@keyframes foundry-arrive {
+  0% {opacity:0}
+  100% {opacity:1}
+}
+@media (prefers-reduced-motion:reduce) {
+  html[data-travel]::view-transition-group(*),
+  html[data-travel]::view-transition-old(*),
+  html[data-travel]::view-transition-new(*) {
+    animation:none!important
+  }
+}
+/* Shared chrome is identical on every page: show the destination copy at
+   once and hold it in place for the whole journey. */
+.site-header {
+  view-transition-name:foundry-header
+}
+.pf-route-chain {
+  view-transition-name:pf-route-chain
+}
+::view-transition-group(foundry-header),::view-transition-group(pf-route-chain) {
+  animation:none;
+  z-index:10
+}
+::view-transition-old(foundry-header),::view-transition-old(pf-route-chain) {
+  display:none
+}
+::view-transition-new(foundry-header),::view-transition-new(pf-route-chain) {
+  animation:none
+}
+.support-hero {
+  padding:75px 0 65px
+}
+.support-hero>.kicker {
+  margin-bottom:24px
+}
+.support-hero h1 {
+  max-width:16ch
+}
+.support-intro {
+  font-size:22px;
+  color:var(--muted);
+  margin-top:25px
+}
+.support-section {
+  padding:50px 0
+}
+.support-content-box h2 {
+  margin-bottom:25px
+}
+.support-content-box p {
+  max-width:75ch;
+  color:var(--muted)
+}
+.support-grid,.contact-grid,.principles-grid,.proof-grid,.founders-grid,.roadmap-grid {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:40px
+}
+.support-card,.contact-card,.principle-card,.proof-card,.founders-card,.roadmap-card {
+  padding:28px 0;
+  border-top:1px solid var(--line)
+}
+.support-card h3,.contact-card h3,.principle-card h3 {
+  margin-bottom:17px
+}
+.support-card p,.contact-card p,.principle-card p {
+  font-size:14px;
+  color:var(--muted)
+}
+.support-card a,.contact-card a {
+  overflow-wrap:anywhere
+}
+.support-content-box ul {
+  max-width:80ch
+}
+.support-content-box li {
+  font-size:15px
+}
+.pf-room-about .support-hero {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:25px 70px
+}
+.pf-room-about .support-hero>.kicker {
+  grid-column:1/-1
+}
+.pf-room-about .support-hero h1 {
+  font-size:clamp(50px,6vw,86px);
+  max-width:12ch
+}
+.pf-room-about .support-intro {
+  align-self:end;
+  font-size:30px;
+  max-width:16ch
+}
+.about-intro-section {
+  margin-left:32%;
+  max-width:760px
+}
+.pf-room-about .support-grid {
+  grid-template-columns:repeat(4,1fr)
+}
+.pf-room-support .support-hero {
+  max-width:900px
+}
+.pf-room-support .support-hero h1 {
+  font-family:var(--pf-serif);
+  font-weight:400;
+  font-size:clamp(52px,6vw,86px);
+  letter-spacing:-.04em
+}
+.pf-room-founders .support-hero {
+  border-bottom:1px solid var(--line)
+}
+.pf-room-roadmap .support-section {
+  border-left:1px solid var(--line);
+  padding-left:40px;
+  margin-left:15%
+}
+.error-station {
+  width:var(--pf-rail);
+  margin:auto;
+  min-height:62vh;
+  display:grid;
+  align-items:center;
+  padding:60px 0
+}
+.error-notice {
+  max-width:620px;
+  border-left:3px solid #b7a37b;
+  padding:15px 0 25px 45px
+}
+.error-notice h1 {
+  font-size:58px;
+  max-width:12ch
+}
+.error-notice p {
+  color:var(--muted);
+  margin-top:25px;
+  max-width:50ch
+}
+.support-faq details,.faq details {
+  border-block-start:1px solid var(--line);
+  padding:20px 0
+}
+.support-faq summary,.faq summary {
+  font-size:18px
+}
+.support-faq details p,.faq details p {
+  font-size:14px;
+  color:var(--muted);
+  margin-top:17px
+}
+.contact-form {
+  max-width:760px
+}
+.contact-form label {
+  display:block;
+  margin-top:20px;
+  font-size:13px
+}
+.contact-form :is(input,select,textarea) {
+  display:block;
+  width:100%;
+  margin-top:8px
+}
+.form-row {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:25px
+}
+@media(max-width:900px) {
+  .pf-room-about .support-grid {
+    grid-template-columns:1fr 1fr
+  }
+}
+@media(max-width:700px) {
+  .support-hero {
+    padding:40px 0 35px
+  }
+  .support-intro {
+    font-size:18px;
+    margin-top:20px
+  }
+  .support-section {
+    padding:35px 0
+  }
+  .support-grid,.contact-grid,.principles-grid,.proof-grid,.founders-grid,.roadmap-grid {
+    grid-template-columns:1fr;
+    gap:20px
+  }
+  .pf-room-about .support-hero {
+    display:block
+  }
+  .pf-room-about .support-hero h1 {
+    font-size:46px
+  }
+  .pf-room-about .support-intro {
+    font-size:25px;
+    max-width:20ch
+  }
+  .about-intro-section {
+    margin-left:0
+  }
+  .pf-room-about .support-grid {
+    grid-template-columns:1fr
+  }
+  .pf-room-roadmap .support-section {
+    margin-left:0;
+    padding-left:20px
+  }
+  .error-station {
+    min-height:55vh;
+    padding:40px 0
+  }
+  .error-notice {
+    padding:15px 0 20px 22px
+  }
+  .error-notice h1 {
+    font-size:42px
+  }
+  .error-notice p {
+    font-size:15px
+  }
+  .error-notice .hero-actions {
+    align-items:start;
+    flex-direction:column;
+    gap:22px
+  }
+  .form-row {
+    display:block
+  }
+}
+@media(prefers-reduced-motion:reduce) {
+  ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*) {
+    animation:none!important
+  }
+}
+html[data-travel=off]::view-transition-group(*),html[data-travel=off]::view-transition-old(*),html[data-travel=off]::view-transition-new(*) {
+  animation:none!important
+}
+@media(forced-colors:active) {
+  ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*) {
+    animation:none!important
+  }
+  .site-header {
+    backdrop-filter:none
+  }
+  .error-notice {
+    border-color:CanvasText
+  }
+}

@@ -5,7 +5,27 @@
   "visibility": "visible",
   "sections": [
     "hero",
-    "outcomes",
+    {
+      "type": "outcomes",
+      "id": "features",
+      "kicker": "Made for the way you work",
+      "title": "A deliberate boundary between work and storage.",
+      "lede": "Stage, select, edit and commit at your own pace.",
+      "items": [
+        {
+          "title": "Stage in RAM",
+          "body": "Drop files into a volatile staging layer and inspect their state."
+        },
+        {
+          "title": "Work on a selection",
+          "body": "Select a group with checkboxes or keyboard shortcuts. Open staged files in their associated editor."
+        },
+        {
+          "title": "Commit with intent",
+          "body": "Commit or discard the selected files. If a destination changed, conflict recovery preserves both versions."
+        }
+      ]
+    },
     "how",
     "get",
     "onboard",
@@ -27,5 +47,72 @@
     "twitterCard": "summary_large_image",
     "twitterImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png"
   },
-  "contentSource": "content.html"
+  "contentSource": "content.html",
+  "schemaVersion": 2,
+  "theme": {
+    "accent": "#00CC33",
+    "glow": "rgba(0,204,51,.15)",
+    "atmosphere": "memory",
+    "background": "#08120A",
+    "surface": "#142018",
+    "accentSecondary": "#89F09A"
+  },
+  "brand": {
+    "name": "GhostLayer",
+    "shortName": "GhostLayer",
+    "accessibleName": "ghostlayer",
+    "mark": "/assets/products/ghostlayer/brand/logo.svg"
+  },
+  "taxonomy": {
+    "category": "Private File Staging",
+    "jobs": [
+      "memory",
+      "staging",
+      "review",
+      "commit"
+    ],
+    "platforms": [
+      "Windows"
+    ]
+  },
+  "hero": {
+    "variant": "immersive",
+    "kicker": "Volatile file staging",
+    "headline": "Choose what becomes permanent.",
+    "lede": "A temporary working layer for your files. Stage them in RAM, review your changes, and commit only what you choose to keep.",
+    "media": {
+      "src": "/assets/ghostlayer/gl-staged-files.png",
+      "alt": "GhostLayer staged files interface",
+      "caption": "Staged files · changes remain reviewable"
+    },
+    "primaryAction": {
+      "label": "Explore product",
+      "href": "#download"
+    },
+    "secondaryAction": {
+      "label": "Explore the details",
+      "href": "#features"
+    }
+  },
+  "card": {
+    "tagline": "Choose what becomes permanent.",
+    "media": "/assets/ghostlayer/gl-staged-files.png",
+    "summary": "A temporary working layer for your files. Stage them in RAM, review your changes, and commit only what you choose to keep.",
+    "mediaAlt": "GhostLayer RAM staging with sample files and explicit commit controls"
+  },
+  "lifecycle": "public-eligible",
+  "placement": {
+    "catalog": true
+  },
+  "homepage": {
+    "tier": "major",
+    "variant": "workstation",
+    "order": 40,
+    "headline": "Stage the work. Make the call.",
+    "lede": "RAM-first staging. An explicit commit boundary.",
+    "media": "/assets/ghostlayer/gl-staged-files.png",
+    "mediaAlt": "GhostLayer RAM staging with sample files and explicit commit controls",
+    "mediaCaption": "Authentic RAM staging interface",
+    "note": "External editing may create temporary disk copies."
+  }
 }

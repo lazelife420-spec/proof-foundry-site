@@ -37,7 +37,7 @@ foreach ($p in ($manifest.products | Where-Object { $_.visible })) {
   Assert-TF "$($p.id): breadcrumb returns to index" ($h -match 'href="/truth-files/"')
   Assert-TF "$($p.id): product identity renders" ($h -match [regex]::Escape(">$($p.name)<") -and $h -match 'card-mark')
 
-  $ver = if ($p.release -and $p.release.publicVersion) { "v$($p.release.publicVersion)" } else { 'Unreleased' }
+  $ver = if ($p.release -and $p.release.publicVersion) { "v$($p.release.publicVersion)" } elseif ($p.release -and $p.release.releaseStatus -eq 'WITHDRAWN' -and $p.release.withdrawnVersion) { "Withdrawn v$($p.release.withdrawnVersion)" } else { 'Unreleased' }
   Assert-TF "$($p.id): current version matches manifest" ($h -match [regex]::Escape(">$ver<"))
 
   $plats = if ($p.platforms) { ($p.platforms -join ', ') } else { $p.platform }

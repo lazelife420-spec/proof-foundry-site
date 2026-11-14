@@ -47,7 +47,14 @@
    "bytes": 5225,
    "comparison": "utf8-lf",
    "lfSha256": "1202087d7bb680201d1c0e98ebf9834b8910d98c382e0b725d18ab74d0ffd2f1",
-   "origin": "original-entry-inventory"
+   "origin": "original-entry-inventory",
+   "migration": {
+    "sha256": "3637a498201354eb9b2645c3e5a876c5b3bdc90889bdc7ffec58d6746611108a",
+    "lfSha256": "3637a498201354eb9b2645c3e5a876c5b3bdc90889bdc7ffec58d6746611108a",
+    "bytes": 5242,
+    "comparison": "utf8-lf",
+    "reason": "Product Module V2 migration: registry-driven catalog, homepage and shared chrome."
+   }
   },
   {
    "path": "assets/cache-vault/cache_vault_poster.png",
@@ -1045,15 +1052,18 @@
    "lfSha256": "6e34f112887312c6757842be2c21f110071165b1fe5699190fab1e9cae9e3f47",
    "origin": "original-entry-inventory",
    "migration": {
+    "sha256": "fc0b0fb6ccbfb7f0d4400ef5b7e0092c504e92d70267c16d0014c5ee69e6ecca",
+    "lfSha256": "fc0b0fb6ccbfb7f0d4400ef5b7e0092c504e92d70267c16d0014c5ee69e6ecca",
+    "bytes": 16391,
+    "comparison": "utf8-lf",
+    "reason": "Product Module V2 migration: registry-driven presentation; module.json carries brand/theme/hero/sections, content.html slimmed to bridge."
+   },
+   "previousMigration": {
     "sha256": "dcd3001ad54aa5c02b2d9b61535c41ca8b3d304c16c7d9e82c8a163e483a4da2",
     "bytes": 22636,
     "comparison": "utf8-lf",
     "lfSha256": "dcd3001ad54aa5c02b2d9b61535c41ca8b3d304c16c7d9e82c8a163e483a4da2",
     "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
-   },
-   "previousMigration": {
-    "path": "cache-vault.html",
-    "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
    }
   },
   {
@@ -1064,15 +1074,18 @@
    "lfSha256": "dd226c02ba94fbf4d73cee255f42330f541413102108b567758ace7c6ce01bfc",
    "origin": "original-entry-inventory",
    "migration": {
+    "sha256": "e5bc01243aac97c58ffa8d85d4d5ae50b02f09414f9a8f104320598aee98606a",
+    "lfSha256": "e5bc01243aac97c58ffa8d85d4d5ae50b02f09414f9a8f104320598aee98606a",
+    "bytes": 12415,
+    "comparison": "utf8-lf",
+    "reason": "Product Module V2 migration: registry-driven presentation; module.json carries brand/theme/hero/sections, content.html slimmed to bridge."
+   },
+   "previousMigration": {
     "sha256": "8a497a62457827feae9c7519724a61bf2de7b665ee324c1507b59569c901508f",
     "bytes": 15773,
     "comparison": "utf8-lf",
     "lfSha256": "8a497a62457827feae9c7519724a61bf2de7b665ee324c1507b59569c901508f",
     "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
-   },
-   "previousMigration": {
-    "path": "cleanroom.html",
-    "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
    }
   },
   {
@@ -1081,7 +1094,14 @@
    "bytes": 40149,
    "comparison": "utf8-lf",
    "lfSha256": "fed8a3d53b93cb5e22b78712f8f906c66f753890fb7d6c28f8df7166e80087d1",
-   "origin": "original-entry-inventory"
+   "origin": "original-entry-inventory",
+   "migration": {
+    "sha256": "a88f1b0056e1625caf26fde95c77d75926c839df979f782338ef99e849de6803",
+    "bytes": 40008,
+    "comparison": "utf8-lf",
+    "lfSha256": "a88f1b0056e1625caf26fde95c77d75926c839df979f782338ef99e849de6803",
+    "reason": "CP-0189 follow-up: dead V2 chrome styling removed (.studio .site-header/.nav-row/.top-nav/.nav-panel/.footer-* and .footer-logo width conflicts) so the approved forged-metal chrome renders unmodified; gallery img gets alt=\"\" at creation."
+   }
   },
   {
    "path": "experience.js",
@@ -1099,15 +1119,18 @@
    "lfSha256": "1b42817b0d02980a418ebdd653be826dbc35fedfb99454fceb007ee4be78870c",
    "origin": "original-entry-inventory",
    "migration": {
+    "sha256": "c63ea5b11b053f27f6996c881bebabadd705982f9e36fa8f0e7dcb0dce5175b8",
+    "lfSha256": "c63ea5b11b053f27f6996c881bebabadd705982f9e36fa8f0e7dcb0dce5175b8",
+    "bytes": 13190,
+    "comparison": "utf8-lf",
+    "reason": "Product Module V2 migration: registry-driven presentation; module.json carries brand/theme/hero/sections, content.html slimmed to bridge."
+   },
+   "previousMigration": {
     "sha256": "6a75ad1c0b5c322d522b0613c374310da1bd693e94c02361ea85e0ce3ed3c3bd",
     "bytes": 17711,
     "comparison": "utf8-lf",
     "lfSha256": "6a75ad1c0b5c322d522b0613c374310da1bd693e94c02361ea85e0ce3ed3c3bd",
     "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
-   },
-   "previousMigration": {
-    "path": "forgecast.html",
-    "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
    }
   },
   {
@@ -1126,15 +1149,18 @@
    "lfSha256": "c85be2d875b2032bb860e31bca1d0ba3323dc9d456be0f8cf68796dbafff17ff",
    "origin": "original-entry-inventory",
    "migration": {
+    "sha256": "115e704337db96a592903cbb234079a0861477144a80a1504223c3e60ea61797",
+    "lfSha256": "115e704337db96a592903cbb234079a0861477144a80a1504223c3e60ea61797",
+    "bytes": 14368,
+    "comparison": "utf8-lf",
+    "reason": "Product Module V2 migration: registry-driven presentation; module.json carries brand/theme/hero/sections, content.html slimmed to bridge."
+   },
+   "previousMigration": {
     "sha256": "5a1ef3f0a88469d181c750ca48284d36c92af81539f0d21d62cf332a9df0b131",
     "bytes": 17685,
     "comparison": "utf8-lf",
     "lfSha256": "5a1ef3f0a88469d181c750ca48284d36c92af81539f0d21d62cf332a9df0b131",
     "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
-   },
-   "previousMigration": {
-    "path": "ghostlayer.html",
-    "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
    }
   },
   {
@@ -1145,15 +1171,25 @@
    "lfSha256": "bc08d12dce3e35c8f36719029438463b22a779ce8ce89a71102b46c9a27b90aa",
    "origin": "original-entry-inventory",
    "migration": {
+    "sha256": "679375040225cf985c7337c2486d96a125de93d7bde29b34c5eb57361b710c6a",
+    "bytes": 35920,
+    "comparison": "utf8-lf",
+    "lfSha256": "679375040225cf985c7337c2486d96a125de93d7bde29b34c5eb57361b710c6a",
+    "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions.",
+    "previousMigration": {
+     "sha256": "6e75c66f3ae155d37dab77b16c302171cd8b3645a5ce7796f20e7273925f7030",
+     "lfSha256": "6e75c66f3ae155d37dab77b16c302171cd8b3645a5ce7796f20e7273925f7030",
+     "bytes": 31909,
+     "comparison": "utf8-lf",
+     "reason": "Product Module V2 migration: registry-driven presentation; module.json carries brand/theme/hero/sections, content.html slimmed to bridge."
+    }
+   },
+   "previousMigration": {
     "sha256": "679ee6397c564b0a2f4942548619856d64292b5b3db3c0283064f56a34d07e71",
     "bytes": 38487,
     "comparison": "utf8-lf",
     "lfSha256": "679ee6397c564b0a2f4942548619856d64292b5b3db3c0283064f56a34d07e71",
     "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
-   },
-   "previousMigration": {
-    "path": "lights-out.html",
-    "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
    }
   },
   {
@@ -1164,11 +1200,18 @@
    "lfSha256": "ad53e5f9048eb648e4769b8cac6f68a62ade77c66d50921007d5cb25896102de",
    "origin": "original-entry-inventory",
    "migration": {
-    "sha256": "b5cfaead90cea168c126fe002f8c7977d4b68457a62260fea3a9cb82369105e1",
-    "bytes": 920,
+    "sha256": "036640f37deeaf5da4afa05ee0b16713a21d6b8f9800b441aab6e4f86aca0b83",
+    "bytes": 2370,
     "comparison": "utf8-lf",
-    "lfSha256": "b5cfaead90cea168c126fe002f8c7977d4b68457a62260fea3a9cb82369105e1",
-    "reason": "PF-TF1 Truth Files 2026-09-21: human-readable layer over /truth/*.json — /truth-files/ index + 7 per-product records generated from the same manifest facts; footer discovery link, sitemap entries, /truth/ related-records card added."
+    "lfSha256": "036640f37deeaf5da4afa05ee0b16713a21d6b8f9800b441aab6e4f86aca0b83",
+    "reason": "CP-0189 approved visual identity restoration: forged-metal chrome (emblem, route-chain nav, chassis layers, Archivo/Plex Mono) restored on home/software/truth-files; V2 registry engine, release truth and product functionality preserved.",
+    "previousMigration": {
+     "sha256": "b5cfaead90cea168c126fe002f8c7977d4b68457a62260fea3a9cb82369105e1",
+     "bytes": 920,
+     "comparison": "utf8-lf",
+     "lfSha256": "b5cfaead90cea168c126fe002f8c7977d4b68457a62260fea3a9cb82369105e1",
+     "reason": "PF-TF1 Truth Files 2026-09-21: human-readable layer over /truth/*.json \u2014 /truth-files/ index + 7 per-product records generated from the same manifest facts; footer discovery link, sitemap entries, /truth/ related-records card added."
+    }
    }
   },
   {
@@ -1177,7 +1220,14 @@
    "bytes": 1043,
    "comparison": "utf8-lf",
    "lfSha256": "98d5c5f50e4b16b6bfe0e1080bbd63a961fa9452ba93caa3776292ca93d4975c",
-   "origin": "original-entry-inventory"
+   "origin": "original-entry-inventory",
+   "migration": {
+    "sha256": "5db18d1d676a8f90113afc0815706efc402ec56553fa7262f9296ab2cdc40627",
+    "bytes": 1913,
+    "comparison": "utf8-lf",
+    "lfSha256": "5db18d1d676a8f90113afc0815706efc402ec56553fa7262f9296ab2cdc40627",
+    "reason": "CP-0189 approved visual identity restoration: forged-metal chrome (emblem, route-chain nav, chassis layers, Archivo/Plex Mono) restored on home/software/truth-files; V2 registry engine, release truth and product functionality preserved."
+   }
   },
   {
    "path": "partials/product-card.html",
@@ -1187,6 +1237,20 @@
    "lfSha256": "ce4d6f62f68de6f50fb1199a1c2468f788790d2eba95499724abb42bbd9ffb4b",
    "origin": "original-entry-inventory",
    "migration": {
+    "sha256": "72273683b861cf61ecc56c37c9a357966c9074fe794204ef903ceea665d1311e",
+    "bytes": 1505,
+    "comparison": "utf8-lf",
+    "lfSha256": "72273683b861cf61ecc56c37c9a357966c9074fe794204ef903ceea665d1311e",
+    "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions.",
+    "previousMigration": {
+     "sha256": "b9c6b6f71921ffbf1b2c384293b6bd577ea4bb341e476bc1412081eab91db398",
+     "lfSha256": "b9c6b6f71921ffbf1b2c384293b6bd577ea4bb341e476bc1412081eab91db398",
+     "bytes": 1464,
+     "comparison": "utf8-lf",
+     "reason": "Product Module V2 migration: registry-driven catalog, homepage and shared chrome."
+    }
+   },
+   "previousMigration": {
     "sha256": "f9ba0c456d1888628f9a888bd29243171967a2601f3c328e4a84d00e1fe15439",
     "bytes": 1234,
     "comparison": "utf8-lf",
@@ -1202,6 +1266,27 @@
    "lfSha256": "9498b8df1f0007adca096559582b3fbd27cb5aaeb2de9f0ec64cd1c7b18accf3",
    "origin": "original-entry-inventory",
    "migration": {
+    "sha256": "f2f992b8f109f9a4240c946501a9655a25b91697f3ca62194192bf82d5cdb5f8",
+    "bytes": 26942,
+    "comparison": "utf8-lf",
+    "lfSha256": "f2f992b8f109f9a4240c946501a9655a25b91697f3ca62194192bf82d5cdb5f8",
+    "reason": "Mobile overflow repair (D1/D2): pp-story single-column override raised to body.pp-system specificity under 900px; tf-grid card column shrinks below 300px. No design changes.",
+    "previousMigration": {
+     "sha256": "4910b9684f014b36736e3b77210bdf2a2becd0510b2a00c72f38dd5bdf4780d6",
+     "bytes": 26927,
+     "comparison": "utf8-lf",
+     "lfSha256": "4910b9684f014b36736e3b77210bdf2a2becd0510b2a00c72f38dd5bdf4780d6",
+     "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions.",
+     "previousMigration": {
+      "sha256": "e5e01608dd3a2cd4843ef883a413729c3978581044345ea42bfa765e839f2730",
+      "lfSha256": "e5e01608dd3a2cd4843ef883a413729c3978581044345ea42bfa765e839f2730",
+      "bytes": 25998,
+      "comparison": "utf8-lf",
+      "reason": "Product Module V2 migration: registry-driven catalog, homepage and shared chrome."
+     }
+    }
+   },
+   "previousMigration": {
     "sha256": "b4047aeb4583a4fa32d360c52473e8fe33a6f2f376f7fd407e6cb379786c8a10",
     "bytes": 24693,
     "comparison": "utf8-lf",
@@ -1240,15 +1325,18 @@
    "lfSha256": "5a5a0b90ddec2a8bffcfdb005b0cee2a20c544bf20357613a02b5415dc5dd08e",
    "origin": "original-entry-inventory",
    "migration": {
+    "sha256": "2d4b5a122a7a7a17c4cb48609a8d5cfd5247873ac7da139319063c135f98d156",
+    "lfSha256": "2d4b5a122a7a7a17c4cb48609a8d5cfd5247873ac7da139319063c135f98d156",
+    "bytes": 27513,
+    "comparison": "utf8-lf",
+    "reason": "Product Module V2 migration: registry-driven presentation; module.json carries brand/theme/hero/sections, content.html slimmed to bridge."
+   },
+   "previousMigration": {
     "sha256": "97e13b3003830505e9172c102eafbb0f7aa235a9e5a7e55e525dca513d2c9f8b",
     "bytes": 30936,
     "comparison": "utf8-lf",
     "lfSha256": "97e13b3003830505e9172c102eafbb0f7aa235a9e5a7e55e525dca513d2c9f8b",
     "reason": "VR1-R2 owner visual-review correction 2026-09-21: desktop header true parity (homepage nav/CTA now shares the studio treatment), ProofShot hero moved to verified web-hero brand artwork after proof-cards capture proved HyperSnatch-chromed, record-open capture fixed to a real scrolled viewport with geometric clearance assertion."
-   },
-   "previousMigration": {
-    "path": "proofshot.html",
-    "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
    }
   },
   {
@@ -1259,15 +1347,25 @@
    "lfSha256": "beb0fc088cf570f4c293d25d95555cf340428b8abf1e610d148368205cee2771",
    "origin": "original-entry-inventory",
    "migration": {
+    "sha256": "eef6af4b281c1969149cce174bda03161343d6af0f893f7f0edc8746cd163481",
+    "bytes": 28032,
+    "comparison": "utf8-lf",
+    "lfSha256": "eef6af4b281c1969149cce174bda03161343d6af0f893f7f0edc8746cd163481",
+    "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions.",
+    "previousMigration": {
+     "sha256": "058ad4356490fb884e40e88a6ceea4f0ea44bf94c139fabfbeb2b0fa0ff3d1e9",
+     "lfSha256": "058ad4356490fb884e40e88a6ceea4f0ea44bf94c139fabfbeb2b0fa0ff3d1e9",
+     "bytes": 25870,
+     "comparison": "utf8-lf",
+     "reason": "Product Module V2 migration: registry-driven presentation; module.json carries brand/theme/hero/sections, content.html slimmed to bridge."
+    }
+   },
+   "previousMigration": {
     "sha256": "5ba2f73806654375b499b6726d0cc8a4a6c560bde143181df703db4722d0999e",
     "bytes": 29956,
     "comparison": "utf8-lf",
     "lfSha256": "5ba2f73806654375b499b6726d0cc8a4a6c560bde143181df703db4722d0999e",
     "reason": "VR1 visual refoundation 2026-09-21 (owner-directed candidate): unified global shell on all pages; homepage reordered product-first with raw SHA-256/commit moved off the primary narrative; stale Cleanroom/ProofShot mini media replaced with current-brand captures; product pages gain shared two-layer hierarchy (experience layer + collapsible proof & technical record); catalog cards expose platform/state/version meta row; roadmap relabeled NOW/PROGRESS/LAB framing; proof-standard gains concise in-brief lead; focus-visible extended to nav toggle."
-   },
-   "previousMigration": {
-    "path": "reality-gate.html",
-    "reason": "H13 modular renderer 2026-09-20: {id}.html template migrated to products/<id>/{module.json,content.html}"
    }
   },
   {
@@ -1278,6 +1376,13 @@
    "lfSha256": "faf8f7558fe7a7faea8291375e56fe4eef9b5342db4d8dc6e56760fe0da4dc80",
    "origin": "original-entry-inventory",
    "migration": {
+    "sha256": "374ce703785c45f713fd3d51fb791fc61d096196658daf82874f98726f592730",
+    "lfSha256": "374ce703785c45f713fd3d51fb791fc61d096196658daf82874f98726f592730",
+    "bytes": 7693,
+    "comparison": "utf8-lf",
+    "reason": "Product Module V2 migration: registry-driven catalog, homepage and shared chrome."
+   },
+   "previousMigration": {
     "sha256": "3e5ea60518b24c632570887737c20f2714c453f12dadf6f0782c536332fa6fe9",
     "bytes": 7869,
     "comparison": "utf8-lf",
@@ -1308,6 +1413,20 @@
    "lfSha256": "926d8054b6a0f115663d7484257b312a16666085f71bad8378da02acdae2d220",
    "origin": "original-entry-inventory",
    "migration": {
+    "sha256": "72293bf3685cf08b7aca72e9a791a55cd6ce1a34e82d1f33ba2f442251bd0d9b",
+    "bytes": 7996,
+    "comparison": "utf8-lf",
+    "lfSha256": "72293bf3685cf08b7aca72e9a791a55cd6ce1a34e82d1f33ba2f442251bd0d9b",
+    "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions.",
+    "previousMigration": {
+     "sha256": "f8bdfe87dbdaf0d2bf9858b11b2339aaab3394b2189969f6b94b0de10aaa0735",
+     "lfSha256": "f8bdfe87dbdaf0d2bf9858b11b2339aaab3394b2189969f6b94b0de10aaa0735",
+     "bytes": 7902,
+     "comparison": "utf8-lf",
+     "reason": "Qualification suite rebound to Product Module V2 rendered contracts (module heroes, scene order, origin surface, compare copy)."
+    }
+   },
+   "previousMigration": {
     "sha256": "8349eb1ac7d4571c71bd63ef6ac51682303833b8baec6d41bdbb7dfa4f143f61",
     "bytes": 7972,
     "comparison": "utf8-lf",
@@ -1331,6 +1450,27 @@
    "lfSha256": "8d2ae818edb11c34ad52890f9648df9c131ebb377c11c599ed30ea6bf83e9586",
    "origin": "original-entry-inventory",
    "migration": {
+    "sha256": "ea2283800135896fd88af8cbe90cf063e948e53426978220c2a8c988733e630b",
+    "bytes": 5287,
+    "comparison": "utf8-lf",
+    "lfSha256": "ea2283800135896fd88af8cbe90cf063e948e53426978220c2a8c988733e630b",
+    "reason": "CP-0189 approved visual identity restoration: forged-metal chrome (emblem, route-chain nav, chassis layers, Archivo/Plex Mono) restored on home/software/truth-files; V2 registry engine, release truth and product functionality preserved.",
+    "previousMigration": {
+     "sha256": "d92f07813956ff62e7b3250aa10c2270d9af19768e8661fe98bb833966d986f5",
+     "bytes": 5421,
+     "comparison": "utf8-lf",
+     "lfSha256": "d92f07813956ff62e7b3250aa10c2270d9af19768e8661fe98bb833966d986f5",
+     "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions.",
+     "previousMigration": {
+      "sha256": "a953323abdcc37f51410c15bf788eec709f31a4eedd37c1697606b8e647c9e1b",
+      "lfSha256": "a953323abdcc37f51410c15bf788eec709f31a4eedd37c1697606b8e647c9e1b",
+      "bytes": 5389,
+      "comparison": "utf8-lf",
+      "reason": "Qualification suite rebound to Product Module V2 rendered contracts (module heroes, scene order, origin surface, compare copy)."
+     }
+    }
+   },
+   "previousMigration": {
     "sha256": "47caff4352e7d5b3b0eed54e07aeb002f4b67d828c745fcbc6c324fd7f4a3c2e",
     "bytes": 5327,
     "comparison": "utf8-lf",
@@ -1346,6 +1486,34 @@
    "lfSha256": "e7bd8f7f422adaab0c022b2c4eb608da8b0d31c88fc28d2b4eb9c75490f80720",
    "origin": "original-entry-inventory",
    "migration": {
+    "sha256": "ee6fc1b4ec670ac1fde7c8ed81b91ebb4725c6860b3b774005c32229a3b23277",
+    "bytes": 11111,
+    "comparison": "utf8-lf",
+    "lfSha256": "ee6fc1b4ec670ac1fde7c8ed81b91ebb4725c6860b3b774005c32229a3b23277",
+    "reason": "CP-0189 approved visual identity restoration: forged-metal chrome (emblem, route-chain nav, chassis layers, Archivo/Plex Mono) restored on home/software/truth-files; V2 registry engine, release truth and product functionality preserved.",
+    "previousMigration": {
+     "sha256": "30e7cbd1ed7c8463398c1bb7f18d7eee54da527feccf71173fc74afe2518df64",
+     "bytes": 11286,
+     "comparison": "utf8-lf",
+     "lfSha256": "30e7cbd1ed7c8463398c1bb7f18d7eee54da527feccf71173fc74afe2518df64",
+     "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions.",
+     "previousMigration": {
+      "sha256": "b3bd4ee6fc3082e616063ba4072903f501caa24763da9fa7874aa0f6b50db22d",
+      "bytes": 11281,
+      "comparison": "utf8-lf",
+      "lfSha256": "b3bd4ee6fc3082e616063ba4072903f501caa24763da9fa7874aa0f6b50db22d",
+      "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions.",
+      "previousMigration": {
+       "sha256": "2988be70605d68e562f5725baad623df1d2a4236fb05651230cd20e18b9c91a9",
+       "lfSha256": "2988be70605d68e562f5725baad623df1d2a4236fb05651230cd20e18b9c91a9",
+       "bytes": 11058,
+       "comparison": "utf8-lf",
+       "reason": "Qualification suite rebound to Product Module V2 rendered contracts (module heroes, scene order, origin surface, compare copy)."
+      }
+     }
+    }
+   },
+   "previousMigration": {
     "sha256": "78242dbcc87e899b9c62b8d21142e416c0309899ba6c9f578ade0bc50aa2c97d",
     "bytes": 10570,
     "comparison": "utf8-lf",
@@ -1361,6 +1529,27 @@
    "lfSha256": "9a1c62f516b426b0eed377834ffc19c9fdaf0f25f0ecf19b7c56a7aff3014a03",
    "origin": "original-entry-inventory",
    "migration": {
+    "sha256": "23c2b202bf0db30ddc48e9a6abc9affea01affa37666680106de88aaf6f1eed0",
+    "bytes": 17395,
+    "comparison": "utf8-lf",
+    "lfSha256": "23c2b202bf0db30ddc48e9a6abc9affea01affa37666680106de88aaf6f1eed0",
+    "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions.",
+    "previousMigration": {
+     "sha256": "3b7324232d2e05a34a26db01ee7dc4bbd48e8bb4b68274e2b9bded205878ae05",
+     "bytes": 17390,
+     "comparison": "utf8-lf",
+     "lfSha256": "3b7324232d2e05a34a26db01ee7dc4bbd48e8bb4b68274e2b9bded205878ae05",
+     "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions.",
+     "previousMigration": {
+      "sha256": "5961ecc3683fc90f031f566b3377df7511c8296e60e9c5ae1c110b19955356a8",
+      "lfSha256": "5961ecc3683fc90f031f566b3377df7511c8296e60e9c5ae1c110b19955356a8",
+      "bytes": 16928,
+      "comparison": "utf8-lf",
+      "reason": "Qualification suite rebound to Product Module V2 rendered contracts (module heroes, scene order, origin surface, compare copy)."
+     }
+    }
+   },
+   "previousMigration": {
     "sha256": "4e6ceb88e5faf38e6addd2b49a0ddf80dc9fa2ffee383fe3cf38fabc12c52e88",
     "bytes": 15777,
     "comparison": "utf8-lf",
@@ -1377,15 +1566,9 @@
       "bytes": 15422,
       "comparison": "utf8-lf",
       "lfSha256": "f9cb4888f726522b1e3528207ef5e44d85b908f08062b6f3aff8a680564ae65c",
-      "reason": "VR1 visual refoundation 2026-09-21: test expectations updated to the authorized new contract — proofshot.presentation cardImage* fields registered as authorized drift (current-brand workbench capture replaces pre-rebrand HyperSnatch imagery)."
+      "reason": "VR1 visual refoundation 2026-09-21: test expectations updated to the authorized new contract \u2014 proofshot.presentation cardImage* fields registered as authorized drift (current-brand workbench capture replaces pre-rebrand HyperSnatch imagery)."
      }
     }
-   },
-   "previousMigration": {
-    "sha256": "d7873cbd0f969441f1caad6574740211e4d81947f1c215a6ef9ca9460d3a0690",
-    "lfSha256": "d7873cbd0f969441f1caad6574740211e4d81947f1c215a6ef9ca9460d3a0690",
-    "bytes": 15030,
-    "reason": "prior authorized state before H13 modular-renderer edits"
    }
   },
   {
@@ -1396,18 +1579,32 @@
    "lfSha256": "14d373ddcea8d50f4db20f3d42f3713e62baa5eae2c5e46bcc8fb09ac718648a",
    "origin": "original-entry-inventory",
    "migration": {
-    "sha256": "53d5929d59e8602bdb122bc8b497429bec3fc50895852dde485b763f42a81a79",
-    "bytes": 9345,
+    "sha256": "771f553e31ad9d6d7ce17b7f998c80345894cb5af6de37220d1d6a7d16340dcc",
+    "bytes": 10385,
     "comparison": "utf8-lf",
-    "lfSha256": "53d5929d59e8602bdb122bc8b497429bec3fc50895852dde485b763f42a81a79",
-    "reason": "PF-TF1 HOLD-1 2026-09-21: companionPublicVersion added to the pinned-field normalization set (canonical truth field absent from production baseline), alongside existing sourceCommit/companionCandidateVersion handling.",
+    "lfSha256": "771f553e31ad9d6d7ce17b7f998c80345894cb5af6de37220d1d6a7d16340dcc",
+    "reason": "CP-0189 approved visual identity restoration: forged-metal chrome (emblem, route-chain nav, chassis layers, Archivo/Plex Mono) restored on home/software/truth-files; V2 registry engine, release truth and product functionality preserved.",
     "previousMigration": {
-     "sha256": "00f6dde9e00a551511296bfabe76138ce61fb902c385eba56f3c83db9adc7635",
-     "bytes": 9274,
+     "sha256": "dd4b82300a2ea049aaf7dfa1d2431e59d72b2db4486f6dcd1c5fc6fab889ca3b",
+     "bytes": 10144,
      "comparison": "utf8-lf",
-     "lfSha256": "00f6dde9e00a551511296bfabe76138ce61fb902c385eba56f3c83db9adc7635",
-     "reason": "VR1 visual refoundation 2026-09-21: test expectations updated to the authorized new contract — proofshot.presentation cardImage* fields registered as authorized drift (current-brand workbench capture replaces pre-rebrand HyperSnatch imagery)."
+     "lfSha256": "dd4b82300a2ea049aaf7dfa1d2431e59d72b2db4486f6dcd1c5fc6fab889ca3b",
+     "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions.",
+     "previousMigration": {
+      "sha256": "075173b99f96e990021345528d28dd161bc0c6c2811895166f2f957214acdccb",
+      "lfSha256": "075173b99f96e990021345528d28dd161bc0c6c2811895166f2f957214acdccb",
+      "bytes": 10039,
+      "comparison": "utf8-lf",
+      "reason": "Qualification suite rebound to Product Module V2 rendered contracts (module heroes, scene order, origin surface, compare copy)."
+     }
     }
+   },
+   "previousMigration": {
+    "sha256": "f1f2d149f5b04c5e2bcacecb75385aeba06809e3638cebae85a2b98367feb3a4",
+    "lfSha256": "f1f2d149f5b04c5e2bcacecb75385aeba06809e3638cebae85a2b98367feb3a4",
+    "bytes": 9439,
+    "comparison": "utf8-lf",
+    "reason": "Qualification suite rebound to Product Module V2 rendered contracts (module heroes, scene order, origin surface, compare copy)."
    }
   },
   {
@@ -1426,11 +1623,25 @@
    "lfSha256": "46ee643e9b130f64bdfaba381f8027ae6b65a73fa322e2e508a7103109baf6c0",
    "origin": "original-entry-inventory",
    "migration": {
+    "sha256": "872181409b50d9be62195c0e4524133a8ef61ff807baa9610d9d86aa3ad2b695",
+    "bytes": 7710,
+    "comparison": "utf8-lf",
+    "lfSha256": "872181409b50d9be62195c0e4524133a8ef61ff807baa9610d9d86aa3ad2b695",
+    "reason": "CP-0189 approved visual identity restoration: forged-metal chrome (emblem, route-chain nav, chassis layers, Archivo/Plex Mono) restored on home/software/truth-files; V2 registry engine, release truth and product functionality preserved.",
+    "previousMigration": {
+     "sha256": "14716a39c4493a36b907f85d566e2d65adda3e0293ac5ecc17dbb1c2c0a16199",
+     "lfSha256": "14716a39c4493a36b907f85d566e2d65adda3e0293ac5ecc17dbb1c2c0a16199",
+     "bytes": 7955,
+     "comparison": "utf8-lf",
+     "reason": "Qualification suite rebound to Product Module V2 rendered contracts (module heroes, scene order, origin surface, compare copy)."
+    }
+   },
+   "previousMigration": {
     "sha256": "9b7b4f75bd95b3451511670cc5c6010f3df6da1d366a7ec54539fea1623d52f2",
     "bytes": 7918,
     "comparison": "utf8-lf",
     "lfSha256": "9b7b4f75bd95b3451511670cc5c6010f3df6da1d366a7ec54539fea1623d52f2",
-    "reason": "VR1 visual refoundation 2026-09-21: test expectations updated to the authorized new contract — product-first homepage order (digests/commits off the primary narrative), unified global nav, current-brand ProofShot/Cleanroom media, conditional card caveat disclosure, Layer-B record wrap."
+    "reason": "VR1 visual refoundation 2026-09-21: test expectations updated to the authorized new contract \u2014 product-first homepage order (digests/commits off the primary narrative), unified global nav, current-brand ProofShot/Cleanroom media, conditional card caveat disclosure, Layer-B record wrap."
    }
   },
   {
@@ -1439,7 +1650,35 @@
    "bytes": 9469,
    "comparison": "utf8-lf",
    "lfSha256": "eb23c3503cfa2d9f76650dea740fd641ff1b8dd84535a70cb87559f7bd29073d",
-   "origin": "original-entry-inventory"
+   "origin": "original-entry-inventory",
+   "migration": {
+    "sha256": "b795be792369acd96f3c140954c09e0aff9f8b25e1b216243f24ea47a602bcd8",
+    "bytes": 10717,
+    "comparison": "utf8-lf",
+    "lfSha256": "b795be792369acd96f3c140954c09e0aff9f8b25e1b216243f24ea47a602bcd8",
+    "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions.",
+    "previousMigration": {
+     "sha256": "27e95d28fb4fee788ec5b742af4caad926a9bc101385ac6cceb762c63c1045dd",
+     "bytes": 9812,
+     "comparison": "utf8-lf",
+     "lfSha256": "27e95d28fb4fee788ec5b742af4caad926a9bc101385ac6cceb762c63c1045dd",
+     "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions.",
+     "previousMigration": {
+      "sha256": "a9adba776d0f665c6655024caadbdbd9c767ad3c99e01cc8a25a662b4d2421fe",
+      "lfSha256": "a9adba776d0f665c6655024caadbdbd9c767ad3c99e01cc8a25a662b4d2421fe",
+      "bytes": 9768,
+      "comparison": "utf8-lf",
+      "reason": "Qualification suite rebound to Product Module V2 rendered contracts (module heroes, scene order, origin surface, compare copy)."
+     }
+    }
+   },
+   "previousMigration": {
+    "sha256": "9cd05ecb5cc256cbf348af15e5fe0aecc82981990a4d86d729784d9ac5f97587",
+    "lfSha256": "9cd05ecb5cc256cbf348af15e5fe0aecc82981990a4d86d729784d9ac5f97587",
+    "bytes": 9469,
+    "comparison": "utf8-lf",
+    "reason": "Qualification suite rebound to Product Module V2 rendered contracts (module heroes, scene order, origin surface, compare copy)."
+   }
   },
   {
    "path": "scripts/test-h7c-product-pages.ps1",
@@ -1449,11 +1688,25 @@
    "lfSha256": "3a3fdf1cf1962205ce6f59b5ca9592e26c630c34e4c27dedcfd173631fb6de3c",
    "origin": "original-entry-inventory",
    "migration": {
-    "sha256": "20cbaa11f41925bd276a41b796342784e770c7c71d7b08e85be68e67403b2fbd",
-    "bytes": 7169,
+    "sha256": "50864487b7fa7c04104f6cd092b14f3ec535977ad90a7fe669e382d2a9c0a1cb",
+    "bytes": 7358,
     "comparison": "utf8-lf",
-    "lfSha256": "20cbaa11f41925bd276a41b796342784e770c7c71d7b08e85be68e67403b2fbd",
-    "reason": "VR1-R2 owner visual-review correction 2026-09-21: desktop header true parity (homepage nav/CTA now shares the studio treatment), ProofShot hero moved to verified web-hero brand artwork after proof-cards capture proved HyperSnatch-chromed, record-open capture fixed to a real scrolled viewport with geometric clearance assertion."
+    "lfSha256": "50864487b7fa7c04104f6cd092b14f3ec535977ad90a7fe669e382d2a9c0a1cb",
+    "reason": "CP-0189 approved visual identity restoration: forged-metal chrome (emblem, route-chain nav, chassis layers, Archivo/Plex Mono) restored on home/software/truth-files; V2 registry engine, release truth and product functionality preserved.",
+    "previousMigration": {
+     "sha256": "49f8d04078af250d7ae09e678848f6e166df518dc17c70c38b13797378c4ab7b",
+     "bytes": 7169,
+     "comparison": "utf8-lf",
+     "lfSha256": "49f8d04078af250d7ae09e678848f6e166df518dc17c70c38b13797378c4ab7b",
+     "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions.",
+     "previousMigration": {
+      "sha256": "20cbaa11f41925bd276a41b796342784e770c7c71d7b08e85be68e67403b2fbd",
+      "bytes": 7169,
+      "comparison": "utf8-lf",
+      "lfSha256": "20cbaa11f41925bd276a41b796342784e770c7c71d7b08e85be68e67403b2fbd",
+      "reason": "VR1-R2 owner visual-review correction 2026-09-21: desktop header true parity (homepage nav/CTA now shares the studio treatment), ProofShot hero moved to verified web-hero brand artwork after proof-cards capture proved HyperSnatch-chromed, record-open capture fixed to a real scrolled viewport with geometric clearance assertion."
+     }
+    }
    }
   },
   {
@@ -1472,11 +1725,39 @@
    "lfSha256": "436f52dc6b1b6ff8768da4c02030f40c2f567cd48ee651551d5ecdd437dda35a",
    "origin": "original-entry-inventory",
    "migration": {
+    "sha256": "b5270df0ec8632eef3ab754019986508187542731068f458c1d4ba39bf05a959",
+    "bytes": 7746,
+    "comparison": "utf8-lf",
+    "lfSha256": "b5270df0ec8632eef3ab754019986508187542731068f458c1d4ba39bf05a959",
+    "reason": "CP-0189 homepage.slot correction: opt-in shelf placement marker in index.html; Build-HomepageShelf + slot validation + shelf styles; capsule homepageSlot mapping; docs + tests corrected to the live contract.",
+    "previousMigration": {
+     "sha256": "bdbdb52219eba6d515bd1074ce81834ada972de41556db59e7846d8ff3956893",
+     "bytes": 7452,
+     "comparison": "utf8-lf",
+     "lfSha256": "bdbdb52219eba6d515bd1074ce81834ada972de41556db59e7846d8ff3956893",
+     "reason": "CP-0189 approved visual identity restoration: forged-metal chrome (emblem, route-chain nav, chassis layers, Archivo/Plex Mono) restored on home/software/truth-files; V2 registry engine, release truth and product functionality preserved.",
+     "previousMigration": {
+      "sha256": "a05e7e7e28928860e9fcd968832f59496ad38a4284fa87007392a373122a2eca",
+      "bytes": 8145,
+      "comparison": "utf8-lf",
+      "lfSha256": "a05e7e7e28928860e9fcd968832f59496ad38a4284fa87007392a373122a2eca",
+      "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions.",
+      "previousMigration": {
+       "sha256": "8d82201947e8f58e2c9ccb89297140dc9840b7a17bdec78222cd8eccbc7995d1",
+       "lfSha256": "8d82201947e8f58e2c9ccb89297140dc9840b7a17bdec78222cd8eccbc7995d1",
+       "bytes": 8086,
+       "comparison": "utf8-lf",
+       "reason": "Qualification suite rebound to Product Module V2 rendered contracts (module heroes, scene order, origin surface, compare copy)."
+      }
+     }
+    }
+   },
+   "previousMigration": {
     "sha256": "a27e62fe78408af17e66cc817e299c0098073ac42a3a209ca3202d08197b3ae6",
     "bytes": 6614,
     "comparison": "utf8-lf",
     "lfSha256": "a27e62fe78408af17e66cc817e299c0098073ac42a3a209ca3202d08197b3ae6",
-    "reason": "VR1 visual refoundation 2026-09-21: test expectations updated to the authorized new contract — product-first homepage order (digests/commits off the primary narrative), unified global nav, current-brand ProofShot/Cleanroom media, conditional card caveat disclosure, Layer-B record wrap."
+    "reason": "VR1 visual refoundation 2026-09-21: test expectations updated to the authorized new contract \u2014 product-first homepage order (digests/commits off the primary narrative), unified global nav, current-brand ProofShot/Cleanroom media, conditional card caveat disclosure, Layer-B record wrap."
    }
   },
   {
@@ -1487,6 +1768,69 @@
    "lfSha256": "eccd353c55072aaaaa9a055e82876c58796d7e64bcf62c268c84120a20e36c3a",
    "origin": "original-entry-inventory",
    "migration": {
+    "sha256": "67d2b28cf3dcfeef759f1c5a5c5f29545fde054e169f3efa4f0dfaa150a73d00",
+    "bytes": 19138,
+    "comparison": "utf8-lf",
+    "lfSha256": "67d2b28cf3dcfeef759f1c5a5c5f29545fde054e169f3efa4f0dfaa150a73d00",
+    "reason": "CP-0189 homepage.slot correction: opt-in shelf placement marker in index.html; Build-HomepageShelf + slot validation + shelf styles; capsule homepageSlot mapping; docs + tests corrected to the live contract.",
+    "previousMigration": {
+     "sha256": "a1e4b4a2efd381d15fcb50337d4c2a51c60cfae7c234b05f831d9d33768beb30",
+     "bytes": 19138,
+     "comparison": "utf8-lf",
+     "lfSha256": "a1e4b4a2efd381d15fcb50337d4c2a51c60cfae7c234b05f831d9d33768beb30",
+     "reason": "CP-0189 pin update: experience.css/site.js moved to authorized pins; studio.css and foundry-connections.css pinned at restored bytes.",
+     "previousMigration": {
+      "sha256": "93266f49c6f68cd02c3af4639abf99c317e71c64c53f56007f92628f38aef4db",
+      "bytes": 18883,
+      "comparison": "utf8-lf",
+      "lfSha256": "93266f49c6f68cd02c3af4639abf99c317e71c64c53f56007f92628f38aef4db",
+      "reason": "CP-0189 approved visual identity restoration: forged-metal chrome (emblem, route-chain nav, chassis layers, Archivo/Plex Mono) restored on home/software/truth-files; V2 registry engine, release truth and product functionality preserved.",
+      "previousMigration": {
+       "sha256": "9c73bd46d14edf7cd314c813dd09d2bf88399e3a94ed835ed9b426a02cc5a9df",
+       "bytes": 18922,
+       "comparison": "utf8-lf",
+       "lfSha256": "9c73bd46d14edf7cd314c813dd09d2bf88399e3a94ed835ed9b426a02cc5a9df",
+       "reason": "Mobile overflow repair (D1/D2): pp-story single-column override raised to body.pp-system specificity under 900px; tf-grid card column shrinks below 300px. Pin updated in reconciliation test.",
+       "previousMigration": {
+        "sha256": "ba9a8b1c8300a4a45d0a1478a1f246bedd6ce805873c56b004b4b5aedde3fa8d",
+        "bytes": 18922,
+        "comparison": "utf8-lf",
+        "lfSha256": "ba9a8b1c8300a4a45d0a1478a1f246bedd6ce805873c56b004b4b5aedde3fa8d",
+        "reason": "Mobile overflow repair (D1/D2): pp-story single-column override raised to body.pp-system specificity under 900px; tf-grid card column shrinks below 300px. No design changes.",
+        "previousMigration": {
+         "sha256": "a0773f46d964cacc8ffe7aa3c21552310d524f0998e32b1716b44509538e1bd1",
+         "bytes": 18922,
+         "comparison": "utf8-lf",
+         "lfSha256": "a0773f46d964cacc8ffe7aa3c21552310d524f0998e32b1716b44509538e1bd1",
+         "reason": "Mobile overflow repair (D1/D2): forgecast story figure drops to single-column under 700px; tf-grid card column shrinks below 300px. No design changes.",
+         "previousMigration": {
+          "sha256": "ba9a8b1c8300a4a45d0a1478a1f246bedd6ce805873c56b004b4b5aedde3fa8d",
+          "bytes": 18922,
+          "comparison": "utf8-lf",
+          "lfSha256": "ba9a8b1c8300a4a45d0a1478a1f246bedd6ce805873c56b004b4b5aedde3fa8d",
+          "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions.",
+          "previousMigration": {
+           "sha256": "003c10279d4ad4aeb7dc9cbc745f5f6457622d4d1f3c9b73cef6fb93ef354a56",
+           "bytes": 18915,
+           "comparison": "utf8-lf",
+           "lfSha256": "003c10279d4ad4aeb7dc9cbc745f5f6457622d4d1f3c9b73cef6fb93ef354a56",
+           "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions.",
+           "previousMigration": {
+            "sha256": "62a9cad172222c070a8b912941951f72b989e5779a00ab44cdfea38c04557a1e",
+            "lfSha256": "62a9cad172222c070a8b912941951f72b989e5779a00ab44cdfea38c04557a1e",
+            "bytes": 17823,
+            "comparison": "utf8-lf",
+            "reason": "Qualification suite rebound to Product Module V2 rendered contracts (module heroes, scene order, origin surface, compare copy)."
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "previousMigration": {
     "sha256": "1a641116f43b04a57005663d363e1c3d17e24905d729798d16725b6bf59cdd59",
     "bytes": 15566,
     "comparison": "utf8-lf",
@@ -1506,12 +1850,6 @@
       "reason": "VR1-R3 pin refresh."
      }
     }
-   },
-   "previousMigration": {
-    "sha256": "93a14bc95199ea8e830ab65395c89930c80422e3ca5e0e935d1736da56e601f8",
-    "lfSha256": "93a14bc95199ea8e830ab65395c89930c80422e3ca5e0e935d1736da56e601f8",
-    "bytes": 12222,
-    "reason": "prior authorized state before H13 modular-renderer edits"
    }
   },
   {
@@ -1522,17 +1860,39 @@
    "lfSha256": "b4a376a6bf210a41329db1d0af571eae5f6ac108a589b729202a509405eb4052",
    "origin": "original-entry-inventory",
    "previousMigration": {
-    "sha256": "b4a376a6bf210a41329db1d0af571eae5f6ac108a589b729202a509405eb4052",
-    "lfSha256": "b4a376a6bf210a41329db1d0af571eae5f6ac108a589b729202a509405eb4052",
-    "bytes": 20925,
-    "reason": "prior authorized state before H13 modular-renderer edits"
-   },
-   "migration": {
     "sha256": "565e23aad007fc800bb2544be4626d428bb4f7ab178b76581c0a0d87aa58ab44",
     "bytes": 20942,
     "comparison": "utf8-lf",
     "lfSha256": "565e23aad007fc800bb2544be4626d428bb4f7ab178b76581c0a0d87aa58ab44",
     "reason": "H13 modular product renderer 2026-09-20: authorized source/test updates for module migration"
+   },
+   "migration": {
+    "sha256": "b3f86b5fc3355623c0790705091267c9f064511b87c058f50412ff063e2459f9",
+    "bytes": 22124,
+    "comparison": "utf8-lf",
+    "lfSha256": "b3f86b5fc3355623c0790705091267c9f064511b87c058f50412ff063e2459f9",
+    "reason": "CP-0189 approved visual identity restoration: forged-metal chrome (emblem, route-chain nav, chassis layers, Archivo/Plex Mono) restored on home/software/truth-files; V2 registry engine, release truth and product functionality preserved.",
+    "previousMigration": {
+     "sha256": "bcf9d85307eabcd1ecb15471dc30e61caa17fd76ecbbbf27d6eb6b9dd6172f50",
+     "bytes": 22115,
+     "comparison": "utf8-lf",
+     "lfSha256": "bcf9d85307eabcd1ecb15471dc30e61caa17fd76ecbbbf27d6eb6b9dd6172f50",
+     "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions; fixture harness streams read async to end a redirected-pipe deadlock.",
+     "previousMigration": {
+      "sha256": "c9d3c5b44371579f95cec767ad4414d69aeac6d38462accb734a7971cd7495fd",
+      "bytes": 22035,
+      "comparison": "utf8-lf",
+      "lfSha256": "c9d3c5b44371579f95cec767ad4414d69aeac6d38462accb734a7971cd7495fd",
+      "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions.",
+      "previousMigration": {
+       "sha256": "0568308a3cdf8a56b8d28e33ec95c25883c90744bbe8a3a635ba04a571806543",
+       "lfSha256": "0568308a3cdf8a56b8d28e33ec95c25883c90744bbe8a3a635ba04a571806543",
+       "bytes": 21872,
+       "comparison": "utf8-lf",
+       "reason": "Qualification suite rebound to Product Module V2 rendered contracts (module heroes, scene order, origin surface, compare copy)."
+      }
+     }
+    }
    }
   },
   {
@@ -1541,7 +1901,21 @@
    "bytes": 5893,
    "comparison": "utf8-lf",
    "lfSha256": "725f261e67afa2174a9c91f01486e0291062edcc7f7f7f752d25bf4cbb761664",
-   "origin": "original-entry-inventory"
+   "origin": "original-entry-inventory",
+   "migration": {
+    "sha256": "da3eb88ed993acfe9797616d88ba2c82c0e65753309ad84e78da826c201b1749",
+    "bytes": 7873,
+    "comparison": "utf8-lf",
+    "lfSha256": "da3eb88ed993acfe9797616d88ba2c82c0e65753309ad84e78da826c201b1749",
+    "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions.",
+    "previousMigration": {
+     "sha256": "8bd8b4d0c79f4bbe02717c47408640abccb9fe369cd1eaec4093980b10c2ad1a",
+     "lfSha256": "8bd8b4d0c79f4bbe02717c47408640abccb9fe369cd1eaec4093980b10c2ad1a",
+     "bytes": 7542,
+     "comparison": "utf8-lf",
+     "reason": "Qualification suite rebound to Product Module V2 rendered contracts (module heroes, scene order, origin surface, compare copy)."
+    }
+   }
   },
   {
    "path": "scripts/test-signature-home.ps1",
@@ -1549,7 +1923,21 @@
    "bytes": 3342,
    "comparison": "utf8-lf",
    "lfSha256": "eae2f4e7ee48970c9d4a52ae5665c0621703c32ea1d06a40780cc293fdf7709d",
-   "origin": "original-entry-inventory"
+   "origin": "original-entry-inventory",
+   "migration": {
+    "sha256": "fda017b03b69619759ec11ca081386d00906f506d6707cd0ac4b93737e162cb2",
+    "bytes": 3569,
+    "comparison": "utf8-lf",
+    "lfSha256": "fda017b03b69619759ec11ca081386d00906f506d6707cd0ac4b93737e162cb2",
+    "reason": "CP-0189 approved visual identity restoration: forged-metal chrome (emblem, route-chain nav, chassis layers, Archivo/Plex Mono) restored on home/software/truth-files; V2 registry engine, release truth and product functionality preserved.",
+    "previousMigration": {
+     "sha256": "6c02f10b0964a44848653628d809de3eec4bc7e6236415dffaf49ce85f2fefeb",
+     "lfSha256": "6c02f10b0964a44848653628d809de3eec4bc7e6236415dffaf49ce85f2fefeb",
+     "bytes": 3323,
+     "comparison": "utf8-lf",
+     "reason": "Qualification suite rebound to Product Module V2 rendered contracts (module heroes, scene order, origin surface, compare copy)."
+    }
+   }
   },
   {
    "path": "signature.css",
@@ -1557,7 +1945,14 @@
    "bytes": 50374,
    "comparison": "utf8-lf",
    "lfSha256": "7043439913c30381836c0611c5d50e2698f1196b0d7b15c80f29ff89b4a30246",
-   "origin": "original-entry-inventory"
+   "origin": "original-entry-inventory",
+   "migration": {
+    "sha256": "72585fdd8ce0b44f88b3b2d8efc80beaf69a380dac53b3fdd027df676784ecb6",
+    "bytes": 50482,
+    "comparison": "utf8-lf",
+    "lfSha256": "72585fdd8ce0b44f88b3b2d8efc80beaf69a380dac53b3fdd027df676784ecb6",
+    "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions."
+   }
   },
   {
    "path": "site.js",
@@ -1565,7 +1960,14 @@
    "bytes": 12190,
    "comparison": "utf8-lf",
    "lfSha256": "08f73edf8f0e4dfdf31c73797c18f62eaa8eed96aa0a5663606bd8645c5568b6",
-   "origin": "original-entry-inventory"
+   "origin": "original-entry-inventory",
+   "migration": {
+    "sha256": "58c053778c834df3bd0440c2a970e20e819297030b4d2d5c6b3502826e387625",
+    "bytes": 12203,
+    "comparison": "utf8-lf",
+    "lfSha256": "58c053778c834df3bd0440c2a970e20e819297030b4d2d5c6b3502826e387625",
+    "reason": "CP-0189 follow-up: dead V2 chrome styling removed (.studio .site-header/.nav-row/.top-nav/.nav-panel/.footer-* and .footer-logo width conflicts) so the approved forged-metal chrome renders unmodified; gallery img gets alt=\"\" at creation."
+   }
   },
   {
    "path": "sitemap.xml",
@@ -1579,7 +1981,7 @@
     "bytes": 3403,
     "comparison": "utf8-lf",
     "lfSha256": "d8a8929d9986536dc93af356e42b5acee049023703e23d0d0f2ea3395d978743",
-    "reason": "PF-TF1 Truth Files 2026-09-21: human-readable layer over /truth/*.json — /truth-files/ index + 7 per-product records generated from the same manifest facts; footer discovery link, sitemap entries, /truth/ related-records card added.",
+    "reason": "PF-TF1 Truth Files 2026-09-21: human-readable layer over /truth/*.json \u2014 /truth-files/ index + 7 per-product records generated from the same manifest facts; footer discovery link, sitemap entries, /truth/ related-records card added.",
     "previousMigration": {
      "sha256": "cb6020c87ecd4c37e455117d519ef9b9c325d2b6af5a80e128a41f26702d9105",
      "bytes": 2238,
@@ -1597,6 +1999,34 @@
    "lfSha256": "f1a0eb72d81531c66ec3e08ebf5e2d711654714b5313c116f9d814b939acbfd7",
    "origin": "original-entry-inventory",
    "migration": {
+    "sha256": "d928c30cc4b40917ad1b5a1b67bb7aafdb1666f95504f0f19d145029159d41c9",
+    "bytes": 53961,
+    "comparison": "utf8-lf",
+    "lfSha256": "d928c30cc4b40917ad1b5a1b67bb7aafdb1666f95504f0f19d145029159d41c9",
+    "reason": "CP-0189 follow-up: dead V2 chrome styling removed (.studio .site-header/.nav-row/.top-nav/.nav-panel/.footer-* and .footer-logo width conflicts) so the approved forged-metal chrome renders unmodified; gallery img gets alt=\"\" at creation.",
+    "previousMigration": {
+     "sha256": "984255936c35fda946b03e570a210ad397a32384b7b7804cd388cd4b0f568f18",
+     "bytes": 55911,
+     "comparison": "utf8-lf",
+     "lfSha256": "984255936c35fda946b03e570a210ad397a32384b7b7804cd388cd4b0f568f18",
+     "reason": "Temporary mobile-overflow experiment reverted byte-identical to this state; the live overflow fix landed in product-page.css instead. studio.css unchanged.",
+     "previousMigration": {
+      "sha256": "34cb1e39d069079f25a9fa3062953e6bfdaa546463a8f77789057156e1345602",
+      "bytes": 55975,
+      "comparison": "utf8-lf",
+      "lfSha256": "34cb1e39d069079f25a9fa3062953e6bfdaa546463a8f77789057156e1345602",
+      "reason": "Mobile overflow repair (D1/D2): forgecast story figure drops to single-column under 700px; tf-grid card column shrinks below 300px. No design changes.",
+      "previousMigration": {
+       "sha256": "984255936c35fda946b03e570a210ad397a32384b7b7804cd388cd4b0f568f18",
+       "lfSha256": "984255936c35fda946b03e570a210ad397a32384b7b7804cd388cd4b0f568f18",
+       "bytes": 55911,
+       "comparison": "utf8-lf",
+       "reason": "Product Module V2 migration: registry-driven catalog, homepage and shared chrome."
+      }
+     }
+    }
+   },
+   "previousMigration": {
     "sha256": "6eb5aabd34c505e4fe09c9d797218717157ce23ce3316342197409595be61ee2",
     "bytes": 54809,
     "comparison": "utf8-lf",
@@ -1627,6 +2057,20 @@
    "lfSha256": "3f3f92cf6ce91f6ec92675abf9708c4d315d15a79f4e03db00fdb68413164474",
    "origin": "original-entry-inventory",
    "migration": {
+    "sha256": "80a87fa04982aa19d3ada79f713c11e4ce3ed1b46fd6737660a7442a23a1e01e",
+    "bytes": 14589,
+    "comparison": "utf8-lf",
+    "lfSha256": "80a87fa04982aa19d3ada79f713c11e4ce3ed1b46fd6737660a7442a23a1e01e",
+    "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions.",
+    "previousMigration": {
+     "sha256": "2078f543d85aa8459cb0e03cb5397a50ac107cdc71162c42dce288ea504dd179",
+     "lfSha256": "2078f543d85aa8459cb0e03cb5397a50ac107cdc71162c42dce288ea504dd179",
+     "bytes": 14438,
+     "comparison": "utf8-lf",
+     "reason": "Product Module V2 migration: registry-driven catalog, homepage and shared chrome."
+    }
+   },
+   "previousMigration": {
     "sha256": "16359dfd025340487b11f4d45f1788901c4d4222e782dd520fa4379d8647549a",
     "bytes": 14251,
     "comparison": "utf8-lf",
@@ -1646,7 +2090,7 @@
     "bytes": 6100,
     "comparison": "utf8-lf",
     "lfSha256": "b5b612ca16adae2897b8736b575b8fa0e109b462dd7a685ee433cc76a97a0094",
-    "reason": "PF-TF1 Truth Files 2026-09-21: human-readable layer over /truth/*.json — /truth-files/ index + 7 per-product records generated from the same manifest facts; footer discovery link, sitemap entries, /truth/ related-records card added."
+    "reason": "PF-TF1 Truth Files 2026-09-21: human-readable layer over /truth/*.json \u2014 /truth-files/ index + 7 per-product records generated from the same manifest facts; footer discovery link, sitemap entries, /truth/ related-records card added."
    }
   },
   {
@@ -1663,7 +2107,14 @@
    "bytes": 21755,
    "comparison": "utf8-lf",
    "lfSha256": "a958f605159b5b1d0783c23c70aeaf32d2ea5695efc640f10ee14be1eba811c3",
-   "origin": "h11-public-truth-surface-2026-09-20"
+   "origin": "h11-public-truth-surface-2026-09-20",
+   "migration": {
+    "sha256": "cd6e2e9a6240f99004087280edff2d16a5eb81c66dc57a6420cc8a8fd554e0cd",
+    "bytes": 21943,
+    "comparison": "utf8-lf",
+    "lfSha256": "cd6e2e9a6240f99004087280edff2d16a5eb81c66dc57a6420cc8a8fd554e0cd",
+    "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions."
+   }
   },
   {
    "path": "schemas/PUBLIC_TRUTH_VERSIONING.md",
@@ -1689,17 +2140,25 @@
    "lfSha256": "9a9dbe987d14b0c5a4332b6fe94b06047d8526f64ae38e03bc703ac38c63c864",
    "origin": "h13-modular-renderer-2026-09-20",
    "previousMigration": {
-    "sha256": "723ac3ef603d78b8ca74591f048cff2dd45b0feedbb439e60d93ac7611d4ac7e",
-    "lfSha256": "9a9dbe987d14b0c5a4332b6fe94b06047d8526f64ae38e03bc703ac38c63c864",
-    "bytes": 1166,
-    "reason": "prior authorized state before H13 modular-renderer edits"
-   },
-   "migration": {
     "sha256": "c5756517b4699d4c6f39df977132d331dbe158372e195dfc88ad20222e83bbf4",
     "bytes": 1636,
     "comparison": "utf8-lf",
     "lfSha256": "5848d7cdd71401b867bdb359ec953b43de958a42b739c8dd6760b961a9d9224c",
     "reason": "H13 modular product renderer 2026-09-20: authorized source/test updates for module migration"
+   },
+   "migration": {
+    "sha256": "efddf82c135d1f33d24acca41968d97502d8538bfcc8c4da4ccb53f587896b77",
+    "bytes": 5564,
+    "comparison": "utf8-lf",
+    "lfSha256": "efddf82c135d1f33d24acca41968d97502d8538bfcc8c4da4ccb53f587896b77",
+    "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions.",
+    "previousMigration": {
+     "sha256": "180dbb27d427ae03b3ef030da175723dc8f6295c4c01469f003341f3efe773da",
+     "lfSha256": "180dbb27d427ae03b3ef030da175723dc8f6295c4c01469f003341f3efe773da",
+     "bytes": 5323,
+     "comparison": "utf8-lf",
+     "reason": "Product Module V2 migration: registry-driven presentation; module.json carries brand/theme/hero/sections, content.html slimmed to bridge."
+    }
    }
   },
   {
@@ -1708,7 +2167,14 @@
    "bytes": 1240,
    "comparison": "utf8-lf",
    "lfSha256": "6d4888279dec5eef477a472ea61a885be8094f26b570f6dd0e97fb3f2e5a8207",
-   "origin": "h13-modular-renderer-2026-09-20"
+   "origin": "h13-modular-renderer-2026-09-20",
+   "migration": {
+    "sha256": "3cbccaa3db5e754a4f55ecacac27263e502a11cec6a869b80a035b04669f93ea",
+    "lfSha256": "3cbccaa3db5e754a4f55ecacac27263e502a11cec6a869b80a035b04669f93ea",
+    "bytes": 8477,
+    "comparison": "utf8-lf",
+    "reason": "Product Module V2 migration: registry-driven presentation; module.json carries brand/theme/hero/sections, content.html slimmed to bridge."
+   }
   },
   {
    "path": "products/lights-out/module.json",
@@ -1716,7 +2182,21 @@
    "bytes": 2184,
    "comparison": "utf8-lf",
    "lfSha256": "b8e6b4327548e0bae8cc044786b28772e15b15504e83b04cca0baf8757961693",
-   "origin": "h13-modular-renderer-2026-09-20"
+   "origin": "h13-modular-renderer-2026-09-20",
+   "migration": {
+    "sha256": "38c6769794ba4159aa586c73919d65c40815f3e0eb8392c7271e597dc195ea7f",
+    "bytes": 7696,
+    "comparison": "utf8-lf",
+    "lfSha256": "38c6769794ba4159aa586c73919d65c40815f3e0eb8392c7271e597dc195ea7f",
+    "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions.",
+    "previousMigration": {
+     "sha256": "fc604db39cb19588212214e3c241dfc659453bb19413ba8fe882c9bd95b40452",
+     "lfSha256": "fc604db39cb19588212214e3c241dfc659453bb19413ba8fe882c9bd95b40452",
+     "bytes": 7446,
+     "comparison": "utf8-lf",
+     "reason": "Product Module V2 migration: registry-driven presentation; module.json carries brand/theme/hero/sections, content.html slimmed to bridge."
+    }
+   }
   },
   {
    "path": "products/cleanroom/module.json",
@@ -1724,7 +2204,14 @@
    "bytes": 1245,
    "comparison": "utf8-lf",
    "lfSha256": "6800bcd13b878421b52341cfb66c9229b3f944ece381930f1730ff55036d845e",
-   "origin": "h13-modular-renderer-2026-09-20"
+   "origin": "h13-modular-renderer-2026-09-20",
+   "migration": {
+    "sha256": "848ef60e39c79be2e7cd8707c04907ebb0f67bba51889ad59ab5389adf05bcde",
+    "lfSha256": "848ef60e39c79be2e7cd8707c04907ebb0f67bba51889ad59ab5389adf05bcde",
+    "bytes": 3958,
+    "comparison": "utf8-lf",
+    "reason": "Product Module V2 migration: registry-driven presentation; module.json carries brand/theme/hero/sections, content.html slimmed to bridge."
+   }
   },
   {
    "path": "products/ghostlayer/module.json",
@@ -1732,7 +2219,14 @@
    "bytes": 1187,
    "comparison": "utf8-lf",
    "lfSha256": "68e9331369e8f2ab7336b53a20edb367c63bf352953ad0f41d3e20a350173a78",
-   "origin": "h13-modular-renderer-2026-09-20"
+   "origin": "h13-modular-renderer-2026-09-20",
+   "migration": {
+    "sha256": "d90d3671da3827bcddf0faaa0cd186217c3574a928251fb879961d6a17560e9f",
+    "lfSha256": "d90d3671da3827bcddf0faaa0cd186217c3574a928251fb879961d6a17560e9f",
+    "bytes": 4025,
+    "comparison": "utf8-lf",
+    "reason": "Product Module V2 migration: registry-driven presentation; module.json carries brand/theme/hero/sections, content.html slimmed to bridge."
+   }
   },
   {
    "path": "products/forgecast/module.json",
@@ -1740,7 +2234,14 @@
    "bytes": 1223,
    "comparison": "utf8-lf",
    "lfSha256": "fe6bbefb7e9e9e9c9b0e107ff44c871aadafbcf7ad2a1d0568f25a33dc7bee32",
-   "origin": "h13-modular-renderer-2026-09-20"
+   "origin": "h13-modular-renderer-2026-09-20",
+   "migration": {
+    "sha256": "1715a502b3f27b8a2dd7d42aca0deb62c9701353735aef054d50d61c1024743f",
+    "lfSha256": "1715a502b3f27b8a2dd7d42aca0deb62c9701353735aef054d50d61c1024743f",
+    "bytes": 4587,
+    "comparison": "utf8-lf",
+    "reason": "Product Module V2 migration: registry-driven presentation; module.json carries brand/theme/hero/sections, content.html slimmed to bridge."
+   }
   },
   {
    "path": "products/proofshot/module.json",
@@ -1748,7 +2249,14 @@
    "bytes": 1983,
    "comparison": "utf8-lf",
    "lfSha256": "d716e40036f86663b03785993f080534dfb1f3180f0741ff5a9c72125501d772",
-   "origin": "h13-modular-renderer-2026-09-20"
+   "origin": "h13-modular-renderer-2026-09-20",
+   "migration": {
+    "sha256": "0a3925a883d87eb58af5e190d8b0b7b6b3b917141f6e255e6f88790d47edc0e0",
+    "lfSha256": "0a3925a883d87eb58af5e190d8b0b7b6b3b917141f6e255e6f88790d47edc0e0",
+    "bytes": 4873,
+    "comparison": "utf8-lf",
+    "reason": "Product Module V2 migration: registry-driven presentation; module.json carries brand/theme/hero/sections, content.html slimmed to bridge."
+   }
   },
   {
    "path": "truth-files.css",
@@ -1756,7 +2264,21 @@
    "bytes": 5891,
    "comparison": "utf8-lf",
    "lfSha256": "bc28c00d98af6b209181f8922b343141df9f862b4d7b44d18e4fe38c6d3616d9",
-   "origin": "pf-tf1-truth-files-2026-09-21"
+   "origin": "pf-tf1-truth-files-2026-09-21",
+   "migration": {
+    "sha256": "7519448d018df199cbefb2c19614cce65fdcf54b4ef58d40c4158c867ba6e645",
+    "bytes": 17846,
+    "comparison": "utf8-lf",
+    "lfSha256": "7519448d018df199cbefb2c19614cce65fdcf54b4ef58d40c4158c867ba6e645",
+    "reason": "CP-0189 approved visual identity restoration: forged-metal chrome (emblem, route-chain nav, chassis layers, Archivo/Plex Mono) restored on home/software/truth-files; V2 registry engine, release truth and product functionality preserved.",
+    "previousMigration": {
+     "sha256": "4aa4346f3758a16e5312dc8291c99fc6caddb5457a30e0dca18ac6d88ed38b67",
+     "bytes": 5902,
+     "comparison": "utf8-lf",
+     "lfSha256": "4aa4346f3758a16e5312dc8291c99fc6caddb5457a30e0dca18ac6d88ed38b67",
+     "reason": "Mobile overflow repair (D1/D2): forgecast story figure drops to single-column under 700px; tf-grid card column shrinks below 300px. No design changes."
+    }
+   }
   },
   {
    "path": "truth-files.html",
@@ -1766,11 +2288,18 @@
    "lfSha256": "012cdfd8b21c120169f3bc9da34edd4bc5f8cf8abdcfe6390e75c91ddba41b6d",
    "origin": "pf-tf1-truth-files-2026-09-21",
    "migration": {
-    "sha256": "4b5e76e493468d61210de7fdc12ac16d174dd98e44aca72d36227253fd54bcda",
-    "bytes": 3508,
+    "sha256": "f1495831349672312c54d2cae405c0997a9aab4dd854bac4d166605e3f1adae2",
+    "bytes": 4005,
     "comparison": "utf8-lf",
-    "lfSha256": "4b5e76e493468d61210de7fdc12ac16d174dd98e44aca72d36227253fd54bcda",
-    "reason": "PF-TF1 HOLD-1 2026-09-21: bounded owner-review corrections — artifact scope semantics (public vs recorded), cache-vault companionPublicVersion=0.2.0 parity, qualified source-identity promise; targeted regression assertions added."
+    "lfSha256": "f1495831349672312c54d2cae405c0997a9aab4dd854bac4d166605e3f1adae2",
+    "reason": "CP-0189 approved visual identity restoration: forged-metal chrome (emblem, route-chain nav, chassis layers, Archivo/Plex Mono) restored on home/software/truth-files; V2 registry engine, release truth and product functionality preserved.",
+    "previousMigration": {
+     "sha256": "4b5e76e493468d61210de7fdc12ac16d174dd98e44aca72d36227253fd54bcda",
+     "bytes": 3508,
+     "comparison": "utf8-lf",
+     "lfSha256": "4b5e76e493468d61210de7fdc12ac16d174dd98e44aca72d36227253fd54bcda",
+     "reason": "PF-TF1 HOLD-1 2026-09-21: bounded owner-review corrections \u2014 artifact scope semantics (public vs recorded), cache-vault companionPublicVersion=0.2.0 parity, qualified source-identity promise; targeted regression assertions added."
+    }
    }
   },
   {
@@ -1781,12 +2310,1282 @@
    "lfSha256": "bf5c2a57bb71e2cf3eec2950cee84c6a57f0b978769a505404331a500e701150",
    "origin": "pf-tf1-truth-files-2026-09-21",
    "migration": {
-    "sha256": "01fabf8eb548f01f40fd576d5245f66772891743a9c515f6a17464afde940a9e",
-    "bytes": 9153,
+    "sha256": "a76fd4d70cfef928fa6cf33075036366faec0de7d91b41b06efb75750098901c",
+    "bytes": 9300,
     "comparison": "utf8-lf",
-    "lfSha256": "01fabf8eb548f01f40fd576d5245f66772891743a9c515f6a17464afde940a9e",
-    "reason": "PF-TF1 HOLD-1 2026-09-21: bounded owner-review corrections — artifact scope semantics (public vs recorded), cache-vault companionPublicVersion=0.2.0 parity, qualified source-identity promise; targeted regression assertions added."
+    "lfSha256": "a76fd4d70cfef928fa6cf33075036366faec0de7d91b41b06efb75750098901c",
+    "reason": "RG v1.1.0 withdrawal + Lights Out v11.2.0 production-truth reconciliation: authorized source bytes for the withdrawn/product-truth migration and its updated guard assertions.",
+    "previousMigration": {
+     "sha256": "01fabf8eb548f01f40fd576d5245f66772891743a9c515f6a17464afde940a9e",
+     "bytes": 9153,
+     "comparison": "utf8-lf",
+     "lfSha256": "01fabf8eb548f01f40fd576d5245f66772891743a9c515f6a17464afde940a9e",
+     "reason": "PF-TF1 HOLD-1 2026-09-21: bounded owner-review corrections \u2014 artifact scope semantics (public vs recorded), cache-vault companionPublicVersion=0.2.0 parity, qualified source-identity promise; targeted regression assertions added."
+    }
    }
+  },
+  {
+   "path": "pf-foundry-system.css",
+   "sha256": "6db5cd2930f8fa3bdc99e58e559bacc3311030e9193d919c5e35e3678abdbc1b",
+   "bytes": 54000,
+   "comparison": "utf8-lf",
+   "lfSha256": "6db5cd2930f8fa3bdc99e58e559bacc3311030e9193d919c5e35e3678abdbc1b",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "pf-styles.css",
+   "sha256": "0aae2c1a91b52f0af8bb5521f349e6702f972537bc992f6237e16aa55ab46fd3",
+   "bytes": 6114,
+   "comparison": "utf8-lf",
+   "lfSha256": "0aae2c1a91b52f0af8bb5521f349e6702f972537bc992f6237e16aa55ab46fd3",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "pf-home-ledger.css",
+   "sha256": "88c4c8ad5345fe65e9ed16805df734b14fe9a65a3e158466b2715c4bc8eee0f7",
+   "bytes": 95886,
+   "comparison": "utf8-lf",
+   "lfSha256": "88c4c8ad5345fe65e9ed16805df734b14fe9a65a3e158466b2715c4bc8eee0f7",
+   "origin": "cp0189-restoration-2026-11-13",
+   "migration": {
+    "sha256": "a6bc785af02929286031bb61c1730b2dda703acb83e6ea19023c135b77543f02",
+    "bytes": 97415,
+    "comparison": "utf8-lf",
+    "lfSha256": "a6bc785af02929286031bb61c1730b2dda703acb83e6ea19023c135b77543f02",
+    "reason": "CP-0189 homepage.slot correction: opt-in shelf placement marker in index.html; Build-HomepageShelf + slot validation + shelf styles; capsule homepageSlot mapping; docs + tests corrected to the live contract."
+   }
+  },
+  {
+   "path": "pf-experience.css",
+   "sha256": "9d894aa224f867809e183a3403d8f88d0b78f39bf8066705306eb0ab06caad0d",
+   "bytes": 2406,
+   "comparison": "utf8-lf",
+   "lfSha256": "9d894aa224f867809e183a3403d8f88d0b78f39bf8066705306eb0ab06caad0d",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "foundry-connections.css",
+   "sha256": "dc7eef5fb5664eff70f030421c189bab7b3245feae23cb3eb30ca002b44e2a42",
+   "bytes": 12712,
+   "comparison": "utf8-lf",
+   "lfSha256": "dc7eef5fb5664eff70f030421c189bab7b3245feae23cb3eb30ca002b44e2a42",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "foundry-world.css",
+   "sha256": "14381b6fdcbb60ffc97de916bdc7d86d863b1fb36fe53d9b23e3af6d5543ab4d",
+   "bytes": 5959,
+   "comparison": "utf8-lf",
+   "lfSha256": "14381b6fdcbb60ffc97de916bdc7d86d863b1fb36fe53d9b23e3af6d5543ab4d",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "foundry-rooms.css",
+   "sha256": "385375f4deacdc4a9a285bcfc2a8d2b71684f092fd4bb78fb47a7a62dde03a96",
+   "bytes": 68718,
+   "comparison": "utf8-lf",
+   "lfSha256": "385375f4deacdc4a9a285bcfc2a8d2b71684f092fd4bb78fb47a7a62dde03a96",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "foundry-navigation.js",
+   "sha256": "9ff8bc047276233a757997433af03dd4f50d8f73f79781b2dbf688f12923a032",
+   "bytes": 18896,
+   "comparison": "utf8-lf",
+   "lfSha256": "9ff8bc047276233a757997433af03dd4f50d8f73f79781b2dbf688f12923a032",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "pf-home.js",
+   "sha256": "6b968cc4118197f66f50f99d76946df0fd345f67baad4dffe299e4573d005108",
+   "bytes": 44824,
+   "comparison": "utf8-lf",
+   "lfSha256": "6b968cc4118197f66f50f99d76946df0fd345f67baad4dffe299e4573d005108",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "pf-truth-receipt.js",
+   "sha256": "418cdcfc8fb0c0e9a2b83afe5058efee5c92f01bedba5cd47494b4b3e4960a34",
+   "bytes": 27017,
+   "comparison": "utf8-lf",
+   "lfSha256": "418cdcfc8fb0c0e9a2b83afe5058efee5c92f01bedba5cd47494b4b3e4960a34",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "index.html",
+   "sha256": "2d9c4d3629754eadd2d2d9eeef2ae33eba6e47ec375edd6f55b95cd40da9a5b5",
+   "bytes": 18757,
+   "comparison": "utf8-lf",
+   "lfSha256": "2d9c4d3629754eadd2d2d9eeef2ae33eba6e47ec375edd6f55b95cd40da9a5b5",
+   "origin": "cp0189-restoration-2026-11-13",
+   "migration": {
+    "sha256": "71a721acd1d44912b5a1d7e7e6a3c582a7dbbec81a0e34312691aa11bf22a69c",
+    "bytes": 18781,
+    "comparison": "utf8-lf",
+    "lfSha256": "71a721acd1d44912b5a1d7e7e6a3c582a7dbbec81a0e34312691aa11bf22a69c",
+    "reason": "CP-0189 homepage.slot correction: opt-in shelf placement marker in index.html; Build-HomepageShelf + slot validation + shelf styles; capsule homepageSlot mapping; docs + tests corrected to the live contract."
+   }
+  },
+  {
+   "path": "brand/PF_HEADER_MARK.svg",
+   "sha256": "eb54f87d3523bd58d2981fd338e34d56bf03e31e866448eed424a44f6a032113",
+   "bytes": 2223,
+   "comparison": "utf8-lf",
+   "lfSha256": "eb54f87d3523bd58d2981fd338e34d56bf03e31e866448eed424a44f6a032113",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/PF_HEADER_MARK_DARK.svg",
+   "sha256": "9ec7538def38e5f9a190811463b11fd44b413a272284d57b9fe3cf2221681f2a",
+   "bytes": 2189,
+   "comparison": "utf8-lf",
+   "lfSha256": "9ec7538def38e5f9a190811463b11fd44b413a272284d57b9fe3cf2221681f2a",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/PF_SOCIAL_CARD.svg",
+   "sha256": "a11e9e675de1c7ce79bffcff46fbfa6b1121f0830e0f7f600817a2c599659791",
+   "bytes": 6605,
+   "comparison": "utf8-lf",
+   "lfSha256": "a11e9e675de1c7ce79bffcff46fbfa6b1121f0830e0f7f600817a2c599659791",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "schemas/product-capsule-v1.schema.json",
+   "sha256": "ca663d20c80ca0bf7c1f4222dab384a21e5d4979917d7d68b55485f2c99f30ae",
+   "bytes": 6748,
+   "comparison": "utf8-lf",
+   "lfSha256": "ca663d20c80ca0bf7c1f4222dab384a21e5d4979917d7d68b55485f2c99f30ae",
+   "origin": "cp0189-restoration-2026-11-13",
+   "migration": {
+    "sha256": "45068721aae7a46a3404dc9326fa20be8ab3ee8c1317c8b7fc0300965568b9f5",
+    "bytes": 6837,
+    "comparison": "utf8-lf",
+    "lfSha256": "45068721aae7a46a3404dc9326fa20be8ab3ee8c1317c8b7fc0300965568b9f5",
+    "reason": "CP-0189 homepage.slot correction: opt-in shelf placement marker in index.html; Build-HomepageShelf + slot validation + shelf styles; capsule homepageSlot mapping; docs + tests corrected to the live contract."
+   }
+  },
+  {
+   "path": "schemas/product-module-v2.schema.json",
+   "sha256": "406bc0a7e7e2c425ac3bd7686b02e81ba7956edb5a17e4acc1ea9a2a318c116a",
+   "bytes": 8514,
+   "comparison": "utf8-lf",
+   "lfSha256": "406bc0a7e7e2c425ac3bd7686b02e81ba7956edb5a17e4acc1ea9a2a318c116a",
+   "origin": "cp0189-restoration-2026-11-13",
+   "migration": {
+    "sha256": "79e35a28d7f48237908fbf3692336a9b47cef4419ed4e8c90a7e087a1a715a00",
+    "bytes": 8595,
+    "comparison": "utf8-lf",
+    "lfSha256": "79e35a28d7f48237908fbf3692336a9b47cef4419ed4e8c90a7e087a1a715a00",
+    "reason": "CP-0189 homepage.slot correction: opt-in shelf placement marker in index.html; Build-HomepageShelf + slot validation + shelf styles; capsule homepageSlot mapping; docs + tests corrected to the live contract."
+   }
+  },
+  {
+   "path": "scripts/run-all-tests.ps1",
+   "sha256": "5e15dd25e86536aeb89bf83b708fd258746f9c1877a2f172124349777735a040",
+   "bytes": 976,
+   "comparison": "utf8-lf",
+   "lfSha256": "5e15dd25e86536aeb89bf83b708fd258746f9c1877a2f172124349777735a040",
+   "origin": "cp0189-restoration-2026-11-13",
+   "migration": {
+    "sha256": "31e42a2476dfd37a5604f24299d4264d0ac5e0a6560f6d730edff66390da6523",
+    "bytes": 3098,
+    "comparison": "utf8-lf",
+    "lfSha256": "31e42a2476dfd37a5604f24299d4264d0ac5e0a6560f6d730edff66390da6523",
+    "reason": "Test-runner reliability fix: each suite file now runs in an isolated pwsh -NoProfile -File process; verdict = child exit code with RESULT-line cross-check; exit-0/exit-1 controls verified before the suite runs."
+   }
+  },
+  {
+   "path": "scripts/capture-candidate-visual.mjs",
+   "sha256": "add3d99e680aab2e23843e4b54b6f2b72327d3142e393e1240740cc8acaa3681",
+   "bytes": 14919,
+   "comparison": "utf8-lf",
+   "lfSha256": "add3d99e680aab2e23843e4b54b6f2b72327d3142e393e1240740cc8acaa3681",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "scripts/capture-ref-comparison.mjs",
+   "sha256": "16b32c5864e165b2c2f272ec779231d2d331803f1061d3d1f8a1bcf9073386e3",
+   "bytes": 2939,
+   "comparison": "utf8-lf",
+   "lfSha256": "16b32c5864e165b2c2f272ec779231d2d331803f1061d3d1f8a1bcf9073386e3",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "scripts/Preview-Product.ps1",
+   "sha256": "4965d4a281d1f59cb9bea98a734168cb48f0c9615deae7362f323bbcd2d73209",
+   "bytes": 3380,
+   "comparison": "utf8-lf",
+   "lfSha256": "4965d4a281d1f59cb9bea98a734168cb48f0c9615deae7362f323bbcd2d73209",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "scripts/New-ProductCapsule.ps1",
+   "sha256": "857d1d7de990b9d54e1e421736fb016ea282ed8f8ed9cd9b16bc149ec5b18b25",
+   "bytes": 4086,
+   "comparison": "utf8-lf",
+   "lfSha256": "857d1d7de990b9d54e1e421736fb016ea282ed8f8ed9cd9b16bc149ec5b18b25",
+   "origin": "cp0189-restoration-2026-11-13",
+   "migration": {
+    "sha256": "e57075c05bda9d897b8e2eb0fa6b56cbeaf92255690485754acf5e6a3cefc157",
+    "bytes": 4181,
+    "comparison": "utf8-lf",
+    "lfSha256": "e57075c05bda9d897b8e2eb0fa6b56cbeaf92255690485754acf5e6a3cefc157",
+    "reason": "CP-0189 homepage.slot correction: opt-in shelf placement marker in index.html; Build-HomepageShelf + slot validation + shelf styles; capsule homepageSlot mapping; docs + tests corrected to the live contract."
+   }
+  },
+  {
+   "path": "scripts/Import-ProductCapsule.ps1",
+   "sha256": "8af3ae7325f7b989d93b216d15864a72e67fc425615e41d5aa7220904162a41c",
+   "bytes": 22707,
+   "comparison": "utf8-lf",
+   "lfSha256": "8af3ae7325f7b989d93b216d15864a72e67fc425615e41d5aa7220904162a41c",
+   "origin": "cp0189-restoration-2026-11-13",
+   "migration": {
+    "sha256": "a9bec3f41432fde6874575db5abf121ac73315b55a6679a0efcd5e42f4bcee37",
+    "bytes": 22987,
+    "comparison": "utf8-lf",
+    "lfSha256": "a9bec3f41432fde6874575db5abf121ac73315b55a6679a0efcd5e42f4bcee37",
+    "reason": "CP-0189 homepage.slot correction: opt-in shelf placement marker in index.html; Build-HomepageShelf + slot validation + shelf styles; capsule homepageSlot mapping; docs + tests corrected to the live contract."
+   }
+  },
+  {
+   "path": "scripts/test-product-capsule.ps1",
+   "sha256": "70895a9395ea95e31bb58259c71ea75f0000d9c8c4c264b3b41b468b7fb72283",
+   "bytes": 13657,
+   "comparison": "utf8-lf",
+   "lfSha256": "70895a9395ea95e31bb58259c71ea75f0000d9c8c4c264b3b41b468b7fb72283",
+   "origin": "cp0189-restoration-2026-11-13",
+   "migration": {
+    "sha256": "99e71023e51e22495ea7e36dede027e3322303bbec837992d71f990c77f211a8",
+    "bytes": 13711,
+    "comparison": "utf8-lf",
+    "lfSha256": "99e71023e51e22495ea7e36dede027e3322303bbec837992d71f990c77f211a8",
+    "reason": "CP-0189 homepage.slot correction: opt-in shelf placement marker in index.html; Build-HomepageShelf + slot validation + shelf styles; capsule homepageSlot mapping; docs + tests corrected to the live contract."
+   }
+  },
+  {
+   "path": "scripts/render-h9-boards.mjs",
+   "sha256": "f16a9b35d8b5cf70c99a468fc957f12cd829b2253f7e5ed6e5fc2b2c0391416c",
+   "bytes": 6685,
+   "comparison": "utf8-lf",
+   "lfSha256": "f16a9b35d8b5cf70c99a468fc957f12cd829b2253f7e5ed6e5fc2b2c0391416c",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "scripts/fixtures/product-module-v2/README.md",
+   "sha256": "87c04a8b0b013430119e48e360a21d4d5b4440cf51c2fe468f8df5054d3320b2",
+   "bytes": 283,
+   "comparison": "utf8-lf",
+   "lfSha256": "87c04a8b0b013430119e48e360a21d4d5b4440cf51c2fe468f8df5054d3320b2",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "scripts/fixtures/product-module-v2/logo.svg",
+   "sha256": "bf661043235bd001651b87e575688a45594772ce08d94b85930fadcba1e5c432",
+   "bytes": 259,
+   "comparison": "utf8-lf",
+   "lfSha256": "bf661043235bd001651b87e575688a45594772ce08d94b85930fadcba1e5c432",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "scripts/fixtures/product-module-v2/module.json",
+   "sha256": "b57589f20bf4994d973b5c526082422e22a55170b87c140b8609a6da4a9c3021",
+   "bytes": 2273,
+   "comparison": "utf8-lf",
+   "lfSha256": "b57589f20bf4994d973b5c526082422e22a55170b87c140b8609a6da4a9c3021",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "scripts/fixtures/product-capsule-cache-vault/README.md",
+   "sha256": "ed46c232beee378554529e33209686b490562a16e0f47c3967a5fb0ce70d78ab",
+   "bytes": 166,
+   "comparison": "utf8-lf",
+   "lfSha256": "ed46c232beee378554529e33209686b490562a16e0f47c3967a5fb0ce70d78ab",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "scripts/fixtures/product-capsule-cache-vault/product.json",
+   "sha256": "c49c68bf47e7d4ad7e77d18d3aedf063c4b4041dc78525854ffd68bd68b88259",
+   "bytes": 4205,
+   "comparison": "utf8-lf",
+   "lfSha256": "c49c68bf47e7d4ad7e77d18d3aedf063c4b4041dc78525854ffd68bd68b88259",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "scripts/fixtures/product-capsule-cache-vault/brand/mark.svg",
+   "sha256": "6d4c3cbb42b701ca0fa95d63127d6d33bbae24f2e264fcb6e8304aa345ed4ae4",
+   "bytes": 428,
+   "comparison": "utf8-lf",
+   "lfSha256": "6d4c3cbb42b701ca0fa95d63127d6d33bbae24f2e264fcb6e8304aa345ed4ae4",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "products/cache-vault/logo.svg",
+   "sha256": "6d4c3cbb42b701ca0fa95d63127d6d33bbae24f2e264fcb6e8304aa345ed4ae4",
+   "bytes": 428,
+   "comparison": "utf8-lf",
+   "lfSha256": "6d4c3cbb42b701ca0fa95d63127d6d33bbae24f2e264fcb6e8304aa345ed4ae4",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "products/cache-vault/README.md",
+   "sha256": "f0001b479483eea6d112e8b2709166dd8c8654f6ddeec9adc3f2f247847af878",
+   "bytes": 1075,
+   "comparison": "utf8-lf",
+   "lfSha256": "f0001b479483eea6d112e8b2709166dd8c8654f6ddeec9adc3f2f247847af878",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "products/cleanroom/logo.svg",
+   "sha256": "15bd7cf3879e3302a6ce9488b4113051ea55bf3af8b7584de5ee5ebbb87cd136",
+   "bytes": 849,
+   "comparison": "utf8-lf",
+   "lfSha256": "15bd7cf3879e3302a6ce9488b4113051ea55bf3af8b7584de5ee5ebbb87cd136",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "products/cleanroom/README.md",
+   "sha256": "6d957dc0e9588dc02fd19eafe375d42f35a0fe1c2d7f95bad9fc1fa613665368",
+   "bytes": 1065,
+   "comparison": "utf8-lf",
+   "lfSha256": "6d957dc0e9588dc02fd19eafe375d42f35a0fe1c2d7f95bad9fc1fa613665368",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "products/forgecast/logo.svg",
+   "sha256": "a5aecc021e61a8fb05195bb33acfae3ba5be2d8fb334f4eb58081b252e96b5eb",
+   "bytes": 839,
+   "comparison": "utf8-lf",
+   "lfSha256": "a5aecc021e61a8fb05195bb33acfae3ba5be2d8fb334f4eb58081b252e96b5eb",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "products/forgecast/README.md",
+   "sha256": "8b132d39bd0e50ed2fe46f66c8d69429771f7c4ea2d01dc9187484f151b17c83",
+   "bytes": 1065,
+   "comparison": "utf8-lf",
+   "lfSha256": "8b132d39bd0e50ed2fe46f66c8d69429771f7c4ea2d01dc9187484f151b17c83",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "products/ghostlayer/logo.svg",
+   "sha256": "9d85010321179121da3b10943e55734f90b18cc6c113621d0e658a9863fdbdec",
+   "bytes": 779,
+   "comparison": "utf8-lf",
+   "lfSha256": "9d85010321179121da3b10943e55734f90b18cc6c113621d0e658a9863fdbdec",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "products/ghostlayer/README.md",
+   "sha256": "f82cb6c1f4a10bd2ca538a533f0cb72678a6b1f203a56aac8d01b15110b7b208",
+   "bytes": 1070,
+   "comparison": "utf8-lf",
+   "lfSha256": "f82cb6c1f4a10bd2ca538a533f0cb72678a6b1f203a56aac8d01b15110b7b208",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "products/lights-out/README.md",
+   "sha256": "c8f5bda598dc6105e4eed7bf8c6777cc724521e747a48e9aef86b88f118951a2",
+   "bytes": 1070,
+   "comparison": "utf8-lf",
+   "lfSha256": "c8f5bda598dc6105e4eed7bf8c6777cc724521e747a48e9aef86b88f118951a2",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "products/proofshot/logo.svg",
+   "sha256": "f292a40e89af1c413b45b7a2d8f064f2428a10ff86c3fe40fb2ab95024e1ca64",
+   "bytes": 1022,
+   "comparison": "utf8-lf",
+   "lfSha256": "f292a40e89af1c413b45b7a2d8f064f2428a10ff86c3fe40fb2ab95024e1ca64",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "products/proofshot/README.md",
+   "sha256": "50fda68354a5cc1c3c8d5a62e0c9e77d0de3bc683c960f75ea665007aa640fb5",
+   "bytes": 1065,
+   "comparison": "utf8-lf",
+   "lfSha256": "50fda68354a5cc1c3c8d5a62e0c9e77d0de3bc683c960f75ea665007aa640fb5",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "products/reality-gate/logo.svg",
+   "sha256": "368ec4739fc7a4d1d42254ff229780a0694caec3e422dd526e8e45918d217cbe",
+   "bytes": 520,
+   "comparison": "utf8-lf",
+   "lfSha256": "368ec4739fc7a4d1d42254ff229780a0694caec3e422dd526e8e45918d217cbe",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "products/reality-gate/README.md",
+   "sha256": "0905496875bf69884d7d7ac4f13bdb109239c24027646a90d064e3be16dcde91",
+   "bytes": 1080,
+   "comparison": "utf8-lf",
+   "lfSha256": "0905496875bf69884d7d7ac4f13bdb109239c24027646a90d064e3be16dcde91",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/fonts/OFL-Archivo.txt",
+   "sha256": "328a406633d9d339b81b1483784101e942e7a5fe85c7f655c37dcea45aad5d89",
+   "bytes": 4424,
+   "comparison": "utf8-lf",
+   "lfSha256": "328a406633d9d339b81b1483784101e942e7a5fe85c7f655c37dcea45aad5d89",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/fonts/OFL-IBM-Plex-Mono.txt",
+   "sha256": "e9b5815a12a17e803ac2ada5921d6ed41e02029dff89403e6e7817b3469b3ffb",
+   "bytes": 4411,
+   "comparison": "utf8-lf",
+   "lfSha256": "e9b5815a12a17e803ac2ada5921d6ed41e02029dff89403e6e7817b3469b3ffb",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "scripts/fixtures/product-module-v2/media/hero.png",
+   "sha256": "a6a2ed0a44a9b6ffb29975b214050f8c51371e518520a75203dfc9c3661d350f",
+   "bytes": 68,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "scripts/fixtures/product-capsule-cache-vault/hero/hero.png",
+   "sha256": "05d675e26e69d8467f37e8246115fa97affcf46d03d504220a44b8a1d6e2f72f",
+   "bytes": 41329,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "scripts/fixtures/product-capsule-cache-vault/screenshots/01.png",
+   "sha256": "05d675e26e69d8467f37e8246115fa97affcf46d03d504220a44b8a1d6e2f72f",
+   "bytes": 41329,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/LIGHT_BRASS.webp",
+   "sha256": "8d78c45404713371a4dfc48de551fb0c9030d1a47baf9829f57b7fb8a3f6f8ec",
+   "bytes": 2584,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/LIGHT_BRASS_R3.webp",
+   "sha256": "296a2a1e0c31cab725ed5f86da8a0e00cbecbb6c045c9dd84b7b3b8dbaad47a7",
+   "bytes": 5036,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/LIGHT_BRIDGE.webp",
+   "sha256": "98a83dbf67c569b70de617dd2d15ad35905ea0e4931b1ad9146b1bdaf70ee2e9",
+   "bytes": 2096,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/LIGHT_BRIDGE_R3.webp",
+   "sha256": "0746da3cb4fb9addc7379aa1daa4cb181a432798fc56fd7a34895a3fd6789a1c",
+   "bytes": 2740,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/LIGHT_EAST.webp",
+   "sha256": "3e1b2cf1874b67e1962746ed77a03876c7c0513466fb1e858d5ca3d5c2121e16",
+   "bytes": 18818,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/LIGHT_EAST_R3.webp",
+   "sha256": "670ae36126605241e590d4ee431322922f65b032ce0b04d1f4a0c90f1da4ee8f",
+   "bytes": 35042,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/LIGHT_ENGRAVING.webp",
+   "sha256": "cff39514aacd8cd4e3d2ffd6299bd273e6e8648f0a8a76373390648d2ea71e92",
+   "bytes": 12090,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/LIGHT_ENGRAVING_R3.webp",
+   "sha256": "2fcfabcd24653d81c12f788b82b68845f74f817d5c78767c966d017eff72ca88",
+   "bytes": 13554,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/LIGHT_NORTH.webp",
+   "sha256": "e9b7a6295bc1d60eab2657034bf4b24adef74c21fb11d2c2b7b9a4b9d2902f86",
+   "bytes": 20690,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/LIGHT_NORTH_R3.webp",
+   "sha256": "89452f826bfafa0066a59bfb6b8ff587154d740852dffd0fcf78a34293c1bc16",
+   "bytes": 24768,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/LIGHT_SEAL.webp",
+   "sha256": "ccb84ea6f1fb8a68caf32050d3943bf1baa9584c72c7fac3024956ec1d1b7f3f",
+   "bytes": 10466,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/LIGHT_SEAL_R3.webp",
+   "sha256": "6775bf65c599e22ad31f8131cd0bc729bc05c55722fcbcbb1f85083aeafd3050",
+   "bytes": 12176,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/LIGHT_SOUTH.webp",
+   "sha256": "35bd9b2b391db13061d7c56d2be4d5b20774fbb3d2176155aeb0c7670ecdf28e",
+   "bytes": 22852,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/LIGHT_SOUTH_R3.webp",
+   "sha256": "91ac2ab80de3267e3dd2fa24fd02b9450ba3beec2014f869f7feb0e521c7a197",
+   "bytes": 32916,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/LIGHT_WEST.webp",
+   "sha256": "6466d6bd6caa191e93f0a2a548a3c9253eaaca2fb7e7e1be49aa18b928e7733a",
+   "bytes": 20006,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/LIGHT_WEST_R3.webp",
+   "sha256": "b81a80bd709dccf5a1872538eef951817e748ce3913996e92ce40724c421144b",
+   "bytes": 33494,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/PF_MARK_G_EMBLEM.webp",
+   "sha256": "8165fe7e753337ab6dfb969fff3f411ea13711165a66dab3c4998502b1d2031d",
+   "bytes": 404190,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/PF_MARK_G_EMBLEM_R3.webp",
+   "sha256": "900e4e6a5470a94c333fc8107594aca96025ca1a8e890fef2f37ed75e149f871",
+   "bytes": 237692,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/PF_MARK_G_HEADER.webp",
+   "sha256": "eda57d5d1abe27adcfd3d13de0b5ec0b4ffa2a2c3cb3c5d768bc7e2b843936f0",
+   "bytes": 10194,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/PF_MARK_G_TI_460.webp",
+   "sha256": "4d922a713f68d2c9d1a017a06cd084a1a5faac9c3bd8f1491880bba838133de8",
+   "bytes": 27854,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/PF_MARK_G_TI_920.webp",
+   "sha256": "76ab20d8f304290d0f9480a43e9f00888c83f65e9fd1279ac23c34be3fe6d254",
+   "bytes": 45276,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/PF_MARK_G_TI_BADGE.webp",
+   "sha256": "231664b5c9755b764ed25dfbe82cfd67c1b774d11ea17a053ff0b60398568af6",
+   "bytes": 2728,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/PF_MARK_G_TI_GLINT_E.webp",
+   "sha256": "27ff4c49e33b561e0877bdf0be1a82791cb0afbe8adf92108b2bbb3a62c0164f",
+   "bytes": 135416,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/PF_MARK_G_TI_GLINT_N.webp",
+   "sha256": "40aa5075ff7d4f7dc0b53ed8fd57ced3ce8f4b8481e0935204c100ee2b4d6369",
+   "bytes": 132598,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/PF_MARK_G_TI_GLINT_S.webp",
+   "sha256": "d107ded56446a629904fa6c22907200d733f6ba7d4f15702f9ce1a01ef37ac5d",
+   "bytes": 127850,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/PF_MARK_G_TI_GLINT_W.webp",
+   "sha256": "c4d204f1779a258b2b0fd69c5658d875a3586630dafe4b4a9f3152da0a3aa9ef",
+   "bytes": 136426,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/PF_MARK_G_TI_HEADER.webp",
+   "sha256": "d38f7992058ca349534d3858dc761985666605a30b523c3a5523aa0679976f87",
+   "bytes": 9020,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "brand/emblem/PF_MARK_G_TI_PLAQUE.webp",
+   "sha256": "4f2b9987ae54e53c38422ad43647df0157d55e2c61dc71ed0f8214b70440f83f",
+   "bytes": 178942,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/carriage-d-s0.webp",
+   "sha256": "3d50258707f7d0be04d5b6e000598a5309cf2d1134d6ca72cb1267dd9f08655d",
+   "bytes": 6564,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/carriage-d-s1.webp",
+   "sha256": "ce9978c24c48a8c5e4119fd7837794ecfa4e5b2a23d8e3f1c8ae531d48db2874",
+   "bytes": 8008,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/carriage-d-s2.webp",
+   "sha256": "5dc9722f47c22f9cc6e6387b62203f7762a627cb3073771a20f9c353c61d3fb1",
+   "bytes": 10868,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/carriage-d-s3.webp",
+   "sha256": "45267add5b4398399ea0f8c157a43f72197285b565b00ef202d0cf9c58dd148b",
+   "bytes": 12442,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/carriage-d-s4.webp",
+   "sha256": "38f4389ca1881fdbf693d9dfe5e52501141dc39b7017178524f91b3e61389a60",
+   "bytes": 14918,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/carriage-m-s0.webp",
+   "sha256": "02895568135d64d3cd3729c58b117ab9da91e37d01015c56aaa60cb47ecf716e",
+   "bytes": 4472,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/carriage-m-s1.webp",
+   "sha256": "b1b77125dc82b823217c89dc72ef4d7d8557beeeb73aa87a839d157e4489ce7f",
+   "bytes": 3104,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/carriage-m-s2.webp",
+   "sha256": "4c52ca352056a60bd9c5ecef29b0e5bddb253b8227d73f9d2b5f951e4de87e78",
+   "bytes": 2672,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/carriage-m-s3.webp",
+   "sha256": "f57f2935d28e5160a11e28133f5aa2c197812b3f4649b6ebe71e93d1dd4c3276",
+   "bytes": 2456,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/carriage-m-s4.webp",
+   "sha256": "1bcbdb605810d440f236e7ad335b4b6852540ca087b16d66c2737fed44486b43",
+   "bytes": 2474,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/chain-desktop-1400.webp",
+   "sha256": "e8cd24d123b581e189ca6284f86675abed210204824354fda77ba514dc020d78",
+   "bytes": 25752,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/chain-desktop-2800.webp",
+   "sha256": "f8807e0581fa534d8d3abdc8d9450aaa10175b0e629d665beb79891c60b7185e",
+   "bytes": 67590,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/chain-mobile-320.webp",
+   "sha256": "5a2f4de130cce7d3ab94e05ba8452f81209686abd2dadc4d5872c19555b91eb8",
+   "bytes": 18738,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/coupler-v.webp",
+   "sha256": "f4156db39a54e143ed9975199cb9542d33c1b75dcb2b9db995c62325d1bafe92",
+   "bytes": 2500,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/coupler.webp",
+   "sha256": "39925529bb58980722b8e114dbfaabc6a9e97680041c7c0a6da5e43f1e3632eb",
+   "bytes": 1938,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/footer-panel.webp",
+   "sha256": "66528eb91c5747f10c97b5a4cf8290f564adde83166f09b3b4eb57b0b99f2740",
+   "bytes": 2320,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/footer-rail-1920.webp",
+   "sha256": "be22f5c6f9b6d8532ae56e55dc515743b8e9835f215042fc47eb24fc9cc2ac15",
+   "bytes": 10340,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/footer-rail-3840.webp",
+   "sha256": "5c4f4cf4f5ba8fbf284764efa7eab3435a66dc97d9eef47d4c4b5f86a810e11e",
+   "bytes": 31182,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/key-current.webp",
+   "sha256": "0cd463500d4c5f23b085d291beafe761d3d20adc8bd20450dbdeb98aed8ce6ee",
+   "bytes": 3434,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/key-rest.webp",
+   "sha256": "30426b7ff762b10adb656a112d5aef85bb1b0026358eec73d5addd2d271a9c55",
+   "bytes": 3260,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/plate-d-p0.webp",
+   "sha256": "f8c7689971a44fa1f0d79329a0c7e8cf3638f482f26cf0e1c7f27e6537ed4974",
+   "bytes": 5528,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/plate-d-p1.webp",
+   "sha256": "3d40ea781ab4a549f0050988fe0deac95a41cb487c33e2fded9202a6aae986a4",
+   "bytes": 6060,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/plate-d-p2.webp",
+   "sha256": "0afcda7644c6a5bb12e0cedffa3769c9a4621130070b317fa0a2683fb1c45913",
+   "bytes": 6414,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/plate-d-p3.webp",
+   "sha256": "04378cd7b7f5a0fc81a68f369589a12dc215980d7399398eec847e1a95f39dc0",
+   "bytes": 6844,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/plate-d-p4.webp",
+   "sha256": "5cd1d6d5e567c2daca7efa972aff2bbff04e7b8582e1705db0b9e84f1cd35b8a",
+   "bytes": 6824,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/seal-mount-raised-460.webp",
+   "sha256": "2e8396aa80ce69383be0f51ee9d3a76e30817b25eb443b16d6d21bca22879e54",
+   "bytes": 5770,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/seal-mount-raised-920.webp",
+   "sha256": "8f9efd92f6a7fcba2b09e9e25e2991a0673844e892346a109c3acf5625fad913",
+   "bytes": 15686,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/weld-seam-2560.webp",
+   "sha256": "582573d0ddb5bfb8b9155c6bf67950ce86414e0811b0fa645ddbf5da15239cc8",
+   "bytes": 14030,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round2/weld-seam-5120.webp",
+   "sha256": "7cf4080ee34bbbcd3c1a878c56b281d6749a64a918e45d0940e430d5c9e7673e",
+   "bytes": 32264,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/anchor-b.webp",
+   "sha256": "6cd67f260db6d0e8e78dce74c36c700b7e80a040e2a490aef3c8a2c45e88f352",
+   "bytes": 1520,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/anchor-l.webp",
+   "sha256": "172e79847f420014e4f2709612e039b5f4bb09c43528ee5ac38736d6f94c316f",
+   "bytes": 1676,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/anchor-r.webp",
+   "sha256": "5eb9ef9535ccc68dc83225565f96f5de373cf184efb8785e2f4996a5095e09ad",
+   "bytes": 1768,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/anchor-t.webp",
+   "sha256": "57b397754db663e3e47865f69529a05ca3faac28a88ca2d750f19c9dd08a842f",
+   "bytes": 1472,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/button-locked.webp",
+   "sha256": "d3f7803bd8d1f6912263b846d8911ef89e9fc188ab7482c91ee38bf2c3f9358a",
+   "bytes": 3104,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/button-pressed.webp",
+   "sha256": "e1f2de62fbe8a555571e5a01ce8291540ec5e01eb1ccd410336a07f6bcb1ba08",
+   "bytes": 3136,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/button-primary-pressed.webp",
+   "sha256": "32349bc213994e55682d05a50a5c98311141d8e27386abf55c1a8733e047866b",
+   "bytes": 3228,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/button-primary.webp",
+   "sha256": "40c1eeceff2246d4d043ac6c604762037c078ce4e99378e31eb9a1ce6e0ba124",
+   "bytes": 3020,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/button-rest.webp",
+   "sha256": "db51a1e2e5bed9e90efbab87f718069a41d43cc536f66152360f42e78b3b5d3f",
+   "bytes": 2992,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/chain-light-s0.webp",
+   "sha256": "7ad481cc549274a6e45458a4a76f953710762bcd5e96f2a0dff1014a1ff2a3ef",
+   "bytes": 61730,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/chain-light-s1.webp",
+   "sha256": "fdb61835e7a00d0c7e211d13105fcc9ac698660ce3c07d84b120a44c306ac468",
+   "bytes": 50460,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/chain-light-s2.webp",
+   "sha256": "531ccea38da1b3a4a218614747563f9b33a74cb2e9459d12ba455b83b3c6189d",
+   "bytes": 54380,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/chain-light-s3.webp",
+   "sha256": "d6bc2e26197934ce369b706a49312537cb41207fcab681e9883912df06573cd1",
+   "bytes": 59894,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/chain-light-s4.webp",
+   "sha256": "801834ed8403316717bde1d0ce397d32d96bd1bb01e834b249301f0dd8db877d",
+   "bytes": 56714,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/chassis-field-1380.webp",
+   "sha256": "4d4fcfe965613b4d3e2c057360536440dbd3239a87fa45d807e1007f5fc0e7f9",
+   "bytes": 42050,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/chassis-field-690.webp",
+   "sha256": "6e19eeebfd26cabddbf74ac36b2a4d1cab17d02af17c5e5f9d66c082644b0794",
+   "bytes": 10984,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/chassis-joint-l.webp",
+   "sha256": "050c4687a34aead263d7ce87d89f7bb76e304ec6a60e8005ac0d14548dabfe0e",
+   "bytes": 2262,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/chassis-joint-r.webp",
+   "sha256": "75e3d20513bc0cafbd253ae478bb8ad6f399b3ea3487879435de884ff91716d9",
+   "bytes": 2198,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/cladding-joint-h.webp",
+   "sha256": "817a2aa806d755585ad774ffdd219f529728826527f2bd6999a9a6633ef7799d",
+   "bytes": 750,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/clamp.webp",
+   "sha256": "025be720c721691185e29b6adca59adb4c441c1c373f21b16d7c26970e826be4",
+   "bytes": 2350,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/coupler.webp",
+   "sha256": "1e82a938da1ce7ed3647c04b5c9092c0da4836995af276a59d9ff96fd01936d6",
+   "bytes": 2682,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/drop.webp",
+   "sha256": "10f4c1e3200eb8e16bf03d46281cbc021913a5c445fc77e31885025aae1306cd",
+   "bytes": 3308,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/footer-field-1024.webp",
+   "sha256": "b6ed6f73c543270447e49f42ab4e64c8d9bc7915e246c606658dca9309541ba1",
+   "bytes": 15136,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/footer-field-512.webp",
+   "sha256": "5e9b57ad71239d745d9c22962938c23897c2b3b834c9b9f5a72936dd012a15c6",
+   "bytes": 4060,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/head-frame-bottom.webp",
+   "sha256": "66e67992178e53ec9d0176d64750292c6cfad8bcf16c6a14d841719738561251",
+   "bytes": 11028,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/head-frame-top.webp",
+   "sha256": "a727a6f732016493e9fb77456dc944bde305e479dd8191c434268b0cc23e944c",
+   "bytes": 8152,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/key-current.webp",
+   "sha256": "10ec6e29e9570ea41f35dd6cad70e003c572aea3af0e127b8f9d2cff29ca023e",
+   "bytes": 5598,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/key-pressed.webp",
+   "sha256": "de5afee47e8bad79746d863367279cd0ba3a2c7cd4e4dd0c7f5f78b38a2ddde2",
+   "bytes": 5314,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/key-rest.webp",
+   "sha256": "4a6aeea34aaa1c3548ada68a8303588e7ab12dbda133b2d3ca8392bf9e56ca50",
+   "bytes": 5206,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/oxide-field-1024.webp",
+   "sha256": "92baf251ad86937c4bf5abacfbc08ed2b6cf9cf75ea37830496a78bde98e69ee",
+   "bytes": 28170,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/oxide-field-512.webp",
+   "sha256": "9fc8ab47e5fa7e38435ff509e9a333bd575ec2e98c78dfb016530ebb37d38f59",
+   "bytes": 9374,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/oxide-frame.webp",
+   "sha256": "c7aed9d943e5511cedfb7df78f2186541e483124b87bc55144493daa74d58cbf",
+   "bytes": 18762,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/paper-field-1024.webp",
+   "sha256": "3a7476673b98219aa637fbddff98a2bb4e0a635c3d70170038ddf9d754d6303c",
+   "bytes": 19876,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/paper-field-512.webp",
+   "sha256": "b3e3765db7cae672c619d9c637193e386b063431b68bdba12b5a7f158d0b725a",
+   "bytes": 7856,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/room-field-1380.webp",
+   "sha256": "e3f32f4aa43100c435d6a85390f4fb3be2622d666ea3d1e18db8a11164ea97b4",
+   "bytes": 33880,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/room-field-690.webp",
+   "sha256": "6e677a18d750156915a2471ea76a0f396bd21faee0679b4d41a39492bc37308d",
+   "bytes": 8442,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/sheet-edge.webp",
+   "sha256": "7e7333e26d412cce5ab30632996da3a4edd1894f2d5b46ae7a0325bfeea7c264",
+   "bytes": 4886,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/stage-plate-on.webp",
+   "sha256": "52cded95000d3b254302f0ae34e11da55d57f618a6c46f1ea4c03f6ce7b15cac",
+   "bytes": 3686,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/stage-plate.webp",
+   "sha256": "be32bff9622d4f9aabc0aeba02e39e54fe354055c87ce7b10db7350bfe2a4259",
+   "bytes": 3480,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/stainless-field-1380.webp",
+   "sha256": "239e491f3a12744e457a6c55ef65935ae96c5f0b35f15c294348c01e6ed4b0ec",
+   "bytes": 39118,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/stainless-field-690.webp",
+   "sha256": "c0cd49e15578715cd31347d42d7d71fcf7a0c56b8479fce52b50f2ace69a5e15",
+   "bytes": 14090,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/stainless-frame.webp",
+   "sha256": "c06fb775aa66a3903f4f1b774aaac8e5b276c1a26246a4b211e8f7fcad79bf55",
+   "bytes": 19748,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/ti-field-1280.webp",
+   "sha256": "9287235737d87aa78bca4fad5ceebc2ca5551dd2ceed0007f3a48cd0d0bb7514",
+   "bytes": 97970,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/ti-field-640.webp",
+   "sha256": "fa81c3f2f89f5ba0c41a422c32a61658bd856056e86efda58698cfaeb9237178",
+   "bytes": 17528,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/ti-frame-384.webp",
+   "sha256": "39b081f9cdb0647f08c29c9445f0f0941e7131b11aac68b7a7b8f9bec8447d53",
+   "bytes": 6312,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/round3/ti-frame-sm.webp",
+   "sha256": "80c12fba3d7982d253fbb84b535abd064d2173d7ccd56110f004655dcb4066ee",
+   "bytes": 3336,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/binding-foundry/foundry-ledger.webp",
+   "sha256": "2073f7846fbe6242b486a755f4eaeb9dead671ba216a523ce970d2ceb635a76a",
+   "bytes": 201594,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/binding-foundry/furnace-opening-v2.webp",
+   "sha256": "b3d6d260b5ab7a21589733dd9f5154b3e886da41b2f3c502790255ec5e293918",
+   "bytes": 200120,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/binding-foundry/open-forge-scene-1536.webp",
+   "sha256": "2641364bb57658184b3e4670fa5cde37dc4d89bdb2dc438235c74214b0802032",
+   "bytes": 301256,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/binding-foundry/open-forge-scene-960.webp",
+   "sha256": "92cd1f43fcf126272dc50d426a767f2f5887d45cb513d9d5c87bcf651d5dfeb1",
+   "bytes": 132330,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/binding-foundry/studio-horizon.webp",
+   "sha256": "41f1594618e270b0879d86c574f2015b6da9d20c9dd07da1289173e07b64f363",
+   "bytes": 240710,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/binding-foundry/weather-horizon.webp",
+   "sha256": "f1b59990616064a6d45ec2d76386670e3737a0f20885e158fa0fb6a1a2950c26",
+   "bytes": 161826,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/cache-vault/cv-mobile-vault.png",
+   "sha256": "8e79cb2239ff367bb3b4da1f433829d65b55643fce27521588809fc559da0932",
+   "bytes": 157887,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/cache-vault/cv-settings-hub.png",
+   "sha256": "99cc657cb3233164668a552c434a9b1b3642db6322b82da8f1a2fcb22d5cc77a",
+   "bytes": 170876,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/cache-vault/cv-time-machine.png",
+   "sha256": "b3472d2d676096c8c20c6a20ea086444f38f580c955fb5da9540454c7bd000c2",
+   "bytes": 56068,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/cache-vault/cv-ui3-library.png",
+   "sha256": "110565e1c63d0ffeec7a10441dbe9da99d810ce174954f079300f247384b46fb",
+   "bytes": 92405,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/fonts/archivo-latin.woff2",
+   "sha256": "e3a28eade21a900c7155a247757f4b2834c07bb7ef07ad7efa55cebaac1e8f5e",
+   "bytes": 90104,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/fonts/ibm-plex-mono-latin-400.woff2",
+   "sha256": "08949f728dc52d528e69b1667d15c89a5686a4ee9a296ff90983985f99c380f7",
+   "bytes": 14708,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/fonts/ibm-plex-mono-latin-500.woff2",
+   "sha256": "01d285447409c8a588692162439a038b8cbd7871309ee20267b0d2d91c6e8e22",
+   "bytes": 14888,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/fonts/ibm-plex-mono-latin-600.woff2",
+   "sha256": "0d1f0b8d0722224e32e9f28261bdc86c79115be73444ae5eceb73976a1bcdf83",
+   "bytes": 15620,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
+  },
+  {
+   "path": "assets/fonts/ibm-plex-mono-latin-700.woff2",
+   "sha256": "4f84d86cfd060f4ded334358ff8a4c81d4db2ed5addd568359d693f44a87765a",
+   "bytes": 14908,
+   "comparison": "binary",
+   "origin": "cp0189-restoration-2026-11-13"
   }
  ],
  "exclusions": [

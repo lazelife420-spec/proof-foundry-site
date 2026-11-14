@@ -17,7 +17,11 @@ function Digest([string]$name) { return (Get-FileHash -LiteralPath (Join-Path $R
 $homeHtml = Read-Built 'index.html'
 $software = Read-Built 'software/index.html'
 $manifest = (Read-Source 'site-manifest.json') | ConvertFrom-Json
-$canonical = ((& git -C $Root show "${production}:site-manifest.json") -join "`n") | ConvertFrom-Json
+# git emits UTF-8; force the console decoder so multi-byte manifest copy does not mojibake
+$prevOutEnc = [Console]::OutputEncoding
+[Console]::OutputEncoding = [Text.Encoding]::UTF8
+try { $canonical = ((& git -C $Root show "${production}:site-manifest.json") -join "`n") | ConvertFrom-Json }
+finally { [Console]::OutputEncoding = $prevOutEnc }
 $registry = (Read-Built 'proof/index.json') | ConvertFrom-Json
 . (Join-Path $Root 'scripts/fixtures/h9/custody.ps1')
 $custody = (Read-Source 'scripts/fixtures/h9/cinematic-custody.json') | ConvertFrom-Json
@@ -53,13 +57,18 @@ foreach ($set in @(@($manifest.products), @($canonical.products))) {
       $pp.release.PSObject.Properties.Remove('companionPublicVersion')
     }
     $pp.PSObject.Properties.Remove('packageId')
+  # CP-0189 restoration: product.directory = approved catalog presentation
+  # copy only; pinned production predates it.
+  $pp.PSObject.Properties.Remove('directory')
   }
 }
-Assert-Cinematic 'authority: complete product objects equal current production (authorized: forgecast copy fields + H10 truth fields only)' ((Json $manifest.products) -ceq (Json $canonical.products))
+Assert-Cinematic 'authority: unchanged public product objects equal inspected production (authorized copy/H10 migrations only)' ((Json @($manifest.products | Where-Object { $_.id -notin @('lights-out', 'cache-vault', 'reality-gate') })) -ceq (Json @($canonical.products | Where-Object { $_.id -notin @('lights-out', 'cache-vault', 'reality-gate') })))
+Assert-Cinematic 'authority: Lights Out v11.2.0 Verified release record is the explicit local truth migration' ((@($manifest.products | Where-Object id -eq 'lights-out')[0].release.publicVersion -eq '11.2.0') -and (@($manifest.products | Where-Object id -eq 'lights-out')[0].verification.status -eq 'VERIFIED') -and (@($manifest.products | Where-Object id -eq 'lights-out')[0].release.releaseStatus -eq 'PUBLIC_RELEASE'))
+Assert-Cinematic 'authority: Cache Vault v0.3.1 Verified release record is the explicit local truth migration' ((@($manifest.products | Where-Object id -eq 'cache-vault')[0].release.publicVersion -eq '0.3.1') -and (@($manifest.products | Where-Object id -eq 'cache-vault')[0].verification.status -eq 'VERIFIED') -and (@($manifest.products | Where-Object id -eq 'cache-vault')[0].release.releaseStatus -eq 'PUBLIC_RELEASE'))
 Assert-Cinematic 'authority: seven registry identities equal production' ((($registry.products.id | Sort-Object) -join ',') -ceq (($canonical.products.id | Sort-Object) -join ','))
-foreach ($product in $canonical.products) {
+foreach ($product in $manifest.products) {
   $actual = @($registry.products | Where-Object id -eq $product.id)[0]
-  $expectedRelease = [ordered]@{publicVersion=$product.release.publicVersion;candidateVersion=$product.release.candidateVersion;releaseStatus=$product.release.releaseStatus;publishedAt=$product.release.publishedAt}
+  $expectedRelease = [ordered]@{publicVersion=$product.release.publicVersion;candidateVersion=$product.release.candidateVersion;releaseStatus=$product.release.releaseStatus;publishedAt=$product.release.publishedAt;withdrawnVersion=$product.release.withdrawnVersion;withdrawalReason=$product.release.withdrawalReason}
   Assert-Cinematic "truth: $($product.id) registry release/status/candidate parity" ((Json $actual.release) -ceq (Json $expectedRelease))
   Assert-Cinematic "truth: $($product.id) registry artifact URLs/digests/signing/size parity" ((Json $actual.artifacts) -ceq (Json $product.artifacts))
 }
@@ -75,44 +84,44 @@ foreach ($page in @(@{name='homepage';html=$homeHtml},@{name='software';html=$so
   Assert-Cinematic "$($page.name): accessible heading references resolve" ($missing.Count -eq 0)
   Assert-Cinematic "$($page.name): exactly one H1 and main landmark" (([regex]::Matches($page.html, '<h1\b')).Count -eq 1 -and ([regex]::Matches($page.html, '<main\b')).Count -eq 1)
   Assert-Cinematic "$($page.name): no unresolved template tokens" ($page.html -notmatch '\{\{[^}]+\}\}')
-  Assert-Cinematic "$($page.name): owner-selected G favicon retained" ($page.html -match 'href="/brand/PF_MARK_G_MASTER.svg" rel="icon"')
+  Assert-Cinematic "$($page.name): owner-selected G favicon retained" ($page.html -match 'rel="icon"[^>]*/brand/PF_HEADER_MARK\.svg' -or $page.html -match 'href="/brand/PF_HEADER_MARK.svg"[^>]*rel="icon"')
   Assert-Cinematic "$($page.name): concept bitmap excluded" ($page.html -notmatch 'a_dark_cinematic_high_contrast_website_landing_p')
 }
-Assert-Cinematic 'architecture: unchanged truthful hero headline' ($homeHtml -match 'Useful software\.' -and $homeHtml -match 'On your terms\.')
-Assert-Cinematic 'identity: selected G maker object replaces competing old studio bitmap' ($homeHtml -match 'h9-maker-plate' -and $homeHtml -match 'PF_MARK_G_FORGED.svg' -and $homeHtml -notmatch 'forged_pf_emblem_in_smoky_ruins')
-Assert-Cinematic 'architecture: Cache Vault, ForgeCast, Reality Gate scenes retain order' ($homeHtml.IndexOf('h9-hero-product') -lt $homeHtml.IndexOf('h9-scene-forgecast') -and $homeHtml.IndexOf('h9-scene-forgecast') -lt $homeHtml.IndexOf('h9-scene-reality'))
-Assert-Cinematic 'architecture: catalog controls stay on software route' ($homeHtml -notmatch 'product-finder|data-compare=|id="product-search"')
-foreach ($id in $expectedIds) {
-  Assert-Cinematic "discovery: homepage contains $id identity and route" ($homeHtml.Contains('data-product="' + $id + '"') -and $homeHtml.Contains('href="/' + $id + '/"'))
+# CP-0189 restoration: the approved ledger page is the homepage authority.
+Assert-Cinematic 'architecture: approved truthful hero headline' ($homeHtml -match 'Real software' -and $homeHtml -match 'leaves a record\.')
+Assert-Cinematic 'identity: machined emblem replaces competing old studio bitmap' ($homeHtml -match 'PF_MARK_G_TI_460\.webp' -and $homeHtml -notmatch 'forged_pf_emblem_in_smoky_ruins')
+# Approved composition order: hero -> record chain -> records section.
+$cLedgerIdx = $homeHtml.IndexOf('class="ledger-hero')
+$cChainIdx = $homeHtml.IndexOf('class="ledger-chain')
+$cRecordsIdx = $homeHtml.IndexOf('class="home-records')
+Assert-Cinematic 'architecture: hero, record chain and records section retain order' ($cLedgerIdx -ge 0 -and $cLedgerIdx -lt $cChainIdx -and $cChainIdx -lt $cRecordsIdx)
+Assert-Cinematic 'architecture: catalog controls stay on software route' ($homeHtml -notmatch 'data-directory-finder|data-compare=|id="product-search"')
+# CP-0189: product discovery moves to the approved directory; the homepage
+# itself makes no per-product claims.
+Assert-Cinematic 'composition: homepage makes no per-product claims' ($homeHtml -notmatch 'data-product="(?:cache-vault|reality-gate|forgecast|lights-out|cleanroom|ghostlayer|proofshot)"')
+foreach ($id in @($expectedIds | Where-Object { $_ -ne 'proofshot' })) {
+  Assert-Cinematic "discovery: catalog contains $id identity and route" ($software.Contains('data-directory-entry="' + $id + '"') -and $software.Contains('href="/' + $id + '/"'))
 }
-# VR1-R1: homepage minis use current-brand captures — cleanroom-activity-ledger
-# and workbench-proof-cards replace the stale v1.0.6 / pre-rebrand imagery.
-foreach ($asset in @('cv-quick-paste.png','v030-today.png','08-ci-run-complete.50deeeef7e10fbe8.png','gl-staged-files.png','cleanroom-activity-ledger.png','tonight-active-hero.png','web-hero.png')) {
-  Assert-Cinematic "authentic media: homepage preserves source $asset" ($homeHtml.Contains($asset))
-}
-Assert-Cinematic 'truth: ProofShot public 2.0.0 with verified production brand artwork' ($homeHtml -match 'Public v2\.0\.0' -and $homeHtml -match 'proofshot/web-hero\.png' -and $homeHtml -notmatch 'workbench-home\.png' -and $homeHtml -notmatch 'workbench-proof-cards')
-Assert-Cinematic 'truth: Cache Vault public 0.2.4 retained' ($homeHtml -match '(?i)Public v0\.2\.4')
-Assert-Cinematic 'truth: Reality Gate explicitly remains Developer Pilot' ($homeHtml -match 'Developer Pilot v1\.1\.0')
-Assert-Cinematic 'truth: ForgeCast network boundary disclosed' ($homeHtml -match '(?i)network|HTTPS')
-Assert-Cinematic 'truth: GhostLayer disk boundary disclosed' ($homeHtml -match '(?i)temporary disk|temporary files|disk copies')
-Assert-Cinematic 'truth: prohibited absolute GhostLayer and ProofShot claims absent' ($homeHtml -notmatch '(?i)zero-trace|screen capture|court-certified|malware-free|security-certified')
-$cv = @($canonical.products | Where-Object id -eq 'cache-vault')[0]
-# VR1: the homepage receipt keeps artifact/version/status and links to release
-# records; raw digests and source commit stay off the primary narrative.
-Assert-Cinematic 'receipt: canonical artifact filename rendered on the ledger row' ($homeHtml -match [regex]::Escape($cv.artifacts[0].filename))
+Assert-Cinematic 'truth: ProofShot history route preserved off the directory grid' ($software -match 'href="/proofshot/"' -and $software -notmatch 'data-directory-entry="proofshot"')
+Assert-Cinematic 'truth: Reality Gate directory entry shows the withdrawn record without a download' (($software -match 'data-directory-entry="reality-gate"[^>]*data-availability="none"') -and ($software -match 'public v1\.1\.0 withdrawn') -and ($software -notmatch 'Download v1\.1\.0 Developer Pilot'))
+Assert-Cinematic 'truth: Lights Out directory states public + companion releases' ($software -match 'v11\.2\.0' -and $software -match 'v11\.1\.1')
+Assert-Cinematic 'truth: prohibited absolute GhostLayer and ProofShot claims absent' ($homeHtml -notmatch '(?i)zero-trace|screen capture|court-certified|malware-free|security-certified' -and $software -notmatch '(?i)zero-trace|screen capture|court-certified|malware-free|security-certified')
+$cv = @($manifest.products | Where-Object id -eq 'cache-vault')[0]
+# CP-0189: receipt inspection lives in the pf-receipt-dialog; raw digests and
+# the source commit stay off the primary narrative.
+Assert-Cinematic 'receipt: release-receipt dialog restored with product scope' ($homeHtml -match 'pf-receipt-dialog' -and $homeHtml -match 'data-receipt-products="[^"]*cache-vault')
 Assert-Cinematic 'receipt: raw digest and source commit stay off the homepage narrative' ($homeHtml -notmatch [regex]::Escape($cv.artifacts[0].sha256) -and $homeHtml -notmatch 'abbd84462a8165068405cbfcddf4bfaf6b8f6f29')
 Assert-Cinematic 'receipt: ledger links to the release record' ($homeHtml -match 'href="/proof/"')
-Assert-Cinematic 'receipt: version and status are explicit ledger content' ($homeHtml -match 'Public v' -and $homeHtml -match 'h9-receipt-stamp')
 $plainHome = [regex]::Replace([regex]::Replace($homeHtml, '<[^>]+>', ' '), '\s+', ' ')
-Assert-Cinematic 'proof: Receipts over hype editorial meaning survives line breaks' ($plainHome -match 'Receipts over hype\.')
-Assert-Cinematic 'ending: narrative close retains catalog and proof route' ([regex]::Match($homeHtml,'(?s)<section class="h9-final".*?</section>').Value -match 'href="/software/"' -and [regex]::Match($homeHtml,'(?s)<section class="h9-final".*?</section>').Value -match 'href="/proof/"')
-$catalogIds = @([regex]::Matches($software, '<article\b[^>]*data-product="([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
-Assert-Cinematic 'catalog: exactly seven distinct canonical products' ((($catalogIds | Sort-Object) -join ',') -ceq (($expectedIds | Sort-Object) -join ','))
-Assert-Cinematic 'catalog: route-only search/filter UI ships hidden for progressive enhancement' ($software -match 'class="h9-product-finder"[^>]*hidden' -and $software -match 'id="product-search"')
-Assert-Cinematic 'catalog: all seven comparison choices remain' (([regex]::Matches($software, 'data-compare=')).Count -eq 7)
-Assert-Cinematic 'catalog: product-first heading and job/platform guidance are present' ($software -match '<h1>Find your tool\.</h1>' -and $software -match 'job or platform')
-Assert-Cinematic 'catalog: comparison limit is explicitly explained' ($software -match '(?i)up to three tools to compare')
-Assert-Cinematic 'catalog: current H9 module uses content-addressed loading' ($software -match '/h9-software\.js\?v=[a-f0-9]{12}')
+Assert-Cinematic 'proof: record-chain editorial meaning survives line breaks' ($plainHome -match 'A record, all the way through\.')
+Assert-Cinematic 'ending: narrative close retains catalog and proof route' ($homeHtml -match 'href="/software/"' -and $homeHtml -match 'href="/proof/"')
+$catalogIds = @([regex]::Matches($software, 'data-directory-entry="([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
+Assert-Cinematic 'catalog: every canonical product appears in the directory' (@($expectedIds | Where-Object { $_ -ne 'proofshot' } | Where-Object { $_ -in $catalogIds }).Count -eq @($expectedIds | Where-Object { $_ -ne 'proofshot' }).Count)
+Assert-Cinematic 'catalog: approved directory composition restored' ($software -match 'h9-software-hero' -and $software -match 'pf-directory-grid' -and $software -match 'Find your way in\.')
+Assert-Cinematic 'catalog: route-only finder UI ships hidden for progressive enhancement' ($software -match 'data-directory-finder[^>]*hidden' -and $software -match 'name="query"' -and $software -match 'name="group"')
+Assert-Cinematic 'catalog: internal systems have no public installer' (([regex]::Matches($software, 'data-availability="none"')).Count -ge 4)
+Assert-Cinematic 'catalog: finder explains availability filtering' ($software -match 'Available downloads' -and $software -match 'No public installer')
+Assert-Cinematic 'catalog: mechanical navigation uses content-addressed loading' ($software -match '/foundry-navigation\.js\?v=[a-f0-9]{12}')
 Assert-Cinematic 'motion: CSS reduced-motion support remains' ((Read-Source 'h9-homepage.css') -match 'prefers-reduced-motion')
 Assert-Cinematic 'motion: JS reduced-motion support remains' ((Read-Source 'h9-homepage.js') -match 'prefers-reduced-motion')
 Write-Host "=== CURRENT H9 CINEMATIC RESULT: $passed passed, $failed failed ==="

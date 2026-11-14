@@ -113,12 +113,13 @@ try {
   Assert ((Src $r) -in @('live','cache')) 'state source = live or 304-cache'
   Assert ((Rev $r) -eq 'A') 'revision = A'
   Assert ($r.Content -match 'product-breadcrumb' -and $r.Content -notmatch '\{\{') 'shell rendered, tokens resolved'
+Assert ($r.Content -match 'product-breadcrumb[^<]*<a href="/__h14/software/"' -and $r.Content -notmatch '/#products') 'runtime breadcrumb stays inside the shadow directory (no dead /#products link)'
   Assert ($r.Content -match 'href="/__h14/truth/products/cleanroom\.json"[^>]*rel="alternate"|rel="alternate"[^>]*href="/__h14/truth/products/cleanroom\.json"') 'runtime truth alternate injected'
 
   # ── TEST 2: catalog + truth coherence on rev A ────────────────────────────
   Write-Host "--- TEST 2: catalog/truth coherence ---"
   $sw = Get-Shadow '/software/'
-  Assert (([regex]::Matches($sw.Content,'data-product="')).Count -eq 7) 'catalog renders 7 products from runtime state'
+  Assert (([regex]::Matches($sw.Content,'data-directory-entry="(?:cache-vault|lights-out|cleanroom|ghostlayer|forgecast|reality-gate)"')).Count -eq 6 -and $sw.Content -match 'href="/proofshot/"') 'catalog renders the public directory from runtime state'
   Assert ((Src $sw) -in @('live','cache') -and (Rev $sw) -eq 'A') 'catalog revision = live/A'
   $ti = (Get-Shadow '/truth/index.json').Content | ConvertFrom-Json
   Assert ($ti.schemaVersion -eq 1 -and $ti.products.Count -eq 7) 'runtime truth index schema v1, 7 products'
@@ -140,7 +141,7 @@ try {
   $pgB = Get-Shadow '/proofshot/'
   Assert ($pgB.Content -match '2\.0\.1' -and $pgB.Content -match 'Downloads currently unavailable') 'product page reflects revision B'
   $swB = Get-Shadow '/software/'
-  Assert ($swB.Content -match '2\.0\.1') 'catalog reflects revision B'
+  Assert ($swB.Content -match 'Read ProofShot' -and $swB.Content -notmatch '2\.0\.1' -and (Rev $swB) -eq 'B') 'catalog serves revision B state (ProofShot stays a history link by design)'
   $siteHashAfter = (Get-FileHash -LiteralPath (Join-Path $root 'functions\__h14\[[path]].js')).Hash
   Assert ($siteHashBefore -eq $siteHashAfter) 'NO REBUILD — site source byte-identical between revisions'
   $stB = Invoke-RestMethod 'http://127.0.0.1:8788/truth/products/proofshot.json'
@@ -212,7 +213,7 @@ try {
   Assert ($rf.StatusCode -eq 200 -and $rf.Content -match 'product-breadcrumb') 'API 500 → page still serves'
   Assert ((Src $rf) -in @('cache','static-fallback','static')) "API 500 → fallback source (src=$(Src $rf))"
   Set-Fault 'badjson'; $rj = Get-Shadow '/software/'
-  Assert ($rj.StatusCode -eq 200 -and $rj.Content -match 'data-product=') 'invalid JSON → catalog still serves'
+  Assert ($rj.StatusCode -eq 200 -and $rj.Content -match 'data-directory-entry=') 'invalid JSON → catalog still serves'
   Set-Fault 'big'; $rb = Get-Shadow '/cleanroom/'
   Assert ($rb.StatusCode -eq 200) 'oversized payload → bounded, page serves'
   Set-Fault $null

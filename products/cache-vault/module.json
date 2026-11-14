@@ -6,29 +6,167 @@
   "sections": [
     "hero",
     "film",
-    "outcomes",
+    {
+      "type": "outcomes",
+      "id": "features",
+      "kicker": "What it does",
+      "title": "A local clipboard workspace for Windows & Android.",
+      "lede": "Capture, organize, look back through history, lock what's sensitive, and export — all on your own machine.",
+      "items": [
+        {
+          "title": "Capture anything you copy",
+          "body": "Text, code, URLs, and images land in a searchable local SQLite database. The inspector shows each clip's character count and SHA-256 digest."
+        },
+        {
+          "title": "Time Machine history",
+          "body": "Every clip stays on an append-only timeline. Step back through a work session, jump to any day from a calendar heatmap, and recall older clips without losing anything copied since."
+        },
+        {
+          "title": "Vault Lock for sensitive clips",
+          "body": "Choose which items to encrypt at rest — passwords, tokens, secrets — with AES-256-GCM. Keys come from an 8+ character passphrase via PBKDF2-HMAC-SHA256 (600,000 iterations, per NIST SP 800-63B), and an interrupted lock or unlock recovers cleanly."
+        },
+        {
+          "title": "Settings in the main window",
+          "body": "Hotkeys, database maintenance, and the three included themes (Vault Noir, Slate Gray, Archive Heritage) live inside the app window, not a separate dialog."
+        },
+        {
+          "title": "Quick Paste",
+          "body": "Pull up your clip history from any app with a global hotkey and paste without leaving the window you're working in."
+        },
+        {
+          "title": "A standalone Android vault",
+          "body": "Save text, links, and photos on the phone itself, no cloud required. Edit notes, sort them into Safes, and make encrypted offline backups (AES-256-GCM) of vaults up to 64 MiB."
+        },
+        {
+          "title": "Safes, Favorites, and cleanup",
+          "body": "Group clips into named Safes, pin the ones you use daily, and review cleanup suggestions that find duplicates."
+        },
+        {
+          "title": "Exports with receipts",
+          "body": "Export selected content as a portable folder or ZIP with a readable index (index.html), machine-readable manifest (manifest.json), and stamped receipt (stamped_receipt.txt)."
+        }
+      ]
+    },
     "how",
     "story",
     "get",
     "onboard",
-    "faq",
+    {
+      "type": "faq",
+      "id": "faq",
+      "kicker": "Privacy & Data Control",
+      "title": "Frequently Asked Questions",
+      "items": [
+        {
+          "title": "What data is captured by Cache Vault?",
+          "body": "Text snippets, developer code, URLs, and image buffers copied to your system clipboard while Cache Vault is active."
+        },
+        {
+          "title": "How does Time Machine history work?",
+          "body": "A normal clipboard overwrites itself. Time Machine keeps every clip on an append-only timeline instead, so you can step back through earlier work sessions, jump to a specific day from a heatmap, and recall older clips without losing anything copied since."
+        },
+        {
+          "title": "How does Vault Lock protect sensitive data at rest?",
+          "body": "When Vault Lock is enabled, sensitive items (such as passwords, tokens, API keys, and connection strings) are selectively encrypted using AES-256-GCM authenticated encryption. Encryption keys are derived via PBKDF2-HMAC-SHA256 (600,000 iterations) from an 8+ character passphrase complying with NIST SP 800-63B standards (4-digit PINs are rate-limited UI locks only). Transitions are guarded by an atomic SQLite transition journal with FULL sync durability."
+        },
+        {
+          "title": "Do the Windows desktop and Android mobile apps require each other?",
+          "body": "No. Both apps are completely independent, full-featured local vaults. The Windows app stores clips in a local SQLite WAL database. The Android app stores text, links, and photos directly in an on-device SQLite database. If you wish to send items between them, you can optionally pair them over your local Wi-Fi network using TLS with certificate pinning (TOFU), without any cloud server."
+        },
+        {
+          "title": "Is my clipboard data uploaded to the cloud?",
+          "body": "No cloud account or cloud storage is required. Core desktop and mobile features work 100% locally on your machines. Optional companion communication is peer-to-peer over your local network."
+        },
+        {
+          "title": "How does offline encrypted backup work on Android?",
+          "body": "The Android app provides native AES-256-GCM encrypted backup directly to device storage. Backups are encrypted under a user passphrase before writing to disk, and staged via bounded memory streams to protect device performance even for phone-local vaults up to 64 MiB with 10 MiB assets."
+        }
+      ]
+    },
     "evidence",
     "privacy",
     "final-cta",
     "related"
   ],
   "meta": {
-    "title": "Cache Vault — Capture it. Find it. Put it to work. | The Proof Foundry",
-    "description": "A local clipboard workspace for Windows with searchable history, collections, Quick Paste, clip ledgers, and receipt exports. Public {{product.versionLabel}}.",
+    "title": "Cache Vault — Find the clip. Get back to work. | The Proof Foundry",
+    "description": "A local clipboard workspace for Windows and Android with Time Machine history scrubbing, selective at-rest encryption, and receipt exports. Public {{product.versionLabel}}.",
     "viewport": "width=device-width, initial-scale=1",
     "robots": "index, follow",
     "themeColor": "#0B0F14",
-    "ogTitle": "Cache Vault — Capture it. Find it. Put it to work.",
-    "ogDescription": "A local clipboard workspace for Windows with searchable history, collections, Quick Paste, clip ledgers, and receipt exports. Public {{product.versionLabel}}.",
+    "ogTitle": "Cache Vault — Find the clip. Get back to work.",
+    "ogDescription": "A local clipboard workspace for Windows and Android with Time Machine history scrubbing, selective at-rest encryption, and receipt exports. Public {{product.versionLabel}}.",
     "ogType": "product",
     "ogImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png",
     "twitterCard": "summary_large_image",
     "twitterImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png"
   },
-  "contentSource": "content.html"
+  "contentSource": "content.html",
+  "schemaVersion": 2,
+  "theme": {
+    "accent": "#A9C48F",
+    "glow": "rgba(121,199,184,.15)",
+    "atmosphere": "archive",
+    "background": "#0D1414",
+    "surface": "#172020",
+    "accentSecondary": "#79C7B8"
+  },
+  "brand": {
+    "name": "Cache Vault",
+    "shortName": "Cache Vault",
+    "accessibleName": "cache-vault",
+    "mark": "/assets/products/cache-vault/brand/logo.svg"
+  },
+  "taxonomy": {
+    "category": "Clipboard & Productivity",
+    "jobs": [
+      "memory",
+      "capture",
+      "retrieval",
+      "organization"
+    ],
+    "platforms": [
+      "Windows",
+      "Android"
+    ]
+  },
+  "hero": {
+    "variant": "split",
+    "kicker": "Local clipboard workspace for Windows & Android",
+    "headline": "Find the clip. Get back to work.",
+    "lede": "Cache Vault keeps everything you copy, text and images, in a local archive on your machine. Search it, step back through its history, encrypt the sensitive parts, and carry a standalone vault on Android.",
+    "media": {
+      "src": "/assets/cache-vault/cv-ui3-library.png",
+      "alt": "Cache Vault desktop library with searchable clipboard history, Safes, and the clip inspector",
+      "caption": "Cache Vault on Windows · library, search, Safes, and the clip inspector"
+    },
+    "primaryAction": {
+      "label": "Download for Windows ({{product.versionLabel}})",
+      "href": "#download"
+    },
+    "secondaryAction": {
+      "label": "Explore features",
+      "href": "#features"
+    }
+  },
+  "card": {
+    "tagline": "Find the clip. Get back to work.",
+    "media": "/assets/cache-vault/cv-ui3-library.png",
+    "summary": "Local clipboard history, Time Machine scrubbing, named Safes, selective at-rest encryption, and stamped receipts for work that stays on your machine.",
+    "mediaAlt": "Cache Vault UI3 desktop library interface with searchable clipboard history"
+  },
+  "lifecycle": "public-eligible",
+  "placement": {
+    "catalog": true
+  },
+  "homepage": {
+    "tier": "featured",
+    "variant": "workstation",
+    "order": 10,
+    "headline": "Useful software. On your terms.",
+    "lede": "Independent tools for files, projects, and everyday decisions. Local control where it fits. Release records you can inspect.",
+    "media": "/assets/cache-vault/cv-ui3-library.png",
+    "mediaAlt": "Cache Vault UI3 desktop library interface with searchable clipboard items",
+    "mediaCaption": "Real application capture · sample clips"
+  }
 }

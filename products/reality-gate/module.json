@@ -1,12 +1,38 @@
 {
   "id": "reality-gate",
   "route": "/reality-gate/",
-  "order": 10,
+  "order": 80,
   "visibility": "visible",
   "sections": [
     "hero",
     "film",
-    "outcomes",
+    {
+      "type": "outcomes",
+      "id": "features",
+      "kicker": "What {{product.withdrawnVersionLabel}} did.",
+      "title": "What the withdrawn release did.",
+      "lede": "Recorded capabilities from the last public build — history, not an offer.",
+      "items": [
+        {
+          "title": "Project Registry",
+          "body": "Bound canonical repository roots, working trees, and target identities to explicit validation maps before running checks."
+        },
+        {
+          "title": "Isolated Runroom",
+          "body": "Built and tested in bounded local checkouts with step-by-step log capture and execution cancellation.",
+          "note": "Runroom protects your main working tree; it is not an OS security sandbox."
+        },
+        {
+          "title": "Proof Ledger",
+          "body": "Saved cryptographic, ECDSA P-256 signed run records binding source commit SHAs, test outcomes, and build digests.",
+          "note": "Local signatures verify payload integrity against local keys, not third-party issuer trust."
+        },
+        {
+          "title": "Recovery Vault",
+          "body": "Prepared recovery bundles with explicitly recorded contents and rehearsed restoration into a separate location."
+        }
+      ]
+    },
     "how",
     "story",
     "get",
@@ -18,16 +44,84 @@
   ],
   "meta": {
     "title": "Reality Gate — Your projects. Your execution. Your way back. | The Proof Foundry",
-    "description": "Bring your Git projects into a local control room for builds, run records, and recovery. Reality Gate Developer Pilot for Windows.",
+    "description": "Reality Gate's public v1.1.0 release was withdrawn after a security packaging defect. The record — checksum, test results and limits — remains here.",
     "viewport": "width=device-width, initial-scale=1.0",
     "robots": "index, follow",
     "ogTitle": "Reality Gate — Your projects. Your execution. Your way back.",
-    "ogDescription": "Bring your Git projects into a local control room for builds, run records, and recovery. Reality Gate Developer Pilot for Windows.",
+    "ogDescription": "Reality Gate's public v1.1.0 release was withdrawn after a security packaging defect. The record — checksum, test results and limits — remains here.",
     "ogType": "product",
     "ogImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png",
     "twitterCard": "summary_large_image",
     "twitterImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png"
   },
   "contentSource": "content.html",
-  "inlineCss": " /* H3 readability correction (retained): the origin narrative beats carry light    copy that was authored against a dark paired surface. Keep that pairing so    the copy stays legible. No copy, layout, or hierarchy change. */ .product-reality-gate #origin {   background: #101418;   border: 1px solid rgba(255,255,255,0.08); } .product-reality-gate #origin .section-heading h2, .product-reality-gate #origin .section-heading p {   color: #f2f0eb; } "
+  "inlineCss": " /* H3 readability correction (retained): the origin narrative beats carry light    copy that was authored against a dark paired surface. Keep that pairing so    the copy stays legible. No copy, layout, or hierarchy change. */ .product-reality-gate #origin {   background: #101418;   border: 1px solid rgba(255,255,255,0.08); } .product-reality-gate #origin .section-heading h2, .product-reality-gate #origin .section-heading p {   color: #f2f0eb; } ",
+  "schemaVersion": 2,
+  "theme": {
+    "accent": "#D9906B",
+    "glow": "rgba(217,144,107,.17)",
+    "atmosphere": "control-room",
+    "background": "#101417",
+    "surface": "#151B20",
+    "accentSecondary": "#C47B57"
+  },
+  "brand": {
+    "name": "Reality Gate",
+    "shortName": "Reality Gate",
+    "accessibleName": "reality-gate",
+    "mark": "/assets/products/reality-gate/brand/logo.svg"
+  },
+  "taxonomy": {
+    "category": "Software Verification",
+    "jobs": [
+      "build",
+      "verification",
+      "execution",
+      "engineering"
+    ],
+    "platforms": [
+      "Windows"
+    ]
+  },
+  "hero": {
+    "variant": "console",
+    "kicker": "Local developer continuity & execution",
+    "headline": "Your projects.",
+    "emphasis": "Your execution. Your way back.",
+    "lede": "The v1.1.0 Developer Pilot for Windows was withdrawn after a security packaging defect and is no longer distributed. The public record of what the release did and how it was qualified stays available below. Work continues separately; internal development is not a new public release.",
+    "media": {
+      "src": "/assets/reality-gate/08-ci-run-complete.50deeeef7e10fbe8.png",
+      "alt": "Reality Gate Runroom showing a completed run, execution log and verified receipt, recorded before withdrawal.",
+      "caption": "The Runroom · a real completed run, before withdrawal"
+    },
+    "primaryAction": {
+      "label": "Review the withdrawn release",
+      "href": "#download"
+    },
+    "secondaryAction": {
+      "label": "Tour the control room",
+      "href": "#try-it"
+    }
+  },
+  "card": {
+    "tagline": "Your projects. Your execution. Your way back.",
+    "media": "/assets/reality-gate/08-ci-run-complete.50deeeef7e10fbe8.png",
+    "summary": "The public v1.1.0 package is withdrawn after a security packaging defect. The page preserves its release record and current limits.",
+    "mediaAlt": "Reality Gate Runroom displaying a completed CI run in a sample repository"
+  },
+  "lifecycle": "public-eligible",
+  "placement": {
+    "catalog": true
+  },
+  "homepage": {
+    "tier": "major",
+    "variant": "console",
+    "order": 90,
+    "headline": "Withdrawn. The record stays open.",
+    "lede": "The public v1.1.0 release is no longer distributed. The record of what it did, how it was qualified, and where it fell short stays available.",
+    "media": "/assets/reality-gate/08-ci-run-complete.50deeeef7e10fbe8.png",
+    "mediaAlt": "Reality Gate Runroom displaying a completed CI run in a sample repository",
+    "mediaCaption": "Sample repository · Demo Widget Service",
+    "note": "Sample repository · Demo Widget Service. Reality Gate is withdrawn."
+  }
 }

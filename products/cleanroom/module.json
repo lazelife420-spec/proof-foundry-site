@@ -5,7 +5,27 @@
   "visibility": "visible",
   "sections": [
     "hero",
-    "outcomes",
+    {
+      "type": "outcomes",
+      "id": "features",
+      "kicker": "Made for the way you work",
+      "title": "A clear process. A reversible decision.",
+      "lede": "Cleanup starts with a review, and leaves a record.",
+      "items": [
+        {
+          "title": "Inspect",
+          "body": "See the candidates and select the files you want to move."
+        },
+        {
+          "title": "Archive",
+          "body": "Move selected files out of the active location into an archive before removal."
+        },
+        {
+          "title": "Restore",
+          "body": "Use the recorded original paths to put archived files back when needed."
+        }
+      ]
+    },
     "how",
     "story",
     "get",
@@ -28,5 +48,71 @@
     "twitterCard": "summary_large_image",
     "twitterImage": "https://theprooffoundry.com/brand/proof-foundry-social-card.png"
   },
-  "contentSource": "content.html"
+  "contentSource": "content.html",
+  "schemaVersion": 2,
+  "theme": {
+    "accent": "#34D399",
+    "glow": "rgba(52,211,153,.14)",
+    "atmosphere": "clean",
+    "background": "#081212",
+    "surface": "#13201D",
+    "accentSecondary": "#A3E635"
+  },
+  "brand": {
+    "name": "Cleanroom",
+    "shortName": "Cleanroom",
+    "accessibleName": "cleanroom",
+    "mark": "/assets/products/cleanroom/brand/logo.svg"
+  },
+  "taxonomy": {
+    "category": "File Cleanup",
+    "jobs": [
+      "memory",
+      "inspect",
+      "archive",
+      "restore"
+    ],
+    "platforms": [
+      "Windows"
+    ]
+  },
+  "hero": {
+    "variant": "split",
+    "kicker": "Precise, reversible Windows cleanup",
+    "headline": "Less clutter. A way back.",
+    "lede": "Inspect what you want to clear. Archive the files you choose. Restore them to their original paths when you need them again.",
+    "media": {
+      "src": "/assets/cleanroom/cleanroom-activity-ledger.png",
+      "alt": "Cleanroom activity ledger",
+      "caption": "Activity ledger · cleanup record"
+    },
+    "primaryAction": {
+      "label": "Explore product",
+      "href": "#download"
+    },
+    "secondaryAction": {
+      "label": "Explore the details",
+      "href": "#features"
+    }
+  },
+  "card": {
+    "tagline": "Less clutter. A way back.",
+    "media": "/assets/cleanroom/cleanroom-activity-ledger.png",
+    "summary": "Inspect what you want to clear. Archive the files you choose. Restore them to their original paths when you need them again.",
+    "mediaAlt": "Cleanroom activity ledger recording cleanup actions and archive locations"
+  },
+  "lifecycle": "public-eligible",
+  "placement": {
+    "catalog": true
+  },
+  "homepage": {
+    "tier": "secondary",
+    "variant": "workstation",
+    "order": 60,
+    "headline": "Inspect. Archive. Restore.",
+    "lede": "A clear process. A reversible decision. Cleanup starts with a review, and leaves a record.",
+    "media": "/assets/cleanroom/cleanroom-activity-ledger.png",
+    "mediaAlt": "Cleanroom activity ledger recording cleanup actions and archive locations",
+    "mediaCaption": "Real interface"
+  }
 }

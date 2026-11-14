@@ -1,0 +1,1329 @@
+
+.home-specimen {
+  grid-column:1/-1;
+  display:grid;
+  grid-template-columns:.65fr 1.35fr;
+  align-items:center;
+  gap:70px;
+  text-decoration:none;
+  border-top:1px solid var(--line);
+  padding:42px 0 30px
+}
+.pfa .stage-btn[aria-pressed=true]{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px}
+.pfa:not([data-ready]) :is(.pfa-record,.pfa-run-status){display:none}
+.pfa[data-ready] .pfa-fallback{display:none}
+.pfa-fallback{padding:24px 24px 24px 48px;background:var(--pf-paper);color:var(--pf-ink)}
+.pfa-fallback li{margin-block:16px}.pfa-fallback h4{font-size:18px;margin:0 0 8px}.pfa-fallback p{font-size:16px;line-height:1.75}
+.pfa-rail .stage-btn:focus-visible{outline:3px solid #00685e;outline-offset:2px}
+@media(forced-colors:active){.pfa-record :is(h4,p,span),.pfa-fallback{color:CanvasText;background:Canvas}.pfa-rail .stage-btn:focus-visible{outline-color:Highlight}}
+
+
+/* Option A integration: readable operating copy; engraving stays secondary. */
+.pfa [hidden]{display:none!important}
+.pfa-run-status{font:400 15px/1.6 var(--pf-sans);color:#c8d3cd;margin-top:18px}
+.pfa .pf-chain-toggle{font:600 14px/1.4 var(--pf-sans);padding:12px 16px}
+.pfa .stage-btn:disabled{cursor:default;opacity:1}
+.pfa .pfa-rail p{font-size:16px;line-height:1.5}
+@media(max-width:700px){
+ .pfa-toolbar{flex-wrap:wrap}
+ .pfa-rail p{font-size:16px;line-height:1.35}
+}
+@media(max-width:360px){
+ .pfa-rail h3{letter-spacing:.02em}
+ .pfa-rail p{font-size:15px}
+}
+/* Option A layout with the Round 2 Cycles render (assets/round2), which keeps the V5
+   frames, plate positions and rail. Horizontal values are px in the 1400 x 431 frame / 14
+   (1cqw = 1/100 of the assembly width); vertical phone values are px in the
+   160 x 635 frame, times --s. */
+.pfa{position:relative;margin:30px 0 24px}
+.pfa-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
+.pfa-stamp{display:inline-flex;align-items:center;gap:10px;font:600 11px var(--pf-mono);letter-spacing:.12em;text-transform:uppercase;color:#c8d1c6}
+.pfa-stamp-mark{width:20px;height:20px;flex:none}
+.pfa-machine{position:relative;isolation:isolate;container-type:inline-size}
+.pfa-assembly{position:relative;z-index:1;display:block;pointer-events:none}
+.pfa-assembly img{display:block;width:100%;height:100%}
+.pfa-rail{position:relative;list-style:none;margin:0;padding:0;color:#c9d2d7}
+.pfa-rail li{margin:0;cursor:pointer}
+.pfa-rail :is(h3,p,.pfa-num){margin:0}
+.pfa-num{font:700 13px/1 var(--pf-mono);letter-spacing:.2em;color:#1a2026}
+.pfa-rail h3{font:700 16px/1 var(--pf-mono);letter-spacing:.12em;text-transform:uppercase;color:#151b21}
+.pfa .stage-btn{all:unset;box-sizing:border-box;display:block;width:100%;cursor:pointer;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;text-align:inherit}
+/* Two-tone focus: a dark inner ring reads on the light plates, the amber outer ring (the keys' focus
+   colour) on the dark housing. */
+.pfa .stage-btn:focus-visible{outline:3px solid #ffd58a;outline-offset:3px;border-radius:2px;box-shadow:0 0 0 3px #0d1215}
+/* Laser-etched marks: a dark cut with a bright lip on its lower edge. */
+.pfa-rail :is(h3,.pfa-num){text-shadow:0 1px 0 rgba(255,255,255,.42),0 -1px 0 rgba(0,0,0,.14)}
+/* Inspection light: the selected stage's link sits in a soft, cool pool of light. Nothing on the chain moves. */
+.pfa-rail li::after{content:"";position:absolute;z-index:2;opacity:0;pointer-events:none;background:radial-gradient(closest-side,rgba(214,228,242,.24),rgba(206,222,238,.09) 60%,rgba(206,222,238,0));transition:opacity .22s ease-out}
+.pfa-rail li[data-engaged=true]::after{opacity:1}
+@media (hover:hover){.pfa-rail li:hover::after{opacity:.7}.pfa-rail li[data-engaged=true]:hover::after{opacity:1}}
+.pfa-rail li[data-engaged=true] p{color:#f1f5f7}
+.pfa-record{margin-top:22px;display:grid;grid-template-columns:minmax(150px,.22fr) minmax(0,1fr);gap:6px 28px;align-items:baseline;padding:20px 26px 22px;background:linear-gradient(180deg,#f4f3ee,#ebe9e1);color:#1b282c;border-radius:2px;box-shadow:0 0 0 1px #0a0d10,inset 0 1px 0 #fff,0 10px 22px rgba(0,0,0,.45)}
+.pfa-record-label{grid-row:1/3;margin:0;font:600 11px/1.6 var(--pf-mono);letter-spacing:.12em;text-transform:uppercase;color:#3e5054}
+.pfa-record-label span{display:block;font-size:26px;letter-spacing:.08em;color:#1b282c;margin-top:4px}
+.pfa-record h4{margin:0;font:600 20px/1.2 var(--pf-sans);letter-spacing:-.01em;color:#11191b}
+.pfa-record [data-detail-text]{margin:0;font-size:15px;line-height:1.65;color:#26363a;max-width:72ch}
+.pfa-caption{margin:16px 0 0}
+
+@media (min-width:701px){
+ .pfa-assembly{aspect-ratio:1400/431}
+ .pfa-rail{position:static;display:grid;grid-template-columns:14.9314cqw 14.9561cqw 14.9807cqw 14.9557cqw 14.9307cqw;margin:-.7839cqw .7743cqw 0;padding:22px 14.2596cqw 18px 9.4371cqw;
+  background:
+   radial-gradient(circle at calc(2.66cqw - .16cqw) calc(50% - .2cqw),rgba(255,255,255,.2),transparent .32cqw),
+   radial-gradient(circle at 2.66cqw 50%,#06080a 0 .2cqw,#22282d .26cqw,#3d454c .36cqw,#2a3036 .5cqw,#15191d .57cqw,#020304 .63cqw,transparent .69cqw),
+   radial-gradient(circle at calc(100% - 2.66cqw - .16cqw) calc(50% - .2cqw),rgba(255,255,255,.2),transparent .32cqw),
+   radial-gradient(circle at calc(100% - 2.66cqw) 50%,#06080a 0 .2cqw,#22282d .26cqw,#3d454c .36cqw,#2a3036 .5cqw,#15191d .57cqw,#020304 .63cqw,transparent .69cqw),
+   linear-gradient(180deg,transparent 7px,#05070a 7px 8px,#0c0f12 8px 12px,rgba(255,255,255,.07) 12px 13px,transparent 13px) 9.4371cqw 0/calc(100% - 9.4371cqw - 14.2596cqw) 100% no-repeat,
+   repeating-linear-gradient(180deg,rgba(255,255,255,.016) 0 1px,transparent 1px 3px),
+   linear-gradient(180deg,#0d1014 0,#1c2228 3px,#1a2026 60%,#151a1f);
+  background-color:#1a2026;
+  box-shadow:0 0 0 1px #05070a,inset 0 1px 0 rgba(0,0,0,.6),inset 0 -2px 0 rgba(0,0,0,.45),inset 0 -3px 0 rgba(255,255,255,.07),inset 1px 0 0 rgba(255,255,255,.05),inset -1px 0 0 rgba(255,255,255,.05),0 12px 20px rgba(0,0,0,.42)}
+ .pfa-rail li{position:static;padding:0 12px}
+ .pfa-rail p{position:relative;padding-top:14px;font:400 16px/1.45 var(--pf-sans);text-align:center;text-wrap:balance;color:#c9d2d7}
+ .pfa-rail p::before{content:"";position:absolute;top:0;left:50%;width:1px;height:9px;background:#05070a;box-shadow:1px 0 0 rgba(255,255,255,.08)}
+ /* Round 2 evaluated checkpoint mesh bounds at the stage marks, divided by 14. */
+ .pfa-rail li:nth-child(1){--px:12.0671cqw;--lx:10.5707cqw;--lw:14.2057cqw;--ly:6cqw;--lh:9.1714cqw}
+ .pfa-rail li:nth-child(2){--px:26.9979cqw;--lx:25.4907cqw;--lw:14.2307cqw;--ly:7.9143cqw;--lh:8.95cqw}
+ .pfa-rail li:nth-child(3){--px:41.9786cqw;--lx:40.4657cqw;--lw:14.2464cqw;--ly:8.5714cqw;--lh:8.8714cqw}
+ .pfa-rail li:nth-child(4){--px:56.9593cqw;--lx:55.455cqw;--lw:14.2293cqw;--ly:7.8786cqw;--lh:9cqw}
+ .pfa-rail li:nth-child(5){--px:71.89cqw;--lx:70.4043cqw;--lw:14.2cqw;--ly:6.0143cqw;--lh:9.1429cqw}
+ .pfa-num{position:absolute;z-index:2;left:var(--px);width:11.2207cqw;text-align:center;white-space:nowrap;pointer-events:none}
+ .pfa-rail li::after{left:calc(var(--lx) - 1.2cqw);top:calc(var(--ly) - 1.2cqw);width:calc(var(--lw) + 2.4cqw);height:calc(var(--lh) + 2.4cqw)}
+}
+@media (min-width:1181px){
+ .pfa-rail h3{position:absolute;z-index:2;left:var(--px);top:calc(25.5143cqw + 1px);width:11.2207cqw;text-align:center;white-space:nowrap}
+ .pfa-rail h3 .stage-btn{margin-top:-24px;padding:24px 0 12px;text-align:center}
+ .pfa-num{top:calc(25.5143cqw - 18px)}
+ /* The rendered plates carry their window flag at the left; labels centre on the plain face beside it. */
+ .pfa-rail h3,.pfa-num{left:calc(var(--px) + 1.6cqw);width:9.6207cqw}
+}
+@media (min-width:1181px) and (max-width:1359px){.pfa-rail h3{font-size:15px;letter-spacing:.05em}.pfa-num{font-size:12.5px}}
+@media (min-width:701px) and (max-width:1180px){
+ .pfa-num{top:calc(25.5143cqw - 7px);font-size:15px;letter-spacing:.16em;text-indent:.16em}
+ .pfa-rail li{padding:0 6px}
+ .pfa-rail h3{position:relative;padding-top:14px;font-size:15px;line-height:1.2;letter-spacing:.1em;text-align:center;color:#dfe6ea;text-shadow:0 -1px 0 rgba(0,0,0,.7)}
+ .pfa-rail p{padding-top:6px;font-size:15px;line-height:1.4}.pfa-rail p::before{display:none}
+}
+/* Below 1000px the same nine links hang vertically in the guide channel; each
+   plate is mounted beside its link on a carrier bolted to the housing. */
+@media (max-width:700px){
+ .pfa-machine{--s:1.1;--pw:320px;width:min(100%,calc(120.57px * var(--s) + var(--pw) + 8px));margin-inline:auto}
+ .pfa-assembly{position:absolute;left:0;top:0;width:calc(160px * var(--s));aspect-ratio:160/635}
+ .pfa-rail{--pitch:calc(95.08px * var(--s));--ph:92px;--pg:calc(var(--pitch) - var(--ph));display:flex;flex-direction:column;gap:var(--pg);box-sizing:border-box;min-height:calc(635px * var(--s));margin:0 0 0 calc(120.57px * var(--s));padding:calc(300.46px * var(--s) - 2 * var(--pitch) - var(--ph) / 2) 8px 26px 0}
+ .pfa-rail::before{content:"";position:absolute;z-index:0;left:calc(29.43px * var(--s));right:0;top:calc(4.6px * var(--s));bottom:calc(4.8px * var(--s));
+  background:
+   radial-gradient(circle at calc(100% - 17px) 18px,#06080a 0 1.7px,#22282d 2.2px,#3d454c 3px,#2a3036 4.2px,#15191d 4.8px,#020304 5.3px,transparent 5.8px),
+   radial-gradient(circle at calc(100% - 17px) calc(100% - 18px),#06080a 0 1.7px,#22282d 2.2px,#3d454c 3px,#2a3036 4.2px,#15191d 4.8px,#020304 5.3px,transparent 5.8px),
+   radial-gradient(circle at 50% 18px,#06080a 0 1.7px,#22282d 2.2px,#3d454c 3px,#2a3036 4.2px,#15191d 4.8px,#020304 5.3px,transparent 5.8px),
+   radial-gradient(circle at 50% calc(100% - 18px),#06080a 0 1.7px,#22282d 2.2px,#3d454c 3px,#2a3036 4.2px,#15191d 4.8px,#020304 5.3px,transparent 5.8px),
+   linear-gradient(90deg,rgba(0,0,0,.55) 0 2px,transparent 7px),
+   repeating-linear-gradient(90deg,rgba(255,255,255,.018) 0 1px,transparent 1px 3px),
+   linear-gradient(180deg,#2c3238,#20252a 6%,#1d2126 94%,#15181c);
+  background-color:#1e2227;box-shadow:0 0 0 1px #05070a,inset 0 1px 0 rgba(255,255,255,.08),inset 0 2px 0 rgba(0,0,0,.4),inset -1px 0 0 rgba(255,255,255,.06),inset -2px 0 0 rgba(0,0,0,.6),inset 0 -2px 0 rgba(0,0,0,.45),3px 6px 14px rgba(0,0,0,.45)}
+ .pfa-rail li{position:relative;z-index:2;box-sizing:border-box;min-height:var(--ph);display:grid;grid-template-columns:auto minmax(0,1fr);align-items:baseline;align-content:center;gap:3px 9px;padding:6px 22px 7px 11px;
+  background:
+   radial-gradient(circle at calc(100% - 10px) 11px,#1d2328 0 1px,#d2d7db 1.5px,#8f979d 2.6px,#4a5258 3.2px,rgba(0,0,0,.5) 3.7px,transparent 4.2px),
+   radial-gradient(circle at calc(100% - 10px) calc(100% - 11px),#1d2328 0 1px,#d2d7db 1.5px,#8f979d 2.6px,#4a5258 3.2px,rgba(0,0,0,.5) 3.7px,transparent 4.2px),
+   repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,rgba(0,0,0,.025) 1px 3px),linear-gradient(180deg,#bcc1c6,#a3a8ae 55%,#979ca2);
+  background-color:#a6abb0;box-shadow:0 0 0 1px #0a0d10,inset 0 1px 0 rgba(255,255,255,.6),inset 0 -1px 0 rgba(0,0,0,.25),2px 3px 6px rgba(0,0,0,.5)}
+ .pfa-rail li[data-engaged=true]{box-shadow:0 0 0 1px #0a0d10,0 0 0 3px rgba(214,228,242,.28),inset 0 1px 0 rgba(255,255,255,.6),inset 0 -1px 0 rgba(0,0,0,.25),2px 3px 6px rgba(0,0,0,.5)}
+ .pfa-rail li:nth-child(1){--k:-2}.pfa-rail li:nth-child(2){--k:-1}.pfa-rail li:nth-child(3){--k:0}.pfa-rail li:nth-child(4){--k:1}.pfa-rail li:nth-child(5){--k:2}
+ .pfa-num{font-size:12.5px;letter-spacing:.14em}
+ .pfa-rail h3{font-size:15px;letter-spacing:.12em}
+ .pfa-rail p{grid-column:1/-1;font:400 16px/1.35 var(--pf-sans);color:#192026;text-wrap:pretty}
+ .pfa-rail li[data-engaged=true] p{color:#0d1316}
+ .pfa-rail li::after{left:calc(-46.43px * var(--s) - 42px * var(--s));top:calc(var(--ph) / 2 - 58px * var(--s));width:calc(84px * var(--s));height:calc(116px * var(--s))}
+ .pfa-record{grid-template-columns:1fr;padding:18px 18px 20px}
+ .pfa-record-label{grid-row:auto}
+ .pfa-record-label span{display:inline;font-size:inherit;margin:0 0 0 6px}
+ /* Here each stage is a whole plate, so focus rings the plate outside its edge, on the dark housing; the
+    selection underline and the description keep their room. */
+ @supports selector(:has(*)){
+  .pfa .stage-btn:focus-visible{outline:none;box-shadow:none}
+  .pfa-rail li:has(.stage-btn:focus-visible){z-index:3;outline:3px solid #ffd58a;outline-offset:2px}
+ }
+}
+@media (max-width:700px){.pfa-machine{--s:1;width:auto}.pfa-rail p{font-size:15px;line-height:1.3}.pfa-toolbar{align-items:flex-start}.pfa-stamp{font-size:9.5px;letter-spacing:.08em}}
+@media (max-width:360px){.pfa-machine{margin-inline:-6px}.pfa-rail{padding-right:2px}.pfa-rail li{padding:5px 17px 6px 9px}.pfa-rail h3{font-size:14.5px;letter-spacing:.06em}}
+@media (forced-colors:active){
+ .pfa-rail,.pfa-rail li{background:Canvas;color:CanvasText;forced-color-adjust:auto}
+ .pfa-machine{width:auto}.pfa-rail{display:block;margin:0;padding:0;min-height:0}
+ .pfa-rail li{display:block;border:1px solid CanvasText;margin-bottom:8px;padding:10px}
+ .pfa-rail :is(h3,p,.pfa-num){position:static;color:CanvasText;text-shadow:none;width:auto;text-align:left}
+ .pfa-record{background:Canvas;color:CanvasText;border:1px solid CanvasText}
+ .pfa .stage-btn:focus-visible{outline-color:Highlight}
+ .pfa-rail li:has(.stage-btn:focus-visible){outline-color:Highlight}
+}
+
+.home-specimen h2 {
+  font-size:clamp(28px,3vw,44px);
+  margin-top:17px;
+  line-height:1.1
+}
+.home-specimen h2 br {
+  display:none
+}
+.home-specimen-cta {
+  display:block;
+  margin-top:20px;
+  font-size:13px;
+  color:#d0bb8e
+}
+.home-specimen img {
+  width:100%;
+  max-height:340px;
+  object-fit:contain;
+  filter:drop-shadow(0 20px 30px #0005)
+}
+.home-specimen figcaption {
+  font:10px/1.7 var(--pf-mono);
+  color:#a9b6b9;
+  margin-top:16px
+}
+.foundry-doors {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  align-items:start;
+  gap:50px 35px;
+  margin-bottom:50px
+}
+.foundry-door {
+  display:grid;
+  position:relative;
+  text-decoration:none;
+  padding-top:10px;
+  border-top:1px solid #69777670
+}
+.door-mechanism {
+  width:100%;
+  height:155px;
+  display:grid;
+  align-items:center
+}
+.door-mechanism svg {
+  max-height:155px
+}
+.door-name {
+  font-size:25px;
+  letter-spacing:-.03em;
+  margin-top:10px
+}
+.door-purpose {
+  color:#abb7bb;
+  font-size:12px;
+  line-height:1.6;
+  margin-top:5px;
+  max-width:24ch
+}
+.door-arrow {
+  position:absolute;
+  right:0;
+  bottom:2px;
+  color:#bea47a
+}
+.door-ghostlayer {
+  grid-column:2
+}
+.door-forgecast {
+  margin-top:24px
+}
+.door-reality-gate {
+  margin-top:48px
+}
+.ledger-paper {
+  background:#e6e7df;
+  color:#1b292d;
+  padding:90px 0
+}
+.ledger-paper .kicker {
+  color:#6a5b42
+}
+.doctrine-layout,.home-index-layout {
+  display:grid;
+  grid-template-columns:.7fr 1.15fr 1fr;
+  gap:50px
+}
+.doctrine-layout h2 {
+  font-size:clamp(32px,4vw,58px)
+}
+.doctrine-layout>div {
+  padding-top:3px
+}
+.doctrine-layout>div>a {
+  margin-top:25px
+}
+.home-record-sample {
+  max-width:950px;
+  margin:0 auto 35px;
+  padding:40px 55px;
+  background:#eeeee5;
+  color:#1b292d;
+  box-shadow:15px 15px 0 #080d10;
+  border-top:5px solid #aba48c
+}
+.home-record-sample h3 {
+  font-size:34px;
+  margin:15px 0
+}
+.home-hash-scope {
+  max-width:70ch;
+  font-size:13px;
+  color:var(--muted);
+  margin:0 0 26px
+}
+.home-hash-scope a {
+  display:inline-block;
+  margin-left:.35em
+}
+.home-record-sample :is(dt,.ledger-label) {
+  font:10px var(--pf-mono);
+  text-transform:uppercase;
+  color:#536066
+}
+.home-record-sample :is(dd,p) {
+  font-size:13px;
+  margin:8px 0 15px
+}
+.home-record-sample a {
+  font-size:12px
+}
+.home-record-sample svg {
+  max-width:28px;
+  max-height:28px
+}
+.home-record-sample .ledger-specimen-fields {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px
+}
+.home-index-layout ul {
+  list-style:none;
+  padding:0;
+  margin:0
+}
+.home-index-layout li {
+  border-bottom:1px solid #65716d55;
+  padding:12px 0
+}
+.home-index-layout a {
+  text-decoration:none;
+  display:flex;
+  justify-content:space-between;
+  font-size:15px
+}
+.home-index-layout small,.home-index-layout .ledger-index-meta {
+  font-size:10px;
+  color:#4a5c60
+}
+.ledger-position {
+  padding:42px 0;
+  display:flex;
+  justify-content:space-between;
+  gap:30px;
+  color:#9eacb0;
+  font-size:12px
+}
+.ledger-close {
+  padding:75px 0 30px
+}
+.ledger-close h2 {
+  margin:15px 0 30px;
+  font-size:clamp(40px,5vw,74px)
+}
+.pf-mk {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:35px
+}
+.pf-mk-stage {
+  background:#0d1316;
+  position:relative;
+  display:grid;
+  align-items:start
+}
+.pf-mk-fig{position:relative;width:min(100%,400px);aspect-ratio:1600/1849;margin-inline:auto}
+.pf-mk-fig>img{position:absolute;inset:0;width:100%;height:100%;max-height:none;object-fit:contain;filter:drop-shadow(0 4px 8px #0006)}
+.pf-mk-svg {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none
+}
+.pf-mk-svg .hl {
+  stroke:#e4c58a;
+  stroke-width:2;
+  fill:#e2bb7d17
+}
+.pf-mk-intro {
+  font-size:14px;
+  color:var(--muted);
+  margin-bottom:25px
+}
+.pf-mk-detail h3 {
+  font-size:27px;
+  margin:10px 0
+}
+.pf-mk-detail p {
+  font-size:14px
+}
+.pf-loupe{position:relative;overflow:hidden;width:100%;height:auto;aspect-ratio:16/6.4;background:#080c0e;margin-top:20px}
+.pf-loupe>img{position:absolute;max-width:none;max-height:none;height:auto;filter:drop-shadow(0 4px 8px #0006)}
+.pf-mk-list {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  list-style:none;
+  gap:8px;
+  padding:0;
+  margin:22px 0
+}
+.pf-mk-list li {
+  margin:0
+}
+.pf-mk-list button {
+  width:100%;
+  text-align:left;
+  border:1px solid var(--line);
+  background:#1e292e;
+  color:inherit;
+  font:11px/1.6 var(--pf-mono);
+  padding:10px
+}
+.pf-mk-list button[aria-pressed=true] {
+  border-color:#c6ab7b
+}
+.pf-mk-note {
+  font-size:11px;
+  color:#b8c0c1
+}
+.pf-rc-tabs {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:24px
+}
+.pf-rc-tabs button {
+  background:none;
+  border:1px solid var(--line);
+  color:inherit;
+  padding:9px 13px;
+  font-size:12px
+}
+.pf-rc-tabs button[aria-selected=true] {
+  background:#c8b58d;
+  color:#10191d
+}
+.pf-rc-bay {
+  padding:10px 30px;
+  background:#080e12
+}
+.pf-rc-doc {
+  background:#f1f0e9;
+  color:#202d31;
+  padding:35px 45px;
+  border-top:5px solid #b2ac93
+}
+.pf-rc-top h3 {
+  font-size:34px;
+  margin:12px 0
+}
+.pf-rc-top p {
+  font-size:13px
+}
+.pf-rc-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:30px
+}
+.pf-rc-sec {
+  border-top:1px solid #7b8b8e60;
+  margin-top:30px;
+  padding-top:20px
+}
+.pf-rc-sec h4 {
+  font:600 12px var(--pf-mono);
+  margin:0 0 15px
+}
+.pf-rc-facts>div,.pf-rc-tests>div {
+  padding:9px 0;
+  border-bottom:1px solid #87928c40
+}
+.pf-rc-facts dt,.pf-rc-tests dt {
+  font:10px var(--pf-mono);
+  color:#526168
+}
+.pf-rc-facts dd,.pf-rc-tests dd {
+  font-size:12px;
+  overflow-wrap:anywhere;
+  margin:5px 0
+}
+.pf-rc-doc :is(p,li) {
+  overflow-wrap:anywhere;
+  font-size:12px;
+  line-height:1.8
+}
+.pf-rc-doc code {
+  overflow-wrap:anywhere;
+  word-break:break-all
+}
+.pf-rc-doc :is(pre,.code-block) {
+  background:#dde1d9;
+  color:#243236
+}
+.pf-rc-links {
+  display:flex;
+  flex-wrap:wrap;
+  gap:15px;
+  margin-top:25px
+}
+.pf-rc-links a {
+  font-size:12px
+}
+.pf-rc-when {
+  margin-top:25px;
+  font:10px var(--pf-mono)
+}
+@media(max-width:1024px) {
+  .home-specimen {
+    gap:35px
+  }
+  .foundry-doors {
+    grid-template-columns:repeat(3,1fr)
+  }
+  .door-ghostlayer {
+    grid-column:auto
+  }
+  .door-forgecast,.door-reality-gate {
+    margin-top:0
+  }
+  .doctrine-layout,.home-index-layout {
+    grid-template-columns:1fr 1fr
+  }
+  .doctrine-layout>.kicker,.home-index-layout>.kicker {
+    grid-column:1/-1
+  }
+}
+@media(max-width:700px) {
+  .home-specimen {
+    grid-template-columns:1fr;
+    gap:22px;
+    padding-top:24px
+  }
+  .home-specimen h2 {
+    font-size:28px;
+    margin-top:9px
+  }
+  .home-specimen-cta {
+    margin-top:9px;
+    font-size:12px
+  }
+  .home-specimen .kicker {
+    font-size:9px
+  }
+  .home-specimen img {
+    max-height:260px
+  }
+  .home-specimen figcaption {
+    font-size:9px;
+    margin-top:10px
+  }
+  .foundry-doors {
+    grid-template-columns:1fr 1fr;
+    gap:28px 20px;
+    margin-bottom:30px
+  }
+  .door-mechanism {
+    height:110px
+  }
+  .door-mechanism svg {
+    max-height:110px
+  }
+  .door-name {
+    font-size:21px;
+    margin-top:3px
+  }
+  .door-purpose {
+    font-size:10px;
+    max-width:19ch
+  }
+  .door-arrow {
+    font-size:12px;
+    bottom:auto;
+    top:12px
+  }
+  .foundry-door:last-child {
+    grid-column:1/-1;
+    grid-template-columns:110px 1fr;
+    column-gap:20px;
+    align-items:center
+  }
+  .foundry-door:last-child .door-mechanism {
+    grid-row:1/3
+  }
+  .foundry-door:last-child .door-purpose {
+    align-self:start
+  }
+  .foundry-door:last-child .door-name {
+    align-self:end
+  }
+  .ledger-paper {
+    padding:55px 0
+  }
+  .doctrine-layout,.home-index-layout {
+    display:block
+  }
+  .doctrine-layout h2,.home-index-layout h2 {
+    margin:18px 0 28px
+  }
+  .doctrine-layout>div {
+    font-size:15px
+  }
+  .home-record-sample {
+    padding:22px 19px;
+    box-shadow:7px 7px 0 #080d10
+  }
+  .home-record-sample .ledger-specimen-fields {
+    display:block
+  }
+  .ledger-position {
+    display:block;
+    padding:30px 0
+  }
+  .ledger-position a {
+    margin-top:15px
+  }
+  .ledger-close {
+    padding-top:40px
+  }
+  .ledger-close h2 {
+    font-size:40px
+  }
+  .pf-mk {
+    display:block
+  }
+  .pf-mk-stage {
+    max-height:260px;
+    overflow:hidden;
+    margin-bottom:24px
+  }
+  .pf-mk-fig{width:220px;max-width:100%}.pf-mk-fig>img{height:100%}
+  .pf-loupe{height:auto}
+  .pf-mk-list {
+    gap:6px
+  }
+  .pf-mk-list button {
+    font-size:9px;
+    min-height:44px
+  }
+  .pf-rc-bay {
+    padding:5px
+  }
+  .pf-rc-doc {
+    padding:24px 17px
+  }
+  .pf-rc-grid {
+    display:block
+  }
+  .pf-rc-top h3 {
+    font-size:28px
+  }
+}
+@media(forced-colors:active) {
+  .ledger-paper,.home-record-sample,.pf-rc-doc {
+    background:Canvas;
+    color:CanvasText;
+    border:1px solid CanvasText;
+    box-shadow:none
+  }
+}
+.pf-material-filters{position:absolute;width:0;height:0;overflow:hidden;pointer-events:none}
+/* Restrained grazing light stays within the original material masks. */
+.pf-lm{position:absolute;inset:0;pointer-events:none;opacity:0;mask-size:100% 100%;mask-repeat:no-repeat}
+.pf-lm--n { -webkit-mask-image:url("/brand/emblem/LIGHT_NORTH_R3.webp"); mask-image:url("/brand/emblem/LIGHT_NORTH_R3.webp"); opacity:calc(var(--lN) * .08) }
+.pf-lm--e { -webkit-mask-image:url("/brand/emblem/LIGHT_EAST_R3.webp"); mask-image:url("/brand/emblem/LIGHT_EAST_R3.webp"); opacity:calc(var(--lE) * .08) }
+.pf-lm--s { -webkit-mask-image:url("/brand/emblem/LIGHT_SOUTH_R3.webp"); mask-image:url("/brand/emblem/LIGHT_SOUTH_R3.webp"); opacity:calc(var(--lS) * .08) }
+.pf-lm--w { -webkit-mask-image:url("/brand/emblem/LIGHT_WEST_R3.webp"); mask-image:url("/brand/emblem/LIGHT_WEST_R3.webp"); opacity:calc(var(--lW) * .08) }
+.pf-lm--n,.pf-lm--e,.pf-lm--s,.pf-lm--w { background:radial-gradient(70% 60% at var(--mx) var(--my),#ffffff,rgba(235,242,255,.55) 60%,rgba(235,242,255,.25)) }
+.pf-lm--bridge { -webkit-mask-image:url("/brand/emblem/LIGHT_BRIDGE_R3.webp"); mask-image:url("/brand/emblem/LIGHT_BRIDGE_R3.webp"); opacity:calc(var(--lOn) * .04); background:linear-gradient(100deg,transparent calc(var(--mx) - 16%),rgba(255,248,232,.9) var(--mx),transparent calc(var(--mx) + 16%)) }
+.pf-lm--brass { -webkit-mask-image:url("/brand/emblem/LIGHT_BRASS_R3.webp"); mask-image:url("/brand/emblem/LIGHT_BRASS_R3.webp"); opacity:calc(var(--lOn) * .03); background:radial-gradient(28% 22% at var(--mx) var(--my),rgba(238,241,231,.8),rgba(238,241,231,0)) }
+.pf-lm--seal { -webkit-mask-image:url("/brand/emblem/LIGHT_SEAL_R3.webp"); mask-image:url("/brand/emblem/LIGHT_SEAL_R3.webp"); opacity:calc(var(--lOn) * .16); background:conic-gradient(from var(--ang) at 50% 43%,rgba(255,255,255,.34),transparent 9%,transparent 41%,rgba(255,255,255,.2) 50%,transparent 59%,transparent 91%,rgba(255,255,255,.34)) }
+.pf-lm--eng { -webkit-mask-image:url("/brand/emblem/LIGHT_ENGRAVING_R3.webp"); mask-image:url("/brand/emblem/LIGHT_ENGRAVING_R3.webp"); opacity:calc(var(--lOn) * .08); background:#020304 }
+
+.home-proof-studies{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:45px 55px;border-top:1px solid var(--line);padding:36px 0 55px}
+.ledger-instrument{min-width:0}.ledger-instrument:first-child{grid-column:1/-1;padding-bottom:45px;border-bottom:1px solid var(--line)}
+.ledger-instrument-in{display:flex;flex-direction:column;gap:25px}.ledger-instrument:first-child .ledger-instrument-in{display:grid;grid-template-columns:.7fr 1.3fr;gap:65px;align-items:center}
+.ledger-instrument:first-child .ledger-feature-screen{grid-column:2;grid-row:1}.ledger-instrument:first-child .ledger-instrument-body{grid-column:1;grid-row:1}
+.ledger-feature-media,.ledger-feature-glass,.ledger-feature-screen picture{display:block}.ledger-feature-screen img{width:100%;height:280px;object-fit:contain;filter:drop-shadow(0 16px 20px #0005)}
+.ledger-feature-screen figcaption{font:10px/1.8 var(--pf-mono);color:var(--muted);margin-top:14px}.ledger-instrument-title{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.ledger-product-mark{width:30px;height:30px;object-fit:contain}
+.ledger-instrument-title h3{font-size:29px}.ledger-version{font:10px var(--pf-mono);color:var(--muted)}.ledger-job{font-size:22px;line-height:1.35;letter-spacing:-.025em;margin-top:18px}.ledger-summary{font-size:14px;color:var(--muted);margin-top:15px}.ledger-platform{font:10px/1.7 var(--pf-mono);color:#c2bcaa;margin-top:17px}.ledger-instrument-actions{display:flex;gap:15px 20px;flex-wrap:wrap;align-items:center;margin-top:23px}.ledger-instrument-actions .ledger-link{font-size:12px}.ledger-button-small{font-size:12px;padding:10px 16px;min-height:44px}.ledger-receipt-trigger{background:transparent;color:#ccb88d;border:0;border-bottom:1px solid #8b7f64;padding:10px 0;min-height:44px;font:11px/1.6 var(--pf-mono)}
+@media(max-width:700px){.home-proof-studies{display:block;padding:25px 0 35px}.ledger-instrument{padding:30px 0;border-bottom:1px solid var(--line)}.ledger-instrument:first-child{padding-top:0}.ledger-instrument:first-child .ledger-instrument-in{display:flex;gap:24px}.ledger-instrument:first-child .ledger-instrument-body{order:-1}.ledger-feature-screen img{height:auto;max-height:285px}.ledger-instrument-title h3{font-size:25px}.ledger-job{font-size:21px;margin-top:14px}.ledger-summary{font-size:13px;margin-top:12px}.ledger-instrument-actions{gap:12px 18px;margin-top:17px}.pf-lm{display:none}}
+@media(prefers-reduced-motion:reduce){.pf-lm{display:none}}
+html[data-motion=off] .pf-lm{display:none}
+@media(forced-colors:active){.pf-lm{display:none}.ledger-job,.ledger-platform,.ledger-feature-screen figcaption{color:CanvasText}.ledger-receipt-trigger{color:ButtonText;border-color:ButtonText}}
+
+.pf-pin{position:absolute;z-index:2;width:30px;height:30px;margin:-15px 0 0 -15px;padding:0;border-radius:50%;display:grid;place-items:center;border:1px solid #ccb185;background:#111b20e8;color:#f2ead9;font:600 11px/1 var(--pf-mono);box-shadow:0 0 0 2px #0a1217b0}
+.pf-pin[aria-pressed=true]{background:#d4bf95;color:#15252b;border-color:#f1e4c7}.pf-mk-list .k{display:inline-block;min-width:18px;color:#c6b38e;margin-right:6px}
+.pf-art{padding:15px 0;border-top:1px solid #81918b66;min-width:0}.pf-art-h{display:flex;align-items:center;flex-wrap:wrap;gap:10px}.pf-art-h b{font:600 12px/1.7 var(--pf-mono);overflow-wrap:anywhere}.pf-art-meta{font:10px/1.7 var(--pf-mono);color:#4b6167}.pf-art-row{display:flex;align-items:center;flex-wrap:wrap;gap:13px;margin-top:10px}.pf-art-row code{flex:1 1 320px;min-width:0;padding:9px 12px;background:#dde2d8;color:#22363c;font-size:11px;overflow-wrap:anywhere}.pf-chips{display:flex;list-style:none;gap:15px;padding:0;flex-wrap:wrap}.pf-chip{display:inline-block;padding:5px 9px;font:10px/1.5 var(--pf-mono);border:1px solid #8b9b8a;white-space:normal}.pf-chip.ok{background:#d5e1ce;color:#23431f}.pf-chip.pend{background:#efe2b5;color:#684704}.pf-chip.neutral,.pf-chip.none{background:#dee2d9;color:#32484d}
+@media(forced-colors:active){.pf-pin,.pf-pin[aria-pressed=true],.pf-chip.ok,.pf-chip.pend,.pf-chip.neutral,.pf-chip.none{background:Canvas;color:CanvasText;border:1px solid CanvasText}}
+
+.pf-seal-fc{display:none}
+@media(forced-colors:active){.pf-seal-inline{display:block;width:100%;height:100%;forced-color-adjust:none}.pf-seal-inline [data-maker-mark="pressed-seal"] :is(circle,path),.pf-seal-inline :is([data-maker-mark="alignment"],[data-maker-mark="three-stages"]),.pf-seal-inline [data-pf-geometry]>path{stroke:CanvasText}.pf-seal-inline [data-pf-geometry]>g{fill:CanvasText}.pf-seal-inline [data-pf-geometry]>g[transform]{display:none}.pf-seal-inline text{fill:CanvasText}}
+
+.doctrine-layout{position:relative}.ledger-receipt-watermark{position:absolute;left:0;top:50px;width:72px;height:86px;opacity:.35;object-fit:contain;pointer-events:none}
+@media(max-width:700px){.ledger-receipt-watermark{left:auto;right:0;top:-20px;width:44px;height:52px;opacity:.2}}
+@media(forced-colors:active){.ledger-receipt-watermark{display:none}}
+
+/* Generated records retain real table/dl structure; typography separates each fact. */
+.home-index-layout{grid-template-columns:.65fr 1.35fr;gap:35px 50px}.home-index-layout>.kicker{grid-column:1/-1}.home-index-table{grid-column:2;min-width:0}.home-index-layout table{font-size:12px}.home-index-layout th,.home-index-layout td{padding:16px 10px;border-color:#84908b60}.home-index-layout thead th{font:9px/1.5 var(--pf-mono);text-transform:uppercase;letter-spacing:.08em;color:#4c6267}.ledger-index-name{display:flex;gap:10px;align-items:center;white-space:nowrap;font-size:15px;font-weight:600;letter-spacing:-.02em}.ledger-index-name .ledger-product-mark{width:24px;height:24px}.home-index-table .ledger-version,.home-index-table .ledger-status{display:block;font:10px/1.6 var(--pf-mono);color:#384e53}.home-index-table .ledger-status{margin-top:6px}.home-index-table td:nth-child(4){font-size:12px;min-width:145px}.home-index-table .ledger-link{display:inline-flex;font-size:12px;gap:8px;white-space:nowrap}.home-index-table td:last-child{white-space:nowrap;min-width:76px}.home-index-table .ledger-arrow{width:15px;height:15px}
+.ledger-record>dl{display:grid;grid-template-columns:120px minmax(0,1fr);gap:12px 25px}.ledger-record dt{padding-top:5px}.ledger-record dd{padding-bottom:12px;border-bottom:1px solid #80918b55;margin:0;overflow-wrap:anywhere}.ledger-record dd.ledger-strong{font-size:27px;line-height:1.2;letter-spacing:-.03em}.ledger-record .ledger-hash{font-size:11px;overflow-wrap:anywhere;word-break:break-all}.ledger-record details{margin-top:25px}.ledger-record summary{font-size:12px;color:#405b61}.ledger-record li{font-size:12px;overflow-wrap:anywhere}.home-record-sample .ledger-receipt-button{color:#344d4f;border-color:#80908a}
+@media(max-width:1024px){.home-index-layout{display:block}.home-index-layout h2{margin:20px 0 35px}}
+@media(max-width:700px){.home-index-table table,.home-index-table tbody{display:block}.home-index-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.home-index-table tr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 18px;padding:23px 0;border-bottom:1px solid #84908b60}.home-index-table :is(th,td){padding:0;border:0;min-width:0}.home-index-table th{grid-column:1/-1}.ledger-index-name{font-size:20px}.home-index-table td:nth-child(3){font-size:10px;text-align:right;max-width:125px}.home-index-table td:nth-child(4){grid-column:1/-1;font-size:13px}.home-index-table td:nth-child(5){grid-column:1/-1;text-align:right}.ledger-record>dl{grid-template-columns:1fr;gap:7px}.ledger-record dt{padding-top:9px}.ledger-record dd{padding-bottom:12px}.ledger-record dd.ledger-strong{font-size:25px}}
+@media(forced-colors:active){.home-index-table .ledger-version,.home-index-table .ledger-status,.home-index-table thead th,.ledger-record summary,.home-record-sample .ledger-receipt-button{color:CanvasText}}
+
+
+/* Home composition: the original mark, shared metal and one evidence mechanism. */
+.ledger-hero{padding:30px 0 0;background:radial-gradient(ellipse at 74% 25%,#4c59552b,transparent 60%)}
+.home-opening{position:relative;display:grid;grid-template-columns:1.12fr .88fr;align-items:center;gap:32px;padding:44px 40px 52px;border:1px solid #5c6866;border-top:3px solid #c2cdc6;background:linear-gradient(120deg,#23313570,#111b1e 60%);box-shadow:inset 0 1px #ffffff38,inset 0 -5px 14px rgba(0,0,0,.7),0 24px 44px rgba(0,0,0,.6)}
+.home-opening::before,.home-opening::after{content:"";position:absolute;width:10px;height:10px;border:2px solid #7a8885;border-radius:50%;background:linear-gradient(135deg,#111a1d 45%,#c8d2c7 49% 54%,#111a1d 58%);box-shadow:0 1px 2px #000;top:13px;pointer-events:none}
+.home-opening::before{left:13px}.home-opening::after{right:13px}
+.home-statement{min-width:0;padding:20px 0}
+.home-statement>.kicker{font-size:11px;font-weight:600;color:#dfbc7a;letter-spacing:.16em;text-transform:uppercase;line-height:1.8;margin-bottom:28px;text-shadow:0 -1px 0 rgba(0,0,0,.95),0 1px 0 rgba(214,168,79,.25)}
+.home-statement h1{font-size:clamp(44px,5.7vw,82px);font-weight:700;line-height:1.04;letter-spacing:-.055em;color:#f4f6f2;text-shadow:0 1px 0 rgba(255,255,255,.22),0 2px 4px rgba(0,0,0,.85),0 8px 24px rgba(0,0,0,.6)}
+.home-intro{font-size:clamp(17px,1.6vw,22px);line-height:1.6;color:#c8d5d1;margin-top:24px}
+.home-statement .studio-actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:30px}
+.home-maker-line{font:11px/1.7 var(--pf-mono);letter-spacing:.08em;color:#9ab0a6;margin-top:30px;padding-top:16px;border-top:1px solid rgba(83,98,91,.6);text-shadow:0 -1px 0 rgba(0,0,0,.8)}
+.home-maker{position:relative;text-align:center;width:100%;max-width:400px;margin:0 auto;min-width:0}
+.pf-emblem{position:relative;width:100%;aspect-ratio:1600/1849;--lN:0;--lE:0;--lS:0;--lW:0;--lOn:0;--mx:28%;--my:24%;--ang:-38deg}
+.pf-emblem>img{display:block;width:100%;height:auto;object-fit:contain;filter:drop-shadow(0 12px 10px #0006)}
+.home-maker figcaption{font:10px/1.7 var(--pf-mono);color:#c0c9bc;margin:8px auto 0;max-width:32ch}
+.pf-inspect{position:relative;display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:8px 2px;margin:5px 0 0;border:0;border-bottom:1px solid #bfa778;background:transparent;color:#ead3a6;font:12px/1.5 var(--pf-mono);cursor:pointer}
+.pf-inspect:focus-visible{outline:2px solid #e5cfaa;outline-offset:5px}
+.home-orientation{display:grid;grid-template-columns:1fr 1fr;gap:70px;padding-block:70px;border-bottom:1px solid var(--line)}
+.home-orientation h2,.home-records h2,.home-contact h2{font-size:clamp(30px,3.1vw,44px);line-height:1.14;letter-spacing:-.035em;margin:17px 0;color:#f0f3ef;text-shadow:0 1px 0 rgba(255,255,255,.15),0 2px 4px rgba(0,0,0,.8)}
+.home-orientation p:not(.kicker),.home-records p:not(.kicker),.home-contact p:not(.kicker){color:#c0cbc5;max-width:60ch;line-height:1.8;font-size:16px}
+.home-orientation .kicker,.home-records .kicker,.home-contact .kicker{color:#dfbc7a;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;text-shadow:0 -1px 0 rgba(0,0,0,.95),0 1px 0 rgba(214,168,79,.25)}
+.home-orientation .text-link{display:inline-flex;margin-top:22px}
+.home-shelf{grid-column:1/-1;display:grid;gap:16px;margin-top:6px}
+.home-shelf-label{margin:0}
+.home-shelf-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:14px;list-style:none;padding:0;margin:0}
+.home-shelf-entry{position:relative;display:grid;grid-template-columns:96px 1fr auto;gap:14px;align-items:center;padding:14px;border:1px solid #74827b;border-left:4px solid #d6a84f;background:linear-gradient(130deg,#2c3939,#182224);text-decoration:none;border-radius:2px;box-shadow:inset 0 1px rgba(232,238,226,.15),inset 0 -1px rgba(0,0,0,.5),0 5px 0 #060f12,0 12px 24px rgba(0,0,0,.45);transition:border-color .15s ease,box-shadow .15s ease}
+.home-shelf-entry:hover{border-color:#9cb0a5;border-left-color:#ffd58a;box-shadow:inset 0 1px rgba(255,255,255,.25),0 5px 0 #060f12,0 16px 32px rgba(0,0,0,.55)}
+.home-shelf-entry:focus-visible{outline:2px solid #e5cfaa;outline-offset:3px}
+.home-shelf-media{width:96px;height:72px;object-fit:cover;border-radius:2px;display:block}
+.home-shelf-copy{display:grid;gap:4px}
+.home-shelf-copy strong{color:#f2f6f4;font-size:15px;text-shadow:0 -1px 0 rgba(0,0,0,.9)}
+.home-shelf-copy>span{color:#a9b8b1;font-size:12.5px;line-height:1.45}
+.home-shelf-status{font:10.5px var(--pf-mono);color:#c8b78e;text-transform:uppercase;letter-spacing:.08em}
+.home-shelf-note{font:11px var(--pf-mono);color:#c9977a}
+.home-shelf-arrow{color:#d4bb8c;font-size:18px}
+@media(max-width:520px){.home-shelf-entry{grid-template-columns:1fr auto}.home-shelf-media{display:none}}
+.home-records{display:grid;grid-template-columns:1fr 1fr;gap:30px 70px;padding-block:75px}
+.home-records-links{display:grid;gap:16px;align-content:center}
+.home-records-links>a{position:relative;display:grid;gap:10px;padding:23px 25px;border:1px solid #74827b;border-left:4px solid #d6a84f;background:linear-gradient(130deg,#2c3939,#182224);text-decoration:none;box-shadow:inset 0 1px rgba(232,238,226,.15),inset 0 -1px rgba(0,0,0,.5),0 5px 0 #060f12,0 12px 24px rgba(0,0,0,.45);transition:border-color .15s ease,box-shadow .15s ease}
+.home-records-links>a:hover{border-color:#9cb0a5;border-left-color:#ffd58a;box-shadow:inset 0 1px rgba(255,255,255,.25),0 5px 0 #060f12,0 16px 32px rgba(0,0,0,.55)}
+.home-records-links>a>span:first-child{font:10px var(--pf-mono);color:#c8d5c8;text-transform:uppercase;letter-spacing:.1em}
+.home-records-links strong{font-size:24px;font-weight:600;color:#f2f6f4;text-shadow:0 -1px 0 rgba(0,0,0,.9),0 1px 0 rgba(255,255,255,.1)}
+.home-records-links>a>span:last-child{position:absolute;right:20px;top:34px;font-size:22px;color:#d4bb8c}
+.home-records .home-hash-scope{grid-column:1/-1;font-size:12px;color:#aebeb8;padding-top:20px;border-top:1px solid var(--line)}
+.home-contact{display:flex;align-items:center;justify-content:space-between;gap:40px;padding:45px 0 60px;border-top:1px solid var(--line)}
+@media(max-width:1000px){.home-opening{padding:28px 26px;gap:24px}.home-statement h1{font-size:clamp(41px,6vw,63px)}.home-maker{max-width:310px}.home-orientation,.home-records{gap:40px}}
+@media(max-width:760px){
+ .ledger-hero{padding-top:16px}.home-opening{grid-template-columns:1fr;padding:26px 22px 30px;gap:28px}
+ .home-statement{padding:8px 0 0}.home-statement>.kicker{margin-bottom:22px;font-size:9px}
+ .home-statement h1{font-size:clamp(40px,8.7vw,62px);line-height:1.06;max-width:16ch}
+ .home-intro{font-size:17px;margin-top:20px}.home-statement .studio-actions{gap:15px;margin-top:23px}
+ .home-maker{max-width:290px}.home-maker figcaption{font-size:10px}.pf-inspect{font-size:12px}
+ .home-maker-line{margin-top:22px;font-size:10px}
+ .home-orientation,.home-records{grid-template-columns:1fr;gap:20px;padding-block:45px}
+ .home-orientation h2,.home-records h2{font-size:34px}.home-orientation p:not(.kicker),.home-records p:not(.kicker){font-size:15px}
+ .home-contact{display:block;padding-block:35px 45px}.home-contact>.button{margin-top:24px}.home-records-links>a{padding:22px}.home-records-links strong{font-size:23px}
+}
+@media(max-width:360px){.home-opening{padding-inline:16px}.home-statement h1{font-size:39px}.home-maker{max-width:242px}.home-statement .studio-actions{align-items:flex-start;flex-direction:column}}
+@media(forced-colors:active){
+ .home-opening,.home-records-links>a{background:Canvas;color:CanvasText;border-color:CanvasText;box-shadow:none}
+ .home-opening::before,.home-opening::after{display:none}
+ .pf-emblem>img{display:none}.pf-emblem .pf-seal-fc{display:block!important;position:absolute;inset:0}
+ .home-statement h1,.home-intro,.home-maker-line,.home-maker figcaption,.pf-inspect,.home-orientation p:not(.kicker),.home-records p:not(.kicker),.home-contact p:not(.kicker),.home-records-links>a>span{color:CanvasText;text-shadow:none}
+}
+/* Materials. Every surface below is a Blender render (MATERIAL_PROVENANCE.md): the hero plate is titanium, the stage
+   plates brushed stainless, the records archival paper. The generated textures these rules once layered are retired. */
+.ledger-paper{background:url(/assets/round3/paper-field-1024.webp) 0 0/512px 512px repeat,#e9e6dd;background-image:image-set(url(/assets/round3/paper-field-512.webp) 1x,url(/assets/round3/paper-field-1024.webp) 2x)}
+.pfa-record{background:url(/assets/round3/paper-field-1024.webp) -137px -211px/512px 512px repeat,#e9e6dd;background-image:image-set(url(/assets/round3/paper-field-512.webp) 1x,url(/assets/round3/paper-field-1024.webp) 2x)}
+.pfa-fallback{background:url(/assets/round3/paper-field-1024.webp) -301px -59px/512px 512px repeat,#e9e6dd;background-image:image-set(url(/assets/round3/paper-field-512.webp) 1x,url(/assets/round3/paper-field-1024.webp) 2x)}
+@media(forced-colors:active){.home-opening,.ledger-paper,.pfa-record,.pfa-fallback,.pfa-rail li,.pfa-rail li::before{background:Canvas}}
+/* Operating copy must win over the integrated prototype's engraving-scale type. */
+.pfa-stamp{font-size:12px;line-height:1.6;letter-spacing:.055em}
+.pfa-caption{font:400 15px/1.75 var(--pf-sans);color:#c4cdc9;max-width:90ch}
+.pfa-record [data-detail-text]{font-size:17px;line-height:1.7}
+.pfa-record-label{font-size:12px}
+@media(max-width:700px){.pfa-record [data-detail-text]{font-size:16px}}
+@media(max-width:700px){.pfa-stamp{max-width:30ch}}
+
+/* Round 2: Cycles-rendered hardware (assets/round2, MATERIAL_PROVENANCE.md). The original emblem image is unchanged. */
+/* ── Maker's seal: the owner's choice, a raised serviceable inspection plate on four stand-offs, mounted behind the
+   emblem. The mount extends 7.5% / 6.49% past the emblem box so registration holds at any size. ── */
+.pf-emblem.r2-seal::before{content:"";position:absolute;z-index:0;pointer-events:none;
+ left:-7.5%;top:-6.49%;width:115%;height:113.14%;
+ background:url(/assets/round2/seal-mount-raised-920.webp) 0 0/100% 100% no-repeat;
+ background-image:image-set(url(/assets/round2/seal-mount-raised-460.webp) 1x,url(/assets/round2/seal-mount-raised-920.webp) 2x)}
+.pf-emblem.r2-seal>img{position:relative;z-index:1;filter:none}
+.pf-emblem.r2-seal>.pf-lm{z-index:2}
+.home-maker:has(.r2-seal){padding:28px 0 6px}
+.home-maker:has(.r2-seal) figcaption{margin-top:40px}
+
+/* ── Proof chain: rendered base, five pressed-plate sprites, one travelling carriage ── */
+.r2-car,.r2-car-m,.r2-plates{position:absolute;z-index:2;pointer-events:none}
+.r2-car img,.r2-car-m img,.r2-plates img{position:absolute;display:block}
+.r2-car-m{display:none}
+@media (min-width:701px){
+ .pfa-rail h3{z-index:3}
+ .r2-plates{inset:0}
+ .r2-plates img{top:22.0714cqw;height:7cqw;width:12.3571cqw}
+ .r2-plates img:nth-child(1){left:11.5cqw}.r2-plates img:nth-child(2){left:26.4286cqw}.r2-plates img:nth-child(3){left:41.4286cqw}
+ .r2-plates img:nth-child(4){left:56.3571cqw;width:12.3929cqw}.r2-plates img:nth-child(5){left:71.2857cqw;width:12.3929cqw}
+ .r2-car{left:10.25cqw;top:14cqw;width:14.857cqw;height:7.857cqw;transform:translateX(var(--travel,0cqw))}
+ .r2-car img{inset:0;width:100%;height:100%}
+ .pfa[data-active="1"] .r2-car{--travel:14.9286cqw}.pfa[data-active="2"] .r2-car{--travel:29.9286cqw}
+ .pfa[data-active="3"] .r2-car{--travel:44.857cqw}.pfa[data-active="4"] .r2-car{--travel:59.786cqw}
+ .pfa[data-motion=on] .r2-car{transition:transform .62s cubic-bezier(.5,0,.15,1.04)}
+}
+/* From 1181 px the labels sit on the rendered plates; below that they sit on the dark rail and keep their light ink. */
+@media (min-width:1181px){.pfa-rail li[data-engaged=true] h3{color:#0e1418}}
+@media (max-width:700px){
+ .r2-plates,.r2-car{display:none}
+ .r2-car-m{display:block;left:calc(92px * var(--s));top:calc(76.3px * var(--s));width:calc(60px * var(--s));height:calc(68px * var(--s));transform:translateY(var(--travel,0px))}
+ .r2-car-m img{inset:0;width:100%;height:100%}
+ .pfa[data-active="1"] .r2-car-m{--travel:calc(95.1px * var(--s))}.pfa[data-active="2"] .r2-car-m{--travel:calc(190.2px * var(--s))}
+ .pfa[data-active="3"] .r2-car-m{--travel:calc(285.2px * var(--s))}.pfa[data-active="4"] .r2-car-m{--travel:calc(380.3px * var(--s))}
+ .pfa[data-motion=on] .r2-car-m{transition:transform .62s cubic-bezier(.5,0,.15,1.04)}
+ /* The rendered V-way and carriage sit at x 115..146; the stage plates mount on the housing wall beyond them. */
+ .pfa-machine{width:min(100%,calc(146px * var(--s) + var(--pw) + 8px))}
+ .pfa-rail{margin-left:calc(146px * var(--s))}
+ .pfa-rail::before{left:calc(14px * var(--s))}
+ .pfa-rail li[data-engaged=true]{box-shadow:0 0 0 1px #0a0d10,inset 3px 0 0 #c9a76a,inset 0 1px 0 rgba(255,255,255,.6),inset 0 -1px 0 rgba(0,0,0,.25),1px 2px 3px rgba(0,0,0,.55);transform:translateX(1px)}
+}
+/* The inspection light is a desktop effect; on the vertical layout the champagne edge marks the selected plate. */
+@media (max-width:700px){.pfa-rail li::after{display:none}}
+@media (prefers-reduced-motion:reduce){.pfa-rail li::after{transition:none!important}}
+/* Forced colours: no rendered hardware, and the stage list returns to the full width the round 2 mobile offset took. */
+@media (forced-colors:active){
+ .pfa-assembly,.r2-car,.r2-car-m,.r2-plates,.pf-emblem.r2-seal::before,.pfa-rail li::after,.pfa-rail li::before,.pfa-rail::before{display:none}
+ .pfa-machine{width:auto}.pfa-rail{margin:0}
+}
+/* Functional text around the seal and records reads at 14px or more. */
+.home-maker figcaption{font-size:14px;line-height:1.7}.pf-inspect{font-size:14px}
+@media (min-width:761px){.home-records{padding-bottom:30px}}
+/* ── Round 3: the hero is a bead-blasted grade 2 titanium plate set flush in the chassis (ti_plate.py). A tiled field
+   is repeated from the padding box and never stretched; a 9-sliced edge carries the shadow gap, the polished chamfer
+   and four countersunk titanium screws. The original emblem's assembly is milled into the plate itself (ti_emblem.py):
+   its flat face is transparent, so the field runs straight through it and the emblem has no edge of its own. Text on the plate is
+   etched: a fine shadow on the cut's upper-left wall, a faint light lip below right. ── */
+.home-opening{border:0 solid;border-image:url(/assets/round3/ti-frame-384.webp) 96/48px/0 stretch;box-shadow:none;
+ filter:drop-shadow(0 20px 36px rgba(0,0,0,.6));
+ background:url(/assets/round3/ti-field-1280.webp) 0 0/640px 640px repeat,#323130;
+ background-image:image-set(url(/assets/round3/ti-field-640.webp) 1x,url(/assets/round3/ti-field-1280.webp) 2x)}
+.home-opening::before,.home-opening::after{content:none}
+.home-statement h1{color:#f4f6f2;text-shadow:0 1px 0 rgba(255,255,255,.18),0 2px 4px rgba(0,0,0,.85),0 8px 24px rgba(0,0,0,.6)}
+.home-statement>.kicker{color:#dfbc7a;text-shadow:0 -1px 0 rgba(0,0,0,.95),0 1px 0 rgba(214,168,79,.3)}
+.home-intro{text-shadow:-.5px -.8px 0 rgba(0,0,0,.6)}
+.home-maker figcaption,.home-maker-line,.pf-inspect{text-shadow:-.5px -.8px 0 rgba(0,0,0,.7),.5px .8px 0 rgba(255,255,255,.1)}
+.home-maker-line{border-top-color:rgba(0,0,0,.55);box-shadow:none}
+.pf-emblem.r3-seal{aspect-ratio:272/314}
+.pf-emblem.r3-seal>img{filter:none}
+@media (min-width:1240px){.home-maker:has(.r3-seal){max-width:460px}}
+@media (forced-colors:active){.home-opening{border-image:none;border:1px solid CanvasText;filter:none}.home-statement h1,.home-statement>.kicker,.home-intro,.home-maker figcaption,.home-maker-line,.pf-inspect{text-shadow:none}}
+/* Round 3: the horizontal proof machine runs down to 701 px inside its bay, so tablets see the same instrument as
+   desktops (owner decision, 2026-11-03); only phones hang the chain vertically. The stage text tightens to fit. */
+@media (min-width:701px) and (max-width:999px){.pfa .pfa-rail p{font-size:14px;line-height:1.35}.pfa-rail h3{font-size:13px;letter-spacing:.08em}.pfa-rail li{padding:0 5px}}
+@media (min-width:701px) and (max-width:800px){.pfa .pfa-rail p{font-size:13px}}
+/* ── Round 3: the rest of Home's hardware is rendered too, from the same stock as the head plate and the hero, so every
+   surface is a part with a job (owner request: "each background each screen should feel like it's there for a reason").
+   - The proof machine's tray and the phone carrier are black-oxide plates of the head plate's stock: its tiled face and
+     its full rendered edge (oxide-frame.webp, the head frame's top and bottom crops), four socket cap screws, shadow.
+   - The phone stage plates are rendered brushed stainless (head_parts.py stage-plate); the selected one carries the
+     current key's champagne witness line, inlaid.
+   - Paper is clamped: a rendered stainless bar (head_parts.py clamp) holds the inspection record's and the studio
+     principle's top edges, and the principle is a sheet on the chassis instead of a band across it.
+   - The records links are titanium index plates of the hero's stock (ti_plate.py frame --size 96, M2.5 screws).
+   - Home's buttons are the nav keys' build without the chain ears (head_parts.py button-*): the primary carries the
+     latched key's bead-blasted cap; the inspection toggle latches down while it is pressed. ── */
+@media (min-width:701px){
+ .pfa .pfa-rail{margin-top:8px;border:0 solid;border-image:url(/assets/round3/oxide-frame.webp) 56 112 104 56/28px 56px 52px 28px/0 24px 24px 0 stretch;
+  background:url(/assets/round3/oxide-field-1024.webp) 0 0/512px 512px repeat,#1d1f21;
+  background-image:image-set(url(/assets/round3/oxide-field-512.webp) 1x,url(/assets/round3/oxide-field-1024.webp) 2x);box-shadow:none}
+ .pfa .pfa-rail p{color:#d3dadd;text-shadow:-.6px -1px 0 rgba(0,0,0,.9),.6px 1px 0 rgba(255,255,255,.12)}
+ .pfa .pfa-rail li[data-engaged=true] p{color:#f1f5f7}
+ .pfa .pfa-rail p::before{display:none}
+}
+@media (max-width:700px){
+ .pfa .pfa-rail::before{border:0 solid;border-image:url(/assets/round3/oxide-frame.webp) 56 112 104 56/28px 56px 52px 28px/0 24px 24px 0 stretch;
+  background:url(/assets/round3/oxide-field-1024.webp) -137px 0/512px 512px repeat,#1d1f21;
+  background-image:image-set(url(/assets/round3/oxide-field-512.webp) 1x,url(/assets/round3/oxide-field-1024.webp) 2x);box-shadow:none}
+ .pfa .pfa-rail li,.pfa .pfa-rail li[data-engaged=true]{border:0 solid;border-radius:1px;border-image:url(/assets/round3/stage-plate.webp) 44 52 44 24 fill/22px 26px 22px 12px/3px stretch;
+  background:url(/assets/round3/stage-plate-on.webp) 0 0/0 0 no-repeat,#a8a8a8;box-shadow:none;transform:none}
+ .pfa .pfa-rail li[data-engaged=true]{border-image-source:url(/assets/round3/stage-plate-on.webp)}
+}
+.pfa-record{position:relative}
+.pfa-record::before,.ledger-doctrine::before{content:"";position:absolute;z-index:1;top:-13px;left:calc(-1 * var(--clamp-out));right:calc(-1 * var(--clamp-out));height:30px;box-sizing:border-box;
+ border:0 solid;border-width:0 36px;border-image:url(/assets/round3/clamp.webp) 0 72 fill/0 36px/0 stretch;pointer-events:none}
+.pfa-record{--clamp-out:24px}
+.ledger-paper.ledger-doctrine{--bleed:20px;--clamp-out:10px;position:relative;box-sizing:border-box;width:calc(var(--pf-rail) + 2 * var(--bleed));margin:64px auto 28px;padding-inline:0;box-shadow:0 0 0 1px #0a0d10,inset 0 1px 0 #fff,0 12px 26px rgba(0,0,0,.5)}
+.ledger-doctrine>.container{width:auto;margin-inline:var(--bleed)}
+/* The sheet's clamp stays inside the viewport at every width (from 701 to 1024 px the rail leaves 32 px a side) and,
+   on desktops, 4 px inside the chassis plate's joints. On phones the text keeps 18 px of paper. */
+@media (max-width:700px){.pfa-record{--clamp-out:14px}.ledger-paper.ledger-doctrine{--bleed:8px;--clamp-out:8px;margin-top:48px}.ledger-doctrine>.container{margin-inline:18px}}
+.home-records-links>a{border:0 solid;border-image:url(/assets/round3/ti-frame-sm.webp) 48/24px/0 stretch;box-shadow:none;padding:24px 30px;
+ background:url(/assets/round3/ti-field-1280.webp) 0 0/640px 640px repeat,#323130;
+ background-image:image-set(url(/assets/round3/ti-field-640.webp) 1x,url(/assets/round3/ti-field-1280.webp) 2x)}
+.home-records-links>a:nth-child(2){background-position:-271px -149px}
+.home-records-links>a>span:first-child{color:#d2cdc0;text-shadow:-.5px -.8px 0 rgba(0,0,0,.7),.5px .8px 0 rgba(255,255,255,.08)}
+.home-records-links strong{color:#eef0e7;text-shadow:-.6px -1px 0 rgba(0,0,0,.55),.6px 1px 0 rgba(255,255,255,.07)}
+.home-records-links>a>span:last-child{right:30px;color:#dcc597;text-shadow:-.5px -.8px 0 rgba(0,0,0,.7)}
+.home-records-links>a:hover strong{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px}
+@media (max-width:760px){.home-records-links>a{padding:22px 26px}}
+:is(.home-opening,.home-contact) .button,.pfa .pf-chain-toggle{min-height:48px;border:0 solid;border-radius:3px;border-image:url(/assets/round3/button-rest.webp) 56 fill/28px/4px stretch;
+ background:url(/assets/round3/button-pressed.webp) 0 0/0 0 no-repeat,#1d2023;box-shadow:none;color:#e6e2d8;text-shadow:-.6px -1px 0 rgba(0,0,0,.9),.6px 1px 0 rgba(255,255,255,.1);transition:none}
+:is(.home-opening,.home-contact) .button:hover,.pfa .pf-chain-toggle:hover:not(:disabled){transform:none;color:#fff}
+:is(.home-opening,.home-contact) .button:focus-visible,.pfa .pf-chain-toggle:focus-visible{outline:3px solid #ffd58a;outline-offset:3px}
+.pfa .pf-chain-toggle:disabled{opacity:1;color:#9aa0a2;border-image-source:url(/assets/round3/button-locked.webp)}
+:is(.home-opening,.home-contact) .button:active,.pfa .pf-chain-toggle:active,.pfa .pf-chain-toggle[aria-pressed=true]{border-image-source:url(/assets/round3/button-pressed.webp)}
+.home-opening .button-primary{border-image-source:url(/assets/round3/button-primary.webp);color:#11191e;text-shadow:.5px .8px 0 rgba(255,255,255,.3);
+ background:url(/assets/round3/button-primary-pressed.webp) 0 0/0 0 no-repeat,#b0b0ab}
+.home-opening .button-primary:hover{color:#000}
+.home-opening .button-primary:active{border-image-source:url(/assets/round3/button-primary-pressed.webp)}
+@media (forced-colors:active){
+ .pfa .pfa-rail,.pfa .pfa-rail li,.pfa .pfa-rail li[data-engaged=true],.home-records-links>a,:is(.home-opening,.home-contact) .button,.pfa .pf-chain-toggle{border-image:none;background:Canvas;text-shadow:none}
+ .pfa .pfa-rail li,.home-records-links>a{border:1px solid CanvasText}
+ :is(.home-opening,.home-contact) .button,.pfa .pf-chain-toggle,
+ :is(.home-opening,.home-contact) .button:is(:hover,:active),.home-opening .button-primary,.home-opening .button-primary:is(:hover,:active),
+ .pfa .pf-chain-toggle:is(:hover,:active,:disabled,[aria-pressed=true]){border-image:none;border:1px solid ButtonText;background:ButtonFace;color:ButtonText;text-shadow:none}
+ .pfa .pfa-rail li[data-engaged=true]{border:3px solid Highlight}
+ .pfa-record::before,.ledger-doctrine::before{display:none}
+ .ledger-paper.ledger-doctrine{box-shadow:none;border:1px solid CanvasText}
+ .home-records-links>a>span:is(:first-child,:last-child),.home-records-links strong,.pfa .pfa-rail p{color:CanvasText;text-shadow:none}
+}
+/* Round 3: the seal's pointer light again ("living metal", pf-home.js), rendered. Each layer is what one low, cool light
+   adds to the milled emblem from one side of the plate (ti_emblem.py --glint, emblem_glints.py): the chamfers, ring
+   walls, gold edges and turned band that face it. pf-home.js sets --lN/--lE/--lS/--lW from the pointer's side, and
+   the layers are added over the emblem (plus-lighter), so two neighbours blend into a light from in between. The CSS
+   gradients and the R3 masks go; reduced motion, motion off and forced colours still hide every layer. */
+.pf-emblem.r3-seal>.pf-lm{z-index:2;-webkit-mask-image:none;mask-image:none;mix-blend-mode:plus-lighter;background:none 0 0/100% 100% no-repeat}
+.pf-emblem.r3-seal>.pf-lm--n{background-image:url("/brand/emblem/PF_MARK_G_TI_GLINT_N.webp");opacity:calc(var(--lN) * .85)}
+.pf-emblem.r3-seal>.pf-lm--e{background-image:url("/brand/emblem/PF_MARK_G_TI_GLINT_E.webp");opacity:calc(var(--lE) * .85)}
+.pf-emblem.r3-seal>.pf-lm--s{background-image:url("/brand/emblem/PF_MARK_G_TI_GLINT_S.webp");opacity:calc(var(--lS) * .85)}
+.pf-emblem.r3-seal>.pf-lm--w{background-image:url("/brand/emblem/PF_MARK_G_TI_GLINT_W.webp");opacity:calc(var(--lW) * .85)}
+.pf-emblem.r3-seal>:is(.pf-lm--seal,.pf-lm--bridge,.pf-lm--brass,.pf-lm--eng){display:none}
+/* Round 3: the proof chain's inspection light, rendered. Each stage's box carries what a small cool spot above that
+   checkpoint link adds to the chain (chain_scene.py --lit, chain_light.py), added over the shipped chain art, which does
+   not change. The CSS radial pool goes; the box, its opacity and its timing stay. */
+@media (min-width:701px){
+ .pfa-rail li::after{background:none 0 0/100% 100% no-repeat;mix-blend-mode:plus-lighter}
+ .pfa-rail li:nth-child(1)::after{background-image:url(/assets/round3/chain-light-s0.webp)}
+ .pfa-rail li:nth-child(2)::after{background-image:url(/assets/round3/chain-light-s1.webp)}
+ .pfa-rail li:nth-child(3)::after{background-image:url(/assets/round3/chain-light-s2.webp)}
+ .pfa-rail li:nth-child(4)::after{background-image:url(/assets/round3/chain-light-s3.webp)}
+ .pfa-rail li:nth-child(5)::after{background-image:url(/assets/round3/chain-light-s4.webp)}
+}
+/* Round 3, rendered ground (owner: "use adobe tools or blender"). Home's chassis plate is hot-rolled mild steel rendered in
+   Blender (ti_plate.py --part mill-field, ti_common.mat_mill_steel): a 690 px tile, half the 1380 px plate, so its
+   joints with the side plates fall on tile edges, and rendered joint strips (chassis-joint-l/-r: a 1 px chamfer on
+   each plate and the 2 px gap between) in place of the CSS stripes. The light falloff and the hero pool go: light
+   belongs to the rendered parts. It replaces the generated mill-steel image on Home; the other rooms followed on 2026-11-04 (room-field,
+   pf-foundry-system.css). */
+body.pf-ledger-page{background-color:#1b1f21;
+ background-image:url(/assets/round3/chassis-joint-l.webp),url(/assets/round3/chassis-joint-r.webp),url(/assets/round3/chassis-field-1380.webp);
+ background-image:url(/assets/round3/chassis-joint-l.webp),url(/assets/round3/chassis-joint-r.webp),image-set(url(/assets/round3/chassis-field-690.webp) 1x,url(/assets/round3/chassis-field-1380.webp) 2x);
+ background-size:12px 512px,12px 512px,690px 690px;background-repeat:repeat-y,repeat-y,repeat;
+ background-position:calc(50% - 690px) 0,calc(50% + 690px) 0,calc(50% - 345px) 0}
+.ledger-hero{background:none}
+/* Paper sheets lie on the chassis: their edge is rendered (head_parts.py sheet-edge), the key light casting the short
+   shadow a thin sheet throws, about 1 px down its right edge and a soft band under its lifted lower edge, in place of
+   the CSS outline and blur. The face is transparent, so the paper tile shows through; the clamp covers the top edge. */
+.ledger-paper.ledger-doctrine,.pfa-record,.pfa-fallback,.pf-rc-doc{border:0 solid;border-radius:0;box-shadow:none;
+ border-image:url(/assets/round3/sheet-edge.webp) 16 32 64 16/8px 16px 32px 8px/4px 8px 8px 4px stretch}
+/* The receipt dialog's sheet is the same paper, held by the same clamp (its empty .ledger-clamp is the bar). */
+.pf-rc-bay{padding-top:22px}
+.pf-mk-fig>img,.pf-loupe>img{filter:none}
+.pf-rc-bed{position:relative}
+.pf-rc-bed>.ledger-clamp{position:absolute;z-index:1;top:-13px;left:-14px;right:-14px;height:30px;box-sizing:border-box;border:0 solid;border-width:0 36px;
+ border-image:url(/assets/round3/clamp.webp) 0 72 fill/0 36px/0 stretch;pointer-events:none}
+.pf-rc-doc{border-top:0;background:url(/assets/round3/paper-field-1024.webp) -211px -97px/512px 512px repeat,#e9e6dd;
+ background-image:image-set(url(/assets/round3/paper-field-512.webp) 1x,url(/assets/round3/paper-field-1024.webp) 2x)}
+@media (max-width:700px){.pf-rc-bay{padding-top:18px}.pf-rc-bed>.ledger-clamp{left:-9px;right:-9px}}
+@media (forced-colors:active){
+ body.pf-ledger-page{background-image:none}
+ .ledger-paper.ledger-doctrine,.pfa-record,.pfa-fallback,.pf-rc-doc{border-image:none;border:1px solid CanvasText}
+ .pf-rc-doc,.pfa-fallback{background:Canvas}
+ .pf-rc-bed>.ledger-clamp{display:none}
+ .pfa .pf-chain-toggle:disabled{border-image:none}
+}
+/* ── The proof chain as a working instrument (CP-0184, 2026-11-04). The mechanism already selected a stage, swapped in
+   the pressed plate's render and slid the carriage; it now reads as a control:
+   - the whole plate takes the press (pf-home.js), not only its lettering;
+   - the selected plate seats 2 px into the housing, its pressed render and its lettering together, with the narrow
+     gap it leaves above it; a plate under the pointer gives 1 px before it engages;
+   - the inspection record names the existing page that holds that stage's evidence.
+   The chain and its anchors never move; the carriage still travels on its own rail (.62 s, instant with motion off). ── */
+.pfa .r2-plates img:not([hidden]){transform:translateY(2px);filter:drop-shadow(0 -2px 0 rgba(5,7,9,.85))}
+.pfa-rail li[data-engaged=true] :is(h3,.pfa-num){transform:translateY(2px)}
+.pfa-rail li:not([data-engaged=true]):active :is(h3,.pfa-num){transform:translateY(1px)}
+.pfa-record-link{grid-column:2;margin:6px 0 0}
+.pfa-record .text-link,.pfa-fallback .text-link{color:#1d3a3f;font-size:14px;text-decoration:underline;text-underline-offset:3px}
+.pfa-record .text-link:focus-visible,.pfa-fallback .text-link:focus-visible{outline:3px solid #1d3a3f;outline-offset:3px}
+/* The whole rendered plate is the button's hit area (its ::before), from 701 px: the plates' left edges are those of
+   .r2-plates. From 701 to 1180 px the label sits below the machine, so the area is placed in the machine; from 1181 px
+   the label sits on the plate, so the area is placed relative to the label. */
+@media (min-width:701px){
+ .pfa-rail li:nth-child(1){--plx:11.5cqw}.pfa-rail li:nth-child(2){--plx:26.4286cqw}.pfa-rail li:nth-child(3){--plx:41.4286cqw}
+ .pfa-rail li:nth-child(4){--plx:56.3571cqw}.pfa-rail li:nth-child(5){--plx:71.2857cqw}
+ .pfa .pfa-rail .stage-btn::before{content:"";position:absolute;z-index:1;left:var(--plx);top:22.0714cqw;width:12.3929cqw;height:7cqw}
+}
+@media (min-width:1181px){.pfa .pfa-rail .stage-btn::before{left:calc(var(--plx) - var(--px) - 1.6cqw);top:calc(-3.4429cqw - 1px)}}
+/* Here the lettering stays put while a plate is pressed: a transformed h3 would become the containing block of the
+   button's hit area and move it from under the pointer mid-press. :not() and :active make this outrank the 1px press. */
+@media (min-width:701px) and (max-width:1180px){.pfa .pfa-rail h3,.pfa .pfa-rail li[data-engaged=true] h3,.pfa .pfa-rail li:not([data-engaged=true]):active h3{position:static;transform:none}}
+/* On phones the whole plate seats, its lettering with it (not 2 px more), and the whole plate is the button's own hit
+   area. The seated plate shows the dark gap it leaves above it and a champagne hairline, so the selected stop reads at a
+   glance beside the carriage finger and the champagne edge of its render. */
+@media (max-width:700px){
+ .pfa .pfa-rail li :is(h3,.pfa-num),.pfa .pfa-rail li[data-engaged=true] :is(h3,.pfa-num),.pfa .pfa-rail li:active :is(h3,.pfa-num){transform:none}
+ .pfa .pfa-rail .stage-btn::before{content:"";position:absolute;z-index:1;inset:0}
+ .pfa .pfa-rail li[data-engaged=true]{transform:translateY(2px);box-shadow:0 -2px 0 rgba(5,7,9,.9),0 0 0 1px rgba(201,167,106,.75)}
+ .pfa .pfa-rail li:not([data-engaged=true]):active{transform:translateY(1px)}
+ .pfa-record-link{grid-column:1}
+}
+@media(forced-colors:active){.pfa-record .text-link,.pfa-fallback .text-link{color:LinkText}.pfa-record .text-link:focus-visible,.pfa-fallback .text-link:focus-visible{outline-color:Highlight}}
+/* Forced colours draw no plates and list the stages as bordered items, so the plate-shaped hit areas go and each item
+   takes its own press (pf-home.js). */
+@media (forced-colors:active){.pfa .pfa-rail .stage-btn::before{content:none}}
+/* ── CP-0185 (2026-11-05): an obvious visual state, from the existing renders and CSS only (no new art).
+   The PF seal sits in a machined counterbore and casts onto the titanium; the proof chain shows its selected station
+   unmistakably (lit, pressed plate; unlit others; the carriage pointing at it; its description window lit; the record
+   stamped with the same number in brass). Geometry of the master PF, the nine links and two anchors is unchanged. ── */
+/* --- PF seal: seated in a machined counterbore, raised housing casting onto the titanium --- */
+.pf-emblem.r3-seal::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+ background:
+  radial-gradient(ellipse 48% 41.58% at 50.9% 44.4%,transparent 0 88.6%,rgba(4,5,6,.78) 90.2%,rgba(4,5,6,.5) 93.5%,rgba(4,5,6,0) 100%),
+  radial-gradient(ellipse 47.2% 40.88% at 49.4% 42.5%,transparent 0 96.6%,rgba(255,255,255,.16) 98.4%,transparent 100%)}
+.pf-emblem.r3-seal>img{filter:drop-shadow(0 1px 0 rgba(0,0,0,.55)) drop-shadow(7px 13px 12px rgba(0,0,0,.5))}
+.pf-emblem.r3-seal>.pf-lm--n{opacity:max(.45,calc(var(--lN) * .85))}
+.pf-emblem.r3-seal>.pf-lm--w{opacity:max(.25,calc(var(--lW) * .85))}
+
+/* --- Proof chain: the selected station is unmistakable --- */
+/* Record: a champagne index edge, a big stamped number, a stronger title. */
+.pfa .pfa-record::after{content:"";position:absolute;pointer-events:none;left:0;top:10px;bottom:6px;width:6px;background:linear-gradient(90deg,#8a6a2f,#d8b878 45%,#a8843f);box-shadow:1px 0 0 rgba(0,0,0,.35)}
+.pfa .pfa-record-label{color:#5a4a2c}
+.pfa .pfa-record-label span{font:700 44px/1 var(--pf-mono);letter-spacing:.02em;color:#7a5a22;text-shadow:0 1px 0 #fff;margin-top:6px}
+.pfa .pfa-record h4{font-size:26px;font-weight:700}
+.pfa .pfa-record [data-detail-text]{font-size:17px;color:#1f2e32}
+
+@media (min-width:701px){
+ /* Unselected plates sit unlit; the selected one is lit and pressed. */
+ .pfa .pfa-rail li::before{content:"";position:absolute;z-index:1;pointer-events:none;left:var(--plx);top:22.0714cqw;width:12.3929cqw;height:7cqw;background:rgba(6,8,10,.18);transition:opacity .3s ease-out}
+ .pfa .pfa-rail li[data-engaged=true]::before{opacity:0}
+ .pfa .r2-plates img:not([hidden]){filter:drop-shadow(0 -2px 0 rgba(5,7,9,.85)) drop-shadow(0 0 .9cqw rgba(255,200,120,.55))}
+ /* The carriage's pointer: a plumb line from the carriage body down onto the selected plate. */
+ .pfa .r2-car::after{content:"";position:absolute;left:calc(50% - 1.5px);top:calc(100% - 1.05cqw);width:3px;height:1.55cqw;background:linear-gradient(180deg,#e9d3a0,#c9a76a);box-shadow:0 0 6px rgba(255,205,130,.85)}
+ .pfa .r2-car::before{content:"";position:absolute;left:calc(50% - .32cqw);top:calc(100% + .32cqw);width:.64cqw;height:.64cqw;border-radius:50%;background:radial-gradient(circle,#fff3d6,#e2b866 55%,rgba(226,184,102,0) 72%)}
+ /* The selected stage's description reads as the lit window under its plate. */
+ .pfa .pfa-rail li[data-engaged=true] p{color:#fff;background:linear-gradient(180deg,rgba(201,167,106,.22),rgba(201,167,106,.05));box-shadow:inset 0 3px 0 #c9a76a;border-radius:1px}
+ .pfa .pfa-rail p{padding-bottom:10px}
+}
+@media (min-width:1360px){.pfa .pfa-rail h3{font-size:18px;letter-spacing:.1em}.pfa .pfa-num{font-size:14px}}
+@media (min-width:1181px){.pfa .pfa-rail li[data-engaged=true] h3{color:#000}.pfa .stage-btn[aria-pressed=true]{text-decoration-color:#8a6a2f;text-decoration-thickness:3px}}
+
+@media (max-width:700px){
+ .pfa .pfa-rail li:not([data-engaged=true]){filter:brightness(.82) saturate(.7)}
+ .pfa .pfa-rail li[data-engaged=true]::after{display:block;content:"";position:absolute;z-index:-1;inset:3px 4px 3px 3px;width:auto;height:auto;opacity:1;border-radius:1px;
+  background:linear-gradient(90deg,rgba(255,210,128,.58),rgba(255,214,140,.22) 45%,rgba(255,214,140,.06) 85%);box-shadow:inset 0 0 0 4px rgba(184,146,79,.95),inset 0 6px 8px rgba(70,48,12,.28)}
+ .pfa .pfa-rail h3{font-size:18px;letter-spacing:.1em}
+ .pfa .pfa-num{font-size:15px}
+ .pfa .r2-car-m{filter:drop-shadow(0 0 5px rgba(255,205,130,.55))}
+ .pfa .r2-car-m::after{content:"";position:absolute;left:72%;top:calc(50% - 2px);width:26%;height:4px;border-radius:2px;background:linear-gradient(180deg,#f0dcae,#b8924f);box-shadow:0 0 5px rgba(255,205,130,.8)}
+ .pfa .pfa-record-label span{font-size:36px}
+ .pfa .pfa-record h4{font-size:23px}
+}
+@media (prefers-reduced-motion:reduce){.pfa .pfa-rail li::before{transition:none}}
+/* Forced colours: no dimming, lamps, pointer or pocket; the system palette carries the state (3px Highlight border). */
+@media (forced-colors:active){
+ .pf-emblem.r3-seal::before,.pfa .pfa-rail li[data-engaged=true]::after,.pfa .r2-car-m::after,.pfa .pfa-record::after,.pfa .pfa-rail li::before{display:none}
+ .pfa .pfa-rail li:not([data-engaged=true]),.pfa .r2-car-m{filter:none}
+}
+/* ── CP-0185 composition (2026-11-05), merged from five measured audits (Home, Proof, About, Truth Files, Support)
+   at 500/1440/390/320. Labels on one scale: 13px labels, 14-15px controls, 15px copy. This stylesheet loads only on
+   Home, so the label sizes here do not reach other pages. ── */
+.kicker{font-size:13px;letter-spacing:.1em}
+.home-statement>.kicker{font-size:13px;letter-spacing:.1em}
+.home-maker-line{font-size:13px}
+.home-records-links>a>span:first-child{font-size:13px}
+.ledger-receipt-button{font-size:14px}
+:is(.home-opening,.home-contact) .button{font-size:15px}
+.pfa-caption{max-width:62ch}
+/* ── CP-0185 composition: Home. Content unchanged; existing rendered parts only. ── */
+/* Section heads on one step: the chain head matches its sibling h2s (44px desktop, 34px phones). */
+.ledger-chain .home-section-head h2{font-size:clamp(30px,3.1vw,44px);text-wrap:balance}
+@media (max-width:760px){.ledger-chain .home-section-head h2,.home-contact h2{font-size:34px}}
+/* Records: the two link plates span both grid rows, so the receipt control sits under its paragraph and no cell is empty. */
+@media (min-width:761px){.home-records{padding-top:48px}.home-records-links{grid-column:2;grid-row:1/span 2}}
+/* Studio-principle sheet: kicker over heading in one column, copy beside it, so there is no empty kicker column. */
+@media (min-width:701px){
+ .ledger-paper.ledger-doctrine{padding-block:72px}
+ .doctrine-layout{grid-template-columns:1.15fr 1fr;grid-template-rows:auto 1fr;gap:18px 70px}
+ .doctrine-layout>.kicker{grid-column:1;grid-row:1}
+ .doctrine-layout h2{grid-column:1;grid-row:2}
+ .doctrine-layout>div{grid-column:2;grid-row:1/span 2;max-width:56ch}
+}
+/* Stacked margins go: the lone link above the sheet and the hash note no longer add padding to a margin. */
+.ledger-chain{padding-top:64px;padding-bottom:0}
+@media (max-width:760px){.ledger-chain{padding-top:45px}}
+.home-records .home-hash-scope{margin-bottom:0}
+/* The orientation and contact bands are mounted on the brushed-stainless plate (the Support hero's recipe,
+   foundry-rooms.css:322-327), so Home no longer runs bare dark bands. Text stays on the rail; the plate bleeds 20px. */
+.home-orientation,.home-contact{position:relative;isolation:isolate;border-top:0;border-bottom:0}
+.home-orientation::after,.home-contact::after{content:"";position:absolute;z-index:-1;inset:0 -20px;pointer-events:none;border:0 solid;box-shadow:none;
+ border-image:url(/assets/round3/stainless-frame.webp) 56 112 104 56/28px 56px 52px 28px/0 24px 24px 0 stretch;
+ background:url(/assets/round3/stainless-field-1380.webp) -233px -131px/690px 690px repeat,#2b2f31;
+ background-image:image-set(url(/assets/round3/stainless-field-690.webp) 1x,url(/assets/round3/stainless-field-1380.webp) 2x)}
+.home-orientation,.home-contact{margin-top:24px;padding-block:48px}
+@media (max-width:1024px){.home-orientation,.home-contact{padding-inline:12px}.home-orientation::after,.home-contact::after{inset:0 -8px}}
+@media (max-width:760px){.home-orientation,.home-contact{padding-block:36px}}
+@media (max-width:700px){.home-orientation,.home-contact{padding-inline:20px}.home-orientation::after,.home-contact::after{inset:0;border-image-width:16px 32px 29.71px 16px;border-image-outset:0 13.71px 13.71px 0}}
+@media (max-width:360px){.home-orientation,.home-contact{padding-inline:16px}.home-orientation h2{font-size:30px}}
+@media (forced-colors:active){.home-orientation::after,.home-contact::after{display:none}.home-orientation,.home-contact{border:1px solid CanvasText}}
+/* ── CP-0185 tranche 2 (2026-11-05): the owner found tranche 1 "still too subtle". Bolder, from the same existing renders
+   and CSS, and judged blind by three independent reviewers (new version picked in 18/18 pairs, obviousness 6-9/10), then
+   made physical rather than glowing on their advice: one brass swatch (the F's), satin gunmetal, real screw heads, no halos.
+   - The seal: larger, under a soft studio light, held in a satin gunmetal collar with turning rings and four slotted screws,
+     notched at 12 o'clock so the binary inscription stays on the titanium; a dark counterbore between seal and collar.
+   - The chain: unlit plates go dark with light lettering and a bevelled rim; the selected plate becomes a brass insert
+     (the sprite's own grain, brass hue) seated by a solid steel plunger from the carriage; on phones it also slides 5px
+     toward the carriage, so the state is not colour alone. The description under it gets a brass rule.
+   - The record: a riveted brass station tag with stamped numerals; the tranche-1 index strip goes (one gold, not three).
+   Contrast measured on rendered pixels; forced colours drops every new layer (the selected plate keeps its Highlight border). ── */
+.home-maker{isolation:isolate}
+.home-maker::before{content:"";position:absolute;z-index:-1;left:-18%;right:-18%;top:-6%;height:96%;pointer-events:none;
+ background:radial-gradient(closest-side at 50% 44%,rgba(255,246,226,.16),rgba(255,246,226,.06) 48%,rgba(255,246,226,0) 78%)}
+@media (max-width:1000px){.home-maker{max-width:340px}.home-maker::before{left:0;right:0}}
+@media (max-width:760px){.home-maker{max-width:min(100%,370px)}}
+@media (max-width:360px){.home-maker{max-width:100%}}
+.pf-emblem.r3-seal{container-type:inline-size}
+.pf-emblem.r3-seal::before{background:
+  radial-gradient(circle at 49.4% 42.6%,transparent 0 44.6cqw,rgba(255,240,215,.16) 44.95cqw,transparent 45.4cqw),
+  radial-gradient(circle at 50.5% 43.8%,transparent 0 42.6cqw,rgba(3,4,5,.92) 43.3cqw 44.7cqw,rgba(3,4,5,.55) 45.3cqw,transparent 45.6cqw),
+  radial-gradient(circle at 49.6% 42.9%,transparent 0 48.5cqw,rgba(255,250,235,.13) 48.85cqw,transparent 49.3cqw),
+  radial-gradient(circle at 50.4% 43.7%,transparent 0 47cqw,rgba(0,0,0,.6) 47.25cqw,rgba(0,0,0,.28) 48.2cqw,transparent 49.2cqw)}
+.pf-emblem.r3-seal::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+ background:
+  radial-gradient(.85cqw .18cqw at 17.33% 15.0%,#0b0d0f 0 55%,transparent 100%),
+  radial-gradient(circle at calc(17.33% - .35cqw) calc(15.0% - .4cqw),rgba(255,255,255,.32) 0 .14cqw,transparent .4cqw),
+  radial-gradient(circle at 17.33% 15.0%,#86827c 0 .45cqw,#615d58 .85cqw,#34312e 1.08cqw,rgba(0,0,0,.6) 1.26cqw,transparent 1.4cqw),
+  radial-gradient(.18cqw .85cqw at 82.67% 15.0%,#0b0d0f 0 55%,transparent 100%),
+  radial-gradient(circle at calc(82.67% - .35cqw) calc(15.0% - .4cqw),rgba(255,255,255,.32) 0 .14cqw,transparent .4cqw),
+  radial-gradient(circle at 82.67% 15.0%,#86827c 0 .45cqw,#615d58 .85cqw,#34312e 1.08cqw,rgba(0,0,0,.6) 1.26cqw,transparent 1.4cqw),
+  radial-gradient(.18cqw .85cqw at 17.33% 71.6%,#0b0d0f 0 55%,transparent 100%),
+  radial-gradient(circle at calc(17.33% - .35cqw) calc(71.6% - .4cqw),rgba(255,255,255,.32) 0 .14cqw,transparent .4cqw),
+  radial-gradient(circle at 17.33% 71.6%,#86827c 0 .45cqw,#615d58 .85cqw,#34312e 1.08cqw,rgba(0,0,0,.6) 1.26cqw,transparent 1.4cqw),
+  radial-gradient(.85cqw .18cqw at 82.67% 71.6%,#0b0d0f 0 55%,transparent 100%),
+  radial-gradient(circle at calc(82.67% - .35cqw) calc(71.6% - .4cqw),rgba(255,255,255,.32) 0 .14cqw,transparent .4cqw),
+  radial-gradient(circle at 82.67% 71.6%,#86827c 0 .45cqw,#615d58 .85cqw,#34312e 1.08cqw,rgba(0,0,0,.6) 1.26cqw,transparent 1.4cqw),
+  radial-gradient(circle at 50% 43.3%,transparent 0 45.2cqw,rgba(255,250,235,.32) 45.3cqw,transparent 45.55cqw,transparent 46.85cqw,rgba(255,250,235,.22) 47cqw,rgba(0,0,0,.55) 47.15cqw,transparent 47.2cqw),
+  repeating-radial-gradient(circle at 50% 43.3%,rgba(255,250,235,.06) 0 .3cqw,rgba(0,0,0,.08) .3cqw .6cqw),
+  conic-gradient(from 210deg at 50% 43.3%,#46433f,#86827b 10%,#58554f 22%,#33302d 36%,#4d4a45 50%,#959088 61%,#5d5a54 74%,#383532 88%,#46433f);
+ -webkit-mask:radial-gradient(circle at 50% 43.3%,transparent 0 45.2cqw,#000 45.4cqw 47.1cqw,transparent 47.2cqw),radial-gradient(circle at 17.33% 15.0%,#000 0 1.4cqw,transparent 1.5cqw),radial-gradient(circle at 82.67% 15.0%,#000 0 1.4cqw,transparent 1.5cqw),radial-gradient(circle at 17.33% 71.6%,#000 0 1.4cqw,transparent 1.5cqw),radial-gradient(circle at 82.67% 71.6%,#000 0 1.4cqw,transparent 1.5cqw);
+ mask:radial-gradient(circle at 50% 43.3%,transparent 0 45.2cqw,#000 45.4cqw 47.1cqw,transparent 47.2cqw),radial-gradient(circle at 17.33% 15.0%,#000 0 1.4cqw,transparent 1.5cqw),radial-gradient(circle at 82.67% 15.0%,#000 0 1.4cqw,transparent 1.5cqw),radial-gradient(circle at 17.33% 71.6%,#000 0 1.4cqw,transparent 1.5cqw),radial-gradient(circle at 82.67% 71.6%,#000 0 1.4cqw,transparent 1.5cqw);
+ filter:drop-shadow(0 1px 0 rgba(0,0,0,.7))}
+.pf-emblem.r3-seal>img{z-index:2;filter:drop-shadow(0 1px 1px rgba(0,0,0,.45))}
+.pf-emblem.r3-seal>.pf-lm--n{opacity:max(.62,calc(var(--lN) * .85))}
+.pf-emblem.r3-seal>.pf-lm--w{opacity:max(.32,calc(var(--lW) * .85))}
+.pf-emblem.r3-seal>.pf-lm{z-index:3}
+
+.pfa .pfa-record::after{display:none}
+.pfa .pfa-record-label{display:inline-block;align-self:start;justify-self:start;padding:10px 24px 12px;border-radius:1px;color:#24180a;
+ background:radial-gradient(circle at 9px 50%,#efe3c4 0 1.3px,#7a6638 2.3px,#3b2f17 3px,transparent 3.5px),radial-gradient(circle at calc(100% - 9px) 50%,#efe3c4 0 1.3px,#7a6638 2.3px,#3b2f17 3px,transparent 3.5px),
+  repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,rgba(0,0,0,.035) 1px 3px),linear-gradient(180deg,#cdb27a 0,#ab8b46 58%,#8f7238 100%);
+ box-shadow:inset 0 1px 0 rgba(255,244,214,.55),inset 0 -1px 0 rgba(0,0,0,.3),0 1px 0 rgba(0,0,0,.35),0 2px 3px rgba(0,0,0,.3);text-shadow:0 1px 0 rgba(255,236,190,.5)}
+.pfa .pfa-record-label span{color:#24180a;text-shadow:0 1px 0 rgba(255,236,190,.55)}
+
+@media (min-width:701px){
+ .pfa .pfa-rail li::before{background:rgba(6,8,10,.58);box-shadow:inset 1px 1px 0 rgba(205,205,198,.38),inset -1px -1px 0 rgba(0,0,0,.65)}
+ .pfa .pfa-rail li[data-engaged=true]::before{opacity:0}
+ .pfa .pfa-rail li[data-engaged=true] .pfa-num{color:#140e05;text-shadow:0 1px 0 rgba(255,236,190,.45)}
+ .pfa .pfa-rail li:not([data-engaged=true]) .pfa-num{color:#e6ebee;text-shadow:0 -1px 0 rgba(0,0,0,.85)}
+ .pfa .r2-plates img:not([hidden]){filter:sepia(1) saturate(2) hue-rotate(2deg) brightness(.82) contrast(1.1) drop-shadow(0 -2px 0 rgba(5,7,9,.85)) drop-shadow(0 2px 2px rgba(0,0,0,.55))}
+ .pfa .r2-car::after{left:calc(50% - 2px);width:4px;background:linear-gradient(90deg,#41474b,#d3d9dc 45%,#565c60);box-shadow:1px 0 1px rgba(0,0,0,.5)}
+ .pfa .r2-car::before{left:calc(50% - .55cqw);width:1.1cqw;height:1.1cqw;top:calc(100% + .1cqw);background:radial-gradient(circle,#d0d6d9 0 28%,#6a7074 52%,#1f2326 68%,transparent 72%)}
+ .pfa .pfa-rail li[data-engaged=true] p{background:none;box-shadow:inset 0 4px 0 #ab8b46;color:#fff}
+}
+@media (min-width:1181px){.pfa .pfa-rail li:not([data-engaged=true]) h3{color:#e6ebee;text-shadow:0 -1px 0 rgba(0,0,0,.85)}.pfa .pfa-rail li[data-engaged=true] h3{color:#140e05}
+ .pfa .pfa-rail li:nth-child(4) :is(h3,.pfa-num){width:8.5cqw}.pfa .pfa-rail li:nth-child(4) h3{letter-spacing:.06em}}
+@media (max-width:700px){
+ .pfa .pfa-rail li:not([data-engaged=true]){filter:none}
+ .pfa .pfa-rail li::after{display:block;content:"";position:absolute;z-index:-1;inset:0;width:auto;height:auto;opacity:1;pointer-events:none;border-radius:1px}
+ .pfa .pfa-rail li:not([data-engaged=true])::after{background:repeating-linear-gradient(90deg,rgba(255,255,255,.03) 0 1px,transparent 1px 3px),rgba(10,12,14,.58);box-shadow:inset 1px 1px 0 rgba(255,255,255,.16),inset -1px -1px 0 rgba(0,0,0,.65),inset 0 3px 7px rgba(0,0,0,.45)}
+ .pfa .pfa-rail li:not([data-engaged=true]) :is(h3,.pfa-num){color:#eef2f4;text-shadow:0 -1px 0 rgba(0,0,0,.8)}
+ .pfa .pfa-rail li:not([data-engaged=true]) p{color:#e2e8ea}
+ .pfa .pfa-rail li[data-engaged=true]::after{background:#ab8b46;box-shadow:none;mix-blend-mode:color}
+ .pfa .pfa-rail li[data-engaged=true]::before{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.24),rgba(255,255,255,0) 38%,rgba(0,0,0,.14)),repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,rgba(0,0,0,.05) 1px 3px)}
+ .pfa .pfa-rail li[data-engaged=true]{transform:translate(-5px,2px);box-shadow:0 -2px 0 rgba(5,7,9,.9),0 0 0 1px rgba(171,139,70,.95),2px 3px 4px rgba(0,0,0,.5)}
+ .pfa .r2-car-m{filter:none}
+ .pfa .r2-car-m::after{left:70%;width:24%;height:5px;top:calc(50% - 2.5px);border-radius:1px;background:linear-gradient(180deg,#d3d9dc,#6a7074 60%,#3d4347);box-shadow:0 1px 1px rgba(0,0,0,.6)}
+}
+@media (forced-colors:active){
+ .home-maker::before,.pf-emblem.r3-seal::after,.pfa .pfa-rail li::after{display:none}
+ .pfa .pfa-record-label{background:none;box-shadow:none;text-shadow:none}
+}
+/* ── CP-0185 tranche 3 (2026-11-05), from the owner-side review of tranche 2: the chain shows mechanical registration
+   (five index stops on the guide rail; the plunger seats in the selected one; on phones the carriage arm ends in a pin at
+   the plate edge), the brass goes satin and seats deeper, and the record leads with the selected stage (number tag beside
+   the stage name, one brass rule) while the mounting note becomes a titled disclosure. ── */
+@media (min-width:701px){
+ .pfa .r2-plates img:not([hidden]){filter:sepia(1) saturate(1.3) hue-rotate(2deg) brightness(.8) contrast(1.06) drop-shadow(0 -3px 0 rgba(5,7,9,.9)) drop-shadow(0 2px 2px rgba(0,0,0,.55))}
+ .pfa .pfa-machine::after{content:"";position:absolute;z-index:1;pointer-events:none;left:0;right:0;top:21.2cqw;height:.85cqw;
+  background:
+   linear-gradient(90deg,transparent calc(17.6964cqw - .2cqw),rgba(0,0,0,.85) calc(17.6964cqw - .2cqw) calc(17.6964cqw + .12cqw),rgba(255,255,255,.18) calc(17.6964cqw + .12cqw) calc(17.6964cqw + .2cqw),transparent calc(17.6964cqw + .2cqw)),
+   linear-gradient(90deg,transparent calc(32.6251cqw - .2cqw),rgba(0,0,0,.85) calc(32.6251cqw - .2cqw) calc(32.6251cqw + .12cqw),rgba(255,255,255,.18) calc(32.6251cqw + .12cqw) calc(32.6251cqw + .2cqw),transparent calc(32.6251cqw + .2cqw)),
+   linear-gradient(90deg,transparent calc(47.6251cqw - .2cqw),rgba(0,0,0,.85) calc(47.6251cqw - .2cqw) calc(47.6251cqw + .12cqw),rgba(255,255,255,.18) calc(47.6251cqw + .12cqw) calc(47.6251cqw + .2cqw),transparent calc(47.6251cqw + .2cqw)),
+   linear-gradient(90deg,transparent calc(62.5536cqw - .2cqw),rgba(0,0,0,.85) calc(62.5536cqw - .2cqw) calc(62.5536cqw + .12cqw),rgba(255,255,255,.18) calc(62.5536cqw + .12cqw) calc(62.5536cqw + .2cqw),transparent calc(62.5536cqw + .2cqw)),
+   linear-gradient(90deg,transparent calc(77.4822cqw - .2cqw),rgba(0,0,0,.85) calc(77.4822cqw - .2cqw) calc(77.4822cqw + .12cqw),rgba(255,255,255,.18) calc(77.4822cqw + .12cqw) calc(77.4822cqw + .2cqw),transparent calc(77.4822cqw + .2cqw))}
+}
+@media (max-width:700px){
+ .pfa .pfa-rail li[data-engaged=true]::after{background:#a3874e}
+ .pfa .pfa-rail li[data-engaged=true]::before{background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,0) 40%,rgba(0,0,0,.12)),repeating-linear-gradient(90deg,rgba(255,255,255,.04) 0 1px,rgba(0,0,0,.04) 1px 3px)}
+ .pfa .r2-car-m::before{content:"";position:absolute;z-index:3;left:calc(81% - 5px);top:calc(50% - 5px);width:10px;height:10px;border-radius:50%;
+  background:radial-gradient(circle,#e3e7e9 0 24%,#7d8488 46%,#2a2e31 70%,transparent 74%);box-shadow:0 0 0 1px rgba(0,0,0,.6)}
+}
+.pfa .pfa-record-label{padding:7px 18px 9px}
+.pfa .pfa-record-label span{font-size:30px}
+.pfa .pfa-record h4{justify-self:start;display:inline-block;font-size:28px;padding-bottom:4px;border-bottom:2px solid #ab8b46}
+@media (min-width:701px){.pfa .pfa-record-label{grid-row:1;align-self:center}.pfa .pfa-record>h4,.pfa .pfa-record [data-detail-text]{grid-column:2}}
+@media (max-width:700px){.pfa .pfa-record-label span{font-size:24px}.pfa .pfa-record h4{font-size:24px}}
+.pfa .pfa-explainer{margin:12px 0 0;max-width:62ch}
+.pfa .pfa-explainer>summary{display:inline-flex;align-items:center;gap:10px;cursor:pointer;list-style:none;padding:8px 0;font:600 13px/1.4 var(--pf-mono);letter-spacing:.08em;text-transform:uppercase;color:#c9b083}
+.pfa .pfa-explainer>summary::-webkit-details-marker{display:none}
+.pfa .pfa-explainer>summary::before{content:"";width:7px;height:7px;border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(-45deg);transition:transform .15s}
+.pfa .pfa-explainer[open]>summary::before{transform:rotate(45deg)}
+.pfa .pfa-explainer>summary:focus-visible{outline:3px solid #ffd58a;outline-offset:3px}
+.pfa .pfa-explainer .pfa-caption{margin:4px 0 0}
+@media (prefers-reduced-motion:reduce){.pfa .pfa-explainer>summary::before{transition:none}}
+@media (forced-colors:active){.pfa .pfa-machine::after,.pfa .r2-car-m::before{display:none}.pfa .pfa-record h4{border-bottom-color:CanvasText}}
+
+/* ── CP-0185 Home: Option A, PF first (owner decision, 2026-11-05) ──────────────────────────────────────────────
+   Home only. The nameplate is its own bolted plate and carries a compact section menu (the same six destinations as
+   the keys): an open row of links from 901 px, a Menu disclosure below. Then the hero (headline, Browse Products, the
+   maker's seal), then the six-key bank, hung from the hero's titanium plate on two forged drops, then the five-stage
+   instrument. The bank follows the hero in the document too (build-site.ps1, <!-- @route-chain -->). */
+body.pf-ledger-page .site-header{height:auto;min-height:calc(var(--pf-head-h) + 30px);padding-bottom:30px;box-sizing:border-box;margin-bottom:22px;
+ border-image:url(/assets/round3/oxide-frame.webp) 56 112 104 56/28px 56px 52px 28px/0 24px 24px 0 stretch}
+body.pf-ledger-page .site-header .nav-row{height:var(--pf-head-h)}
+body.pf-ledger-page .pf-quicknav{flex:none}
+body.pf-ledger-page .pf-quicknav ul{list-style:none;margin:0;padding:0}
+body.pf-ledger-page .pf-quicknav a{text-decoration:none;color:#dfe4e0}
+body.pf-ledger-page .pf-quicknav a:focus-visible{outline:3px solid #ffd58a;outline-offset:3px}
+@media (min-width:901px){
+ body.pf-ledger-page .pf-quicknav>summary{display:none}
+ body.pf-ledger-page .pf-quicknav::details-content{content-visibility:visible}
+ body.pf-ledger-page .pf-quicknav ul{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:2px 22px}
+ body.pf-ledger-page .pf-quicknav a{display:inline-flex;align-items:center;min-height:40px;font:600 12.5px/1 var(--pf-mono);letter-spacing:.08em;text-transform:uppercase;border-bottom:2px solid transparent;padding-top:2px}
+ body.pf-ledger-page .pf-quicknav a:hover{color:#fff;border-bottom-color:#8f7238}
+ body.pf-ledger-page .pf-quicknav a[aria-current=page]{color:#e9cf96;border-bottom-color:#ab8b46}
+}
+@media (min-width:901px) and (max-width:1199.98px){body.pf-ledger-page .site-header .header-maker-note{display:none}body.pf-ledger-page .pf-quicknav{margin-left:auto}}
+@media (max-width:900.98px){
+ body.pf-ledger-page .pf-quicknav{margin-left:auto}
+ body.pf-ledger-page .pf-quicknav>summary{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 14px 0 16px;cursor:pointer;list-style:none;font:600 13px/1 var(--pf-mono);letter-spacing:.12em;text-transform:uppercase;color:#e9ece9;
+  background:linear-gradient(180deg,#2a3236,#171d20);border:1px solid #56636a;border-top-color:#6c787d;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 2px 0 #050708}
+ body.pf-ledger-page .pf-quicknav>summary::-webkit-details-marker{display:none}
+ body.pf-ledger-page .pf-quicknav>summary::after{content:"+";content:"+" / "";font:400 19px/1 var(--pf-mono);color:#c6cdc8}
+ body.pf-ledger-page .pf-quicknav[open]>summary::after{content:"\2212";content:"\2212" / ""}
+ body.pf-ledger-page .pf-quicknav>summary:focus-visible{outline:3px solid #ffd58a;outline-offset:3px}
+ body.pf-ledger-page .pf-quicknav nav{position:absolute;z-index:30;left:12px;right:12px;top:calc(var(--pf-head-h) - 2px);padding:10px;
+  background:linear-gradient(180deg,#1d2427,#141a1d);border:1px solid #4b585c;border-top:3px solid #6c787d;box-shadow:0 10px 0 #050708,0 18px 28px rgba(0,0,0,.55)}
+ body.pf-ledger-page .pf-quicknav ul{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+ body.pf-ledger-page .pf-quicknav a{display:flex;align-items:center;min-height:46px;padding:0 14px;font:600 14px/1.2 var(--pf-mono);letter-spacing:.06em;text-transform:uppercase;background:#11171a;border:1px solid #2f3a3e}
+ body.pf-ledger-page .pf-quicknav a[aria-current=page]{color:#e9cf96;border-color:#8f7238}
+}
+@media (max-width:700.98px){
+ body.pf-ledger-page .site-header{border-image-width:16px 32px 29.71px 16px;border-image-outset:0 13.71px 13.71px 0;min-height:calc(var(--pf-head-h) + 14px);padding-bottom:14px;margin-bottom:18px}
+}
+
+/* The key bank hangs from the hero's titanium plate on two forged hangers: the chain's own clevis anchors, one bolted to
+   the hero's lower edge and one to the bank's upper edge, their rods interlinked across the gap, centred over the first and
+   last keys of the bank's top row (01 and 06 in one row, 01 and 03 on tablets, 01 and 02 on phones). It reads as one
+   chassis, not a separate panel further down. */
+body.pf-ledger-page main>.pf-route-chain{position:relative;margin:30px auto 40px;padding-top:30px;background-position:0 0;
+ border-image:url(/assets/round3/oxide-frame.webp) 56 112 104 56/28px 56px 52px 28px/0 24px 24px 0 stretch}
+body.pf-ledger-page main>.pf-route-chain+.ledger-chain{margin-top:0}
+@media (max-width:700.98px){
+ body.pf-ledger-page main>.pf-route-chain{margin:26px auto 30px;padding-top:22px;border-image-width:16px 32px 29.71px 16px;border-image-outset:0 13.71px 13.71px 0}
+}
+@media (forced-colors:active){
+ body.pf-ledger-page .site-header,body.pf-ledger-page main>.pf-route-chain{border-image:none}
+ body.pf-ledger-page main>.pf-route-chain li::before{display:none}
+ body.pf-ledger-page .pf-quicknav a{color:LinkText}
+ body.pf-ledger-page .pf-quicknav a[aria-current=page]{color:CanvasText}
+}
+/* The open menu panel paints above the hero plate; on narrow phones the Menu button stays on the brand row. */
+body.pf-ledger-page .site-header{position:relative;z-index:40}
+@media (max-width:900.98px){body.pf-ledger-page .site-header .nav-row{flex-wrap:nowrap;gap:12px}}
+@media (max-width:440px){body.pf-ledger-page .pf-quicknav>summary{gap:7px;padding:0 10px 0 12px;font-size:12px;letter-spacing:.1em}}
+@media (max-width:900.98px){body.pf-ledger-page .pf-quicknav:not([open]) nav{display:none}}
+@media (max-width:380px){body.pf-ledger-page .site-header .nav-row{padding-inline:16px;gap:8px}body.pf-ledger-page .pf-quicknav>summary{width:44px;padding:0;justify-content:center;font-size:0;letter-spacing:0}body.pf-ledger-page .pf-quicknav>summary::after{content:"\2261";content:"\2261" / "";font-size:22px}body.pf-ledger-page .pf-quicknav[open]>summary::after{content:"\00D7";content:"\00D7" / ""}body.pf-ledger-page .site-header .brand-name small{letter-spacing:.06em}}
+/* r5 (review fixes). Hangers: drawn by the top row's end keys, so they sit centred over those keys at every layout. Each is
+   two clevis anchors (30 x 50 art, 40 x 67 from 1024 px, 24 x 40 on phones) overlapping so their rods interlink. */
+body.pf-ledger-page main>.pf-route-chain li::before{content:none}
+body.pf-ledger-page main>.pf-route-chain :is(li:nth-child(1),li:nth-child(6))::before{content:"";position:absolute;z-index:4;pointer-events:none;left:50%;
+ top:-94px;width:30px;height:86px;margin-left:-15px;
+ background:url(/assets/round3/anchor-t.webp) 50% 0/30px 50px no-repeat,url(/assets/round3/anchor-b.webp) 50% 100%/30px 50px no-repeat;
+ filter:drop-shadow(0 2px 1px rgba(0,0,0,.65)) brightness(1.18)}
+@media (min-width:1024px){body.pf-ledger-page main>.pf-route-chain :is(li:nth-child(1),li:nth-child(6))::before{top:-106px;width:40px;height:98px;margin-left:-20px;background-size:40px 67px,40px 67px}}
+@media (min-width:701px) and (max-width:1239.98px){
+ body.pf-ledger-page main>.pf-route-chain li:nth-child(6)::before{content:none}
+ body.pf-ledger-page main>.pf-route-chain li:nth-child(3)::before{content:"";position:absolute;z-index:4;pointer-events:none;left:50%;top:-94px;width:30px;height:86px;margin-left:-15px;
+  background:url(/assets/round3/anchor-t.webp) 50% 0/30px 50px no-repeat,url(/assets/round3/anchor-b.webp) 50% 100%/30px 50px no-repeat;filter:drop-shadow(0 2px 1px rgba(0,0,0,.65)) brightness(1.18)}
+}
+@media (min-width:1024px) and (max-width:1239.98px){body.pf-ledger-page main>.pf-route-chain li:nth-child(3)::before{top:-106px;width:40px;height:98px;margin-left:-20px;background-size:40px 67px,40px 67px}}
+@media (max-width:700.98px){
+ body.pf-ledger-page main>.pf-route-chain li:nth-child(6)::before{content:none}
+ body.pf-ledger-page main>.pf-route-chain :is(li:nth-child(1),li:nth-child(2))::before{content:"";position:absolute;z-index:4;pointer-events:none;left:50%;top:-76px;width:24px;height:70px;margin-left:-12px;
+  background:url(/assets/round3/anchor-t.webp) 50% 0/24px 40px no-repeat,url(/assets/round3/anchor-b.webp) 50% 100%/24px 40px no-repeat;filter:drop-shadow(0 2px 1px rgba(0,0,0,.65)) brightness(1.18)}
+}
+/* Quick menu items: no inherited list rhythm, so HOME lines up with the other five. */
+body.pf-ledger-page .pf-quicknav li{margin:0}
+/* The nameplate's row sits at the plate's visual centre. */
+body.pf-ledger-page .site-header{padding-top:12px;padding-bottom:18px}
+@media (max-width:700.98px){body.pf-ledger-page .site-header{padding-top:7px;padding-bottom:7px}}
+/* Narrow phones: the brand lockup may compress and the Menu button is a 44 px icon up to 420 px, inside the plate. */
+@media (max-width:420px){
+ body.pf-ledger-page .site-header .nav-row{padding-inline:16px;gap:8px}
+ body.pf-ledger-page .site-header .brand-lockup{flex:0 1 auto;min-width:0}
+ body.pf-ledger-page .site-header .brand-name small{letter-spacing:.04em;white-space:normal}
+ body.pf-ledger-page .pf-quicknav>summary{width:44px;padding:0;justify-content:center;font-size:0;letter-spacing:0}
+ body.pf-ledger-page .pf-quicknav>summary::after{content:"\2261";content:"\2261" / "";font-size:22px}
+ body.pf-ledger-page .pf-quicknav[open]>summary::after{content:"\00D7";content:"\00D7" / ""}
+}
+/* From 1200 px: the maker note is set apart from the link row, and the opening is a little tighter so the hangers and the
+   bank's top edge reach the first screen at 900 px tall. */
+@media (min-width:1200px){
+ body.pf-ledger-page .site-header .header-maker-note{padding-right:26px;margin-right:4px;border-right:1px solid rgba(160,172,168,.35)}
+ body.pf-ledger-page .site-header{margin-bottom:12px}
+ body.pf-ledger-page .ledger-hero{padding-top:16px}
+ body.pf-ledger-page .home-opening{padding-top:34px}
+}
+/* Forced colours: the open phone panel keeps a plain box; the desktop row stays a plain row of links. */
+@media (forced-colors:active) and (max-width:900.98px){
+ body.pf-ledger-page .pf-quicknav>summary,body.pf-ledger-page .pf-quicknav nav,body.pf-ledger-page .pf-quicknav a{background:Canvas;color:LinkText;border:1px solid CanvasText;box-shadow:none}
+ body.pf-ledger-page .pf-quicknav a[aria-current=page]{border:2px solid Highlight}
+}
+@media (max-width:340px){body.pf-ledger-page .site-header .brand-lockup{gap:9px}body.pf-ledger-page .site-header .brand-name small{letter-spacing:0;white-space:nowrap}}
+/* r6: on narrow phones the header mark keeps its size and the tagline stays on one line at normal spacing (it may wrap,
+   not slide under the button, when a reader widens text spacing). Forced colours: only the current link is underlined on
+   the desktop row. From 1200 px the opening is 16 px tighter, so the bank's top edge reaches a 900 px first screen. */
+@media (max-width:420px){body.pf-ledger-page .site-header :is(.brand-mark-picture,.brand-mark){flex:none}body.pf-ledger-page .site-header .brand-name small{letter-spacing:0;white-space:normal}body.pf-ledger-page .site-header .brand-lockup{gap:10px}}
+@media (forced-colors:active) and (min-width:901px){body.pf-ledger-page .pf-quicknav a{border-bottom:0;padding-bottom:2px}body.pf-ledger-page .pf-quicknav a[aria-current=page]{border-bottom:2px solid Highlight;padding-bottom:0}}
+@media (min-width:1200px){body.pf-ledger-page .site-header{padding-bottom:14px;margin-bottom:10px}}
+/* From 1240 px (one row of keys, hangers over 01 and 06, clear of the seal's links) the opening tightens further, so the
+   hangers and the bank's top edge sit inside a 900 px first screen. */
+@media (min-width:1240px){body.pf-ledger-page .site-header{margin-bottom:6px}body.pf-ledger-page .ledger-hero{padding-top:8px}body.pf-ledger-page .home-opening{padding-bottom:30px}}
+@media (max-width:339.98px){body.pf-ledger-page .site-header .brand-name small{max-width:19.5ch}}

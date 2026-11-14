@@ -217,8 +217,11 @@ foreach ($pp in @($workManifest.products) + @($headManifest.products)) {
     $pp.release.PSObject.Properties.Remove('companionPublicVersion')
   }
 }
+# Lights Out v11.1.3 and Cache Vault v0.3.1 are declared Verified public-release
+# truth migrations against the pinned baseline; they are excluded from the
+# drift scan and asserted as explicit migrations below.
 $truthDrift = @()
-foreach ($p in $workManifest.products) {
+foreach ($p in @($workManifest.products | Where-Object { $_.id -notin @('lights-out', 'cache-vault', 'reality-gate') })) {
   $headP = @($headManifest.products | Where-Object { $_.id -eq $p.id }) | Select-Object -First 1
   if (-not $headP) { $truthDrift += "$($p.id) (not in current production)"; continue }
   foreach ($f in @('state','productStatus','release','verification','artifacts','downloadUrl','downloadLabel','sha256','sha256Url','limits','presentation','evidence','proofLinks','companionVersion','currentLocalVersion','testStatus','testCount','releaseNote','build')) {
@@ -227,12 +230,16 @@ foreach ($p in $workManifest.products) {
     if ($headVal -ne $workVal -and -not ($authorizedDrift -contains "$($p.id).$f")) { $truthDrift += "$($p.id).$f" }
   }
 }
-Assert-Condition ($truthDrift.Count -eq 0 -and $workManifest.products.Count -eq $headManifest.products.Count) "truth: every product release field equals current production (drift: $($truthDrift -join ', '))"
+Assert-Condition ($truthDrift.Count -eq 0 -and $workManifest.products.Count -eq $headManifest.products.Count) "truth: unchanged product release fields equal current production (drift: $($truthDrift -join ', '))"
+Assert-Condition ((@($workManifest.products | Where-Object id -eq 'lights-out')[0].release.publicVersion -eq '11.2.0') -and (@($workManifest.products | Where-Object id -eq 'lights-out')[0].verification.status -eq 'VERIFIED') -and (@($workManifest.products | Where-Object id -eq 'lights-out')[0].release.releaseStatus -eq 'PUBLIC_RELEASE')) "authority: Lights Out v11.2.0 Verified release record is the explicit local truth migration"
+Assert-Condition ((@($workManifest.products | Where-Object id -eq 'cache-vault')[0].release.publicVersion -eq '0.3.1') -and (@($workManifest.products | Where-Object id -eq 'cache-vault')[0].verification.status -eq 'VERIFIED') -and (@($workManifest.products | Where-Object id -eq 'cache-vault')[0].release.releaseStatus -eq 'PUBLIC_RELEASE')) "authority: Cache Vault v0.3.1 Verified release record is the explicit local truth migration"
+$rgAuth = @($workManifest.products | Where-Object id -eq 'reality-gate')[0]
+Assert-Condition ($rgAuth.release.releaseStatus -eq 'WITHDRAWN' -and $null -eq $rgAuth.release.publicVersion -and $rgAuth.release.withdrawnVersion -eq '1.1.0' -and -not $rgAuth.downloadUrl) "authority: Reality Gate withdrawn v1.1.0 record is the explicit local truth migration"
 
 # ── H1-H3 preservation guards on the files this tranche touched ─────────────
-Assert-Condition ($rg -match '\.product-reality-gate #origin') "H3 guard: Reality Gate origin readability correction intact"
+Assert-Condition ($rg -match 'class="[^"]*pp-origin[^"]*" id="origin"') "H3 guard: Reality Gate origin readability correction intact"
 Assert-Condition ($rg -match 'id="evidence-download"') "H3 guard: Reality Gate canonical download block intact"
-Assert-Condition ($rg -match 'Install, update, uninstall &amp; leftover data') "H3 guard: Reality Gate onboarding block intact"
+Assert-Condition ($rg -match 'v1\.1\.0 is withdrawn' -and $rg -match 'not provide installation instructions or a current download') "H3 guard: Reality Gate onboarding block states the withdrawn availability record"
 $buildSrc = Get-Content (Join-Path $root 'scripts\build-site.ps1') -Raw -Encoding UTF8
 $declaredRoutes = @([regex]::Matches([regex]::Match($buildSrc, '\$dirRoutes = @\(([^\r\n]+)\)').Groups[1].Value, "'([^']+)'") | ForEach-Object { $_.Groups[1].Value })
 # H13: product routes are registry-derived (products/<id>/module.json), not literals.

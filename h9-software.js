@@ -11,13 +11,8 @@ if (finder) {
   const empty = document.querySelector('.finder-empty');
   const resetButtons = [...document.querySelectorAll('[data-filter-reset]')];
   const cards = [...document.querySelectorAll('#software-results [data-product]')];
-  // Editorial job taxonomy only; versions, platform names and release notes
-  // remain manifest-rendered content. No mobile subset hides matching products.
-  const jobs = {
-    'cache-vault': 'memory', cleanroom: 'memory', ghostlayer: 'memory',
-    'lights-out': 'everyday', forgecast: 'everyday',
-    'reality-gate': 'build', proofshot: 'build'
-  };
+  // Product job tags come from each validated module. Release/platform facts
+  // remain manifest-rendered content; adding a module needs no JS id-list edit.
   const normalize = value => value.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9.]+/g, ' ').trim();
   let intent = 'all';
 
@@ -34,9 +29,9 @@ if (finder) {
     const text = [...card.querySelectorAll('.card-name, .card-value, .card-platform, .card-version, .card-detail, .card-availability')].map(node => node.textContent).join(' ');
     return {
       card,
-      job: jobs[card.dataset.product],
+      jobs: (card.dataset.jobs || '').split('|').map(normalize).filter(Boolean),
       platforms: normalize(card.querySelector('.card-platform')?.textContent || '').split(' '),
-      text: normalize(text)
+      text: normalize(text + ' ' + (card.dataset.category || '') + ' ' + (card.dataset.jobs || ''))
     };
   });
 
@@ -44,7 +39,7 @@ if (finder) {
     const terms = normalize(search.value).split(' ').filter(Boolean);
     let matches = 0;
     for (const entry of entries) {
-      const visible = (intent === 'all' || entry.job === intent)
+      const visible = (intent === 'all' || entry.jobs.includes(intent))
         && (platform.value === 'all' || entry.platforms.includes(platform.value))
         && terms.every(term => entry.text.includes(term));
       entry.card.hidden = !visible;

@@ -1,147 +1,918 @@
-/* H9 catalog: matte, legible utility. Product and release data stay canonical. */
-.software-catalog-page{background:#090d10;color:#f0eee7;color-scheme:dark}
-.software-catalog-page .site-header{background:#090d10f5;border-bottom-color:#ffffff15;backdrop-filter:blur(16px)}
-.software-catalog-page .brand-lockup{display:flex;align-items:center;gap:12px}
-.h9-software-wrap{width:min(1280px,calc(100% - 64px));margin:auto}
-.h9-software-hero{padding:44px 0 38px;border-bottom:1px solid #ffffff15;background:radial-gradient(ellipse at 85% 0,#95694712,transparent 60%)}
-.h9-software-kicker{font:400 .69rem/1.5 var(--font-mono,monospace);text-transform:uppercase;letter-spacing:.16em;color:#c6a887;margin:0 0 16px}
-.software-catalog-page .h9-software-hero h1{font:400 clamp(2.7rem,4.7vw,4.4rem)/1.04 Georgia,'Times New Roman',serif;letter-spacing:-.035em;margin:0 0 17px;color:#f2eee5}
-.h9-software-hero p:last-child{font-size:1rem;line-height:1.6;color:#b9c2c6;max-width:660px;margin:0}
-.h9-software-body{padding:30px 0 72px}
-.h9-catalog-heading{display:flex;align-items:baseline;justify-content:space-between;gap:24px;margin-bottom:21px}
-.software-catalog-page .h9-catalog-heading h2{font-size:1.3rem;letter-spacing:-.015em;margin:0;white-space:nowrap}
-.h9-catalog-heading>p{font-size:.82rem;color:#b0bdc2;line-height:1.5;margin:0;max-width:550px}
-.h9-product-finder{display:grid;grid-template-columns:minmax(250px,1fr) auto;gap:16px 24px;padding:20px 0 22px;margin:0 0 24px;border-top:1px solid #ffffff20;border-bottom:1px solid #ffffff20}
-.h9-search>label,.software-catalog-page .finder-platform>label{display:block;font-size:.76rem;color:#c3cbd0;line-height:1.3;margin-bottom:8px}
-.h9-search-field{display:flex;align-items:center;gap:11px;min-height:48px;padding:0 13px;border:1px solid #52616a;background:#0b1014;border-radius:3px}
-.h9-search-field:focus-within{outline:2px solid #d3af87;outline-offset:3px}
-.h9-search-field>svg{color:#a8bbc5;flex:none}
-.h9-search-field input{min-width:0;width:100%;padding:11px 0;border:0;background:transparent;color:#edf1f0;font-size:16px;font-family:inherit;line-height:1.5;outline:none;box-shadow:none}
-.h9-search-field input:focus{outline:none;box-shadow:none}
-.h9-search-field input::placeholder{color:#96a7b2;opacity:1}
-.h9-search-field input::-webkit-search-cancel-button{-webkit-appearance:none}
-.h9-search-field button{border:0;border-left:1px solid #41515c;background:transparent;color:#cbd9de;min-height:44px;padding:8px 4px 8px 13px;font-size:.8rem}
-.software-catalog-page .finder-platform{display:block;margin:0;width:auto;color:#c3cbd0}
-.software-catalog-page .finder-platform select{min-width:172px;min-height:48px;width:100%;background:#0b1014;color:#edf1f0;border:1px solid #52616a;border-radius:3px;font-size:.9rem;padding:10px 32px 10px 12px}
-.software-catalog-page .finder-intents{display:flex;gap:7px;flex-wrap:wrap;width:auto;align-items:center}
-.software-catalog-page .finder-intents button{min-height:44px;padding:10px 15px;font-size:.81rem;color:#c5d0d5;border:1px solid #43515a;background:transparent;border-radius:3px}
-.software-catalog-page .finder-intents button:hover{border-color:#b6c1c2;color:#fff}
-.software-catalog-page .finder-intents button[aria-pressed=true]{color:#091c1e;background:#abd4cf;border-color:#abd4cf}
-.h9-finder-summary{display:flex;gap:18px;align-items:center;justify-content:flex-end}
-.software-catalog-page .finder-count{font:400 .8rem/1.5 var(--font-mono,monospace);color:#c6d1d7;min-width:0;white-space:nowrap;margin:0}
-.h9-finder-summary button{min-height:44px;padding:8px 0;border:0;background:transparent;color:#d1b191;font-size:.8rem;text-decoration:underline;text-underline-offset:4px}
-.h9-finder-summary button:disabled{color:#89969e;text-decoration:none;cursor:default}
-.h9-compare-hint{grid-column:1/-1;font-size:.78rem;color:#aebac0;margin:-3px 0 0}
-.software-catalog-page .products-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.software-catalog-page .product-card{--text:#f0eee7;display:grid;grid-template-columns:minmax(170px,.78fr) minmax(0,1.22fr);min-width:0;border:1px solid #35414a;border-radius:3px;overflow:hidden;background:#10161b;color:#e9edec;padding:0;gap:0;box-shadow:none;transform:none}
-.software-catalog-page .product-card:hover,.software-catalog-page .product-card:focus-within{border-color:#748d96;transform:none;box-shadow:none}
-.software-catalog-page .catalog-image-link{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-height:215px;margin:0;padding:0;background:#090e12;border:0;border-right:1px solid #ffffff0c;border-radius:0;box-shadow:none;transform:none}
-.software-catalog-page .catalog-image-link img{display:block;width:100%;height:100%;max-height:285px;padding:0;object-fit:contain;transform:none}
-.software-catalog-page .card-body{display:flex;min-width:0;padding:20px;flex-direction:column;gap:0}
-.software-catalog-page .card-head{gap:9px;margin:0 0 11px;align-items:center}
-.software-catalog-page .card-head svg{width:24px;height:24px;flex:none}
-.software-catalog-page .card-name{font-size:1.4rem;letter-spacing:-.03em;line-height:1.2;color:#f2f1eb}
-.software-catalog-page .card-name a,.software-catalog-page .card-cleanroom .card-name a{color:#f2f1eb}
-.software-catalog-page .card-value,.software-catalog-page .card-cleanroom .card-value{font-size:.86rem;line-height:1.55;min-height:0;color:#bdc8cd;margin:0 0 14px;flex:1}
-.h9-card-meta{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:12px;row-gap:4px;margin:0 0 10px}
-.software-catalog-page .card-platform,.software-catalog-page .card-version{font:400 .74rem/1.5 var(--font-mono,monospace);color:#cbd8dc}
-.software-catalog-page .card-platform{color:#a4b7c0}
-.software-catalog-page .card-availability{font-size:.78rem;line-height:1.4;color:#b1c9bd;margin-bottom:12px}
-.software-catalog-page .card-bottom{margin-top:0;padding-top:0;border-top:0}
-.software-catalog-page .card-explore{display:inline-flex;align-items:center;min-height:44px;font-size:.84rem;color:#eee9dd;font-weight:500}
-.software-catalog-page .card-explore span{margin-left:9px}
-.software-catalog-page .card-more{margin-top:0;font-size:.8rem;color:#ced5d8}
-.software-catalog-page .card-more summary{cursor:pointer;min-height:44px;padding:12px 0;line-height:20px;color:#d4bfaa}
-.software-catalog-page .card-more .card-platform,.software-catalog-page .card-more .card-version{display:block}
-.software-catalog-page .card-detail,.software-catalog-page .card-cleanroom .card-detail{font-size:.78rem;line-height:1.6;color:#b9c6cc;margin:0 0 10px}
-.software-catalog-page .compare-choice,.software-catalog-page .card-cleanroom .compare-choice{min-height:44px;margin-top:4px;color:#c6d3d8;font-size:.82rem}
-.software-catalog-page .compare-choice input{accent-color:#a5d4cd}
-.software-catalog-page .finder-empty{margin:24px 0 0;padding:40px 20px;border:1px dashed #647078;color:#bfccd0;text-align:center}
-.software-catalog-page .finder-empty h3{font-size:1.2rem;letter-spacing:-.02em;color:#ecece5;margin:0 0 12px}
-.software-catalog-page .finder-empty p{margin:0;font-size:.95rem}
-.software-catalog-page .finder-empty button{min-height:44px;padding:12px 20px;background:#abd4cf;color:#091c1e;border:1px solid #abd4cf;border-radius:3px;margin-top:20px}
-.software-catalog-page :is(a,button,select,input,summary):focus-visible{outline:2px solid #e0b990;outline-offset:4px}
-.software-catalog-page .h9-search-field input:focus-visible{outline:0}
-.software-catalog-page .compare-tray{background:#e6e5dc;color:#182a2d;border-color:#cbd1c9;border-radius:4px}
-.software-catalog-page .compare-open{background:#1e494a;border-color:#1e494a;color:#f1f5ec}
-.software-catalog-page .compare-chip{background:#d1dad5;color:#294645;border-color:#b0c1b9}
-.software-catalog-page .compare-clear{color:#364d49}
-.software-catalog-page .compare-dialog{border-color:#60757b;border-radius:4px;background:#10181c;color:#e2e9e8}
-.software-catalog-page .compare-header{background:#10181c;border-color:#3a4c52}
-.software-catalog-page .compare-header .kicker{color:#b5c7c8}
-.software-catalog-page .compare-header button{border-color:#6d8388;color:#e3ecec;border-radius:3px}
-.software-catalog-page .comparison-product{border-color:#455962;border-radius:3px;background:#18262b;color:#e1e9e7}
-.software-catalog-page .comparison-product :is(h3,.comparison-value,dd){color:#dfe9e7}
-.software-catalog-page .comparison-product :is(.comparison-category,dt){color:#b1c7c9}
-.software-catalog-page .comparison-media{background:#0b1418}
-.software-catalog-page .comparison-value{min-height:88px}
-.software-catalog-page .comparison-product dl{border-color:#455962}
-.software-catalog-page .comparison-link{background:#24464a;border-color:#66898b;color:#f1f3e9;border-radius:3px}
-.software-catalog-page .footer-logo{display:none}
-.software-catalog-page .footer-brand{position:relative;padding:36px 0 0 52px;min-height:70px}
-.software-catalog-page .footer-brand:before{content:"";position:absolute;left:0;top:0;width:37px;height:37px;background:url('/brand/PF_MARK_G_MASTER.svg') center/contain no-repeat}
-.software-catalog-page .footer-brand:after{content:"PROOF FOUNDRY";position:absolute;top:7px;left:52px;font:400 .93rem/1.2 Georgia,serif;letter-spacing:.13em;color:#e5e7df}
-.software-catalog-page .footer-brand p{margin:0}
-.software-catalog-page [hidden]{display:none!important}
-@media(max-width:1050px){
-  .software-catalog-page .products-grid{grid-template-columns:1fr}
-  .software-catalog-page .product-card{grid-template-columns:minmax(200px,.5fr) minmax(0,1fr)}
-  .h9-finder-summary{gap:12px}
-  .software-catalog-page .finder-intents button{padding-inline:11px}
+/* Equipment gallery; filters and availability are functional. */
+/* Reserve the already-authored controls only in the JS-capable page. Hidden
+   controls remain invisible/inert until their controller is ready; no-JS
+   visitors retain the ordinary unfiltered catalog without this reservation. */
+.h9-software-js .h9-product-finder[hidden]{display:grid!important;visibility:hidden}
+
+.h9-software-wrap {
+  width:var(--pf-rail);
+  margin:auto
 }
-@media(max-width:700px){
-  .h9-software-wrap{width:calc(100% - 32px)}
-  .h9-software-hero{padding:30px 0 25px}
-  .h9-software-kicker{font-size:.64rem;letter-spacing:.1em;margin-bottom:13px}
-  .software-catalog-page .h9-software-hero h1{font-size:2.8rem;margin-bottom:14px}
-  .h9-software-hero p:last-child{font-size:.93rem;line-height:1.5;max-width:420px}
-  .h9-software-body{padding:24px 0 48px}
-  .h9-catalog-heading{display:block;margin-bottom:18px}
-  .software-catalog-page .h9-catalog-heading h2{font-size:1.16rem;margin-bottom:9px}
-  .h9-catalog-heading>p{font-size:.78rem;line-height:1.5;max-width:440px}
-  .h9-product-finder{grid-template-columns:minmax(0,1fr) auto;gap:13px 14px;padding:17px 0;margin-bottom:20px}
-  .h9-search{grid-column:1/-1}
-  .software-catalog-page .finder-platform{grid-column:1}
-  .software-catalog-page .finder-platform>label{margin-bottom:7px}
-  .software-catalog-page .finder-platform select{min-width:0;font-size:.87rem}
-  .software-catalog-page .finder-intents{grid-column:1/-1;grid-row:2;display:grid;grid-template-columns:1fr 1fr;gap:6px}
-  .software-catalog-page .finder-intents button{font-size:.8rem;padding:10px 7px;min-height:44px}
-  .h9-finder-summary{grid-column:2;align-self:end;flex-direction:column;align-items:flex-end;gap:0}
-  .h9-finder-summary button{min-height:44px;padding-block:8px;font-size:.76rem}
-  .h9-compare-hint{font-size:.75rem;margin:0}
-  .software-catalog-page .products-grid{gap:12px}
-  .software-catalog-page .product-card{grid-template-columns:100px minmax(0,1fr);align-items:stretch}
-  .software-catalog-page .catalog-image-link{min-height:0;height:100%;width:100%;border-radius:0;border-right:1px solid #ffffff0c;align-items:flex-start;padding-top:20px}
-  .software-catalog-page .catalog-image-link img{height:130px;max-height:none;object-fit:contain}
-  .software-catalog-page .card-body{padding:16px 14px 12px}
-  .software-catalog-page .card-head{gap:7px;margin-bottom:9px;align-items:flex-start}
-  .software-catalog-page .card-head svg{width:19px;height:19px;margin-top:2px}
-  .software-catalog-page .card-name{font-size:1.2rem;line-height:1.2}
-  .software-catalog-page .card-value,.software-catalog-page .card-cleanroom .card-value{font-size:.81rem;line-height:1.5;margin-bottom:12px}
-  .h9-card-meta{display:block;margin-bottom:8px}
-  .h9-card-meta>span{display:block}
-  .software-catalog-page .card-platform,.software-catalog-page .card-version{font-size:.71rem;line-height:1.5}
-  .software-catalog-page .card-availability{font-size:.74rem;margin-bottom:3px}
-  .software-catalog-page .card-explore{font-size:.78rem;min-height:44px;line-height:1.4}
-  .software-catalog-page .card-explore span{margin-left:7px}
-  .software-catalog-page .compare-choice,.software-catalog-page .card-cleanroom .compare-choice{font-size:.8rem;margin-top:0}
-  .software-catalog-page .compare-tray{max-width:calc(100vw - 20px);bottom:max(10px,env(safe-area-inset-bottom));gap:8px}
-  .software-catalog-page .compare-dialog{border:0;border-radius:0;width:100vw;height:100dvh;max-width:100vw;max-height:100dvh}
-  .software-catalog-page .compare-columns,.software-catalog-page .compare-columns[data-count="2"]{grid-template-columns:1fr;padding:15px;gap:15px}
-  .software-catalog-page .comparison-value{min-height:0}
-  .software-catalog-page .comparison-media{height:150px}
-  .software-catalog-page .comparison-copy{padding:21px}
-  .software-catalog-page .comparison-product dl{font-size:.87rem}
+.h9-software-hero .h9-software-wrap {
+  display:grid;
+  grid-template-columns:1.3fr .7fr;
+  gap:18px 50px;
+  align-items:end
 }
-@media(max-width:374px){
-  .software-catalog-page .product-card{grid-template-columns:82px minmax(0,1fr)}
-  .software-catalog-page .card-body{padding-left:12px;padding-right:12px}
-  .software-catalog-page .card-name{font-size:1.15rem}
+.h9-software-kicker {
+  grid-column:1/-1
+}
+.h9-software-hero {
+  padding:42px 0 35px
+}
+.h9-software-kicker {
+  font:11px var(--pf-mono);
+  text-transform:uppercase;
+  letter-spacing:.15em;
+  color:var(--accent);
+  margin-bottom:18px
+}
+.h9-software-hero h1 {
+  font-size:clamp(40px,4.4vw,64px);
+  max-width:1000px
+}
+.h9-software-hero .h9-software-wrap>p:last-child {
+  font-size:16px;
+  max-width:68ch;
+  color:var(--muted);
+  margin-top:18px
+}
+.h9-catalog-heading {
+  display:flex;
+  justify-content:space-between;
+  gap:60px;
+  border-top:1px solid var(--line);
+  padding:24px 0
+}
+.h9-catalog-heading h2 {
+  font-size:27px
+}
+.h9-catalog-heading p {
+  font-size:13px;
+  color:var(--muted);
+  max-width:53ch
+}
+.h9-product-finder {
+  display:grid;
+  grid-template-columns:1fr 220px;
+  gap:22px;
+  padding-bottom:30px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:30px
+}
+.h9-product-finder label {
+  display:block;
+  font:10px var(--pf-mono);
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  margin-bottom:9px;
+  color:#bbc4c4
+}
+.h9-search-field {
+  display:flex;
+  align-items:center;
+  border-bottom:1px solid #a4aca878;
+  gap:15px
+}
+.h9-search-field input {
+  border:0;
+  background:none;
+  flex:1;
+  min-width:0;
+  padding-left:0
+}
+.h9-search-field button {
+  background:none;
+  border:0;
+  color:#b3c1c6;
+  font-size:12px
+}
+.finder-platform select {
+  width:100%;
+  background:transparent
+}
+.finder-intents {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px
+}
+.finder-intents button,.h9-finder-summary button {
+  background:none;
+  border:1px solid var(--line);
+  color:inherit;
+  padding:9px 14px;
+  font-size:12px;
+  min-height:42px
+}
+.finder-intents button[aria-pressed=true] {
+  background:#d5d5c9;
+  color:#142328;
+  border-color:#d5d5c9
+}
+.h9-finder-summary {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  font:11px var(--pf-mono)
+}
+.h9-compare-hint {
+  grid-column:1/-1;
+  font-size:11px;
+  color:var(--muted);
+  margin:0
+}
+.products-grid {
+  display:block
+}
+.product-card {
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:70px;
+  position:relative;
+  align-items:center;
+  padding:30px 0 45px;
+  border-bottom:1px solid var(--line)
+}
+.catalog-image-link {
+  display:block;
+  padding:30px;
+  background:radial-gradient(ellipse at center,#34444a66,transparent 72%);
+  text-decoration:none;
+  position:relative
+}
+.pf-preview-picture {
+  display:block
+}
+.pf-preview-picture img {
+  width:100%;
+  max-height:430px;
+  object-fit:contain;
+  filter:drop-shadow(0 15px 22px #0007)
+}
+.card-body {
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  position:relative;
+  padding-right:20px;
+  align-self:start;
+  padding-top:20px
+}
+.card-head>svg,.card-product-mark {
+  width:38px;
+  height:38px;
+  object-fit:contain;
+  flex:none
+}
+.card-head{grid-row:1}.card-value{grid-row:2}.card-bottom{grid-row:3}.card-summary{grid-row:4}.h9-card-meta{grid-row:5}.card-more{grid-row:6}.compare-choice{grid-row:7}
+.card-head {
+  display:flex;
+  align-items:center;
+  gap:15px
+}
+.card-name {
+  font-size:34px
+}
+.card-name a {
+  text-decoration:none
+}
+.card-value {
+  font-size:23px;
+  line-height:1.35;
+  letter-spacing:-.03em;
+  margin-top:24px;
+  max-width:25ch
+}
+.card-summary {
+  font-size:14px;
+  color:var(--muted);
+  margin-top:17px;
+  max-width:50ch
+}
+.h9-card-meta {
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  font:10px var(--pf-mono);
+  color:#bdc9cc;
+  margin-top:25px
+}
+.card-availability {
+  color:#d1bc94
+}
+.card-availability[data-availability=withdrawn] {
+  color:#c6a89e
+}
+.card-bottom {
+  margin-top:25px
+}
+.card-explore {
+  font-size:14px;
+  display:inline-flex;
+  align-items:center;
+  gap:20px
+}
+.ui-arrow {
+  width:16px;
+  height:16px
+}
+.card-more {
+  margin-top:20px;
+  font-size:12px;
+  color:var(--muted);
+  max-width:44ch
+}
+.card-more summary {
+  width:max-content;
+  border-bottom:1px solid #697a7d
+}
+.card-more p {
+  margin-top:10px
+}
+.compare-choice {
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  margin-top:20px;
+  font:10px var(--pf-mono);
+  cursor:pointer
+}
+.compare-choice input {
+  min-height:20px;
+  width:17px;
+  height:17px;
+  accent-color:#d3bd94
+}
+.catalog-joint {
+  display:block;
+  position:absolute;
+  z-index:2;
+  left:var(--catalog-joint-left,-110px);
+  right:var(--catalog-joint-right,auto);
+  bottom:0;
+  width:100px;
+  text-decoration:none
+}
+.catalog-joint>span {
+  display:block
+}
+.card-joint {
+  position:absolute;
+  width:120px;
+  left:-120px;
+  bottom:-10px;
+  pointer-events:none
+}
+.card-cleanroom .catalog-image-link {
+  background:#e7e8e0
+}
+.card-lights-out {
+  --catalog-joint-left:auto;
+  --catalog-joint-right:-110px;
+  grid-template-columns:.9fr 1.1fr
+}
+.card-lights-out .catalog-image-link {
+  order:2
+}
+.card-forgecast .pf-preview-picture img {
+  height:440px;
+  width:auto;
+  margin:auto
+}
+.finder-empty {
+  padding:70px 0
+}
+.compare-tray {
+  position:sticky;
+  bottom:0;
+  z-index:35;
+  background:#202c30;
+  border:1px solid #809094;
+  padding:18px;
+  font-size:12px
+}
+.compare-tray button {
+  background:none;
+  border:1px solid var(--line);
+  color:inherit;
+  padding:8px 12px
+}
+.comparison-table {
+  overflow:auto
+}
+.comparison-table table {
+  min-width:550px
+}
+.card-commerce {
+  font:11px var(--pf-mono);
+  margin-top:12px;
+  color:#b8c5c7
+}
+@media(max-width:900px) {
+  .product-card {
+    gap:35px
+  }
+  .card-joint {
+    display:none
+  }
+  .catalog-joint {
+    width:85px;
+    left:auto;
+    right:0;
+    bottom:20px
+  }
+  .card-name {
+    font-size:28px
+  }
+  .card-value {
+    font-size:20px
+  }
+  .catalog-image-link {
+    padding:15px
+  }
+  .h9-catalog-heading {
+    gap:30px
+  }
+}
+@media(max-width:700px) {
+  .h9-software-hero {
+    padding:28px 0 24px
+  }
+  .h9-software-hero .h9-software-wrap {
+    display:block
+  }
+  .h9-software-hero h1 {
+    font-size:clamp(34px,9vw,50px)
+  }
+  .h9-software-kicker {
+    font-size:9px;
+    margin-bottom:23px
+  }
+  .h9-software-hero .h9-software-wrap>p:last-child {
+    font-size:14px;
+    margin-top:17px
+  }
+  .h9-catalog-heading {
+    display:block;
+    padding:20px 0
+  }
+  .h9-catalog-heading p {
+    display:none
+  }
+  .h9-catalog-heading h2 {
+    font-size:25px
+  }
+  .h9-catalog-heading p {
+    margin-top:15px
+  }
+  .h9-product-finder {
+    grid-template-columns:1fr 135px;
+    gap:12px 15px;
+    padding-bottom:15px;
+    margin-bottom:0
+  }
+  .h9-compare-hint {
+    display:none
+  }
+  .finder-intents {
+    grid-column:1/-1
+  }
+  .h9-finder-summary {
+    grid-column:1/-1
+  }
+  .finder-intents button {
+    font-size:11px;
+    padding:8px 10px
+  }
+  .product-card,.card-lights-out {
+    display:flex;
+    flex-direction:column;
+    gap:25px;
+    align-items:stretch;
+    padding:32px 0 40px
+  }
+  .card-lights-out .catalog-image-link {
+    order:0
+  }
+  .catalog-image-link {
+    padding:12px
+  }
+  .pf-preview-picture img {
+    max-height:265px
+  }
+  .card-head {
+    gap:12px
+  }
+  .card-body {
+    display:grid;
+    padding:0
+  }
+  .card-head {
+    order:-2
+  }
+  .card-value {
+    order:-1
+  }
+  .card-name {
+    font-size:28px
+  }
+  .card-mark {
+    width:30px;
+    height:30px
+  }
+  .card-value {
+    font-size:23px;
+    max-width:100%;
+    margin-top:17px
+  }
+  .card-summary {
+    font-size:14px
+  }
+  .h9-card-meta {
+    font-size:9px;
+    gap:9px;
+    margin-top:20px
+  }
+  .card-forgecast .pf-preview-picture img {
+    height:310px
+  }
+  .compare-choice {
+    margin-top:13px
+  }
+}
+@media(forced-colors:active) {
+  .catalog-image-link,.card-cleanroom .catalog-image-link,.compare-tray {
+    background:Canvas;
+    color:CanvasText;
+    border:1px solid CanvasText
+  }
+  .finder-intents button[aria-pressed=true] {
+    background:Highlight;
+    color:HighlightText
+  }
+  .card-availability,.card-summary,.h9-card-meta {
+    color:CanvasText
+  }
 }
 
-/* VR1 visual refoundation: platform, release state and version sit in the
-   visible h9-card-meta row; the Details disclosure now only carries the
-   candidate/hold caveat line and collapses away entirely when absent. */
-.software-catalog-page .h9-card-meta .card-availability{margin-bottom:0;display:inline-flex;align-items:center}
-.software-catalog-page .h9-card-meta .card-availability i{margin-right:6px}
-.software-catalog-page .h9-card-meta{margin:0 0 12px}
+
+/* PF-V3-R2: REVIEW-ONLY — no release or runtime authority. */
+
+/* Software junction: seven actual workstations, never seven tiny identical
+   tiles. Each real screenshot remains an unobstructed display/window. */
+.h9-software-hero{position:relative;overflow:hidden;isolation:isolate;background:none;border-bottom:1px solid #536067}
+.h9-software-hero::before{content:"";position:absolute;inset:0 0 auto auto;width:min(21vw,260px);height:100%;border-left:1px solid #85918645}
+.h9-software-hero .h9-software-wrap{position:relative;padding:37px 0 42px}
+.h9-catalog-heading h2{font-size:clamp(30px,3vw,45px);letter-spacing:-.035em;max-width:14ch}
+.h9-product-finder{border:1px solid #5a6a6870;background:linear-gradient(120deg,#172125,#10181a);padding:24px 26px;margin:0 0 34px;box-shadow:inset 0 2px #a5b2a32a, 0 8px 22px #0003}
+.products-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:44px;margin:0}
+.products-grid>.product-card{min-width:0;margin:0;padding:32px clamp(22px,4vw,58px) 37px;min-height:400px;display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);gap:clamp(28px,5vw,85px);align-items:center;border:1px solid #66747280;border-top:3px solid #71827e;background:linear-gradient(132deg,#222e31cc 0,#111b1e 46%,#0a1114 100%);box-shadow:inset 1px 1px #d8e4d01f, inset -2px -2px #0007, 9px 15px 35px #0004;isolation:isolate;position:relative}
+.products-grid>.product-card::before{content:"";position:absolute;left:0;top:0;width:120px;height:2px;background:#b5a17b;opacity:.78;pointer-events:none}
+.products-grid>.product-card:nth-of-type(even){grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr)}
+.products-grid>.product-card:nth-of-type(even) .catalog-image-link{order:2}
+.products-grid>.product-card:nth-of-type(even) .card-body{order:1}
+.products-grid>.product-card .catalog-image-link{align-self:stretch;display:grid;place-items:center;min-width:0;padding:30px 22px;background:linear-gradient(140deg,#10191e 0,#1b292d 43%,#0e1719 100%);border:9px solid #29353a;outline:1px solid #87938a55;outline-offset:0;box-shadow:inset 0 3px 18px #010507,0 12px 22px #0007}
+.products-grid>.product-card .catalog-image-link img{max-height:340px;object-fit:contain;filter:drop-shadow(0 12px 12px #0008)}
+.products-grid>.product-card .card-body{padding:20px 0;align-self:center}
+.products-grid>.product-card .catalog-joint{min-width:80px}
+/* Seven different structural compositional treatments; NOT new claims. */
+.products-grid>.card-cache-vault{border-left:16px double #576760;background:repeating-linear-gradient(0deg,transparent 0 75px,#96b19912 76px 77px),linear-gradient(115deg,#253129,#0d1413 61%)}
+.products-grid>.card-cache-vault .catalog-image-link{border-radius:0 0 22px 0;box-shadow:inset 0 12px 25px #0008,14px 14px 0 #738b7845}
+.products-grid>.card-ghostlayer{border-top:0;background:radial-gradient(ellipse 66% 90% at 25% 35%,#98bdbe27,transparent),#101920}
+.products-grid>.card-ghostlayer .catalog-image-link{border:1px solid #81959780;transform:translate(-8px,-5px);box-shadow:14px 13px 0 #789aa134,28px 27px 0 #49677622, 0 18px 25px #0006}
+.products-grid>.card-lights-out{border-top:1px solid #334247;background:radial-gradient(ellipse 45% 56% at 72% 50%,#89908c20,transparent 84%),#0a0e13;min-height:470px}
+.products-grid>.card-lights-out .catalog-image-link{border-radius:55% / 14%;border-color:#111a20;box-shadow:0 0 0 2px #6572797a,0 0 0 13px #0b1116,inset 0 0 28px #000a}
+.products-grid>.card-cleanroom{color:#273a36;background:linear-gradient(145deg,#f1f0e7,#dae1d9 64%,#c1cbc0);border-color:#cfd6c7}
+.products-grid>.card-cleanroom .card-value,.products-grid>.card-cleanroom .card-name,.products-grid>.card-cleanroom .card-summary,.products-grid>.card-cleanroom .h9-card-meta{color:#273a36}
+.products-grid>.card-cleanroom a{color:#28483b}
+.products-grid>.card-cleanroom .catalog-image-link{border:2px solid #b2beb4;background:#e0e7de;box-shadow:9px 8px 0 #b7c3b6,0 13px 22px #48584a32}
+.products-grid>.card-cleanroom :is(.card-more,.card-more summary,.card-availability,.card-bottom,.card-explore,.card-summary,.card-value,.h9-card-meta,.card-more p,.compare-choice,.compare-choice label){color:#2e4944!important}
+.products-grid>.card-cleanroom .card-more summary{border-color:#6b8d80}
+.products-grid>.card-cleanroom .card-bottom a{color:#244a43!important}
+.products-grid>.card-cleanroom .card-availability{font-weight:700}
+.products-grid>.card-cleanroom .card-head a:focus-visible{outline:2px solid #264d44;outline-offset:5px}
+
+.products-grid>.card-proofshot{border-top:1px solid #a3ada2;border-left:11px solid #83918b;background:linear-gradient(125deg,#141b1e 4%,#243137 32%,#0d1418 100%);clip-path:polygon(0 0,calc(100% - 34px) 0,100% 34px,100% 100%,0 100%);min-height:490px}
+.products-grid>.card-proofshot .catalog-image-link{border:2px solid #95a39b;border-left:12px solid #394b4b;transform:perspective(1400px) rotateY(-3deg);box-shadow:inset 0 0 0 12px #111b20,0 17px 23px #0009}
+.products-grid>.card-proofshot::after{content:"";position:absolute;right:23px;top:22px;width:52px;height:4px;background:repeating-linear-gradient(90deg,#9da9a1 0 2px,#0d1417 2px 6px)}
+.products-grid>.card-forgecast{border-top:0;background:radial-gradient(ellipse 70% 105% at 55% 2%,#778c8f7d,transparent 78%),linear-gradient(148deg,#324d55,#1d2e37 49%,#0c1418)}
+.products-grid>.card-forgecast .catalog-image-link{background:linear-gradient(142deg,#405c63b3,#263c47a3);border:0;border-bottom:3px solid #bac8c5;box-shadow:inset 0 0 0 1px #a5b8b282,0 20px 35px #0007}
+.products-grid>.card-reality-gate{border:2px solid #5e5850;border-block:7px double #74634b;background:linear-gradient(126deg,#262522,#161a19 60%,#100f0c);filter:saturate(.75)}
+.products-grid>.card-reality-gate .catalog-image-link{border-color:#5a5750;filter:grayscale(.35);box-shadow:0 0 0 1px #95846c,inset 0 20px 33px #0009}
+.products-grid>.card-reality-gate .card-availability{color:#e8c9aa;font-weight:700}
+.products-grid>.product-card:focus-within{outline:2px solid #f1e4b8;outline-offset:4px}
+@media(max-width:900px){.products-grid>.product-card,.products-grid>.product-card:nth-of-type(even){grid-template-columns:minmax(0,1fr);gap:20px;padding:22px 25px 35px;min-height:0}.products-grid>.product-card:nth-of-type(even) .catalog-image-link{order:0}.products-grid>.product-card:nth-of-type(even) .card-body{order:0}.products-grid>.card-proofshot .catalog-image-link{transform:none}.products-grid>.card-ghostlayer .catalog-image-link{transform:none}.h9-product-finder{padding:18px}}
+@media(max-width:540px){.products-grid{gap:23px}.products-grid>.product-card{padding:18px 18px 26px;box-shadow:none}.products-grid>.product-card .catalog-image-link{padding:15px;border-width:4px;min-height:185px}.products-grid>.card-cache-vault{border-left-width:7px}.products-grid>.card-proofshot{border-left-width:7px}.products-grid>.card-cleanroom .catalog-image-link{border-width:2px}.products-grid>.product-card .card-name{font-size:29px}.products-grid>.product-card .card-value{font-size:20px}.products-grid>.product-card .card-summary{font-size:14px}}
+@media(forced-colors:active){.products-grid>.product-card,.products-grid>.product-card .catalog-image-link{background:Canvas!important;color:CanvasText!important;border:1px solid CanvasText!important;clip-path:none!important;filter:none!important;transform:none!important}.products-grid>.product-card :is(a,p,span,h3){color:CanvasText!important}}
+
+/* Configurable directory: its listing data has no ownership of the shared shell. */
+.pf-directory-page .h9-software-hero{padding:50px 0 45px}
+.pf-directory-page .h9-software-hero h1{font-size:clamp(42px,4.6vw,68px);line-height:1.08;letter-spacing:-.045em}
+.pf-directory-page .h9-software-hero .h9-software-wrap{grid-template-columns:1.2fr .8fr}
+@media(max-width:800px){
+ .pf-directory-page .h9-software-hero{padding:20px 0 24px}
+ .pf-directory-page .h9-software-hero .h9-software-wrap{display:block;padding:0}
+ .pf-directory-page .h9-software-kicker{margin:0 0 12px}
+}
+.directory-heading{display:flex;justify-content:space-between;align-items:baseline;gap:25px;border-top:1px solid var(--line);padding:25px 0}
+.directory-heading h2{font-size:28px;letter-spacing:-.025em}.directory-heading p{font-size:13px;color:#bfccc6}
+.directory-finder{display:grid;grid-template-columns:1fr .65fr auto;gap:16px 22px;align-items:end;margin-bottom:28px;padding:24px;border:1px solid #60766c;background:#18252a;box-shadow:inset 0 2px 5px #0008}
+.directory-finder[hidden]{display:none}
+.directory-finder label{font:11px/1.6 var(--pf-mono);color:#d5dfd2}
+.directory-finder input,.directory-finder select{display:block;width:100%;margin-top:8px;background:#0d191f;color:#e7efe3}
+.directory-finder input::placeholder{color:#a5b7b0}
+.directory-finder [data-directory-count]{grid-column:1/-1;font:11px var(--pf-mono);color:#becbc1;margin:0}
+.pf-directory-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px}
+.directory-entry{min-width:0;display:flex;flex-direction:column;border:1px solid #60746b;border-top:3px solid #a5b19d;background:linear-gradient(140deg,#293a3880,#111e22 55%);box-shadow:inset 0 1px #e5e9dc27,0 5px 0 #060f13}
+.directory-entry[hidden]{display:none}
+.directory-entry>header{padding:26px 24px 16px}.directory-entry h3{font-size:28px;line-height:1.1;letter-spacing:-.03em;margin:15px 0}
+.directory-entry .kicker{font-size:9px;letter-spacing:.08em;color:#c9b38c}
+.directory-purpose{font-size:15px;line-height:1.7;color:#c7d4cc;min-height:5.1em}
+.directory-art{margin:0 14px;min-width:0;padding:9px;border:1px solid #627870;border-bottom:3px solid #040d11;background:#071216;box-shadow:inset 0 2px 4px #000}
+.directory-art img{width:100%;height:auto;aspect-ratio:16/10;object-fit:contain;display:block}
+.directory-art figcaption{font:9px/1.7 var(--pf-mono);color:#b4c4bc;margin-top:12px;padding:0 3px}
+.directory-no-art{position:relative;display:flex;align-items:center;justify-content:center;gap:8px;min-height:174px;margin:0 15px;border:1px solid #6e8176;background:repeating-linear-gradient(0deg,#ffffff02 0 1px,transparent 1px 4px),linear-gradient(120deg,#0a151a,#30433d);box-shadow:inset 0 0 0 7px #112124,inset 0 0 0 8px #61716b}
+.directory-no-art>span{font:500 36px var(--pf-mono);letter-spacing:.1em;color:#b8c8ba;text-shadow:0 2px #000,0 -1px #f2efdb44}
+.directory-no-art i{position:absolute;width:7px;height:7px;border:1px solid #9eaa9b;background:#081219;border-radius:50%;top:14px;left:14px}
+.directory-no-art i:nth-of-type(2){left:auto;right:14px}.directory-no-art i:last-child{top:auto;bottom:14px;left:auto;right:14px}
+.directory-foot{margin-top:auto;padding:22px 24px 26px}
+.directory-state{font:10px/1.8 var(--pf-mono);color:#c1cfc2;min-height:3.6em;margin-bottom:19px}
+.directory-foot .button{font-size:12px;width:100%;text-align:center}
+.directory-systems{padding-block:65px 20px}
+.directory-system-record{border-top:1px solid #728477;margin:0}
+.directory-system-record>summary{cursor:pointer;padding:25px 6px;font-size:23px;min-height:60px}
+.directory-system-record>summary>span{font:10px var(--pf-mono);color:#becec2;float:right;margin-top:9px}
+.directory-system-record .pf-system{border-top:0;margin:0;padding:20px 0 35px}
+.directory-zero,[data-directory-empty]{border:1px solid var(--line);padding:30px;color:#d9e1d5;line-height:1.8}
+@media(max-width:1100px){.pf-directory-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.directory-entry>header{padding:22px 20px 14px}.directory-foot{padding:20px}.directory-entry h3{font-size:27px}}
+@media(max-width:700px){
+ .pf-directory-page .h9-software-hero{padding:20px 0 24px}.pf-directory-page .h9-software-hero .h9-software-wrap{display:block}
+ .pf-directory-page .h9-software-hero h1{font-size:clamp(39px,8.6vw,56px)}
+ .pf-directory-page .h9-software-hero .h9-software-wrap>p:last-child{font-size:15px;margin-top:22px}
+ .directory-heading{display:block;padding:24px 0}.directory-heading p{margin-top:12px}.directory-heading h2{font-size:27px}
+ .directory-finder{grid-template-columns:1fr auto;padding:18px;gap:15px}
+ .directory-finder label:first-child{grid-column:1/-1}.directory-finder .button{font-size:11px;padding-inline:16px}
+ .pf-directory-grid{grid-template-columns:1fr;gap:25px}.directory-purpose{min-height:0}.directory-state{min-height:0}
+ .directory-entry>header{padding:25px 22px 20px}.directory-entry h3{font-size:29px}.directory-foot{padding:22px}
+ .directory-system-record>summary{font-size:23px;padding:20px 4px}.directory-system-record>summary>span{float:none;display:block;margin-top:12px;font-size:10px}
+ .directory-systems{padding-top:40px}
+}
+@media(forced-colors:active){
+ .directory-entry,.directory-finder,.directory-art,.directory-no-art,.directory-zero,[data-directory-empty]{background:Canvas;color:CanvasText;border-color:CanvasText;box-shadow:none}
+ .directory-entry p,.directory-entry .kicker,.directory-finder label,.directory-finder [data-directory-count],.directory-art figcaption,.directory-no-art>span,.directory-heading p,.directory-system-record>summary>span{color:CanvasText;text-shadow:none}
+ .directory-finder input,.directory-finder select{background:Field;color:FieldText;border-color:FieldText}
+}
+/* Round 3 (owner: "use adobe tools or blender", 2026-11-04): the directory's cards and no-art plates are titanium index
+   plates of the hero's stock (ti-frame-sm, ti-field), as Home's records links; their rendered screws replace the CSS
+   rings. The per-product colour stays as a flat top rule (UI); washes, glows, insets and drop slabs go. */
+.directory-entry{position:relative;border:0 solid;border-image:url(/assets/round3/ti-frame-sm.webp) 48/24px/0 stretch;box-shadow:none;background:url(/assets/round3/ti-field-1280.webp) var(--px,0) var(--py,0)/640px 640px repeat,#323130;background-image:image-set(url(/assets/round3/ti-field-640.webp) 1x,url(/assets/round3/ti-field-1280.webp) 2x)}
+.directory-entry{--accent:#a5b19d}.directory-entry--lights-out{--accent:#80a4b1}.directory-entry--cleanroom{--accent:#d4dbc3}
+.directory-entry--crosspoint{--accent:#bfa575}.directory-entry--forgecast{--accent:#7eb6ac}
+/* Each card is cut from its own part of the sheet (nine offsets, so no two cards in a grid share a crop). */
+.directory-entry:nth-child(9n+2){--px:-271px;--py:-149px}.directory-entry:nth-child(9n+3){--px:-401px;--py:-53px}.directory-entry:nth-child(9n+4){--px:-137px;--py:-311px}
+.directory-entry:nth-child(9n+5){--px:-523px;--py:-227px}.directory-entry:nth-child(9n+6){--px:-61px;--py:-457px}.directory-entry:nth-child(9n+7){--px:-337px;--py:-389px}
+.directory-entry:nth-child(9n+8){--px:-449px;--py:-97px}.directory-entry:nth-child(9n){--px:-211px;--py:-523px}
+.directory-entry::after{content:"";position:absolute;left:24px;right:24px;top:6px;height:3px;background:var(--accent);pointer-events:none}
+.directory-art{border:1px solid #627870;box-shadow:none}
+.directory-no-art{border:0 solid;border-image:url(/assets/round3/ti-frame-sm.webp) 48/24px/0 stretch;box-shadow:none;background:url(/assets/round3/ti-field-1280.webp) var(--px,0) var(--py,0)/640px 640px repeat,#323130;background-image:image-set(url(/assets/round3/ti-field-640.webp) 1x,url(/assets/round3/ti-field-1280.webp) 2x);--px:-311px;--py:-421px}
+.directory-no-art i{display:none}
+/* Each no-art plate takes its card's offset shifted by a fixed amount, so no two plates (and no plate and its card) share a crop. */
+.directory-no-art{background-position:calc(var(--card-px,0px) - 311px) calc(var(--card-py,0px) - 421px)}
+.directory-entry{--card-px:var(--px,0px);--card-py:var(--py,0px)}
+.directory-finder{box-shadow:none}
+@media(forced-colors:active){
+ .directory-entry,.directory-no-art{border-image:none;border:1px solid CanvasText;background:Canvas}
+ .directory-entry::after{background:CanvasText}
+}
+/* CP-0185 P1: the image context note is stated once for the directory instead of on every card. */
+.directory-heading{flex-wrap:wrap}
+.pf-directory .directory-art-note{margin:22px 0 0;font-size:13px;line-height:1.6;color:#bfccc6}
+/* Products pass (owner decisions, 2026-11-05). The directory lists the public products first, then the Foundry systems as
+   a compact row of nameplates (each tool stays its own card, its name stamped into a recessed plate, no placeholder
+   letters). Each group is introduced by its editorial name. The review-inventory sections are withheld from this page. */
+.pf-directory-grid{grid-template-columns:repeat(12,minmax(0,1fr));gap:26px}
+.pf-directory-grid>.directory-entry{grid-column:span 4}
+.pf-directory-grid>.directory-group-label{grid-column:1/-1;display:flex;align-items:center;gap:16px;margin:0;font:600 13px/1.4 var(--pf-mono);letter-spacing:.12em;text-transform:uppercase;color:#d7c39b}
+.pf-directory-grid>.directory-group-label::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,#73867c,transparent)}
+.pf-directory-grid>.directory-group-label:not(:first-child){margin-top:24px}
+.pf-directory-grid:not(:has(.directory-entry[data-directory-group="Everyday software"]:not([hidden]))) .directory-group-label[data-directory-group-label="Everyday software"],
+.pf-directory-grid:not(:has(.directory-entry[data-directory-group="Foundry systems"]:not([hidden]))) .directory-group-label[data-directory-group-label="Foundry systems"]{display:none}
+/* Public product cards: the same content, a little less padding and no reserved empty lines. */
+.directory-entry>header{padding:22px 22px 14px}
+.directory-entry h3{margin:12px 0 10px}
+.directory-purpose{min-height:3.4em}
+.directory-state{min-height:0;margin-bottom:14px}
+.directory-foot{padding:18px 22px 22px}
+.directory-state-note{margin:-6px 0 14px;font-size:13px;line-height:1.55;color:#c7d4cc}
+/* Foundry systems: compact nameplate cards, four across. */
+.pf-directory-grid>.directory-entry[data-directory-group="Foundry systems"]{grid-column:span 3}
+.directory-entry[data-directory-group="Foundry systems"] :is(.directory-no-art,.directory-art,.kicker){display:none}
+.directory-entry[data-directory-group="Foundry systems"]>header{padding:24px 20px 6px}
+.directory-entry[data-directory-group="Foundry systems"] h3{margin:0 0 14px;padding:13px 14px 12px;font:700 15px/1.25 var(--pf-mono);letter-spacing:.1em;text-transform:uppercase;color:#e2dccb;
+ background:linear-gradient(180deg,rgba(0,0,0,.42),rgba(0,0,0,.2));border-radius:2px;
+ box-shadow:inset 0 1px 0 rgba(0,0,0,.85),inset 0 3px 6px rgba(0,0,0,.4),inset 0 -1px 0 rgba(255,255,255,.1);
+ text-shadow:0 -1px 0 rgba(0,0,0,.9),0 1px 0 rgba(255,255,255,.14)}
+.directory-entry[data-directory-group="Foundry systems"] .directory-purpose{min-height:0;font-size:14px;line-height:1.6}
+.directory-entry[data-directory-group="Foundry systems"] .directory-foot{padding:10px 20px 20px}
+.pf-directory .directory-history-link{margin:10px 0 0;font-size:14px}
+@media(max-width:1100px){
+ .pf-directory-grid>.directory-entry,.pf-directory-grid>.directory-entry[data-directory-group="Foundry systems"]{grid-column:span 6}
+}
+@media(max-width:700px){
+ .pf-directory-grid{gap:20px}
+ .pf-directory-grid>.directory-entry{grid-column:1/-1}
+ .pf-directory-grid>.directory-entry[data-directory-group="Foundry systems"]{grid-column:span 6}
+ .directory-entry[data-directory-group="Foundry systems"]>header{padding:18px 14px 4px}
+ .directory-entry[data-directory-group="Foundry systems"] h3{font-size:13px;letter-spacing:.06em;padding:11px 10px 10px}
+ .directory-entry[data-directory-group="Foundry systems"] .directory-purpose{font-size:13px}
+ .directory-entry[data-directory-group="Foundry systems"] .directory-foot{padding:8px 14px 16px}
+}
+@media(max-width:420px){.pf-directory-grid>.directory-entry[data-directory-group="Foundry systems"]{grid-column:1/-1}}
+@media(forced-colors:active){
+ .directory-entry[data-directory-group="Foundry systems"] h3{background:Canvas;color:CanvasText;border:1px solid CanvasText;box-shadow:none;text-shadow:none}
+ .pf-directory-grid>.directory-group-label{color:CanvasText}.pf-directory-grid>.directory-group-label::after{background:CanvasText}
+}
+/* The group label now names the group, so the per-card kicker is not repeated. Phones: each product is a compact row,
+   name and purpose beside a small capture, with its status and action below. */
+.pf-directory-grid>.directory-entry .kicker{display:none}
+@media(max-width:700px){
+ .pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"]){display:grid;grid-template-columns:minmax(0,1fr) 128px;grid-template-rows:auto auto;align-items:start}
+ .pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"])[hidden]{display:none}
+ .pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"])>header{grid-column:1;grid-row:1;padding:20px 12px 8px 18px}
+ .pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"]) h3{font-size:24px;margin:4px 0 8px}
+ .pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"]) .directory-purpose{font-size:14px;line-height:1.55}
+ .pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"])>.directory-art{grid-column:2;grid-row:1;margin:20px 16px 0 0;padding:5px}
+ .pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"])>.directory-foot{grid-column:1/-1;grid-row:2;padding:10px 18px 18px}
+}
+/* Products pass, review round 1. */
+/* The release line reads first; the candidate note is quieter. */
+.directory-state{font-size:12px;color:#d3ddd5}
+.directory-state-note{font-size:13px;color:#aebbb3}
+/* Foundry systems: content sits at the top of the nameplate card. */
+.directory-entry[data-directory-group="Foundry systems"] .directory-foot{margin-top:0;padding-bottom:24px}
+.directory-entry[data-directory-group="Foundry systems"] h3{text-transform:none;letter-spacing:.04em;font-size:16px;border:1px solid;border-color:#07090a #5a666d #5a666d #07090a}
+/* The image note only accompanies products that are shown. */
+.pf-directory:not(:has(.directory-entry[data-directory-group="Everyday software"]:not([hidden]))) .directory-art-note{display:none}
+/* Desktop: a tighter opening so the first product reaches the first screen; three columns down to 901px. */
+@media(min-width:701px){
+ .pf-directory-page .h9-software-hero{padding:30px 0 26px}
+ .pf-directory-page .h9-software-hero h1{font-size:clamp(40px,4vw,58px)}
+ .pf-directory .directory-heading{padding:16px 0}
+ .directory-finder{padding:18px 22px;margin-bottom:18px}
+}
+@media(min-width:901px) and (max-width:1100px){.pf-directory-grid>.directory-entry{grid-column:span 4}.pf-directory-grid>.directory-entry[data-directory-group="Foundry systems"]{grid-column:span 6}}
+@media(min-width:701px) and (max-width:900px){.pf-directory-grid>.directory-entry,.pf-directory-grid>.directory-entry[data-directory-group="Foundry systems"]{grid-column:span 6}}
+/* Phones: no reserved lines under one-line purposes, and a shorter action. */
+@media(max-width:700px){
+ .pf-directory-grid>.directory-entry .directory-purpose{min-height:0}
+ .pf-directory-grid>.directory-entry .directory-foot .button{min-height:42px;padding-block:10px}
+}
+/* Showing more cards (a category back to All) must not scroll the finder away: no scroll anchoring on this page. Nor
+   does typing: the site-wide scroll-padding-top (for a header that is no longer sticky) made the first keystroke
+   scroll the search field down, so this page uses none. */
+body.pf-directory-page{overflow-anchor:none}
+html:has(body.pf-directory-page){scroll-padding-top:0}
+/* The narrowest phones: a product name is a little smaller up to 340px (and again up to 315px), so a long one-word
+   name fits whole, also with enlarged text spacing; if it still cannot fit, it wraps rather than running under the
+   capture. */
+@media(max-width:360px){.pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"]) h3{overflow-wrap:break-word}}
+@media(max-width:340px){.pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"]) h3{font-size:21px}}
+@media(max-width:315px){.pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"]) h3{font-size:19px}}
+/* The hero's decorative rule crossed the intro paragraph on the directory page (pre-existing); it is dropped here. */
+.pf-directory-page .h9-software-hero::before{display:none}
+/* Products final pass (2026-11-05): each card says whether it has a public download; the group filter is a row of
+   category chips (native radio buttons); the count shows only while a filter is active, in a place that never moves
+   the directory, and its live region stays in the accessibility tree when empty. */
+.directory-availability{display:inline-flex;align-items:center;gap:8px;margin:0 0 12px;padding:4px 10px 4px 9px;font:600 12px/1.3 var(--pf-mono);letter-spacing:.04em;border:1px solid}
+.directory-availability::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:currentColor}
+.directory-availability--public{color:#bfdbad;border-color:#6f8f62;background:rgba(36,58,33,.45)}
+.directory-availability--none{color:#d6cbad;border-color:#80775f;background:rgba(0,0,0,.22)}
+.directory-entry[data-directory-group="Foundry systems"] .directory-availability{margin-bottom:10px}
+.directory-chips{display:flex;flex-wrap:wrap;gap:8px;align-self:end}
+.directory-finder .directory-chip{position:relative;display:inline-flex;align-items:center;min-height:42px;padding:9px 14px;font:600 12px/1.2 var(--pf-mono);letter-spacing:.05em;color:#d5dfd2;background:#0d191f;border:1px solid #60766c;cursor:pointer}
+/* The radio covers the chip's border box (half a pixel more, so fractional chip edges are covered after pixel snapping),
+   and only the radio takes presses (the label ignores them), so no press reaches the label (whose activation would
+   scroll the page); the global input min-height (44px), max-width (100%) and rounded corners do not change its size or shape. Hover still styles
+   the chip, as the radio is inside it. */
+.directory-finder .directory-chip{pointer-events:none}
+.directory-finder .directory-chip input{pointer-events:auto}
+.directory-finder .directory-chip input{position:absolute;inset:-1.5px;display:block;width:auto;height:auto;min-height:0;max-width:none;margin:0;padding:0;opacity:0;cursor:pointer;appearance:none;background:none;border:0;border-radius:0}
+.directory-finder .directory-chip:hover{border-color:#a5b19d}
+.directory-finder .directory-chip:has(input:checked){color:#13201b;background:#d7c39b;border-color:#d7c39b}
+.directory-finder .directory-chip:has(input:focus-visible){outline:3px solid #ffd58a;outline-offset:2px}
+/* 701-1023px: search and Clear on the first line, the chips below with the count at their right (in Clear's column, so
+   it never widens anything). 1024px and up: one line (the search field is then about 310-400px wide up to 1100px, and
+   wider above), and the count sits above Clear, level with the search label, in a reserved row, so a filter never
+   moves the directory. */
+@media(min-width:701px){
+ .directory-finder{grid-template-columns:minmax(0,1fr) auto;row-gap:14px}
+ .directory-finder>label:first-child{grid-column:1;grid-row:1}
+ .directory-finder button[type=reset]{grid-column:2;grid-row:1;align-self:end}
+ .directory-chips{grid-column:1;grid-row:2}
+ .directory-finder [data-directory-count]{grid-column:2;grid-row:2;align-self:center;justify-self:end}
+}
+@media(min-width:1024px){
+ .directory-finder{grid-template-columns:minmax(0,1fr) auto auto;grid-template-rows:minmax(18px,auto) auto;row-gap:4px}
+ .directory-finder>label:first-child{grid-row:1/3}
+ .directory-finder [data-directory-count]{grid-column:2/4;grid-row:1;align-self:end}
+ .directory-chips{grid-column:2;grid-row:2;flex-wrap:nowrap}
+ .directory-finder button[type=reset]{grid-column:3;grid-row:2}
+}
+@media(max-width:700px){
+ .directory-finder{grid-template-columns:minmax(0,1fr) auto;align-items:center}
+ .directory-finder>label:first-child,.directory-chips{grid-column:1/-1}
+ .directory-chips{gap:6px}.directory-finder .directory-chip{min-height:40px;padding:8px 11px;font-size:11.5px}
+ .directory-finder [data-directory-count]{grid-column:1;grid-row:3}
+ .directory-finder button[type=reset]{grid-column:2;grid-row:3;justify-self:end}
+ .directory-availability{font-size:11.5px;margin-bottom:8px}
+ /* Readable typed text, and no iOS zoom-on-focus (it applies to inputs under 16px). */
+ .directory-finder input[type=search]{font-size:16px}
+}
+/* The narrowest phones: a slightly smaller capture leaves the badge room for one line at 320px (it wraps only where it
+   cannot fit, below about 316px or with enlarged text spacing), and the chips take two rows. */
+@media(max-width:360px){
+ .pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"]){grid-template-columns:minmax(0,1fr) 112px}
+ .pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"])>.directory-art{margin-right:12px}
+ .directory-availability{letter-spacing:0;padding-inline:8px 9px}
+ .directory-finder .directory-chip{padding-inline:9px;font-size:11px;letter-spacing:.03em}
+}
+@media(forced-colors:active){
+ .directory-availability,.directory-finder .directory-chip{background:Canvas;color:CanvasText;border:1px solid CanvasText}
+ .directory-availability::before{background:CanvasText}
+ .directory-finder .directory-chip:has(input:checked){forced-color-adjust:none;background:Highlight;color:HighlightText;border-color:Highlight}
+ .directory-finder .directory-chip:has(input:focus-visible){outline:3px solid CanvasText}
+}
+/* ── Storefront pass (owner decision 2026-11-06, Option A with refinements). Product discovery leads the page: the
+   nameplate carries the compact section menu (as on Home) and the six-key bank follows the listings (build-site.ps1,
+   <!-- @route-chain -->). The finder is a machined panel: an engraved search slot, one availability selector (All products /
+   Available downloads / No public installer) and the Clear key. Each Foundry system carries its own engraved emblem (a
+   drawing of what it does, not a screenshot), and their shared availability is stated once under the group label. ── */
+
+/* Compact section menu in the nameplate: an open row of links from 901 px, a Menu disclosure below. The nameplate
+   rules apply only where the bank has moved into <main>; the shadow catalog keeps its bank under the nameplate. */
+body.pf-directory-page:has(main>.pf-route-chain) .site-header{position:relative;z-index:40}
+body.pf-directory-page .pf-quicknav{flex:none}
+body.pf-directory-page .pf-quicknav ul{list-style:none;margin:0;padding:0}
+body.pf-directory-page .pf-quicknav li{margin:0}
+body.pf-directory-page .pf-quicknav a{text-decoration:none;color:#dfe4e0}
+body.pf-directory-page .pf-quicknav a:focus-visible{outline:3px solid #ffd58a;outline-offset:3px}
+@media (min-width:901px){
+ body.pf-directory-page .pf-quicknav>summary{display:none}
+ body.pf-directory-page .pf-quicknav::details-content{content-visibility:visible}
+ body.pf-directory-page .pf-quicknav ul{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:2px 22px}
+ body.pf-directory-page .pf-quicknav a{display:inline-flex;align-items:center;min-height:40px;font:600 12.5px/1 var(--pf-mono);letter-spacing:.08em;text-transform:uppercase;border-bottom:2px solid transparent;padding-top:2px}
+ body.pf-directory-page .pf-quicknav a:hover{color:#fff;border-bottom-color:#8f7238}
+ body.pf-directory-page .pf-quicknav a[aria-current=page]{color:#e9cf96;border-bottom-color:#ab8b46}
+}
+@media (min-width:901px) and (max-width:1199.98px){body.pf-directory-page:has(main>.pf-route-chain) .site-header .header-maker-note{display:none}body.pf-directory-page .pf-quicknav{margin-left:auto}}
+@media (min-width:1200px){body.pf-directory-page:has(main>.pf-route-chain) .site-header .header-maker-note{padding-right:26px;margin-right:4px;border-right:1px solid rgba(160,172,168,.35)}}
+@media (max-width:900.98px){
+ body.pf-directory-page:has(main>.pf-route-chain) .site-header .nav-row{flex-wrap:nowrap;gap:12px}
+ body.pf-directory-page .pf-quicknav{margin-left:auto}
+ body.pf-directory-page .pf-quicknav>summary{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 14px 0 16px;cursor:pointer;list-style:none;font:600 13px/1 var(--pf-mono);letter-spacing:.12em;text-transform:uppercase;color:#e9ece9;
+  background:linear-gradient(180deg,#2a3236,#171d20);border:1px solid #56636a;border-top-color:#6c787d;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 2px 0 #050708}
+ body.pf-directory-page .pf-quicknav>summary::-webkit-details-marker{display:none}
+ body.pf-directory-page .pf-quicknav>summary::after{content:"+";content:"+" / "";font:400 19px/1 var(--pf-mono);color:#c6cdc8}
+ body.pf-directory-page .pf-quicknav[open]>summary::after{content:"\2212";content:"\2212" / ""}
+ body.pf-directory-page .pf-quicknav>summary:focus-visible{outline:3px solid #ffd58a;outline-offset:3px}
+ body.pf-directory-page .pf-quicknav nav{position:absolute;z-index:30;left:12px;right:12px;top:calc(var(--pf-head-h) - 2px);padding:10px;
+  background:linear-gradient(180deg,#1d2427,#141a1d);border:1px solid #4b585c;border-top:3px solid #6c787d;box-shadow:0 10px 0 #050708,0 18px 28px rgba(0,0,0,.55)}
+ body.pf-directory-page .pf-quicknav:not([open]) nav{display:none}
+ body.pf-directory-page .pf-quicknav ul{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+ body.pf-directory-page .pf-quicknav a{display:flex;align-items:center;min-height:46px;padding:0 14px;font:600 14px/1.2 var(--pf-mono);letter-spacing:.06em;text-transform:uppercase;background:#11171a;border:1px solid #2f3a3e}
+ body.pf-directory-page .pf-quicknav a[aria-current=page]{color:#e9cf96;border-color:#8f7238}
+}
+@media (max-width:440px){body.pf-directory-page .pf-quicknav>summary{gap:7px;padding:0 10px 0 12px;font-size:12px;letter-spacing:.1em}}
+@media (max-width:420px){
+ body.pf-directory-page:has(main>.pf-route-chain) .site-header .nav-row{padding-inline:16px;gap:8px}
+ body.pf-directory-page:has(main>.pf-route-chain) .site-header .brand-lockup{flex:0 1 auto;min-width:0;gap:10px}
+ body.pf-directory-page:has(main>.pf-route-chain) .site-header :is(.brand-mark-picture,.brand-mark){flex:none}
+ body.pf-directory-page:has(main>.pf-route-chain) .site-header .brand-name small{letter-spacing:0;white-space:normal}
+ body.pf-directory-page .pf-quicknav>summary{width:44px;padding:0;justify-content:center;font-size:0;letter-spacing:0}
+ body.pf-directory-page .pf-quicknav>summary::after{content:"\2261";content:"\2261" / "";font-size:22px}
+ body.pf-directory-page .pf-quicknav[open]>summary::after{content:"\00D7";content:"\00D7" / ""}
+}
+@media (max-width:339.98px){body.pf-directory-page:has(main>.pf-route-chain) .site-header .brand-name small{max-width:19.5ch}}
+@media (forced-colors:active){
+ body.pf-directory-page .pf-quicknav a{color:LinkText}
+ body.pf-directory-page .pf-quicknav a[aria-current=page]{color:CanvasText}
+}
+@media (forced-colors:active) and (max-width:900.98px){
+ body.pf-directory-page .pf-quicknav>summary,body.pf-directory-page .pf-quicknav nav,body.pf-directory-page .pf-quicknav a{background:Canvas;color:LinkText;border:1px solid CanvasText;box-shadow:none}
+ body.pf-directory-page .pf-quicknav a[aria-current=page]{border:2px solid Highlight}
+}
+@media (forced-colors:active) and (min-width:901px){body.pf-directory-page .pf-quicknav a{border-bottom:0;padding-bottom:2px}body.pf-directory-page .pf-quicknav a[aria-current=page]{border-bottom:2px solid Highlight;padding-bottom:0}}
+
+/* The six-key bank follows the listings: the connected navigation continues the page instead of leading it. */
+body.pf-directory-page main>.pf-route-chain{margin:60px auto 36px}
+@media (max-width:700.98px){body.pf-directory-page main>.pf-route-chain{margin:44px auto 28px}}
+/* With the bank moved, the nameplate and the bank are each a whole bolted plate, framed exactly as on Home: the full
+   oxide frame (the head frame's top and bottom crops), so neither stops in a straight cut. */
+body.pf-directory-page:has(main>.pf-route-chain) .site-header{height:auto;min-height:calc(var(--pf-head-h) + 30px);padding-top:12px;padding-bottom:18px;box-sizing:border-box;margin-bottom:22px;
+ border-image:url(/assets/round3/oxide-frame.webp) 56 112 104 56/28px 56px 52px 28px/0 24px 24px 0 stretch}
+body.pf-directory-page:has(main>.pf-route-chain) .site-header .nav-row{height:var(--pf-head-h)}
+body.pf-directory-page main>.pf-route-chain{position:relative;padding-top:30px;background-position:0 0;
+ border-image:url(/assets/round3/oxide-frame.webp) 56 112 104 56/28px 56px 52px 28px/0 24px 24px 0 stretch}
+@media (min-width:1200px){body.pf-directory-page:has(main>.pf-route-chain) .site-header{margin-bottom:12px}}
+@media (max-width:700.98px){
+ body.pf-directory-page:has(main>.pf-route-chain) .site-header{border-image-width:16px 32px 29.71px 16px;border-image-outset:0 13.71px 13.71px 0;min-height:calc(var(--pf-head-h) + 14px);padding-top:7px;padding-bottom:7px;margin-bottom:18px}
+ body.pf-directory-page main>.pf-route-chain{padding-top:22px;border-image-width:16px 32px 29.71px 16px;border-image-outset:0 13.71px 13.71px 0}
+}
+@media (forced-colors:active){body.pf-directory-page:has(main>.pf-route-chain) .site-header,body.pf-directory-page main>.pf-route-chain{border-image:none}}
+
+/* The finder: a machined panel with four set screws, an engraved search slot, one selector and the Clear key. */
+.pf-directory-page .directory-finder{gap:14px 20px;padding:22px 26px;border:1px solid #4d5b60;border-top-color:#6e7b80;border-bottom-color:#20272a;
+ background:radial-gradient(circle at 11px 11px,#7d898d 0 1.8px,#161c1f 2.4px,transparent 3.2px),radial-gradient(circle at calc(100% - 11px) 11px,#7d898d 0 1.8px,#161c1f 2.4px,transparent 3.2px),
+  radial-gradient(circle at 11px calc(100% - 11px),#7d898d 0 1.8px,#161c1f 2.4px,transparent 3.2px),radial-gradient(circle at calc(100% - 11px) calc(100% - 11px),#7d898d 0 1.8px,#161c1f 2.4px,transparent 3.2px),
+  repeating-linear-gradient(90deg,rgba(255,255,255,.02) 0 1px,transparent 1px 3px),linear-gradient(180deg,#242d31,#161c1f);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.07),inset 0 -2px 0 rgba(0,0,0,.45),0 3px 0 #050708}
+.pf-directory-page .directory-finder>label{font:600 11px/1.4 var(--pf-mono);letter-spacing:.14em;text-transform:uppercase;color:#c9b388}
+.pf-directory-page .directory-finder input[type=search]{min-height:46px;margin-top:9px;padding:0 14px 0 40px;border:1px solid #2b3539;border-radius:2px;color:#eef2ee;
+ background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23b9a27a' stroke-width='1.6'%3E%3Ccircle cx='6.5' cy='6.5' r='4.5'/%3E%3Cpath d='M10 10l4.5 4.5' stroke-linecap='round'/%3E%3C/svg%3E") 14px 50%/16px 16px no-repeat,#0a1013;
+ box-shadow:inset 0 2px 5px rgba(0,0,0,.75),0 1px 0 rgba(255,255,255,.07)}
+.pf-directory-page .directory-finder input[type=search]::placeholder{color:#93a39d}
+.pf-directory-page .directory-finder input[type=search]:focus{border-color:#8c7646}
+.pf-directory-page .directory-finder [data-directory-count]{font:600 11px/1.4 var(--pf-mono);letter-spacing:.08em;color:#c9b388}
+/* The availability selector: a recessed track with three positions. The chosen one is a raised brass plate whose lamp is
+   lit; every position reserves its lamp, so choosing never changes a position's width. */
+.pf-directory-page .directory-chips{display:inline-grid;grid-auto-flow:column;grid-auto-columns:auto;gap:3px;padding:3px;justify-self:start;align-self:end;
+ background:#0a1013;border:1px solid #2b3539;border-radius:2px;box-shadow:inset 0 2px 5px rgba(0,0,0,.75),0 1px 0 rgba(255,255,255,.07)}
+.pf-directory-page .directory-finder .directory-chip{min-height:40px;padding:0 16px 0 13px;gap:9px;justify-content:center;text-align:center;border:1px solid transparent;border-radius:1px;
+ background:transparent;color:#cdd5d0;font:600 12px/1.15 var(--pf-mono);letter-spacing:.06em;text-shadow:none;box-shadow:none}
+.pf-directory-page .directory-finder .directory-chip::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:#253034;box-shadow:inset 0 1px 1px rgba(0,0,0,.8)}
+.pf-directory-page .directory-finder .directory-chip:hover{border-color:transparent;background:rgba(255,255,255,.05);color:#f1f4f1}
+.pf-directory-page .directory-finder .directory-chip:has(input:checked){color:#1d1607;border-color:#f0e2bf #8c7442 #6e5a31 #d9c290;
+ background:linear-gradient(180deg,#e7d6ae,#bda26b);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 1px 2px rgba(0,0,0,.6);text-shadow:0 1px 0 rgba(255,255,255,.3)}
+.pf-directory-page .directory-finder .directory-chip:has(input:checked)::before{background:#5f8f3e;box-shadow:inset 0 1px 1px rgba(0,0,0,.45),0 0 0 1px rgba(40,60,25,.55)}
+.pf-directory-page .directory-finder .directory-chip:has(input:focus-visible){outline:3px solid #ffd58a;outline-offset:2px}
+/* 701-1199 px: search and Clear on the first line, the selector below with the count at its right. From 1200 px, one
+   line: search, selector, Clear, with the count above Clear in a reserved row. */
+@media (min-width:1024px) and (max-width:1199.98px){
+ .pf-directory-page .directory-finder{grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto;row-gap:14px}
+ .pf-directory-page .directory-finder>label:first-child{grid-column:1;grid-row:1}
+ .pf-directory-page .directory-finder button[type=reset]{grid-column:2;grid-row:1;align-self:end}
+ .pf-directory-page .directory-chips{grid-column:1;grid-row:2}
+ .pf-directory-page .directory-finder [data-directory-count]{grid-column:2;grid-row:2;align-self:center;justify-self:end}
+}
+@media (min-width:1200px){
+ .pf-directory-page .directory-finder{grid-template-columns:minmax(0,1fr) auto auto;grid-template-rows:minmax(18px,auto) auto;row-gap:4px}
+ .pf-directory-page .directory-finder>label:first-child{grid-column:1;grid-row:1/3}
+ .pf-directory-page .directory-finder [data-directory-count]{grid-column:2/4;grid-row:1;align-self:end;justify-self:end}
+ .pf-directory-page .directory-chips{grid-column:2;grid-row:2}
+ .pf-directory-page .directory-finder button[type=reset]{grid-column:3;grid-row:2}
+}
+/* Phones: the selector spans the panel in three equal positions (a long label takes two lines). Where the three cannot
+   fit side by side (below about 358 px, or with enlarged text spacing), a position wraps to a second row inside the
+   track instead of running past the panel. */
+@media (max-width:700.98px){
+ .pf-directory-page .directory-finder{padding:18px 18px 16px}
+ .pf-directory-page .directory-chips{display:flex;flex-wrap:wrap;justify-self:stretch}
+ .pf-directory-page .directory-finder .directory-chips>.directory-chip{flex:1 1 0}
+ .pf-directory-page .directory-finder .directory-chip{min-height:46px;padding:4px 8px;gap:6px;font-size:11px;letter-spacing:.03em}
+ .pf-directory-page .directory-finder .directory-chip::before{width:6px;height:6px}
+}
+@media (forced-colors:active){
+ .pf-directory-page .directory-finder{background:Canvas;border:1px solid CanvasText}
+ .pf-directory-page .directory-finder input[type=search]{background:Field;color:FieldText;border:1px solid FieldText;padding-left:14px}
+ .pf-directory-page .directory-chips{background:Canvas;border:1px solid CanvasText}
+ .pf-directory-page .directory-finder .directory-chip{background:Canvas;color:CanvasText;border:1px solid CanvasText}
+ .pf-directory-page .directory-finder .directory-chip::before{background:CanvasText}
+ .pf-directory-page .directory-finder .directory-chip:has(input:checked){forced-color-adjust:none;background:Highlight;color:HighlightText;border-color:Highlight}
+ .pf-directory-page .directory-finder .directory-chip:has(input:checked)::before{background:HighlightText}
+ .pf-directory-page .directory-finder .directory-chip:has(input:focus-visible){outline:3px solid CanvasText}
+}
+
+/* Narrow screens: one card per row, with a capture large enough to read (about 38% of the card) beside the name, badge
+   and purpose; the Foundry systems take full rows too. */
+@media (max-width:700.98px){
+ .pf-directory-grid>.directory-entry:not([data-directory-group="Foundry systems"]){grid-template-columns:minmax(0,1fr) clamp(112px,38%,240px)}
+ .pf-directory-grid>.directory-entry[data-directory-group="Foundry systems"]{grid-column:1/-1}
+}
+
+/* Foundry systems: an engraved emblem beside each nameplate, in the system's own accent. */
+.directory-entry:where([data-directory-group="Foundry systems"]){--sys:#a5b19d}
+.directory-entry--hardline-zero{--sys:#d29a6a;--emblem:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='none' stroke='%23d29a6a' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M11 5h13l6 6v19H11z'/%3E%3Cpath d='M24 5v6h6'/%3E%3Cpath d='M15 15h11M15 20h11M15 25h7'/%3E%3Cpath d='M5 35h30' stroke-width='3.2' stroke-linecap='square'/%3E%3C/svg%3E")}
+.directory-entry--crosspoint{--sys:#7fc1b3;--emblem:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='none' stroke='%237fc1b3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 11l28 18M6 29l28-18'/%3E%3Cpath d='M28 29.5h6v-6M28 10.5h6v6'/%3E%3Ccircle cx='20' cy='20' r='4.5' fill='%23111a1d'/%3E%3C/svg%3E")}
+.directory-entry--reality-gate{--sys:#d7c39b;--emblem:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='none' stroke='%23d7c39b' stroke-width='2' stroke-linecap='square'%3E%3Cpath d='M9 34V7M31 34V7'/%3E%3Cpath d='M9 13h22M9 21h22'/%3E%3Cpath d='M14 13l4 8M22 13l4 8' stroke-width='1.4'/%3E%3Cpath d='M5 34h30' stroke-width='3.2'/%3E%3C/svg%3E")}
+.directory-entry--proof-foundry-app{--sys:#9db4cf;--emblem:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='none' stroke='%239db4cf' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M7 33V9h6v24zM15 33V6h6v27zM23.5 32.5L28 9l5.5 1-4.5 23.5z'/%3E%3Ccircle cx='18' cy='19' r='2.2'/%3E%3Cpath d='M4 34h32' stroke-width='3.2' stroke-linecap='square'/%3E%3C/svg%3E")}
+.directory-entry[data-directory-group="Foundry systems"] .directory-no-art{display:block;position:absolute;left:20px;top:24px;width:48px;height:48px;min-height:0;margin:0;border:1px solid #3a474c;border-image:none;border-radius:2px;
+ background:var(--emblem) 50% 50%/32px 32px no-repeat,linear-gradient(180deg,#0c1215,#161d20);box-shadow:inset 0 2px 5px rgba(0,0,0,.8),0 1px 0 rgba(255,255,255,.08),inset 0 -2px 0 color-mix(in srgb,var(--sys) 35%,transparent)}
+.directory-entry[data-directory-group="Foundry systems"] h3{margin-left:62px;min-height:48px;box-sizing:border-box;display:flex;align-items:center}
+@media (max-width:700.98px){
+ .directory-entry[data-directory-group="Foundry systems"] .directory-no-art{left:14px;top:18px;width:44px;height:44px;background-size:28px 28px,auto}
+ .directory-entry[data-directory-group="Foundry systems"] h3{margin-left:56px;min-height:44px}
+}
+@media (max-width:1419.98px) and (forced-colors:none){@media not all and (max-width:1100px){
+ .directory-entry[data-directory-group="Foundry systems"] h3{margin-left:0;margin-top:58px}
+}}
+@media (forced-colors:active){
+ .directory-entry[data-directory-group="Foundry systems"] .directory-no-art{display:none}
+ .directory-entry[data-directory-group="Foundry systems"] h3{margin-left:0}
+}
+
+/* A group whose cards share their availability says so once, under its label. */
+.pf-directory-grid>.directory-group-note{grid-column:1/-1;margin:-14px 0 0;font:500 12.5px/1.5 var(--pf-mono);letter-spacing:.03em;color:#bcc8c1}
+.pf-directory-grid:not(:has(.directory-entry[data-directory-group="Everyday software"]:not([hidden]))) .directory-group-note[data-directory-group-note="Everyday software"],
+.pf-directory-grid:not(:has(.directory-entry[data-directory-group="Foundry systems"]:not([hidden]))) .directory-group-note[data-directory-group-note="Foundry systems"]{display:none}
+@media (forced-colors:active){.pf-directory-grid>.directory-group-note{color:CanvasText}}
+/* A group where not every card has a page offers the pages that exist as plain links (visual verdict 2026-11-06). */
+.pf-directory-grid .directory-foot .directory-link{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:14px;line-height:1.4}

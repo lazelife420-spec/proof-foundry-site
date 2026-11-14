@@ -35,7 +35,7 @@ function Assert($name, [bool]$ok, $detail = '') {
 }
 
 # Build against a fixture. Returns @{ Exit; Output; ProofHtml; Registry; OutDir }
-function Invoke-FixtureBuild([string]$name, [scriptblock]$mutate, [switch]$ValidateOnly) {
+function Invoke-FixtureBuild([string]$name, [scriptblock]$mutate, [switch]$ValidateOnly, [scriptblock]$mutateModules) {
   $fixDir = Join-Path $work $name
   New-Item -ItemType Directory -Force -Path $fixDir | Out-Null
   $fixManifest = Join-Path $fixDir 'site-manifest.json'
@@ -47,18 +47,27 @@ function Invoke-FixtureBuild([string]$name, [scriptblock]$mutate, [switch]$Valid
   [IO.File]::WriteAllText($fixManifest, $json, (New-Object System.Text.UTF8Encoding $false))
 
   $valOpt = if ($ValidateOnly) { ' -ValidateOnly' } else { '' }
+  $productsOpt = ''
+  if ($mutateModules) {
+    $fixtureProducts = Join-Path $fixDir 'products'
+    Copy-Item (Join-Path $root 'products') $fixtureProducts -Recurse
+    & $mutateModules $fixtureProducts
+    $productsOpt = " -ProductsDir `"$fixtureProducts`""
+  }
   $psExe = if (Get-Command pwsh -ErrorAction SilentlyContinue) { (Get-Command pwsh).Source } else { (Get-Process -Id $PID).Path }
   $pinfo = New-Object System.Diagnostics.ProcessStartInfo
   $pinfo.FileName = $psExe
-  $pinfo.Arguments = "-NoProfile -File `"$buildPs1`" -ManifestPath `"$fixManifest`" -OutDir `"$outDir`"$valOpt"
+  $pinfo.Arguments = "-NoProfile -File `"$buildPs1`" -ManifestPath `"$fixManifest`" -OutDir `"$outDir`"$valOpt$productsOpt"
   $pinfo.RedirectStandardOutput = $true
   $pinfo.RedirectStandardError = $true
   $pinfo.UseShellExecute = $false
   $pinfo.CreateNoWindow = $true
   $p = [System.Diagnostics.Process]::Start($pinfo)
-  $stdout = $p.StandardOutput.ReadToEnd()
-  $stderr = $p.StandardError.ReadToEnd()
+  $stdoutTask = $p.StandardOutput.ReadToEndAsync()
+  $stderrTask = $p.StandardError.ReadToEndAsync()
   $p.WaitForExit()
+  $stdout = $stdoutTask.Result
+  $stderr = $stderrTask.Result
   $code = $p.ExitCode
   $out = ($stdout + "`n" + $stderr).Trim()
 
@@ -80,32 +89,34 @@ Write-Host "--- TEST 1: generated output derives from canonical data ---"
 # The fixture models a COHERENT release bump: version, artifact names, URLs and
 # labels all move together. A partial bump is itself a validation failure (see the
 # version-literal drift invariant), so it cannot be used to test derivation.
+# GhostLayer is used for the bump fixture: Reality Gate is withdrawn — a sentinel
+# public version there is exactly the invalid state the build must reject.
 $t1 = Invoke-FixtureBuild 'derive' {
   param($o)
-  $rg = $o.products | Where-Object { $_.id -eq 'reality-gate' }
-  $rg.release.publicVersion = '9.9.9'
-  $rg.downloadLabel = 'Download v9.9.9 Developer Pilot'
-  $bump = { param($s) if ($s) { $s -replace '1\.1\.0', '9.9.9' } else { $s } }
-  foreach ($a in $rg.artifacts) {
+  $gl = $o.products | Where-Object { $_.id -eq 'ghostlayer' }
+  $gl.release.publicVersion = '9.9.9'
+  $gl.downloadLabel = 'Download v9.9.9'
+  $bump = { param($s) if ($s) { $s -replace '0\.4\.0', '9.9.9' } else { $s } }
+  foreach ($a in $gl.artifacts) {
     $a.filename    = & $bump $a.filename
     $a.downloadUrl = & $bump $a.downloadUrl
     $a.sha256Url   = & $bump $a.sha256Url
   }
-  $rg.downloadUrl = & $bump $rg.downloadUrl
-  $rg.sha256Url   = & $bump $rg.sha256Url
-  foreach ($e in $rg.evidence) { $e.url = & $bump $e.url; $e.label = & $bump $e.label }
-  if ($rg.proofLinks) { $rg.proofLinks = @($rg.proofLinks | ForEach-Object { & $bump $_ }) }
+  $gl.downloadUrl = & $bump $gl.downloadUrl
+  $gl.sha256Url   = & $bump $gl.sha256Url
+  foreach ($e in $gl.evidence) { $e.url = & $bump $e.url; $e.label = & $bump $e.label }
+  if ($gl.proofLinks) { $gl.proofLinks = @($gl.proofLinks | ForEach-Object { & $bump $_ }) }
   $o
 }
 Assert 'build succeeds with sentinel version' ($t1.Exit -eq 0) $t1.Output
 if ($t1.Exit -eq 0) {
   Assert 'proof page shows sentinel v9.9.9'        ($t1.ProofHtml -match 'v9\.9\.9')
-  Assert 'proof page no longer shows old v1.1.0'   ($t1.ProofHtml -notmatch 'v1\.1\.0')
-  $rgEntry = $t1.Registry.products | Where-Object { $_.id -eq 'reality-gate' }
-  Assert 'registry shows sentinel v9.9.9'          ($rgEntry.release.publicVersion -eq '9.9.9') "got '$($rgEntry.release.publicVersion)'"
-  $homeHtml = [IO.File]::ReadAllText((Join-Path $t1.OutDir 'index.html'))
-  Assert 'homepage shows sentinel v9.9.9'          ($homeHtml -match 'v9\.9\.9')
-  $prodHtml = [IO.File]::ReadAllText((Join-Path $t1.OutDir 'reality-gate\index.html'))
+  Assert 'proof page no longer shows old artifact version'   ($t1.ProofHtml -notmatch 'GhostLayer-Setup-0\.4\.0')
+  $glEntry = $t1.Registry.products | Where-Object { $_.id -eq 'ghostlayer' }
+  Assert 'registry shows sentinel v9.9.9'          ($glEntry.release.publicVersion -eq '9.9.9') "got '$($glEntry.release.publicVersion)'"
+  $softHtml = [IO.File]::ReadAllText((Join-Path $t1.OutDir 'software\index.html'))
+  Assert 'catalog shows sentinel v9.9.9'           ($softHtml -match 'v9\.9\.9')
+  $prodHtml = [IO.File]::ReadAllText((Join-Path $t1.OutDir 'ghostlayer\index.html'))
   Assert 'product page shows sentinel v9.9.9'      ($prodHtml -match 'v9\.9\.9')
 }
 Write-Host ""
@@ -146,6 +157,16 @@ $t4 = Invoke-FixtureBuild 'nodate' {
     if ($p.PSObject.Properties.Name -contains 'lastVerified') { $p.lastVerified = $null }
   }
   $o
+} -mutateModules {
+  param($productsDir)
+  # Unverified records cannot remain production-eligible under the current
+  # publication gate. Keep the presentation in the preview lifecycle so this
+  # fixture can exercise the site's no-date fallback without public emission.
+  Get-ChildItem -LiteralPath $productsDir -Filter 'module.json' -File -Recurse | ForEach-Object {
+    $module = Get-Content -LiteralPath $_.FullName -Raw | ConvertFrom-Json
+    $module.lifecycle = 'preview'; $module.visibility = 'hidden'
+    [IO.File]::WriteAllText($_.FullName, ($module | ConvertTo-Json -Depth 30), [Text.UTF8Encoding]::new($false))
+  }
 }
 Assert 'build succeeds with no dates' ($t4.Exit -eq 0) $t4.Output
 if ($t4.Exit -eq 0) {

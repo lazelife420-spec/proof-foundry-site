@@ -53,7 +53,7 @@ function Test-Order([string]$html, [string[]]$needles, [string]$label) {
 
 # 3. Test each H7C target product page
 $h7cProducts = @(
-  @{ Name = 'Lights Out'; Slug = 'lights-out'; PublicVer = 'v11.1.2'; CandidateVer = 'v11.1.3'; Unreleased = $false },
+  @{ Name = 'Lights Out'; Slug = 'lights-out'; PublicVer = 'v11.2.0'; CandidateVer = 'v11.2.0'; Unreleased = $false },
   @{ Name = 'Cleanroom'; Slug = 'cleanroom'; PublicVer = 'v1.0.7'; CandidateVer = 'v1.0.10'; Unreleased = $false },
   @{ Name = 'GhostLayer'; Slug = 'ghostlayer'; PublicVer = 'v0.4.0'; CandidateVer = 'v0.4.0'; Unreleased = $false },
   @{ Name = 'ForgeCast'; Slug = 'forgecast'; PublicVer = 'v0.3.5'; CandidateVer = 'v0.3.5'; Unreleased = $false },
@@ -103,13 +103,14 @@ foreach ($p in $h7cProducts) {
 }
 
 # 4. The functional catalog's geometry & card consistency checks moved with it.
-Assert-Condition ($catalogHtml -match 'class="products-grid"') "Software catalog contains products-grid container"
-Assert-Condition ($catalogHtml -match 'data-product="cache-vault"') "Software catalog card present for Cache Vault"
-Assert-Condition ($catalogHtml -match 'data-product="lights-out"') "Software catalog card present for Lights Out"
-Assert-Condition ($catalogHtml -match 'data-product="cleanroom"') "Software catalog card present for Cleanroom"
-Assert-Condition ($catalogHtml -match 'data-product="ghostlayer"') "Software catalog card present for GhostLayer"
-Assert-Condition ($catalogHtml -match 'data-product="forgecast"') "Software catalog card present for ForgeCast"
-Assert-Condition ($catalogHtml -match 'data-product="proofshot"') "Software catalog card present for ProofShot"
+Assert-Condition ($catalogHtml -match 'class="pf-directory-grid"') "Software catalog contains directory grid container"
+Assert-Condition ($catalogHtml -match 'data-directory-entry="cache-vault"') "Software catalog entry present for Cache Vault"
+Assert-Condition ($catalogHtml -match 'data-directory-entry="lights-out"') "Software catalog entry present for Lights Out"
+Assert-Condition ($catalogHtml -match 'data-directory-entry="cleanroom"') "Software catalog entry present for Cleanroom"
+Assert-Condition ($catalogHtml -match 'data-directory-entry="ghostlayer"') "Software catalog entry present for GhostLayer"
+Assert-Condition ($catalogHtml -match 'data-directory-entry="forgecast"') "Software catalog entry present for ForgeCast"
+Assert-Condition ($catalogHtml -match 'href="/proofshot/"') "Software catalog history link present for ProofShot"
+Assert-Condition ($catalogHtml -match 'data-directory-entry="reality-gate"') "Software catalog entry present for withdrawn Reality Gate"
 
 # Unbiased card geometry: ForgeCast & ProofShot do not force 2-column grid span in studio.css
 $studioCss = [IO.File]::ReadAllText((Join-Path $PublicDir 'studio.css'))

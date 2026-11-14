@@ -1,24 +1,11 @@
 <a class="skip-link" href="#main-content">Skip to content</a>
 <header class="site-header" id="top">
   <div class="container nav-row">
-    <a class="brand-lockup" href="/" aria-label="Proof Foundry home">
-      <picture>
-        <source media="(max-width: 640px)" srcset="/brand/proof-foundry-mark.svg" />
-        <img class="brand-logo" src="/brand/proof-foundry-logo-horizontal.svg" alt="Proof Foundry" />
-      </picture>
+    <a class="brand-lockup" href="/">
+      <picture class="brand-mark-picture"><source media="(forced-colors: active)" srcset="/brand/PF_HEADER_MARK.svg"/><img class="brand-mark" src="/brand/emblem/PF_MARK_G_TI_HEADER.webp" alt="" width="50" height="51"/></picture><span class="pf-mark-fc pf-mark-fc--header" hidden><svg viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path data-maker-mark="plate-edge" d="M17 7H239L249 17V239L239 249H17L7 239V17Z" fill="none" stroke="#829396" stroke-width="7"/><g data-maker-mark="pressed-seal" fill="none" stroke="#829396" stroke-width="4"><path d="M37 98A95 95 0 0 1 219 98M219 158A95 95 0 0 1 37 158"/></g><g data-pf-geometry="shipped-G" transform="translate(31.52 35.84) scale(.72)"><g fill="#f4f0e8"><path d="M42 34H116C157 34 181 56 181 91C181 126 157 148 116 148H82V222H42V34ZM82 70V112H115C132 112 141 104 141 91C141 78 132 70 115 70H82Z"/><path d="M146 34H226V72H186V106H218V143H186V222H146V34Z"/><path d="M145.5 76H146V104H145.5C144.6 104 144.0 103.4 144.0 102.5V77.5C144.0 76.6 144.6 76 145.5 76Z"/></g><path data-maker-mark="receipt-fold" d="M90 77H109L118 86V106H90ZM109 77V86H118" fill="none" stroke="#d6a84f" stroke-width="2" stroke-linejoin="miter"/><path data-maker-mark="record-crossbar" d="M139 103.5H185" stroke="#d6a84f" stroke-width="3.1"/></g><path data-maker-mark="alignment" d="M128 9V20M236 128H247M128 236V247M9 128H20" stroke="#d6a84f" stroke-width="5"/></svg></span>
+      <span class="brand-name">The Proof Foundry<small>Build it. Prove it. Ship it.</small></span>
     </a>
-    <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="primary-nav">
-      <span class="nav-toggle-bar"></span>
-      <span class="nav-toggle-bar"></span>
-      <span class="nav-toggle-bar"></span>
-    </button>
-    <!-- Wrapper so the links and the CTA collapse into one dropdown panel on mobile
-         instead of the CTA wrapping onto a second header row. -->
-    <div class="nav-panel" id="primary-nav">
-      <nav class="top-nav" aria-label="Primary navigation">
-        {{nav-links}}
-      </nav>
-      {{nav-cta}}
-    </div>
+    <p class="header-maker-note">Independent software.<br>Public records. Clear limits.</p>
   </div>
 </header>
+<nav class="pf-route-chain container" id="primary-nav" aria-label="Primary navigation"><ol>{{nav-links}}</ol></nav>

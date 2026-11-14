@@ -5,7 +5,27 @@
   "visibility": "visible",
   "sections": [
     "hero",
-    "outcomes",
+    {
+      "type": "outcomes",
+      "id": "features",
+      "kicker": "Made for the way you work",
+      "title": "From page context to a portable record.",
+      "lede": "This engine captures page structure and resources. It does not take pixel screenshots.",
+      "items": [
+        {
+          "title": "Inspect the input",
+          "body": "Read the page’s declared scripts, styles, images and links. Review the candidates and the generated retrieval plan."
+        },
+        {
+          "title": "Organize the case",
+          "body": "Keep a matter together in a named local folder, with its items and timestamps."
+        },
+        {
+          "title": "Export and check",
+          "body": "Create a bundle with SHA-256 manifests, a Proof Passport and an offline verifier."
+        }
+      ]
+    },
     "how",
     "story",
     "get",
@@ -43,5 +63,73 @@
       "name": "The Proof Foundry",
       "url": "https://theprooffoundry.com"
     }
+  },
+  "schemaVersion": 2,
+  "theme": {
+    "accent": "#F97316",
+    "glow": "rgba(249,115,22,.14)",
+    "atmosphere": "carbon",
+    "background": "#150D0A",
+    "surface": "#21150F",
+    "accentSecondary": "#FBBF24"
+  },
+  "brand": {
+    "name": "ProofShot",
+    "shortName": "ProofShot",
+    "accessibleName": "proofshot",
+    "logo": "/assets/proofshot/logo-transparent.png",
+    "mark": "/assets/products/proofshot/brand/logo.svg"
+  },
+  "taxonomy": {
+    "category": "Web Capture",
+    "jobs": [
+      "build",
+      "capture",
+      "evidence",
+      "export"
+    ],
+    "platforms": [
+      "Windows"
+    ]
+  },
+  "hero": {
+    "variant": "cinematic",
+    "kicker": "Capture & evidence workbench",
+    "headline": "Keep the context. Build the evidence.",
+    "lede": "A local workbench for capturing page resources, organizing a case and exporting a bundle you can verify later.",
+    "media": {
+      "src": "/assets/proofshot/web-hero.png",
+      "alt": "ProofShot evidence workbench artwork",
+      "caption": "ProofShot evidence workbench"
+    },
+    "primaryAction": {
+      "label": "Explore product",
+      "href": "#download"
+    },
+    "secondaryAction": {
+      "label": "Explore the details",
+      "href": "#features"
+    }
+  },
+  "card": {
+    "tagline": "Keep the context. Build the evidence.",
+    "media": "/assets/proofshot/web-hero.png",
+    "summary": "A local workbench for capturing page resources, organizing a case and exporting a bundle you can verify later.",
+    "mediaAlt": "ProofShot production brand artwork over a dark carbon and vermilion field"
+  },
+  "lifecycle": "public-eligible",
+  "placement": {
+    "catalog": true
+  },
+  "homepage": {
+    "tier": "secondary",
+    "variant": "wide-screen",
+    "order": 70,
+    "headline": "Capture context. Carry the proof.",
+    "lede": "Turn page structure and resources into a portable record.",
+    "media": "/assets/proofshot/web-hero.png",
+    "mediaAlt": "ProofShot production brand artwork over a dark carbon and vermilion field",
+    "mediaCaption": "Production brand artwork",
+    "note": "Structural page-resource capture. Not pixel screenshots."
   }
 }

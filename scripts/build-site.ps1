@@ -1,4 +1,4 @@
-# scripts/build-site.ps1 — Manifest-driven static site generator for The Proof Foundry.
+﻿# scripts/build-site.ps1 — Manifest-driven static site generator for The Proof Foundry.
 #
 # Source of truth: site-manifest.json (product identity / status / release facts)
 # Shared chrome:    partials/*.html
@@ -34,6 +34,9 @@ param(
   # site-manifest.json or the real public/ tree.
   [string]$ManifestPath,
   [string]$OutDir,
+  # Explicit presentation-only preview. Preview modules are never included in
+  # the production registry, catalog, truth, sitemap, or public routes.
+  [string]$PreviewProductId,
   # Alternate products/ module directory (fixtures exercise registry controls
   # — extra/hidden/colliding modules — without touching the canonical tree).
   [string]$ProductsDir,
@@ -73,10 +76,10 @@ $manifest = Get-Content $manifestPath -Raw -Encoding UTF8 | ConvertFrom-Json
 # ─────────────────────────────────────────────────────────────────────────────
 # Validation
 # ─────────────────────────────────────────────────────────────────────────────
-$allowedStates = @('pilot','available','frozen','testing','proof','coming')
+$allowedStates = @('pilot','available','frozen','testing','proof','coming','withdrawn')
 $statesRequiringDownload = @('pilot','available','frozen')
-$allowedProductStatuses = @('PUBLIC_RELEASE','RELEASE_CANDIDATE','ACTIVE_PROOF','HOLD','FROZEN','RESEARCH','ROADMAP_DIRECTION','UNRELEASED')
-$allowedReleaseStatuses = @('PUBLIC_RELEASE','RELEASE_CANDIDATE','ACTIVE_PROOF','HOLD','FROZEN','RESEARCH','ROADMAP_DIRECTION','UNRELEASED')
+$allowedProductStatuses = @('PUBLIC_RELEASE','RELEASE_CANDIDATE','ACTIVE_PROOF','HOLD','FROZEN','RESEARCH','ROADMAP_DIRECTION','UNRELEASED','WITHDRAWN')
+$allowedReleaseStatuses = @('PUBLIC_RELEASE','RELEASE_CANDIDATE','ACTIVE_PROOF','HOLD','FROZEN','RESEARCH','ROADMAP_DIRECTION','UNRELEASED','WITHDRAWN')
 $allowedVerificationStatuses = @('VERIFIED','PENDING','NOT_PUBLISHED','NOT_VERIFIED')
 $allowedVerificationTypes = @('ARTIFACT_HASH_PUBLISHED','ARTIFACT_HASH_VERIFIED','ARTIFACT_CUSTODY','RUNTIME_VALIDATION','REALITY_GATE','PUBLIC_DOWNLOAD','CODE_SIGNING','RELEASE_AUTHORIZATION','PUBLICATION_STATUS')
 $allowedSigningStatuses = @('UNSIGNED','DEBUG_SIGNED','PRODUCTION_SIGNED','NOT_APPLICABLE')
@@ -215,6 +218,17 @@ foreach ($p in $manifest.products) {
         if ($p.state -ne 'pilot') { $errors += "$tag releaseStatus PUBLIC_RELEASE but no artifacts listed" }
       }
     }
+    # WITHDRAWN keeps the historical artifact record (filename + checksum) but
+    # never offers it: no current publicVersion, no download URLs anywhere.
+    if ($p.release.releaseStatus -eq 'WITHDRAWN') {
+      if (-not [string]::IsNullOrWhiteSpace([string]$p.release.publicVersion)) { $errors += "$tag WITHDRAWN release must not expose release.publicVersion as current" }
+      if ($p.release.withdrawnVersion -notmatch '^\d+\.\d+\.\d+$') { $errors += "$tag WITHDRAWN release requires release.withdrawnVersion" }
+      if (-not [string]::IsNullOrWhiteSpace([string]$p.downloadUrl)) { $errors += "$tag WITHDRAWN release must not expose downloadUrl" }
+      if (-not $p.presentation.downloadUnavailable) { $errors += "$tag WITHDRAWN release requires presentation.downloadUnavailable" }
+      foreach ($a in @($p.artifacts)) {
+        if ($a.downloadUrl -or $a.sha256Url) { $errors += "$tag WITHDRAWN release artifact URLs must be cleared; retain historical checksum and filename only" }
+      }
+    }
 
     # Candidate must not silently replace public version
     if ($p.release.candidateVersion -and $p.release.publicVersion -and $p.release.candidateVersion -eq $p.release.publicVersion) {
@@ -269,7 +283,7 @@ foreach ($p in $manifest.products) {
   if ($p.artifacts) {
     $declaredVersions = @(
       $p.release.publicVersion, $p.release.candidateVersion,
-      $p.release.companionPublicVersion,
+      $p.release.companionPublicVersion, $p.release.withdrawnVersion,
       $p.companionVersion, $p.currentLocalVersion, $p.version
     ) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
     # A pre-release candidateVersion like "0.2.3-rc1" also declares its base
@@ -379,7 +393,7 @@ foreach ($p in $visibleProducts) {
     continue
   }
   $pubVersion = if ($p.release -and $p.release.publicVersion) { "$($p.release.publicVersion)" } else { '' }
-  $avail = if (-not [string]::IsNullOrWhiteSpace($pubVersion)) { 'AVAILABLE' } else { 'NO_PUBLIC_RELEASE' }
+  $avail = if ($p.release.releaseStatus -eq 'WITHDRAWN') { 'WITHDRAWN' } elseif (-not [string]::IsNullOrWhiteSpace($pubVersion)) { 'AVAILABLE' } else { 'NO_PUBLIC_RELEASE' }
   if (-not $manifest.availabilityTaxonomy -or -not $manifest.availabilityTaxonomy.labels.$avail) {
     $errors += "[$($p.id)] derived availability '$avail' has no availabilityTaxonomy label; the card badge would render blank"
   }
@@ -556,6 +570,9 @@ if ($ValidateOnly) { exit 0 }
 function Read-File($path) { return [System.IO.File]::ReadAllText($path, [System.Text.Encoding]::UTF8) }
 
 function VersionLabel($p) {
+  # A withdrawn release has no current public version; the withdrawn number is
+  # carried separately by withdrawnVersion, never presented as current.
+  if ($p.release -and $p.release.releaseStatus -eq 'WITHDRAWN') { return '' }
   # Prefer canonical release.publicVersion, then legacy publicVersion, then version.
   $v = if ($p.release -and $p.release.publicVersion) { $p.release.publicVersion }
        elseif (-not [string]::IsNullOrWhiteSpace($p.publicVersion)) { $p.publicVersion }
@@ -650,6 +667,11 @@ function StatusLine($p) {
 # decode to the literal characters in every HTML context.
 function Html-Attr($s) { return ($s -replace '&','&amp;' -replace '<','&lt;' -replace '>','&gt;' -replace '"','&quot;' -replace "'",'&#39;') }
 
+# -replace treats its replacement operand as a .NET substitution pattern, so a
+# literal $_, $&, $' or $1 inside injected content (e.g. a PowerShell example)
+# would splice in pieces of the document. Escape before injecting content.
+function Rx-Lit($s) { return ([string]$s).Replace('$', '$$') }
+
 # Public-state URL policy: the only URL shapes allowed to cross into public
 # surfaces are site-relative paths and https:// absolute URLs on public hosts.
 # Everything else (javascript:, data:, file:, vbscript:, about:, blob:,
@@ -687,15 +709,16 @@ function Assert-PublicStateUrls($products) {
 # Two distinct concepts live here and must never be conflated:
 #
 #   Availability — does a public release of the PRODUCT exist? Derived from
-#   release.publicVersion, not from the newest build lane. Lights Out has a
-#   public v11.1.2, so it is Available even though its v11.1.3 candidate is on
-#   hold; calling it "in the foundry" would erase a real release.
+#   release.publicVersion, not from the newest build lane. Lights Out v11.1.3
+#   is the current public release; a later candidate, if present, must not
+#   replace or obscure that released version.
 #
 #   Development lane — what releaseStatus says the newest build is doing. That
 #   is engineering truth and stays on the card as a second state layer, not as
 #   a mutually exclusive homepage bucket.
 
 function VisitorAvailability($p) {
+  if ($p.release -and $p.release.releaseStatus -eq 'WITHDRAWN') { return 'WITHDRAWN' }
   $pub = if ($p.release) { $p.release.publicVersion } else { $null }
   if (-not [string]::IsNullOrWhiteSpace("$pub")) { return 'AVAILABLE' }
   return 'NO_PUBLIC_RELEASE'
@@ -739,6 +762,10 @@ function CardDetailLine($p) {
   $dot  = [char]0x00B7
 
   switch ($rs) {
+    'WITHDRAWN' {
+      $version = if ($p.release.withdrawnVersion) { "v$($p.release.withdrawnVersion)" } else { 'The former release' }
+      return "$version withdrawn $dot no current public download"
+    }
     'RELEASE_CANDIDATE' {
       if ($pub) {
         if ($p.presentation.downloadUnavailable) { return "Candidate $cand $dot downloads currently unavailable" }
@@ -800,6 +827,17 @@ function IsFileDownload($url) {
   return $url -like '*.zip' -or $url -like '*.exe' -or $url -like '*.apk'
 }
 
+# Whether this site actually offers a companion-platform file for download.
+# A listed companion version is a record fact; a downloadable companion file is
+# a separate fact — the site must not imply it serves one it does not.
+function Test-CompanionDownloadOffered($p) {
+  $arts = @($p.artifacts)
+  for ($i = 1; $i -lt $arts.Count; $i++) {
+    if ($arts[$i].downloadUrl -and [string]$arts[$i].platform -ne [string]$arts[0].platform) { return $true }
+  }
+  return $false
+}
+
 # Resolve computed blocks for a product from canonical data (release/artifacts/verification)
 function ProductTokens($p) {
   $tokens = @{}
@@ -813,7 +851,10 @@ function ProductTokens($p) {
   $tokens['statusLabel']         = StateLabel $p.state
   $tokens['productStatus']       = if ($p.productStatus) { $p.productStatus } else { '' }
   $tokens['productStatusLabel']  = if ($p.productStatus -and $manifest.statusTaxonomy.$($p.productStatus)) { $manifest.statusTaxonomy.$($p.productStatus) } else { $tokens['statusLabel'] }
+  $tokens['availabilityStatement'] = if ($p.release -and $p.release.releaseStatus -eq 'WITHDRAWN') { "The former v$(Html-Attr $p.release.withdrawnVersion) release is withdrawn and no public download is available." } elseif ($p.release -and $p.release.publicVersion) { "The public v$(Html-Attr $p.release.publicVersion) release is available." } else { 'No current public release is available.' }
   $tokens['versionLabel']        = VersionLabel $p
+  $tokens['withdrawnVersionLabel'] = if ($p.release -and $p.release.withdrawnVersion) { "v$($p.release.withdrawnVersion)" } else { '' }
+  $tokens['withdrawalNotice']    = if ($p.release -and $p.release.releaseStatus -eq 'WITHDRAWN') { "<p class=`"availability-notice`"><strong>Withdrawn:</strong> v$(Html-Attr $p.release.withdrawnVersion) is not available for download. $(Html-Attr $p.presentation.downloadNotice)</p>" } else { '' }
   $tokens['candidateVersionLabel'] = CandidateVersionLabel $p
   $tokens['currentVersionLabel'] = CurrentVersionLabel $p
   $tokens['companionLabel']      = CompanionLabel $p
@@ -1006,14 +1047,14 @@ $verificationNote
 # Tokens whose values are generated markup — they are built by this script and
 # already escape their dynamic leaves. Every other token value is untrusted
 # dynamic state and is HTML-escaped at interpolation (attribute-safe set).
-$script:MarkupProductTokens = @('proofStrip','downloadBlock','hashBlock','releaseNoteBlock','limitsBlock','markSvg')
+$script:MarkupProductTokens = @('proofStrip','downloadBlock','hashBlock','releaseNoteBlock','limitsBlock','markSvg','withdrawalNotice')
 
 # Apply {{product.X}} substitution to a string given a tokens hashtable
 function Replace-ProductTokens($text, $tokens, [switch]$Strict) {
   foreach ($key in $tokens.Keys) {
     $v = [string]$tokens[$key]
     if ($script:MarkupProductTokens -notcontains $key) { $v = Html-Attr $v }
-    $text = $text -replace [regex]::Escape("{{product.$key}}"), $v
+    $text = $text -replace [regex]::Escape("{{product.$key}}"), (Rx-Lit $v)
   }
   # On a page bound to a product, an unresolved token is a defect, not a blank.
   # Silently stripping it would delete published evidence — a mistyped
@@ -1041,11 +1082,15 @@ function Build-NavLinks($activeId) {
   foreach ($p in $allProductState) { $productIds += $p.id }
   if ($productIds -contains $activeId) { $activeId = 'products' }
 
+  # CP-0189 chrome: engraved station numbering with couplers between items.
   $links = @()
+  $i = 0
   foreach ($item in $manifest.nav) {
+    $i++
     $cur = ''
     if ($item.id -eq $activeId) { $cur = ' aria-current="page"' }
-    $links += "<a href=`"$(Html-Attr $item.href)`"$cur>$(Html-Attr $item.label)</a>"
+    $station = '{0:d2}' -f $i
+    $links += "<li><a href=`"$(Html-Attr $item.href)`"$cur><span class=`"pf-chain-station`" aria-hidden=`"true`">$station</span><span>$(Html-Attr $item.label)</span></a><span class=`"pf-route-coupler`" aria-hidden=`"true`"><i></i><i></i><i></i></span></li>"
   }
   return ($links -join "`n        ")
 }
@@ -1059,19 +1104,132 @@ function Build-FooterProducts {
   return ($items -join "`n          ")
 }
 
+# ─────────────────────────────────────────────────────────────────────────────
+# CP-0189 software directory — the approved composition restored on the V2
+# registry. Public products render real directory entries with art and release
+# state; internal foundry systems keep their static records; withdrawn products
+# state their historical release without implying availability.
+# ─────────────────────────────────────────────────────────────────────────────
+$script:DirectoryInternalEntries = @(
+  @{
+    id='hardline-zero'; name='Hardline Zero'
+    purpose='Keep the work contract visible across tools and agents.'
+  },
+  @{
+    id='crosspoint'; name='CrossPoint'
+    purpose='Give every handoff a recipient, a state and a record.'
+  },
+  @{
+    id='proof-foundry-app'; name='Proof Foundry App'
+    purpose='A software library with the record attached.'
+  }
+)
+
+function Build-DirectoryInternalEntry($e) {
+  return @"
+<article class="directory-entry directory-entry--$($e.id)" data-directory-entry="$($e.id)" data-directory-group="Foundry systems" data-availability="none"><header><p class="kicker">Foundry systems</p><h3>$(Html-Attr $e.name)</h3><p class="directory-purpose">$(Html-Attr $e.purpose)</p></header><div class="directory-no-art" aria-hidden="true"><i></i><i></i><i></i></div><div class="directory-foot"><p class="directory-state">Internal product</p></div></article>
+"@
+}
+
+function Build-DirectoryEntries {
+  $everyday = @()
+  $foundry = @()
+
+  foreach ($p in $allProductState) {
+    $module = @($productRegistry | Where-Object { $_.id -eq $p.id }) | Select-Object -First 1
+    $dir = $p.directory
+
+    if ($p.release -and $p.release.releaseStatus -eq 'WITHDRAWN') {
+      # Withdrawn: a record in the systems ledger — no download, honest limit.
+      $foundry += @"
+<article class="directory-entry directory-entry--$($p.id)" data-directory-entry="$($p.id)" data-directory-group="Foundry systems" data-availability="none"><header><p class="kicker">Foundry systems</p><h3>$(Html-Attr $p.name)</h3><p class="directory-purpose">$(Html-Attr $(if ($dir.purpose) { $dir.purpose } else { $p.cardSummary }))</p></header><div class="directory-no-art" aria-hidden="true"><i></i><i></i><i></i></div><div class="directory-foot"><p class="directory-state">Internal development · public v$(Html-Attr $p.release.withdrawnVersion) withdrawn</p><p class="directory-state-note">$(Html-Attr $dir.stateNote)</p><a class="text-link directory-link" href="$(Html-Attr $p.route)">Explore $(Html-Attr $p.name) <span aria-hidden="true">↗</span></a></div></article>
+"@
+      continue
+    }
+
+    if ($dir.catalog -eq $false) { continue }
+
+    # Release-state line: each platform carries its own public version.
+    $parts = @()
+    $platforms = @($p.platforms)
+    if ($platforms.Count -gt 0) {
+      $parts += "$($platforms[0]) · v$($p.release.publicVersion)"
+      if ($p.release.companionPublicVersion) {
+        $tail = "Android · v$($p.release.companionPublicVersion)"
+        if ($dir.stateSuffix) { $tail += " · $($dir.stateSuffix)" }
+        $parts += $tail
+      }
+    }
+    $stateLine = $parts -join ' / '
+    $note = if ($dir.stateNote) {
+      $noteText = $dir.stateNote -replace '\{candidateVersion\}', ("v" + [string]$p.release.candidateVersion)
+      "<p class=`"directory-state-note`">$(Html-Attr $noteText)</p>"
+    } else { '' }
+    $platformsAttr = if ($dir.downloadPlatforms) { $dir.downloadPlatforms } else { 'windows' }
+    $entryName = if ($dir.name) { [string]$dir.name } else { $p.name }
+    $purpose = if ($dir.purpose) { $dir.purpose } elseif ($module.card.tagline) { [string]$module.card.tagline } else { $p.cardSummary }
+    $art = if ($dir.art) { [string]$dir.art } else { [string]$module.card.media }
+    $artAlt = if ($dir.artAlt) { [string]$dir.artAlt } else { [string]$module.card.mediaAlt }
+    if (-not $art) { $art = [string]$p.presentation.cardImage }
+    if (-not $artAlt) { $artAlt = [string]$p.presentation.cardImageAlt }
+
+    $everyday += @"
+<article class="directory-entry directory-entry--$($p.id)" data-directory-entry="$($p.id)" data-directory-group="Everyday software" data-availability="download" data-download-platforms="$(Html-Attr $platformsAttr)"><header><p class="kicker">Everyday software</p><h3>$(Html-Attr $entryName)</h3><p class="directory-availability directory-availability--public">Public download</p><p class="directory-purpose">$(Html-Attr $purpose)</p></header><figure class="directory-art"><img src="$(Html-Attr $art)" alt="$(Html-Attr $artAlt)" loading="lazy" width="960" height="540"/></figure><div class="directory-foot"><p class="directory-state">$(Html-Attr $stateLine)</p>$note<a class="button button-secondary" href="$(Html-Attr $p.route)">Explore $(Html-Attr $entryName) <span aria-hidden="true">↗</span></a></div></article>
+"@
+  }
+
+  # Internal foundry systems hold their fixed order around the withdrawn record.
+  $foundry = @(
+    (Build-DirectoryInternalEntry $script:DirectoryInternalEntries[0]),
+    (Build-DirectoryInternalEntry $script:DirectoryInternalEntries[1])
+  ) + $foundry + @(
+    (Build-DirectoryInternalEntry $script:DirectoryInternalEntries[2])
+  )
+
+  $grid = '<p class="directory-group-label" role="heading" aria-level="3" data-directory-group-label="Everyday software">Everyday software</p>' + "`n" +
+          ($everyday -join "`n") +
+          '<p class="directory-group-label" role="heading" aria-level="3" data-directory-group-label="Foundry systems">Foundry systems</p>' + "`n" +
+          ($foundry -join "`n")
+  return $grid
+}
+
+function Build-DirectoryGroups {
+  return '<option value="Everyday software">Everyday software</option><option value="Foundry systems">Foundry systems</option>'
+}
+
 function Render-ProductCard($p, $cardTemplate) {
   $t = ProductTokens $p
+  $module = @($productRegistry | Where-Object { $_.id -eq $p.id }) | Select-Object -First 1
+  if ($module.schemaVersion -eq 2 -and $module.card) {
+    if ($module.card.tagline) { $t['valueLine'] = [string]$module.card.tagline }
+    if ($module.card.summary) { $t['moduleSummary'] = [string]$module.card.summary }
+    if ($module.card.media) { $t['cardImage'] = [string]$module.card.media }
+    if ($module.card.mediaAlt) { $t['cardImageAlt'] = [string]$module.card.mediaAlt }
+    if ($module.brand.name) { $t['homeName'] = [string]$module.brand.name }
+  }
+  if ($module.brand.mark) { $t['markSvg'] = '<img class="card-product-mark" src="' + (Html-Attr $module.brand.mark) + '" alt="" aria-hidden="true"/>' }
+  if ($module.theme.accent) {
+    $themeParts=@('--product-accent:' + [string]$module.theme.accent)
+    if ($module.theme.accentSecondary) { $themeParts += '--product-accent-2:' + [string]$module.theme.accentSecondary }
+    $t['moduleCardTheme'] = $themeParts -join ';'
+  }
+  if ($module.taxonomy.category) { $t['moduleCategory'] = [string]$module.taxonomy.category }
+  if ($module.taxonomy.jobs) {
+    $t['moduleJobs'] = (@($module.taxonomy.jobs) -join ', ')
+    $t['moduleJobKeys'] = (@($module.taxonomy.jobs) -join '|')
+  }
   $card = $cardTemplate
   # cardVersionLabel is substituted before versionLabel would be, and the token
   # names are distinct, so ordering here is incidental rather than load-bearing.
   foreach ($key in @(
     'homeName','name','route','state','statusLabel','summary','cardSummary','statusLine','markSvg','id','meta','cta',
     'visitorStatusLabel','visitorStatusSlug','groupId','cardVersionLabel','cardDetailLine','cardCtaHref',
+    'moduleSummary','moduleCategory','moduleJobs','moduleJobKeys','moduleCardTheme',
     'cardProofHref','valueLine','cardImage','cardImageAlt','cardImageWidth','cardImageHeight','cardCta','platform'
   )) {
     $v = [string]$t[$key]
     if ($script:MarkupProductTokens -notcontains $key) { $v = Html-Attr $v }
-    $card = $card -replace [regex]::Escape("{{$key}}"), $v
+    $card = $card -replace [regex]::Escape("{{$key}}"), (Rx-Lit $v)
   }
   # Optional card regions collapse rather than rendering an empty element, so a
   # product without a detail line does not leave a blank row in the card.
@@ -1085,6 +1243,12 @@ function Render-ProductCard($p, $cardTemplate) {
   } else {
     $card = $card -replace '<!--\s*@if-version\s*-->', '' -replace '<!--\s*@end-version\s*-->', ''
   }
+  # A withdrawn product is a record, not a choice: it gets no Compare control.
+  if ($p.release -and $p.release.releaseStatus -eq 'WITHDRAWN') {
+    $card = $card -replace '(?s)<!--\s*@if-compare\s*-->.*?<!--\s*@end-compare\s*-->', ''
+  } else {
+    $card = $card -replace '<!--\s*@if-compare\s*-->', '' -replace '<!--\s*@end-compare\s*-->', ''
+  }
   return $card
 }
 
@@ -1097,21 +1261,33 @@ function Build-ProductCards($groupId, [bool]$includeFeatured = $false) {
   $cardTemplate = Read-File (Join-Path $partialsDir 'product-card.html')
   $cards = @()
   foreach ($p in $allProductState) {
+    $module = @($productRegistry | Where-Object { $_.id -eq $p.id }) | Select-Object -First 1
+    if ($module.placement -and $module.placement.catalog -eq $false) { continue }
     # The featured product gets its own full-width composition above the groups
     # rather than a card, so it is not also emitted into the grid.
-    if ($p.featured -and -not $includeFeatured) { continue }
+    if (($module.homepage.tier -eq 'featured' -or $p.featured) -and -not $includeFeatured) { continue }
     if ($groupId -and (ProductGroupId $p) -ne $groupId) { continue }
     $cards += (Render-ProductCard $p $cardTemplate)
   }
   return ($cards -join "`n`n          ")
 }
 
+function Get-CatalogProductState {
+  $result = @()
+  foreach ($p in $allProductState) {
+    $module = @($productRegistry | Where-Object { $_.id -eq $p.id }) | Select-Object -First 1
+    if (-not $module.placement -or $module.placement.catalog -ne $false) { $result += $p }
+  }
+  return @($result)
+}
+
 # One group section: heading, note, and grid. Emitted only when the group has
 # members, so an empty category cannot publish a heading with nothing under it.
 function Build-ProductGroupSections {
   $sections = @()
+  $catalogState = @(Get-CatalogProductState)
   foreach ($g in @($manifest.productGroups)) {
-    $members = @($allProductState | Where-Object { -not $_.featured -and (ProductGroupId $_) -eq $g.id })
+    $members = @($catalogState | Where-Object { -not $_.featured -and (ProductGroupId $_) -eq $g.id })
     if ($members.Count -eq 0) { continue }
     $cards = Build-ProductCards $g.id
     $count = $members.Count
@@ -1136,11 +1312,11 @@ function Build-ProductGroupSections {
 # facts, each counted from its own source of truth:
 #   - downloads ready today = a served artifact exists (downloadUrl non-empty)
 #   - products with a public release = release.publicVersion non-empty
-# These differ on purpose: Lights Out has a public v11.1.2 whose artifact is
-# currently blocked, so it counts as released but not as downloadable. Counting
-# both from the same predicate is what let the old line erase that release.
+# These differ on purpose: a public release can remain real even when its
+# download is unavailable. Counting both from the same predicate would erase
+# that distinction.
 function Build-CatalogSummary {
-  $visible     = $allProductState
+  $visible     = @(Get-CatalogProductState)
   $downloadable = @($visible | Where-Object { -not $_.presentation.downloadUnavailable -and -not [string]::IsNullOrWhiteSpace($_.downloadUrl) })
   $released     = @($visible | Where-Object { $_.release -and -not [string]::IsNullOrWhiteSpace("$($_.release.publicVersion)") })
   $total        = $visible.Count
@@ -1155,6 +1331,128 @@ function Build-CatalogSummary {
   }
   return ($parts -join " $dot ")
 }
+
+function Get-HomepageProductModules {
+  $eligible = @()
+  foreach ($module in $productRegistry) {
+    # Placement is owned by homepage.tier. Hidden means the module still has a
+    # public route/catalog/truth record, but is intentionally omitted here.
+    if (-not $module.homepage -or $module.homepage.tier -eq 'hidden') { continue }
+    $p = $productStateSource.Get($module.id)
+    if (-not $p) { continue }
+    $tier = [string]$module.homepage.tier
+    $order = [int]$module.homepage.order
+    $eligible += [PSCustomObject]@{ Module=$module; Product=$p; Tier=$tier; Order=$order }
+  }
+  return @($eligible | Sort-Object Order, { [int]$_.Module.order })
+}
+
+function Get-HomepageStatus($product, $tokens) {
+  if ($product.release -and $product.release.releaseStatus -eq 'WITHDRAWN') { return 'Withdrawn · record only' }
+  $status = if ($product.state -eq 'pilot') { [string]$tokens.statusLabel } else { 'Public' }
+  if ($tokens.publicVersion) { $status += ' v' + [string]$tokens.publicVersion }
+  if ($tokens.companionPublicVersionLabel) { $status += ' · Android companion ' + [string]$tokens.companionPublicVersionLabel }
+  return $status
+}
+
+function Build-HomepageFeatured {
+  $entry = @(Get-HomepageProductModules | Where-Object { $_.Tier -eq 'featured' })
+  if (-not $entry.Count) { return '' }
+  if ($entry.Count -gt 1) { throw "Homepage supports one featured module; found $($entry.Count)" }
+  $module = $entry[0].Module; $p = $entry[0].Product; $homeData = $module.homepage; $tokens = ProductTokens $p
+  $name = if ($p.homeName) { $p.homeName } else { $p.name }
+  $image = if ($homeData.media) { $homeData.media } else { $module.hero.media.src }
+  $alt = if ($homeData.mediaAlt) { $homeData.mediaAlt } else { $module.hero.media.alt }
+  $caption = if ($homeData.mediaCaption) { $homeData.mediaCaption } else { $module.hero.media.caption }
+  $headline = if ($homeData.headline) { $homeData.headline } else { $module.hero.headline }
+  $lede = if ($homeData.lede) { $homeData.lede } else { $module.hero.lede }
+  $homeStatus = Get-HomepageStatus $p $tokens
+  return @"
+<section class="h9-hero h9-auto-featured h9-auto-variant-$($homeData.variant)" style="--scene-accent:$(Html-Attr $module.theme.accent)" data-product="$(Html-Attr $module.id)" aria-labelledby="home-featured-title">
+<div class="h9-hero-forge" aria-hidden="true"></div><div class="h9-hero-inner"><div class="h9-hero-copy">
+<div class="h9-studio-chip">Independent software studio · $(Html-Text $name)</div>
+<h1 id="home-featured-title"><span>$(Html-Text $headline)</span></h1>
+<p>$(Html-Text $lede)</p>
+<div class="h9-actions"><a class="button button-primary" href="$(Html-Attr $module.route)">Explore $(Html-Text $name) <span aria-hidden="true">→</span></a><a class="button h9-button-ghost" href="/software/">Explore our software <span aria-hidden="true">→</span></a></div>
+<ul class="h9-principles" aria-label="Studio principles"><li><span aria-hidden="true">◇</span><strong>Independent<br/><small>By design</small></strong></li><li><span aria-hidden="true">▱</span><strong>Inspectable<br/><small>Real records</small></strong></li><li><span aria-hidden="true">◷</span><strong>Local-first<br/><small>Where it fits</small></strong></li></ul>
+</div><div class="h9-hero-product"><figure class="h9-auto-featured-media"><a href="$(Html-Attr $module.route)" aria-label="Explore $(Html-Attr $name)"><img src="$(Html-Attr $image)" alt="$(Html-Attr $alt)" loading="eager" fetchpriority="high" decoding="async"/></a><figcaption><span>$(Html-Text $caption)</span><span>$(Html-Text $tokens.platform) · $(Html-Text $homeStatus)</span></figcaption></figure></div></div>
+</section>
+"@
+}
+
+function Build-HomepageMajorScenes {
+  $scenes = @()
+  foreach ($entry in @(Get-HomepageProductModules | Where-Object { $_.Tier -eq 'major' })) {
+    $module=$entry.Module; $p=$entry.Product; $homeData=$module.homepage; $tokens=ProductTokens $p
+    $name = if ($p.homeName) { $p.homeName } else { $p.name }
+    $image = if ($homeData.media) { $homeData.media } else { $module.hero.media.src }
+    $alt = if ($homeData.mediaAlt) { $homeData.mediaAlt } else { $module.hero.media.alt }
+    $caption = if ($homeData.mediaCaption) { $homeData.mediaCaption } else { $module.hero.media.caption }
+    $headline = if ($homeData.headline) { $homeData.headline } else { $module.hero.headline }
+    $lede = if ($homeData.lede) { $homeData.lede } else { $module.hero.lede }
+    $variant = if ($homeData.variant) { $homeData.variant } else { 'workstation' }
+    $homeStatus = Get-HomepageStatus $p $tokens
+    $noteHtml = if ($homeData.note) { '<p class="h9-scene-note">' + (Html-Text $homeData.note) + '</p>' } else { '' }
+    $scenes += @"
+<section class="h9-scene h9-auto-scene h9-auto-variant-$variant" style="--scene-accent:$(Html-Attr $module.theme.accent)" data-product="$(Html-Attr $module.id)" aria-labelledby="home-scene-$(Html-Attr $module.id)"><div class="h9-scene-inner">
+<div class="h9-scene-copy h9-reveal"><p class="h9-kicker">$(Html-Text $name)</p><h2 id="home-scene-$($module.id)">$(Html-Text $headline)</h2><p>$(Html-Text $lede)</p><span class="h9-product-status">$(Html-Text $tokens.platform) · $(Html-Text $homeStatus)</span><a class="h9-text-link" href="$(Html-Attr $module.route)">Explore $(Html-Text $name) <span aria-hidden="true">→</span></a>$noteHtml</div>
+<figure class="h9-auto-scene-media h9-reveal"><a href="$(Html-Attr $module.route)" aria-label="Explore $(Html-Attr $name)"><img src="$(Html-Attr $image)" alt="$(Html-Attr $alt)" loading="lazy" decoding="async"/></a><figcaption>$(Html-Text $caption)</figcaption></figure>
+</div></section>
+"@
+  }
+  return ($scenes -join "`n")
+}
+
+function Build-HomepageSecondary {
+  $cards = @()
+  foreach ($entry in @(Get-HomepageProductModules | Where-Object { $_.Tier -eq 'secondary' })) {
+    $module=$entry.Module; $p=$entry.Product; $homeData=$module.homepage; $tokens=ProductTokens $p
+    $name = if ($p.homeName) { $p.homeName } else { $p.name }
+    $image = if ($homeData.media) { $homeData.media } else { $module.card.media }
+    $alt = if ($homeData.mediaAlt) { $homeData.mediaAlt } else { $module.card.mediaAlt }
+    $headline = if ($homeData.headline) { $homeData.headline } else { $module.card.tagline }
+    $homeStatus = Get-HomepageStatus $p $tokens
+    $noteHtml = if ($homeData.note) { '<p class="h9-scene-note">' + (Html-Text $homeData.note) + '</p>' } else { '' }
+    $cards += @"
+<article class="h9-mini h9-auto-mini h9-auto-variant-$($homeData.variant)" style="--scene-accent:$(Html-Attr $module.theme.accent)" data-product="$(Html-Attr $module.id)"><div class="h9-mini-copy"><h3>$(Html-Text $name)</h3><p>$(Html-Text $headline)</p><span class="h9-mini-status">$(Html-Text $tokens.platform) · $(Html-Text $homeStatus)</span>$noteHtml<a href="$(Html-Attr $module.route)">Explore <span aria-hidden="true">→</span></a></div><div class="h9-mini-media"><img src="$(Html-Attr $image)" alt="$(Html-Attr $alt)" loading="lazy" decoding="async"/><span class="h9-media-note">$(Html-Text $homeData.mediaCaption)</span></div></article>
+"@
+  }
+  if (-not $cards.Count) { return '' }
+  $open = '<section class="h9-collection h9-secondary-strip" aria-labelledby="collection-title"><h2 class="h9-visually-hidden" id="collection-title">More from the Foundry</h2><div class="products-grid h9-collection-grid">'
+  return $open + "`n" + ($cards -join "`n") + "`n</div></section>"
+}
+
+function Build-HomepageShelf {
+  # CP-0189 placement contract: the approved ledger homepage is a fixed editorial
+  # composition. The single data-driven surface is this bounded shelf inside
+  # home-orientation — modules opt in with homepage.slot='shelf'. tier/variant
+  # remain validated scene vocabulary but do not place products on this page.
+  # Hidden-tier and non-visible modules never render: Get-HomepageProductModules
+  # already filters both. At most four entries; the build refuses a larger set
+  # rather than silently truncating the approved composition.
+  $entries = @(Get-HomepageProductModules | Where-Object { [string]$_.Module.homepage.slot -eq 'shelf' })
+  if (-not $entries.Count) { return '' }
+  if ($entries.Count -gt 4) { throw "Homepage shelf holds at most 4 entries; found $($entries.Count)" }
+  $items = @()
+  foreach ($entry in $entries) {
+    $module=$entry.Module; $p=$entry.Product; $homeData=$module.homepage; $tokens=ProductTokens $p
+    $name = if ($p.homeName) { $p.homeName } else { $p.name }
+    $image = if ($homeData.media) { $homeData.media } elseif ($module.card.media) { $module.card.media } else { $module.hero.media.src }
+    $alt = if ($homeData.mediaAlt) { $homeData.mediaAlt } elseif ($module.card.mediaAlt) { $module.card.mediaAlt } else { $module.hero.media.alt }
+    $headline = if ($homeData.headline) { $homeData.headline } else { $module.card.tagline }
+    $homeStatus = Get-HomepageStatus $p $tokens
+    $noteHtml = if ($homeData.note) { '<span class="home-shelf-note">' + (Html-Text $homeData.note) + '</span>' } else { '' }
+    $items += @"
+<li><a class="home-shelf-entry" href="$(Html-Attr $module.route)" data-product="$(Html-Attr $module.id)">
+<img class="home-shelf-media" src="$(Html-Attr $image)" alt="$(Html-Attr $alt)" width="96" height="72" loading="lazy" decoding="async"/>
+<span class="home-shelf-copy"><strong>$(Html-Text $name)</strong><span>$(Html-Text $headline)</span><span class="home-shelf-status">$(Html-Text $tokens.platform) · $(Html-Text $homeStatus)</span>$noteHtml</span>
+<span class="home-shelf-arrow" aria-hidden="true">↗</span></a></li>
+"@
+  }
+  return '<aside class="home-shelf" aria-label="New in the directory"><p class="home-shelf-label"><span class="kicker">New in the directory</span></p><ul class="home-shelf-list">' + "`n" + ($items -join "`n") + "`n</ul></aside>"
+}
+
+function Get-PublicCatalogCount { return @(Get-CatalogProductState).Count }
 
 function Build-TrustStrip {
   $items = @()
@@ -1252,6 +1550,8 @@ function Build-ProofRegistry {
         candidateVersion = $canVer
         releaseStatus    = if ($p.release -and $p.release.releaseStatus) { $p.release.releaseStatus } else { 'UNRELEASED' }
         publishedAt      = if ($p.release -and $p.release.publishedAt) { $p.release.publishedAt } else { $null }
+        withdrawnVersion  = if ($p.release -and $p.release.withdrawnVersion) { $p.release.withdrawnVersion } else { $null }
+        withdrawalReason  = if ($p.release -and $p.release.withdrawalReason) { $p.release.withdrawalReason } else { $null }
       }
       platform      = if ($p.platforms -and $p.platforms.Count -gt 0) { @($p.platforms) } else { @($p.platform) }
       route         = $p.route
@@ -1334,6 +1634,8 @@ function Build-PublicTruthProduct($p, $source) {
       companionPublicVersion     = if ($p.release.companionPublicVersion) { $p.release.companionPublicVersion } else { $null }
       publishedAt                = if ($p.release.publishedAt) { $p.release.publishedAt } else { $null }
       sourceCommit               = if ($p.release.sourceCommit) { $p.release.sourceCommit } else { $null }
+      withdrawnVersion           = if ($p.release.withdrawnVersion) { $p.release.withdrawnVersion } else { $null }
+      withdrawalReason           = if ($p.release.withdrawalReason) { $p.release.withdrawalReason } else { $null }
     }
   } else { $null }
 
@@ -1432,7 +1734,7 @@ function Build-TruthIndexCards {
   $cards = ''
   foreach ($p in $allProductState) {
     $statusLabel = if ($manifest.statusTaxonomy -and $manifest.statusTaxonomy.PSObject.Properties[$p.productStatus]) { $manifest.statusTaxonomy.($p.productStatus) } else { $p.productStatus }
-    $ver = if ($p.release -and $p.release.publicVersion) { "v$($p.release.publicVersion)" } else { 'Unreleased' }
+    $ver = if ($p.release -and $p.release.publicVersion) { "v$($p.release.publicVersion)" } elseif ($p.release -and $p.release.releaseStatus -eq 'WITHDRAWN' -and $p.release.withdrawnVersion) { "Withdrawn v$($p.release.withdrawnVersion)" } else { 'Unreleased' }
     $artCount = @($p.artifacts).Count
     $artWord = if ($artCount -eq 1) { 'artifact' } else { 'artifacts' }
     # "Public" artifacts only exist when the release is actually public. HOLD /
@@ -1456,22 +1758,52 @@ function Build-TruthIndexCards {
 # the machine records, so the two surfaces can never disagree.
 # ─────────────────────────────────────────────────────────────────────────────
 function Build-TruthFileCards {
-  $cards = ''
+  # CP-0189 composition: records grouped by release status behind a status jump
+  # nav — every group still derives from the same manifest fields as the JSON.
+  $groups = [ordered]@{}
   foreach ($p in $allProductState) {
-    $stateLabel = if ($manifest.stateLabels -and $manifest.stateLabels.PSObject.Properties[$p.state]) { $manifest.stateLabels.($p.state) } else { $p.state }
     $statusLabel = if ($manifest.statusTaxonomy -and $manifest.statusTaxonomy.PSObject.Properties[$p.productStatus]) { $manifest.statusTaxonomy.($p.productStatus) } else { $p.productStatus }
-    $ver = if ($p.release -and $p.release.publicVersion) { "v$($p.release.publicVersion)" } else { 'Unreleased' }
-    $plats = if ($p.platforms) { ($p.platforms -join ' · ') } else { $p.platform }
-    $cards += @"
+    $slug = ($p.productStatus -replace '[^a-zA-Z0-9]+','-').ToLowerInvariant().Trim('-')
+    if (-not $groups.Contains($p.productStatus)) { $groups[$p.productStatus] = @{ label=$statusLabel; slug=$slug; items=@() } }
+    $groups[$p.productStatus].items += $p
+  }
+
+  $jump = @()
+  foreach ($g in $groups.Values) {
+    $n = $g.items.Count
+    $word = if ($n -eq 1) { 'record' } else { 'records' }
+    $jump += "<a href=`"#tf-group-$($g.slug)`">$(Html-Attr $g.label) <b>$n</b><span class=`"sr-only`"> $word</span></a>"
+  }
+
+  $sections = @()
+  foreach ($g in $groups.Values) {
+    $n = $g.items.Count
+    $word = if ($n -eq 1) { 'record' } else { 'records' }
+    $cards = @()
+    foreach ($p in $g.items) {
+      $stateLabel = if ($manifest.stateLabels -and $manifest.stateLabels.PSObject.Properties[$p.state]) { $manifest.stateLabels.($p.state) } else { $p.state }
+      $statusLabel = if ($manifest.statusTaxonomy -and $manifest.statusTaxonomy.PSObject.Properties[$p.productStatus]) { $manifest.statusTaxonomy.($p.productStatus) } else { $p.productStatus }
+      $ver = if ($p.release -and $p.release.publicVersion) { "v$($p.release.publicVersion)" } elseif ($p.release -and $p.release.releaseStatus -eq 'WITHDRAWN' -and $p.release.withdrawnVersion) { "Withdrawn v$($p.release.withdrawnVersion)" } else { 'Unreleased' }
+      $plats = if ($p.platforms) { ($p.platforms -join ' · ') } else { $p.platform }
+      $cards += @"
         <a class="tf-card" href="/truth-files/$(Html-Attr $p.id)/">
-          <div class="tf-card-head">$($p.markSvg)<div><h2>$(Html-Attr $p.name)</h2><span class="tf-card-state">$(Html-Attr $stateLabel)</span></div></div>
+          <div class="tf-card-head">$($p.markSvg)<div><h4>$(Html-Attr $p.name)</h4><span class="tf-card-state">$(Html-Attr $stateLabel)</span></div></div>
           <p>$(Html-Attr $p.cardSummary)</p>
           <div class="tf-card-facts"><span><b>$(Html-Attr $ver)</b> · $(Html-Attr $statusLabel)</span><span>$(Html-Attr $plats)</span></div>
           <span class="tf-open">Open the record →</span>
         </a>
 "@
+    }
+    $sections += @"
+      <section class="tf-group" id="tf-group-$($g.slug)" aria-labelledby="tf-group-$($g.slug)-title">
+        <h3 class="tf-group-title" id="tf-group-$($g.slug)-title">$(Html-Attr $g.label) <span class="tf-group-count">$n $word</span></h3>
+        <div class="tf-grid">
+$($cards -join "`n")        </div>
+      </section>
+"@
   }
-  return $cards
+
+  return "<nav class=`"tf-status-jump`" aria-label=`"Records by status`">$($jump -join '')</nav>`n" + ($sections -join "`n")
 }
 
 function Build-TruthFileShell($module, $source) {
@@ -1484,7 +1816,7 @@ function Build-TruthFileShell($module, $source) {
   $statusClass = ($p.productStatus).ToLowerInvariant()
 
   # ── CURRENT TRUTH ──────────────────────────────────────────────────────────
-  $ver = if ($p.release -and $p.release.publicVersion) { "v$($p.release.publicVersion)" } else { 'Unreleased' }
+  $ver = if ($p.release -and $p.release.publicVersion) { "v$($p.release.publicVersion)" } elseif ($p.release -and $p.release.releaseStatus -eq 'WITHDRAWN' -and $p.release.withdrawnVersion) { "Withdrawn v$($p.release.withdrawnVersion)" } else { 'Unreleased' }
   $relStatus = if ($p.release -and $p.release.releaseStatus) { $p.release.releaseStatus } else { 'UNRELEASED' }
   $relLabel = if ($manifest.statusTaxonomy -and $manifest.statusTaxonomy.PSObject.Properties[$relStatus]) { $manifest.statusTaxonomy.($relStatus) } else { $relStatus }
   $plats = if ($p.platforms) { ($p.platforms -join ', ') } else { $p.platform }
@@ -1499,18 +1831,30 @@ function Build-TruthFileShell($module, $source) {
   if ($p.release -and $p.release.candidateVersion) { $candBits += "Candidate v$(Html-Attr $p.release.candidateVersion) in evaluation" }
   if ($p.release -and $p.release.companionCandidateVersion) { $candBits += "Companion candidate v$(Html-Attr $p.release.companionCandidateVersion)" }
   $candLine = if ($candBits.Count -gt 0) { '<span class="tf-sub">' + ($candBits -join ' · ') + '</span>' } else { '' }
-  $compLine = if ($p.release -and $p.release.companionPublicVersion) { "<span class=`"tf-sub`">Companion v$(Html-Attr $p.release.companionPublicVersion)</span>" } else { '' }
+  $compLine = if ($p.release -and $p.release.companionPublicVersion) { "<span class=`"tf-sub`">Companion v$(Html-Attr $p.release.companionPublicVersion)$(if (Test-CompanionDownloadOffered $p) { '' } else { ' ' + [char]0x00B7 + ' not offered here' })</span>" } else { '' }
   $pkgLine = if ($p.packageId) { "<span class=`"tf-sub`">$(Html-Attr $p.packageId)</span>" } else { '' }
   $pkgFact = if ($pkgLine) { '<div class="tf-fact"><dt>Package</dt><dd>' + $pkgLine + '</dd></div>' } else { '' }
+  # A withdrawn record states its recorded reason; no withdrawal date exists in
+  # the record.
+  $withdrawalFact = ''
+  if ($p.release -and $p.release.releaseStatus -eq 'WITHDRAWN') {
+    $withdrawalReasonHtml = if (-not [string]::IsNullOrWhiteSpace([string]$p.release.withdrawalReason)) { Html-Attr $p.release.withdrawalReason } else { 'Reason not recorded' }
+    $withdrawalFact = '<div class="tf-fact"><dt>Withdrawal</dt><dd>' + $withdrawalReasonHtml + '<span class="tf-sub">Withdrawal date: not recorded</span></dd></div>'
+  }
 
   # ── VERIFIED AGAINST ───────────────────────────────────────────────────────
   $vRows = @()
   $verif = $p.verification
   if ($verif -and $verif.status) {
-    $vClass = if ($verif.status -eq 'VERIFIED') { 'verified' } else { 'pending' }
+    # On a withdrawn product the qualification record is historical, not a
+    # current pass: the chip says so in words while the raw status stays
+    # machine-readable in data-report-status.
+    $tfWithdrawn = $p.release -and $p.release.releaseStatus -eq 'WITHDRAWN'
+    $chipText = if ($tfWithdrawn) { 'Historical (withdrawn)' } else { [string]$verif.status }
+    $vClass = if ($verif.status -eq 'VERIFIED' -and -not $tfWithdrawn) { 'verified' } else { 'pending' }
     $when = if ($verif.verifiedAt) { "Verified $(Html-Attr $verif.verifiedAt)" } elseif ($verif.checkedAt) { "Checked $(Html-Attr $verif.checkedAt)" } else { '' }
     $whenNote = if ($when) { '<span class="tf-v-note">' + $when + '</span>' } else { '' }
-    $vRows += "<li><span class=`"tf-v-label`">Qualification state</span><span class=`"tf-v-val`"><span class=`"tf-chip $vClass`">$(Html-Attr $verif.status)</span></span>$whenNote</li>"
+    $vRows += "<li><span class=`"tf-v-label`">Qualification state</span><span class=`"tf-v-val`"><span class=`"tf-chip $vClass`" data-report-status=`"$(Html-Attr $verif.status)`">$(Html-Attr $chipText)</span></span>$whenNote</li>"
   }
   if ($p.release -and $p.release.publishedAt) {
     $vRows += "<li><span class=`"tf-v-label`">Publication state</span><span class=`"tf-v-val`">$(Html-Attr $relLabel)</span><span class=`"tf-v-note`">Published $(Html-Attr $p.release.publishedAt)</span></li>"
@@ -1608,6 +1952,7 @@ function Build-TruthFileShell($module, $source) {
         <div class="tf-fact"><dt>Release state</dt><dd>$(Html-Attr $relLabel)</dd></div>
         <div class="tf-fact"><dt>Artifact</dt><dd>$downloadLine<span class="tf-sub">$(Html-Attr $artLine)</span></dd></div>
         $pkgFact
+        $withdrawalFact
       </dl>
     </section>
 
@@ -1767,6 +2112,8 @@ function Build-ReceiptCards {
         $candidateLabel = if ($p.release -and $p.release.releaseStatus -eq 'PUBLIC_RELEASE') { 'Next' } else { 'Candidate' }
         $verHtml += "<dd class='candidate-version'>$candidateLabel v$(Html-Attr $candidateVer)</dd>"
       }
+    } elseif ($p.release -and $p.release.releaseStatus -eq 'WITHDRAWN' -and $p.release.withdrawnVersion) {
+      $verHtml = "<dd>Withdrawn (v$(Html-Attr $p.release.withdrawnVersion))</dd>"
     } else {
       $verHtml = '<dd style="color:var(--muted);">Unreleased</dd>'
     }
@@ -1780,8 +2127,8 @@ function Build-ReceiptCards {
       $fn = if ($primaryArtifact.filename) { Html-Attr $primaryArtifact.filename } else { 'Artifact' }
       # Name the build this checksum covers. The card's "Public version" row sits a
       # few lines above, so an unattributed hash reads as the public release's
-      # checksum. For a product on HOLD (Lights Out: public v11.1.2, artifacts
-      # v11.1.3) that would be a false public claim, so say which build it is.
+      # checksum. If artifact and public versions differ, identify the artifact's
+      # scope to avoid implying that the checksum verifies another build.
       $artifactVersions = @([regex]::Matches("$($primaryArtifact.filename) $($primaryArtifact.downloadUrl)", '(?<![\d.])(\d+\.\d+\.\d+(?:-[a-zA-Z0-9._]+)?)(?![\d.])') |
                             ForEach-Object { $_.Groups[1].Value } | Select-Object -Unique)
       $scopeNote = ''
@@ -1802,14 +2149,20 @@ function Build-ReceiptCards {
       $shaBlock = '<p style="color:var(--muted);">No public artifact hash.</p>'
     }
 
-    # typed verification matrix
-    $matrixDims = @('ARTIFACT_HASH_PUBLISHED','ARTIFACT_HASH_VERIFIED','ARTIFACT_CUSTODY','RUNTIME_VALIDATION','REALITY_GATE','PUBLIC_DOWNLOAD','CODE_SIGNING','RELEASE_AUTHORIZATION','PUBLICATION_STATUS')
-    $matrixRows = @()
-    foreach ($dim in $matrixDims) {
-      $r = Get-VerificationStatus $dim $p
-      $matrixRows += "<div><dt>$(Html-Attr $r[0])</dt><dd class=`"status-$($r[2])`">$(Html-Attr $r[1])</dd></div>"
+    # typed verification matrix: a withdrawn product gets one historical line
+    # instead of release-time checks presented as current verification.
+    if ($p.release -and $p.release.releaseStatus -eq 'WITHDRAWN') {
+      $wv = if ($p.release.withdrawnVersion) { ' v' + (Html-Attr $p.release.withdrawnVersion) } else { '' }
+      $matrix = "<p class='verification-withdrawn'>Withdrawn$wv $([char]0x2014) release-time checks are historical; no public download</p>"
+    } else {
+      $matrixDims = @('ARTIFACT_HASH_PUBLISHED','ARTIFACT_HASH_VERIFIED','ARTIFACT_CUSTODY','RUNTIME_VALIDATION','REALITY_GATE','PUBLIC_DOWNLOAD','CODE_SIGNING','RELEASE_AUTHORIZATION','PUBLICATION_STATUS')
+      $matrixRows = @()
+      foreach ($dim in $matrixDims) {
+        $r = Get-VerificationStatus $dim $p
+        $matrixRows += "<div><dt>$(Html-Attr $r[0])</dt><dd class=`"status-$($r[2])`">$(Html-Attr $r[1])</dd></div>"
+      }
+      $matrix = "<dl class='receipt-fields verification-matrix'>" + ($matrixRows -join '') + "</dl>"
     }
-    $matrix = "<dl class='receipt-fields verification-matrix'>" + ($matrixRows -join '') + "</dl>"
 
     # evidence links from canonical evidence and legacy proofLinks
     $evidenceLinks = @()
@@ -1936,7 +2289,12 @@ if (-not (Test-Path $publicDir)) { New-Item -ItemType Directory $publicDir | Out
 # truth surface, and H12 discovery all enumerate the registry — never a
 # hardcoded product-id list.
 
-$KnownProductSections = @('hero','film','outcomes','how','story','get','onboard','faq','identity','evidence','privacy','related','final-cta')
+$KnownProductSections = @('hero','film','outcomes','how','story','get','onboard','faq','identity','evidence','privacy','related','final-cta','gallery','features','copy','guided-tour','devices','integrations','download','technical-record')
+$KnownStructuredRenderers = @('outcomes','features','how','onboard','guided-tour','devices','integrations','faq','story','get','identity','evidence','privacy','related','final-cta','gallery','copy','download','technical-record')
+$KnownHeroVariants = @('split','centered','cinematic','console','device','immersive')
+$KnownHomepageVariants = @('forge-scene','workstation','device','console','wide-screen','compact')
+$KnownLifecycles = @('draft','preview','public-eligible')
+$KnownAtmospheres = @('archive','night','control-room','weather','carbon','memory','clean','foundry','none')
 $ReservedRoutes = @('/','/software/','/truth/','/truth-files/','/proof/','/proof-standard/','/support/','/roadmap/','/api/','/assets/','/brand/','/reports/','/about/','/founders/','/404','/sitemap.xml','/robots.txt','/_redirects','/_headers')
 
 function Get-ProductRegistry {
@@ -1944,12 +2302,14 @@ function Get-ProductRegistry {
   $modulesDir = $script:productsDir
   $modules = @()
   $regErrors = @()
+  $moduleDirectoryNames = @{}
   if (Test-Path $modulesDir) {
     foreach ($dir in Get-ChildItem $modulesDir -Directory | Sort-Object Name) {
       $modPath = Join-Path $dir.FullName 'module.json'
       if (-not (Test-Path $modPath)) { $regErrors += "products/$($dir.Name)/: missing module.json"; continue }
       try { $m = Get-Content $modPath -Raw -Encoding UTF8 | ConvertFrom-Json }
       catch { $regErrors += "products/$($dir.Name)/module.json: invalid JSON — $($_.Exception.Message)"; continue }
+      if ($m.id) { $moduleDirectoryNames[$m.id] = $dir.Name }
       $modules += $m
     }
   }
@@ -1957,6 +2317,7 @@ function Get-ProductRegistry {
   foreach ($m in $modules) {
     $tag = "module '$($m.id)'"
     if ([string]::IsNullOrWhiteSpace($m.id)) { $regErrors += "module missing id"; continue }
+    if ($moduleDirectoryNames[$m.id] -ne $m.id) { $regErrors += "module directory must match module id '$($m.id)'" }
     if ($m.id -notmatch '^[a-z0-9]+(-[a-z0-9]+)*$') { $regErrors += "${tag}: unsafe slug '$($m.id)'" }
     if ($seenIds.ContainsKey($m.id)) { $regErrors += "${tag}: duplicate product id" }
     $seenIds[$m.id] = $true
@@ -1966,18 +2327,79 @@ function Get-ProductRegistry {
     if ($seenRoutes.ContainsKey($routeKey)) { $regErrors += "${tag}: duplicate/case-colliding route $($m.route)" }
     $seenRoutes[$routeKey] = $true
     if ($m.visibility -notin @('visible','hidden')) { $regErrors += "${tag}: visibility must be visible|hidden (got '$($m.visibility)')" }
+    if ($m.lifecycle -notin $KnownLifecycles) { $regErrors += "${tag}: lifecycle must be draft|preview|public-eligible" }
+    if ($m.lifecycle -eq 'public-eligible' -and $m.visibility -ne 'visible') { $regErrors += "${tag}: public-eligible lifecycle requires visible presentation" }
+    if ($m.lifecycle -in @('draft','preview') -and $m.visibility -ne 'hidden') { $regErrors += "${tag}: draft/preview lifecycle requires hidden visibility" }
     if (-not ($m.order -is [int] -or $m.order -is [long] -or $m.order -is [double])) { $regErrors += "${tag}: numeric order required" }
-    foreach ($s in @($m.sections)) { if ($s -notin $KnownProductSections) { $regErrors += "${tag}: unknown section '$s'" } }
-    if ($m.contentSource -ne 'content.html') { $regErrors += "${tag}: contentSource must be content.html (no traversal/alt paths)" }
-    if (-not (Test-Path (Join-Path $modulesDir "$($m.id)\content.html"))) { $regErrors += "${tag}: missing content.html" }
+    foreach ($s in @($m.sections)) {
+      $type = if ($s -is [string]) { $s } else { [string]$s.type }
+      if ($type -notin $KnownProductSections) { $regErrors += "${tag}: unknown section '$type'" }
+      if ($s -isnot [string] -and $s -isnot [System.Management.Automation.PSCustomObject]) { $regErrors += "${tag}: section entries must be names or objects" }
+      if ($s -is [System.Management.Automation.PSCustomObject] -and $type -notin $KnownStructuredRenderers) { $regErrors += "${tag}: no registered structured renderer for '$type'" }
+    }
+    if ($m.contentSource -and $m.contentSource -ne 'content.html') { $regErrors += "${tag}: contentSource must be content.html (no traversal/alt paths)" }
+    if ($m.contentSource -and -not (Test-Path (Join-Path $modulesDir "$($m.id)\content.html"))) { $regErrors += "${tag}: missing content.html" }
+    if (-not $m.contentSource -and @($m.sections).Count -eq 0) { $regErrors += "${tag}: structured modules require sections" }
+    if ($m.schemaVersion -and $m.schemaVersion -ne 2) { $regErrors += "${tag}: schemaVersion must be 2 when specified" }
+    if ($m.schemaVersion -eq 2) {
+      if ($m.lifecycle -notin $KnownLifecycles) { $regErrors += "${tag}: schemaVersion 2 requires an explicit lifecycle" }
+      if (-not $m.brand.name -or -not ($m.brand.mark -or $m.brand.logo)) { $regErrors += "${tag}: v2 brand.name and a product mark/logo are required" }
+      if (-not $m.hero -or [string]::IsNullOrWhiteSpace($m.hero.headline) -or [string]::IsNullOrWhiteSpace($m.hero.kicker) -or [string]::IsNullOrWhiteSpace($m.hero.lede)) { $regErrors += "${tag}: v2 hero requires kicker, headline, and lede" }
+      if ($m.hero -and $m.hero.variant -notin $KnownHeroVariants) { $regErrors += "${tag}: unsupported hero variant '$($m.hero.variant)'" }
+      foreach ($colorKey in @('accent','accentSecondary','background','surface','glow','text','muted')) {
+        $value = [string]$m.theme.$colorKey
+        if ($value -and $value -notmatch '^(#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?|rgba?\(\s*(\d{1,3}\s*,\s*){2}\d{1,3}(\s*,\s*(0|1|0?\.\d+))?\s*\))$') { $regErrors += "${tag}: invalid theme.$colorKey; use hex or rgb(a)" }
+      }
+      if ($m.theme.atmosphere -and $m.theme.atmosphere -notin $KnownAtmospheres) { $regErrors += "${tag}: unsupported atmosphere '$($m.theme.atmosphere)'" }
+      if ($m.lifecycle -eq 'public-eligible' -and -not $m.homepage) { $regErrors += "${tag}: public-eligible modules require homepage presentation metadata (tier hidden is allowed)" }
+      if ($m.homepage) {
+        if ($m.homepage.tier -notin @('featured','major','secondary','hidden')) { $regErrors += "${tag}: homepage.tier must be featured|major|secondary|hidden" }
+        if ($m.homepage.variant -notin $KnownHomepageVariants) { $regErrors += "${tag}: unsupported homepage.variant '$($m.homepage.variant)'" }
+        if (-not ($m.homepage.order -is [int] -or $m.homepage.order -is [long] -or $m.homepage.order -is [double])) { $regErrors += "${tag}: homepage.order must be numeric" }
+        if ($m.homepage.slot -and $m.homepage.slot -ne 'shelf') { $regErrors += "${tag}: homepage.slot must be 'shelf' when declared (no other slot exists on the approved ledger page)" }
+      }
+      if ($m.placement -and $m.placement.PSObject.Properties['homepage']) { $regErrors += "${tag}: homepage placement is controlled by homepage.tier; remove placement.homepage" }
+      foreach ($asset in @($m.brand.mark, $m.brand.logo, $m.brand.monochrome, $m.hero.media.src, $m.card.media, $m.homepage.media)) {
+        if (-not $asset) { continue }
+        if ($asset -notmatch '^/assets/[a-zA-Z0-9._/-]+$' -or $asset.Contains('..')) { $regErrors += "${tag}: asset paths must be local /assets/... paths"; continue }
+        $assetDiskPath = $null
+        $moduleAssetPrefix = "/assets/products/$($m.id)/"
+        $moduleDirectoryPath = Join-Path $modulesDir $m.id
+        if ($asset.StartsWith($moduleAssetPrefix, [StringComparison]::Ordinal)) {
+          $tail = $asset.Substring($moduleAssetPrefix.Length)
+          if ($tail -eq 'brand/logo.svg') { $assetDiskPath = Join-Path $moduleDirectoryPath 'logo.svg' }
+          elseif ($tail -eq 'brand/wordmark.svg') { $assetDiskPath = Join-Path $moduleDirectoryPath 'wordmark.svg' }
+          elseif ($tail.StartsWith('media/')) { $assetDiskPath = Join-Path (Join-Path $moduleDirectoryPath 'media') ($tail.Substring(6).Replace('/','\')) }
+        } else { $assetDiskPath = Join-Path $root ($asset.TrimStart('/').Replace('/','\')) }
+        if ($assetDiskPath -and -not (Test-Path $assetDiskPath)) { $regErrors += "${tag}: referenced asset is missing ($asset)" }
+      }
+      foreach ($action in @($m.hero.primaryAction, $m.hero.secondaryAction)) {
+        if ($action.href -and $action.href -notmatch '^(#[a-zA-Z0-9_-]+|/[a-zA-Z0-9._/-]+)$') { $regErrors += "${tag}: hero action href must be a local path or fragment" }
+      }
+      foreach ($section in @($m.sections | Where-Object { $_ -isnot [string] })) {
+        if ($section.type -notin $KnownProductSections) { continue }
+        if ($section.type -in @('outcomes','features') -and @($section.items).Count -gt 12) { $regErrors += "${tag}: section '$($section.type)' supports at most 12 items" }
+        foreach ($item in @($section.items)) {
+          if ($item.src -and ($item.src -notmatch '^/assets/[a-zA-Z0-9._/-]+$' -or $item.src.Contains('..'))) { $regErrors += "${tag}: section media paths must be local /assets/... paths" }
+        }
+      }
+    }
     if (-not $m.meta -or [string]::IsNullOrWhiteSpace($m.meta.title) -or [string]::IsNullOrWhiteSpace($m.meta.description)) { $regErrors += "${tag}: meta.title + meta.description required" }
-    if (-not @($manifest.products | Where-Object { $_.id -eq $m.id }).Count) { $regErrors += "${tag}: no manifest product with id '$($m.id)'" }
+    $canonical = @($manifest.products | Where-Object { $_.id -eq $m.id }) | Select-Object -First 1
+    if ($m.lifecycle -eq 'public-eligible') {
+      if (-not $canonical) { $regErrors += "${tag}: publication gate denied; no canonical manifest product exists for '$($m.id)'" }
+      elseif ($canonical.route -ne $m.route -or -not $canonical.visible -or $canonical.release.releaseStatus -notin @('PUBLIC_RELEASE','WITHDRAWN') -or $canonical.verification.status -ne 'VERIFIED' -or ($canonical.release.releaseStatus -eq 'PUBLIC_RELEASE' -and [string]::IsNullOrWhiteSpace([string]$canonical.release.publicVersion)) -or ($canonical.release.releaseStatus -eq 'WITHDRAWN' -and [string]::IsNullOrWhiteSpace([string]$canonical.release.withdrawnVersion))) {
+        $regErrors += "${tag}: publication gate denied; route, visibility, verified provenance, and public or withdrawn release truth must agree with site-manifest.json"
+      }
+    }
   }
   foreach ($p in $manifest.products) {
     if ($p.visible -and -not $seenIds.ContainsKey($p.id)) { $regErrors += "manifest product '$($p.id)' has no module — registry is the enumeration source" }
   }
   if ($regErrors.Count) { throw "PRODUCT REGISTRY INVALID:`n" + ($regErrors | ForEach-Object { "  - $_" } | Out-String) }
-  return @($modules | Sort-Object { [int]$_.order })
+  $script:allProductModules = @($modules | Sort-Object { [int]$_.order })
+  $script:previewProductModules = @($script:allProductModules | Where-Object { $_.lifecycle -in @('draft','preview') })
+  return @($script:allProductModules | Where-Object { $_.lifecycle -eq 'public-eligible' } | Sort-Object { [int]$_.order })
 }
 
 function New-ManifestProductStateSource($manifestData, $registry) {
@@ -1989,12 +2411,12 @@ function New-ManifestProductStateSource($manifestData, $registry) {
     # Every module-paired product — including hidden (hidden state may still be
     # referenced by name tokens on non-product pages).
     $byId = @{}; foreach ($p in $this.Manifest.products) { $byId[$p.id] = $p }
-    return @($this.Registry | ForEach-Object { $byId[$_.id] })
+    return @($this.Registry | ForEach-Object { $byId[$_.id] } | Where-Object { $null -ne $_ })
   }
   $src | Add-Member -MemberType ScriptMethod -Name GetVisible -Value {
     # Visible modules only — the enumeration source for public surfaces.
     $byId = @{}; foreach ($p in $this.Manifest.products) { $byId[$p.id] = $p }
-    return @($this.Registry | Where-Object { $_.visibility -eq 'visible' } | ForEach-Object { $byId[$_.id] })
+    return @($this.Registry | Where-Object { $_.lifecycle -eq 'public-eligible' -and $_.visibility -eq 'visible' } | ForEach-Object { $byId[$_.id] } | Where-Object { $null -ne $_ })
   }
   $src | Add-Member -MemberType ScriptMethod -Name Get -Value { param($id)
     return @($this.Manifest.products | Where-Object { $_.id -eq $id }) | Select-Object -First 1
@@ -2010,11 +2432,11 @@ function New-FixtureApiProductStateSource($data, $registry) {
   $src = [PSCustomObject]@{ Kind = 'fixture-api'; Data = $data; Registry = $registry }
   $src | Add-Member -MemberType ScriptMethod -Name GetAll -Value {
     $byId = @{}; foreach ($p in $this.Data) { $byId[$p.id] = $p }
-    return @($this.Registry | ForEach-Object { $byId[$_.id] })
+    return @($this.Registry | ForEach-Object { $byId[$_.id] } | Where-Object { $null -ne $_ })
   }
   $src | Add-Member -MemberType ScriptMethod -Name GetVisible -Value {
     $byId = @{}; foreach ($p in $this.Data) { $byId[$p.id] = $p }
-    return @($this.Registry | Where-Object { $_.visibility -eq 'visible' } | ForEach-Object { $byId[$_.id] })
+    return @($this.Registry | Where-Object { $_.lifecycle -eq 'public-eligible' -and $_.visibility -eq 'visible' } | ForEach-Object { $byId[$_.id] } | Where-Object { $null -ne $_ })
   }
   $src | Add-Member -MemberType ScriptMethod -Name Get -Value { param($id)
     return @($this.Data | Where-Object { $_.id -eq $id }) | Select-Object -First 1
@@ -2023,13 +2445,19 @@ function New-FixtureApiProductStateSource($data, $registry) {
 }
 
 $productRegistry    = Get-ProductRegistry
+$previewModule = $null
+if ($PreviewProductId) {
+  if ($PreviewProductId -notmatch '^[a-z0-9]+(-[a-z0-9]+)*$') { throw 'PreviewProductId must be a lowercase product slug.' }
+  $previewModule = @($script:allProductModules | Where-Object { $_.id -eq $PreviewProductId }) | Select-Object -First 1
+  if (-not $previewModule) { throw "Preview product '$PreviewProductId' has no validated module." }
+}
 if ($StateSourcePath) {
   # Fixture/alternate transport: a JSON document shaped like the public-state
   # response ({ products: [...] }) — the adapter seam, not the manifest.
   $stateDoc = Get-Content $StateSourcePath -Raw | ConvertFrom-Json
-  $productStateSource = New-FixtureApiProductStateSource (@($stateDoc.products)) $productRegistry
+  $productStateSource = New-FixtureApiProductStateSource (@($stateDoc.products)) $script:allProductModules
 } else {
-  $productStateSource = New-ManifestProductStateSource $manifest $productRegistry
+  $productStateSource = New-ManifestProductStateSource $manifest $script:allProductModules
 }
 $allProductState    = @($productStateSource.GetVisible())
 $allModuleState     = @($productStateSource.GetAll())
@@ -2037,7 +2465,78 @@ $allModuleState     = @($productStateSource.GetAll())
 # foreign — is held to the same public-state rules before emission.
 Assert-PublicStateUrls $allModuleState
 
-function Render-ProductShell($module, [switch]$Template) {
+function Html-Text($value) { return [System.Net.WebUtility]::HtmlEncode([string]$value) }
+
+function Render-StructuredSection($section) {
+  $type = [string]$section.type
+  $id = if ($section.id -match '^[a-zA-Z][a-zA-Z0-9_-]*$') { " id=`"$(Html-Attr $section.id)`"" } else { '' }
+  $kicker = if ($section.kicker) { "<p class=`"kicker pp-kicker`">$(Html-Text $section.kicker)</p>" } else { '' }
+  $title = if ($section.title) { "<h2>$(Html-Text $section.title)</h2>" } else { '' }
+  $lede = if ($section.lede) { "<p>$(Html-Text $section.lede)</p>" } else { '' }
+  switch ($type) {
+    { $_ -in @('outcomes','features') } {
+      $items = @($section.items | ForEach-Object {
+        $note = if ($_.note) { "<p class=`"pp-scope-note`"><em>Note: $(Html-Text $_.note)</em></p>" } else { '' }
+        "<article><h3>$(Html-Text $_.title)</h3><p>$(Html-Text $_.body)</p>$note</article>"
+      }) -join "`n"
+      return "<section class=`"pp-section pp-generated-section pp-generated-grid`"$id><div class=`"section-heading pp-section-head`">$kicker$title$lede</div><div class=`"pp-outcome-grid`">$items</div></section>"
+    }
+    'gallery' {
+      $items = @($section.items | ForEach-Object {
+        $src = [string]$_.src; $alt = Html-Attr $_.alt; $caption = Html-Text $_.caption
+        "<figure class=`"app-shot`"><img src=`"$(Html-Attr $src)`" alt=`"$alt`" loading=`"lazy`" decoding=`"async`"/><figcaption>$caption</figcaption></figure>"
+      }) -join "`n"
+      return "<section class=`"pp-section pp-generated-section`"$id><div class=`"section-heading pp-section-head`">$kicker$title$lede</div><div class=`"pp-generated-gallery`">$items</div></section>"
+    }
+    'copy' {
+      $body = @($section.paragraphs | ForEach-Object { "<p>$(Html-Text $_)</p>" }) -join "`n"
+      return "<section class=`"pp-section pp-generated-section`"$id><div class=`"section-heading pp-section-head`">$kicker$title$lede</div><div class=`"pp-generated-copy`">$body</div></section>"
+    }
+    { $_ -in @('how','onboard','guided-tour','devices','integrations') } {
+      $items = @($section.items | ForEach-Object { "<article><h3>$(Html-Text $_.title)</h3><p>$(Html-Text $_.body)</p></article>" }) -join "`n"
+      return "<section class=`"pp-section pp-generated-section`"$id><div class=`"section-heading pp-section-head`">$kicker$title$lede</div><div class=`"pp-outcome-grid`">$items</div></section>"
+    }
+    'faq' {
+      $items = @($section.items | ForEach-Object { "<div class=`"pp-faq-item`"><h3>$(Html-Text $_.title)</h3><p>$(Html-Text $_.body)</p></div>" }) -join "`n"
+      $support = '<div class="pp-support pp-support-flush"><strong>Questions or a problem?</strong><span>The Support Hub covers checksums, downloads, and problem reports for every product.</span><a class="text-link" href="/support/">Visit the Support Hub ↗</a></div>'
+      return "<section class=`"pp-faq pp-section pp-generated-section`"$id><div class=`"section-heading pp-section-head`">$kicker$title$lede</div>$items$support</section>"
+    }
+    { $_ -in @('story','get','identity','evidence','privacy','download','technical-record','final-cta','related') } {
+      $body = @($section.paragraphs | ForEach-Object { "<p>$(Html-Text $_)</p>" }) -join "`n"
+      return "<section class=`"pp-section pp-generated-section pp-generated-copy`"$id><div class=`"section-heading pp-section-head`">$kicker$title$lede</div>$body</section>"
+    }
+    default { return '' }
+  }
+}
+
+function Render-ModuleHero($module, $product) {
+  $hero = $module.hero
+  $variant = if ($hero.variant) { [string]$hero.variant } else { 'split' }
+  $mark = if ($module.brand.mark) { "<img class=`"product-module-mark`" src=`"$(Html-Attr $module.brand.mark)`" alt=`"`"/>" } else { '' }
+  $brandName = if ($module.brand.name) { [string]$module.brand.name } else { [string]$product.name }
+  $emphasis = if ($hero.emphasis) { "<em>$(Html-Text $hero.emphasis)</em>" } else { '' }
+  $headline = Html-Text $hero.headline
+  $media = ''
+  if ($hero.media.src) { $media = "<figure class=`"app-shot hero-product-shot`"><img src=`"$(Html-Attr $hero.media.src)`" alt=`"$(Html-Attr $hero.media.alt)`" loading=`"eager`" fetchpriority=`"high`" decoding=`"async`"/><figcaption>$(Html-Text $hero.media.caption)</figcaption></figure>" }
+  $primary = if ($hero.primaryAction.label -and $hero.primaryAction.href) { "<a class=`"button button-primary`" href=`"$(Html-Attr $hero.primaryAction.href)`">$(Html-Text $hero.primaryAction.label)</a>" } else { '' }
+  $secondary = if ($hero.secondaryAction.label -and $hero.secondaryAction.href) { "<a class=`"text-link`" href=`"$(Html-Attr $hero.secondaryAction.href)`">$(Html-Text $hero.secondaryAction.label)</a>" } else { '' }
+  $lede = Html-Text $hero.lede
+  # A withdrawn release states its status in words directly under the headline.
+  $statusLine = ''
+  if ($product -and $product.release -and $product.release.releaseStatus -eq 'WITHDRAWN') {
+    $dot = [char]0x00B7
+    $statusParts = @()
+    $heroPlatform = PlatformLabel $product
+    if (-not [string]::IsNullOrWhiteSpace($heroPlatform)) { $statusParts += $heroPlatform }
+    if (-not [string]::IsNullOrWhiteSpace([string]$product.release.withdrawnVersion)) { $statusParts += ('v' + [string]$product.release.withdrawnVersion) }
+    $statusParts += 'no current download'
+    $statusLine = '<p class="pp-hero-status" data-release-status="withdrawn"><strong>WITHDRAWN</strong> ' + (Html-Text ($dot + ' ' + ($statusParts -join (' ' + $dot + ' ')))) + '</p>'
+  }
+  $layoutClass = if ($variant -eq 'centered') { 'pp-hero-layout pp-hero-centered' } else { "pp-hero-layout pp-hero-$variant" }
+  return "<section class=`"product-hero pp-hero pp-module-hero`" id=`"overview`" data-hero-variant=`"$(Html-Attr $variant)`"><div class=`"product-identity`">$mark<span>$(Html-Text $brandName)</span><span class=`"identity-studio`">by The Proof Foundry</span></div><div class=`"$layoutClass`"><div class=`"product-copy`"><p class=`"kicker pp-kicker`">$(Html-Text $hero.kicker)</p><h1>$headline $emphasis</h1>$statusLine<p class=`"product-lede`">$lede</p><div class=`"studio-actions`">$primary$secondary</div></div><div class=`"hero-media`">$media</div></div></section>"
+}
+
+function Render-ProductShell($module, [switch]$Template, [switch]$Preview) {
   # Generic product renderer: assembles the full page shell from module
   # metadata. Narrative markup lives in products/<id>/content.html (injected at
   # the content marker and still flows through the normal token pipeline).
@@ -2049,32 +2548,49 @@ function Render-ProductShell($module, [switch]$Template) {
   $related = "<nav class=`"studio-related`" aria-label=`"More software`"><span>More from the foundry</span>" +
     (($productRegistry | Where-Object { $_.visibility -eq 'visible' -and $_.id -ne $module.id } | ForEach-Object {
       $rp = $productStateSource.Get($_.id); "<a href=`"$($_.route)`">$(Html-Attr $rp.name)</a>" }) -join '') + "</nav>"
-  # Module meta fields are authored markup (already HTML-encoded in module.json,
-  # same trust level as template literals) — emitted verbatim; escaping is the
-  # module author's responsibility, validated by the registry.
-  $metaTitle = $module.meta.title
-  $metaDesc  = $module.meta.description
-  $ogTitle   = if ($module.meta.ogTitle) { $module.meta.ogTitle } else { $module.meta.title }
-  $viewport  = if ($module.meta.viewport) { $module.meta.viewport } else { 'width=device-width, initial-scale=1' }
-  $robots    = if ($module.meta.robots) { $module.meta.robots } else { 'index, follow' }
-  $themeTag  = if ($module.meta.themeColor) { "`n<meta content=`"$($module.meta.themeColor)`" name=`"theme-color`"/>" } else { '' }
-  $ogType    = if ($module.meta.ogType) { $module.meta.ogType } else { 'product' }
-  $ogImage   = if ($module.meta.ogImage) { $module.meta.ogImage } else { 'https://theprooffoundry.com/brand/proof-foundry-social-card.png' }
-  $ogDesc    = if ($module.meta.ogDescription) { $module.meta.ogDescription } else { $metaDesc }
-  $twCard    = if ($module.meta.twitterCard) { $module.meta.twitterCard } else { 'summary_large_image' }
-  $twImage   = if ($module.meta.twitterImage) { $module.meta.twitterImage } else { $ogImage }
+  if ($Preview) {
+    $name = Html-Attr $module.brand.name
+    $crumb = '<nav class="product-breadcrumb" aria-label="Breadcrumb"><a href="/__preview/software/">Preview catalog</a><span aria-hidden="true">/</span><span>' + $name + '</span></nav>'
+    $related = '<nav class="studio-related" aria-label="Preview navigation"><a href="/__preview/software/">Back to preview catalog</a></nav>'
+  }
+  # Module JSON is authored data. Escape every string at its output boundary;
+  # decode pre-existing HTML entities first because legacy meta uses &amp;.
+  $metaTitle = Html-Attr ([System.Net.WebUtility]::HtmlDecode([string]$module.meta.title))
+  $metaDesc  = Html-Attr ([System.Net.WebUtility]::HtmlDecode([string]$module.meta.description))
+  $ogTitleRaw = if ($module.meta.ogTitle) { $module.meta.ogTitle } else { $module.meta.title }
+  $ogTitle   = Html-Attr ([System.Net.WebUtility]::HtmlDecode([string]$ogTitleRaw))
+  $viewport  = Html-Attr $(if ($module.meta.viewport) { $module.meta.viewport } else { 'width=device-width, initial-scale=1' })
+  $robots    = Html-Attr $(if ($Preview) { 'noindex, nofollow' } elseif ($module.meta.robots) { $module.meta.robots } else { 'index, follow' })
+  $themeTag  = if ($module.meta.themeColor) { "`n<meta content=`"$(Html-Attr $module.meta.themeColor)`" name=`"theme-color`"/>" } else { '' }
+  $ogType    = Html-Attr $(if ($module.meta.ogType) { $module.meta.ogType } else { 'product' })
+  $ogImage   = Html-Attr $(if ($module.meta.ogImage) { $module.meta.ogImage } else { 'https://theprooffoundry.com/brand/proof-foundry-social-card.png' })
+  $ogDescRaw = if ($module.meta.ogDescription) { $module.meta.ogDescription } else { $module.meta.description }
+  $ogDesc    = Html-Attr ([System.Net.WebUtility]::HtmlDecode([string]$ogDescRaw))
+  $twCard    = Html-Attr $(if ($module.meta.twitterCard) { $module.meta.twitterCard } else { 'summary_large_image' })
+  $twImage   = Html-Attr $(if ($module.meta.twitterImage) { $module.meta.twitterImage } else { $ogImage })
   $twExtra   = ''
-  if ($module.meta.twitterTitle) { $twExtra += "`n<meta content=`"$($module.meta.twitterTitle)`" name=`"twitter:title`"/>" }
-  if ($module.meta.twitterDescription) { $twExtra += "`n<meta content=`"$($module.meta.twitterDescription)`" name=`"twitter:description`"/>" }
+  if ($module.meta.twitterTitle) { $twExtra += "`n<meta content=`"$(Html-Attr ([System.Net.WebUtility]::HtmlDecode([string]$module.meta.twitterTitle)))`" name=`"twitter:title`"/>" }
+  if ($module.meta.twitterDescription) { $twExtra += "`n<meta content=`"$(Html-Attr ([System.Net.WebUtility]::HtmlDecode([string]$module.meta.twitterDescription)))`" name=`"twitter:description`"/>" }
   $jsonLdTag = ''
   if ($module.jsonLd) {
-    $jsonLdTag = "`n<!-- Structured data carries identity only. No offers/availability claims. -->`n<script type=`"application/ld+json`">`n" + ($module.jsonLd | ConvertTo-Json -Depth 20) + "`n</script>"
+    $jsonLd = ($module.jsonLd | ConvertTo-Json -Depth 20 -Compress).Replace('<','\u003c').Replace('>','\u003e').Replace('&','\u0026')
+    $jsonLdTag = "`n<!-- Structured data carries identity only. No offers/availability claims. -->`n<script type=`"application/ld+json`">`n" + $jsonLd + "`n</script>"
   }
-  $inlineCssTag = if ($module.inlineCss) { "`n<style>" + $module.inlineCss + "</style>" } else { '' }
+  $inlineCssTag = ''
+  $themeAttrs = ''
+  if ($module.schemaVersion -eq 2) {
+    $themeMap = @{ accent='--product-accent'; accentSecondary='--product-accent-2'; background='--product-bg'; surface='--product-surface'; glow='--product-glow'; text='--product-text'; muted='--product-muted' }
+    $vars = @(); foreach ($key in $themeMap.Keys) { if ($module.theme.$key) { $vars += "$($themeMap[$key]):$($module.theme.$key)" } }
+    $themeAttrs = if ($vars.Count) { " style=`"$(Html-Attr ($vars -join ';'))`"" } else { '' }
+  } elseif ($module.inlineCss) { $inlineCssTag = "`n<style>" + $module.inlineCss + "</style>" }
+  $pageMarker = if ($Preview) { '<!-- @page preview-' + $module.id + ' -->' } else { '<!-- @page ' + $module.id + ' -->' }
+  $productMarker = if ($Preview) { '' } else { '<!-- @product ' + $module.id + ' -->' }
+  $canonicalTag = if ($Preview) { '' } else { '<link href="https://theprooffoundry.com' + $module.route + '" rel="canonical"/>' }
+  $bodyClass = if ($Preview) { 'studio product-page product-' + $module.id + ' pp-system product-preview' } else { 'studio product-page product-' + $module.id + ' pp-system' }
   $shell = @"
 <!doctype html>
-<!-- @page $($module.id) -->
-<!-- @product $($module.id) -->
+$pageMarker
+$productMarker
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
@@ -2082,7 +2598,7 @@ function Render-ProductShell($module, [switch]$Template) {
 <title>$metaTitle</title>
 <meta content="$metaDesc" name="description"/>
 <meta content="$robots" name="robots"/>$themeTag
-<link href="https://theprooffoundry.com$($module.route)" rel="canonical"/>
+$canonicalTag
 <meta content="$ogTitle" property="og:title"/>
 <meta content="$ogDesc" property="og:description"/>
 <meta content="$ogType" property="og:type"/>
@@ -2097,7 +2613,7 @@ function Render-ProductShell($module, [switch]$Template) {
 <link rel="stylesheet" href="/product-page.css">
 <link href="/brand/proof-foundry-mark.svg" rel="icon" type="image/svg+xml"/>$jsonLdTag$inlineCssTag
 </head>
-<body class="studio product-page product-$($module.id) pp-system">
+<body class="$bodyClass"$themeAttrs data-product-atmosphere="$(Html-Attr $module.theme.atmosphere)">
 <!-- @include header -->
 <!-- @product-content -->
 </body></html>
@@ -2109,10 +2625,28 @@ function Render-ProductShell($module, [switch]$Template) {
     return $shell
   }
   # Inject the module's narrative content + generated shells at their markers.
-  $content = Read-File (Join-Path $script:productsDir "$($module.id)\content.html")
-  $content = $content -replace '<!--\s*@product-breadcrumb\s*-->', $crumb
-  $content = $content -replace '<!--\s*@product-related\s*-->',    $related
-  $shell = $shell -replace '<!--\s*@product-content\s*-->', $content
+  if ($module.contentSource) {
+    $content = Read-File (Join-Path $script:productsDir "$($module.id)\content.html")
+    $content = $content -replace '<!--\s*@product-breadcrumb\s*-->', (Rx-Lit $crumb)
+    $content = $content -replace '<!--\s*@product-related\s*-->',    (Rx-Lit $related)
+    if ($module.schemaVersion -eq 2 -and $module.hero) {
+      $product = $productStateSource.Get($module.id)
+      $genericHero = Render-ModuleHero $module $product
+      $content = [regex]::Replace($content, '<!--\s*@product-hero\s*-->', [System.Text.RegularExpressions.MatchEvaluator]{ param($match) $genericHero })
+      if ($content -match '<section class="product-hero\b') {
+        $content = [regex]::Replace($content, '<section class="product-hero\b.*?</section>', [System.Text.RegularExpressions.MatchEvaluator]{ param($match) $genericHero }, [System.Text.RegularExpressions.RegexOptions]::Singleline, [TimeSpan]::FromSeconds(2))
+      }
+    }
+    $structuredSections = @($module.sections | Where-Object { $_ -isnot [string] -and $_.type -ne 'faq' } | ForEach-Object { Render-StructuredSection $_ }) -join "`n"
+    $content = [regex]::Replace($content, '<!--\s*@structured-sections\s*-->', [System.Text.RegularExpressions.MatchEvaluator]{ param($match) $structuredSections })
+    $structuredFaqs = @($module.sections | Where-Object { $_ -isnot [string] -and $_.type -eq 'faq' } | ForEach-Object { Render-StructuredSection $_ }) -join "`n"
+    $content = [regex]::Replace($content, '<!--\s*@structured-faq\s*-->', [System.Text.RegularExpressions.MatchEvaluator]{ param($match) $structuredFaqs })
+  } else {
+    $product = $productStateSource.Get($module.id)
+    $generatedSections = @($module.sections | Where-Object { $_ -isnot [string] } | ForEach-Object { Render-StructuredSection $_ }) -join "`n"
+    $content = "<main id=`"main-content`"><div class=`"product-shell`">$crumb" + (Render-ModuleHero $module $product) + $generatedSections + "</div></main>" + $related
+  }
+  $shell = $shell -replace '<!--\s*@product-content\s*-->', (Rx-Lit $content)
   return $shell
 }
 
@@ -2136,7 +2670,7 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
 
   # Give shared presentation assets content-derived URLs. A cached stylesheet
   # or script must not leave visitors on a previous design after publication.
-  foreach ($assetName in @('styles.css', 'studio.css', 'experience.css', 'signature.css', 'product-page.css', 'truth-files.css', 'site.js', 'experience.js', 'h9-homepage.css', 'h9-software.css', 'h9-homepage.js', 'h9-software.js')) {
+  foreach ($assetName in @('styles.css', 'studio.css', 'experience.css', 'signature.css', 'product-page.css', 'truth-files.css', 'site.js', 'experience.js', 'h9-homepage.css', 'h9-software.css', 'h9-homepage.js', 'h9-software.js', 'pf-styles.css', 'pf-foundry-system.css', 'foundry-connections.css', 'foundry-world.css', 'pf-home-ledger.css', 'foundry-rooms.css', 'pf-experience.css', 'foundry-navigation.js', 'pf-home.js', 'pf-truth-receipt.js')) {
     $assetPath = Join-Path $root $assetName
     $assetVersion = (Get-FileHash $assetPath -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
     $html = $html.Replace('"/' + $assetName + '"', '"/' + $assetName + '?v=' + $assetVersion + '"')
@@ -2177,14 +2711,30 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   $navLinks = Build-NavLinks $pageId
   $navCta = "<a class=`"button button-primary nav-cta`" href=`"$(Html-Attr $manifest.navCta.href)`">$(Html-Attr $manifest.navCta.label)</a>"
   $header = $headerPartial
-  $header = $header -replace [regex]::Escape('{{nav-links}}'), $navLinks
-  $header = $header -replace [regex]::Escape('{{nav-cta}}'),   $navCta
+  $header = $header -replace [regex]::Escape('{{nav-links}}'), (Rx-Lit $navLinks)
+  $header = $header -replace [regex]::Escape('{{nav-cta}}'),   (Rx-Lit $navCta)
 
-  $footer = $footerPartial -replace [regex]::Escape('{{footer-products}}'), (Build-FooterProducts)
+  $footer = $footerPartial -replace [regex]::Escape('{{footer-products}}'), (Rx-Lit (Build-FooterProducts))
 
   # Inject partials
-  $html = $html -replace '<!--\s*@include header\s*-->', $header
-  $html = $html -replace '<!--\s*@include footer\s*-->', $footer
+  $html = $html -replace '<!--\s*@include header\s*-->', (Rx-Lit $header)
+  $html = $html -replace '<!--\s*@include footer\s*-->', (Rx-Lit $footer)
+
+  # CP-0189 chrome: every page carries the foundry system tokens, chassis and
+  # mechanical-navigation layers plus the navigation behavior. Pages that
+  # author the stack explicitly (home/software/truth-files) skip injection.
+  if ($html -notmatch 'pf-foundry-system\.css') {
+    $chromeCss = @()
+    foreach ($assetName in @('pf-styles.css', 'pf-foundry-system.css', 'foundry-connections.css', 'foundry-world.css')) {
+      $av = (Get-FileHash (Join-Path $root $assetName) -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
+      $chromeCss += "<link href=`"/$assetName`?v=$av`" rel=`"stylesheet`"/>"
+    }
+    $html = $html -replace '</head>', (($chromeCss -join "`n") + "`n</head>")
+  }
+  if ($html -notmatch 'foundry-navigation\.js') {
+    $navJsAv = (Get-FileHash (Join-Path $root 'foundry-navigation.js') -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
+    $html = $html -replace '</body>', "<script src=`"/foundry-navigation.js?v=$navJsAv`" defer></script>`n</body>"
+  }
 
   # The H9 catalog moved to its own route; preserve frozen page source markup.
   $html = $html.Replace('href="/#products"', 'href="/software/"')
@@ -2193,19 +2743,29 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   $html = $html -replace '<!--\s*@product-groups\s*-->', (Build-ProductGroupSections)
   $html = $html -replace '<!--\s*@trust-strip\s*-->',    (Build-TrustStrip)
   $html = $html -replace [regex]::Escape('{{catalogSummary}}'), (Build-CatalogSummary)
+  $publicCatalogCount = [string](Get-PublicCatalogCount)
+  $html = $html.Replace('{{publicProductCount}}', $publicCatalogCount)
+  $html = $html.Replace('<!-- @homepage-featured -->', (Build-HomepageFeatured))
+  $html = $html.Replace('<!-- @homepage-major-scenes -->', (Build-HomepageMajorScenes))
+  $html = $html.Replace('<!-- @homepage-secondary -->', (Build-HomepageSecondary))
+  $html = $html.Replace('<!-- @homepage-shelf -->', (Build-HomepageShelf))
   # The standalone catalog includes the featured product as a normal card.
   $catalogCards = (Build-ProductCards $null $true) -replace '<h4 class="card-name">', '<h3 class="card-name">' -replace '</h4>', '</h3>'
-  $html = $html -replace '<!--\s*@all-products\s*-->', $catalogCards
+  $html = $html -replace '<!--\s*@all-products\s*-->', (Rx-Lit $catalogCards)
   $html = $html -replace '<!--\s*@products\s*-->', (Build-ProductCards $null)
 
+  # CP-0189 directory (restored /software/ composition)
+  $html = $html -replace '<!--\s*@directory-entries\s*-->', (Rx-Lit (Build-DirectoryEntries))
+  $html = $html -replace '<!--\s*@directory-groups\s*-->',  (Rx-Lit (Build-DirectoryGroups))
+
   # Inject receipt cards (receipts page)
-  $html = $html -replace '<!--\s*@receipts\s*-->', (Build-ReceiptCards)
+  $html = $html -replace '<!--\s*@receipts\s*-->', (Rx-Lit (Build-ReceiptCards))
 
   # Public truth index cards (/truth/ page) — same manifest model as the JSON
-  $html = $html -replace '<!--\s*@truth-products\s*-->', (Build-TruthIndexCards)
+  $html = $html -replace '<!--\s*@truth-products\s*-->', (Rx-Lit (Build-TruthIndexCards))
 
   # Truth Files index cards (/truth-files/ page)
-  $html = $html -replace '<!--\s*@truth-files\s*-->', (Build-TruthFileCards)
+  $html = $html -replace '<!--\s*@truth-files\s*-->', (Rx-Lit (Build-TruthFileCards))
 
   # Brand-level tokens
   $html = $html -replace [regex]::Escape('{{brand}}'),       (Html-Attr $manifest.brand)
@@ -2223,7 +2783,7 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
 <p>No verified site verification event is recorded in the canonical <code class="inline">site-manifest.json</code> release/evidence model.</p>
 "@
   }
-  $html = $html -replace [regex]::Escape('{{latestVerification.block}}'), $latestBlock
+  $html = $html -replace [regex]::Escape('{{latestVerification.block}}'), (Rx-Lit $latestBlock)
 
   # Site verification receipt link, from canonical data. Previously the date was a
   # literal in proof.html, so the receipt could silently disagree with the receipt
@@ -2240,7 +2800,7 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   } else {
     $receiptLink = ''
   }
-  $html = $html -replace [regex]::Escape('{{siteVerification.receiptLink}}'), $receiptLink
+  $html = $html -replace [regex]::Escape('{{siteVerification.receiptLink}}'), (Rx-Lit $receiptLink)
 
   # Named product tokens for pages discussing several products.
   foreach ($namedProduct in $allModuleState) {
@@ -2310,6 +2870,60 @@ foreach ($module in ($productRegistry | Where-Object { $_.visibility -eq 'visibl
   [System.IO.File]::WriteAllText((Join-Path $dir 'index.html'), $out, [System.Text.Encoding]::UTF8)
 }
 
+if ($previewModule) {
+  $previewShell = Render-ProductShell $previewModule -Preview
+  $previewHtml = Process-Template $null "preview/$($previewModule.id)" -OverrideHtml $previewShell
+  $previewDir = Join-Path $publicDir "__preview\$($previewModule.id)"
+  New-Item -ItemType Directory $previewDir -Force | Out-Null
+  [System.IO.File]::WriteAllText((Join-Path $previewDir 'index.html'), $previewHtml, [System.Text.Encoding]::UTF8)
+  $previewName = Html-Text $previewModule.brand.name
+  $previewHeadline = if ($previewModule.homepage.headline) { Html-Text $previewModule.homepage.headline } else { Html-Text $previewModule.hero.headline }
+  $previewRoute = "/__preview/$($previewModule.id)/"
+  $previewCatalogShell = @"
+<!doctype html>
+<!-- @page preview-software -->
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Preview catalog · $(Html-Attr $previewName)</title><meta name="robots" content="noindex, nofollow"/>
+<link rel="stylesheet" href="/styles.css"/><link rel="stylesheet" href="/studio.css"/><link rel="stylesheet" href="/product-page.css"/>
+</head><body class="studio storefront product-preview">
+<!-- @include header -->
+<main id="main-content"><div class="product-shell"><p class="kicker">LOCAL PRESENTATION PREVIEW</p><h1>$(Html-Text $previewName)</h1><p>This draft is visible only in the local preview build. Canonical release truth has not been changed.</p>
+<article class="product-card" data-product="$(Html-Attr $previewModule.id)"><img src="$(Html-Attr $previewModule.brand.mark)" alt="" width="72" height="72"/><h2>$(Html-Text $previewHeadline)</h2><p>$(Html-Text $previewModule.card.summary)</p><a class="button button-primary" href="$(Html-Attr $previewRoute)">Open product preview</a></article></div></main>
+</body></html>
+"@
+  $previewCatalogHtml = Process-Template $null 'preview/software' -OverrideHtml $previewCatalogShell
+  $previewCatalogDir = Join-Path $publicDir '__preview\software'
+  New-Item -ItemType Directory $previewCatalogDir -Force | Out-Null
+  [System.IO.File]::WriteAllText((Join-Path $previewCatalogDir 'index.html'), $previewCatalogHtml, [System.Text.Encoding]::UTF8)
+  $previewTier = if ($previewModule.homepage -and $previewModule.homepage.tier) { [string]$previewModule.homepage.tier } else { 'not-placed' }
+  $previewSlot = if ($previewModule.homepage -and $previewModule.homepage.slot) { [string]$previewModule.homepage.slot } else { 'no slot' }
+  $previewMedia = if ($previewModule.homepage.media) { $previewModule.homepage.media } else { $previewModule.hero.media.src }
+  $previewMediaAlt = if ($previewModule.homepage.mediaAlt) { $previewModule.homepage.mediaAlt } else { $previewModule.hero.media.alt }
+  $previewNote = if ($previewModule.homepage.note) { '<span class="home-shelf-note">' + (Html-Text $previewModule.homepage.note) + '</span>' } else { '' }
+  $previewHomeShell = @"
+<!doctype html>
+<!-- @page preview-home -->
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Local product shelf preview</title><meta name="robots" content="noindex, nofollow"/>
+<link rel="stylesheet" href="/pf-styles.css"/><link rel="stylesheet" href="/pf-foundry-system.css"/><link rel="stylesheet" href="/foundry-connections.css"/><link rel="stylesheet" href="/foundry-world.css"/><link rel="stylesheet" href="/pf-home-ledger.css"/>
+</head><body class="pf-ledger-page product-preview">
+<!-- @include header -->
+<main id="main-content"><section class="home-orientation container"><p class="kicker" style="padding:20px 0">LOCAL-ONLY HOMEPAGE SHELF PREVIEW · slot=$(Html-Text $previewSlot) · tier=$(Html-Text $previewTier) (vocabulary only)</p>
+<aside class="home-shelf" aria-label="New in the directory"><p class="home-shelf-label"><span class="kicker">New in the directory</span></p><ul class="home-shelf-list">
+<li><a class="home-shelf-entry" href="$(Html-Attr $previewRoute)" data-product="$(Html-Attr $previewModule.id)">
+<img class="home-shelf-media" src="$(Html-Attr $previewMedia)" alt="$(Html-Attr $previewMediaAlt)" width="96" height="72" loading="eager" decoding="async"/>
+<span class="home-shelf-copy"><strong>$(Html-Text $previewName)</strong><span>$(Html-Text $previewHeadline)</span><span class="home-shelf-status">preview</span>$previewNote</span>
+<span class="home-shelf-arrow" aria-hidden="true">↗</span></a></li></ul></aside>
+<p class="product-preview-notice"><a href="/__preview/software/">Preview catalog</a> · <a href="/__preview/$($previewModule.id)/">Product page</a></p></section></main>
+</body></html>
+"@
+  $previewHomeHtml = Process-Template $null 'preview/home' -OverrideHtml $previewHomeShell
+  $previewHomeDir = Join-Path $publicDir '__preview'
+  New-Item -ItemType Directory $previewHomeDir -Force | Out-Null
+  [System.IO.File]::WriteAllText((Join-Path $previewHomeDir 'index.html'), $previewHomeHtml, [System.Text.Encoding]::UTF8)
+  Write-Host "==> Generated local-only preview: /__preview/$($previewModule.id)/ (noindex; excluded from public truth)" -ForegroundColor Cyan
+}
+
 # ─────────────────────────────────────────────────────────────────────────────
 # ─────────────────────────────────────────────────────────────────────────────
 # Generate machine-readable proof registry
@@ -2367,12 +2981,50 @@ if (Test-Path (Join-Path $root 'h9-homepage.js'))  { Copy-Item (Join-Path $root 
 if (Test-Path (Join-Path $root 'h9-software.js'))  { Copy-Item (Join-Path $root 'h9-software.js')  $publicDir -Force }
 if (Test-Path (Join-Path $root 'truth-files.css')) { Copy-Item (Join-Path $root 'truth-files.css') $publicDir -Force }
 if (Test-Path (Join-Path $root 'site.js'))   { Copy-Item (Join-Path $root 'site.js') $publicDir -Force }
+foreach ($chromeAsset in @('pf-styles.css','pf-foundry-system.css','foundry-connections.css','foundry-world.css','pf-home-ledger.css','foundry-rooms.css','pf-experience.css','foundry-navigation.js','pf-home.js','pf-truth-receipt.js')) {
+  if (Test-Path (Join-Path $root $chromeAsset)) { Copy-Item (Join-Path $root $chromeAsset) $publicDir -Force }
+}
 Copy-Item (Join-Path $root 'CNAME')          $publicDir -Force
 Copy-Item (Join-Path $root 'robots.txt')     $publicDir -Force
 Copy-Item (Join-Path $root 'sitemap.xml')    $publicDir -Force
 Copy-Item (Join-Path $root 'site-manifest.json') $publicDir -Force
 Copy-Item (Join-Path $root 'brand')  $publicDir -Recurse -Force
 Copy-Item (Join-Path $root 'assets') $publicDir -Recurse -Force
+
+# Module-local packaging: products/<id>/logo.svg + media/ are published under
+# a deterministic, product-scoped asset path. SVG is accepted only as a passive
+# image; active/external-reference SVG is rejected before it reaches public/.
+$moduleAssetRegistry = @($productRegistry)
+if ($previewModule) { $moduleAssetRegistry += $previewModule }
+foreach ($module in $moduleAssetRegistry) {
+  $moduleDir = Join-Path $script:productsDir $module.id
+  $moduleAssetDir = Join-Path $publicDir "assets/products/$($module.id)"
+  $logoPath = Join-Path $moduleDir 'logo.svg'
+  if (Test-Path $logoPath) {
+    $svg = Read-File $logoPath
+    if ($svg -match '(?i)<\s*(script|foreignObject)\b|\son[a-z]+\s*=|(?:href|src)\s*=\s*[`"'']\s*(?:https?:|//|javascript:|data:)') { throw "products/$($module.id)/logo.svg is not a passive local image" }
+    $brandOut = Join-Path $moduleAssetDir 'brand'; New-Item -ItemType Directory $brandOut -Force | Out-Null
+    Copy-Item $logoPath (Join-Path $brandOut 'logo.svg') -Force
+  }
+  $wordmarkPath = Join-Path $moduleDir 'wordmark.svg'
+  if (Test-Path $wordmarkPath) {
+    $svg = Read-File $wordmarkPath
+    if ($svg -match '(?i)<\s*(script|foreignObject|iframe|object|embed|animate|set|style)\b|\son[a-z]+\s*=|\sstyle\s*=|url\s*\(|(?:href|src)\s*=\s*["'']\s*(?:https?:|//|javascript:|data:)') { throw "products/$($module.id)/wordmark.svg is not a passive local image" }
+    $brandOut = Join-Path $moduleAssetDir 'brand'; New-Item -ItemType Directory $brandOut -Force | Out-Null
+    Copy-Item $wordmarkPath (Join-Path $brandOut 'wordmark.svg') -Force
+  }
+  $mediaPath = Join-Path $moduleDir 'media'
+  if (Test-Path $mediaPath) {
+    $mediaOut = Join-Path $moduleAssetDir 'media'; New-Item -ItemType Directory $mediaOut -Force | Out-Null
+    foreach ($file in Get-ChildItem $mediaPath -File -Recurse) {
+      if ($file.Extension -notin @('.png','.jpg','.jpeg','.webp','.avif','.mp4','.webm')) { throw "products/$($module.id)/media contains unsupported file type $($file.Extension)" }
+      $relative = $file.FullName.Substring($mediaPath.Length).TrimStart('\','/')
+      $destination = Join-Path $mediaOut $relative
+      New-Item -ItemType Directory (Split-Path $destination) -Force | Out-Null
+      Copy-Item $file.FullName $destination -Force
+    }
+  }
+}
 
 # ── H14 shadow runtime assets ─────────────────────────────────────────────────
 # The /__h14/ namespace ships slot-templates the Pages Function resolves against
@@ -2386,14 +3038,20 @@ foreach ($sub in @('shells','content','modules','partials','pages')) {
 foreach ($module in $productRegistry) {
   $mid = $module.id
   [System.IO.File]::WriteAllText((Join-Path $h14Dir "modules\$mid.json"), (Read-File (Join-Path $script:productsDir "$mid\module.json")), (New-Object System.Text.UTF8Encoding $false))
-  [System.IO.File]::WriteAllText((Join-Path $h14Dir "content\$mid.html"), (Read-File (Join-Path $script:productsDir "$mid\content.html")), (New-Object System.Text.UTF8Encoding $false))
+  if ($module.contentSource) { $runtimeContent = Read-File (Join-Path $script:productsDir "$mid\content.html") }
+  else {
+    $runtimeProduct = $productStateSource.Get($mid)
+    $runtimeSections = @($module.sections | Where-Object { $_ -isnot [string] } | ForEach-Object { Render-StructuredSection $_ }) -join "`n"
+    $runtimeContent = "<main id=`"main-content`"><div class=`"product-shell`">" + (Render-ModuleHero $module $runtimeProduct) + $runtimeSections + "</div></main>"
+  }
+  [System.IO.File]::WriteAllText((Join-Path $h14Dir "content\$mid.html"), $runtimeContent, (New-Object System.Text.UTF8Encoding $false))
   if ($module.visibility -eq 'visible') {
     # Shell with module meta resolved but runtime slots + product tokens intact:
     # the Function resolves {{product.*}} / {{products.*}} / @include /
     # @product-breadcrumb / @product-related against live API state.
     $shellTemplate = Render-ProductShell $module -Template
     # Bake asset-version URLs the same way Process-Template does.
-    foreach ($assetName in @('styles.css','studio.css','experience.css','signature.css','product-page.css','site.js','experience.js','h9-homepage.css','h9-software.css','h9-homepage.js','h9-software.js')) {
+    foreach ($assetName in @('styles.css','studio.css','experience.css','signature.css','product-page.css','site.js','experience.js','h9-homepage.css','h9-software.css','h9-homepage.js','h9-software.js','pf-styles.css','pf-foundry-system.css','foundry-connections.css','foundry-world.css','pf-home-ledger.css','foundry-rooms.css','pf-experience.css','foundry-navigation.js','pf-home.js','pf-truth-receipt.js')) {
       $assetPath = Join-Path $root $assetName
       if (Test-Path $assetPath) {
         $av = (Get-FileHash $assetPath -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
@@ -2409,7 +3067,7 @@ foreach ($pn in @('header.html','footer.html','product-card.html')) {
 # Page shells keep their @-markers; the runtime fills them.
 foreach ($pg in @('software.html','truth.html')) {
   $pgHtml = Read-File (Join-Path $root $pg)
-  foreach ($assetName in @('styles.css','studio.css','experience.css','signature.css','product-page.css','site.js','experience.js','h9-homepage.css','h9-software.css','h9-homepage.js','h9-software.js')) {
+  foreach ($assetName in @('styles.css','studio.css','experience.css','signature.css','product-page.css','site.js','experience.js','h9-homepage.css','h9-software.css','h9-homepage.js','h9-software.js','pf-styles.css','pf-foundry-system.css','foundry-connections.css','foundry-world.css','pf-home-ledger.css','foundry-rooms.css','pf-experience.css','foundry-navigation.js','pf-home.js','pf-truth-receipt.js')) {
     $assetPath = Join-Path $root $assetName
     if (Test-Path $assetPath) {
       $av = (Get-FileHash $assetPath -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()

@@ -52,10 +52,17 @@ foreach ($p in $pages) {
   Assert-Condition ($html -match '/product-page\.css\?v=[a-f0-9]{12}') "$($name) - product-page.css linked with content version token"
 
   # --- canonical hierarchy ---
-  Test-Order $html @('id="overview"', 'id="film"', 'id="features"', 'id="try-it"', 'id="download"', 'id="onboarding"', 'id="proof"', 'id="privacy-data-flow"', 'pp-final-cta') "$name hierarchy"
+  $isWithdrawn = $html -match 'data-commerce="withdrawn"'
+  if ($isWithdrawn) {
+    # A withdrawn product leads with the availability record — that is the most
+    # important fact on the page and matches the production layout.
+    Test-Order $html @('id="overview"', 'id="download"', 'id="film"', 'id="features"', 'id="try-it"', 'pp-story', 'id="origin"', 'id="onboarding"', 'id="proof"', 'id="privacy-data-flow"', 'pp-final-cta') "$name hierarchy"
+  } else {
+    Test-Order $html @('id="overview"', 'id="film"', 'id="features"', 'id="try-it"', 'id="download"', 'id="onboarding"', 'id="proof"', 'id="privacy-data-flow"', 'pp-final-cta') "$name hierarchy"
+  }
 
   # --- hero answers ---
-  Assert-Condition ($html -match 'class="pp-status"') "$($name) - hero carries product status/availability row"
+  Assert-Condition ($html -match 'id="release-status"' -and $html -match '<strong>Status</strong>') "$($name) - page carries product status/availability record"
   Assert-Condition ([regex]::Match($html, '(?s)id="overview".*?button button-primary.*?href="#download"').Success) "$($name) - hero primary CTA points at the get block"
 
   # --- evidence hierarchy ---
@@ -68,7 +75,11 @@ foreach ($p in $pages) {
   $prf = $html.IndexOf('id="proof"')
   Assert-Condition ($onb -gt 0 -and $prf -gt 0 -and $onb -lt $prf) "$($name) - onboarding tier precedes technical verification tier"
   $onbRegion = $html.Substring($onb, [Math]::Min(6000, $html.Length - $onb))
-  Assert-Condition ($onbRegion -match '<dl class="onboarding-list">') "$($name) - onboarding list is directly visible"
+  if ($isWithdrawn) {
+    Assert-Condition ($onbRegion -match 'not provide installation instructions or a current download') "$($name) - withdrawn onboarding states the availability record"
+  } else {
+    Assert-Condition ($onbRegion -match '<dl class="onboarding-list">') "$($name) - onboarding list is directly visible"
+  }
 
   # --- critical warnings never inside a closed disclosure ---
   $dl = $html.IndexOf('id="download"')
@@ -80,11 +91,16 @@ foreach ($p in $pages) {
   Assert-Condition ($firstDetails -lt 0 -or $warnIdx -lt $firstDetails) "$($name) - warning line renders outside any disclosure"
 
   # --- final CTA present with action + support ---
-  Assert-Condition ([regex]::Match($html, '(?s)pp-final-cta.*?href="#download".*?href="/support/"').Success) "$($name) - final CTA carries download action and support link"
+  if ($isWithdrawn) {
+    Assert-Condition ([regex]::Match($html, '(?s)pp-final-cta.*?href="/truth-files/.*?href="/support/"').Success) "$($name) - withdrawn final CTA carries Truth File action and support link"
+  } else {
+    Assert-Condition ([regex]::Match($html, '(?s)pp-final-cta.*?href="#download".*?href="/support/"').Success) "$($name) - final CTA carries download action and support link"
+  }
 
-  # --- no inline styles on pilot pages ---
-  $hasInlineStyles = $html -match 'style="'
-  Assert-Condition (-not $hasInlineStyles) "$($name) - zero inline style attributes"
+  # --- no inline styles on pilot pages (validated --product-* theme tokens are the only permitted inline styles) ---
+  $inlineStyles = [regex]::Matches($html, 'style="([^"]*)"') | ForEach-Object { $_.Groups[1].Value }
+  $badStyles = @($inlineStyles | Where-Object { $_ -notmatch '^\s*(--[\w-]+\s*:[^;]+;?\s*)+$' })
+  Assert-Condition ($badStyles.Count -eq 0) "$($name) - inline styles limited to --product-* theme tokens"
 
   # --- disclosure semantics ---
   $dCount = ([regex]::Matches($html, '<details')).Count
@@ -103,7 +119,7 @@ foreach ($p in $pages) {
 }
 
 # --- pilot-specific evidence containment ---
-Assert-Condition ($rg.IndexOf('Capability &amp; Public Status Matrix') -gt $rg.IndexOf('<details class="proof-details">')) "RG - capability matrix lives inside the technical disclosure"
+Assert-Condition ($rg.IndexOf('Capability qualification history') -gt $rg.IndexOf('<details class="proof-details">')) "RG - capability matrix lives inside the technical disclosure"
 Assert-Condition (([regex]::Matches($rg, '<details class="pp-sub"')).Count -ge 5) "RG - at least 5 named sub-disclosures in technical tier"
 Assert-Condition ($rg -match 'id="origin"') "RG - origin narrative retained"
 Assert-Condition ($rg.IndexOf('id="origin"') -gt $rg.IndexOf('id="try-it"')) "RG - origin narrative no longer precedes how-it-works"
@@ -113,11 +129,11 @@ Assert-Condition ($cv -match 'id="faq"') "CV - FAQ retained in support tier"
 Assert-Condition ($cv.IndexOf('id="faq"') -gt $cv.IndexOf('id="download"')) "CV - FAQ sits in support tier after get block"
 
 # --- truth anchoring ---
-Assert-Condition ($cv -match 'https://downloads\.theprooffoundry\.com/cache-vault/v0\.2\.4/CacheVault-v0\.2\.4-windows\.zip') "CV - v0.2.4 Windows ZIP URL intact"
-$cvShaMatches = ([regex]::Matches($cv, '717ed13efd3d8d4e5a16d4e412ed5be0fd20b0219918f913d7d2b44f021cae7e')).Count
-Assert-Condition ($cvShaMatches -eq 2) "CV - v0.2.4 SHA-256 rendered by exactly one canonical verify block"
-Assert-Condition ($cv -match 'v0\.2\.4 is the current public Windows release') "CV - final public release state intact"
-Assert-Condition ($rg -match 'Download v1\.1\.0 Developer Pilot') "RG - canonical pilot download action intact"
+Assert-Condition ($cv -match 'https://downloads\.theprooffoundry\.com/cache-vault/v0\.3\.1/CacheVault-v0\.3\.1-windows\.zip') "CV - v0.3.1 Windows ZIP URL intact"
+$cvShaMatches = ([regex]::Matches($cv, 'd0c59c440b1d5787c9319e1bdf8829f117ccaa2d64d3424dd6955a84fb975d45')).Count
+Assert-Condition ($cvShaMatches -eq 2) "CV - v0.3.1 SHA-256 rendered by exactly one canonical verify block"
+Assert-Condition ($cv -match 'v0\.3\.1 is the current public Windows release') "CV - final public release state intact"
+Assert-Condition ($rg -match 'No download is offered' -and $rg -notmatch 'Download v1\.1\.0 Developer Pilot') "RG - withdrawn record exposes no download action"
 
 # --- Reality Gate recovery evidence labeling guards ---
 Assert-Condition ($rg -match 'Subject:\s*<strong>Demo Widget Service</strong>' -and $rg -match 'Status:\s*<strong>Interface demonstration</strong>') "RG - recovery screenshot is identified as Demo Widget Service interface demonstration"

@@ -493,7 +493,10 @@ const provenance = (mode, revision) => `\n<!-- h14-state: ${mode} revision=${esc
 
 function buildNavLinks(cfg) {
   const items = (cfg.navLinks || []);
-  return items.map(i => `<a href="${esc(i.href)}">${esc(i.label)}</a>`).join('\n            ');
+  return items.map((i, n) => {
+    const station = String(n + 1).padStart(2, '0');
+    return `<li><a href="${esc(i.href)}"><span class="pf-chain-station" aria-hidden="true">${station}</span><span>${esc(i.label)}</span></a><span class="pf-route-coupler" aria-hidden="true"><i></i><i></i><i></i></span></li>`;
+  }).join('\n            ');
 }
 function buildNavCta(cfg) {
   const c = cfg.navCta || {};
@@ -503,6 +506,58 @@ function buildFooter(footerPartial, states, cfg) {
   const items = states.map(p =>
     `<li><a href="${esc(p.route)}">${esc(p.displayName || p.homeName || p.name)}</a></li>`).join('\n            ');
   return footerPartial.split('{{footer-products}}').join(items);
+}
+
+// CP-0189 software directory — mirrors the build-time emitter so the shadow
+// catalog renders the same approved composition from live runtime state.
+const INTERNAL_DIRECTORY = [
+  { id: 'hardline-zero', name: 'Hardline Zero', purpose: 'Keep the work contract visible across tools and agents.' },
+  { id: 'crosspoint', name: 'CrossPoint', purpose: 'Give every handoff a recipient, a state and a record.' },
+  { id: 'proof-foundry-app', name: 'Proof Foundry App', purpose: 'A software library with the record attached.' },
+];
+function internalEntry(e) {
+  return `<article class="directory-entry directory-entry--${e.id}" data-directory-entry="${e.id}" data-directory-group="Foundry systems" data-availability="none"><header><p class="kicker">Foundry systems</p><h3>${esc(e.name)}</h3><p class="directory-purpose">${esc(e.purpose)}</p></header><div class="directory-no-art" aria-hidden="true"><i></i><i></i><i></i></div><div class="directory-foot"><p class="directory-state">Internal product</p></div></article>`;
+}
+function renderDirectory(orderedState, registry) {
+  const everyday = [];
+  let withdrawn = null;
+  for (const p of orderedState) {
+    const mod = registry.find(m => m.id === p.id) || {};
+    const dir = p.directory || {};
+    if (p.release && p.release.releaseStatus === 'WITHDRAWN') {
+      const purpose = dir.purpose || p.cardSummary || '';
+      const note = dir.stateNote ? `<p class="directory-state-note">${esc(dir.stateNote)}</p>` : '';
+      withdrawn = `<article class="directory-entry directory-entry--${esc(p.id)}" data-directory-entry="${esc(p.id)}" data-directory-group="Foundry systems" data-availability="none"><header><p class="kicker">Foundry systems</p><h3>${esc(p.name)}</h3><p class="directory-purpose">${esc(purpose)}</p></header><div class="directory-no-art" aria-hidden="true"><i></i><i></i><i></i></div><div class="directory-foot"><p class="directory-state">Internal development · public v${esc(p.release.withdrawnVersion)} withdrawn</p>${note}<a class="text-link directory-link" href="/__h14/${esc(p.id)}/">Explore ${esc(p.name)} <span aria-hidden="true">↗</span></a></div></article>`;
+      continue;
+    }
+    if (dir.catalog === false) continue;
+    const platforms = Array.isArray(p.platforms) ? p.platforms : [];
+    const parts = [];
+    if (platforms.length > 0) {
+      parts.push(`${platforms[0]} · v${(p.release && p.release.publicVersion) || ''}`);
+      if (p.release && p.release.companionPublicVersion) {
+        let tail = `Android · v${p.release.companionPublicVersion}`;
+        if (dir.stateSuffix) tail += ` · ${dir.stateSuffix}`;
+        parts.push(tail);
+      }
+    }
+    const note = dir.stateNote
+      ? `<p class="directory-state-note">${esc(dir.stateNote.replace('{candidateVersion}', 'v' + ((p.release || {}).candidateVersion || '')))}</p>`
+      : '';
+    const entryName = dir.name || p.name;
+    const purpose = dir.purpose || (mod.card && mod.card.tagline) || p.cardSummary || '';
+    const art = dir.art || (mod.card && mod.card.media) || (p.presentation && p.presentation.cardImage) || '';
+    const artAlt = dir.artAlt || (mod.card && mod.card.mediaAlt) || (p.presentation && p.presentation.cardImageAlt) || '';
+    const plats = dir.downloadPlatforms || 'windows';
+    everyday.push(`<article class="directory-entry directory-entry--${esc(p.id)}" data-directory-entry="${esc(p.id)}" data-directory-group="Everyday software" data-availability="download" data-download-platforms="${esc(plats)}"><header><p class="kicker">Everyday software</p><h3>${esc(entryName)}</h3><p class="directory-availability directory-availability--public">Public download</p><p class="directory-purpose">${esc(purpose)}</p></header><figure class="directory-art"><img src="${esc(art)}" alt="${esc(artAlt)}" loading="lazy" width="960" height="540"/></figure><div class="directory-foot"><p class="directory-state">${esc(parts.join(' / '))}</p>${note}<a class="button button-secondary" href="/__h14/${esc(p.id)}/">Explore ${esc(entryName)} <span aria-hidden="true">↗</span></a></div></article>`);
+  }
+  const foundry = [internalEntry(INTERNAL_DIRECTORY[0]), internalEntry(INTERNAL_DIRECTORY[1])]
+    .concat(withdrawn ? [withdrawn] : [])
+    .concat([internalEntry(INTERNAL_DIRECTORY[2])]);
+  return '<p class="directory-group-label" role="heading" aria-level="3" data-directory-group-label="Everyday software">Everyday software</p>\n'
+    + everyday.join('\n') + '\n'
+    + '<p class="directory-group-label" role="heading" aria-level="3" data-directory-group-label="Foundry systems">Foundry systems</p>\n'
+    + foundry.join('\n');
 }
 function buildHeader(headerPartial, cfg) {
   return headerPartial
@@ -610,12 +665,13 @@ ${provenance(mode, fetched.revision)}</body></html>`, { mode, revision: fetched.
     const tmpl = await loadText(env, '/__h14/pages/software.html');
     const header = buildHeader(await loadText(env, '/__h14/partials/header.html'), cfg);
     const footer = buildFooter(await loadText(env, '/__h14/partials/footer.html'), orderedState, cfg);
-    const cardT = await loadText(env, '/__h14/partials/product-card.html');
-    const cards = orderedState.map(p => renderCard(cardT, p, cfg)
-      .replace('<h4 class="card-name">', '<h3 class="card-name">').replace('</h4>', '</h3>')).join('\n');
+    const entries = renderDirectory(orderedState, registry);
+    const groups = '<option value="Everyday software">Everyday software</option><option value="Foundry systems">Foundry systems</option>';
     let html = tmpl
-      .replace(/<!--\s*@all-products\s*-->/, cards)
-      .replace(/<!--\s*@products\s*-->/, cards)
+      .replace(/<!--\s*@directory-entries\s*-->/, entries)
+      .replace(/<!--\s*@directory-groups\s*-->/, groups)
+      .replace(/<!--\s*@all-products\s*-->/, entries)
+      .replace(/<!--\s*@products\s*-->/, entries)
       .replace(/<!--\s*@include header\s*-->/, header)
       .replace(/<!--\s*@include footer\s*-->/, footer);
     html = replaceNamedTokens(html, byId, cfg);
@@ -649,7 +705,7 @@ ${provenance(mode, fetched.revision)}</body></html>`, { mode, revision: fetched.
     ]);
     if (!shell || !content) return respond('Shadow assets missing', { type: 'text/plain', mode, revision: fetched.revision });
     const t = productTokens(p, cfg);
-    const crumb = `<nav class="product-breadcrumb" aria-label="Breadcrumb"><a href="/#products">All software</a><span aria-hidden="true">/</span><span>${esc(p.name)}</span></nav>`;
+    const crumb = `<nav class="product-breadcrumb" aria-label="Breadcrumb"><a href="/__h14/software/">All software</a><span aria-hidden="true">/</span><span>${esc(p.name)}</span></nav>`;
     const related = '<nav class="studio-related" aria-label="More software"><span>More from the foundry</span>'
       + visible.filter(m => m.id !== id).map(m => `<a href="/__h14/${m.id}/">${esc((byId[m.id] || {}).name || m.id)}</a>`).join('')
       + '</nav>';

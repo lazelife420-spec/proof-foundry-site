@@ -1,70 +1,541 @@
-/* Truth Files — human-readable layer over /truth/*.json
-   Scoped to .tf-page / .tf-index. Reuses the studio dark system. */
-
-.tf-hero { padding: 56px 0 30px; }
-.tf-hero-kicker { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin: 0 0 14px; }
-.tf-hero h1 { font-size: clamp(2.4rem, 5vw, 3.8rem); letter-spacing: -.04em; line-height: 1.04; margin: 0 0 18px; }
-.tf-hero .tf-lede { max-width: 680px; color: var(--muted); font-size: 1.05rem; line-height: 1.65; }
-.tf-hero .tf-axiom { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .82rem; letter-spacing: .06em; color: var(--gold); margin: 22px 0 0; }
-
-/* index cards */
-.tf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
-.tf-card { display: block; text-decoration: none; color: inherit; border: 1px solid var(--line); border-radius: 10px; padding: 24px; background: linear-gradient(160deg, #141a1c, #0d1113); transition: border-color .2s, transform .2s; }
-.tf-card:hover { border-color: #5c6b64; transform: translateY(-2px); }
-.tf-card .tf-card-head { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
-.tf-card .card-mark { width: 40px; height: 40px; flex: none; }
-.tf-card h2 { font-size: 1.15rem; letter-spacing: -.01em; margin: 0; }
-.tf-card .tf-card-state { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
-.tf-card p { color: var(--muted); font-size: .9rem; line-height: 1.55; margin: 0 0 14px; }
-.tf-card .tf-card-facts { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: .82rem; color: var(--text); }
-.tf-card .tf-card-facts b { color: var(--text); font-weight: 600; }
-.tf-card .tf-open { display: inline-block; margin-top: 14px; font-size: .85rem; color: var(--gold); }
-
-/* product page fact surfaces */
-.tf-section { margin: 0 0 44px; }
-.tf-section > h2 { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .74rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin: 0 0 16px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
-.tf-product-head { display: flex; align-items: center; gap: 18px; margin-bottom: 8px; }
-.tf-product-head .card-mark { width: 52px; height: 52px; flex: none; }
-.tf-product-head h1 { font-size: clamp(2rem, 4vw, 3rem); letter-spacing: -.03em; margin: 0; }
-.tf-product-head .tf-state { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); display: block; margin-top: 6px; }
-.tf-product-summary { color: var(--muted); max-width: 660px; line-height: 1.65; margin: 0 0 34px; }
-
-.tf-facts { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
-.tf-fact { border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; background: #11161880; }
-.tf-fact dt { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .64rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
-.tf-fact dd { margin: 0; font-size: .98rem; font-weight: 600; color: var(--text); word-break: break-word; }
-.tf-fact dd .tf-sub { display: block; font-weight: 400; font-size: .78rem; color: var(--muted); margin-top: 4px; }
-
-.tf-chip { display: inline-block; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .68rem; letter-spacing: .08em; padding: 2px 9px; border-radius: 999px; border: 1px solid var(--line); vertical-align: 1px; }
-.tf-chip.verified { color: #9fe0b0; border-color: #3f6b4c; }
-.tf-chip.pending { color: #ecd28a; border-color: #6b5f36; }
-.tf-chip.not-published { color: #e0a09f; border-color: #6b3f42; }
-
-.tf-verify-list, .tf-limit-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
-.tf-verify-list li, .tf-limit-list li { padding: 13px 16px; border: 1px solid var(--line); border-radius: 8px; background: #11161880; font-size: .92rem; line-height: 1.55; color: var(--text); }
-.tf-verify-list .tf-v-label { display: block; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .64rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
-.tf-verify-list .tf-v-val { font-weight: 600; }
-.tf-verify-list .tf-v-note { display: block; color: var(--muted); font-size: .8rem; margin-top: 5px; }
-
-.tf-record-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
-.tf-record-list li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; padding: 12px 16px; border: 1px solid var(--line); border-radius: 8px; font-size: .9rem; }
-.tf-record-list .tf-rec-label { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .64rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); min-width: 110px; }
-.tf-record-list a { color: var(--gold); }
-
-.tf-machine { border: 1px dashed #4a5850; border-radius: 10px; padding: 22px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; justify-content: space-between; background: #0d1314; }
-.tf-machine p { margin: 0; color: var(--muted); font-size: .88rem; max-width: 460px; }
-.tf-machine a { white-space: nowrap; }
-
-.tf-breadcrumb { font-size: .8rem; color: var(--muted); margin: 0 0 26px; }
-.tf-breadcrumb a { color: var(--muted); text-decoration: none; }
-.tf-breadcrumb a:hover { color: var(--text); }
-.tf-breadcrumb span[aria-hidden] { margin: 0 8px; }
-
-@media (max-width: 700px) {
-  .tf-hero { padding: 38px 0 22px; }
-  .tf-facts { grid-template-columns: 1fr 1fr; }
-  .tf-machine { padding: 18px; }
+/* Records: opaque paper, quiet technical hierarchy, no decorative dashboard. */
+.record-qualification {
+  font:11px/1.8 var(--pf-mono);
+  color:#c9bba2;
+  margin-top:20px;
+  max-width:76ch
 }
-@media (max-width: 480px) {
-  .tf-facts { grid-template-columns: 1fr; }
+.tf-breadcrumb {
+  display:flex;
+  gap:12px;
+  font:10px var(--pf-mono);
+  color:var(--muted);
+  padding-top:25px
 }
+.tf-hero {
+  position:relative;
+  padding:45px 0 35px;
+  max-width:1050px
+}
+.tf-hero-kicker {
+  margin-bottom:24px
+}
+.tf-product-head {
+  display:flex;
+  gap:20px;
+  align-items:center;
+  padding-right:180px
+}
+.tf-product-head>svg {
+  width:46px;
+  height:46px;
+  flex:none
+}
+.tf-product-head h1 {
+  font-size:clamp(38px,5.2vw,70px)
+}
+.tf-state {
+  display:block;
+  font:11px/1.7 var(--pf-mono);
+  color:#c6b28e;
+  margin-top:14px;
+  max-width:60ch
+}
+.tf-product-summary {
+  font-size:18px;
+  color:var(--muted);
+  max-width:62ch;
+  margin-top:25px
+}
+.record-return {
+  position:absolute;
+  right:0;
+  top:34px;
+  width:150px;
+  text-decoration:none
+}
+.record-joint {
+  display:block
+}
+.record-return>span:last-child {
+  display:block;
+  font:9px/1.7 var(--pf-mono);
+  text-align:center;
+  color:var(--muted)
+}
+.tf-page .tf-section {
+  --text:#202f34;
+  --muted:#4b6167;
+  --accent:#65593e;
+  --line:#83918b;
+}
+.tf-section {
+  background:#f1f0e9;
+  color:#202f34;
+  padding:40px 48px;
+  margin-bottom:1px;
+  max-width:1050px;
+  border-bottom:1px solid #83918b5c
+}
+.tf-section:first-of-type {
+  border-top:5px solid #aaa38a
+}
+.tf-sub {
+  display:block;
+  margin-top:7px;
+  font-size:11px;
+  color:#4b6268
+}
+.tf-verify-list,.tf-record-list {
+  list-style:none;
+  padding:0;
+  margin:0
+}
+.tf-verify-list>li {
+  display:grid;
+  grid-template-columns:1fr 1.1fr;
+  gap:10px 30px;
+  border-top:1px solid #81918c60;
+  padding:17px 0;
+  margin:0
+}
+.tf-v-label,.tf-rec-label {
+  font:10px/1.7 var(--pf-mono);
+  color:#4b6268
+}
+.tf-v-val {
+  font-size:13px
+}
+.tf-v-note {
+  grid-column:2;
+  font-size:11px;
+  line-height:1.8;
+  color:#4b6268;
+  overflow-wrap:anywhere
+}
+.tf-chip {
+  display:inline-block;
+  border-bottom:1px solid #8c987c;
+  padding-bottom:3px;
+  font-size:12px
+}
+.tf-record-list>li {
+  display:flex;
+  justify-content:space-between;
+  gap:25px;
+  border-top:1px solid #81918c60;
+  padding:15px 0;
+  margin:0
+}
+.tf-section .tf-product-summary {
+  font-size:14px;
+  color:#40555b
+}
+.tf-product-head>.card-product-mark {
+  width:42px;
+  height:42px;
+  object-fit:contain;
+  flex:none
+}
+.tf-section h2 {
+  font-family:var(--pf-serif);
+  font-size:32px;
+  font-weight:400;
+  letter-spacing:-.025em;
+  margin-bottom:24px
+}
+.tf-section h3 {
+  font-size:21px;
+  margin:24px 0 15px
+}
+.tf-section :is(p,li,a) {
+    overflow-wrap:anywhere;
+
+  font-size:14px;
+  line-height:1.85
+}
+.tf-section p+p {
+  margin-top:14px
+}
+.tf-facts {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px 45px
+}
+.tf-facts>div {
+  border-top:1px solid #80908c5c;
+  padding:14px 0
+}
+.tf-facts dt {
+  font:10px var(--pf-mono);
+  color:#4b6166;
+  text-transform:uppercase;
+  letter-spacing:.08em
+}
+.tf-facts dd {
+  margin:8px 0 0;
+  font-size:14px;
+  overflow-wrap:anywhere
+}
+.tf-section .note,.tf-section .scope-note {
+  color:#4c6167
+}
+.tf-section .kicker {
+  color:#65593e
+}
+.tf-section :is(code,pre,.code-block) {
+  background:#e1e4db;
+  color:#22343a
+}
+.tf-section th,.tf-section td {
+  border-color:#81918b61
+}
+.tf-section .sha256-value {
+  font-size:11px
+}
+.tf-section .sha256-copy {
+  color:#213439;
+  border-color:#8e9c96
+}
+.tf-evidence-list {
+  padding-left:20px
+}
+.record-next {
+  display:flex;
+  gap:30px;
+  align-items:center;
+  font-size:13px;
+  margin-top:45px;
+  flex-wrap:wrap
+}
+.record-next .foundry-connection {
+  display:flex;
+  align-items:center;
+  gap:15px
+}
+.record-next [data-joint] {
+  display:block;
+  width:95px
+}
+.record-next>span {
+  color:var(--muted);
+  margin-right:auto
+}
+.tf-index-hero,.truth-hero,.receipts-hero {
+  padding:70px 0 55px
+}
+.tf-index-hero h1,.truth-hero h1,.receipts-hero h1 {
+  max-width:15ch
+}
+.tf-index-hero p,.truth-hero p,.receipts-hero p {
+  color:var(--muted);
+  max-width:65ch;
+  margin-top:25px
+}
+.tf-grid,.truth-grid,.receipts-grid {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:28px
+}
+.tf-card,.truth-card,.receipt-card {
+  padding:32px;
+  background:#ecece3;
+  color:#23353a;
+  border-top:4px solid #9c9b87;
+  box-shadow:0 15px 30px #0003
+}
+.tf-card :is(h2,h4),.truth-card h2,.receipt-card h2 {
+  font:32px/1.15 var(--pf-serif);
+  letter-spacing:-.025em;
+  margin-bottom:18px
+}
+.tf-card p,.truth-card p,.receipt-card p {
+  font-size:13px
+}
+.tf-card .kicker,.truth-card .kicker,.receipt-card .kicker {
+  color:#5e624e
+}
+.tf-card svg,.truth-card svg,.receipt-card svg {
+  max-width:38px;
+  max-height:38px
+}
+.receipt-card :is(dt,dd) {
+  font-size:12px;
+  overflow-wrap:anywhere
+}
+.receipt-card code {
+  color:#253c42
+}
+.receipt-card .note {
+  color:#465e62
+}
+.receipt-card .sha256-block {
+  padding:15px 0
+}
+.receipt-card a {
+  font-size:13px
+}
+@media(max-width:700px) {
+  .record-qualification {
+    font:11px/1.8 var(--pf-mono);
+    color:#c9bba2;
+    margin-top:20px;
+    max-width:76ch
+  }
+  .tf-breadcrumb {
+    padding-top:20px;
+    font-size:9px
+  }
+  .tf-hero {
+    padding:30px 0 25px
+  }
+  .tf-hero-kicker {
+    font-size:9px;
+    margin-bottom:20px
+  }
+  .tf-product-head {
+    padding-right:0;
+    gap:12px;
+    align-items:start
+  }
+  .tf-product-head>svg {
+    width:32px;
+    height:32px;
+    margin-top:7px
+  }
+  .tf-product-head h1 {
+    font-size:clamp(34px,10vw,45px);
+    overflow-wrap:anywhere
+  }
+  .tf-state {
+    font-size:9px;
+    margin-top:10px
+  }
+  .tf-product-summary {
+    font-size:15px;
+    margin-top:20px
+  }
+  .record-return {
+    position:relative;
+    top:auto;
+    right:auto;
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin:15px 0 0
+  }
+  .record-qualification {
+    font-size:10px;
+    margin-top:13px
+  }
+  .record-joint {
+    width:60px;
+    flex:none
+  }
+  .record-return>span:last-child {
+    text-align:left;
+    font-size:9px
+  }
+  .tf-section {
+    padding:27px 20px
+  }
+  .tf-sub {
+    display:block;
+    margin-top:7px;
+    font-size:11px;
+    color:#4b6268
+  }
+  .tf-verify-list,.tf-record-list {
+    list-style:none;
+    padding:0;
+    margin:0
+  }
+  .tf-verify-list>li {
+    display:grid;
+    grid-template-columns:1fr 1.1fr;
+    gap:10px 30px;
+    border-top:1px solid #81918c60;
+    padding:17px 0;
+    margin:0
+  }
+  .tf-v-label,.tf-rec-label {
+    font:10px/1.7 var(--pf-mono);
+    color:#4b6268
+  }
+  .tf-v-val {
+    font-size:13px
+  }
+  .tf-v-note {
+    grid-column:2;
+    font-size:11px;
+    line-height:1.8;
+    color:#4b6268;
+    overflow-wrap:anywhere
+  }
+  .tf-chip {
+    display:inline-block;
+    border-bottom:1px solid #8c987c;
+    padding-bottom:3px;
+    font-size:12px
+  }
+  .tf-record-list>li {
+    display:flex;
+    justify-content:space-between;
+    gap:25px;
+    border-top:1px solid #81918c60;
+    padding:15px 0;
+    margin:0
+  }
+  .tf-section .tf-product-summary {
+    font-size:14px;
+    color:#40555b
+  }
+  .tf-product-head>.card-product-mark {
+    width:42px;
+    height:42px;
+    object-fit:contain;
+    flex:none
+  }
+  .tf-section h2 {
+    font-size:28px;
+    margin-bottom:20px
+  }
+  .tf-verify-list>li {
+    display:block
+  }
+  .tf-v-label,.tf-v-val,.tf-v-note {
+    display:block;
+    margin-top:7px
+  }
+  .tf-record-list>li {
+    display:block
+  }
+  .tf-record-list a {
+    display:block;
+    margin-top:8px
+  }
+  .tf-facts {
+    display:block
+  }
+  .tf-facts>div {
+    padding:12px 0
+  }
+  .tf-facts dd {
+    font-size:13px
+  }
+  .tf-section :is(p,li,a) {
+    overflow-wrap:anywhere;
+
+    font-size:13px
+  }
+  .tf-section .sha256-value {
+    font-size:10px
+  }
+  .record-next {
+    gap:18px;
+    margin-top:30px;
+    font-size:12px
+  }
+  .tf-index-hero,.truth-hero,.receipts-hero {
+    padding:40px 0 35px
+  }
+  .tf-grid,.truth-grid,.receipts-grid {
+    display:block
+  }
+  .tf-card,.truth-card,.receipt-card {
+    padding:25px 20px;
+    margin-bottom:20px
+  }
+  .tf-card :is(h2,h4),.truth-card h2,.receipt-card h2 {
+    font-size:28px
+  }
+}
+@media(forced-colors:active) {
+  .tf-section,.tf-card,.truth-card,.receipt-card {
+    --text:CanvasText;
+    --muted:CanvasText;
+    --accent:CanvasText;
+    --line:CanvasText;
+    background:Canvas;
+    color:CanvasText;
+    border:1px solid CanvasText;
+    box-shadow:none
+  }
+  .tf-section .note,.tf-section .scope-note,.tf-facts dt,.tf-state {
+    color:CanvasText
+  }
+}
+
+
+/* PF-V3-R2: REVIEW-ONLY — no release or runtime authority. */
+
+/* ProofShot's truthful record is a physical reverso, NOT a metallic certificate.
+   Permanent chassis and a single pressure clamp carry actual off-white paper. */
+.tf-page .tf-hero{max-width:1080px;padding:50px 60px 32px;margin-top:38px;border:1px solid #50625f;background:linear-gradient(145deg,#2a3335,#101a1d 55%);box-shadow:inset 0 1px #a3aca161,12px 15px 0 #070d0f}
+.tf-page .tf-hero::before{content:"";position:absolute;top:-8px;left:52px;right:52px;height:13px;background:linear-gradient(#bdc2b8,#576664 48%,#1a2729 55%,#7e8a86);border-inline:2px solid #62716b;box-shadow:0 2px 3px #0009}
+.tf-page .tf-section{max-width:1080px;margin-left:0;padding:41px 60px;background:#f1efe6;box-shadow:9px 0 0 #3d4b4b,13px 0 0 #091113;position:relative}
+.tf-page .tf-section:nth-of-type(even){background:#f6f4eb}
+.tf-page .tf-section:first-of-type{border-top:4px solid #acaaa0}
+.tf-page .tf-section h2{color:#283630}
+.tf-page .tf-section a:not(.button){color:#2a4e50;text-decoration-color:#67817b}
+.tf-page .tf-section code{white-space:normal;overflow-wrap:anywhere}
+.tf-page .record-return{right:36px;top:52px;width:155px}
+.tf-page .record-return .record-joint{background:linear-gradient(#354443,#111b1d);border:1px solid #657472;border-radius:0 0 16px 16px;box-shadow:inset 0 1px #cbd0b844,0 8px 9px #0005}
+.tf-page .record-return>span:last-child{font-size:10px;color:#d8dacc;margin-top:9px}
+@media(max-width:780px){.tf-page .tf-hero{margin-top:18px;padding:35px 24px 22px}.tf-page .tf-hero::before{left:15px;right:15px}.tf-page .tf-section{padding:32px 24px;box-shadow:5px 0 #344646}.tf-page .record-return{right:15px;top:40px}}
+@media(max-width:540px){.tf-page .tf-hero{padding:24px 16px 20px}.tf-page .tf-section{padding:28px 17px}.tf-page .record-return{position:relative;right:auto;top:auto;width:150px;margin:22px 0 0}.tf-page .tf-product-head{padding-right:0}.tf-page .tf-hero::before{top:-5px}}
+@media(forced-colors:active){.tf-page .tf-hero,.tf-page .tf-section,.tf-page .record-return .record-joint{color:CanvasText!important;background:Canvas!important;border:1px solid CanvasText!important;box-shadow:none!important}.tf-page .tf-section a{color:LinkText!important}}
+/* Round 3 (owner: "use adobe tools or blender", 2026-11-04): a record's head is a black-oxide plate (oxide-field and the
+   head plate's rendered edge), held by the rendered clamp bar; its sections are rendered paper with their rendered edge;
+   the return joint is a small titanium plate. The page ground stays flat (no chassis on a record), and the facts, lists
+   and machines keep their opaque print colours. */
+.tf-page .tf-hero{border:0 solid;border-image:url(/assets/round3/oxide-frame.webp) 56 112 104 56/28px 56px 52px 28px/0 24px 24px 0 stretch;background:url(/assets/round3/oxide-field-1024.webp) 0 0/512px 512px repeat,#1d1f21;background-image:image-set(url(/assets/round3/oxide-field-512.webp) 1x,url(/assets/round3/oxide-field-1024.webp) 2x);box-shadow:none}
+.tf-page .tf-hero::before{top:-13px;left:52px;right:52px;height:30px;box-sizing:border-box;border:0 solid;border-width:0 36px;
+ border-image:url(/assets/round3/clamp.webp) 0 72 fill/0 36px/0 stretch;background:none;box-shadow:none}
+.tf-page .tf-section,.tf-page .tf-section:nth-of-type(even),.tf-page .tf-section:first-of-type{border:0 solid;border-radius:0;box-shadow:none;border-image:url(/assets/round3/sheet-edge.webp) 16 32 64 16/8px 16px 32px 8px/4px 8px 8px 4px stretch;background:url(/assets/round3/paper-field-1024.webp) var(--px,0) var(--py,0)/512px 512px repeat,#e9e6dd;background-image:image-set(url(/assets/round3/paper-field-512.webp) 1x,url(/assets/round3/paper-field-1024.webp) 2x);--px:-59px;--py:-173px}
+.tf-page .tf-section:nth-of-type(even){--px:-311px;--py:-421px}
+.tf-page .tf-section:nth-of-type(3n){--px:-163px;--py:-29px}
+.tf-page .record-return .record-joint{border-radius:0;border:0 solid;border-image:url(/assets/round3/ti-frame-sm.webp) 48/24px/0 stretch;box-shadow:none;background:url(/assets/round3/ti-field-1280.webp) var(--px,0) var(--py,0)/640px 640px repeat,#323130;background-image:image-set(url(/assets/round3/ti-field-640.webp) 1x,url(/assets/round3/ti-field-1280.webp) 2x)}
+@media(max-width:780px){.tf-page .tf-hero::before{left:15px;right:15px}.tf-page .tf-section{box-shadow:none}}
+/* From 541 px the return plate sits absolutely in the head; between 541 and 780 px it was taller than the head, so its
+   label ran under the first sheet. The head now holds it, with room for the sheet edge's 4 px outset. */
+@media(min-width:541px){.tf-page .tf-hero{min-height:208px}}
+/* Up to 700 px the return plate is in flow (position:relative), so the 40 px offset from the 780 px rule only pushed it
+   under the first sheet; it stays where the flow puts it. */
+@media(max-width:700px){.tf-page .record-return{top:auto;right:auto}}
+/* The Product scope sheet sits outside .store-shell, so the margin-left:0 meant for the shell's sheets put it at the
+   viewport's edge; it lines up with the stack above (the shell's left edge is (100% - rail) / 2). */
+.tf-page .tf-section.container{margin-left:calc((100% - var(--pf-rail)) / 2)}
+@media(max-width:540px){.tf-page .tf-hero{border-image-width:16px 32px 29.71px 16px;border-image-outset:0 13.71px 13.71px 0}.tf-page .tf-hero::before{top:-13px}}
+@media(forced-colors:active){.tf-page .tf-hero,.tf-page .tf-section,.tf-page .record-return .record-joint{border-image:none!important}.tf-page .tf-hero::before{display:none}}
+/* Up to 700 px the return plate is 60 x 40 px: its frame is drawn at 10 px (the plate's own scale), so the rendered
+   screws stay in the frame's corners, clear of the joint drawn inside it. */
+@media(max-width:700px){.tf-page .record-return .record-joint{border-image-width:10px}}
+/* Round 3 (owner: "Yes, render them", 2026-11-04): each record's connection joints are Blender renders of the authored
+   mechanisms (scripts/render-round2/joint_parts.py): the drawing's gradients, painted highlights and drop shadow
+   become real parts, light and a contact shadow. Their motion is rendered too: nine frames at even steps of engagement
+   (frame 0 rest, frame 8 engaged), and nothing rendered is rotated or scaled in CSS. The page moves a whole-number frame
+   index (--joint-frame, a registered <integer>, so an interrupted or reversed hover always lands on a whole frame) with
+   the drawing's own timing (--joint-time, --joint-ease from foundry-connections.css), so it eases in and out as the
+   drawing did. The render covers the SVG's box plus its shadow margin (the viewBox -6..252 x -6..168); the SVG after it
+   keeps the layout, hidden, and is the forced-colours drawing. Reduced motion holds frame 0 (foundry-connections.css sets
+   --joint-engage to 0 and turns transitions off). It prints as rendered (print-color-adjust), as the drawing did. */
+@property --joint-frame{syntax:'<integer>';inherits:false;initial-value:0}
+.tf-page [data-joint]{position:relative}
+.tf-page .joint-render+.joint-svg{visibility:hidden}
+.tf-page .joint-render{position:absolute;left:-2.5%;top:-3.75%;width:107.5%;height:108.75%;pointer-events:none;
+ --joint-frame:calc(var(--joint-engage,0) * 8);background-repeat:no-repeat;background-size:900% 100%;
+ background-position:calc(var(--joint-frame) * 12.5%) 0;transition:--joint-frame var(--joint-time,380ms) var(--joint-ease,cubic-bezier(.2,.72,.16,1));
+ -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.tf-page .joint-render--cache-vault{background-image:url(/assets/round3/joints/cache-vault-2x.webp);background-image:image-set(url(/assets/round3/joints/cache-vault-1x.webp) 1x,url(/assets/round3/joints/cache-vault-2x.webp) 2x)}
+.tf-page .joint-render--cleanroom{background-image:url(/assets/round3/joints/cleanroom-2x.webp);background-image:image-set(url(/assets/round3/joints/cleanroom-1x.webp) 1x,url(/assets/round3/joints/cleanroom-2x.webp) 2x)}
+.tf-page .joint-render--forgecast{background-image:url(/assets/round3/joints/forgecast-2x.webp);background-image:image-set(url(/assets/round3/joints/forgecast-1x.webp) 1x,url(/assets/round3/joints/forgecast-2x.webp) 2x)}
+.tf-page .joint-render--ghostlayer{background-image:url(/assets/round3/joints/ghostlayer-2x.webp);background-image:image-set(url(/assets/round3/joints/ghostlayer-1x.webp) 1x,url(/assets/round3/joints/ghostlayer-2x.webp) 2x)}
+.tf-page .joint-render--lights-out{background-image:url(/assets/round3/joints/lights-out-2x.webp);background-image:image-set(url(/assets/round3/joints/lights-out-1x.webp) 1x,url(/assets/round3/joints/lights-out-2x.webp) 2x)}
+.tf-page .joint-render--proofshot{background-image:url(/assets/round3/joints/proofshot-2x.webp);background-image:image-set(url(/assets/round3/joints/proofshot-1x.webp) 1x,url(/assets/round3/joints/proofshot-2x.webp) 2x)}
+.tf-page .joint-render--reality-gate{background-image:url(/assets/round3/joints/reality-gate-2x.webp);background-image:image-set(url(/assets/round3/joints/reality-gate-1x.webp) 1x,url(/assets/round3/joints/reality-gate-2x.webp) 2x)}
+@media(forced-colors:active){.tf-page .joint-render{display:none}.tf-page .joint-render+.joint-svg{visibility:visible}}
+/* The machine record's two buttons are rendered keys whose bezels reach 4 px past their boxes; they sat 3 px apart
+   (inline, separated by a space) and touched when they wrapped. They keep at least 8 px of plate between bezels. */
+.tf-page .tf-machine .button{margin:16px 14px 0 0}

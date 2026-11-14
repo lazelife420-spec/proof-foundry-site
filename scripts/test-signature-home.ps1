@@ -28,17 +28,19 @@ function Assert-Home([string]$name, [bool]$condition) {
   }
 }
 
-Assert-Home 'signature stylesheet is linked with a content version' ($homeHtml -match 'href="/signature\.css\?v=[0-9a-f]{12}"')
+Assert-Home 'foundry stylesheet layers are linked with a content version' ($homeHtml -match 'href="/pf-foundry-system\.css\?v=[0-9a-f]{12}"')
 Assert-Home 'generated signature stylesheet contains the workbench system' ($css -match '\.signature-home \.product-theater')
-# H9 supersedes the signature theater with editorial scenes and a separate
-# catalog. Preserve discovery and authentic media against that new contract.
-Assert-Home 'Foundry identity is present in the opening composition' ($homeHtml -match 'h9-studio-chip' -and $homeHtml -match 'PF_MARK_G_MASTER\.svg')
-Assert-Home 'real Cache Vault stage is present before enhancement' ($homeHtml -match 'cv-quick-paste\.png')
-Assert-Home 'Cache Vault scene leads to its product details' ($homeHtml -match 'href="/cache-vault/"')
-Assert-Home 'software catalog uses the broader tool framing' ($catalogHtml -match 'Choose the one for the job\.')
-Assert-Home 'Reality Gate retains a major editorial scene' ($homeHtml -match 'class="h9-scene h9-scene-reality" data-product="reality-gate"')
-Assert-Home 'all seven product identities remain discoverable' (@('Reality Gate','Cache Vault','Lights Out','Cleanroom','GhostLayer','ForgeCast','ProofShot' | ForEach-Object { $homeHtml -match [regex]::Escape($_) } | Where-Object { -not $_ }).Count -eq 0)
-Assert-Home 'all seven software cards expose availability metadata' (([regex]::Matches($catalogHtml, 'class="card-availability"')).Count -eq 7)
+# CP-0189 restores the approved forged-metal identity: machined emblem in the
+# header and on the homepage plate, engraved route-chain nav, and the approved
+# software directory for product discovery.
+Assert-Home 'Foundry identity is present in the opening composition' ($homeHtml -match 'brand-lockup' -and $homeHtml -match 'PF_MARK_G_TI_HEADER\.webp')
+Assert-Home 'homepage emblem plate is present' ($homeHtml -match 'pf-emblem' -and $homeHtml -match 'PF_MARK_G_TI_460\.webp')
+Assert-Home 'real Cache Vault catalog art is present' ($catalogHtml -match 'cv-quick-paste-card-960\.png')
+Assert-Home 'Cache Vault directory entry leads to its product details' ($catalogHtml -match 'data-directory-entry="cache-vault"' -and $catalogHtml -match 'href="/cache-vault/"')
+Assert-Home 'software catalog uses the approved directory framing' ($catalogHtml -match 'Find your way in\.')
+Assert-Home 'Reality Gate retains a foundry-systems record entry' ($catalogHtml -match 'data-directory-entry="reality-gate"')
+Assert-Home 'all product identities remain discoverable' (@('Reality Gate','Cache Vault','Lights Out','Cleanroom','GhostLayer','ForgeCast','ProofShot' | ForEach-Object { $catalogHtml -match [regex]::Escape($_) } | Where-Object { -not $_ }).Count -eq 0)
+Assert-Home 'directory entries expose availability metadata' (([regex]::Matches($catalogHtml, 'data-availability=')).Count -ge 9)
 Assert-Home 'release-record label is consistent in the footer' ($homeHtml -match '>Release records<')
 Assert-Home 'Foundry identity destination remains discoverable' ($homeHtml -match 'href="/about/"')
 Assert-Home 'Founders destination remains in shared navigation' ($homeHtml -match 'href="/founders/"')

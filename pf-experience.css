@@ -1,0 +1,124 @@
+/* Real product demonstrations; progressive controls. */
+.experience-section {
+  border-top:1px solid var(--line)
+}
+.experience-heading p:last-child {
+  font-size:15px
+}
+.tour-layout {
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:40px
+}
+.tour-layout:has(>.tour-screen:only-child) {
+  display:block
+}
+.tour-screen img {
+  max-height:550px;
+  object-fit:contain
+}
+.tour-screen figcaption {
+  font-size:12px
+}
+.tour-steps {
+  display:grid;
+  gap:10px
+}
+.tour-step,.experience-tabs button,.scenario-button {
+  background:none;
+  color:inherit;
+  border:1px solid var(--line);
+  padding:16px;
+  text-align:left
+}
+.tour-step[aria-pressed=true],.experience-tabs button[aria-selected=true] {
+  border-color:#b9aa8a;
+  background:#b5b69e12
+}
+.experience-error {
+  font-size:12px;
+  color:#d3b397
+}
+.experience-tabs {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:25px
+}
+.demo-console,.demo-panel,.demo-stage {
+  padding:35px;
+  background:#0d171c;
+  border:1px solid var(--line)
+}
+.demo-console button,.demo-panel button,.demo-stage button,.timer-controls button,.scenario-controls button {
+  background:#d2d5c9;
+  border:1px solid #c9d0c1;
+  color:#17262b;
+  padding:10px 18px;
+  min-height:44px
+}
+.demo-scope {
+  margin-top:18px
+}
+.demo-controls,.timer-controls,.scenario-controls {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:20px
+}
+.demo-output,.timer-display,.countdown-display {
+  font:clamp(40px,8vw,100px)/1.2 var(--pf-mono);
+  letter-spacing:-.07em
+}
+.demo-label {
+  font:10px var(--pf-mono);
+  color:var(--muted)
+}
+.demo-layout {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px
+}
+.demo-status {
+  font:11px/1.7 var(--pf-mono);
+  margin-top:20px
+}
+.demo-file,.staged-file {
+  padding:13px;
+  border-bottom:1px solid var(--line);
+  font-size:13px
+}
+.experience-step h3 {
+  font-size:22px
+}
+.experience-step p {
+  font-size:14px;
+  color:var(--muted)
+}
+@media(max-width:700px) {
+  .tour-layout,.demo-layout {
+    display:block
+  }
+  .tour-steps {
+    margin-top:22px
+  }
+  .demo-console,.demo-panel,.demo-stage {
+    padding:22px 17px
+  }
+  .demo-output,.timer-display,.countdown-display {
+    font-size:60px
+  }
+  .experience-tabs button {
+    font-size:12px;
+    padding:10px
+  }
+  .tour-step {
+    padding:13px
+  }
+}
+@media(prefers-reduced-motion:reduce) {
+  .experience-section * {
+    animation:none!important;
+    transition:none!important
+  }
+}

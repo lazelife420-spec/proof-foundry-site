@@ -174,13 +174,16 @@ Assert-Truth ($LASTEXITCODE -ne 0 -or $blocked) 'negative: file:// downloadUrl i
 # ── Drift negative control (Phase M) ──────────────────────────────────────────
 # Coherent drift: bump publicVersion and every embedded copy (artifact filename,
 # URLs, labels) so the fixture stays internally consistent, plus a checksum swap.
+# GhostLayer carries the bump: Reality Gate is withdrawn — a new publicVersion on
+# that record is exactly the invalid state the build must reject, not drift.
 $fm3 = Get-Content "$tmp\manifest.json" -Raw -Encoding UTF8 | ConvertFrom-Json
-$fm3.products[0].release.publicVersion = '9.9.9'
-$fm3.products[0].artifacts[0].sha256 = '0' * 64
-$fm3.products[0].sha256 = '0' * 64
-[IO.File]::WriteAllText("$tmp\manifest3.json", (($fm3 | ConvertTo-Json -Depth 30) -replace '1\.1\.0', '9.9.9'))
+$gl = @($fm3.products | Where-Object { $_.id -eq 'ghostlayer' })[0]
+$gl.release.publicVersion = '9.9.9'
+$gl.artifacts[0].sha256 = '0' * 64
+$gl.sha256 = '0' * 64
+[IO.File]::WriteAllText("$tmp\manifest3.json", (($fm3 | ConvertTo-Json -Depth 30) -replace '0\.4\.0', '9.9.9'))
 & pwsh -NoProfile -File $buildScript -ManifestPath "$tmp\manifest3.json" -OutDir "$tmp\public3" -TruthCommit $tCommit -TruthTree $tTree -TruthCommittedAt $tAt *> "$tmp\build3.log"
-$drifted = Get-Content "$tmp\public3\truth\products\reality-gate.json" -Raw | ConvertFrom-Json
+$drifted = Get-Content "$tmp\public3\truth\products\ghostlayer.json" -Raw | ConvertFrom-Json
 Assert-Truth ($drifted.version -ceq '9.9.9' -and $drifted.release.publicVersion -ceq '9.9.9') 'drift: version change flows into truth output automatically'
 Assert-Truth ($drifted.artifacts[0].sha256 -ceq ('0' * 64)) 'drift: artifact checksum change flows into truth output automatically'
 

@@ -44,19 +44,19 @@
         <article class="detail-card">
           <h3><a href="/reality-gate/">Reality Gate ↗</a></h3>
           <p>Local control room for Git project execution, signed receipts, and recovery vault operations.</p>
-          <p class="note">Windows Developer Pilot {{products.reality-gate.versionLabel}} available.</p>
+          <p class="note">{{products.reality-gate.productStatusLabel}} — {{products.reality-gate.availabilityStatement}}</p>
         </article>
 
         <article class="detail-card">
           <h3><a href="/cache-vault/">Cache Vault ↗</a></h3>
           <p>Local clipboard archive and workspace for Windows, with Android companion.</p>
-          <p class="note">Public Windows {{products.cache-vault.versionLabel}} available via Proof Foundry downloads. Android companion APK link currently unavailable on GitHub.</p>
+          <p class="note">Public Windows {{products.cache-vault.versionLabel}} and standalone Android companion v{{products.cache-vault.companionVersion}} available via Proof Foundry downloads.</p>
         </article>
 
         <article class="detail-card">
-          <h3><a href="/lights-out/">Lights Out PC ↗</a></h3>
+          <h3><a href="/lights-out/">Lights Out ↗</a></h3>
           <p>Bedtime enforcement timer with Smart Lights and Wi-Fi Guard support for Windows and Android.</p>
-          <p class="note">Public Windows {{products.lights-out.versionLabel}} available via Proof Foundry downloads; public Android companion {{products.lights-out.companionPublicVersionLabel}}.</p>
+          <p class="note">Public Windows {{products.lights-out.versionLabel}} available from its public GitHub release (portable ZIP). This site offers no Android companion download. The release record lists Android companion {{products.lights-out.companionPublicVersionLabel}} but publishes no companion file or checksum.</p>
         </article>
 
         <article class="detail-card">
@@ -79,7 +79,7 @@
 
         <article class="detail-card">
           <h3><a href="/proofshot/">ProofShot ↗</a></h3>
-          <p>Structural page-resource capture and portable proof-bundle workbench built on the underlying HyperSnatch engine.</p>
+          <p>Structural page-resource capture: ProofShot saves a web page's structure and resources into a portable evidence bundle you can verify offline. Formerly HyperSnatch.</p>
           <p class="note">Public Windows v{{products.proofshot.publicVersion}} is available from Proof Foundry downloads. The installer is unsigned; verify its SHA-256 before running.</p>
         </article>
       </div>
@@ -133,8 +133,8 @@
         <p>Installing Android APK packages directly (such as ForgeCast Weather or mobile companion apps) requires granting your web browser or file manager permission to install unknown apps.</p>
         <ul class="support-list-muted">
           <li>Before installing an APK, verify the SHA-256 digest on a desktop device using PowerShell (<code class="inline">Get-FileHash .\&lt;apk-filename&gt; -Algorithm SHA256</code>) or terminal tools.</li>
-          <li>Phone-native verification guidance is being prepared on the support hub.</li>
-          <li>Seamless in-place app updates require signing continuity across versions. If an app update fails to install over an existing version, verify signing compatibility details on the product page.</li>
+          <li>On-phone verification steps are not published yet. Until they are, check the APK's SHA-256 on a computer using the command above.</li>
+          <li>In-place app updates require signing continuity across versions. If an app update fails to install over an existing version, verify signing compatibility details on the product page.</li>
         </ul>
       </div>
     </section>

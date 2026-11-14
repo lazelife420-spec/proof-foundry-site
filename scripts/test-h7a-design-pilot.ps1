@@ -35,6 +35,8 @@ $outputExperience = Get-Content -LiteralPath $files.OutputExperience -Raw -Encod
 $cardTemplate = Get-Content -LiteralPath $files.CardTemplate -Raw -Encoding UTF8
 $experienceJs = Get-Content -LiteralPath $files.SourceExperienceJs -Raw -Encoding UTF8
 $outputExperienceJs = Get-Content -LiteralPath $files.OutputExperienceJs -Raw -Encoding UTF8
+$navJs = Get-Content (Join-Path $root 'foundry-navigation.js') -Raw -Encoding UTF8
+$outputNavJs = Get-Content (Join-Path $public 'foundry-navigation.js') -Raw -Encoding UTF8
 
 $script:passed = 0
 $script:failed = 0
@@ -80,25 +82,23 @@ Assert-Condition ($cardTemplate -match 'class="h9-card-meta"' -and $cardTemplate
 Assert-Condition ($cardTemplate -notmatch 'card-topline') 'source: card template drops the old topline row'
 Assert-Condition (([regex]::Matches($outputCatalog, '<details class="card-more">')).Count -eq ([regex]::Matches($outputCatalog, 'card-detail')).Count) 'output: card details disclosure renders only where a caveat line exists'
 Assert-Condition ($outputCatalog -notmatch 'card-topline') 'output: no software card renders the old topline row'
-# H9 moves the entire functional catalog to /software/. The old mobile
-# curation toggle is replaced by filters; without JS all seven remain visible.
-Assert-Condition ($sourceCatalog -match 'class="product-finder" data-enhance hidden') 'source: software filters are progressive enhancement'
-Assert-Condition ($outputCatalog -match 'class="product-finder" data-enhance hidden' -and $outputCatalog -match 'data-intent="all"') 'output: software filter controls survive build'
-Assert-Condition ($signature -match '\.signature-home \.catalog-toggle') 'source: catalog toggle styles exist'
-Assert-Condition ($signature -match '(?s)@media \(max-width: 700px\)\s*\{\s*\.signature-home \.catalog-toggle') 'source: catalog toggle only appears at small widths'
-Assert-Condition ($experienceJs -match 'data-catalog-toggle' -and $experienceJs -match 'matchMedia\(''\(max-width: 700px\)''\)') 'source: mobile curation is runtime-driven and viewport-gated'
-Assert-Condition ($outputExperienceJs -match 'data-catalog-toggle') 'output: curation logic survives build'
+# CP-0189 restores the approved directory finder: the form ships hidden and the
+# foundry navigation script reveals and drives it; without JS all entries stay.
+Assert-Condition ($sourceCatalog -match 'data-directory-finder hidden') 'source: directory finder is progressive enhancement'
+Assert-Condition ($outputCatalog -match 'data-directory-finder[^>]*hidden' -and $outputCatalog -match 'name="query"') 'output: directory finder controls survive build'
+Assert-Condition ($navJs -match 'data-directory-finder' -and $navJs -match 'data-directory-entry') 'source: finder filtering is runtime-driven by the navigation module'
+Assert-Condition ($outputNavJs -match 'data-directory-finder') 'output: finder logic survives build'
 # No-JS invariants (NC-3): without JavaScript every product stays accessible.
 # Curation may only ever happen at runtime; nothing may ship pre-hidden.
 Assert-Condition ($cardTemplate -notmatch '<article hidden') 'source: card template never ships pre-hidden products'
-Assert-Condition (($outputCatalog -notmatch '<article[^>]*\shidden[\s>][^>]*class="product-card') -and ($outputCatalog -notmatch '<article[^>]*class="product-card[^>]*"[^>]*\shidden[\s>]')) 'output: no generated software card is hidden by default'
-Assert-Condition ($sourceCatalog -notmatch 'data-catalog-toggle' -and ([regex]::Matches($outputCatalog, '<article class="product-card')).Count -eq 7) 'source/output: software ships the complete seven-tool catalog without a curation toggle'
-Assert-Condition ($sourceCatalog -match 'Choose the one for the job\.') 'source: catalog has an editorial product-first heading'
-Assert-Condition ($sourceHome -match 'Receipts over hype\.') 'source: proof is concise and subordinate'
-Assert-Condition ($sourceHome -match '(?s)class="h9-final".*?href="/software/"') 'source: homepage ends with one clear product invitation'
+Assert-Condition ($outputCatalog -notmatch '<article[^>]*\shidden[\s>][^>]*data-directory-entry' -and $outputCatalog -notmatch '<article[^>]*data-directory-entry[^>]*"[^>]*\shidden[\s>]') 'output: no generated directory entry is hidden by default'
+Assert-Condition (($sourceCatalog -notmatch 'data-directory-entry=') -and ([regex]::Matches($outputCatalog, 'data-directory-entry=')).Count -eq 9) 'source/output: software ships the complete directory without a curation toggle'
+Assert-Condition ($sourceCatalog -match 'Find your way in\.') 'source: catalog has an editorial product-first heading'
+Assert-Condition ($sourceHome -match 'A record, all the way through\.') 'source: proof is concise and subordinate'
+Assert-Condition ($sourceHome -match 'href="/software/"') 'source: homepage ends with one clear product invitation'
 Assert-Condition ($sourceHome -notmatch 'hero-signals|home-reassurance') 'source: hero removes competing secondary signals'
-Assert-Condition ($sourceHome -notmatch 'theater-controls|product-finder|data-compare=') 'source: functional catalog controls do not compete with H9 editorial scenes'
-Assert-Condition ($outputHome -match 'Different jobs\. Same standards\.' -and $outputHome -match '(?s)class="h9-final".*?href="/software/"') 'output: editorial discovery and final catalog CTA survive build'
+Assert-Condition ($sourceHome -notmatch 'theater-controls|product-finder|data-compare=|data-directory-finder') 'source: functional catalog controls do not compete with the ledger composition'
+Assert-Condition ($outputHome -match 'Browse Products' -and $outputHome -match 'href="/software/"') 'output: editorial discovery and catalog CTA survive build'
 Assert-Condition ($experience -match '\.layer-number\{font:9px Consolas,monospace;color:#969eb5;letter-spacing:\.14em\}') 'source: GhostLayer contrast color is corrected'
 Assert-Condition ($outputExperience -match '\.layer-number\{font:9px Consolas,monospace;color:#969eb5;letter-spacing:\.14em\}') 'output: GhostLayer contrast color survives build'
 Assert-Condition ($layerRatio -ge 4.5) ("WCAG AA: GhostLayer layer number contrast is {0:N2}:1 (>= 4.50:1)" -f $layerRatio)
