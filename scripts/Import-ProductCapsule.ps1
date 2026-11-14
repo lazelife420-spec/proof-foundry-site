@@ -109,7 +109,7 @@ Assert-HasProperties $capsule.theme @('accent','accentSecondary','atmosphere') @
 Assert-HasProperties $capsule.hero @('variant','kicker','headline','lede','media','mediaAlt','mediaCaption') @('variant','kicker','headline','emphasis','lede','media','mediaAlt','mediaCaption') 'hero'
 Assert-HasProperties $capsule.card @('tagline','summary','media','mediaAlt') @('tagline','summary','media','mediaAlt') 'card'
 Assert-HasProperties $capsule.taxonomy @('category','jobs','platforms') @('category','jobs','platforms') 'taxonomy'
-Assert-HasProperties $capsule.placement @('catalog') @('catalog','homepageTier','homepageOrder','homepageVariant','homepageNote') 'placement'
+Assert-HasProperties $capsule.placement @('catalog') @('catalog','homepageTier','homepageOrder','homepageVariant','homepageSlot','homepageNote') 'placement'
 if ($capsule.lifecycle -and $capsule.lifecycle -notin @('draft','preview','public-eligible')) { throw 'lifecycle must be draft, preview, or public-eligible.' }
 if ($capsule.commerce) {
   Assert-HasProperties $capsule.commerce @('status','label') @('status','label','checkoutUrl','price') 'commerce'
@@ -265,6 +265,10 @@ $module.homepage=[ordered]@{
   role='studioPortfolio'; order=$homeOrder; presentation=$presentation
   tier=if ($tier -in @('featured','major','secondary')) { $tier } else { 'secondary' }
   visibility=if ($tier -eq 'hidden') { 'hidden' } else { 'visible' }
+}
+if ($capsule.placement.homepageSlot) {
+  if ($capsule.placement.homepageSlot -ne 'shelf') { throw 'homepageSlot must be ''shelf'' when declared (the approved ledger page offers no other slot).' }
+  $module.homepage.slot = 'shelf'
 }
 
 $stage = Join-Path $productsRoot ('.' + $id + '.import-stage-' + [Guid]::NewGuid().ToString('N'))

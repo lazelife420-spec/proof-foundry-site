@@ -114,16 +114,19 @@ registered renderer; arbitrary HTML/component names fail validation.
 
 Use these capsule placement values:
 
-- homepageTier: featured, major, secondary, or hidden (the legacy value none is normalized to hidden)
-- homepageVariant: forge-scene, workstation, device, console, wide-screen, or compact
-- homepageOrder: integer ordering within the selected tier
+- homepageTier: featured, major, secondary, or hidden (the legacy value none is normalized to hidden) — maps to the module's homepage tier/presentation vocabulary, which drives the studio portfolio and directory surfaces
+- homepageVariant: forge-scene, workstation, device, console, wide-screen, or compact — retained validated vocabulary
+- homepageOrder: integer ordering (module homepage.order)
+- homepageSlot: shelf — the only live placement control on the ledger homepage. Set it to render the product in the bounded "New in the directory" shelf inside the orientation block (at most four entries; the build fails rather than silently truncating)
 - homepageNote: optional short factual qualifier shown with the release status
 
-The homepage renders featured, major, and secondary placements from public
-modules. New capsules default to hidden: their product route and catalog/truth
-records remain available after promotion, but the homepage does not show them
-until you choose a placement tier.
-Preview builds also include a local-only homepage placement page at /__preview/;
+The homepage is the approved ledger composition — a fixed editorial layout.
+New capsules default to no slot, so their route and catalog/truth records
+stay public without appearing on the homepage until you set
+`homepageSlot: "shelf"`. A `homepageTier: "hidden"` module sets
+`homepage.visibility: "hidden"` and never renders on the homepage, shelf
+included.
+Preview builds also include a local-only homepage placement view at /__preview/;
 it never changes the production homepage.
 
 ## Preview

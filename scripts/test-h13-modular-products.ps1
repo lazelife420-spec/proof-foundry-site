@@ -356,6 +356,66 @@ $withdrawnHomeRow = [regex]::Match($evidenceControlHome, '(?s)<tr data-ledger-pr
 Assert ($evidenceControlHome -ceq $canonicalHome -and $evidenceControlHome -notmatch $homeProductSlots -and $evidenceControlCard -match 'public v1\.1\.0 withdrawn' -and $evidenceControlCard -notmatch '>\s*Download' -and $evidenceControlPage -match 'data-commerce="withdrawn"' -and $evidenceControlPage -notmatch '<a[^>]+>\s*Download' -and $evidenceControlTruth.release.releaseStatus -eq 'WITHDRAWN' -and $null -eq $evidenceControlTruth.version -and $evidenceControlTruth.download.available -eq $false -and $null -eq $evidenceControlTruth.download.url) 'highest evidence priority cannot restore withdrawn availability in Home, directory, product page or truth'
 Write-Host ""
 
+# ── TEST 4C: homepage.slot shelf is the live opt-in placement contract ────────
+Write-Host "--- TEST 4C: homepage.slot shelf placement ---"
+$t4slot = Invoke-ModuleFixture 'homepage-slot' {
+  param($modDir)
+  $fixtureDir = New-FixtureModule $modDir 'fixture-product' @{
+    schemaVersion = 2
+    order = 5
+    brand = [ordered]@{ name = 'Fixture Product'; mark = '/assets/products/fixture-product/brand/logo.svg' }
+    hero = [ordered]@{ variant = 'split'; kicker = 'Fixture'; headline = 'A shelf fixture'; lede = 'Shelf media.'; media = [ordered]@{ src = '/assets/cache-vault/cv-quick-paste.png'; alt = 'Fixture capture' } }
+    theme = [ordered]@{ accent = '#38BDF8' }
+    card = [ordered]@{ tagline = 'A new module in the directory shelf.'; media = '/assets/forgecast/v030-today.png'; mediaAlt = 'Shelf fixture media' }
+    homepage = [ordered]@{ role = 'studioPortfolio'; tier = 'secondary'; presentation = 'compact'; visibility = 'visible'; order = 5; slot = 'shelf' }
+  }
+  Copy-Item (Join-Path $srcProducts 'cleanroom/logo.svg') (Join-Path $fixtureDir 'logo.svg') -Force
+} -RealOut -mutateManifest {
+  param($o)
+  $clone = @($o.products | Where-Object { $_.id -eq 'cleanroom' })[0]
+  $fp = $clone | ConvertTo-Json -Depth 30 | ConvertFrom-Json
+  $fp.id = 'fixture-product'; $fp.name = 'Fixture Product'; $fp.route = '/fixture-product/'
+  $fp | Add-Member -NotePropertyName featured -NotePropertyValue $false -Force
+  $o.products += $fp
+  $o
+}
+Assert ($t4slot.Exit -eq 0) "slot fixture build succeeds (exit=$($t4slot.Exit))"
+$t4slotHome = Get-Content (Join-Path $t4slot.OutDir 'index.html') -Raw -Encoding UTF8
+Assert ($t4slotHome -match '<aside class="home-shelf"[^>]*aria-label') 'opted-in module emits the bounded shelf region on the homepage'
+Assert ($t4slotHome -match 'data-product="fixture-product"' -and $t4slotHome -match 'A new module in the directory shelf\.' -and $t4slotHome -match 'href="/fixture-product/"') 'homepage.slot renders the module entry (name, headline, route) without editing index.html'
+$shelfIdx = $t4slotHome.IndexOf('home-shelf'); $orientIdx = $t4slotHome.IndexOf('home-orientation')
+Assert ($orientIdx -ge 0 -and $shelfIdx -gt $orientIdx -and $shelfIdx -lt $t4slotHome.IndexOf('ledger-doctrine')) 'the shelf lives inside the orientation block of the approved composition'
+Assert ((Get-FileHash (Join-Path $root 'index.html') -Algorithm SHA256).Hash -eq $indexBefore) 'shelf placement needs no homepage template edit'
+
+$t4slotHidden = Invoke-ModuleFixture 'homepage-slot-hidden' {
+  param($modDir)
+  $path = Join-Path $modDir "$script:controlId\module.json"; $m = Get-Content $path -Raw | ConvertFrom-Json
+  $m.homepage.visibility = 'hidden'; $m.homepage | Add-Member -NotePropertyName slot -NotePropertyValue 'shelf' -Force
+  [IO.File]::WriteAllText($path, ($m | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
+} -RealOut
+Assert ($t4slotHidden.Exit -eq 0) 'homepage-hidden + slot build succeeds'
+$t4shHome = Get-Content (Join-Path $t4slotHidden.OutDir 'index.html') -Raw -Encoding UTF8
+Assert ($t4shHome -notmatch ('data-product="' + [regex]::Escape($controlId) + '"')) 'homepage.visibility=hidden still excludes a module from the shelf (slot cannot override withdrawal-from-homepage)'
+
+$t4badSlot = Invoke-ModuleFixture 'homepage-bad-slot' {
+  param($modDir)
+  $path = Join-Path $modDir "$script:controlId\module.json"; $m = Get-Content $path -Raw | ConvertFrom-Json
+  $m.homepage | Add-Member -NotePropertyName slot -NotePropertyValue 'hero' -Force
+  [IO.File]::WriteAllText($path, ($m | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
+} -RealOut
+Assert ($t4badSlot.Exit -ne 0 -and $t4badSlot.Output -match 'homepage\.slot must be') 'unknown homepage.slot value is rejected'
+
+$t4shelfCap = Invoke-ModuleFixture 'homepage-shelf-cap' {
+  param($modDir)
+  foreach ($file in Get-ChildItem $modDir -Directory | Select-Object -First 5 | ForEach-Object { Join-Path $_.FullName 'module.json' }) {
+    $m = Get-Content $file -Raw | ConvertFrom-Json
+    $m.homepage | Add-Member -NotePropertyName slot -NotePropertyValue 'shelf' -Force
+    [IO.File]::WriteAllText($file, ($m | ConvertTo-Json -Depth 20), [Text.UTF8Encoding]::new($false))
+  }
+} -RealOut
+Assert ($t4shelfCap.Exit -ne 0 -and $t4shelfCap.Output -match 'at most 4') 'the shelf refuses to grow past its bound instead of silently truncating'
+Write-Host ""
+
 # ── TEST 5: hidden product control ───────────────────────────────────────────
 Write-Host "--- TEST 5: hidden product excluded everywhere ---"
 $t5 = Invoke-ModuleFixture 'hidden' {

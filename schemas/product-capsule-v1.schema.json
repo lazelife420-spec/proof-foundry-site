@@ -233,6 +233,11 @@
             "compact"
           ]
         },
+        "homepageSlot": {
+          "enum": [
+            "shelf"
+          ]
+        },
         "homepageNote": {
           "type": "string"
         }

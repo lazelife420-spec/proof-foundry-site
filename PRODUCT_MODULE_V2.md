@@ -22,7 +22,7 @@ The executable constraints are documented in [`schemas/product-module-v2.schema.
 - `hero`: a registered variant, kicker, headline, lede, local media, and local/fragment actions.
 - `card`: catalog tagline and media.
 - `taxonomy`: category and job tags, with room for platform and audience tags.
-- `lifecycle` and `homepage`: publication readiness plus a tier (`featured`, `major`, or `secondary`), presentation, optional major-scene composition, order, and copy. `major` renders a dense scene with `media-left` or `media-right`; `secondary` renders an image-led compact card. Homepage tiers are consumed generically from module metadata, without product-ID branches. A hidden product uses `homepage.visibility: hidden` and keeps its public route/catalog/truth while omitting it from the homepage.
+- `lifecycle` and `homepage`: publication readiness plus a role, tier (`featured`, `major`, or `secondary`), presentation, optional major-scene composition, order, and copy — the vocabulary that drives the studio portfolio and directory surfaces. Direct placement on the ledger homepage is the separate opt-in `homepage.slot` field: `slot: "shelf"` renders the module in a bounded (≤4) "New in the directory" shelf inside the orientation block, ordered by `homepage.order`. A hidden product uses `homepage.visibility: hidden` and keeps its public route/catalog/truth while omitting it from the homepage, shelf included.
 - `commerce`: a generic `FREE`, `PAID`, `COMING_SOON`, `UNAVAILABLE`, or `WITHDRAWN` state and visitor-facing label. Canonical release truth must agree with the state; paid offers require an explicit checkout URL. The catalog renders the label. Public Truth v1 keeps its existing schema and release/download fields; no price is inferred from a download link.
 - `sections`: known component names or structured section objects.
 - `contentSource: content.html` as a migration bridge; it is optional for fully structured/capsule-authored modules.
@@ -50,11 +50,14 @@ downloads, and public status still come from canonical manifest state. The
 commercial/acquisition label is module-authored but build-validated against
 that release state. There is no ID-specific job map in `h9-software.js`.
 
-The generated product showcase markers in `index.html` are registry-driven.
-The builder groups products by the module's homepage tier and orders each
-group by module metadata. Modules choose from controlled homepage variants;
-CSS keeps the cinematic scenes and provides reusable variants. Adding a
-capsule does not require editing either page or the renderer.
+The restored `index.html` is a fixed editorial composition; the only
+data-driven product surface is the `<!-- @homepage-shelf -->` marker inside
+the orientation block. `Build-HomepageShelf` emits the bounded shelf for
+modules that declare `homepage.slot: "shelf"`, ordered by `homepage.order`,
+with entry copy/media taken from `homepage` and `card` fields.
+Hidden-visibility and non-visible modules never appear. Adding a product to
+the shelf requires no page or renderer edits — only the module's own `slot`
+declaration.
 
 ## 10. Publication safety
 

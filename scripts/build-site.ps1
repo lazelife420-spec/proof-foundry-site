@@ -1478,6 +1478,45 @@ function Get-HomepageStatus($product, $tokens) {
   return $status
 }
 
+function Build-HomepageShelf {
+  # CP-0189 placement contract: the approved ledger homepage is a fixed editorial
+  # composition. The single data-driven surface is this bounded shelf inside
+  # home-orientation — modules opt in with homepage.slot='shelf'. The role/tier/
+  # presentation vocabulary drives the studio portfolio/directory surfaces, not
+  # this page; hidden-withdrawn lifecycle states never render a download claim.
+  # At most four entries; the build refuses a larger set rather than silently
+  # truncating the approved composition.
+  $entries = @()
+  foreach ($module in $productRegistry) {
+    if ($module.lifecycle -ne 'public-eligible' -or $module.visibility -ne 'visible') { continue }
+    if (-not $module.homepage -or $module.homepage.visibility -eq 'hidden' -or [string]$module.homepage.slot -ne 'shelf') { continue }
+    $p = $productStateSource.Get($module.id)
+    if (-not $p -or -not $p.visible) { continue }
+    $entries += [PSCustomObject]@{ Module=$module; Product=$p; Order=[int]$module.homepage.order }
+  }
+  $entries = @($entries | Sort-Object Order, { [int]$_.Module.order })
+  if (-not $entries.Count) { return '' }
+  if ($entries.Count -gt 4) { throw "Homepage shelf holds at most 4 entries; found $($entries.Count)" }
+  $items = @()
+  foreach ($entry in $entries) {
+    $module=$entry.Module; $p=$entry.Product
+    $name = if ($p.homeName) { $p.homeName } else { $p.name }
+    $image = if ($module.card.media) { $module.card.media } else { $module.hero.media.src }
+    $alt = if ($module.card.mediaAlt) { $module.card.mediaAlt } else { $module.hero.media.alt }
+    $headline = if ($module.homepage.jobLabel) { $module.homepage.jobLabel } elseif ($module.card.tagline) { $module.card.tagline } else { $module.hero.headline }
+    $tokens = ProductTokens $p
+    $homeStatus = Get-HomepageStatus $p $tokens
+    $noteHtml = if ($module.homepage.mediaDisclosure) { '<span class="home-shelf-note">' + (Html-Text $module.homepage.mediaDisclosure) + '</span>' } else { '' }
+    $items += @"
+<li><a class="home-shelf-entry" href="$(Html-Attr $module.route)" data-product="$(Html-Attr $module.id)">
+<img class="home-shelf-media" src="$(Html-Attr $image)" alt="$(Html-Attr $alt)" width="96" height="72" loading="lazy" decoding="async"/>
+<span class="home-shelf-copy"><strong>$(Html-Text $name)</strong><span>$(Html-Text $headline)</span><span class="home-shelf-status">$(Html-Text $tokens.platform) · $(Html-Text $homeStatus)</span>$noteHtml</span>
+<span class="home-shelf-arrow" aria-hidden="true">↗</span></a></li>
+"@
+  }
+  return '<aside class="home-shelf" aria-label="New in the directory"><p class="home-shelf-label"><span class="kicker">New in the directory</span></p><ul class="home-shelf-list">' + "`n" + ($items -join "`n") + "`n</ul></aside>"
+}
+
 function Get-StudioEvidenceCandidate {
   $candidates = @()
   foreach ($entry in Get-StudioPortfolioEntries) {
@@ -2640,6 +2679,7 @@ function Get-ProductRegistry {
         if (-not ($m.homepage.order -is [int] -or $m.homepage.order -is [long] -or $m.homepage.order -is [double])) { $regErrors += "${tag}: homepage.order must be numeric" }
         if ($null -ne $m.homepage.evidencePriority -and -not ($m.homepage.evidencePriority -is [int] -or $m.homepage.evidencePriority -is [long])) { $regErrors += "${tag}: homepage.evidencePriority must be a positive integer when specified" }
         if ($null -ne $m.homepage.evidencePriority -and [int]$m.homepage.evidencePriority -lt 1) { $regErrors += "${tag}: homepage.evidencePriority must be a positive integer when specified" }
+        if ($m.homepage.slot -and $m.homepage.slot -ne 'shelf') { $regErrors += "${tag}: homepage.slot must be 'shelf' when declared (no other slot exists on the approved ledger page)" }
       }
       if ($m.placement -and $m.placement.PSObject.Properties['homepage']) { $regErrors += "${tag}: homepage placement is controlled by homepage presentation metadata; remove placement.homepage" }
       foreach ($asset in @($m.brand.mark, $m.brand.logo, $m.brand.monochrome, $m.hero.media.src, $m.hero.media.mobileSrc, $m.card.media)) {
@@ -3238,6 +3278,7 @@ function Process-Template($srcPath, $srcName, [string]$OverrideHtml) {
   $html = $html.Replace('{{publicProductCount}}', $publicCatalogCount)
   $html = $html.Replace('<!-- @studio-evidence -->', (Build-StudioEvidence))
   $html = $html.Replace('<!-- @studio-portfolio -->', (Build-StudioPortfolio))
+  $html = $html.Replace('<!-- @homepage-shelf -->', (Build-HomepageShelf))
   $html = $html.Replace('<!-- @studio-withdrawn -->', (Build-StudioWithdrawn))
   # The standalone catalog includes the featured product as a normal card.
   $catalogCards = (Build-ProductCards $null $true $true) -replace '<h4 class="card-name">', '<h3 class="card-name">' -replace '</h4>', '</h3>'
