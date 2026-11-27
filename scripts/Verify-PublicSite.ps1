@@ -89,7 +89,7 @@ $cvArtifactPattern = Esc $cvArtifact.filename
 $cvSha256 = $cvArtifact.sha256
 $cvPublicVer = "v$($cvCh.version)"
 
-# Lights Out — public Windows v11.3.1 (Proof Foundry mirror + GitHub release), no open candidate
+# Lights Out — public Windows v11.3.2 (Proof Foundry mirror + GitHub release), no open candidate
 # Android: public companion v11.1.1; a companion v11.2.0 build exists but is not public.
 $loTruth = $truthModel.products | Where-Object { $_.id -eq "lights-out" } | Select-Object -First 1
 $loPublicVer = "v$(($loTruth.channels | Where-Object { $_.id -eq 'windows-public' }).version)"

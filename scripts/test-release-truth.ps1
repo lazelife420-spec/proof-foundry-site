@@ -147,17 +147,17 @@ Assert-Condition ($psRegistry.release.publishedAt -eq '2026-09-17') 'Registry Pr
 
 $loRegistry = $registryJson.products | Where-Object { $_.id -eq 'lights-out' }
 Assert-Condition ($loRegistry.release.releaseStatus -eq 'PUBLIC_RELEASE') "Registry Lights Out release status is PUBLIC_RELEASE"
-Assert-Condition ($loRegistry.release.publicVersion -eq '11.3.1') "Registry Lights Out public version is 11.3.1"
-Assert-Condition ($null -eq $loRegistry.release.candidateVersion) "Registry Lights Out carries no candidate version (v11.3.1 is final)"
+Assert-Condition ($loRegistry.release.publicVersion -eq '11.3.2') "Registry Lights Out public version is 11.3.2"
+Assert-Condition ($null -eq $loRegistry.release.candidateVersion) "Registry Lights Out carries no candidate version (v11.3.2 is final)"
 Assert-Condition ($loRegistry.release.publishedAt -eq '2026-11-27') "Registry Lights Out publishedAt matches the final release date"
 $loTruthJson = Get-Content (Join-Path $publicDir "truth\products\lights-out.json") -Raw | ConvertFrom-Json
 Assert-Condition ($loTruthJson.release.companionPublicVersion -eq '11.1.1') "Truth record Lights Out public companion remains 11.1.1"
 Assert-Condition ($loTruthJson.download.available -eq $true) "Truth record Lights Out download is available"
-Assert-Condition ($loHtml -match [regex]::Escape('https://downloads.theprooffoundry.com/lights-out/v11.3.1/Lights-Out-Portable-v11.3.1-win-x64.zip')) "Lights Out download resolves to the v11.3.1 mirror ZIP"
-Assert-Condition ($loHtml -match 'c03374ca5da7e0690c451f77dfade6f9210e1b92e775d0fc02afaed270b2e83f') "Lights Out publishes the v11.3.1 portable ZIP SHA-256"
-Assert-Condition ($loHtml -match '9d792fd3066de40218e5c844a5a1b3a5387b24bd5883ce093ad1064ce6132259') "Lights Out publishes the v11.3.1 installer SHA-256"
+Assert-Condition ($loHtml -match [regex]::Escape('https://downloads.theprooffoundry.com/lights-out/v11.3.2/Lights-Out-Portable-v11.3.2-win-x64.zip')) "Lights Out download resolves to the v11.3.2 mirror ZIP"
+Assert-Condition ($loHtml -match '383731ee124c2d20ac41af04694d9e1e152ed4b089f29580d2826f0ec4a725d2') "Lights Out publishes the v11.3.2 portable ZIP SHA-256"
+Assert-Condition ($loHtml -match 'a18da552d4e7bd6e71392d4c63f0ab5fac32f3da20767aaaf95e53fff273cb24') "Lights Out publishes the v11.3.2 installer SHA-256"
 Assert-Condition ($loHtml -notmatch 'c7872350101906471e83d8c0649e1e65c5f9baa4591e0c02ccfd8780215726d6') "Lights Out does not present the superseded RC4 artifact hash"
-Assert-Condition ($loHtml -notmatch 'Receipt</dt><dd>342c11bc' -and $loRegistry.verification.verificationType -notcontains 'REALITY_GATE') "Lights Out v11.3.1 does not borrow the v11.1.3 Reality Gate receipt"
+Assert-Condition ($loHtml -notmatch 'Receipt</dt><dd>342c11bc' -and $loRegistry.verification.verificationType -notcontains 'REALITY_GATE') "Lights Out v11.3.2 does not borrow the v11.1.3 Reality Gate receipt"
 
 # 6. K2: one withdrawn Reality Gate story on every page (dateless; W/PROPOSAL.md A-01)
 function Get-K2Text([string]$html) {
@@ -315,7 +315,7 @@ $crQual = 'as described by Proof Foundry for ' + $crV + '; no release receipt is
 Assert-Condition ($null -eq $crSource.verification.receiptUrl -and -not $crSource.release.PSObject.Properties['sourceCommit'] -and $crPage.Contains('No release receipt or source commit is published for ' + $crV + '.') -and $crPage.Contains('exact one-click restoration, ' + $crQual) -and $crPage.Contains('explicitly purged by the operator, ' + $crQual) -and $crTf.Contains('custody checks, and rollback, ' + $crQual) -and ($crPage + $rgProof) -notmatch '(?i)provenance attested') 'K4: Cleanroom states that v1.0.7 has no published receipt or source commit, and its user-file claims carry that qualifier'
 # R7 Lights Out
 $loText = [System.Net.WebUtility]::HtmlDecode($loHtml)
-Assert-Condition ($loText.Contains('the installer and the portable build each matched all 1,421 files recorded in the build manifest') -and $loText.Contains('This is first-party evidence — not an independent or security certification') -and $loText.Contains('No Reality Gate receipt is published for v11.3.1') -and $loHtml -notmatch '(?i)20-step|independently verified|cryptographically signed|live physical-phone' -and @(@('342c11bc-d2d6-4918-8920-a495211ff69b','6323d762-859a-4385-91d7-923cd1bc1610','adff2359-3350-4d6d-9e04-74c295003c58') | Where-Object { -not $loHtml.Contains($_) }).Count -eq 0) "K4: Lights Out scopes v11.3.1 qualification to the release's first-party record, keeps the three historical receipt IDs as text, and claims no independent certification"
+Assert-Condition ($loText.Contains('the installer and the portable build each matched all 1,421 files recorded in the build manifest') -and $loText.Contains('This is first-party evidence — not an independent or security certification') -and $loText.Contains('No Reality Gate receipt is published for v11.3.2') -and $loHtml -notmatch '(?i)20-step|independently verified|cryptographically signed|live physical-phone' -and @(@('342c11bc-d2d6-4918-8920-a495211ff69b','6323d762-859a-4385-91d7-923cd1bc1610','adff2359-3350-4d6d-9e04-74c295003c58') | Where-Object { -not $loHtml.Contains($_) }).Count -eq 0) "K4: Lights Out scopes v11.3.2 qualification to the release's first-party record, keeps the three historical receipt IDs as text, and claims no independent certification"
 # R8 ProofShot
 $psText = [System.Net.WebUtility]::HtmlDecode($psHtml)
 $psCustody = "a release manifest that names Proof Foundry's internal Reality Gate receipts (the receipts are not published)"
@@ -378,7 +378,7 @@ function Get-A12Figure([string]$html, [string]$marker) {
     return [regex]::Match($html, '(?s)<figure\b(?:(?!</figure>).)*?' + [regex]::Escape($marker) + '.*?</figure>').Value
 }
 $a12Bindings = @(
-    @{ Route = 'lights-out'; Marker = 'hero-product-shot'; Src = '/assets/lights-out/tonight-active-hero.png'; Need = @('Lights Out v11.1.2', 'dry-run countdown', 'Historical interface image', 'public Windows release is v11.3.1') },
+    @{ Route = 'lights-out'; Marker = 'hero-product-shot'; Src = '/assets/lights-out/tonight-active-hero.png'; Need = @('Lights Out v11.1.2', 'dry-run countdown', 'Historical interface image', 'public Windows release is v11.3.2') },
     @{ Route = 'lights-out'; Marker = 'aria-labelledby="shot-firstlight-cap"'; Src = '/assets/lights-out/settings-first-light-automations.png'; Need = @('both switched off', "CAPTURED $a12Dot Lights Out v11.1.2") },
     @{ Route = 'lights-out'; Marker = 'aria-labelledby="shot-devices-cap"'; Src = '/assets/lights-out/devices-panel.png'; Need = @('nothing connected yet', "CAPTURED $a12Dot Lights Out v11.1.2 dry run") },
     @{ Route = 'lights-out'; Marker = 'aria-labelledby="shot-lights-cap"'; Src = '/assets/lights-out/settings-smart-lights.png'; Need = @('not yet configured', "CAPTURED $a12Dot Lights Out v11.1.2") },

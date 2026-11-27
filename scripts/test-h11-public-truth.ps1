@@ -180,7 +180,7 @@ Assert-Truth ($LASTEXITCODE -eq 0 -and $homeMaterialDate -match '^\d{4}-\d{2}-\d
 # NOT_ESTABLISHED): /proof/ moved (ForgeCast build line no longer names a
 # production signing identity); / (Home) moved via ForgeCast homepage card;
 # their literals move with their sitemap dates.
-# 2026-11-27 Lights Out v11.3.1: /, /software/, /lights-out/, /roadmap/, /support/
+# 2026-11-27 Lights Out v11.3.2: /, /software/, /lights-out/, /roadmap/, /support/
 # /proof/ and /truth-files/lights-out/ render the new release and name; their literals move with their
 # sitemap dates.
 $reconciledLastmod = @{
