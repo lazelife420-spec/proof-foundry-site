@@ -3,7 +3,7 @@
   "reviewOnly": true,
   "activation": "NOT_AUTHORIZED",
   "registerSha256": "29efa3120b7c2ea04b5ec21098f71a2e91c4a8dbb91605fa150421c75a6d7b85",
-  "websiteReleaseTruthSha256": "c29b305f6b9e7b987395dfd1bf87b6244e6da1a40db015525ed9d28e406fc8de",
+  "websiteReleaseTruthSha256": "d222630a2cedb1d3b9a8ce2beae8838852e6d3293a2beaa0cb1f5c2162c5fa96",
   "appReferenceCommit": "1982486667749ebc6310e77738a0626e960e2690",
   "evidenceIds": [
     "PF-INDEX-20261101",
@@ -123,7 +123,7 @@
         {
           "id": "windows-public",
           "platform": "Windows",
-          "version": "11.3.2",
+          "version": "11.3.3",
           "availability": "PUBLISHED_METADATA_ONLY_NO_BINARY_FETCH",
           "observedAt": "2026-11-01T03:00:43.709Z",
           "evidenceIds": [
@@ -132,13 +132,13 @@
           ],
           "artifacts": [
             {
-              "filename": "Lights-Out-Portable-v11.3.2-win-x64.zip",
-              "sha256": "383731ee124c2d20ac41af04694d9e1e152ed4b089f29580d2826f0ec4a725d2",
+              "filename": "Lights-Out-Portable-v11.3.3-win-x64.zip",
+              "sha256": "862b84ed4f0405416f990f8b26d530b44c895842370d32e2a20df97431ced880",
               "hashProvenance": "PUBLISHED_DIGEST_NOT_INDEPENDENTLY_REHASHED"
             },
             {
-              "filename": "Lights-Out-Setup-v11.3.2.exe",
-              "sha256": "a18da552d4e7bd6e71392d4c63f0ab5fac32f3da20767aaaf95e53fff273cb24",
+              "filename": "Lights-Out-Setup-v11.3.3.exe",
+              "sha256": "bae9da8fedaee3d3573202eaad42fa35ef2eecf0ffb301b5d4b7c6c8733b1f0e",
               "hashProvenance": "PUBLISHED_DIGEST_NOT_INDEPENDENTLY_REHASHED"
             }
           ]

@@ -5,13 +5,13 @@
   "sourceCommit": "c5df5bb805f88af41456351e3a648063f3da03c8",
   "sourceTree": "5be20b8ab334a9f85d4d2b74edb8200c5ab21122",
   "foundationCommit": "2258341bfa47de187147b03617e7dfa9ade678bf",
-  "modelSha256": "311fbd41aee176819f8919fc02d2baac3dd5e0098f45e2cf39a6330baa88ea2c",
+  "modelSha256": "a136b516072a34d11a868924bb5f265a6643fabd1eefd87e329819cab5394b71",
   "files": [
     {
       "source": "proof-foundry-app/release-truth/release-truth.json",
       "destination": "release-truth.json",
       "blob": null,
-      "sha256": "c29b305f6b9e7b987395dfd1bf87b6244e6da1a40db015525ed9d28e406fc8de"
+      "sha256": "d222630a2cedb1d3b9a8ce2beae8838852e6d3293a2beaa0cb1f5c2162c5fa96"
     },
     {
       "source": "proof-foundry-app/packages/pf-release-truth/index.js",
@@ -49,8 +49,8 @@
     {
       "amendedAt": "2026-11-27",
       "file": "release-truth.json",
-      "scope": "lights-out product only: Windows public release 11.2.0 -> 11.3.2 (CI-built release artifacts from tag v11.3.2, source commit dd49df0, downloads served from downloads.theprooffoundry.com/lights-out/v11.3.2/, hashes from the release's BUILD-MANIFEST.json, first-party qualification record); product name 'Lights Out PC' -> 'Lights Out'; limitations updated (Android standalone app in testing, smart-light evidence scope). Android channels unchanged. Historical v11.1.3 Reality Gate receipt references retained word-for-word as url-less unlinked evidence.",
-      "authorization": "Owner directive 2026-11-26/27 ('Yes, publish'; 'Yes, prepare it'; owner defaults: product name 'Lights Out', Android described as in testing, v11.3.0 assets on the downloads mirror); v11.3.1 owner directive 2026-11-27 ('Yes, release 11.3.1'; 'Yes, mirror it'); v11.3.2 owner directive 2026-11-27 ('Yes, release it'; 'take full control and authority')",
+      "scope": "lights-out product only: Windows public release 11.2.0 -> 11.3.3 (CI-built release artifacts from tag v11.3.3, source commit 58c96f4, downloads served from downloads.theprooffoundry.com/lights-out/v11.3.3/, hashes from the release's BUILD-MANIFEST.json, first-party qualification record); product name 'Lights Out PC' -> 'Lights Out'; limitations updated (Android standalone app in testing, smart-light evidence scope). Android channels unchanged. Historical v11.1.3 Reality Gate receipt references retained word-for-word as url-less unlinked evidence.",
+      "authorization": "Owner directive 2026-11-26/27 ('Yes, publish'; 'Yes, prepare it'; owner defaults: product name 'Lights Out', Android described as in testing, v11.3.0 assets on the downloads mirror); v11.3.1 owner directive 2026-11-27 ('Yes, release 11.3.1'; 'Yes, mirror it'); v11.3.2 owner directive 2026-11-27 ('Yes, release it'; 'take full control and authority'); v11.3.3 owner directive 2026-11-27 ('Yes, release 11.3.3')",
       "priorFileSha256": "ad264ffd9f32005867157706b61090bd0f1aefc384c44046f41c6e6bbb7b507e",
       "priorModelSha256": "d0a2c17539123dc65067b8e2a9b9edcd2fa4269e708c42694d00691b2aaaa89a",
       "note": "Website-side amendment ahead of App-repo custody, as on 2026-10-25. Downloads move from GitHub to the Proof Foundry mirror because installed Lights Out apps accept update downloads only from downloads.theprooffoundry.com. The seal is re-established so any further unsanctioned drift still breaks the build; the App repository remains the canonical home and should absorb this amendment. blob is null because no App-repo blob exists for the amended bytes."

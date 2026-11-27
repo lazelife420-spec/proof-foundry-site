@@ -95,7 +95,7 @@ Assert-Condition ($loBlock -notmatch '"offers"') "F9: Lights Out JSON-LD no long
 Assert-Condition ($loJson.name -eq 'Lights Out') "F9: Lights Out JSON-LD identity (name) preserved"
 Assert-Condition ($loJson.author.name -eq 'The Proof Foundry') "F9: Lights Out JSON-LD author preserved"
 Assert-Condition (-not [string]::IsNullOrWhiteSpace($loJson.description)) "F9: Lights Out JSON-LD description preserved"
-Assert-Condition ($lo -match 'Public Windows v11\.3\.2' -and $lo -match 'Download Lights Out v11\.3\.2' -and $lo -notmatch 'downloads are currently on hold|currently unavailable') "F9: Lights Out visible copy states the public v11.3.2 release and download"
+Assert-Condition ($lo -match 'Public Windows v11\.3\.3' -and $lo -match 'Download Lights Out v11\.3\.3' -and $lo -notmatch 'downloads are currently on hold|currently unavailable') "F9: Lights Out visible copy states the public v11.3.3 release and download"
 
 $ps = Read-Page 'proofshot'
 $psBlock = @(Get-JsonLdBlocks $ps)[0]
