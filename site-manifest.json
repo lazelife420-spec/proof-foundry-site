@@ -258,12 +258,12 @@
         "unofferedArtifacts": [1],
         "evidenceClass": { "ARTIFACT_CUSTODY": "NONE", "RUNTIME_VALIDATION": "NONE", "REALITY_GATE": "NONE" }
       },
-      "downloadLabel": "Download Lights Out v11.3.3",
+      "downloadLabel": "Download Lights Out v11.3.4",
       "distType": "Portable ZIP + Windows installer EXE (unsigned)",
-      "build": "Electron v11.3.3 · This site offers no Android companion download.",
+      "build": "Electron v11.3.4 · This site offers no Android companion download.",
       "testStatus": "Windows qualification passed · 1421/1421 files matched",
       "testCount": "Windows release qualification passed: the installer and the portable build each matched all 1,421 files recorded in the build manifest, and 60 installed-runtime settings layout checks passed (WINDOWS-VERIFICATION.json). Published hashes were re-verified on 2026-11-27 against bytes downloaded from the GitHub release.",
-      "releaseNote": "Lights Out v11.3.3 is the current public Windows release, published 2026-11-27 from source commit 58c96f4. Together with v11.3.0 to v11.3.2 earlier that day it adds a draggable Tonight dial, opt-in light cues and dimming that follows the countdown, refreshes the design, and comes out of a production audit of power actions. The installer EXE and portable ZIP are served from the Proof Foundry downloads mirror and the GitHub release alongside SHA256SUMS.txt, a build manifest and a Windows verification record; both hashes were re-checked against downloaded bytes. No Reality Gate receipt has been published for this version. These are unsigned Windows builds — not Authenticode-signed. The Android companion stays at v11.1.1; no new companion APK ships with this version.",
+      "releaseNote": "Lights Out v11.3.4 is the current public Windows release, published 2026-11-27 from source commit 9f5bf0f. Together with v11.3.0 to v11.3.3 earlier that day it adds a draggable Tonight dial, opt-in light cues and dimming that follows the countdown, refreshes the design, and comes out of a production audit of power actions. The installer EXE and portable ZIP are served from the Proof Foundry downloads mirror and the GitHub release alongside SHA256SUMS.txt, a build manifest and a Windows verification record; both hashes were re-checked against downloaded bytes. No Reality Gate receipt has been published for this version. These are unsigned Windows builds — not Authenticode-signed. The Android companion stays at v11.1.1; no new companion APK ships with this version.",
       "proofStatus": "First-party qualification · unsigned",
       "proofLinks": [],
       "releasePresentation": {

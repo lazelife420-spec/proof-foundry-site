@@ -16,7 +16,7 @@
 <section data-world-composition="night-rituals" class="night-ritual-spread product-story pp-story pp-section"><div class="story-copy"><p class="kicker pp-kicker">Make it a ritual</p><h2>A different ritual for every night.</h2><p>Start with a Night Mode or save a profile for the routine you use most. Your movie night and your early start do not need the same ending.</p><p data-editorial-origin>Lights Out began with a familiar bedtime frustration: shutdown commands were easy to mistype, and Task Scheduler was cumbersome. The project README describes the response—a visible timer with an explicit start and a way to cancel.</p><div class="pp-story-evidence-card"><div class="pp-evidence-badge"><span class="pp-status-glyph glyph-pass">●</span> NIGHT MODES, SCHEDULES &amp; FIRST LIGHT</div><div class="pp-evidence-meta"><span>Routine systems: <strong>Night Modes, scheduling, First Light wake alarm, smart lights, Wi-Fi Guard</strong></span><span>Documented with real interface captures in the technical evidence below.</span></div></div></div><figure class="app-shot story-shot"><a class="screenshot-link" href="/assets/lights-out/night-modes-panel.png" data-screenshot aria-label="Enlarge: Lights Out Night Modes panel with bedtime presets."><img src="/assets/studio/night-modes-panel-1600.webp" srcset="/assets/studio/night-modes-panel-480.webp 480w, /assets/studio/night-modes-panel-960.webp 960w, /assets/studio/night-modes-panel-1600.webp 1600w" sizes="(max-width: 700px) 92vw, 60vw" width="1600" height="1002" alt="Lights Out Night Modes panel with bedtime presets." loading="lazy"  decoding="async"></a><figcaption>Night Modes · real Windows v11.1.2 interface</figcaption></figure></section>
 
 <!-- 7 · GET / AVAILABILITY -->
-<section class="pp-get" id="download"><div id="release-status"></div><p class="pp-warning" data-editorial-status>Windows v11.3.3 is the published desktop release. The Android companion and the standalone Android app, which is in testing, are separate channels; experimental device integrations need their own setup.</p><p class="kicker pp-kicker">Get the software</p><h2 class="pp-h2">A better end to your day.</h2><p class="download-description">The public Windows release is {{product.versionLabel}}. The download offered here is the portable ZIP, served from the Proof Foundry downloads mirror with a published SHA256SUMS.txt — verify the hash before running.</p><div class="studio-actions">{{product.downloadBlock}}</div><p class="pp-warning">This site offers no Android companion download. The release record lists Android companion {{product.companionPublicVersionLabel}} but publishes no companion file or checksum. A companion v{{product.companionVersion}} build exists alongside Windows {{product.versionLabel}} but has not been released publicly.</p><p class="pp-link-row"><a class="text-link" href="#release-note">What changed in {{product.versionLabel}} ↓</a> &nbsp;·&nbsp; <a class="text-link" href="#proof">Read release evidence ↓</a></p></section>
+<section class="pp-get" id="download"><div id="release-status"></div><p class="pp-warning" data-editorial-status>Windows v11.3.4 is the published desktop release. The Android companion and the standalone Android app, which is in testing, are separate channels; experimental device integrations need their own setup.</p><p class="kicker pp-kicker">Get the software</p><h2 class="pp-h2">A better end to your day.</h2><p class="download-description">The public Windows release is {{product.versionLabel}}. The download offered here is the portable ZIP, served from the Proof Foundry downloads mirror with a published SHA256SUMS.txt — verify the hash before running.</p><div class="studio-actions">{{product.downloadBlock}}</div><p class="pp-warning">This site offers no Android companion download. The release record lists Android companion {{product.companionPublicVersionLabel}} but publishes no companion file or checksum. A companion v{{product.companionVersion}} build exists alongside Windows {{product.versionLabel}} but has not been released publicly.</p><p class="pp-link-row"><a class="text-link" href="#release-note">What changed in {{product.versionLabel}} ↓</a> &nbsp;·&nbsp; <a class="text-link" href="#proof">Read release evidence ↓</a></p></section>
 
 <!-- 8 · ONBOARDING -->
 <details class="pp-record" id="record">
@@ -28,8 +28,9 @@
 <p>29 October 2026 — the local branch records further Android accessibility and emulator qualification work, separate from public Windows availability.</p>
 <p>27 November 2026 — Windows v11.3.0 is published: a draggable Tonight dial, opt-in light cues, dimming that follows the countdown, a refreshed design and a production audit of power actions. v11.3.1 follows the same day with fixes from its engineering audit: quitting during a run's ending stops it, and a blocked ending restores dimmed lights.</p>
 <p>27 November 2026 — Windows v11.3.2 is a design release: calmer Tonight, Schedule, Devices, Night Modes and Proof screens, with no change to timers, power actions or lights.</p>
-<p>27 November 2026 — Windows v11.3.3: the time format follows the Windows region, Settings never loses a quick edit, and the full end-to-end qualification passes.</p></section>
-<section class="evidence-section" data-editorial-claim="lights-out.today"><h3>One Windows release, distinct Android work</h3><p>Windows v11.3.3 is the current published desktop release in the records checked. It includes the session controls and settings surface, with recurring schedules and experimental WiZ integration described in the release notes. The Android companion and the newer standalone Android work are separate channels. Neither should be inferred to ship as a production-signed Android package with the Windows release.</p></section>
+<p>27 November 2026 — Windows v11.3.3: the time format follows the Windows region, Settings never loses a quick edit, and the full end-to-end qualification passes.</p>
+<p>27 November 2026 — Windows v11.3.4 is a look-and-feel release: the broken-O app icon returns, a larger wordmark and a night-blue room, with no change to timers, power actions or lights.</p></section>
+<section class="evidence-section" data-editorial-claim="lights-out.today"><h3>One Windows release, distinct Android work</h3><p>Windows v11.3.4 is the current published desktop release in the records checked. It includes the session controls and settings surface, with recurring schedules and experimental WiZ integration described in the release notes. The Android companion and the newer standalone Android work are separate channels. Neither should be inferred to ship as a production-signed Android package with the Windows release.</p></section>
 <section class="evidence-section" data-editorial-claim="lights-out.workflow"><h3>Set tonight up while you are still at the desk</h3><p>Choose the intended action and time, review the settings, then start the session. Use pause or snooze if your evening changes; cancel when you want to keep working. Review the session record afterward. Optional device integrations need their own configuration and should be checked on the actual hardware before relying on them.</p></section>
 <section class="evidence-section" data-editorial-claim="lights-out.limits"><h3>Keep the quiet parts honest</h3><p>The Windows packages are unsigned. The application checks GitHub for updates by default; optional configured features can also use the network. WiZ is experimental, and the reviewed evidence does not establish every physical bulb or router combination. Household, school-night and other deferred ideas are not described here as current features.</p></section><p class="note pp-small-note">Product history reviewed 27 November 2026. The earliest surviving source record is not a claimed conception date.</p></div></details>
 
@@ -328,21 +329,21 @@
 <div class="lo-proof-card">
 <dl class="lo-proof-fields">
 <div><dt>Qualification</dt><dd>{{product.testStatus}}</dd></div>
-<div><dt>Source commit</dt><dd><code>58c96f4</code></dd></div>
+<div><dt>Source commit</dt><dd><code>9f5bf0f</code></dd></div>
 <div><dt>Artifact</dt><dd>{{product.artifacts.0.filename}}</dd></div>
 <div><dt>Build</dt><dd>{{product.build}}</dd></div>
 <div><dt>Distribution</dt><dd>Portable ZIP (unsigned), linked above, served from the Proof Foundry downloads mirror and published on the GitHub release. The release's SHA256SUMS.txt also lists an unsigned installer EXE that this site does not offer; both published hashes were re-checked against downloaded bytes on 2026-11-27.</dd></div>
-<div><dt>Public download</dt><dd>Available — Proof Foundry mirror and GitHub release v11.3.3</dd></div>
+<div><dt>Public download</dt><dd>Available — Proof Foundry mirror and GitHub release v11.3.4</dd></div>
 </dl>
         <div id="release-note">{{product.releaseNoteBlock}}</div>
       </div>
 <div class="lo-proof-card">
 <h3>What was checked</h3>
 <ul class="lo-story-list">
-<li>The release's own Windows qualification passed on source commit <code>58c96f4</code>: the installer and the portable build each matched all 1,421 files recorded in the build manifest, and 60 installed-runtime settings layout checks passed (<code>WINDOWS-VERIFICATION.json</code>).</li>
+<li>The release's own Windows qualification passed on source commit <code>9f5bf0f</code>: the installer and the portable build each matched all 1,421 files recorded in the build manifest, and 60 installed-runtime settings layout checks passed (<code>WINDOWS-VERIFICATION.json</code>).</li>
 <li>Both published SHA-256 hashes were re-verified on 2026-11-27 against bytes downloaded from the GitHub release — the downloaded bytes match the published hashes; the mirror copies are checked byte for byte after upload.</li>
 <li>This qualification is first-party: Proof Foundry qualified its own release. It is not an independent or security certification.</li>
-<li>Earlier Reality Gate receipts 342c11bc-d2d6-4918-8920-a495211ff69b, 6323d762-859a-4385-91d7-923cd1bc1610 and adff2359-3350-4d6d-9e04-74c295003c58 covered v11.1.3 only; they do not qualify v11.3.3 and are retained as historical evidence.</li>
+<li>Earlier Reality Gate receipts 342c11bc-d2d6-4918-8920-a495211ff69b, 6323d762-859a-4385-91d7-923cd1bc1610 and adff2359-3350-4d6d-9e04-74c295003c58 covered v11.1.3 only; they do not qualify v11.3.4 and are retained as historical evidence.</li>
 </ul>
 </div>
 <div class="lo-proof-card">
@@ -366,7 +367,7 @@
 <li>Not a signed Windows release.</li>
 <li>Not a trusted-publisher build.</li>
 <li>Not SmartScreen trusted.</li>
-<li>No Reality Gate receipt is published for v11.3.3 — the qualification above is first-party, not an independent certification.</li>
+<li>No Reality Gate receipt is published for v11.3.4 — the qualification above is first-party, not an independent certification.</li>
 <li>Not a re-verification of the earlier, separately frozen v11.1.2 GitHub release ZIP.</li>
 </ul>
 </div>
@@ -384,7 +385,7 @@
 </article>
 <article class="detail-card">
 <h3>Downloads come from the Proof Foundry mirror</h3>
-<p>The v11.3.3 installer, portable ZIP, SHA256SUMS.txt, build manifest and Windows verification record are public on the GitHub release and served byte for byte from the Proof Foundry downloads mirror, which installed copies of Lights Out use for in-app updates. v11.2.0 was distributed from the GitHub release only.</p>
+<p>The v11.3.4 installer, portable ZIP, SHA256SUMS.txt, build manifest and Windows verification record are public on the GitHub release and served byte for byte from the Proof Foundry downloads mirror, which installed copies of Lights Out use for in-app updates. v11.2.0 was distributed from the GitHub release only.</p>
 </article>
 <article class="detail-card">
 <h3>Windows desktop + Android companion</h3>
