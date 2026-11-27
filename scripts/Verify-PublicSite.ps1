@@ -89,7 +89,7 @@ $cvArtifactPattern = Esc $cvArtifact.filename
 $cvSha256 = $cvArtifact.sha256
 $cvPublicVer = "v$($cvCh.version)"
 
-# Lights Out — public Windows v11.2.0 (GitHub release), no open candidate
+# Lights Out — public Windows v11.3.0 (Proof Foundry mirror + GitHub release), no open candidate
 # Android: public companion v11.1.1; a companion v11.2.0 build exists but is not public.
 $loTruth = $truthModel.products | Where-Object { $_.id -eq "lights-out" } | Select-Object -First 1
 $loPublicVer = "v$(($loTruth.channels | Where-Object { $_.id -eq 'windows-public' }).version)"
@@ -336,7 +336,7 @@ foreach ($target in $TargetUrls) {
     Test-UrlContent -Url "$target/lights-out/" -Name "product truth" -ContainsPatterns @(
         "Wi-Fi Guard",
         "ForgeCast Weather",
-        "Windows $(Esc $loPublicVer) is the current public release, published 2026-10-16",
+        "Windows $(Esc $loPublicVer) is the current public release, published 2026-11-27",
         "No successor candidate is open",
         "no companion $(Esc $loCompanionBuiltVer) build has been released publicly",
         "Android companion $(Esc $loCompanionPublicVer)"
