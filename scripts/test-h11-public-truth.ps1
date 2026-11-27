@@ -180,18 +180,22 @@ Assert-Truth ($LASTEXITCODE -eq 0 -and $homeMaterialDate -match '^\d{4}-\d{2}-\d
 # NOT_ESTABLISHED): /proof/ moved (ForgeCast build line no longer names a
 # production signing identity); / (Home) moved via ForgeCast homepage card;
 # their literals move with their sitemap dates.
+# 2026-11-27 Lights Out v11.3.0: /, /software/, /lights-out/, /roadmap/, /support/
+# /proof/ and /truth-files/lights-out/ render the new release and name; their literals move with their
+# sitemap dates.
 $reconciledLastmod = @{
-  'https://theprooffoundry.com/' = (@($homeMaterialDate, '2026-11-06') | Sort-Object | Select-Object -Last 1)
+  'https://theprooffoundry.com/' = (@($homeMaterialDate, '2026-11-27') | Sort-Object | Select-Object -Last 1)
   'https://theprooffoundry.com/about/' = '2026-11-05'
   'https://theprooffoundry.com/cache-vault/' = '2026-11-01'
-  'https://theprooffoundry.com/lights-out/' = '2026-11-01'
+  'https://theprooffoundry.com/lights-out/' = '2026-11-27'
   'https://theprooffoundry.com/proofshot/' = '2026-11-01'
   'https://theprooffoundry.com/reality-gate/' = '2026-11-01'
-  'https://theprooffoundry.com/roadmap/' = '2026-10-25'
-  'https://theprooffoundry.com/software/' = '2026-11-06'
-  'https://theprooffoundry.com/support/' = '2026-11-05'
-  'https://theprooffoundry.com/proof/' = '2026-11-06'
+  'https://theprooffoundry.com/roadmap/' = '2026-11-27'
+  'https://theprooffoundry.com/software/' = '2026-11-27'
+  'https://theprooffoundry.com/support/' = '2026-11-27'
+  'https://theprooffoundry.com/proof/' = '2026-11-27'
   'https://theprooffoundry.com/truth-files/' = '2026-11-05'
+  'https://theprooffoundry.com/truth-files/lights-out/' = '2026-11-27'
 }
 foreach ($kv in $headLastmod.GetEnumerator()) {
   if ($kv.Key -eq 'https://theprooffoundry.com/proof-standard/') { continue }

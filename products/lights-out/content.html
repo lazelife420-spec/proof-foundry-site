@@ -25,11 +25,11 @@
 <details class="pp-sub" id="product-history"><summary>How Lights Out grew<span class="pp-sub-hint">Origins, milestones and present scope</span></summary><div><section class="evidence-section" data-editorial-claim="lights-out.origin"><h3>Why a shutdown timer needed a better interface</h3><p>The project’s own README explains the starting frustration: command-line shutdown timers were easy to mistype, and Task Scheduler felt cumbersome at bedtime. The response was a calmer, visible sequence with an explicit start and a way to cancel. That is documented owner intent; the exact conception date is not established.</p></section>
 <section class="evidence-section" data-editorial-claim="lights-out.evolution"><h3>From timer to night console</h3><p>10 June 2026 — the surviving source history already contains the Lights Out interface and release work; development predates this review’s earliest record.</p>
 <p>29 June 2026 — the classic Windows implementation is removed as the Electron application becomes the maintained desktop path.</p>
-<p>27 November 2026 — Windows v11.3.0 is published: a draggable Tonight dial, opt-in light cues, dimming that follows the countdown, a refreshed design and a production audit of power actions.</p>
-<p>29 October 2026 — the local branch records further Android accessibility and emulator qualification work, separate from public Windows availability.</p></section>
+<p>29 October 2026 — the local branch records further Android accessibility and emulator qualification work, separate from public Windows availability.</p>
+<p>27 November 2026 — Windows v11.3.0 is published: a draggable Tonight dial, opt-in light cues, dimming that follows the countdown, a refreshed design and a production audit of power actions.</p></section>
 <section class="evidence-section" data-editorial-claim="lights-out.today"><h3>One Windows release, distinct Android work</h3><p>Windows v11.3.0 is the current published desktop release in the records checked. It includes the session controls and settings surface, with recurring schedules and experimental WiZ integration described in the release notes. The Android companion and the newer standalone Android work are separate channels. Neither should be inferred to ship as a production-signed Android package with the Windows release.</p></section>
 <section class="evidence-section" data-editorial-claim="lights-out.workflow"><h3>Set tonight up while you are still at the desk</h3><p>Choose the intended action and time, review the settings, then start the session. Use pause or snooze if your evening changes; cancel when you want to keep working. Review the session record afterward. Optional device integrations need their own configuration and should be checked on the actual hardware before relying on them.</p></section>
-<section class="evidence-section" data-editorial-claim="lights-out.limits"><h3>Keep the quiet parts honest</h3><p>The Windows packages are unsigned. The application checks GitHub for updates by default; optional configured features can also use the network. WiZ is experimental, and the reviewed evidence does not establish every physical bulb or router combination. Household, school-night and other deferred ideas are not described here as current features.</p></section><p class="note pp-small-note">Product history reviewed 1 November 2026. The earliest surviving source record is not a claimed conception date.</p></div></details>
+<section class="evidence-section" data-editorial-claim="lights-out.limits"><h3>Keep the quiet parts honest</h3><p>The Windows packages are unsigned. The application checks GitHub for updates by default; optional configured features can also use the network. WiZ is experimental, and the reviewed evidence does not establish every physical bulb or router combination. Household, school-night and other deferred ideas are not described here as current features.</p></section><p class="note pp-small-note">Product history reviewed 27 November 2026. The earliest surviving source record is not a claimed conception date.</p></div></details>
 
 <section class="pp-onboard pp-section" id="onboarding">
   <div class="section-heading pp-section-head">
@@ -329,7 +329,7 @@
 <div><dt>Source commit</dt><dd><code>5f790c8</code></dd></div>
 <div><dt>Artifact</dt><dd>{{product.artifacts.0.filename}}</dd></div>
 <div><dt>Build</dt><dd>{{product.build}}</dd></div>
-<div><dt>Distribution</dt><dd>Portable ZIP (unsigned), linked above, published on the GitHub release. The release's SHA256SUMS.txt also lists an unsigned installer EXE that this site does not offer; both published hashes were re-checked against downloaded bytes on 2026-10-25.</dd></div>
+<div><dt>Distribution</dt><dd>Portable ZIP (unsigned), linked above, served from the Proof Foundry downloads mirror and published on the GitHub release. The release's SHA256SUMS.txt also lists an unsigned installer EXE that this site does not offer; both published hashes were re-checked against downloaded bytes on 2026-11-27.</dd></div>
 <div><dt>Public download</dt><dd>Available — Proof Foundry mirror and GitHub release v11.3.0</dd></div>
 </dl>
         <div id="release-note">{{product.releaseNoteBlock}}</div>
@@ -352,7 +352,7 @@
         <h4>Also listed in SHA256SUMS.txt (not offered here)</h4>
 <p>The GitHub release's SHA256SUMS.txt also lists the installer EXE <code>{{product.artifacts.1.filename}}</code>. This site does not offer that file; its published SHA-256 is:</p>
 <div class="code-block">{{product.artifacts.1.sha256}}</div>
-<p class="note">Both digests are also published in <a href="{{product.artifacts.0.sha256Url}}">SHA256SUMS.txt</a> on the GitHub release. If the hash doesn't match exactly, do not run the file — treat a mismatch as a stop signal and <a href="/support/#report">see the support guide</a>.</p>
+<p class="note">Both digests are also published in <a href="{{product.artifacts.0.sha256Url}}">SHA256SUMS.txt</a> on the Proof Foundry mirror (identical to the GitHub release copy). If the hash doesn't match exactly, do not run the file — treat a mismatch as a stop signal and <a href="/support/#report">see the support guide</a>.</p>
 </div>
 <div class="lo-proof-card">
 <h3>Unsigned build disclosure</h3>

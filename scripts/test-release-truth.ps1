@@ -153,7 +153,7 @@ Assert-Condition ($loRegistry.release.publishedAt -eq '2026-11-27') "Registry Li
 $loTruthJson = Get-Content (Join-Path $publicDir "truth\products\lights-out.json") -Raw | ConvertFrom-Json
 Assert-Condition ($loTruthJson.release.companionPublicVersion -eq '11.1.1') "Truth record Lights Out public companion remains 11.1.1"
 Assert-Condition ($loTruthJson.download.available -eq $true) "Truth record Lights Out download is available"
-Assert-Condition ($loHtml -match [regex]::Escape('https://downloads.theprooffoundry.com/lights-out/v11.3.0/Lights-Out-Portable-v11.3.0-win-x64.zip')) "Lights Out download resolves to the public v11.2.0 GitHub release ZIP"
+Assert-Condition ($loHtml -match [regex]::Escape('https://downloads.theprooffoundry.com/lights-out/v11.3.0/Lights-Out-Portable-v11.3.0-win-x64.zip')) "Lights Out download resolves to the v11.3.0 mirror ZIP"
 Assert-Condition ($loHtml -match 'cdc6701a917a8b5d041f030b2dced53990977ce49b41aad498c2cf18baa370f7') "Lights Out publishes the v11.3.0 portable ZIP SHA-256"
 Assert-Condition ($loHtml -match 'c85db571b611abd0989079deb6dc5ecff51dde8d38850af0303667776e38bc93') "Lights Out publishes the v11.3.0 installer SHA-256"
 Assert-Condition ($loHtml -notmatch 'c7872350101906471e83d8c0649e1e65c5f9baa4591e0c02ccfd8780215726d6') "Lights Out does not present the superseded RC4 artifact hash"
