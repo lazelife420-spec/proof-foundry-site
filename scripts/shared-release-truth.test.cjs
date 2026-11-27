@@ -29,8 +29,8 @@ function fixture() {
 test('website authority uses the remotely preserved seven-product model and exact website projection', () => {
   const result = readAuthoredInputs();
   assert.equal(result.manifest.products.length, 7);
-  assert.equal(result.projection.modelSha256, 'd0a2c17539123dc65067b8e2a9b9edcd2fa4269e708c42694d00691b2aaaa89a');
-  assert.equal(crypto.createHash('sha256').update(result.projectionBytes).digest('hex'), '720728e20e175b049c40bef6ce27a0703905787dcde29cb1f3be433d0074bf0e');
+  assert.equal(result.projection.modelSha256, '12fc2f9a691471a4e0cf74848f901e1c56de47a006b1fed403bf6f8e3256d235');
+  assert.equal(crypto.createHash('sha256').update(result.projectionBytes).digest('hex'), '669a7a263b09f9ff43db37c7b99a26844d5694613a2acf3b5a87712757d3858d');
   assert.equal(result.provenance.mode, 'WEBSITE_SOURCE_AUTHORITY');
   assert.equal(result.provenance.foundationAuthorityScope, 'HISTORICAL_RECONCILIATION_SNAPSHOT');
 });
@@ -57,7 +57,7 @@ test('Cleanroom candidate remains separate from its public artifact and reported
 });
 test('Lights Out public companion and built-only companion never collapse into one channel', () => {
   const compiled = compile(model, presentation), p = product(compiled.manifest, 'lights-out');
-  assert.equal(p.release.publicVersion, '11.2.0'); assert.equal(p.release.companionPublicVersion, '11.1.1');
+  assert.equal(p.release.publicVersion, '11.3.4'); assert.equal(p.release.companionPublicVersion, '11.1.1');
   assert.equal(p.companionVersion, '11.2.0');
   const c = product(compiled.projection, 'lights-out').channels;
   assert.equal(c.find(x => x.platform === 'android' && x.track === 'BUILT').publicationState, 'BUILT_NOT_PUBLIC');

@@ -50,11 +50,11 @@
         },
         {
           "title": "What does \"First-party qualification\" mean?",
-          "body": "For v11.2.0 it means the release's own Windows qualification passed: the installer and the portable build each matched all 614 files recorded in the build manifest, and 60 installed-runtime settings checks passed (WINDOWS-VERIFICATION.json). Proof Foundry re-checked both published SHA-256 hashes against anonymously downloaded bytes. This is first-party evidence — not an independent or security certification, not a code signature, and with no effect on Windows SmartScreen. Earlier Reality Gate runs covered v11.1.3 only."
+          "body": "For v11.3.4 it means the release's own Windows qualification passed: the installer and the portable build each matched all 1,421 files recorded in the build manifest, and 60 installed-runtime settings checks passed (WINDOWS-VERIFICATION.json). Proof Foundry re-checked both published SHA-256 hashes against anonymously downloaded bytes. This is first-party evidence — not an independent or security certification, not a code signature, and with no effect on Windows SmartScreen. Earlier Reality Gate runs covered v11.1.3 only."
         },
         {
           "title": "Is this hosted on GitHub?",
-          "body": "Yes. The v11.2.0 installer, portable ZIP and SHA256SUMS.txt are public on the GitHub release, and the download button on this page points there."
+          "body": "Yes. The v11.3.4 installer, portable ZIP and SHA256SUMS.txt are public on the GitHub release and on the Proof Foundry downloads mirror, and the download button on this page points to the mirror."
         },
         {
           "title": "How do I verify the download?",
@@ -138,7 +138,7 @@
     "media": {
       "src": "/assets/lights-out/tonight-active-hero.png",
       "alt": "Lights Out desktop with an active countdown and session controls.",
-      "caption": "Lights Out v11.1.2, visible in the image, running a dry-run countdown. Historical interface image; public Windows release is v11.2.0."
+      "caption": "Lights Out v11.1.2, visible in the image, running a dry-run countdown. Historical interface image; public Windows release is v11.3.4."
     },
     "primaryAction": {
       "label": "View release options",
@@ -167,7 +167,7 @@
       "tier": "secondary",
     "presentation": "compact",
     "visibility": "visible",
-    "mediaDisclosure": "Dry Run capture from v11.1.2 · current public release v11.2.0.",
+    "mediaDisclosure": "Dry Run capture from v11.1.2 · current public release v11.3.4.",
     "evidencePriority": 3
   }
 }
